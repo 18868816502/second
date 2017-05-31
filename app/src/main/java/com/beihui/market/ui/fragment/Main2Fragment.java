@@ -151,6 +151,7 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
         this.selectTimeIndex = event.selectTimeIndex;
         this.inputMoney = event.inputMoney;
         tv1.setText(inputMoney);
+        setOnTimeSelect(selectTimeIndex);
     }
 
 
