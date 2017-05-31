@@ -72,6 +72,6 @@ dependencies {
     //https://github.com/sfsheng0322/MarqueeView
     compile 'com.sunfusheng:marqueeview:1.2.0'
     //https://github.com/gyf-dev/ImmersionBar  沉浸式状态栏
-    compile 'com.gyf.barlibrary:barlibrary:2.1.9'
+    compile 'com.gyf.barlibrary:barlibrary:2.2.1'
 
 }
