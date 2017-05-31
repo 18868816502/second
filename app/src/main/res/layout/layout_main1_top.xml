@@ -62,6 +62,10 @@
             app:mvTextSize="12sp" />
 
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -136,9 +140,8 @@
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
-                    android:minWidth="80dp"
                     android:text="50000"
-                    android:hint="请输入金额"
+                    android:hint="金额"
                     android:textColorHint="#909298"
                     android:inputType="number"
                     android:textColor="#424251"
