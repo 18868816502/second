@@ -97,10 +97,7 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
     @Override
     protected void immersionInit() {
-        ImmersionBar.with(getActivity())
-                .statusBarDarkFont(false)
-                .navigationBarColor(R.color.colorPrimary)
-                .init();
+
     }
 
     @Override

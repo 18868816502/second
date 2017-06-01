@@ -106,11 +106,6 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
     @Override
     protected void immersionInit() {
-        ImmersionBar.with(getActivity())
-                .transparentStatusBar()
-                .statusBarDarkFont(false)
-                .navigationBarColor(R.color.colorPrimary)
-                .init();
 
         final int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         top_view.post(new Runnable() {
@@ -419,18 +414,22 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
         if (moveY <= maxMove) {
             if (moveY < 10) {
                 alpha = 0;
+                toolbar.setVisibility(View.GONE);
                 textAlpha = 0;
             } else if (moveY >= 10 && moveY < maxMove) {
                 alpha = (float) moveY / maxMove;
                 textAlpha = (int) (alpha * 255);
+                toolbar.setVisibility(View.VISIBLE);
             } else {
                 alpha = 1;
                 textAlpha = 255;
+                toolbar.setVisibility(View.VISIBLE);
             }
 
         } else {
             alpha = 1;
             textAlpha = 255;
+            toolbar.setVisibility(View.VISIBLE);
         }
 
         ImmersionBar.with(getActivity())
