@@ -8,7 +8,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
@@ -25,13 +28,22 @@ import android.widget.Toast;
 
 import com.beihui.market.App;
 import com.beihui.market.R;
+import com.beihui.market.base.Constant;
 import com.beihui.market.view.SplashView;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -219,7 +231,7 @@ public class CommonUtils {
      * @return
      */
     public static String generateSign(FwsHttpParames parames, String reqTime) {
-        StringBuilder builder = new StringBuilder("Constant.secretKey");
+        StringBuilder builder = new StringBuilder(Constant.secretKey);
         builder.append(reqTime);
         if (parames != null && !parames.isEmpty()) {
             for (Map.Entry<String, ?> entry : parames.entrySet()) {
@@ -473,29 +485,107 @@ public class CommonUtils {
 
 
     /**
-     * 获取控件的高度
+     * 通过包名判断有没有安装某个应用
+     * @param context
+     * @param packageName
+     * @return
      */
-    public static int getViewMeasuredHeight(View view) {
-        calculateViewMeasure(view);
-        return view.getMeasuredHeight();
+    public static boolean isAppInstalled(Context context, String packageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        List<String> pName = new ArrayList<String>();
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                pName.add(pn);
+            }
+        }
+        return pName.contains(packageName);
     }
 
+
     /**
-     * 获取控件的宽度
+     * 检测当的网络（WLAN、3G/2G）状态
+     * @param context Context
+     * @return true 表示网络可用
      */
-    public static int getViewMeasuredWidth(View view) {
-        calculateViewMeasure(view);
-        return view.getMeasuredWidth();
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected())
+            {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED)
+                {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    /**
-     * 测量控件的尺寸
-     */
-    private static void calculateViewMeasure(View view) {
-        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
-        view.measure(w, h);
+
+    /**
+     * 将.0改为整数
+     * @param sMoney
+     * @return
+     */
+    public static String formatMoney(String sMoney){
+        String formatString;
+
+        if (!TextUtils.isEmpty(sMoney)) {
+            float money = Float.valueOf(sMoney);
+            if (money == 0) {
+                formatString = "0";
+            } else {
+                if (money % (int)money == 0) {
+                    formatString = (int) money + "";
+                } else {
+                    DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                    formatString= decimalFormat.format(money);//format 返回的是字符串
+                }
+            }
+
+        }else{
+            formatString = "0";
+        }
+        return formatString;
+
+    }
+
+
+    /**
+     * 根据图片的url路径获得Bitmap对象
+     * @param url
+     * @return
+     */
+    public static  Bitmap returnBitmap(String url) {
+        URL fileUrl = null;
+        Bitmap bitmap = null;
+
+        try {
+            fileUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            HttpURLConnection conn = (HttpURLConnection) fileUrl
+                    .openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+
     }
 
 

@@ -1,5 +1,8 @@
 package com.beihui.market.component;
 
+import com.beihui.market.ui.activity.LoginActivity;
+import com.beihui.market.ui.activity.RegisterActivity;
+import com.beihui.market.ui.activity.RegisterPsdActivity;
 import com.beihui.market.ui.fragment.Main1Fragment;
 import com.beihui.market.ui.fragment.Main2Fragment;
 import com.beihui.market.ui.fragment.Main3Fragment;
@@ -20,5 +23,9 @@ public interface MainComponent {
     Main2Fragment inject(Main2Fragment fragment);
     Main3Fragment inject(Main3Fragment fragment);
     Main4Fragment inject(Main4Fragment fragment);
+
+    LoginActivity inject(LoginActivity activity);
+    RegisterActivity inject(RegisterActivity activity);
+    RegisterPsdActivity inject(RegisterPsdActivity activity);
 
 }

@@ -21,6 +21,12 @@ public class SPUtils {
 
     public static final String IS_SPLASH = "isSplash"; // 是否跳过了引导页
     public static final String IS_ONLE = "isOnle"; // 是否是线上线下
+    public static final String IS_CESHI_ONLE = "isCeshiOnle"; // 是否是默认测试环境还是自己配置的环境
+    /**
+     * 可以自己配置后台的baseUrl
+     */
+    public static final String BASE_URL = "baseUrl";
+
 
     public static final String PREFERNCE_FILE_NAME = "xiaorong"; // 缓存文件名
     public static final String GESTURE_PSD = "GESTURE_PSD"; // 缓存登录信息
@@ -66,6 +72,34 @@ public class SPUtils {
         return b;
     }
 
+
+
+
+    public static void setCeshiOnLine(Context context,boolean isOnline) {
+        SharedPreferences prefe = context.getSharedPreferences(IS_CESHI_ONLE, 0);
+        Editor editor = prefe.edit();
+        editor.putBoolean("changeOnline", isOnline);
+        editor.commit();
+    }
+
+    public static boolean isCeshiOnLine(Context context) {
+        SharedPreferences prefe = context.getSharedPreferences(IS_CESHI_ONLE, 0);
+        boolean b = prefe.getBoolean("changeOnline", false);
+        return b;
+    }
+
+
+
+
+
+
+    public static void setBaseUrl(Context context, String baseUrl) {
+        saveObj(context, baseUrl, BASE_URL);
+    }
+
+    public static String getBaseUrl(Context context) {
+        return (String) readObj(context, BASE_URL);
+    }
 
 
 

@@ -40,9 +40,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@mipmap/mine_bg_blue"
                 android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:paddingBottom="40dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,10 +51,11 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:id="@+id/iv_msg"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="10dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/mine_message_icon" />
 
                 </LinearLayout>
 
@@ -75,6 +76,7 @@
                             android:background="@mipmap/mine_head_shadow_icon" />
 
                         <com.beihui.market.view.CircleImageView
+                            android:id="@+id/iv_user"
                             android:layout_width="79dp"
                             android:layout_height="79dp"
                             android:layout_gravity="center"
@@ -119,16 +121,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="未实名"
-                            android:textColor="@color/white"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/round_shiming_wei"
                             android:gravity="center"
-                            android:layout_marginTop="5dp"
+                            android:paddingBottom="3dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:paddingTop="3dp"
-                            android:paddingBottom="3dp"
-                            android:textSize="8sp"/>
+                            android:text="未实名"
+                            android:textColor="@color/white"
+                            android:textSize="8sp" />
 
 
                     </LinearLayout>
@@ -140,33 +142,33 @@
             </LinearLayout>
 
 
-
             <LinearLayout
+                android:id="@+id/ly_menu1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/mine_credit_report_card"
-                android:layout_marginTop="-10dp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
+                android:layout_marginTop="-20dp"
+                android:background="@mipmap/mine_credit_report_card"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black_1"
-                    android:textSize="14sp"
-                    android:text="个人信用报告"
+                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
-                    android:layout_marginLeft="7dp"/>
+                    android:text="个人信用报告"
+                    android:textColor="@color/black_1"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black_2"
-                    android:textSize="14sp"
+                    android:layout_marginLeft="7dp"
                     android:text="直连央行查询"
-                    android:layout_marginLeft="7dp"/>
+                    android:textColor="@color/black_2"
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -179,30 +181,30 @@
 
 
             <LinearLayout
+                android:id="@+id/ly_menu2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/round_white"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/round_white"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginLeft="7dp"/>
+                    android:layout_marginLeft="7dp"
+                    android:src="@mipmap/mine_list_bankcard_icon" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black_1"
-                    android:textSize="14sp"
-                    android:text="银行卡"
+                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
-                    android:layout_marginLeft="7dp"/>
+                    android:text="银行卡"
+                    android:textColor="@color/black_1"
+                    android:textSize="14sp" />
 
 
                 <ImageView
@@ -213,74 +215,77 @@
                     android:src="@mipmap/right_icon" />
 
             </LinearLayout>
-
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100.5dp"
-                android:background="@drawable/round_white"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_marginTop="5dp"
-                android:orientation="vertical"
-                >
+                android:background="@drawable/round_white"
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ly_menu3"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginLeft="7dp"/>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black_1"
-                    android:textSize="14sp"
-                    android:text="帮助与反馈"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="7dp"/>
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/right_icon" />
-
-            </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/line"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="10dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:layout_marginLeft="7dp"/>
+                        android:layout_marginLeft="7dp"
+                        android:src="@mipmap/mine_list_help_icon" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black_1"
-                        android:textSize="14sp"
-                        android:text="设置"
+                        android:layout_marginLeft="7dp"
                         android:layout_weight="1"
-                        android:layout_marginLeft="7dp"/>
+                        android:text="帮助与反馈"
+                        android:textColor="@color/black_1"
+                        android:textSize="14sp" />
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/right_icon" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:id="@+id/ly_menu4"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="7dp"
+                        android:src="@mipmap/mine_list_setting_icon" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:layout_weight="1"
+                        android:text="设置"
+                        android:textColor="@color/black_1"
+                        android:textSize="14sp" />
 
 
                     <ImageView
@@ -296,13 +301,6 @@
 
 
         </LinearLayout>
-
-
-
-
-
-
-
 
 
     </FrameLayout>
