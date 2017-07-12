@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * 办事中心页面
  */
 
-public class Main4Fragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View {
+public class TabMineFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View {
 
 
     @BindView(R.id.iv_msg)
@@ -30,17 +30,17 @@ public class Main4Fragment extends BaseRVFragment<Main1Presenter> implements Mai
     @BindView(R.id.iv_user)
     CircleImageView ivUser;
 
-    public static Main4Fragment newInstance() {
-        Main4Fragment f = new Main4Fragment();
+    public static TabMineFragment newInstance() {
+        TabMineFragment f = new TabMineFragment();
         Bundle b = new Bundle();
-        b.putString("type", "Main2Fragment");
+        b.putString("type", "TabLoanFragment");
         f.setArguments(b);
         return f;
     }
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_main4;
+        return R.layout.fragment_tab_mine;
     }
 
     @Override

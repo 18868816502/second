@@ -21,6 +21,7 @@ import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.adapter.BorrowAdapter;
 import com.beihui.market.ui.adapter.GonglueAdapter;
+import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.bean.BannerData;
 import com.beihui.market.ui.bean.GonglueData;
 import com.beihui.market.ui.bean.support.ReturnMain2;
@@ -46,12 +47,12 @@ import butterknife.BindView;
  * 新闻通知页面
  */
 
-public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View, YRecycleview.OnYRecycleScrolling,
+public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View, YRecycleview.OnYRecycleScrolling,
         View.OnClickListener {
 
 
-    @BindView(R.id.yrecycle_view)
-    YRecycleview yrecycleView;
+    @BindView(R.id.recycle_view)
+    RecyclerView mRecycleView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.center_text)
@@ -59,6 +60,7 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
     @BindView(R.id.top_view)
     View top_view;
 
+    private LoanRVAdapter mLoanRVAdapter;
 
     //记录顶部banner的高度
     private int bannerHeight;
@@ -91,22 +93,27 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
     private String inputMoney;
 
 
-    public static Main1Fragment newInstance() {
-        Main1Fragment f = new Main1Fragment();
+    public static TabHomeFragment newInstance() {
+        TabHomeFragment f = new TabHomeFragment();
         Bundle b = new Bundle();
-        b.putString("type", "Main2Fragment");
+        b.putString("type", "TabLoanFragment");
         f.setArguments(b);
         return f;
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        System.out.println("TabHomeFragment DestroyView");
+    }
+
+    @Override
     public int getLayoutResId() {
-        return R.layout.fragment_main1;
+        return R.layout.fragment_tab_home;
     }
 
     @Override
     protected void immersionInit() {
-
         final int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         top_view.post(new Runnable() {
             @Override
@@ -120,21 +127,68 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
     @Override
     public void configViews() {
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        yrecycleView.setLayoutManager(layoutManager);
-        yrecycleView.setOnYRecycleScrolling(this);
-        adapter = new BorrowAdapter(getActivity());
-        yrecycleView.setAdapter(adapter);
-        yrecycleView.setLoadMoreEnabled(false);
+        mRecycleView.setLayoutManager(layoutManager);
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int scrollY;
 
-        LayoutInflater inflator =
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                float alpha;
+                final int textAlpha;
+                scrollY += dy;
+
+                int maxMove = bannerHeight / 2;
+                if (scrollY <= maxMove) {
+                    if (scrollY < 10) {
+                        alpha = 0;
+                        toolbar.setVisibility(View.GONE);
+                        textAlpha = 0;
+                    } else if (scrollY >= 10 && scrollY < maxMove) {
+                        alpha = (float) scrollY / maxMove;
+                        textAlpha = (int) (alpha * 255);
+                        toolbar.setVisibility(View.VISIBLE);
+                    } else {
+                        alpha = 1;
+                        textAlpha = 255;
+                        toolbar.setVisibility(View.VISIBLE);
+                    }
+
+                } else {
+                    alpha = 1;
+                    textAlpha = 255;
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+
+                ImmersionBar.with(getActivity())
+                        .barColorTransform(R.color.colorPrimary)
+                        .navigationBarColorTransform(R.color.colorPrimary)
+                        .addViewSupportTransformColor(toolbar)
+                        .barAlpha(alpha)
+                        .init();
+
+
+                center_text.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));   //文字透明度
+                    }
+                });
+            }
+        });
+        mLoanRVAdapter = new LoanRVAdapter();
+        mRecycleView.setAdapter(mLoanRVAdapter);
+
+        LayoutInflater inflater =
                 (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout header1 =
-                (LinearLayout) inflator.inflate(R.layout.layout_main1_top, null);
-        cycleViewPager = (CycleViewPager) getActivity().getFragmentManager()
-                .findFragmentById(R.id.fm_banner);
+                (LinearLayout) inflater.inflate(R.layout.layout_tab_home_rv_header, null);
+
+//        cycleViewPager = (CycleViewPager) getChildFragmentManager().findFragmentById(R.id.fm_banner);
+//        cycleViewPager = new CycleViewPager();
+//        getChildFragmentManager().beginTransaction().add(R.id.fm_banner, cycleViewPager).commit();
+
         ivBannerOne = (ImageView) header1.findViewById(R.id.iv_banner_one);
         ly_banner = (LinearLayout) header1.findViewById(R.id.ly_banner);
         marqueeView = (MarqueeView) header1.findViewById(R.id.marqueeView);
@@ -168,26 +222,7 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
         ly_banner.setLayoutParams(params);
 
-        yrecycleView.addHeadView(header1);
-        yrecycleView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                InputMethodUtil.closeSoftKeyboard(getActivity());
-                return false;
-            }
-        });
-
-        yrecycleView.setRefreshAndLoadMoreListener(new YRecycleview.OnRefreshAndLoadMoreListener() {
-            @Override
-            public void onRefresh() {
-                yrecycleView.setReFreshComplete();
-            }
-
-            @Override
-            public void onLoadMore() {
-                yrecycleView.setloadMoreComplete();
-            }
-        });
+        mLoanRVAdapter.setHeaderView(header1);
 
     }
 
@@ -222,7 +257,7 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
         list.add(data1);
         list.add(data2);
         list.add(data3);
-        initBanner(list);
+//        initBanner(list);
 
         List<String> info = new ArrayList<>();
         info.add("187****0421在闪贷侠成功借款1000元");
@@ -260,6 +295,12 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
         gonglueDataList.add(d6);
 
         gonglueAdapter.onReference(gonglueDataList);
+
+        List<String> tempList = new ArrayList<>();
+        for (int i = 0; i < 10; ++i) {
+            tempList.add("" + i);
+        }
+        mLoanRVAdapter.notifyDataSetChanged(tempList);
 
     }
 
@@ -302,7 +343,7 @@ public class Main1Fragment extends BaseRVFragment<Main1Presenter> implements Mai
                 else
                     inputMoney = et_money.getText().toString();
 
-                EventBus.getDefault().post(new ReturnMain2(selectTimeIndex,inputMoney));
+                EventBus.getDefault().post(new ReturnMain2(selectTimeIndex, inputMoney));
 
                 break;
             case R.id.ly_zhengxin:

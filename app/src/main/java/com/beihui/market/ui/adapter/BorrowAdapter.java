@@ -48,7 +48,6 @@ public class BorrowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-
     @Override
     public int getItemViewType(int position) {
         int type;
@@ -79,11 +78,11 @@ public class BorrowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            ViewHolder holder1 =  (ViewHolder) holder;
+            ViewHolder holder1 = (ViewHolder) holder;
 
 
         } else if (holder instanceof ViewBottomHolder) {
-            ViewBottomHolder holder2 =  (ViewBottomHolder) holder;
+            ViewBottomHolder holder2 = (ViewBottomHolder) holder;
 
         }
     }
@@ -110,6 +109,7 @@ public class BorrowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView tvDetail;
         @BindView(R.id.iv_sing)
         ImageView ivSing;
+
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

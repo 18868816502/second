@@ -40,13 +40,14 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //*******************MVP框架**start************************************//
-    //RxJava
+    //NetWork
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    //RxJava
     compile 'io.reactivex:rxjava:1.2.2'
     compile 'io.reactivex:rxandroid:1.2.1'
     //Dagger2,下面三个都要导入 使用初步,http://www.cnblogs.com/zhuyp1015/p/5119727.html
@@ -75,5 +76,7 @@ dependencies {
     compile 'com.gyf.barlibrary:barlibrary:2.2.5'
     //RecyclerView Adapter Helper
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
-
+    //LeakCanary memory leak check, only exits while developing
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }

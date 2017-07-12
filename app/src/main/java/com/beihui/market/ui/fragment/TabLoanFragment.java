@@ -20,7 +20,6 @@ import com.beihui.market.ui.dialog.BrZhiyePopup;
 import com.beihui.market.ui.presenter.Main1Presenter;
 import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.yrecycleview.YRecycleview;
-import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,8 +34,8 @@ import butterknife.OnClick;
  * 办事中心页面
  */
 
-public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View, BrMoneyPopup.onBrMoneyListener,
-        BrTimePopup.onBrTimeListener,BrZhiyePopup.onBrZhiyeListener {
+public class TabLoanFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View, BrMoneyPopup.onBrMoneyListener,
+        BrTimePopup.onBrTimeListener, BrZhiyePopup.onBrZhiyeListener {
 
 
     @BindView(R.id.iv_1)
@@ -82,17 +81,17 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
     private BorrowAdapter adapter;
 
 
-    public static Main2Fragment newInstance() {
-        Main2Fragment f = new Main2Fragment();
+    public static TabLoanFragment newInstance() {
+        TabLoanFragment f = new TabLoanFragment();
         Bundle b = new Bundle();
-        b.putString("type", "Main2Fragment");
+        b.putString("type", "TabLoanFragment");
         f.setArguments(b);
         return f;
     }
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_main2;
+        return R.layout.fragment_tab_loan;
     }
 
     @Override
@@ -102,7 +101,10 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
     @Override
     public void configViews() {
-        EventBus.getDefault().register(this);
+        //register to EventBus if hasn't yet
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         inputMoney = tv1.getText().toString();
         tvTishi.setScrollMode(AutoTextView.SCROLL_FAST);
 
@@ -166,11 +168,12 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
     /**
      * 点击职业弹出框的选择
+     *
      * @param selectIndex
      */
     @Override
     public void onZhiyeItemClick(int selectIndex) {
-        switch (selectIndex){
+        switch (selectIndex) {
             case 1:
                 tv3.setText("上班族");
                 break;
@@ -188,10 +191,11 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
 
     /**
      * 借款期限彈出框的文字改變
+     *
      * @param selectTimeIndex
      */
-    public void setOnTimeSelect(int selectTimeIndex){
-        switch (selectTimeIndex){
+    public void setOnTimeSelect(int selectTimeIndex) {
+        switch (selectTimeIndex) {
             case 1:
                 tv2.setText("1个月及以下");
                 break;
@@ -235,22 +239,21 @@ public class Main2Fragment extends BaseRVFragment<Main1Presenter> implements Mai
     }
 
 
-
     @OnClick({R.id.ly_1, R.id.ly_2, R.id.ly_3, R.id.iv_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ly_1:
-                moneyPopup = new BrMoneyPopup(getActivity(),inputMoney,shadowView,tvTop1,iv1);
+                moneyPopup = new BrMoneyPopup(getActivity(), inputMoney, shadowView, tvTop1, iv1);
                 moneyPopup.setShareItemListener(this);
                 moneyPopup.showAsDropDown(ly_top);
                 break;
             case R.id.ly_2:
-                timePopup = new BrTimePopup(getActivity(),selectTimeIndex,shadowView,tvTop2,iv2);
+                timePopup = new BrTimePopup(getActivity(), selectTimeIndex, shadowView, tvTop2, iv2);
                 timePopup.setShareItemListener(this);
                 timePopup.showAsDropDown(ly_top);
                 break;
             case R.id.ly_3:
-                zhiyePopup = new BrZhiyePopup(getActivity(),shadowView,tvTop3,iv3);
+                zhiyePopup = new BrZhiyePopup(getActivity(), shadowView, tvTop3, iv3);
                 zhiyePopup.setShareItemListener(this);
                 zhiyePopup.showAsDropDown(ly_top);
                 break;

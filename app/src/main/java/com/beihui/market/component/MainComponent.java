@@ -3,10 +3,10 @@ package com.beihui.market.component;
 import com.beihui.market.ui.activity.LoginActivity;
 import com.beihui.market.ui.activity.RegisterActivity;
 import com.beihui.market.ui.activity.RegisterPsdActivity;
-import com.beihui.market.ui.fragment.Main1Fragment;
-import com.beihui.market.ui.fragment.Main2Fragment;
-import com.beihui.market.ui.fragment.Main3Fragment;
-import com.beihui.market.ui.fragment.Main4Fragment;
+import com.beihui.market.ui.fragment.TabHomeFragment;
+import com.beihui.market.ui.fragment.TabLoanFragment;
+import com.beihui.market.ui.fragment.TabMineFragment;
+import com.beihui.market.ui.fragment.TabNewsFragment;
 
 import dagger.Component;
 
@@ -19,10 +19,10 @@ import dagger.Component;
 public interface MainComponent {
 
 
-    Main1Fragment inject(Main1Fragment fragment);
-    Main2Fragment inject(Main2Fragment fragment);
-    Main3Fragment inject(Main3Fragment fragment);
-    Main4Fragment inject(Main4Fragment fragment);
+    TabHomeFragment inject(TabHomeFragment fragment);
+    TabLoanFragment inject(TabLoanFragment fragment);
+    TabNewsFragment inject(TabNewsFragment fragment);
+    TabMineFragment inject(TabMineFragment fragment);
 
     LoginActivity inject(LoginActivity activity);
     RegisterActivity inject(RegisterActivity activity);

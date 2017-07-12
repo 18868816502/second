@@ -5,156 +5,135 @@
     android:background="@color/common_bg"
     android:orientation="vertical">
 
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <FrameLayout
+        android:id="@+id/tab_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:flipInterval="30"
-        android:layout_weight="1"
-        android:layout_above="@+id/view_temp"
-        android:persistentDrawingCache="animation"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/line"/>
-    <LinearLayout
-        android:id="@+id/ly_botton"
+        android:background="@color/line" />
+
+    <com.beihui.market.view.BottomNavigationBar
+        android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="#ffffff"
+        android:background="@android:color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:id="@+id/re_1"
+            android:id="@+id/tab_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="3dp">
 
             <ImageView
-                android:id="@+id/ib_1"
+                android:id="@+id/tab_home_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
-                android:background="#ffffff"
                 android:focusable="false"
                 android:src="@drawable/select_menu1" />
 
             <TextView
-                android:id="@+id/tv_1"
+                android:id="@+id/tab_home_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ib_1"
+                android:layout_below="@+id/tab_home_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="首页"
+                android:text="@string/tab_home"
                 android:textColor="@color/select_blue_grey"
                 android:textSize="12sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/re_2"
+            android:id="@+id/tab_loan"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="3dp">
 
             <ImageView
-                android:id="@+id/ib_2"
+                android:id="@+id/tab_loan_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
-                android:background="#ffffff"
                 android:focusable="false"
                 android:src="@drawable/select_menu2" />
 
             <TextView
-                android:id="@+id/tv_2"
+                android:id="@+id/tab_loan_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ib_2"
+                android:layout_below="@+id/tab_loan_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="借款"
+                android:text="@string/tab_loan"
                 android:textColor="@color/select_blue_grey"
                 android:textSize="12sp" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/re_3"
+            android:id="@+id/tab_news"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="3dp">
 
             <ImageView
-                android:id="@+id/ib_3"
+                android:id="@+id/tab_news_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
-                android:background="#ffffff"
                 android:focusable="false"
                 android:src="@drawable/select_menu3" />
 
             <TextView
-                android:id="@+id/tv_3"
+                android:id="@+id/tab_news_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ib_3"
+                android:layout_below="@+id/tab_news_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="返现"
+                android:text="@string/tab_news"
                 android:textColor="@color/select_blue_grey"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tv_notice_num"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:gravity="center"
-                android:background="@mipmap/ic_launcher"
-                android:text=""
-                android:visibility="gone"
-                android:textColor="@android:color/white"
-                android:textSize="10sp"
-                android:layout_alignTop="@+id/ib_3"
-                android:layout_toRightOf="@+id/tv_3"
-                android:layout_toEndOf="@+id/tv_3" />
-
-
         </RelativeLayout>
+
         <RelativeLayout
-            android:id="@+id/re_4"
+            android:id="@+id/tab_mine"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="3dp">
 
             <ImageView
-                android:id="@+id/ib_4"
+                android:id="@+id/tab_mine_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
-                android:background="#ffffff"
                 android:focusable="false"
                 android:src="@drawable/select_menu4" />
 
             <TextView
-                android:id="@+id/tv_4"
+                android:id="@+id/tab_mine_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ib_4"
+                android:layout_below="@+id/tab_mine_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="我的"
+                android:text="@string/tab_mine"
                 android:textColor="@color/select_blue_grey"
                 android:textSize="12sp" />
         </RelativeLayout>
 
-    </LinearLayout>
+    </com.beihui.market.view.BottomNavigationBar>
 
 </LinearLayout>

@@ -17,7 +17,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1" />
 
             <LinearLayout
@@ -34,10 +34,10 @@
         </LinearLayout>
 
 
-        <com.beihui.market.view.yrecycleview.YRecycleview
-            android:id="@+id/yrecycle_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,8 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                >
+                app:contentInsetStart="0dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -65,18 +65,15 @@
                         android:id="@+id/center_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="17sp"
                         android:text="首页"
                         android:textColor="@color/transparent"
-                        />
+                        android:textSize="17sp" />
                 </LinearLayout>
-                </android.support.v7.widget.Toolbar>
+            </android.support.v7.widget.Toolbar>
 
         </LinearLayout>
 
     </FrameLayout>
-
-
 
 
 </LinearLayout>

@@ -18,25 +18,24 @@ import java.util.List;
 
 import butterknife.BindView;
 
-
-public class Main3Fragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View {
+public class TabNewsFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
     private NewsRVAdapter adapter;
 
-    public static Main3Fragment newInstance() {
-        Main3Fragment f = new Main3Fragment();
+    public static TabNewsFragment newInstance() {
+        TabNewsFragment f = new TabNewsFragment();
         Bundle b = new Bundle();
-        b.putString("type", "Main2Fragment");
+        b.putString("type", "TabLoanFragment");
         f.setArguments(b);
         return f;
     }
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_main3;
+        return R.layout.fragment_tab_news;
     }
 
     @Override
