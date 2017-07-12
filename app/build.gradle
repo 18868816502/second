@@ -64,14 +64,16 @@ dependencies {
     compile 'com.trello:rxlifecycle-components:0.8.0'
     //图片加载框架glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:multidex:1.0.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     //*******************MVP框架**end************************************//
 
     //https://github.com/sfsheng0322/MarqueeView
     compile 'com.sunfusheng:marqueeview:1.2.0'
     //https://github.com/gyf-dev/ImmersionBar  沉浸式状态栏
     compile 'com.gyf.barlibrary:barlibrary:2.2.5'
+    //RecyclerView Adapter Helper
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
 
 }
