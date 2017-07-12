@@ -1,13 +1,13 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +17,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseRVFragment;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
+import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.WorthTestActivity;
 import com.beihui.market.ui.adapter.GonglueAdapter;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.bean.BannerData;
 import com.beihui.market.ui.bean.GonglueData;
 import com.beihui.market.ui.bean.support.ReturnMain2;
 import com.beihui.market.ui.contract.Main1Contract;
-import com.beihui.market.ui.presenter.Main1Presenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.view.yrecycleview.YRecycleview;
 import com.bumptech.glide.Glide;
-import com.gyf.barlibrary.ImmersionBar;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -142,6 +141,13 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     @Override
     public void configViews() {
         loanRVAdapter = new LoanRVAdapter();
+        loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
+                startActivity(intent);
+            }
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -154,6 +160,14 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
         View headerView =
                 inflater.inflate(R.layout.layout_tab_home_rv_header, mRecycleView, false);
         headerViewHolder = new HeaderViewHolder(headerView);
+
+        headerViewHolder.worthTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), WorthTestActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         LinearLayoutManager layoutHorManager = new LinearLayoutManager(getActivity());
@@ -301,6 +315,8 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
         TextView tvTuiJian;
         @BindView(R.id.tv_more)
         TextView tvMore;
+        @BindView(R.id.worth_test)
+        View worthTest;
         @BindView(R.id.recycle_hor)
         RecyclerView recyclerView;
 

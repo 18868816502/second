@@ -65,6 +65,10 @@
         <!-- 模糊 -->
     </style>
 
+    <style name="ToolBarStyle">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
     <style name="ToolBarTitleTextAppearance">
         <item name="android:textSize">17sp</item>
     </style>
@@ -81,6 +85,5 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#979797</item>
     </style>
-
 
 </resources>

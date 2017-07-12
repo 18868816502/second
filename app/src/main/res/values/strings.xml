@@ -4,4 +4,8 @@
     <string name="tab_loan">借款</string>
     <string name="tab_news">资讯</string>
     <string name="tab_mine">我的</string>
+    <string name="self_worth">我能贷多少</string>
+    <string name="operation">operation</string>
+    <string name="apply_for_loan">我要借款</string>
+    <string name="share">分享</string>
 </resources>
