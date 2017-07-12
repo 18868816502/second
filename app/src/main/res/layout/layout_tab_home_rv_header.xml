@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/fm_banner"
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -147,154 +148,16 @@
                     android:textColorHint="#909298"
                     android:textSize="27sp" />
 
-
             </LinearLayout>
 
-
         </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/line" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="想借多久"
-                android:textColor="#424251"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="借款期限"
-                android:textColor="#909298"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_time1"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="1个月及以下"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_time2"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="3个月"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_time3"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="6个月"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_time4"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="12个月"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_time5"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="24个月"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_time6"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="36个月及以上"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_time7"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/select_tag"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="不限"
-                android:textColor="@color/select_tag"
-                android:textSize="12sp" />
-
-
-        </LinearLayout>
-
 
         <TextView
             android:id="@+id/tv_tuijian"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/round_login_select"
             android:gravity="center"
             android:text="给我推荐"
@@ -304,71 +167,34 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="78dp"
         android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:background="@mipmap/home_test_bg">
 
         <LinearLayout
-            android:id="@+id/ly_zhengxin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="?android:selectableItemBackground"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/home_zhengxin" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="征信查询"
-                    android:textColor="#424251"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="获取央行正西报告"
-                    android:textColor="#909298"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ly_daikuan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?android:selectableItemBackground"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/home_my_daikuan" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="32dp"
+                android:src="@mipmap/home_privilege_icon_normal"
+                tools:ignore="RtlHardcoded" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:orientation="vertical">
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14dp"
+                android:orientation="vertical"
+                tools:ignore="RtlHardcoded">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -380,18 +206,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:text="测测我的身价"
                     android:textColor="#909298"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16dp"
+                android:drawablePadding="15dp"
+                android:drawableRight="@mipmap/right_icon"
+                android:gravity="right"
+                android:text="一分钟测算身价"
+                android:textColor="#909298"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

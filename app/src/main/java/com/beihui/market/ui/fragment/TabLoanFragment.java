@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseRVFragment;
+import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.adapter.BorrowAdapter;
@@ -17,7 +17,6 @@ import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.ui.dialog.BrMoneyPopup;
 import com.beihui.market.ui.dialog.BrTimePopup;
 import com.beihui.market.ui.dialog.BrZhiyePopup;
-import com.beihui.market.ui.presenter.Main1Presenter;
 import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.yrecycleview.YRecycleview;
 
@@ -34,7 +33,7 @@ import butterknife.OnClick;
  * 办事中心页面
  */
 
-public class TabLoanFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View, BrMoneyPopup.onBrMoneyListener,
+public class TabLoanFragment extends BaseTabFragment implements Main1Contract.View, BrMoneyPopup.onBrMoneyListener,
         BrTimePopup.onBrTimeListener, BrZhiyePopup.onBrZhiyeListener {
 
 
@@ -90,13 +89,13 @@ public class TabLoanFragment extends BaseRVFragment<Main1Presenter> implements M
     }
 
     @Override
-    public int getLayoutResId() {
-        return R.layout.fragment_tab_loan;
+    public void attachView() {
+
     }
 
     @Override
-    protected void immersionInit() {
-
+    public int getLayoutResId() {
+        return R.layout.fragment_tab_loan;
     }
 
     @Override

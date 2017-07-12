@@ -5,12 +5,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseRVFragment;
+import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
 import com.beihui.market.ui.contract.Main1Contract;
-import com.beihui.market.ui.presenter.Main1Presenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class TabNewsFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View {
+public class TabNewsFragment extends BaseTabFragment implements Main1Contract.View {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -34,13 +33,13 @@ public class TabNewsFragment extends BaseRVFragment<Main1Presenter> implements M
     }
 
     @Override
-    public int getLayoutResId() {
-        return R.layout.fragment_tab_news;
+    public void attachView() {
+
     }
 
     @Override
-    protected void immersionInit() {
-
+    public int getLayoutResId() {
+        return R.layout.fragment_tab_news;
     }
 
     @Override

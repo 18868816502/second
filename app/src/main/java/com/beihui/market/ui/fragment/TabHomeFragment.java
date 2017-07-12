@@ -7,9 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,9 +18,9 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseRVFragment;
+import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
-import com.beihui.market.ui.adapter.BorrowAdapter;
 import com.beihui.market.ui.adapter.GonglueAdapter;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.bean.BannerData;
@@ -29,11 +30,13 @@ import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.ui.presenter.Main1Presenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.view.cycleviewpager.CycleViewPager;
 import com.beihui.market.view.yrecycleview.YRecycleview;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.sunfusheng.marqueeview.MarqueeView;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.loader.ImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,56 +44,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-/**
- * Created by Administrator on 2017/1/22.
- * 新闻通知页面
- */
-
-public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements Main1Contract.View, YRecycleview.OnYRecycleScrolling,
-        View.OnClickListener {
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
-    @BindView(R.id.recycle_view)
-    RecyclerView mRecycleView;
+public class TabHomeFragment extends BaseTabFragment implements Main1Contract.View, View.OnClickListener {
+
+    @BindView(R.id.faked_bar)
+    View fakedBar;
+    @BindView(R.id.tool_bar_container)
+    View toolBarContainer;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.recycle_view)
+    RecyclerView mRecycleView;
     @BindView(R.id.center_text)
     TextView center_text;
-    @BindView(R.id.top_view)
-    View top_view;
 
-    private LoanRVAdapter mLoanRVAdapter;
+    private LoanRVAdapter loanRVAdapter;
 
     //记录顶部banner的高度
     private int bannerHeight;
+    //status and tool bar render
+    public float alpha;
+    public int textAlpha;
 
+    private HeaderViewHolder headerViewHolder;
 
-    //顶部的空间
-    private ImageView ivBannerOne;
-    private LinearLayout ly_banner;
-    private MarqueeView marqueeView;
-    private LinearLayout ly_etbg;
-    private EditText et_money;
-    private TextView tv_time, tv_time1, tv_time2, tv_time3, tv_time4, tv_time5, tv_time6, tv_time7;
-    private TextView tv_tuijian;
-    private LinearLayout ly_zhengxin, ly_daikuan;
-    private RecyclerView recycle_hor;
-    private TextView tv_more;
-
-
-    private CycleViewPager cycleViewPager;
-    private List<ImageView> views = new ArrayList<>();
-    private List<BannerData> infos = new ArrayList<>();
-
-
-    private BorrowAdapter adapter;
     private GonglueAdapter gonglueAdapter;
 
-    //记录选择的是什么范围的，一个月，三个月还是不限,从1 ~ 7
-    private int selectTimeIndex;
     //记录输入的钱数
     private String inputMoney;
+
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        int scrollY;
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            scrollY += dy;
+
+            int maxMove = bannerHeight / 2;
+            if (scrollY <= maxMove) {
+                if (scrollY < 10) {
+                    alpha = 0;
+                    toolbar.setVisibility(View.GONE);
+                    textAlpha = 0;
+                } else if (scrollY >= 10 && scrollY < maxMove) {
+                    alpha = (float) scrollY / maxMove;
+                    textAlpha = (int) (alpha * 255);
+                    toolbar.setVisibility(View.VISIBLE);
+                } else {
+                    alpha = 1;
+                    textAlpha = 255;
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+            } else {
+                alpha = 1;
+                textAlpha = 255;
+                toolbar.setVisibility(View.VISIBLE);
+            }
+
+            renderStatusAndToolBar(alpha, textAlpha);
+        }
+
+    };
 
 
     public static TabHomeFragment newInstance() {
@@ -103,8 +120,18 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
 
     @Override
     public void onDestroyView() {
+        headerViewHolder.banner.stopAutoPlay();
         super.onDestroyView();
-        System.out.println("TabHomeFragment DestroyView");
+    }
+
+    void renderStatusAndToolBar(float alpha, int textAlpha) {
+        toolBarContainer.setAlpha(alpha);
+        center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));
+    }
+
+    @Override
+    public void attachView() {
+
     }
 
     @Override
@@ -113,139 +140,48 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
     }
 
     @Override
-    protected void immersionInit() {
-        final int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
-        top_view.post(new Runnable() {
-            @Override
-            public void run() {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) top_view.getLayoutParams();
-                params.height = statusHeight;
-                top_view.setLayoutParams(params);
-            }
-        });
-    }
-
-    @Override
     public void configViews() {
+        loanRVAdapter = new LoanRVAdapter();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
-        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int scrollY;
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                float alpha;
-                final int textAlpha;
-                scrollY += dy;
-
-                int maxMove = bannerHeight / 2;
-                if (scrollY <= maxMove) {
-                    if (scrollY < 10) {
-                        alpha = 0;
-                        toolbar.setVisibility(View.GONE);
-                        textAlpha = 0;
-                    } else if (scrollY >= 10 && scrollY < maxMove) {
-                        alpha = (float) scrollY / maxMove;
-                        textAlpha = (int) (alpha * 255);
-                        toolbar.setVisibility(View.VISIBLE);
-                    } else {
-                        alpha = 1;
-                        textAlpha = 255;
-                        toolbar.setVisibility(View.VISIBLE);
-                    }
-
-                } else {
-                    alpha = 1;
-                    textAlpha = 255;
-                    toolbar.setVisibility(View.VISIBLE);
-                }
-
-                ImmersionBar.with(getActivity())
-                        .barColorTransform(R.color.colorPrimary)
-                        .navigationBarColorTransform(R.color.colorPrimary)
-                        .addViewSupportTransformColor(toolbar)
-                        .barAlpha(alpha)
-                        .init();
-
-
-                center_text.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));   //文字透明度
-                    }
-                });
-            }
-        });
-        mLoanRVAdapter = new LoanRVAdapter();
-        mRecycleView.setAdapter(mLoanRVAdapter);
+        mRecycleView.addOnScrollListener(onScrollListener);
+        mRecycleView.setAdapter(loanRVAdapter);
 
         LayoutInflater inflater =
                 (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout header1 =
-                (LinearLayout) inflater.inflate(R.layout.layout_tab_home_rv_header, null);
-
-//        cycleViewPager = (CycleViewPager) getChildFragmentManager().findFragmentById(R.id.fm_banner);
-//        cycleViewPager = new CycleViewPager();
-//        getChildFragmentManager().beginTransaction().add(R.id.fm_banner, cycleViewPager).commit();
-
-        ivBannerOne = (ImageView) header1.findViewById(R.id.iv_banner_one);
-        ly_banner = (LinearLayout) header1.findViewById(R.id.ly_banner);
-        marqueeView = (MarqueeView) header1.findViewById(R.id.marqueeView);
-        ly_etbg = (LinearLayout) header1.findViewById(R.id.ly_etbg);
-        et_money = (EditText) header1.findViewById(R.id.et_money);
-        tv_time1 = (TextView) header1.findViewById(R.id.tv_time1);
-        tv_time2 = (TextView) header1.findViewById(R.id.tv_time2);
-        tv_time3 = (TextView) header1.findViewById(R.id.tv_time3);
-        tv_time4 = (TextView) header1.findViewById(R.id.tv_time4);
-        tv_time5 = (TextView) header1.findViewById(R.id.tv_time5);
-        tv_time6 = (TextView) header1.findViewById(R.id.tv_time6);
-        tv_time7 = (TextView) header1.findViewById(R.id.tv_time7);
-        tv_tuijian = (TextView) header1.findViewById(R.id.tv_tuijian);
-        tv_more = (TextView) header1.findViewById(R.id.tv_more);
-        ly_zhengxin = (LinearLayout) header1.findViewById(R.id.ly_zhengxin);
-        ly_daikuan = (LinearLayout) header1.findViewById(R.id.ly_daikuan);
-        recycle_hor = (RecyclerView) header1.findViewById(R.id.recycle_hor);
+        View headerView =
+                inflater.inflate(R.layout.layout_tab_home_rv_header, mRecycleView, false);
+        headerViewHolder = new HeaderViewHolder(headerView);
 
 
         LinearLayoutManager layoutHorManager = new LinearLayoutManager(getActivity());
         layoutHorManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recycle_hor.setLayoutManager(layoutHorManager);
+        headerViewHolder.recyclerView.setLayoutManager(layoutHorManager);
         gonglueAdapter = new GonglueAdapter(getActivity());
-        recycle_hor.setAdapter(gonglueAdapter);
+        headerViewHolder.recyclerView.setAdapter(gonglueAdapter);
 
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ly_banner.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headerViewHolder.lyBanner.getLayoutParams();
         params.width = CommonUtils.getScreenMaxWidth(getActivity(), 0);
         bannerHeight = (params.width * 530) / 975;
         params.height = bannerHeight;
 
-        ly_banner.setLayoutParams(params);
+        headerViewHolder.lyBanner.setLayoutParams(params);
+        loanRVAdapter.setHeaderView(headerView);
 
-        mLoanRVAdapter.setHeaderView(header1);
+        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+        ViewGroup.LayoutParams lp = fakedBar.getLayoutParams();
+        lp.height = statusHeight;
+        fakedBar.setLayoutParams(lp);
+        renderStatusAndToolBar(alpha, textAlpha);
 
     }
 
     @Override
     public void initDatas() {
-        ly_etbg.setOnClickListener(this);
-        tv_time1.setOnClickListener(this);
-        tv_time2.setOnClickListener(this);
-        tv_time3.setOnClickListener(this);
-        tv_time4.setOnClickListener(this);
-        tv_time5.setOnClickListener(this);
-        tv_time6.setOnClickListener(this);
-        tv_time7.setOnClickListener(this);
-        tv_tuijian.setOnClickListener(this);
-        tv_more.setOnClickListener(this);
-        ly_zhengxin.setOnClickListener(this);
-        ly_daikuan.setOnClickListener(this);
-
-        //默认选择第一项
-        tv_time1.setSelected(true);
-        tv_time = tv_time1;
-        selectTimeIndex = 1;
-
+        headerViewHolder.setOnClickListener(this);
 
         List<BannerData> list = new ArrayList<>();
         BannerData data1 = new BannerData();
@@ -257,7 +193,7 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
         list.add(data1);
         list.add(data2);
         list.add(data3);
-//        initBanner(list);
+        headerViewHolder.loadBanner(list);
 
         List<String> info = new ArrayList<>();
         info.add("187****0421在闪贷侠成功借款1000元");
@@ -266,7 +202,7 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
         info.add("150****1122在贷款王成功借款500元");
         info.add("134****0123在爱信钱包成功借款2000元");
         info.add("138****4422在闪贷侠成功借款800元");
-        marqueeView.startWithList(info);
+        headerViewHolder.marqueeView.startWithList(info);
 
         List<GonglueData> gonglueDataList = new ArrayList<>();
         GonglueData d1 = new GonglueData();
@@ -300,7 +236,7 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
         for (int i = 0; i < 10; ++i) {
             tempList.add("" + i);
         }
-        mLoanRVAdapter.notifyDataSetChanged(tempList);
+        loanRVAdapter.notifyDataSetChanged(tempList);
 
     }
 
@@ -314,80 +250,19 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ly_etbg:
-                InputMethodUtil.openSoftKeyboard(getActivity(), et_money);
-                break;
-            case R.id.tv_time1:
-                onTimeMenuCheck(1);
-                break;
-            case R.id.tv_time2:
-                onTimeMenuCheck(2);
-                break;
-            case R.id.tv_time3:
-                onTimeMenuCheck(3);
-                break;
-            case R.id.tv_time4:
-                onTimeMenuCheck(4);
-                break;
-            case R.id.tv_time5:
-                onTimeMenuCheck(5);
-                break;
-            case R.id.tv_time6:
-                onTimeMenuCheck(6);
-                break;
-            case R.id.tv_time7:
-                onTimeMenuCheck(7);
+                InputMethodUtil.openSoftKeyboard(getActivity(), headerViewHolder.etMoney);
                 break;
             case R.id.tv_tuijian:
-                if (TextUtils.isEmpty(et_money.getText().toString()))
+                if (TextUtils.isEmpty(headerViewHolder.etMoney.getText().toString()))
                     inputMoney = "0";
                 else
-                    inputMoney = et_money.getText().toString();
+                    inputMoney = headerViewHolder.etMoney.getText().toString();
 
-                EventBus.getDefault().post(new ReturnMain2(selectTimeIndex, inputMoney));
-
-                break;
-            case R.id.ly_zhengxin:
-                break;
-            case R.id.ly_daikuan:
+                EventBus.getDefault().post(new ReturnMain2(0, inputMoney));
                 break;
             case R.id.tv_more:
                 break;
         }
-    }
-
-
-    /**
-     * 点击选择时间改变状态
-     *
-     * @param index
-     */
-    private void onTimeMenuCheck(int index) {
-        tv_time.setSelected(false);
-        selectTimeIndex = index;
-        switch (index) {
-            case 1:
-                tv_time = tv_time1;
-                break;
-            case 2:
-                tv_time = tv_time2;
-                break;
-            case 3:
-                tv_time = tv_time3;
-                break;
-            case 4:
-                tv_time = tv_time4;
-                break;
-            case 5:
-                tv_time = tv_time5;
-                break;
-            case 6:
-                tv_time = tv_time6;
-                break;
-            case 7:
-                tv_time = tv_time7;
-                break;
-        }
-        tv_time.setSelected(true);
     }
 
 
@@ -401,91 +276,71 @@ public class TabHomeFragment extends BaseRVFragment<Main1Presenter> implements M
         dismissDialog();
     }
 
-    public void initBanner(final List<BannerData> data) {
-        infos.clear();
-        views.clear();
-        infos.addAll(data);
-        // 将最后一个ImageView添加进来
-        views.add(getImageView(getActivity(), infos.get(infos.size() - 1)));
-        for (int i = 0; i < infos.size(); i++) {
-            views.add(getImageView(getActivity(), infos.get(i)));
+    @Override
+    protected boolean needFakeStatusBar() {
+        //fake status bar is unexpected.
+        return false;
+    }
+
+    class HeaderViewHolder {
+        View itemView;
+
+        @BindView(R.id.banner)
+        Banner banner;
+        @BindView(R.id.iv_banner_one)
+        ImageView ivBannerOne;
+        @BindView(R.id.ly_banner)
+        LinearLayout lyBanner;
+        @BindView(R.id.marqueeView)
+        MarqueeView marqueeView;
+        @BindView(R.id.ly_etbg)
+        LinearLayout lyEtbg;
+        @BindView(R.id.et_money)
+        EditText etMoney;
+        @BindView(R.id.tv_tuijian)
+        TextView tvTuiJian;
+        @BindView(R.id.tv_more)
+        TextView tvMore;
+        @BindView(R.id.recycle_hor)
+        RecyclerView recyclerView;
+
+        Unbinder headerUnbinder;
+
+        public HeaderViewHolder(View itemView) {
+            this.itemView = itemView;
+            headerUnbinder = ButterKnife.bind(this, itemView);
+
+            banner.setDelayTime(1500);
+            banner.setIndicatorGravity(BannerConfig.RIGHT);
+            banner.isAutoPlay(true);
         }
-        // 将第一个ImageView添加进来
-        views.add(getImageView(getActivity(), infos.get(0)));
-        cycleViewPager.setScrollable(true);
-        // 设置循环，在调用setData方法前调用
-        cycleViewPager.setCycle(true);
-        // 在加载数据前设置是否循环
-        cycleViewPager.setData(views, infos, mAdCycleViewListener);
-        //设置轮播
-        cycleViewPager.setWheel(true);
 
-        // 设置轮播时间，默认5000ms
-        cycleViewPager.setTime(2000);
-        //设置圆点指示图标组居中显示，默认靠右
-//        cycleViewPager.setIndicatorCenter();
+        public void destroy() {
+            headerUnbinder.unbind();
+        }
+
+        public void setOnClickListener(View.OnClickListener listener) {
+            lyEtbg.setOnClickListener(listener);
+            tvTuiJian.setOnClickListener(listener);
+            tvMore.setOnClickListener(listener);
+
+        }
+
+        public void loadBanner(List<BannerData> list) {
+            List<String> images = new ArrayList<>();
+            for (int i = 0; i < list.size(); ++i) {
+                images.add(list.get(i).getImgUrl());
+            }
+            banner.setImages(images).setImageLoader(new BannerImageLoader()).start();
+        }
     }
 
-    public ImageView getImageView(Context context, final BannerData data) {
-        ImageView imageView = (ImageView) LayoutInflater.from(context).inflate(
-                R.layout.view_banner, null);
-        Glide.with(getActivity()).load(data.getImgUrl()).into(imageView);
-        return imageView;
-    }
-
-    private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new CycleViewPager.ImageCycleViewListener() {
+    private class BannerImageLoader extends ImageLoader {
 
         @Override
-        public void onImageClick(BannerData info, int position, View imageView) {
-            if (cycleViewPager.isCycle()) {
-                position = position - 1;
-
-            }
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            System.out.println("display " + path);
+            Glide.with(context).load((String) path).into(imageView);
         }
-    };
-
-
-    @Override
-    public void OnYRecycleScrolled(int moveY) {
-
-        float alpha;
-        final int textAlpha;
-
-        int maxMove = bannerHeight / 2;
-        if (moveY <= maxMove) {
-            if (moveY < 10) {
-                alpha = 0;
-                toolbar.setVisibility(View.GONE);
-                textAlpha = 0;
-            } else if (moveY >= 10 && moveY < maxMove) {
-                alpha = (float) moveY / maxMove;
-                textAlpha = (int) (alpha * 255);
-                toolbar.setVisibility(View.VISIBLE);
-            } else {
-                alpha = 1;
-                textAlpha = 255;
-                toolbar.setVisibility(View.VISIBLE);
-            }
-
-        } else {
-            alpha = 1;
-            textAlpha = 255;
-            toolbar.setVisibility(View.VISIBLE);
-        }
-
-        ImmersionBar.with(getActivity())
-                .barColorTransform(R.color.colorPrimary)
-                .navigationBarColorTransform(R.color.colorPrimary)
-                .addViewSupportTransformColor(toolbar)
-                .barAlpha(alpha)
-                .init();
-
-
-        center_text.post(new Runnable() {
-            @Override
-            public void run() {
-                center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));   //文字透明度
-            }
-        });
     }
 }

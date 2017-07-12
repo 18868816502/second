@@ -37,10 +37,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void configViews() {
         EventBus.getDefault().register(this);
-        ImmersionBar.with(this)
-                .statusBarDarkFont(false)
-                .navigationBarColor(R.color.colorPrimary)
-                .init();
+        ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
     }
 
     @Override
@@ -50,7 +47,6 @@ public class MainActivity extends BaseActivity {
             public void onSelected(int selectedId) {
                 if (selectedId != mSelectedFragmentId) {
                     selectTab(selectedId);
-                    changeStatusBarState(selectedId);
                 }
             }
         });
@@ -74,7 +70,7 @@ public class MainActivity extends BaseActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void returnMenu2(ReturnMain2 event) {
-        selectTab(R.id.tab_loan);
+        mNavigationBar.select(R.id.tab_loan);
     }
 
     private void selectTab(int id) {
@@ -109,14 +105,6 @@ public class MainActivity extends BaseActivity {
             ft.attach(newSelected);
         }
         ft.commit();
-    }
-
-    private void changeStatusBarState(int selectedId) {
-        if (selectedId == R.id.tab_home) {
-            ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
-        } else {
-            ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.colorPrimary).init();
-        }
     }
 
     private String makeTag(int id) {

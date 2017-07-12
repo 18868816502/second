@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,25 +14,17 @@ import android.view.ViewGroup;
 import com.beihui.market.App;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.dialog.JuhuaDialog;
-import com.gyf.barlibrary.ImmersionFragment;
 
 import java.util.regex.Pattern;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by Administrator on 2016/11/15.
- */
-
-public abstract class BaseFragment extends ImmersionFragment {
+public abstract class BaseFragment extends Fragment {
 
     protected View parentView;
     protected FragmentActivity activity;
     protected LayoutInflater inflater;
     protected Context mContext;
-
-
-//    protected GifLoadingView mGifLoadingView;
 
     protected JuhuaDialog juhuaDialog;
 
@@ -66,12 +59,15 @@ public abstract class BaseFragment extends ImmersionFragment {
 
 
     public abstract void attachView();
+
     @LayoutRes
     public abstract int getLayoutResId();
+
     /**
      * 对各种控件进行设置、适配、填充数据
      */
     public abstract void configViews();
+
     public abstract void initDatas();
 
 
@@ -87,7 +83,6 @@ public abstract class BaseFragment extends ImmersionFragment {
     }
 
 
-
     /**
      * 显示dialog
      *
@@ -95,23 +90,19 @@ public abstract class BaseFragment extends ImmersionFragment {
      */
     protected void showDialog(String dialogText) {
         // TODO Auto-generated method stub
-//        mGifLoadingView = GifLoadingView.newInstance(dialogText);
-//        mGifLoadingView.show(getActivity().getFragmentManager(), "");
-        juhuaDialog = new JuhuaDialog(getActivity(),dialogText);
+        juhuaDialog = new JuhuaDialog(getActivity(), dialogText);
         juhuaDialog.show();
     }
+
     /**
      * 隐藏dialog
      */
     protected void dismissDialog() {
         // TODO Auto-generated method stub
-//        if (mGifLoadingView != null)
-//            mGifLoadingView.dismiss();
 
         if (juhuaDialog != null)
             juhuaDialog.dismiss();
     }
-
 
 
     @Override
@@ -137,6 +128,7 @@ public abstract class BaseFragment extends ImmersionFragment {
     public void onResume() {
         super.onResume();
     }
+
     public void onPause() {
         super.onPause();
     }

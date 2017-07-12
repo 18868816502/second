@@ -1,79 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_bg">
 
-    <FrameLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:src="@mipmap/home_big_pic" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/tool_bar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <View
+            android:id="@+id/faked_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp" />
 
-            <View
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
-
-                <ImageView
+                <TextView
+                    android:id="@+id/center_text"
+                    style="@style/ToolBarTitleTextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/home_big_pic" />
+                    android:layout_gravity="center"
+                    android:text="@string/tab_home"
+                    android:textColor="@color/transparent" />
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
 
-            </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <View
-                android:id="@+id/top_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/status_bar_height" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/center_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="首页"
-                        android:textColor="@color/transparent"
-                        android:textSize="17sp" />
-                </LinearLayout>
-            </android.support.v7.widget.Toolbar>
-
-        </LinearLayout>
-
-    </FrameLayout>
-
-
-</LinearLayout>
+</FrameLayout>
