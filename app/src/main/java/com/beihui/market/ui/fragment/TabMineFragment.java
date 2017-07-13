@@ -38,11 +38,6 @@ public class TabMineFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    public void attachView() {
-
-    }
-
-    @Override
     public int getLayoutResId() {
         return R.layout.fragment_tab_mine;
     }

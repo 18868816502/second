@@ -21,8 +21,6 @@
         android:id="@+id/tool_bar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0"
-        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <View
@@ -33,23 +31,16 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
+            android:layout_height="50dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/center_text"
-                    style="@style/ToolBarTitleTextAppearance.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/tab_home"
-                    android:textColor="@color/transparent" />
-            </FrameLayout>
+            <TextView
+                android:id="@+id/center_text"
+                style="@style/ToolBarTitleTextAppearance.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/tab_home"
+                android:textColor="@color/transparent" />
         </android.support.v7.widget.Toolbar>
 
     </LinearLayout>

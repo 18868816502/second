@@ -1,7 +1,9 @@
 package com.beihui.market.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,26 +14,17 @@ import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.adapter.BorrowAdapter;
-import com.beihui.market.ui.bean.support.ReturnMain2;
 import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.ui.dialog.BrMoneyPopup;
 import com.beihui.market.ui.dialog.BrTimePopup;
 import com.beihui.market.ui.dialog.BrZhiyePopup;
 import com.beihui.market.view.AutoTextView;
-import com.beihui.market.view.yrecycleview.YRecycleview;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
-/**
- * Created by Administrator on 2017/1/22.
- * 办事中心页面
- */
 
 public class TabLoanFragment extends BaseTabFragment implements Main1Contract.View, BrMoneyPopup.onBrMoneyListener,
         BrTimePopup.onBrTimeListener, BrZhiyePopup.onBrZhiyeListener {
@@ -65,15 +58,16 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     LinearLayout lyTishi;
 
 
-    @BindView(R.id.yrecycle_view)
-    YRecycleview yrecycleView;
+    @BindView(R.id.recycle_view)
+    RecyclerView recycleView;
 
 
     private BrMoneyPopup moneyPopup;
     private BrTimePopup timePopup;
     private BrZhiyePopup zhiyePopup;
 
-    private String inputMoney;
+    //target money to query, default 5000
+    private String inputMoney = "5000";
     //记录选择的是什么范围的，一个月，三个月还是不限,从1 ~ 7
     public int selectTimeIndex = 1;
 
@@ -89,8 +83,12 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    public void attachView() {
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle pending = getArguments();
+        if (pending != null) {
+            inputMoney = pending.getString("queryMoney");
+        }
     }
 
     @Override
@@ -104,26 +102,14 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        inputMoney = tv1.getText().toString();
+        tv1.setText(inputMoney);
         tvTishi.setScrollMode(AutoTextView.SCROLL_FAST);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        yrecycleView.setLayoutManager(layoutManager);
+        recycleView.setLayoutManager(layoutManager);
         adapter = new BorrowAdapter(getActivity());
-        yrecycleView.setAdapter(adapter);
-
-        yrecycleView.setRefreshAndLoadMoreListener(new YRecycleview.OnRefreshAndLoadMoreListener() {
-            @Override
-            public void onRefresh() {
-                yrecycleView.setReFreshComplete();
-            }
-
-            @Override
-            public void onLoadMore() {
-                yrecycleView.setloadMoreComplete();
-            }
-        });
+        recycleView.setAdapter(adapter);
 
         setOnTimeSelect(selectTimeIndex);
     }
@@ -136,20 +122,6 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainComponent.builder().appComponent(appComponent).build().inject(this);
-    }
-
-
-    /**
-     * 点击给我推荐，把条件带过去在第二个页面筛选
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void returnMenu2(ReturnMain2 event) {
-        this.selectTimeIndex = event.selectTimeIndex;
-        this.inputMoney = event.inputMoney;
-        tv1.setText(inputMoney);
-        setOnTimeSelect(selectTimeIndex);
     }
 
 

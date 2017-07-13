@@ -11,11 +11,7 @@ public abstract class BaseRVFragment<T1 extends BaseContract.BasePresenter> exte
     @Inject
     protected T1 mPresenter;
 
-    /**
-     * [此方法不可再重写]
-     */
-    @Override
-    public void attachView() {
+    public final void attachView() {
         if (mPresenter != null)
             mPresenter.attachView(this);
     }

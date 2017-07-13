@@ -33,11 +33,6 @@ public class TabNewsFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    public void attachView() {
-
-    }
-
-    @Override
     public int getLayoutResId() {
         return R.layout.fragment_tab_news;
     }

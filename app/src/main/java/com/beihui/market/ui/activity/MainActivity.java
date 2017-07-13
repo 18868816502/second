@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,7 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseActivity;
 import com.beihui.market.component.AppComponent;
-import com.beihui.market.ui.bean.support.ReturnMain2;
+import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.fragment.TabHomeFragment;
 import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
@@ -28,6 +29,17 @@ public class MainActivity extends BaseActivity {
 
     private int mSelectedFragmentId = -1;
 
+    /**
+     * param need passed to target fragment if there is.
+     */
+    private Bundle pendingBundle;
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public int getLayoutId() {
@@ -69,8 +81,11 @@ public class MainActivity extends BaseActivity {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void returnMenu2(ReturnMain2 event) {
+    public void navigateLoan(NavigateLoan event) {
+        pendingBundle = new Bundle();
+        pendingBundle.putString("queryMoney", event.queryMoney);
         mNavigationBar.select(R.id.tab_loan);
+        pendingBundle = null;
     }
 
     private void selectTab(int id) {
@@ -104,6 +119,9 @@ public class MainActivity extends BaseActivity {
         } else {
             ft.attach(newSelected);
         }
+        if (pendingBundle != null && newSelected != null) {
+            newSelected.setArguments(pendingBundle);
+        }
         ft.commit();
     }
 
@@ -111,9 +129,4 @@ public class MainActivity extends BaseActivity {
         return "TabFragmentId=" + id;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }

@@ -4,11 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -26,7 +31,7 @@ import com.beihui.market.ui.adapter.GonglueAdapter;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.bean.BannerData;
 import com.beihui.market.ui.bean.GonglueData;
-import com.beihui.market.ui.bean.support.ReturnMain2;
+import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
@@ -56,7 +61,7 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recycle_view)
-    RecyclerView mRecycleView;
+    RecyclerView recyclerView;
     @BindView(R.id.center_text)
     TextView center_text;
 
@@ -65,8 +70,7 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     //记录顶部banner的高度
     private int bannerHeight;
     //status and tool bar render
-    public float alpha;
-    public int textAlpha;
+    public int toolBarBgAlpha;
 
     private HeaderViewHolder headerViewHolder;
 
@@ -84,30 +88,22 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
 
             int maxMove = bannerHeight / 2;
             if (scrollY <= maxMove) {
-                if (scrollY < 10) {
-                    alpha = 0;
-                    toolbar.setVisibility(View.GONE);
-                    textAlpha = 0;
+                if (scrollY < 5) {
+                    toolBarBgAlpha = 0;
                 } else if (scrollY >= 10 && scrollY < maxMove) {
-                    alpha = (float) scrollY / maxMove;
-                    textAlpha = (int) (alpha * 255);
-                    toolbar.setVisibility(View.VISIBLE);
+                    float ratio = (float) scrollY / maxMove;
+                    toolBarBgAlpha = (int) (ratio * 255);
                 } else {
-                    alpha = 1;
-                    textAlpha = 255;
-                    toolbar.setVisibility(View.VISIBLE);
+                    toolBarBgAlpha = 255;
                 }
             } else {
-                alpha = 1;
-                textAlpha = 255;
-                toolbar.setVisibility(View.VISIBLE);
+                toolBarBgAlpha = 255;
             }
 
-            renderStatusAndToolBar(alpha, textAlpha);
+            renderStatusAndToolBar(toolBarBgAlpha);
         }
 
     };
-
 
     public static TabHomeFragment newInstance() {
         TabHomeFragment f = new TabHomeFragment();
@@ -118,19 +114,21 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    public void onDestroyView() {
-        headerViewHolder.banner.stopAutoPlay();
-        super.onDestroyView();
-    }
-
-    void renderStatusAndToolBar(float alpha, int textAlpha) {
-        toolBarContainer.setAlpha(alpha);
-        center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
-    public void attachView() {
+    public void onDestroyView() {
+        headerViewHolder.banner.stopAutoPlay();
+        headerViewHolder.destroy();
+        super.onDestroyView();
+    }
 
+    void renderStatusAndToolBar(int textAlpha) {
+        toolBarContainer.setBackgroundColor(Color.argb(textAlpha, 85, 145, 255));
+        center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));
     }
 
     @Override
@@ -140,6 +138,10 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
 
     @Override
     public void configViews() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         loanRVAdapter = new LoanRVAdapter();
         loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -151,14 +153,14 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecycleView.setLayoutManager(layoutManager);
-        mRecycleView.addOnScrollListener(onScrollListener);
-        mRecycleView.setAdapter(loanRVAdapter);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(onScrollListener);
+        recyclerView.setAdapter(loanRVAdapter);
 
         LayoutInflater inflater =
                 (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View headerView =
-                inflater.inflate(R.layout.layout_tab_home_rv_header, mRecycleView, false);
+                inflater.inflate(R.layout.layout_tab_home_rv_header, recyclerView, false);
         headerViewHolder = new HeaderViewHolder(headerView);
 
         headerViewHolder.worthTest.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +191,7 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
         ViewGroup.LayoutParams lp = fakedBar.getLayoutParams();
         lp.height = statusHeight;
         fakedBar.setLayoutParams(lp);
-        renderStatusAndToolBar(alpha, textAlpha);
+        renderStatusAndToolBar(toolBarBgAlpha);
 
     }
 
@@ -272,7 +274,7 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
                 else
                     inputMoney = headerViewHolder.etMoney.getText().toString();
 
-                EventBus.getDefault().post(new ReturnMain2(0, inputMoney));
+                EventBus.getDefault().post(new NavigateLoan(inputMoney));
                 break;
             case R.id.tv_more:
                 break;
@@ -294,6 +296,18 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     protected boolean needFakeStatusBar() {
         //fake status bar is unexpected.
         return false;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_tab_home, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
     }
 
     class HeaderViewHolder {

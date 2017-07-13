@@ -1,11 +1,8 @@
 package com.beihui.market.base;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,18 +19,12 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     protected View parentView;
-    protected FragmentActivity activity;
-    protected LayoutInflater inflater;
-    protected Context mContext;
 
     protected JuhuaDialog juhuaDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
         parentView = inflater.inflate(getLayoutResId(), container, false);
-        activity = getSupportActivity();
-        mContext = activity;
-        this.inflater = inflater;
 
         /** 预防 点击击穿，实现下面的fragment的点击事件*/
         parentView.setOnTouchListener(new View.OnTouchListener() {
@@ -52,13 +43,10 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         setupActivityComponent(App.getInstance().getAppComponent());
-        attachView();
         configViews();
         initDatas();
     }
 
-
-    public abstract void attachView();
 
     @LayoutRes
     public abstract int getLayoutResId();
@@ -72,16 +60,6 @@ public abstract class BaseFragment extends Fragment {
 
 
     protected abstract void setupActivityComponent(AppComponent appComponent);
-
-    public FragmentActivity getSupportActivity() {
-        return (FragmentActivity) super.getActivity();
-    }
-
-    public Context getApplicationContext() {
-        return this.activity == null ? (getActivity() == null ? null : getActivity()
-                .getApplicationContext()) : this.activity.getApplicationContext();
-    }
-
 
     /**
      * 显示dialog
@@ -104,32 +82,10 @@ public abstract class BaseFragment extends Fragment {
             juhuaDialog.dismiss();
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity = (FragmentActivity) activity;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.activity = null;
-    }
-
-
     public boolean matchPhone(String text) {
         if (Pattern.compile("(\\d{11})|(\\+\\d{3,})").matcher(text).matches()) {
             return true;
         }
         return false;
-    }
-
-    public void onResume() {
-        super.onResume();
-    }
-
-    public void onPause() {
-        super.onPause();
     }
 }
