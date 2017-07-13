@@ -6,8 +6,11 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.beihui.market.App;
+import com.beihui.market.R;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.dialog.JuhuaDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -46,13 +49,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         ButterKnife.bind(this);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
         setupActivityComponent(App.getInstance().getAppComponent());
-        attachView();
         configViews();
         initDatas();
     }
 
-
-    public abstract void attachView();
 
     public abstract int getLayoutId();
 
@@ -76,8 +76,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         // TODO Auto-generated method stub
         juhuaDialog = new JuhuaDialog(this, dialogText);
         juhuaDialog.show();
-//        mGifLoadingView = GifLoadingView.newInstance(dialogText);
-//        mGifLoadingView.show(getFragmentManager(), "");
     }
 
     /**
@@ -85,13 +83,48 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
      */
     protected void dismissDialog() {
         // TODO Auto-generated method stub
-//        if (mGifLoadingView != null)
-//            mGifLoadingView.dismiss();
 
         if (juhuaDialog != null)
             juhuaDialog.dismiss();
     }
 
+    /**
+     * set tool bar render and behavior with default action
+     *
+     * @param toolbar target to set up
+     */
+    protected void setupToolBar(Toolbar toolbar) {
+        setupToolBar(toolbar, true);
+        setupToolBarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
+    }
+
+    /**
+     * helper method for render standard tool with status bar
+     *
+     * @param toolBar       target to be set up
+     * @param withStatusBar true if status bar should render with tool bar
+     */
+    protected void setupToolBar(Toolbar toolBar, boolean withStatusBar) {
+        setSupportActionBar(toolBar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (withStatusBar) {
+            ImmersionBar.with(this).titleBar(toolBar).init();
+        }
+    }
+
+    /**
+     * helper method for setting up navigation
+     */
+    protected void setupToolBarBackNavigation(Toolbar toolbar, int navigationIcon) {
+        toolbar.setNavigationIcon(navigationIcon);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
 
     //解决崩溃后重新打开程序，fragment 重叠问题
     //当前APP崩溃再次启动或者从后台再次回到这个app的时候，通过onCreate中的参数savedInstanceState恢复了之前的fragment。

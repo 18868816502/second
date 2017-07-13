@@ -1,28 +1,31 @@
 package com.beihui.market.ui.activity;
 
-import android.webkit.WebView;
+import android.content.Intent;
+import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseActivity;
 import com.beihui.market.component.AppComponent;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
 
-public class NewsDetailActivity extends BaseActivity {
-
-    @BindView(R.id.web_view)
-    WebView webView;
-
+public class EditNickNameActivity extends BaseActivity {
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
+    @BindView(R.id.edit_text)
+    EditText editText;
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_news_detail;
+        return R.layout.activity_edit_nick_name;
     }
 
     @Override
     public void configViews() {
-
+        setupToolBar(toolbar);
     }
 
     @Override

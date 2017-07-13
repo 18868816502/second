@@ -34,7 +34,6 @@
     <color name="c_2b4473">#2b4473</color>
 
 
-
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>
@@ -46,4 +45,6 @@
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
 
+    <color name="ghost_white">#f8f8ff</color>
+    <color name="floral_white">#fff8f0</color>
 </resources>

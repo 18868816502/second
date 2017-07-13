@@ -45,6 +45,16 @@
             android:name=".ui.activity.LoanDetailActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.UserProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EditNickNameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EditJobGroupActivity"
+            android:screenOrientation="portrait" />
+
 
     </application>
 

@@ -8,4 +8,12 @@
     <string name="operation">operation</string>
     <string name="apply_for_loan">我要借款</string>
     <string name="share">分享</string>
+    <string name="profile">个人资料</string>
+    <string name="nick_name">昵称</string>
+    <string name="phone">手机</string>
+    <string name="job_group">职业身份</string>
+    <string name="edit_nick_name">修改昵称</string>
+    <string name="freelance">自由职业</string>
+    <string name="worker">上班族</string>
+    <string name="household">个体户</string>
 </resources>

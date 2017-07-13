@@ -9,6 +9,7 @@ import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.activity.LoginActivity;
+import com.beihui.market.ui.activity.UserProfileActivity;
 import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.view.CircleImageView;
 
@@ -74,7 +75,8 @@ public class TabMineFragment extends BaseTabFragment implements Main1Contract.Vi
             case R.id.iv_msg:
                 break;
             case R.id.iv_user:
-                LoginActivity.startActivity(getActivity());
+//                LoginActivity.startActivity(getActivity());
+                UserProfileActivity.launch(getActivity());
                 break;
             case R.id.ly_menu1:
                 break;

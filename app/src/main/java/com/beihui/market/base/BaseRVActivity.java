@@ -14,7 +14,6 @@ public abstract class BaseRVActivity<T1 extends BaseContract.BasePresenter> exte
     /**
      * [此方法不可再重写]
      */
-    @Override
     public void attachView() {
         if (mPresenter != null)
             mPresenter.attachView(this);

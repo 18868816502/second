@@ -18,11 +18,6 @@ public class WorthTestActivity extends BaseActivity {
     Toolbar toolbar;
 
     @Override
-    public void attachView() {
-
-    }
-
-    @Override
     public int getLayoutId() {
         return R.layout.activity_worth_test;
     }

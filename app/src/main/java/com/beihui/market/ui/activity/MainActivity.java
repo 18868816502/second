@@ -70,11 +70,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void attachView() {
-
-    }
-
     /**
      * 点击给我推荐，把条件带过去在第二个页面筛选
      *

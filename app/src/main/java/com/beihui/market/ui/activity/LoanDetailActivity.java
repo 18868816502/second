@@ -4,6 +4,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -26,7 +27,7 @@ public class LoanDetailActivity extends BaseActivity {
     @BindView(R.id.loan_name_title)
     TextView loanNameTitleTv;
     @BindView(R.id.loan_icon)
-    TextView loanIconTv;
+    ImageView loanIconIv;
     @BindView(R.id.loan_name)
     TextView loanNameTv;
     @BindView(R.id.for_people_tag)
@@ -50,11 +51,6 @@ public class LoanDetailActivity extends BaseActivity {
 
     private int[] selectedState = new int[]{android.R.attr.state_selected};
     private int[] noneState = new int[]{};
-
-    @Override
-    public void attachView() {
-
-    }
 
     @Override
     public int getLayoutId() {
