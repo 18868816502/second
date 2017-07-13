@@ -36,11 +36,9 @@
             android:name=".ui.activity.RegisterPsdActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
         <activity
             android:name=".ui.activity.WorthTestActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.LoanDetailActivity"
             android:screenOrientation="portrait" />
@@ -56,6 +54,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ResetPsdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MessageCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SysMsgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AnnouncementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ComWebViewActivity"
             android:screenOrientation="portrait" />
 
 
