@@ -16,4 +16,11 @@
     <string name="freelance">自由职业</string>
     <string name="worker">上班族</string>
     <string name="household">个体户</string>
+    <string name="forget_psd">忘记密码</string>
+    <string name="phone_number">手机号</string>
+    <string name="input_phone_number">请输入手机号</string>
+    <string name="fetch">获取</string>
+    <string name="verify_code">验证码</string>
+    <string name="input_verify_code">请输入验证码</string>
+    <string name="next_step">下一步</string>
 </resources>

@@ -93,9 +93,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
      *
      * @param toolbar target to set up
      */
-    protected void setupToolBar(Toolbar toolbar) {
-        setupToolBar(toolbar, true);
-        setupToolBarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
+    protected void setupToolbar(Toolbar toolbar) {
+        setupToolbar(toolbar, true);
+        setupToolbarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
      * @param toolBar       target to be set up
      * @param withStatusBar true if status bar should render with tool bar
      */
-    protected void setupToolBar(Toolbar toolBar, boolean withStatusBar) {
+    protected void setupToolbar(Toolbar toolBar, boolean withStatusBar) {
         setSupportActionBar(toolBar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -116,7 +116,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
     /**
      * helper method for setting up navigation
      */
-    protected void setupToolBarBackNavigation(Toolbar toolbar, int navigationIcon) {
+    protected void setupToolbarBackNavigation(Toolbar toolbar, int navigationIcon) {
         toolbar.setNavigationIcon(navigationIcon);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

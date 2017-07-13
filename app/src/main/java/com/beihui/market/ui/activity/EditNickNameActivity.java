@@ -25,7 +25,7 @@ public class EditNickNameActivity extends BaseActivity {
 
     @Override
     public void configViews() {
-        setupToolBar(toolbar);
+        setupToolbar(toolbar);
     }
 
     @Override

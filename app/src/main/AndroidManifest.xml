@@ -54,6 +54,9 @@
         <activity
             android:name=".ui.activity.EditJobGroupActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ResetPsdActivity"
+            android:screenOrientation="portrait" />
 
 
     </application>
