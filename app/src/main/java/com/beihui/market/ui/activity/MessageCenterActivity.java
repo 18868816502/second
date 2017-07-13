@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseActivity;
 import com.beihui.market.component.AppComponent;
+import com.beihui.market.ui.adapter.MessageCenterAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,9 +19,10 @@ import butterknife.ButterKnife;
 public class MessageCenterActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.recycle_view)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    private MessageCenterAdapter adapter;
     private HeaderViewHolder headerViewHolder;
 
     @Override
@@ -30,6 +33,10 @@ public class MessageCenterActivity extends BaseActivity implements View.OnClickL
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        adapter = new MessageCenterAdapter();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
         View view = LayoutInflater.from(this).inflate(R.layout.layout_message_center_header, recyclerView, false);
         headerViewHolder = new HeaderViewHolder(view);
         headerViewHolder.annItemView.setOnClickListener(this);
