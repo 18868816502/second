@@ -13,14 +13,15 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
-import com.beihui.market.ui.adapter.BorrowAdapter;
+import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.ui.dialog.BrMoneyPopup;
 import com.beihui.market.ui.dialog.BrTimePopup;
 import com.beihui.market.ui.dialog.BrZhiyePopup;
 import com.beihui.market.view.AutoTextView;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +58,6 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     @BindView(R.id.ly_tishi)
     LinearLayout lyTishi;
 
-
     @BindView(R.id.recycle_view)
     RecyclerView recycleView;
 
@@ -71,15 +71,11 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     //记录选择的是什么范围的，一个月，三个月还是不限,从1 ~ 7
     public int selectTimeIndex = 1;
 
-    private BorrowAdapter adapter;
+    private LoanRVAdapter loanRVAdapter;
 
 
     public static TabLoanFragment newInstance() {
-        TabLoanFragment f = new TabLoanFragment();
-        Bundle b = new Bundle();
-        b.putString("type", "TabLoanFragment");
-        f.setArguments(b);
-        return f;
+        return new TabLoanFragment();
     }
 
     @Override
@@ -98,25 +94,25 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
 
     @Override
     public void configViews() {
-        //register to EventBus if hasn't yet
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         tv1.setText(inputMoney);
         tvTishi.setScrollMode(AutoTextView.SCROLL_FAST);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycleView.setLayoutManager(layoutManager);
-        adapter = new BorrowAdapter(getActivity());
-        recycleView.setAdapter(adapter);
+        loanRVAdapter = new LoanRVAdapter();
+        recycleView.setAdapter(loanRVAdapter);
 
         setOnTimeSelect(selectTimeIndex);
     }
 
     @Override
     public void initDatas() {
-
+        List<String> tempList = new ArrayList<>();
+        for (int i = 0; i < 10; ++i) {
+            tempList.add("" + i);
+        }
+        loanRVAdapter.notifyDataSetChanged(tempList);
     }
 
     @Override
@@ -200,13 +196,6 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     @Override
     public void complete() {
         dismissDialog();
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
 

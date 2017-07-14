@@ -39,11 +39,14 @@
     <string name="origin_psd">原密码</string>
     <string name="input_origin_psd">请输入原密码</string>
     <string name="new_psd">新密码</string>
-    <string name="set_login_psd">请设置6-20位登录密码</string>
+    <string name="set_login_psd">请设置6–0位登录密码</string>
     <string name="confirm_new_psd">确认新密码</string>
     <string name="input_new_psd_again">请再次输入新密码</string>
     <string name="confirm_change">确认修改</string>
     <string name="welcome_page">欢迎页</string>
     <string name="know_us">了解贷款超市</string>
     <string name="user_agreement">用户注册协议</string>
+    <string name="loan_max_amount">最高额度</string>
+    <string name="loan_interests">参考月息</string>
+    <string name="loan_time_range">期限范围</string>
 </resources>
