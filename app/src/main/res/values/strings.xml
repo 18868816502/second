@@ -49,4 +49,9 @@
     <string name="loan_max_amount">最高额度</string>
     <string name="loan_interests">参考月息</string>
     <string name="loan_time_range">期限范围</string>
+    <string name="cancel">取消</string>
+    <string name="register">注册</string>
+    <string name="forget_psd_question">忘记密码?</string>
+    <string name="has_account_to_login">已有账号？去登录</string>
+    <string name="register_account">请注册你的账号</string>
 </resources>

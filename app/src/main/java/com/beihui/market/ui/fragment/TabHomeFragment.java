@@ -2,7 +2,11 @@ package com.beihui.market.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +31,7 @@ import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
 import com.beihui.market.ui.adapter.GonglueAdapter;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
@@ -44,6 +50,12 @@ import com.youth.banner.loader.ImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +65,8 @@ import butterknife.Unbinder;
 
 
 public class TabHomeFragment extends BaseTabFragment implements Main1Contract.View, View.OnClickListener {
-
+    @BindView(R.id.root_container)
+    FrameLayout rootContainer;
     @BindView(R.id.faked_bar)
     View fakedBar;
     @BindView(R.id.tool_bar_container)
@@ -64,6 +77,8 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     RecyclerView recyclerView;
     @BindView(R.id.center_text)
     TextView center_text;
+    @BindView(R.id.dim_cover)
+    View dimCoverView;
 
     private LoanRVAdapter loanRVAdapter;
 
@@ -117,6 +132,20 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (dimCoverView.getVisibility() == View.VISIBLE) {
+            headerViewHolder.banner.setDrawingCacheEnabled(false);
+            dimCoverView.setVisibility(View.GONE);
+            if (Build.VERSION.SDK_INT < 16) {
+                dimCoverView.setBackgroundDrawable(null);
+            } else {
+                dimCoverView.setBackground(null);
+            }
+        }
     }
 
     @Override
@@ -306,7 +335,20 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        //show blurred background, doing blurring here
+        View banner = headerViewHolder.banner;
+        banner.setDrawingCacheEnabled(true);
+        Bitmap bg = banner.getDrawingCache();
+        if (bg != null) {
+            if (Build.VERSION.SDK_INT < 16) {
+                dimCoverView.setBackgroundDrawable(new BitmapDrawable(getResources(), bg));
+            } else {
+                dimCoverView.setBackground(new BitmapDrawable(getResources(), bg));
+            }
+            dimCoverView.setVisibility(View.VISIBLE);
+        }
+        Intent intent = new Intent(getActivity(), UserAuthorizationActivity.class);
+        startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
 
@@ -369,7 +411,6 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
 
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            System.out.println("display " + path);
             Glide.with(context).load((String) path).into(imageView);
         }
     }

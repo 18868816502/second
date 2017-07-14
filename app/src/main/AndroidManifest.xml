@@ -76,6 +76,10 @@
         <activity
             android:name=".ui.activity.AboutUsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UserAuthorizationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FloatActivityStyle" />
 
 
     </application>

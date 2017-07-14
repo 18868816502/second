@@ -109,4 +109,12 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/BottomSlideAnim</item>
     </style>
+
+    <style name="FloatActivityStyle" parent="Theme.AppCompat.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/BottomSlideAnim</item>
+    </style>
 </resources>
