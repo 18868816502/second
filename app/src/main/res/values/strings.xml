@@ -31,4 +31,19 @@
     <string name="invite_friend">邀请朋友</string>
     <string name="help_feedback">帮助与反馈</string>
     <string name="settings">设置</string>
+    <string name="change_psd">修改登录密码</string>
+    <string name="version_name">版本号</string>
+    <string name="star_me">鼓励一下</string>
+    <string name="about_us">关于我们</string>
+    <string name="exit_safely">安全退出</string>
+    <string name="origin_psd">原密码</string>
+    <string name="input_origin_psd">请输入原密码</string>
+    <string name="new_psd">新密码</string>
+    <string name="set_login_psd">请设置6-20位登录密码</string>
+    <string name="confirm_new_psd">确认新密码</string>
+    <string name="input_new_psd_again">请再次输入新密码</string>
+    <string name="confirm_change">确认修改</string>
+    <string name="welcome_page">欢迎页</string>
+    <string name="know_us">了解贷款超市</string>
+    <string name="user_agreement">用户注册协议</string>
 </resources>

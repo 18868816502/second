@@ -17,6 +17,7 @@ import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.activity.MessageCenterActivity;
+import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
 import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.view.CircleImageView;
@@ -109,6 +110,8 @@ public class TabMineFragment extends BaseTabFragment implements Main1Contract.Vi
             case R.id.helper_feedback:
                 break;
             case R.id.settings:
+                Intent toSettings = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(toSettings);
                 break;
         }
     }

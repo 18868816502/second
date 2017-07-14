@@ -67,6 +67,15 @@
         <activity
             android:name=".ui.activity.ComWebViewActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChangePsdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AboutUsActivity"
+            android:screenOrientation="portrait" />
 
 
     </application>
