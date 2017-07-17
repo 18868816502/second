@@ -25,7 +25,7 @@ public class NewsRVAdapter extends BaseQuickAdapter<String, NewsRVAdapter.NewsVi
     @Override
     protected void convert(NewsViewHolder helper, String item) {
         Context context = helper.itemView.getContext();
-        Glide.with(context).load("").placeholder(R.drawable.animaition01).into(helper.newsIv);
+        Glide.with(context).load("").placeholder(R.mipmap.borrow_student_icon).into(helper.newsIv);
         helper.newsTitleTv.setText("NewsTitle");
         helper.newsSourceTv.setText("NewsSource");
         helper.newsPublishTimeTv.setText("NewsPublishTime");

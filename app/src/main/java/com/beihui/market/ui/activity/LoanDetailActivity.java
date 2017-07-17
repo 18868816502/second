@@ -1,8 +1,11 @@
 package com.beihui.market.ui.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.StateListDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,11 +62,7 @@ public class LoanDetailActivity extends BaseActivity {
 
     @Override
     public void configViews() {
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.dark_light_state_navigation);
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        setupToolbar(toolbar);
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             boolean selected;
@@ -71,14 +70,22 @@ public class LoanDetailActivity extends BaseActivity {
             @Override
             public void onScrolled(int dy) {
                 if (dy <= 5) {
-                    changeToolBarIconState(false);
+                    if (!selected) {
+                        changeToolBarIconState(true);
+                        selected = true;
+                    }
                 } else if (dy >= hitDistance) {
-                    changeToolBarIconState(true);
+                    if (selected) {
+                        changeToolBarIconState(false);
+                        selected = false;
+                    }
+                } else {
+                    renderBar((float) dy / hitDistance);
                 }
             }
         });
 
-        ImmersionBar.with(this).fitsSystemWindows(true).barColor("#D8D8D8").init();
+        ImmersionBar.with(this).fitsSystemWindows(true).init();
     }
 
     @Override
@@ -93,14 +100,27 @@ public class LoanDetailActivity extends BaseActivity {
 
     private void changeToolBarIconState(boolean selected) {
         int[] state = selected ? selectedState : noneState;
+        int color = selected ? Color.WHITE : getResources().getColor(R.color.colorPrimary);
         //noinspection ConstantConditions
         toolbar.getNavigationIcon().setState(state);
         toolbar.getMenu().findItem(R.id.share).getIcon().setState(state);
+        toolbar.setBackgroundColor(color);
+        ImmersionBar.with(this).statusBarColorInt(color).init();
+
+        loanNameTitleTv.setSelected(!selected);
+    }
+
+    private void renderBar(float alpha) {
+        int alphaInt = (int) (alpha * 255);
+        int color = Color.argb(alphaInt, 85, 145, 255);
+        toolbar.setBackgroundColor(color);
+        ImmersionBar.with(this).statusBarColorInt(color).init();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_loan_detail, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
