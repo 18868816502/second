@@ -21,6 +21,8 @@ public class MessageCenterActivity extends BaseActivity implements View.OnClickL
     Toolbar toolbar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.ignore_unread)
+    TextView ignoreUnreadTv;
 
     private MessageCenterAdapter adapter;
     private HeaderViewHolder headerViewHolder;
@@ -41,6 +43,10 @@ public class MessageCenterActivity extends BaseActivity implements View.OnClickL
         headerViewHolder = new HeaderViewHolder(view);
         headerViewHolder.annItemView.setOnClickListener(this);
         headerViewHolder.msgItemView.setOnClickListener(this);
+        adapter.setHeaderView(view);
+
+        ignoreUnreadTv.setOnClickListener(this);
+        showNoMessage();
     }
 
     @Override
@@ -59,9 +65,16 @@ public class MessageCenterActivity extends BaseActivity implements View.OnClickL
 
         } else if (v.getId() == R.id.msg_item) {
 
+        } else if (v.getId() == R.id.ignore_unread) {
+            
         }
     }
 
+    void showNoMessage() {
+        adapter.notifyMessageChanged(null);
+        View footer = LayoutInflater.from(this).inflate(R.layout.layout_message_center_no_message, null);
+        adapter.setFooterView(footer);
+    }
 
     class HeaderViewHolder {
         @BindView(R.id.ann_item)

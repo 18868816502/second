@@ -39,7 +39,7 @@
     <string name="origin_psd">原密码</string>
     <string name="input_origin_psd">请输入原密码</string>
     <string name="new_psd">新密码</string>
-    <string name="set_login_psd">请设置6–0位登录密码</string>
+    <string name="set_login_psd">请设置6–16位登录密码</string>
     <string name="confirm_new_psd">确认新密码</string>
     <string name="input_new_psd_again">请再次输入新密码</string>
     <string name="confirm_change">确认修改</string>
@@ -61,4 +61,7 @@
     <string name="status">状态</string>
     <string name="help">帮助</string>
     <string name="feedback">反馈</string>
+    <string name="no_message">暂无消息</string>
+    <string name="password">密码</string>
+    <string name="comfirm">确认</string>
 </resources>

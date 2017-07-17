@@ -7,6 +7,9 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseFragment;
 import com.beihui.market.component.AppComponent;
+import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +44,6 @@ public class RequireVerifyCodeFragment extends BaseFragment {
 
     @OnClick(R.id.next_step)
     void onNextStepClicked() {
-
+        EventBus.getDefault().post(new ResetPsdNavigationEvent());
     }
 }
