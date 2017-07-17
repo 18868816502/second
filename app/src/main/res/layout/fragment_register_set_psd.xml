@@ -3,52 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:ignore="RtlHardcoded">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="@string/set_your_psd"
+        android:textColor="@color/black_2"
+        android:textSize="17sp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="100dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/phone_number"
-            android:textColor="@color/black_1"
-            android:textSize="15sp" />
-
-
-        <com.beihui.market.view.ClearEditText
-            android:id="@+id/phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:hint="@string/input_phone_number"
-            android:inputType="number"
-            android:maxLength="11"
-            android:textColor="@color/c_222222"
-            android:textColorHint="#B2B2B2"
-            android:textSize="15sp" />
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -62,13 +35,13 @@
 
         <com.beihui.market.view.ClearEditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@null"
             android:digits="0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"
-            android:hint="请输入密码"
+            android:hint="请设置6-16位登录密码"
             android:inputType="textPassword"
             android:maxLength="16"
             android:textColor="@color/c_222222"
@@ -79,10 +52,44 @@
             android:id="@+id/psd_visibility"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:button="@drawable/eyes_check" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="邀请码"
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
+
+
+        <com.beihui.market.view.ClearEditText
+            android:id="@+id/invitation_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:digits="0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"
+            android:hint="请输入邀请码(可不填)"
+            android:inputType="text"
+            android:maxLength="16"
+            android:textColor="@color/c_222222"
+            android:textColorHint="#B2B2B2"
+            android:textSize="15sp" />
 
 
     </LinearLayout>
@@ -94,41 +101,39 @@
 
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/round_login_select"
-        android:enabled="false"
-        android:text="@string/login"
+        android:text="注册"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
 
-    <TextView
-        android:id="@+id/forget_psd"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="5dp"
-        android:gravity="right"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="10dp"
-        android:text="@string/forget_psd_question"
-        android:textColor="@color/login1" />
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="99dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/round_register_select"
+        android:layout_marginTop="15dp"
         android:gravity="center"
-        android:text="@string/register"
-        android:textColor="@color/c_999999"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击注册即视为同意"
+            android:textColor="@color/c_666666"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/contract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:text="《爱信管家用户协议》"
+            android:textColor="@color/login1"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
