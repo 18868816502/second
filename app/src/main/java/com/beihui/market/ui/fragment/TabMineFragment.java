@@ -16,6 +16,8 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.component.DaggerMainComponent;
+import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
+import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
@@ -106,8 +108,12 @@ public class TabMineFragment extends BaseTabFragment implements Main1Contract.Vi
                 startActivity(toMsg);
                 break;
             case R.id.invite_friend:
+                Intent toInviteFriend = new Intent(getActivity(), InvitationActivity.class);
+                startActivity(toInviteFriend);
                 break;
             case R.id.helper_feedback:
+                Intent toHelp = new Intent(getActivity(), HelperAndFeedbackActivity.class);
+                startActivity(toHelp);
                 break;
             case R.id.settings:
                 Intent toSettings = new Intent(getActivity(), SettingsActivity.class);

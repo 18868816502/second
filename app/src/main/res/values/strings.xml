@@ -56,4 +56,9 @@
     <string name="register_account">请注册你的账号</string>
     <string name="login">登录</string>
     <string name="set_your_psd">请设置你的登录密码</string>
+    <string name="invitation_list">邀请明细</string>
+    <string name="friends">好友</string>
+    <string name="status">状态</string>
+    <string name="help">帮助</string>
+    <string name="feedback">反馈</string>
 </resources>
