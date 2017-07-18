@@ -2,8 +2,6 @@ package com.beihui.market.base;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,21 +12,11 @@ import com.beihui.market.R;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.dialog.JuhuaDialog;
 import com.gyf.barlibrary.ImmersionBar;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.ActivityEvent;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
-/**
- * Created by Administrator on 2016/11/15.
- */
 
-public abstract class BaseActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
+public abstract class BaseComponentActivity extends AppCompatActivity {
 
 
     protected JuhuaDialog juhuaDialog;
@@ -37,6 +25,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
+        configureComponent(App.getInstance().getAppComponent());
+
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
@@ -47,8 +37,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
         }
 
         ButterKnife.bind(this);
-        lifecycleSubject.onNext(ActivityEvent.CREATE);
-        setupActivityComponent(App.getInstance().getAppComponent());
         configViews();
         initDatas();
     }
@@ -64,7 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
     public abstract void initDatas();
 
 
-    protected abstract void setupActivityComponent(AppComponent appComponent);
+    protected abstract void configureComponent(AppComponent appComponent);
 
 
     /**
@@ -135,63 +123,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
 //        super.onSaveInstanceState(outState);
     }
 
-
-    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
-    }
-
-    @Override
-    @CallSuper
-    protected void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(ActivityEvent.START);
-    }
-
-    @Override
-    @CallSuper
-    protected void onResume() {
-        super.onResume();
-        lifecycleSubject.onNext(ActivityEvent.RESUME);
-    }
-
-    @Override
-    @CallSuper
-    protected void onPause() {
-        super.onPause();
-        lifecycleSubject.onNext(ActivityEvent.PAUSE);
-    }
-
-    @Override
-    @CallSuper
-    protected void onStop() {
-        lifecycleSubject.onNext(ActivityEvent.STOP);
-        super.onStop();
-    }
-
     @Override
     @CallSuper
     protected void onDestroy() {
         super.onDestroy();
-        lifecycleSubject.onNext(ActivityEvent.DESTROY);
         //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
         ImmersionBar.with(this).destroy();
     }

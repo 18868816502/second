@@ -6,16 +6,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.dialog.AvatarSelectorDialog;
-import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class UserProfileActivity extends BaseActivity {
+public class UserProfileActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -41,7 +40,7 @@ public class UserProfileActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 

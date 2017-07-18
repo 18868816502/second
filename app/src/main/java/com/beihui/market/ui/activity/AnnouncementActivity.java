@@ -6,13 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.adapter.AnnouncementAdapter;
 
 import butterknife.BindView;
 
-public class AnnouncementActivity extends BaseActivity {
+public class AnnouncementActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.recycler_view)
@@ -40,7 +40,7 @@ public class AnnouncementActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 }

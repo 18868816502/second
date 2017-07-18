@@ -65,10 +65,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
-    //RxLifecycle
-    compile 'com.trello:rxlifecycle:0.8.0'
-    compile 'com.trello:rxlifecycle-android:0.8.0'
-    compile 'com.trello:rxlifecycle-components:0.8.0'
     //Glide Image Loader
     compile 'com.github.bumptech.glide:glide:3.7.0'
 

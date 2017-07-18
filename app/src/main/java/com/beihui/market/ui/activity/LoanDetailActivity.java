@@ -1,17 +1,15 @@
 package com.beihui.market.ui.activity;
 
 import android.graphics.Color;
-import android.graphics.drawable.StateListDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.view.WatchableScrollView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -19,7 +17,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 
 
-public class LoanDetailActivity extends BaseActivity {
+public class LoanDetailActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.scroll_view)
@@ -94,7 +92,7 @@ public class LoanDetailActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 

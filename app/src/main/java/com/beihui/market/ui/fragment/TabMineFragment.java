@@ -15,20 +15,18 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
-import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
-import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.view.CircleImageView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class TabMineFragment extends BaseTabFragment implements Main1Contract.View {
+public class TabMineFragment extends BaseTabFragment  {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -71,19 +69,10 @@ public class TabMineFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerMainComponent.builder().appComponent(appComponent).build().inject(this);
+    protected void configureComponent(AppComponent appComponent) {
+
     }
 
-    @Override
-    public void showError(String err) {
-        dismissDialog();
-    }
-
-    @Override
-    public void complete() {
-        dismissDialog();
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -100,7 +89,6 @@ public class TabMineFragment extends BaseTabFragment implements Main1Contract.Vi
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.avatar:
-//                LoginActivity.startActivity(getActivity());
                 UserProfileActivity.launch(getActivity());
                 break;
             case R.id.mine_msg:

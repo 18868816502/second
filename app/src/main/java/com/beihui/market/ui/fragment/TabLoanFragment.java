@@ -12,9 +12,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
-import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
-import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.ui.dialog.BrMoneyPopup;
 import com.beihui.market.ui.dialog.BrTimePopup;
 import com.beihui.market.ui.dialog.BrZhiyePopup;
@@ -27,7 +25,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class TabLoanFragment extends BaseTabFragment implements Main1Contract.View, BrMoneyPopup.onBrMoneyListener,
+public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onBrMoneyListener,
         BrTimePopup.onBrTimeListener, BrZhiyePopup.onBrZhiyeListener {
 
 
@@ -116,8 +114,8 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerMainComponent.builder().appComponent(appComponent).build().inject(this);
+    protected void configureComponent(AppComponent appComponent) {
+
     }
 
 
@@ -185,17 +183,6 @@ public class TabLoanFragment extends BaseTabFragment implements Main1Contract.Vi
                 tv2.setText("不限");
                 break;
         }
-    }
-
-
-    @Override
-    public void showError(String err) {
-        dismissDialog();
-    }
-
-    @Override
-    public void complete() {
-        dismissDialog();
     }
 
 

@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseFragment;
+import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.util.CountDownTimerUtils;
@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class UserRegisterVerifyCodeFragment extends BaseFragment {
+public class UserRegisterVerifyCodeComponentFragment extends BaseComponentFragment {
 
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;
@@ -84,7 +84,7 @@ public class UserRegisterVerifyCodeFragment extends BaseFragment {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 

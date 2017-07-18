@@ -25,7 +25,8 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
-import com.beihui.market.component.DaggerMainComponent;
+import com.beihui.market.component.DaggerTabHomeComponent;
+import com.beihui.market.module.TabHomeModule;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
@@ -34,7 +35,8 @@ import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.bean.BannerData;
 import com.beihui.market.ui.bean.GonglueData;
 import com.beihui.market.ui.busevents.NavigateLoan;
-import com.beihui.market.ui.contract.Main1Contract;
+import com.beihui.market.ui.contract.TabHomeContract;
+import com.beihui.market.ui.presenter.TabHomePresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.bumptech.glide.Glide;
@@ -49,12 +51,14 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class TabHomeFragment extends BaseTabFragment implements Main1Contract.View, View.OnClickListener {
+public class TabHomeFragment extends BaseTabFragment implements View.OnClickListener, TabHomeContract.View {
     @BindView(R.id.root_container)
     FrameLayout rootContainer;
     @BindView(R.id.faked_bar)
@@ -67,6 +71,9 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     RecyclerView recyclerView;
     @BindView(R.id.center_text)
     TextView center_text;
+
+    @Inject
+    TabHomePresenter presenter;
 
     private LoanRVAdapter loanRVAdapter;
 
@@ -109,11 +116,7 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     };
 
     public static TabHomeFragment newInstance() {
-        TabHomeFragment f = new TabHomeFragment();
-        Bundle b = new Bundle();
-        b.putString("type", "TabLoanFragment");
-        f.setArguments(b);
-        return f;
+        return new TabHomeFragment();
     }
 
     @Override
@@ -181,7 +184,6 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
         gonglueAdapter = new GonglueAdapter(getActivity());
         headerViewHolder.recyclerView.setAdapter(gonglueAdapter);
 
-
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headerViewHolder.lyBanner.getLayoutParams();
         params.width = CommonUtils.getScreenMaxWidth(getActivity(), 0);
         bannerHeight = (params.width * 530) / 975;
@@ -196,11 +198,12 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
         fakedBar.setLayoutParams(lp);
         renderStatusAndToolBar(toolBarBgAlpha);
 
+        headerViewHolder.setOnClickListener(this);
     }
 
     @Override
     public void initDatas() {
-        headerViewHolder.setOnClickListener(this);
+        presenter.onStart();
 
         List<BannerData> list = new ArrayList<>();
         BannerData data1 = new BannerData();
@@ -260,10 +263,13 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerMainComponent.builder().appComponent(appComponent).build().inject(this);
+    protected void configureComponent(AppComponent appComponent) {
+        DaggerTabHomeComponent.builder()
+                .appComponent(appComponent)
+                .tabHomeModule(new TabHomeModule(this))
+                .build()
+                .inject(this);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -284,17 +290,6 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
         }
     }
 
-
-    @Override
-    public void showError(String err) {
-        dismissDialog();
-    }
-
-    @Override
-    public void complete() {
-        dismissDialog();
-    }
-
     @Override
     protected boolean needFakeStatusBar() {
         //fake status bar is unexpected.
@@ -311,6 +306,10 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
     public boolean onOptionsItemSelected(MenuItem item) {
         UserAuthorizationActivity.launch(getActivity(), headerViewHolder.banner);
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setPresenter(TabHomeContract.Presenter presenter) {
     }
 
     class HeaderViewHolder {
@@ -339,7 +338,7 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
 
         Unbinder headerUnbinder;
 
-        public HeaderViewHolder(View itemView) {
+        HeaderViewHolder(View itemView) {
             this.itemView = itemView;
             headerUnbinder = ButterKnife.bind(this, itemView);
 
@@ -348,18 +347,17 @@ public class TabHomeFragment extends BaseTabFragment implements Main1Contract.Vi
             banner.isAutoPlay(true);
         }
 
-        public void destroy() {
+        void destroy() {
             headerUnbinder.unbind();
         }
 
-        public void setOnClickListener(View.OnClickListener listener) {
+        void setOnClickListener(View.OnClickListener listener) {
             lyEtbg.setOnClickListener(listener);
             tvTuiJian.setOnClickListener(listener);
             tvMore.setOnClickListener(listener);
-
         }
 
-        public void loadBanner(List<BannerData> list) {
+        void loadBanner(List<BannerData> list) {
             List<String> images = new ArrayList<>();
             for (int i = 0; i < list.size(); ++i) {
                 images.add(list.get(i).getImgUrl());

@@ -7,12 +7,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 
 import butterknife.BindView;
 
-public class InvitationActivity extends BaseActivity {
+public class InvitationActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.invitation_code)
@@ -38,7 +38,7 @@ public class InvitationActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 }

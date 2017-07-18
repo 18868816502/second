@@ -5,14 +5,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
 
-public class WorthTestActivity extends BaseActivity {
+public class WorthTestActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -37,7 +37,7 @@ public class WorthTestActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

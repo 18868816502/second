@@ -19,9 +19,7 @@ import okhttp3.OkHttpClient;
 public class ApiModule {
 
     @Provides
-    public OkHttpClient provideOKHttpClient() {
-        LoggingInterceptor logging = new LoggingInterceptor(new MyLog());
-        logging.setLevel(LoggingInterceptor.Level.BODY);
+    public OkHttpClient provideOkHttpClient() {
         File cacheFile = new File(App.getInstance().getCacheDir().getAbsolutePath(), "ShopHttpCache");
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
 
@@ -30,25 +28,31 @@ public class ApiModule {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
-//                .addInterceptor(new HttpCacheInterceptor())
-                .addInterceptor(logging)
                 .cache(cache);
 
+        if (BuildConfig.DEBUG) {
+            LoggingInterceptor logging = new LoggingInterceptor(new DebugLog());
+            logging.setLevel(LoggingInterceptor.Level.BODY);
+            builder.addInterceptor(logging);
+        }
 
         return builder.build();
     }
 
 
     @Provides
-    protected Api provideService(OkHttpClient okHttpClient) {
+    protected Api provideApi(OkHttpClient okHttpClient) {
         return Api.getInstance(okHttpClient);
     }
 
 
-    public static class MyLog implements LoggingInterceptor.Logger {
+    static class DebugLog implements LoggingInterceptor.Logger {
+
+        private static final String TAG = "HttpDebug";
+
         @Override
         public void log(String message) {
-            LogUtils.i("oklog: " + message);
+            LogUtils.i(TAG, message);
         }
     }
 

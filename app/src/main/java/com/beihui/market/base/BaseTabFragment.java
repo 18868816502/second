@@ -10,7 +10,7 @@ import com.beihui.market.R;
 import com.beihui.market.util.CommonUtils;
 
 
-public abstract class BaseTabFragment extends BaseFragment {
+public abstract class BaseTabFragment extends BaseComponentFragment {
 
     private View fakedStatusBar;
 

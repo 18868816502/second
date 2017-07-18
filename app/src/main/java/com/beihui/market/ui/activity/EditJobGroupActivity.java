@@ -4,13 +4,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class EditJobGroupActivity extends BaseActivity {
+public class EditJobGroupActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
 
@@ -32,7 +32,7 @@ public class EditJobGroupActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 

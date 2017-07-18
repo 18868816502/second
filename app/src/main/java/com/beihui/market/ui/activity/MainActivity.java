@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.fragment.TabHomeFragment;
@@ -22,7 +22,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseComponentActivity {
 
     @BindView(R.id.navigation_bar)
     BottomNavigationBar mNavigationBar;
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 

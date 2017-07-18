@@ -4,12 +4,12 @@ package com.beihui.market.ui.fragment;
 import android.widget.EditText;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseFragment;
+import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.component.AppComponent;
 
 import butterknife.BindView;
 
-public class SetPsdFragment extends BaseFragment {
+public class SetPsdComponentFragment extends BaseComponentFragment {
     @BindView(R.id.password)
     EditText passwordEt;
 
@@ -29,7 +29,7 @@ public class SetPsdFragment extends BaseFragment {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 }

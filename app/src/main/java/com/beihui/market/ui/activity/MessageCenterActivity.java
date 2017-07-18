@@ -9,14 +9,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.adapter.MessageCenterAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessageCenterActivity extends BaseActivity implements View.OnClickListener {
+public class MessageCenterActivity extends BaseComponentActivity implements View.OnClickListener {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.recycler_view)
@@ -55,7 +55,7 @@ public class MessageCenterActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 
@@ -66,7 +66,7 @@ public class MessageCenterActivity extends BaseActivity implements View.OnClickL
         } else if (v.getId() == R.id.msg_item) {
 
         } else if (v.getId() == R.id.ignore_unread) {
-            
+
         }
     }
 

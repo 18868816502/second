@@ -5,7 +5,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseFragment;
+import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 
@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RequireVerifyCodeFragment extends BaseFragment {
+public class RequireVerifyCodeComponentFragment extends BaseComponentFragment {
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;
     @BindView(R.id.verify_code)
@@ -38,7 +38,7 @@ public class RequireVerifyCodeFragment extends BaseFragment {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 

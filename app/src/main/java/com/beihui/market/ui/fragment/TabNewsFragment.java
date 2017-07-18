@@ -7,9 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
-import com.beihui.market.component.DaggerMainComponent;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
-import com.beihui.market.ui.contract.Main1Contract;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class TabNewsFragment extends BaseTabFragment implements Main1Contract.View {
+public class TabNewsFragment extends BaseTabFragment {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -58,18 +56,8 @@ public class TabNewsFragment extends BaseTabFragment implements Main1Contract.Vi
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerMainComponent.builder().appComponent(appComponent).build().inject(this);
-    }
+    protected void configureComponent(AppComponent appComponent) {
 
-    @Override
-    public void showError(String err) {
-        dismissDialog();
-    }
-
-    @Override
-    public void complete() {
-        dismissDialog();
     }
 
 

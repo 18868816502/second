@@ -6,12 +6,12 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 
 import butterknife.BindView;
 
-public class ComWebViewActivity extends BaseActivity {
+public class ComWebViewActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.title)
@@ -35,7 +35,7 @@ public class ComWebViewActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 }

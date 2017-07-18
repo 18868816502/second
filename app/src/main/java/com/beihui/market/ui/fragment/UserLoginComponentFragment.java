@@ -12,7 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseFragment;
+import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.activity.ResetPsdActivity;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class UserLoginFragment extends BaseFragment {
+public class UserLoginComponentFragment extends BaseComponentFragment {
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;
     @BindView(R.id.password)
@@ -89,9 +89,10 @@ public class UserLoginFragment extends BaseFragment {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
+
 
     @OnClick({R.id.register, R.id.forget_psd, R.id.login})
     void onViewClicked(View view) {

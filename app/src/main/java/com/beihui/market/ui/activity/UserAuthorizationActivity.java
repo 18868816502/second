@@ -16,12 +16,12 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
-import com.beihui.market.ui.fragment.UserLoginFragment;
-import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
-import com.beihui.market.ui.fragment.UserRegisterVerifyCodeFragment;
+import com.beihui.market.ui.fragment.UserLoginComponentFragment;
+import com.beihui.market.ui.fragment.UserRegisterSetPsdComponentFragment;
+import com.beihui.market.ui.fragment.UserRegisterVerifyCodeComponentFragment;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,7 +32,7 @@ import java.io.ByteArrayOutputStream;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class UserAuthorizationActivity extends BaseActivity {
+public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @BindView(R.id.root_container)
     FrameLayout rootContainer;
@@ -72,7 +72,7 @@ public class UserAuthorizationActivity extends BaseActivity {
     @Override
     public void configViews() {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.content_container, new UserLoginFragment(), UserLoginFragment.class.getSimpleName())
+                .add(R.id.content_container, new UserLoginComponentFragment(), UserLoginComponentFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -82,7 +82,7 @@ public class UserAuthorizationActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 
@@ -114,13 +114,13 @@ public class UserAuthorizationActivity extends BaseActivity {
             FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
 
-            Fragment login = fm.findFragmentByTag(UserLoginFragment.class.getSimpleName());
+            Fragment login = fm.findFragmentByTag(UserLoginComponentFragment.class.getSimpleName());
             ft.detach(login);
 
-            String registerTag = UserRegisterVerifyCodeFragment.class.getSimpleName();
+            String registerTag = UserRegisterVerifyCodeComponentFragment.class.getSimpleName();
             Fragment verifyCode = fm.findFragmentByTag(registerTag);
             if (verifyCode == null) {
-                verifyCode = new UserRegisterVerifyCodeFragment();
+                verifyCode = new UserRegisterVerifyCodeComponentFragment();
                 ft.add(R.id.content_container, verifyCode, registerTag);
             } else {
                 ft.attach(verifyCode);
@@ -132,13 +132,13 @@ public class UserAuthorizationActivity extends BaseActivity {
             FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
 
-            Fragment verifyCode = fm.findFragmentByTag(UserRegisterVerifyCodeFragment.class.getSimpleName());
+            Fragment verifyCode = fm.findFragmentByTag(UserRegisterVerifyCodeComponentFragment.class.getSimpleName());
             ft.detach(verifyCode);
 
-            String setPsdTag = UserRegisterSetPsdFragment.class.getSimpleName();
+            String setPsdTag = UserRegisterSetPsdComponentFragment.class.getSimpleName();
             Fragment setPsd = fm.findFragmentByTag(setPsdTag);
             if (setPsd == null) {
-                setPsd = new UserRegisterSetPsdFragment();
+                setPsd = new UserRegisterSetPsdComponentFragment();
                 ft.add(R.id.content_container, setPsd, setPsdTag);
             } else {
                 ft.attach(setPsd);

@@ -9,14 +9,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseActivity;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -39,7 +39,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
+    protected void configureComponent(AppComponent appComponent) {
 
     }
 
