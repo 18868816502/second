@@ -7,21 +7,16 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
+        style="@style/ToolBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_height="@dimen/tool_bar_height">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                style="@style/ToolBarTitleTextAppearance.Dark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/tab_news" />
-        </FrameLayout>
+        <TextView
+            style="@style/ToolBarTitleTextAppearance.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/tab_news" />
     </android.support.v7.widget.Toolbar>
 
     <WebView

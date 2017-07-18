@@ -101,13 +101,23 @@
         <item name="android:windowExitAnimation">@anim/slide_to_bottom</item>
     </style>
 
-    <style name="AvatarSelectorStyle">
+    <style name="BottomSlideDialogStyle">
+        <item name="android:windowAnimationStyle">@style/BottomSlideAnim</item>
+    </style>
+
+    <style name="CommonBottomDialogStyle" parent="BottomSlideDialogStyle">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="AvatarSelectorStyle" parent="BottomSlideDialogStyle">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowAnimationStyle">@style/BottomSlideAnim</item>
     </style>
 
     <style name="FloatActivityStyle" parent="Theme.AppCompat.Dialog">

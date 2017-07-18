@@ -1,14 +1,18 @@
 package com.beihui.market.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.component.AppComponent;
+import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,13 @@ public class TabNewsFragment extends BaseTabFragment {
     @Override
     public void configViews() {
         adapter = new NewsRVAdapter();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                startActivity(intent);
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
