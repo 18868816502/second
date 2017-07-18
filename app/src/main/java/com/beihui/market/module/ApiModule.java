@@ -2,6 +2,7 @@ package com.beihui.market.module;
 
 
 import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.support.LoggingInterceptor;
 import com.beihui.market.util.LogUtils;
@@ -14,9 +15,6 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
-/**
- * Created by Administrator on 2017/1/16.
- */
 @Module
 public class ApiModule {
 
@@ -36,12 +34,13 @@ public class ApiModule {
                 .addInterceptor(logging)
                 .cache(cache);
 
+
         return builder.build();
     }
 
 
     @Provides
-    protected Api provideService(OkHttpClient okHttpClient){
+    protected Api provideService(OkHttpClient okHttpClient) {
         return Api.getInstance(okHttpClient);
     }
 

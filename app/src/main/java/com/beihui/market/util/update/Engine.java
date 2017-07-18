@@ -15,7 +15,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
@@ -46,7 +46,7 @@ class Engine {
         mDownloadApi = new Retrofit.Builder()
                 .baseUrl("https://github.com/bingoogolapple/")
                 .client(getDownloadOkHttpClient())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(DownloadApi.class);
     }

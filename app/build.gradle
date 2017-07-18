@@ -38,41 +38,44 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    //*******************MVP框架**start************************************//
-    //NetWork
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    //RxJava
-    compile 'io.reactivex:rxjava:1.2.2'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    //Dagger2,下面三个都要导入 使用初步,http://www.cnblogs.com/zhuyp1015/p/5119727.html
-    compile 'com.google.dagger:dagger:2.7'
-    apt 'com.google.dagger:dagger-compiler:2.7'
-    compile 'org.glassfish:javax.annotation:10.0-b28'
-    //butterknife
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    //eventbus
-    compile 'org.greenrobot:eventbus:3.0.0'
-    //在 Activity 的 onCreate 方法中监听下载进度。引用了 rxlifecycle 这个库来防止 Activity 内存泄漏
-    compile 'com.trello:rxlifecycle:0.8.0'
-    compile 'com.trello:rxlifecycle-android:0.8.0'
-    compile 'com.trello:rxlifecycle-components:0.8.0'
-    //图片加载框架glide
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    //*******************MVP框架**end************************************//
+    testCompile 'junit:junit:4.12'
 
-    //https://github.com/sfsheng0322/MarqueeView
+    //Retrofit
+    compile('com.squareup.retrofit2:retrofit:2.3.0', {
+        exclude module: 'okhttp'
+    })
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    //OkHttp
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    //RxJava
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //Dagger2
+    compile 'com.google.dagger:dagger:2.7'
+    apt 'com.google.dagger:dagger-compiler:2.7'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    //ButterKnife
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    //EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //RxLifecycle
+    compile 'com.trello:rxlifecycle:0.8.0'
+    compile 'com.trello:rxlifecycle-android:0.8.0'
+    compile 'com.trello:rxlifecycle-components:0.8.0'
+    //Glide Image Loader
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    /*View Lib*/
+    //MarqueeView
     compile 'com.sunfusheng:marqueeview:1.2.0'
-    //https://github.com/gyf-dev/ImmersionBar  沉浸式状态栏
+    //StatusBar
     compile 'com.gyf.barlibrary:barlibrary:2.2.5'
     //RecyclerView Adapter Helper
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
