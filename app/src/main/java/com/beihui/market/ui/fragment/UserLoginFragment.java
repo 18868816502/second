@@ -13,18 +13,26 @@ import android.widget.EditText;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerLoginComponent;
+import com.beihui.market.injection.module.LoginModule;
 import com.beihui.market.ui.activity.ResetPsdActivity;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
+import com.beihui.market.ui.contract.LoginContract;
+import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LegalInputUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class UserLoginComponentFragment extends BaseComponentFragment {
+public class UserLoginFragment extends BaseComponentFragment implements LoginContract.View {
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;
     @BindView(R.id.password)
@@ -34,32 +42,15 @@ public class UserLoginComponentFragment extends BaseComponentFragment {
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
 
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    @Inject
+    LoginPresenter presenter;
 
-        }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            int phoneLen = phoneNumberEt.getText().length();
-            int psdLen = passwordEt.getText().length();
-            if (phoneLen > 0 && psdLen > 0) {
-                if (!loginBtn.isEnabled()) {
-                    loginBtn.setEnabled(true);
-                }
-            } else {
-                if (loginBtn.isEnabled()) {
-                    loginBtn.setEnabled(false);
-                }
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
 
     @Override
     public int getLayoutResId() {
@@ -79,6 +70,31 @@ public class UserLoginComponentFragment extends BaseComponentFragment {
                 CommonUtils.setEditTextCursorLocation(passwordEt);
             }
         });
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String phone = phoneNumberEt.getText().toString();
+                String pwd = passwordEt.getText().toString();
+                if (LegalInputUtils.isPhoneAndPwdLegal(phone, pwd)) {
+                    if (!loginBtn.isEnabled()) {
+                        loginBtn.setEnabled(true);
+                    }
+                } else {
+                    if (loginBtn.isEnabled()) {
+                        loginBtn.setEnabled(false);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
         phoneNumberEt.addTextChangedListener(textWatcher);
         passwordEt.addTextChangedListener(textWatcher);
     }
@@ -90,7 +106,10 @@ public class UserLoginComponentFragment extends BaseComponentFragment {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
+        DaggerLoginComponent.builder().appComponent(appComponent)
+                .loginModule(new LoginModule(this))
+                .build()
+                .inject(this);
     }
 
 
@@ -105,9 +124,31 @@ public class UserLoginComponentFragment extends BaseComponentFragment {
                 startActivity(toResetPsd);
                 break;
             case R.id.login:
+                presenter.login(phoneNumberEt.getText().toString(), passwordEt.getText().toString());
                 break;
         }
     }
 
 
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        //injected, do nothing
+    }
+
+    @Override
+    public void showLoading() {
+        showProgress("登录中");
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        dismissProgress();
+        ToastUtils.showShort(getContext(), msg, null);
+    }
+
+    @Override
+    public void showLoginSuccess() {
+        dismissProgress();
+        ToastUtils.showShort(getContext(), "登录成功", R.mipmap.white_success);
+    }
 }

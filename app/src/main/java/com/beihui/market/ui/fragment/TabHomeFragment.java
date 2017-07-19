@@ -24,9 +24,9 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.component.AppComponent;
-import com.beihui.market.component.DaggerTabHomeComponent;
-import com.beihui.market.module.TabHomeModule;
+import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerTabHomeComponent;
+import com.beihui.market.injection.module.TabHomeModule;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;

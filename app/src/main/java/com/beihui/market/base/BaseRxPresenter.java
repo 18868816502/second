@@ -16,6 +16,10 @@ public abstract class BaseRxPresenter implements BasePresenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
+    public void onStart() {
+    }
+
     @CallSuper
     @Override
     public void onDestroy() {

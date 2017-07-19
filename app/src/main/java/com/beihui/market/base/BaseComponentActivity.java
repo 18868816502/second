@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.beihui.market.App;
 import com.beihui.market.R;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.JuhuaDialog;
 import com.gyf.barlibrary.ImmersionBar;
 

@@ -7,9 +7,9 @@ import android.support.v7.widget.Toolbar;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
-import com.beihui.market.ui.fragment.RequireVerifyCodeComponentFragment;
+import com.beihui.market.ui.fragment.RequireVerifyCodeFragment;
 import com.beihui.market.ui.fragment.SetPsdComponentFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,7 +39,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
         setupToolbar(toolbar);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.content_container, new RequireVerifyCodeComponentFragment(), RequireVerifyCodeComponentFragment.class.getSimpleName())
+                .add(R.id.content_container, new RequireVerifyCodeFragment(), RequireVerifyCodeFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -58,7 +58,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
         FragmentTransaction ft = fm.beginTransaction();
 
         ft.setCustomAnimations(R.anim.slide_from_right, R.anim.hold_still);
-        Fragment verifyCode = fm.findFragmentByTag(RequireVerifyCodeComponentFragment.class.getSimpleName());
+        Fragment verifyCode = fm.findFragmentByTag(RequireVerifyCodeFragment.class.getSimpleName());
         ft.detach(verifyCode);
 
         String setPsdTag = SetPsdComponentFragment.class.getSimpleName();

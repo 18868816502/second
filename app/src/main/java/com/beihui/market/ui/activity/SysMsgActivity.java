@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.SysMsgAdapter;
 
 import butterknife.BindView;

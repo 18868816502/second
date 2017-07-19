@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.view.WatchableScrollView;
 import com.gyf.barlibrary.ImmersionBar;
 

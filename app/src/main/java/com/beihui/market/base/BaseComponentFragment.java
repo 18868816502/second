@@ -10,9 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beihui.market.App;
-import com.beihui.market.component.AppComponent;
-
-import java.util.regex.Pattern;
+import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.dialog.JuhuaDialog;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -20,6 +19,8 @@ import butterknife.Unbinder;
 public abstract class BaseComponentFragment extends Fragment {
 
     private Unbinder unbinder;
+
+    private JuhuaDialog progress;
 
     @Override
     public void onAttach(Context context) {
@@ -66,11 +67,16 @@ public abstract class BaseComponentFragment extends Fragment {
      */
     protected abstract void configureComponent(AppComponent appComponent);
 
-
-    public boolean matchPhone(String text) {
-        if (Pattern.compile("(\\d{11})|(\\+\\d{3,})").matcher(text).matches()) {
-            return true;
+    protected void showProgress(String msg) {
+        if (progress == null) {
+            progress = new JuhuaDialog(getContext(), msg);
         }
-        return false;
+        progress.show();
+    }
+
+    protected void dismissProgress() {
+        if (progress != null) {
+            progress.dismiss();
+        }
     }
 }

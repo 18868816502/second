@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;

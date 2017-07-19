@@ -12,12 +12,12 @@ import android.widget.EditText;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.component.AppComponent;
+import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.util.CommonUtils;
 
 import butterknife.BindView;
 
-public class UserRegisterSetPsdComponentFragment extends BaseComponentFragment {
+public class UserRegisterSetPsdFragment extends BaseComponentFragment {
     @BindView(R.id.password)
     EditText passwordEt;
     @BindView(R.id.invitation_code)

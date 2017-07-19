@@ -62,7 +62,7 @@
 
         <com.beihui.market.view.ClearEditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
@@ -98,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/round_login_select"
+        android:background="@drawable/round_alpha_primary_btn"
         android:enabled="false"
         android:text="@string/login"
         android:textColor="@color/white"

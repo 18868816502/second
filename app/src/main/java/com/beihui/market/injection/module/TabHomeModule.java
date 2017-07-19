@@ -1,4 +1,4 @@
-package com.beihui.market.module;
+package com.beihui.market.injection.module;
 
 
 import com.beihui.market.ui.contract.TabHomeContract;
