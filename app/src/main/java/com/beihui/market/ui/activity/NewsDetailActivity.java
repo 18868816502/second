@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.UMShareAPI;
 
 import butterknife.BindView;
 
@@ -53,5 +55,11 @@ public class NewsDetailActivity extends BaseComponentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         new ShareDialog().show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

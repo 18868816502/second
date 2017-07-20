@@ -6,6 +6,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAppComponent;
 import com.beihui.market.injection.module.ApiModule;
 import com.beihui.market.injection.module.AppModule;
+import com.beihui.market.umeng.Umeng;
 import com.beihui.market.util.FileUtil;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -23,6 +24,7 @@ public class App extends Application {
 
         FileUtil.initFileCache(this);
         LeakCanary.install(this);
+        Umeng.install(this);
     }
 
 
