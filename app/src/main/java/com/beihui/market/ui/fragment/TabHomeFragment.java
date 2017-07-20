@@ -199,6 +199,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         renderStatusAndToolBar(toolBarBgAlpha);
 
         headerViewHolder.setOnClickListener(this);
+
     }
 
     @Override
@@ -304,7 +305,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        UserAuthorizationActivity.launch(getActivity(), headerViewHolder.banner);
+        UserAuthorizationActivity.launch(getActivity(), rootContainer);
         return super.onOptionsItemSelected(item);
     }
 

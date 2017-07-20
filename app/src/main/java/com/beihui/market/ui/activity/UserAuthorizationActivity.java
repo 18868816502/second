@@ -1,19 +1,19 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.view.animation.Interpolator;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -22,33 +22,30 @@ import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.fragment.UserLoginFragment;
 import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
 import com.beihui.market.ui.fragment.UserRegisterVerifyCodeFragment;
+import com.beihui.market.view.drawable.BlurringDrawable;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class UserAuthorizationActivity extends BaseComponentActivity {
 
+    @SuppressLint("StaticFieldLeak")
+    private static View blurredView;
+
     @BindView(R.id.root_container)
-    FrameLayout rootContainer;
+    View rootContainer;
+    @BindView(R.id.deco_container)
+    View decoContainer;
+
+    private BlurringDrawable blurringDrawable;
 
     public static void launch(Context context, View blurView) {
-        blurView.setDrawingCacheEnabled(true);
-        Bitmap bg = blurView.getDrawingCache();
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bg.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        bg.recycle();
-        blurView.setDrawingCacheEnabled(false);
-
+        blurredView = blurView.getRootView();
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
-        intent.putExtra("bytes", bytes);
         context.startActivity(intent);
     }
 
@@ -61,6 +58,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        if (blurringDrawable != null) {
+            blurringDrawable.unbindBlurredView(blurredView);
+            blurringDrawable.stop();
+        }
+        blurredView = null;
         super.onDestroy();
     }
 
@@ -74,6 +76,28 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.content_container, new UserLoginFragment(), UserLoginFragment.class.getSimpleName())
                 .commit();
+        decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    decoContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    decoContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+                decoContainer.setTranslationY(decoContainer.getMeasuredHeight());
+                decoContainer.animate()
+                        .translationY(0)
+                        .setDuration(1000)
+                        .setInterpolator(new Interpolator() {
+                            @Override
+                            public float getInterpolation(float input) {
+                                float factor = 0.88F;
+                                return (float) (Math.pow(2, -10 * input) * Math.sin((input - factor / 4) * (2 * Math.PI) / factor) + 1);
+                            }
+                        })
+                        .start();
+            }
+        });
     }
 
     @Override
@@ -83,7 +107,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override
@@ -96,13 +119,14 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
 
-        byte[] bytes = getIntent().getByteArrayExtra("bytes");
-        Bitmap bg = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        window.setBackgroundDrawable(new BitmapDrawable(getResources(), bg));
+        blurringDrawable = new BlurringDrawable(this);
+        blurringDrawable.bindBlurredView(blurredView);
+        blurringDrawable.start();
+        window.setBackgroundDrawable(blurringDrawable);
     }
 
 
-    @OnClick(R.id.tv_back)
+    @OnClick(R.id.cancel)
     void OnViewClicked() {
         finish();
     }
