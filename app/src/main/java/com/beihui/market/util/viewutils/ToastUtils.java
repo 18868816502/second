@@ -40,16 +40,18 @@ public class ToastUtils {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_toast_as_alert, null);
         toast.setView(view);
 
-        if (msg != null) {
-            TextView textView = (TextView) view.findViewById(R.id.text);
-            textView.setVisibility(View.VISIBLE);
-            textView.setText(msg);
+        if (msg != null && drawable != null) {
+            view.findViewById(R.id.both).setVisibility(View.VISIBLE);
+            ((TextView) view.findViewById(R.id.text)).setText(msg);
+            ((ImageView) view.findViewById(R.id.image)).setImageDrawable(drawable);
+        } else if (msg != null) {
+            view.findViewById(R.id.single_text).setVisibility(View.VISIBLE);
+            ((TextView) view.findViewById(R.id.text_single)).setText(msg);
+        } else if (drawable != null) {
+            view.findViewById(R.id.single_image).setVisibility(View.VISIBLE);
+            ((ImageView) view.findViewById(R.id.image_single)).setImageDrawable(drawable);
         }
-        if (drawable != null) {
-            ImageView imageView = (ImageView) view.findViewById(R.id.image);
-            imageView.setVisibility(View.VISIBLE);
-            imageView.setImageDrawable(drawable);
-        }
+
         return toast;
     }
 }
