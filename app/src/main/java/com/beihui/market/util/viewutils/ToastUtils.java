@@ -13,9 +13,11 @@ import android.widget.Toast;
 
 import com.beihui.market.R;
 
+import java.lang.ref.WeakReference;
+
 public class ToastUtils {
 
-    private static Toast toast;
+    private static WeakReference<Toast> toast;
 
     public static void showShort(Context context, String msg, @DrawableRes int drawableRes) {
         Drawable drawable = context.getResources().getDrawable(drawableRes);
@@ -24,13 +26,13 @@ public class ToastUtils {
 
     public static void showShort(Context context, String msg, Drawable drawable) {
         cancel();
-        toast = createToast(context, msg, drawable);
-        toast.show();
+        toast = new WeakReference<>(createToast(context, msg, drawable));
+        toast.get().show();
     }
 
     public static void cancel() {
-        if (toast != null) {
-            toast.cancel();
+        if (toast != null && toast.get() != null) {
+            toast.get().cancel();
         }
     }
 
