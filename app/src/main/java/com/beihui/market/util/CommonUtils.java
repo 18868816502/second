@@ -93,18 +93,18 @@ public class CommonUtils {
 
     /**
      * 判断字符串是否是数字
+     *
      * @param str
      * @return
      */
-    public static boolean isNumeric(String str){
+    public static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if( !isNum.matches() ){
+        if (!isNum.matches()) {
             return false;
         }
         return true;
     }
-
 
 
     /**
@@ -419,6 +419,7 @@ public class CommonUtils {
 
     /**
      * 将Edittext光标定位到最后一位
+     *
      * @param editText
      */
     public static void setEditTextCursorLocation(EditText editText) {
@@ -430,10 +431,9 @@ public class CommonUtils {
     }
 
 
-
-
     /**
      * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
+     *
      * @param context
      * @return true 表示开启
      */
@@ -454,6 +454,7 @@ public class CommonUtils {
 
     /**
      * 强制帮用户打开GPS
+     *
      * @param context
      */
     public static final void openGPS(Context context) {
@@ -472,12 +473,13 @@ public class CommonUtils {
 
     /**
      * 两个String数组拼接
+     *
      * @param a
      * @param b
      * @return
      */
     public static String[] concat(String[] a, String[] b) {
-        String[] c= new String[a.length+b.length];
+        String[] c = new String[a.length + b.length];
         System.arraycopy(a, 0, c, 0, a.length);
         System.arraycopy(b, 0, c, a.length, b.length);
         return c;
@@ -486,6 +488,7 @@ public class CommonUtils {
 
     /**
      * 通过包名判断有没有安装某个应用
+     *
      * @param context
      * @param packageName
      * @return
@@ -506,6 +509,7 @@ public class CommonUtils {
 
     /**
      * 检测当的网络（WLAN、3G/2G）状态
+     *
      * @param context Context
      * @return true 表示网络可用
      */
@@ -514,11 +518,9 @@ public class CommonUtils {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
-            if (info != null && info.isConnected())
-            {
+            if (info != null && info.isConnected()) {
                 // 当前网络是连接的
-                if (info.getState() == NetworkInfo.State.CONNECTED)
-                {
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
                     // 当前所连接的网络可用
                     return true;
                 }
@@ -528,13 +530,13 @@ public class CommonUtils {
     }
 
 
-
     /**
      * 将.0改为整数
+     *
      * @param sMoney
      * @return
      */
-    public static String formatMoney(String sMoney){
+    public static String formatMoney(String sMoney) {
         String formatString;
 
         if (!TextUtils.isEmpty(sMoney)) {
@@ -542,15 +544,15 @@ public class CommonUtils {
             if (money == 0) {
                 formatString = "0";
             } else {
-                if (money % (int)money == 0) {
+                if (money % (int) money == 0) {
                     formatString = (int) money + "";
                 } else {
-                    DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-                    formatString= decimalFormat.format(money);//format 返回的是字符串
+                    DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                    formatString = decimalFormat.format(money);//format 返回的是字符串
                 }
             }
 
-        }else{
+        } else {
             formatString = "0";
         }
         return formatString;
@@ -560,10 +562,11 @@ public class CommonUtils {
 
     /**
      * 根据图片的url路径获得Bitmap对象
+     *
      * @param url
      * @return
      */
-    public static  Bitmap returnBitmap(String url) {
+    public static Bitmap returnBitmap(String url) {
         URL fileUrl = null;
         Bitmap bitmap = null;
 
@@ -588,5 +591,9 @@ public class CommonUtils {
 
     }
 
+
+    public static String phone2Username(String phone) {
+        return phone.substring(0, 3) + "****" + phone.substring(8, 11);
+    }
 
 }

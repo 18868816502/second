@@ -55,44 +55,29 @@
 
                 </FrameLayout>
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/phone"
+
+                    <TextView
+                        android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/phone_number_head"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="137"
-                            android:textColor="@color/white"
-                            android:textSize="15sp" />
-
-                        <ImageView
-                            android:layout_width="32.25dp"
-                            android:layout_height="6dp"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginRight="2dp"
-                            android:src="@mipmap/spot_four" />
-
-                        <TextView
-                            android:id="@+id/phone_number_tail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4956"
-                            android:textColor="@color/white"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="@string/login"
+                        android:textColor="@android:color/white" />
+                </FrameLayout>
 
             </LinearLayout>
 
@@ -112,6 +97,7 @@
             android:paddingRight="9dp">
 
             <TextView
+                android:id="@+id/has_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -121,8 +107,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/msg"
                 android:textColor="@color/black_1"
-                android:textSize="15sp"
-                tools:ignore="RtlHardcoded" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -156,7 +141,7 @@
                 android:textSize="15sp" />
 
         </FrameLayout>
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

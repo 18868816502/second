@@ -12,14 +12,14 @@ public class UserHelper {
 
     private static UserHelper sInstance;
 
+    private Gson gson = new Gson();
+
     private Profile profile;
 
     private UserHelper(Context context) {
-        SharedPreferences sp = context.getSharedPreferences("UserHelper", Context.MODE_PRIVATE);
-        String cached = sp.getString("profile", null);
-        if (cached != null) {
-            String profileStr = cached;
-            profile = new Gson().fromJson(profileStr, Profile.class);
+        String json = readFromSp(context.getApplicationContext());
+        if (json != null) {
+            profile = gson.fromJson(json, Profile.class);
         }
     }
 
@@ -38,15 +38,74 @@ public class UserHelper {
         return profile;
     }
 
-    public void update(UserProfile profile) {
+    public void update(UserProfile param, Context context) {
+        if (param != null) {
+            if (profile == null) {
+                profile = new Profile();
+            }
+            profile.setUserName(param.getUserName());
+            profile.setHeadPortrait(param.getHeadPortrait());
+            profile.setAccount(param.getAccount());
+            profile.setProfession(param.getProfession());
 
+            saveUserToSp(context.getApplicationContext());
+        }
     }
 
-    public void update(UserProfileAbstract profileAbstract) {
+    public void update(UserProfileAbstract param, Context context) {
+        if (param != null) {
+            if (profile == null) {
+                profile = new Profile();
+            }
+            profile.setId(param.getId());
+            profile.setHeadPortrait(param.getHeadPortrait());
+            profile.setMsgIsRead(param.getMsgIsRead());
+            profile.setUserName(param.getUserName());
 
+            saveUserToSp(context.getApplicationContext());
+        }
     }
 
-    static class Profile {
+    public void updateUsername(String username, Context context) {
+        if (username != null) {
+            profile.setUserName(username);
+
+            saveUserToSp(context.getApplicationContext());
+        }
+    }
+
+    public void updateAvatar(String avatar, Context context) {
+        if (avatar != null) {
+            profile.setHeadPortrait(avatar);
+
+            saveUserToSp(context.getApplicationContext());
+        }
+    }
+
+    public void updateProfession(String profession, Context context) {
+        if (profession != null) {
+            profile.setProfession(profession);
+
+            saveUserToSp(context.getApplicationContext());
+        }
+    }
+
+    private void saveUserToSp(Context context) {
+        if (profile != null) {
+            String json = gson.toJson(profile);
+            SharedPreferences sp = context.getSharedPreferences("UserHelper", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("profile", json);
+            editor.apply();
+        }
+    }
+
+    private String readFromSp(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("UserHelper", Context.MODE_PRIVATE);
+        return sp.getString("profile", null);
+    }
+
+    public static class Profile {
         String id;
         String account;
         String userName;
