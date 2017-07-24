@@ -13,11 +13,20 @@ import android.widget.EditText;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerRegisterSetPwdComponent;
+import com.beihui.market.injection.module.RegisterSetPwdModule;
+import com.beihui.market.ui.contract.RegisterSetPwdContract;
+import com.beihui.market.ui.presenter.RegisterSetPwdPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LegalInputUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class UserRegisterSetPsdFragment extends BaseComponentFragment {
+public class UserRegisterSetPsdFragment extends BaseComponentFragment implements RegisterSetPwdContract.View {
     @BindView(R.id.password)
     EditText passwordEt;
     @BindView(R.id.invitation_code)
@@ -26,6 +35,11 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment {
     Button registerBtn;
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
+
+    @Inject
+    RegisterSetPwdPresenter presenter;
+
+    private String requestPhone;
 
     @Override
     public int getLayoutResId() {
@@ -53,16 +67,7 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int psdLen = passwordEt.getText().length();
-                if (psdLen > 6) {
-                    if (!registerBtn.isEnabled()) {
-                        registerBtn.setEnabled(true);
-                    }
-                } else {
-                    if (registerBtn.isEnabled()) {
-                        registerBtn.setEnabled(false);
-                    }
-                }
+                registerBtn.setEnabled(LegalInputUtils.validatePassword(passwordEt.getText().toString()));
             }
 
             @Override
@@ -74,11 +79,43 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment {
 
     @Override
     public void initDatas() {
-
+        requestPhone = getArguments().getString("requestPhone");
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+        DaggerRegisterSetPwdComponent.builder()
+                .appComponent(appComponent)
+                .registerSetPwdModule(new RegisterSetPwdModule(this))
+                .build()
+                .inject(this);
+    }
 
+    @OnClick(R.id.register)
+    void onViewClicked() {
+        presenter.register(requestPhone, passwordEt.getText().toString(), invitationCodeEt.getText().toString());
+    }
+
+    @Override
+    public void setPresenter(RegisterSetPwdContract.Presenter presenter) {
+        //injected.nothing to do.
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        ToastUtils.showShort(getContext(), msg, null);
+    }
+
+    @Override
+    public void showRegisterSuccess() {
+        ToastUtils.showShort(getContext(), "注册成功", R.mipmap.white_success);
+        if (getView() != null) {
+            getView().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getActivity().finish();
+                }
+            }, 200);
+        }
     }
 }

@@ -4,17 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/cancel"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:background="?android:selectableItemBackground"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/cancel"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:minWidth="50dp">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?android:selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/dark_light_state_navigation"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/deco_container"

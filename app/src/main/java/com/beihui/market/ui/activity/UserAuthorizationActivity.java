@@ -14,6 +14,8 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -40,6 +42,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     View rootContainer;
     @BindView(R.id.deco_container)
     View decoContainer;
+
+    @BindView(R.id.cancel)
+    TextView cancelTv;
+    @BindView(R.id.navigation)
+    ImageView navigationIv;
 
     private BlurringDrawable blurringDrawable;
 
@@ -126,9 +133,16 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     }
 
 
-    @OnClick(R.id.cancel)
-    void OnViewClicked() {
-        finish();
+    @OnClick({R.id.cancel, R.id.navigation})
+    void OnViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.cancel:
+                finish();
+                break;
+            case R.id.navigation:
+                onBackPressed();
+                break;
+        }
     }
 
     @Subscribe
@@ -167,10 +181,25 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             } else {
                 ft.attach(setPsd);
             }
+            Bundle bundle = new Bundle();
+            bundle.putString("requestPhone", event.requestPhone);
+            setPsd.setArguments(bundle);
             ft.addToBackStack(setPsdTag);
             ft.commit();
+
+            cancelTv.setVisibility(View.GONE);
+            navigationIv.setVisibility(View.VISIBLE);
         } else if (event.navigationTag == AuthNavigationEvent.TAG_HEAD_TO_LOGIN) {
             onBackPressed();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
+            cancelTv.setVisibility(View.VISIBLE);
+            navigationIv.setVisibility(View.GONE);
+        }
+        super.onBackPressed();
     }
 }

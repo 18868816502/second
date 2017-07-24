@@ -9,6 +9,8 @@ public class AuthNavigationEvent {
 
     public int navigationTag;
 
+    public String requestPhone;
+
     public AuthNavigationEvent(int tag) {
         navigationTag = tag;
     }

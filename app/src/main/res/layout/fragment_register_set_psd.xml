@@ -105,7 +105,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/round_login_select"
+        android:background="@drawable/round_alpha_primary_btn"
+        android:enabled="false"
         android:text="注册"
         android:textColor="@color/white"
         android:textSize="14sp" />

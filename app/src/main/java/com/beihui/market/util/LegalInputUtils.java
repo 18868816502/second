@@ -19,7 +19,8 @@ public class LegalInputUtils {
         if (TextUtils.isEmpty(str) || str.length() < 6 || str.length() > 16) {
             return false;
         }
-        String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+//        String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+        String regex = "^[0-9A-Za-z]{6,16}$";
         return str.matches(regex);
     }
 

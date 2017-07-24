@@ -22,9 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:orientation="vertical">
 
 
         <LinearLayout
@@ -64,11 +62,12 @@
                 android:id="@+id/fetch_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="@string/fetch"
-                android:textColor="@color/black_2"
+                android:textColor="@color/color_primary_light_black_enable"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -120,7 +119,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_login_select"
+        android:background="@drawable/round_alpha_primary_btn"
+        android:enabled="false"
         android:gravity="center"
         android:text="@string/next_step"
         android:textColor="@color/white" />

@@ -1,18 +1,19 @@
 package com.beihui.market.entity;
 
 
-public class UserProfileAbstract {
-    private String id;
-    private String userName;
-    private String msgIsRead;
-    private String headPortrait;
+public class UserProfile {
 
-    public String getId() {
-        return id;
+    private String account;
+    private String userName;
+    private String headPortrait;
+    private String profession;
+
+    public String getAccount() {
+        return account;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getUserName() {
@@ -23,19 +24,19 @@ public class UserProfileAbstract {
         this.userName = userName;
     }
 
-    public String getMsgIsRead() {
-        return msgIsRead;
-    }
-
-    public void setMsgIsRead(String msgIsRead) {
-        this.msgIsRead = msgIsRead;
-    }
-
     public String getHeadPortrait() {
         return headPortrait;
     }
 
     public void setHeadPortrait(String headPortrait) {
         this.headPortrait = headPortrait;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
     }
 }

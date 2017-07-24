@@ -78,7 +78,7 @@ public class ClearEditText extends AppCompatEditText implements OnFocusChangeLis
 
     @Override
     public void onTextChanged(CharSequence s, int start, int count, int after) {
-        setClearIconVisible(s.length() > 0);
+        setClearIconVisible(s.length() > 0 && hasFocus());
     }
 
 }

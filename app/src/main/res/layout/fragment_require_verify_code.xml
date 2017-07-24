@@ -54,11 +54,12 @@
                 android:id="@+id/fetch_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="@string/fetch"
-                android:textColor="@color/black_2"
+                android:textColor="@color/color_primary_light_black_enable"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -107,10 +108,11 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_login_select"
+        android:background="@drawable/round_shiming_gray_state_enable"
+        android:enabled="false"
         android:gravity="center"
         android:text="@string/next_step"
-        android:textColor="@color/white" />
+        android:textColor="@color/color_white_brown_state_enable" />
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +11,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 import com.beihui.market.ui.fragment.RequireVerifyCodeFragment;
-import com.beihui.market.ui.fragment.SetPsdComponentFragment;
+import com.beihui.market.ui.fragment.SetPsdFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,14 +62,18 @@ public class ResetPsdActivity extends BaseComponentActivity {
         Fragment verifyCode = fm.findFragmentByTag(RequireVerifyCodeFragment.class.getSimpleName());
         ft.detach(verifyCode);
 
-        String setPsdTag = SetPsdComponentFragment.class.getSimpleName();
+        String setPsdTag = SetPsdFragment.class.getSimpleName();
         Fragment setPsd = fm.findFragmentByTag(setPsdTag);
         if (setPsd == null) {
-            setPsd = new SetPsdComponentFragment();
+            setPsd = new SetPsdFragment();
             ft.add(R.id.content_container, setPsd, setPsdTag);
         } else {
             ft.attach(setPsd);
         }
+        Bundle bundle = new Bundle();
+        bundle.putString("requestPhone", event.requestPhone);
+        setPsd.setArguments(bundle);
+        ft.addToBackStack(setPsdTag);
         ft.commit();
     }
 }
