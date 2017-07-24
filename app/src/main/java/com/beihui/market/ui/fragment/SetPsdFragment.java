@@ -83,7 +83,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     }
 
     @Override
-    public void showError(String msg) {
+    public void showErrorMsg(String msg) {
         ToastUtils.showShort(getContext(), msg, null);
     }
 

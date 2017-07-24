@@ -15,8 +15,6 @@ public interface RegisterVerifyContract {
     interface View extends BaseView<Presenter> {
         void showVerificationSend(String msg);
 
-        void showError(String msg);
-
         void moveToNextStep(String requestPhone);
     }
 }

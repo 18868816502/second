@@ -1,20 +1,38 @@
 package com.beihui.market.ui.activity;
 
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerEditUserNameComponent;
+import com.beihui.market.injection.module.EditUserNameModule;
+import com.beihui.market.ui.contract.EditUserNameContract;
+import com.beihui.market.ui.presenter.EditUserNamePresenter;
+import com.beihui.market.util.viewutils.ToastUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
-public class EditNickNameActivity extends BaseComponentActivity {
+public class EditNickNameActivity extends BaseComponentActivity implements EditUserNameContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.edit_text)
     EditText editText;
+    @BindView(R.id.confirm)
+    Button confirmBtn;
+
+    @Inject
+    EditUserNamePresenter presenter;
+
 
     @Override
     public int getLayoutId() {
@@ -24,15 +42,64 @@ public class EditNickNameActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                confirmBtn.setEnabled(editText.getText().length() > 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
+        if (profile != null && profile.getUserName() != null) {
+            editText.setText(profile.getUserName());
+        }
     }
 
     @Override
     public void initDatas() {
-
+        presenter.onStart();
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+        DaggerEditUserNameComponent.builder()
+                .appComponent(appComponent)
+                .editUserNameModule(new EditUserNameModule(this))
+                .build()
+                .inject(this);
+    }
 
+    @OnClick(R.id.confirm)
+    void onViewClicked() {
+        presenter.updateUserName(editText.getText().toString());
+    }
+
+    @Override
+    public void setPresenter(EditUserNameContract.Presenter presenter) {
+        //injected.nothing to do.
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        ToastUtils.showShort(this, msg, null);
+    }
+
+    @Override
+    public void showUserName(String name) {
+        editText.setText(name);
+    }
+
+    @Override
+    public void showUpdateNameSuccess() {
+        ToastUtils.showShort(this, "昵称修改成功", null);
     }
 }

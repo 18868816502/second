@@ -131,7 +131,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
     }
 
     @Override
-    public void showError(String msg) {
+    public void showErrorMsg(String msg) {
         ToastUtils.showShort(getContext(), msg, null);
     }
 

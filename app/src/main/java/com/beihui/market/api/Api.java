@@ -2,9 +2,12 @@ package com.beihui.market.api;
 
 
 import com.beihui.market.entity.Phone;
+import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
+
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -139,6 +142,15 @@ public class Api {
      */
     public Observable<ResultEntity> updateUsername(String id, String username) {
         return service.updateUsername(id, username);
+    }
+
+    /**
+     * 获取职业列表
+     *
+     * @param id 用户id
+     */
+    public Observable<ResultEntity<ArrayList<Profession>>> queryProfession(String id) {
+        return service.queryProfession(id);
     }
 
     /**

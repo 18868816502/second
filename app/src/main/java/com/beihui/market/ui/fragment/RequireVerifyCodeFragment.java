@@ -117,6 +117,11 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
     }
 
     @Override
+    public void showErrorMsg(String msg) {
+
+    }
+
+    @Override
     public void showMsg(String msg) {
         ToastUtils.showShort(getContext(), msg, null);
     }

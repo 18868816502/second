@@ -97,4 +97,8 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
+    //Permission
+    compile "com.github.hotchemi:permissionsdispatcher:2.4.0"
+    apt "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
+
 }

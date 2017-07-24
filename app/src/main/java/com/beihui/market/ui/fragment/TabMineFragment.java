@@ -120,7 +120,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.avatar:
-                presenter.checkUserProfile();
+//                presenter.checkUserProfile();
+                navigateUserProfile(null);
                 break;
             case R.id.mine_msg:
                 presenter.checkMessage();
@@ -140,6 +141,11 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void setPresenter(TabMineContract.Presenter presenter) {
         //injected.nothing to do.
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+
     }
 
     @Override

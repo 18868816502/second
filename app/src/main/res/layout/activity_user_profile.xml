@@ -23,9 +23,10 @@
     <LinearLayout
         android:id="@+id/avatar_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -39,10 +40,23 @@
             android:paddingTop="15dp"
             android:text="个人头像" />
 
-        <ImageView
-            android:id="@+id/avatar"
+        <FrameLayout
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:background="@mipmap/mine_head_shadow_icon" />
+
+            <com.beihui.market.view.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:src="@mipmap/mine_head_white_icon" />
+        </FrameLayout>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -62,7 +76,8 @@
         <LinearLayout
             android:id="@+id/nick_name_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -82,8 +97,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
                 android:drawableRight="@mipmap/right_icon"
-                android:gravity="right"
-                android:text="王二狗" />
+                android:gravity="right" />
 
         </LinearLayout>
 
@@ -97,7 +111,8 @@
         <LinearLayout
             android:id="@+id/phone_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -118,18 +133,18 @@
                 android:drawablePadding="8dp"
                 android:drawableRight="@mipmap/right_icon"
                 android:gravity="right"
-                android:text="159****9747"
                 tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/job_group_item"
+        android:id="@+id/profession_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -143,14 +158,13 @@
             android:text="@string/job_group" />
 
         <TextView
-            android:id="@+id/job_group"
+            android:id="@+id/profession"
             style="@style/ProfileItemValueTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="8dp"
             android:drawableRight="@mipmap/right_icon"
-            android:gravity="right"
-            android:text="上班族" />
+            android:gravity="right" />
 
     </LinearLayout>
 </LinearLayout>

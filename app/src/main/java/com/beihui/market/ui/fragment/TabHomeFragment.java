@@ -313,6 +313,11 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     public void setPresenter(TabHomeContract.Presenter presenter) {
     }
 
+    @Override
+    public void showErrorMsg(String msg) {
+
+    }
+
     class HeaderViewHolder {
         View itemView;
 

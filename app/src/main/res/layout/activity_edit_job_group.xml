@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/common_bg"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -24,55 +25,24 @@
         android:paddingBottom="8dp"
         android:paddingLeft="15dp"
         android:paddingTop="8dp"
-        android:text="选择工作种类"
+        android:text="@string/select_profession"
         android:textSize="12sp" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:background="@android:color/white">
 
-        <TextView
-            android:id="@+id/freelance"
+        <RadioGroup
+            android:id="@+id/profession_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableRight="@drawable/job_group_selection"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp"
-            android:text="@string/freelance"
-            android:textColor="@android:color/black" />
+            android:background="@android:color/white"
+            android:divider="@drawable/linear_horizontal_divider_small"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:showDividers="middle" />
+    </ScrollView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/common_bg" />
-
-        <TextView
-            android:id="@+id/worker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/job_group_selection"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp"
-            android:text="@string/worker"
-            android:textColor="@android:color/black" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/common_bg" />
-
-        <TextView
-            android:id="@+id/household"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/job_group_selection"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp"
-            android:text="@string/household"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
 </LinearLayout>

@@ -3,14 +3,16 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
+import com.beihui.market.helper.UserHelper;
 
-public interface ResetPwdSetPwdContract {
+public interface UserProfileContract {
 
     interface Presenter extends BasePresenter {
-        void resetPwd(String phone, String pwd);
+
+        void updateAvatar(byte[] avatarBytes);
     }
 
     interface View extends BaseView<Presenter> {
-        void showRestPwdSuccess();
+        void showProfile(UserHelper.Profile profile);
     }
 }

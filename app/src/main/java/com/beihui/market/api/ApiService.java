@@ -1,8 +1,11 @@
 package com.beihui.market.api;
 
 import com.beihui.market.entity.Phone;
+import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
+
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
@@ -56,6 +59,12 @@ public interface ApiService {
      */
     @POST("/clientUser/updateNickName")
     Observable<ResultEntity> updateUsername(@Query("id") String id, @Query("userName") String userName);
+
+    /**
+     * 获取职业列表
+     */
+    @POST("/clientUserDetail/showProfession")
+    Observable<ResultEntity<ArrayList<Profession>>> queryProfession(@Query("id") String id);
 
     /**
      * 修改职业

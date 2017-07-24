@@ -31,8 +31,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="买买买" />
+            android:paddingLeft="15dp" />
     </FrameLayout>
 
     <Button
@@ -42,6 +41,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/common_primary_rect_btn"
-        android:text="确认修改" />
+        android:background="@drawable/round_shiming_gray_state_enable"
+        android:enabled="false"
+        android:text="@string/comfirm_change"
+        android:textColor="@color/color_white_brown_state_enable" />
 </LinearLayout>

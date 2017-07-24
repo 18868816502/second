@@ -134,6 +134,19 @@
             </intent-filter>
 
         </activity>
+        <!--share setting end-->
+
+        <!--file provider, N feature-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.beihui.market.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
         <!--umeng setting-->
         <meta-data
             android:name="UMENG_APPKEY"
