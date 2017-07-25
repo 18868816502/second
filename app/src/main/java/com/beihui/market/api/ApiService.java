@@ -44,7 +44,7 @@ public interface ApiService {
      * 更新密码，重置或者修改
      */
     @POST("/clientUser/updatePwd")
-    Observable<ResultEntity> updatePwd(@Query("id") String id, @Query("pwdType") int pwdType,
+    Observable<ResultEntity> updatePwd(@Query("id") String id, @Query("account") String account, @Query("pwdType") int pwdType,
                                        @Query("pwd") String pwd, @Query("originPwd") String originPwd,
                                        @Query("pwd2") String pwd2);
 

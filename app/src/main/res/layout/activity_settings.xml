@@ -59,8 +59,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="8dp"
                 android:drawableRight="@mipmap/right_icon"
-                android:gravity="right"
-                android:text="最新版00" />
+                android:gravity="right" />
         </LinearLayout>
 
         <View

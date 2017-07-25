@@ -20,13 +20,15 @@ public class ChangePsdPresenter extends BaseRxPresenter implements ChangePsdCont
 
     private Api mApi;
     private ChangePsdContract.View mView;
-    private UserHelper.Profile profile;
+    private Context mContext;
+    private UserHelper mUserHelper;
 
     @Inject
     ChangePsdPresenter(Api api, ChangePsdContract.View view, Context context) {
         mApi = api;
         mView = view;
-        profile = UserHelper.getInstance(context).getProfile();
+        mContext = context;
+        mUserHelper = UserHelper.getInstance(context);
     }
 
     @Override
@@ -34,14 +36,17 @@ public class ChangePsdPresenter extends BaseRxPresenter implements ChangePsdCont
         if (origin != null && newPsd != null && confirm != null) {
             if (!newPsd.equals(confirm)) {
                 mView.showErrorMsg("两次输入的密码不一致");
+                return;
             }
 
-            Disposable dis = mApi.updatePwd(profile.getAccount(), newPsd, origin)
+            UserHelper.Profile profile = mUserHelper.getProfile();
+            Disposable dis = mApi.updatePwd(profile.getId(), profile.getAccount(), newPsd, origin)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {
                                    @Override
                                    public void accept(@NonNull ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
+                                           mUserHelper.clearUser(mContext);
                                            mView.showUpdateSuccess();
                                        } else {
                                            mView.showErrorMsg(result.getMsg());

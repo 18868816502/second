@@ -11,17 +11,29 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerSettingComponent;
+import com.beihui.market.injection.module.SettingModule;
+import com.beihui.market.ui.busevents.UserLogoutEvent;
+import com.beihui.market.ui.contract.SettingContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
+import com.beihui.market.ui.presenter.SettingPresenter;
+
+import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingsActivity extends BaseComponentActivity {
+public class SettingsActivity extends BaseComponentActivity implements SettingContract.View {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.version_name)
     TextView versionNameTv;
+
+    @Inject
+    SettingPresenter presenter;
 
     @Override
     public int getLayoutId() {
@@ -40,7 +52,11 @@ public class SettingsActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
+        DaggerSettingComponent.builder()
+                .appComponent(appComponent)
+                .settingModule(new SettingModule(this))
+                .build()
+                .inject(this);
     }
 
     @OnClick({R.id.change_psd, R.id.star_me, R.id.about_us, R.id.exit})
@@ -68,11 +84,31 @@ public class SettingsActivity extends BaseComponentActivity {
                         .withNegativeBtn("退出", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
+                                presenter.logout();
                             }
                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                 break;
         }
+    }
+
+    @Override
+    public void setPresenter(SettingContract.Presenter presenter) {
+        //injected.nothing to do.
+    }
+
+    @Override
+    public void showLatestVersion(String version) {
+        versionNameTv.setText(version);
+    }
+
+    @Override
+    public void showLogoutSuccess() {
+        //发送用户退出全局事件
+        EventBus.getDefault().post(new UserLogoutEvent());
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }
 

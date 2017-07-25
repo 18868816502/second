@@ -23,12 +23,16 @@ import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
+import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -62,6 +66,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -73,6 +78,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void onDestroyView() {
         presenter.onDestroy();
+        EventBus.getDefault().unregister(this);
         super.onDestroyView();
     }
 
@@ -116,12 +122,30 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.avatar, R.id.mine_msg, R.id.invite_friend, R.id.helper_feedback, R.id.settings})
+    @Subscribe
+    public void onLogout(UserLogoutEvent event) {
+        loginTv.setVisibility(View.VISIBLE);
+        userNameTv.setVisibility(View.GONE);
+
+        Glide.with(this)
+                .load(R.mipmap.mine_head_white_icon)
+                .into(avatarIv);
+
+        if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)) {
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    navigateLogin();
+                }
+            });
+        }
+    }
+
+    @OnClick({R.id.avatar, R.id.mine_msg, R.id.invite_friend, R.id.helper_feedback, R.id.settings, R.id.login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.avatar:
-//                presenter.checkUserProfile();
-                navigateUserProfile(null);
+                presenter.checkUserProfile();
                 break;
             case R.id.mine_msg:
                 presenter.checkMessage();
@@ -135,17 +159,15 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
             case R.id.settings:
                 presenter.checkSetting();
                 break;
+            case R.id.login:
+                navigateLogin();
+                break;
         }
     }
 
     @Override
     public void setPresenter(TabMineContract.Presenter presenter) {
         //injected.nothing to do.
-    }
-
-    @Override
-    public void showErrorMsg(String msg) {
-
     }
 
     @Override

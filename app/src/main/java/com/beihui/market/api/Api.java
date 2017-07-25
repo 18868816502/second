@@ -106,22 +106,22 @@ public class Api {
     /**
      * 重置密码
      *
-     * @param phone 用户手机号
-     * @param pwd   新密码
+     * @param account 用户手机号
+     * @param pwd     新密码
      */
-    public Observable<ResultEntity> resetPwd(String phone, String pwd) {
-        return service.updatePwd(phone, RequestConstants.UPDATE_PWD_TYPE_RESET, pwd, null, null);
+    public Observable<ResultEntity> resetPwd(String account, String pwd) {
+        return service.updatePwd(null, account, RequestConstants.UPDATE_PWD_TYPE_RESET, pwd, null, null);
     }
 
     /**
      * 修改密码
      *
-     * @param phone     用户手机号
+     * @param account   用户手机号
      * @param pwd       新密码
      * @param originPwd 原密码
      */
-    public Observable<ResultEntity> updatePwd(String phone, String pwd, String originPwd) {
-        return service.updatePwd(phone, RequestConstants.UPDATE_PWD_TYPE_CHANGE, pwd, originPwd, originPwd);
+    public Observable<ResultEntity> updatePwd(String id, String account, String pwd, String originPwd) {
+        return service.updatePwd(id, account, RequestConstants.UPDATE_PWD_TYPE_CHANGE, pwd, originPwd, pwd);
     }
 
     /**
@@ -161,5 +161,14 @@ public class Api {
      */
     public Observable<ResultEntity> updateUserProfession(String id, int professionType) {
         return service.updateProfession(id, professionType);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param id 用户id
+     */
+    public Observable<ResultEntity> logout(String id) {
+        return service.logout(id);
     }
 }

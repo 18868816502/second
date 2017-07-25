@@ -90,14 +90,20 @@ public class UserHelper {
         }
     }
 
+    public void clearUser(Context context) {
+        profile = null;
+        saveUserToSp(context);
+    }
+
     private void saveUserToSp(Context context) {
+        String json = null;
         if (profile != null) {
-            String json = gson.toJson(profile);
-            SharedPreferences sp = context.getSharedPreferences("UserHelper", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("profile", json);
-            editor.apply();
+            json = gson.toJson(profile);
         }
+        SharedPreferences sp = context.getSharedPreferences("UserHelper", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("profile", json);
+        editor.apply();
     }
 
     private String readFromSp(Context context) {
