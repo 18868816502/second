@@ -57,7 +57,7 @@ public interface ApiService {
     /**
      * 修改用户名
      */
-    @POST("/clientUser/updateNickName")
+    @POST("/clientUserDetail/updateNickName")
     Observable<ResultEntity> updateUsername(@Query("id") String id, @Query("userName") String userName);
 
     /**
@@ -69,7 +69,7 @@ public interface ApiService {
     /**
      * 修改职业
      */
-    @POST("/clientUser/updateProfession")
+    @POST("/clientUserDetail/updateProfession")
     Observable<ResultEntity> updateProfession(@Query("id") String id, @Query("professionType") int professionType);
 
     /**

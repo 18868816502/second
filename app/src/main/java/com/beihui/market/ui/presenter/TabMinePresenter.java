@@ -67,7 +67,9 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
 
     @Override
     public void checkSetting() {
-        mView.navigateSetting(null);
+        if (checkValidUser()) {
+            mView.navigateSetting(null);
+        }
     }
 
     private boolean checkValidUser() {

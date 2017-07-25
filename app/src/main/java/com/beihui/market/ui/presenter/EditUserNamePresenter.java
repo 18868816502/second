@@ -20,31 +20,35 @@ public class EditUserNamePresenter extends BaseRxPresenter implements EditUserNa
 
     private Api mApi;
     private EditUserNameContract.View mView;
-
-    private UserHelper.Profile profile;
+    private Context mContext;
+    private UserHelper mUserHelper;
 
     @Inject
-    public EditUserNamePresenter(Api api, EditUserNameContract.View view, Context context) {
+    EditUserNamePresenter(Api api, EditUserNameContract.View view, Context context) {
         mApi = api;
         mView = view;
-        profile = UserHelper.getInstance(context).getProfile();
+        mContext = context;
+        mUserHelper = UserHelper.getInstance(context);
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        mView.showUserName(profile.getUserName());
+        mView.showUserName(mUserHelper.getProfile().getUserName());
     }
 
     @Override
     public void updateUserName(String username) {
-        Disposable dis = mApi.updateUsername(profile.getId(), username)
+        final String name = username;
+        mView.showLoading();
+        Disposable dis = mApi.updateUsername(mUserHelper.getProfile().getId(), username)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
                                public void accept(@NonNull ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       mUserHelper.updateUsername(name, mContext);
                                        mView.showUpdateNameSuccess();
                                    } else {
                                        mView.showUserName(result.getMsg());

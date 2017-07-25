@@ -33,6 +33,13 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
     EditProfessionPresenter presenter;
 
     @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        presenter = null;
+        super.onDestroy();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_edit_job_group;
     }
@@ -87,7 +94,7 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
 
                 view.setTag(pro);
 
-                if (pro.getSelected() == 0) {
+                if (pro.getSelected() != 0) {
                     view.setSelected(true);
                     curSelectedView = view;
                 }
@@ -97,11 +104,14 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
 
     @Override
     public void showErrorMsg(String msg) {
+        dismissProgress();
         ToastUtils.showShort(this, msg, null);
     }
 
     @Override
     public void showUpdateSuccess() {
+        dismissProgress();
         ToastUtils.showShort(this, "职业身份修改成功", null);
+        finish();
     }
 }

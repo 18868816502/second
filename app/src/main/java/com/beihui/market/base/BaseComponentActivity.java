@@ -11,6 +11,7 @@ import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.ButterKnife;
@@ -110,7 +111,15 @@ public abstract class BaseComponentActivity extends AppCompatActivity {
      * hook BaseView.showLoading
      */
     public void showLoading() {
+        showProgress(null);
+    }
 
+    /**
+     * hook BaseView.showErrorMsg(String).
+     */
+    public void showErrorMsg(String msg) {
+        dismissProgress();
+        ToastUtils.showShort(this, msg, null);
     }
 
     //解决崩溃后重新打开程序，fragment 重叠问题
