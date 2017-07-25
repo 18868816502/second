@@ -1,6 +1,5 @@
 package com.beihui.market.ui.activity;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,9 +29,9 @@ public class MainActivity extends BaseComponentActivity {
     private int mSelectedFragmentId = -1;
 
     /**
-     * param need passed to target fragment if there is.
+     * param need passed to target fragment if navigating to TabLoanFragment.
      */
-    private Bundle pendingBundle;
+    private String queryMoney;
 
 
     @Override
@@ -77,10 +76,11 @@ public class MainActivity extends BaseComponentActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateLoan(NavigateLoan event) {
-        pendingBundle = new Bundle();
-        pendingBundle.putString("queryMoney", event.queryMoney);
+        if (event.queryMoney != null) {
+            queryMoney = event.queryMoney;
+        }
         mNavigationBar.select(R.id.tab_loan);
-        pendingBundle = null;
+        queryMoney = null;
     }
 
     private void selectTab(int id) {
@@ -114,8 +114,8 @@ public class MainActivity extends BaseComponentActivity {
         } else {
             ft.attach(newSelected);
         }
-        if (pendingBundle != null && newSelected != null) {
-            newSelected.setArguments(pendingBundle);
+        if (newSelected != null && newSelected instanceof TabLoanFragment && queryMoney != null) {
+            ((TabLoanFragment) newSelected).setQueryMoney(queryMoney);
         }
         ft.commit();
     }

@@ -261,6 +261,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         }
         loanRVAdapter.notifyDataSetChanged(tempList);
 
+        if (inputMoney != null) {
+            headerViewHolder.etMoney.setText(inputMoney);
+        }
     }
 
     @Override

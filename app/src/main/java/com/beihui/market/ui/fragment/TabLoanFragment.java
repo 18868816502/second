@@ -1,7 +1,5 @@
 package com.beihui.market.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -74,15 +72,6 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
 
     public static TabLoanFragment newInstance() {
         return new TabLoanFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle pending = getArguments();
-        if (pending != null) {
-            inputMoney = pending.getString("queryMoney");
-        }
     }
 
     @Override
@@ -208,5 +197,9 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
                 lyTishi.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    public void setQueryMoney(String queryMoney) {
+        this.inputMoney = queryMoney;
     }
 }
