@@ -1,12 +1,14 @@
 package com.beihui.market.ui.presenter;
 
 
+import android.content.Context;
+
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.UserProfileAbstract;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.LoginContract;
-import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.update.RxUtil;
 
 import javax.inject.Inject;
@@ -16,14 +18,17 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class LoginPresenter extends BaseRxPresenter implements LoginContract.Presenter {
-    private static final String TAG = LoginPresenter.class.getSimpleName();
     private Api mApi;
     private LoginContract.View mView;
+    private Context mContext;
+    private UserHelper mUserHelper;
 
     @Inject
-    LoginPresenter(Api api, LoginContract.View view) {
+    LoginPresenter(Api api, LoginContract.View view, Context context) {
         mApi = api;
         mView = view;
+        mContext = context;
+        mUserHelper = UserHelper.getInstance(context);
     }
 
     @Override
@@ -35,6 +40,8 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                     @Override
                     public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
                         if (result.isSuccess()) {
+                            //登录之后，将用户信息注册到本地
+                            mUserHelper.update(result.getData(), mContext);
                             mView.showLoginSuccess();
                         } else {
                             mView.showErrorMsg(result.getMsg());
@@ -43,8 +50,8 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        LogUtils.e(TAG, "login exception thrown throwable " + throwable);
-                        mView.showErrorMsg(throwable.getMessage());
+                        logError(LoginPresenter.this, throwable);
+                        mView.showErrorMsg(generateErrorMsg(throwable));
                     }
                 });
         addDisposable(dis);

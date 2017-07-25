@@ -24,7 +24,7 @@ public class RegisterVerifyPresenter extends BaseRxPresenter implements Register
     private boolean isRequestingVerification;
 
     @Inject
-    public RegisterVerifyPresenter(Api api, RegisterVerifyContract.View view) {
+    RegisterVerifyPresenter(Api api, RegisterVerifyContract.View view) {
         mApi = api;
         mView = view;
     }

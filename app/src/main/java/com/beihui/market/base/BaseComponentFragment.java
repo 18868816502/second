@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 
 import com.beihui.market.App;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.dialog.JuhuaDialog;
+import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
+import com.beihui.market.util.viewutils.ToastUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -20,7 +21,7 @@ public abstract class BaseComponentFragment extends Fragment {
 
     private Unbinder unbinder;
 
-    private JuhuaDialog progress;
+    private CommNoneAndroidLoading loading;
 
     @Override
     public void onAttach(Context context) {
@@ -68,15 +69,29 @@ public abstract class BaseComponentFragment extends Fragment {
     protected abstract void configureComponent(AppComponent appComponent);
 
     protected void showProgress(String msg) {
-        if (progress == null) {
-            progress = new JuhuaDialog(getContext(), msg);
+        if (loading == null) {
+            loading = new CommNoneAndroidLoading(getContext(), msg);
         }
-        progress.show();
+        loading.show();
     }
 
     protected void dismissProgress() {
-        if (progress != null) {
-            progress.dismiss();
+        if (loading != null) {
+            loading.dismiss();
         }
+    }
+
+    /**
+     * hook BaseView.showLoading().
+     */
+    public void showLoading() {
+        showProgress(null);
+    }
+
+    /**
+     * hook BaseView.showErrorMsg(String).
+     */
+    public void showErrorMsg(String msg) {
+        ToastUtils.showShort(getContext(), msg, null);
     }
 }

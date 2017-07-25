@@ -35,6 +35,6 @@ public class ResultEntity<T> {
      * whether request has been correctly handled
      */
     public boolean isSuccess() {
-        return code == 10000;
+        return code == 1000000;
     }
 }

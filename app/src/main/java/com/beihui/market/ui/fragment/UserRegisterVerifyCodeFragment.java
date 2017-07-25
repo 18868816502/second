@@ -125,6 +125,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
 
     @Override
     public void showVerificationSend(String msg) {
+        ToastUtils.showShort(getContext(), msg, null);
         fetchText.setEnabled(false);
         countDownTimer = new CountDownTimerUtils(fetchText, phoneNumberEt);
         countDownTimer.start();

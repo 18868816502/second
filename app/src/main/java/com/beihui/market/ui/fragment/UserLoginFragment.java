@@ -18,6 +18,7 @@ import com.beihui.market.injection.component.DaggerLoginComponent;
 import com.beihui.market.injection.module.LoginModule;
 import com.beihui.market.ui.activity.ResetPsdActivity;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
+import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
 import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.util.CommonUtils;
@@ -132,7 +133,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
-        //injected, do nothing
+        //injected, do nothing.
     }
 
     @Override
@@ -150,5 +151,15 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     public void showLoginSuccess() {
         dismissProgress();
         ToastUtils.showShort(getContext(), "登录成功", R.mipmap.white_success);
+        //登录后发送全局事件,更新UI
+        EventBus.getDefault().post(new UserLoginEvent());
+        if (getView() != null) {
+            getView().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getActivity().finish();
+                }
+            }, 200);
+        }
     }
 }

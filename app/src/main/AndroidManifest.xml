@@ -151,6 +151,11 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="596c4b3dbbea83542c001b01" />
+        <!--umeng setting end-->
+
+        <meta-data
+            android:name="channelId"
+            android:value="native" />
     </application>
 
 </manifest>

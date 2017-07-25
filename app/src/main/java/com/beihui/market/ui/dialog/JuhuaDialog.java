@@ -35,9 +35,10 @@ public class JuhuaDialog extends Dialog {
         setContentView(R.layout.dialog_juhua);
         ButterKnife.bind(this);
         setCanceledOnTouchOutside(false);
-        tvTitle.setText(title);
+        if (title != null) {
+            tvTitle.setText(title);
+        }
     }
-
 
 
 }

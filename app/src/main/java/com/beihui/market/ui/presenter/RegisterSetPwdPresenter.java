@@ -2,41 +2,79 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.entity.UserProfileAbstract;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
 import com.beihui.market.util.update.RxUtil;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class RegisterSetPwdPresenter extends BaseRxPresenter implements RegisterSetPwdContract.Presenter {
     private Api mApi;
     private RegisterSetPwdContract.View mView;
     private Context mContext;
+    private UserHelper mUserHelper;
 
     @Inject
-    public RegisterSetPwdPresenter(Api api, RegisterSetPwdContract.View view, Context context) {
+    RegisterSetPwdPresenter(Api api, RegisterSetPwdContract.View view, Context context) {
         mApi = api;
         mView = view;
         mContext = context;
+        mUserHelper = UserHelper.getInstance(context);
     }
 
     @Override
     public void register(String phone, String pwd, String inviteCode) {
-        String channelId = "";
+        String channelId = "unknown";
+        try {
+            channelId = mContext.getPackageManager()
+                    .getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA).metaData.getString("channelId");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        final String account = phone;
+        final String password = pwd;
+        //do not pass empty str to retrofit query annotation, if empty then set null
+        if (TextUtils.isEmpty(inviteCode)) {
+            inviteCode = null;
+        }
+        mView.showLoading();
         Disposable dis = mApi.register(phone, pwd, channelId, inviteCode)
                 .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
+                .flatMap(new Function<ResultEntity, ObservableSource<ResultEntity<UserProfileAbstract>>>() {
+                    @Override
+                    public ObservableSource<ResultEntity<UserProfileAbstract>> apply(@NonNull ResultEntity resultEntity) throws Exception {
+                        //注册成功后，执行登录
+                        if (resultEntity.isSuccess()) {
+                            return mApi.login(account, password).subscribeOn(Schedulers.io());
+                        } else {
+                            //注册失败则停止
+                            mView.showErrorMsg(resultEntity.getMsg());
+                            return Observable.empty();
+                        }
+                    }
+                })
+                .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
                                @Override
-                               public void accept(@NonNull ResultEntity result) throws Exception {
+                               public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
                                    if (result.isSuccess()) {
-
+                                       //登录成功后，将用户信息注册到本地
+                                       mUserHelper.update(result.getData(), mContext);
+                                       mView.showRegisterSuccess();
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

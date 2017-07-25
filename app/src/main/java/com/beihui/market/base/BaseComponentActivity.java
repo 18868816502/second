@@ -10,7 +10,7 @@ import android.view.View;
 import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.dialog.JuhuaDialog;
+import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.ButterKnife;
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public abstract class BaseComponentActivity extends AppCompatActivity {
 
 
-    protected JuhuaDialog juhuaDialog;
+    protected CommNoneAndroidLoading loading;
 
 
     @Override
@@ -55,25 +55,17 @@ public abstract class BaseComponentActivity extends AppCompatActivity {
     protected abstract void configureComponent(AppComponent appComponent);
 
 
-    /**
-     * 显示dialog
-     *
-     * @param dialogText 可为空，为空不显示文字
-     */
-    protected void showDialog(String dialogText) {
-        // TODO Auto-generated method stub
-        juhuaDialog = new JuhuaDialog(this, dialogText);
-        juhuaDialog.show();
+    protected void showProgress(String msg) {
+        if (loading == null) {
+            loading = new CommNoneAndroidLoading(this, msg);
+        }
+        loading.show();
     }
 
-    /**
-     * 隐藏dialog
-     */
-    protected void dismissDialog() {
-        // TODO Auto-generated method stub
-
-        if (juhuaDialog != null)
-            juhuaDialog.dismiss();
+    protected void dismissProgress() {
+        if (loading != null) {
+            loading.dismiss();
+        }
     }
 
     /**
@@ -112,6 +104,13 @@ public abstract class BaseComponentActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    /**
+     * hook BaseView.showLoading
+     */
+    public void showLoading() {
+
     }
 
     //解决崩溃后重新打开程序，fragment 重叠问题

@@ -15,11 +15,14 @@ import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerRegisterSetPwdComponent;
 import com.beihui.market.injection.module.RegisterSetPwdModule;
+import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
 import com.beihui.market.ui.presenter.RegisterSetPwdPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -103,12 +106,16 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
 
     @Override
     public void showErrorMsg(String msg) {
+        dismissProgress();
         ToastUtils.showShort(getContext(), msg, null);
     }
 
     @Override
     public void showRegisterSuccess() {
+        dismissProgress();
         ToastUtils.showShort(getContext(), "注册成功", R.mipmap.white_success);
+        //登录后发送全局事件，更新UI
+        EventBus.getDefault().post(new UserLoginEvent());
         if (getView() != null) {
             getView().postDelayed(new Runnable() {
                 @Override
