@@ -33,6 +33,7 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
 
     @Override
     public void login(String account, String pwd) {
+        final String phone = account;
         mView.showLoading();
         Disposable dis = mApi.login(account, pwd)
                 .compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
@@ -41,7 +42,7 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                     public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
                         if (result.isSuccess()) {
                             //登录之后，将用户信息注册到本地
-                            mUserHelper.update(result.getData(), mContext);
+                            mUserHelper.update(result.getData(), phone, mContext);
                             mView.showLoginSuccess();
                         } else {
                             mView.showErrorMsg(result.getMsg());

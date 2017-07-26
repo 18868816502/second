@@ -78,7 +78,6 @@ public class AccessHeadInterceptor implements Interceptor {
                 for (String key : keys) {
                     sb.append(key).append(keyValue.get(key));
                 }
-                System.out.println("str " + sb.toString());
                 builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
             }
 

@@ -73,7 +73,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
                                public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
                                    if (result.isSuccess()) {
                                        //登录成功后，将用户信息注册到本地
-                                       mUserHelper.update(result.getData(), mContext);
+                                       mUserHelper.update(result.getData(), account, mContext);
                                        mView.showRegisterSuccess();
                                    } else {
                                        mView.showErrorMsg(result.getMsg());

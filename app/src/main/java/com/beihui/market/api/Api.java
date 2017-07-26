@@ -7,6 +7,9 @@ import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
@@ -50,7 +53,7 @@ public class Api {
      * @param pwd     用户密码
      */
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
-        return service.login(account, pwd);
+        return service.login(account, generatePwd(pwd, account));
     }
 
     /**
@@ -100,7 +103,7 @@ public class Api {
      * @param inviteCode 邀请码，可控
      */
     public Observable<ResultEntity> register(String phone, String pwd, String channelId, String inviteCode) {
-        return service.register(RequestConstants.PLATFORM, phone, pwd, channelId, inviteCode);
+        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), channelId, inviteCode);
     }
 
     /**
@@ -110,7 +113,7 @@ public class Api {
      * @param pwd     新密码
      */
     public Observable<ResultEntity> resetPwd(String account, String pwd) {
-        return service.updatePwd(null, account, RequestConstants.UPDATE_PWD_TYPE_RESET, pwd, null, null);
+        return service.updatePwd(null, account, RequestConstants.UPDATE_PWD_TYPE_RESET, generatePwd(pwd, account), null, null);
     }
 
     /**
@@ -121,7 +124,9 @@ public class Api {
      * @param originPwd 原密码
      */
     public Observable<ResultEntity> updatePwd(String id, String account, String pwd, String originPwd) {
-        return service.updatePwd(id, account, RequestConstants.UPDATE_PWD_TYPE_CHANGE, pwd, originPwd, pwd);
+        String generatedPwd = generatePwd(pwd, account);
+        return service.updatePwd(id, account, RequestConstants.UPDATE_PWD_TYPE_CHANGE,
+                generatedPwd, generatePwd(originPwd, account), generatedPwd);
     }
 
     /**
@@ -170,5 +175,13 @@ public class Api {
      */
     public Observable<ResultEntity> logout(String id) {
         return service.logout(id);
+    }
+
+
+    //加密密码
+    private String generatePwd(String pwd, String account) {
+        String sha = new String(Hex.encodeHex(DigestUtils.sha512(pwd)));
+        String md5 = new String(Hex.encodeHex(DigestUtils.md5(sha + account)));
+        return md5.toUpperCase();
     }
 }

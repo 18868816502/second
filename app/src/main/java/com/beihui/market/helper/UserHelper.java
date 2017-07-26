@@ -52,7 +52,7 @@ public class UserHelper {
         }
     }
 
-    public void update(UserProfileAbstract param, Context context) {
+    public void update(UserProfileAbstract param, String account, Context context) {
         if (param != null) {
             if (profile == null) {
                 profile = new Profile();
@@ -61,6 +61,7 @@ public class UserHelper {
             profile.setHeadPortrait(param.getHeadPortrait());
             profile.setMsgIsRead(param.getMsgIsRead());
             profile.setUserName(param.getUserName());
+            profile.setAccount(account);
 
             saveUserToSp(context.getApplicationContext());
         }
