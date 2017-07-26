@@ -7,20 +7,23 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.Buffer;
 
 public class AccessHeadInterceptor implements Interceptor {
-
-    private List<String> sortedKey = new ArrayList<>();
+    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private Map<String, Object> keyValue = new HashMap<>();
     private Comparator<String> keyComparator = new Comparator<String>() {
         @Override
         public int compare(String o1, String o2) {
@@ -36,23 +39,52 @@ public class AccessHeadInterceptor implements Interceptor {
         Request.Builder builder = request.newBuilder()
                 .addHeader("reqTime", "" + reqTime)
                 .addHeader("accessKey", NetConstants.ACCESS_KEY);
-
-        HttpUrl url = request.url();
-        //排序只有MD5
-        sortedKey.clear();
-        Set<String> keys = url.queryParameterNames();
-        sortedKey.addAll(keys);
-        Collections.sort(sortedKey, keyComparator);
-
-        StringBuilder sb = new StringBuilder(NetConstants.SECRET_KEY).append(reqTime);
-        for (String key : sortedKey) {
-            List<String> values = url.queryParameterValues(key);
-            if (values != null && values.size() > 0) {
-                sb.append(key).append(values.get(0));
+        RequestBody requestBody = request.body();
+        if (requestBody != null) {
+            MediaType contentType = requestBody.contentType();
+            if (contentType != null && contentType.toString().equals("application/x-www-form-urlencoded")) {
+                appendHeadWithBody(request, reqTime, builder);
             }
         }
-        builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
         return chain.proceed(builder.build());
+    }
+
+    private void appendHeadWithBody(Request request, long reqTime, Request.Builder builder) {
+        try {
+            RequestBody requestBody = request.body();
+            Buffer buffer = new Buffer();
+            if (requestBody != null) {
+                requestBody.writeTo(buffer);
+
+                Charset charset = null;
+                MediaType contentType = requestBody.contentType();
+                if (contentType != null) {
+                    charset = contentType.charset(UTF8);
+                }
+                if (charset == null) {
+                    charset = UTF8;
+                }
+                StringBuilder sb = new StringBuilder(NetConstants.SECRET_KEY).append(reqTime);
+                String param = buffer.readString(charset);
+                String[] pairs = param.split("&");
+                String[] keys = new String[pairs.length];
+                keyValue.clear();
+                for (int i = 0, len = pairs.length; i < len; ++i) {
+                    String[] keyvalue = pairs[i].split("=");
+                    keys[i] = keyvalue[0];
+                    keyValue.put(keys[i], URLDecoder.decode(keyvalue[1], "utf-8"));
+                }
+                Arrays.sort(keys, keyComparator);
+                for (String key : keys) {
+                    sb.append(key).append(keyValue.get(key));
+                }
+                System.out.println("str " + sb.toString());
+                builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

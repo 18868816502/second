@@ -51,7 +51,7 @@ public class EditUserNamePresenter extends BaseRxPresenter implements EditUserNa
                                        mUserHelper.updateUsername(name, mContext);
                                        mView.showUpdateNameSuccess();
                                    } else {
-                                       mView.showUserName(result.getMsg());
+                                       mView.showErrorMsg(result.getMsg());
                                    }
                                }
                            },

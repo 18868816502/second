@@ -8,73 +8,84 @@ import com.beihui.market.entity.UserProfileAbstract;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
     /**
      * 登录
      */
+    @FormUrlEncoded
     @POST("/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> login(@Query("account") String account, @Query("pwd") String pwd);
+    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd);
 
     /**
      * 请求验证码
      */
+    @FormUrlEncoded
     @POST("/sms/sendSms")
-    Observable<ResultEntity<Phone>> requestSms(@Query("phone") String phone, @Query("type") String type);
+    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type);
 
     /**
      * 验证验证码
      */
+    @FormUrlEncoded
     @POST("/clientUser/verificationCodeVerify")
-    Observable<ResultEntity> verifyCode(@Query("account") String account, @Query("verificationCode") String verificationCode,
-                                        @Query("verificationCodeType") String verificationCodeType);
+    Observable<ResultEntity> verifyCode(@Field("account") String account, @Field("verificationCode") String verificationCode,
+                                        @Field("verificationCodeType") String verificationCodeType);
 
     /**
      * 注册
      */
+    @FormUrlEncoded
     @POST("/clientUser/register")
-    Observable<ResultEntity> register(@Query("platform") int platform, @Query("account") String account,
-                                      @Query("pwd") String pwd, @Query("channelId") String channelId,
-                                      @Query("inviteCode") String inviteCode);
+    Observable<ResultEntity> register(@Field("platform") int platform, @Field("account") String account,
+                                      @Field("pwd") String pwd, @Field("channelId") String channelId,
+                                      @Field("inviteCode") String inviteCode);
 
     /**
      * 更新密码，重置或者修改
      */
+    @FormUrlEncoded
     @POST("/clientUser/updatePwd")
-    Observable<ResultEntity> updatePwd(@Query("id") String id, @Query("account") String account, @Query("pwdType") int pwdType,
-                                       @Query("pwd") String pwd, @Query("originPwd") String originPwd,
-                                       @Query("pwd2") String pwd2);
+    Observable<ResultEntity> updatePwd(@Field("id") String id, @Field("account") String account, @Field("pwdType") int pwdType,
+                                       @Field("pwd") String pwd, @Field("originPwd") String originPwd,
+                                       @Field("pwd2") String pwd2);
 
     /**
      * 用户个人中心信息
      */
+    @FormUrlEncoded
     @POST("/clientUserDetail/personalCenter")
-    Observable<ResultEntity<UserProfile>> userProfile(@Query("id") String id);
+    Observable<ResultEntity<UserProfile>> userProfile(@Field("id") String id);
 
     /**
      * 修改用户名
      */
+    @FormUrlEncoded
     @POST("/clientUserDetail/updateNickName")
-    Observable<ResultEntity> updateUsername(@Query("id") String id, @Query("userName") String userName);
+    Observable<ResultEntity> updateUsername(@Field("id") String id, @Field("userName") String userName);
 
     /**
      * 获取职业列表
      */
+    @FormUrlEncoded
     @POST("/clientUserDetail/showProfession")
-    Observable<ResultEntity<ArrayList<Profession>>> queryProfession(@Query("id") String id);
+    Observable<ResultEntity<ArrayList<Profession>>> queryProfession(@Field("id") String id);
 
     /**
      * 修改职业
      */
+    @FormUrlEncoded
     @POST("/clientUserDetail/updateProfession")
-    Observable<ResultEntity> updateProfession(@Query("id") String id, @Query("professionType") int professionType);
+    Observable<ResultEntity> updateProfession(@Field("id") String id, @Field("professionType") int professionType);
 
     /**
      * 退出登录
      */
+    @FormUrlEncoded
     @POST("/clientUser/logout")
-    Observable<ResultEntity> logout(@Query("id") String id);
+    Observable<ResultEntity> logout(@Field("id") String id);
 }
