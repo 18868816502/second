@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
         style="@style/ToolBarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
@@ -20,6 +21,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white" />
 </LinearLayout>

@@ -1,8 +1,14 @@
 package com.beihui.market.api;
 
 
+import com.beihui.market.entity.Announce;
+import com.beihui.market.entity.AnnounceAbstract;
+import com.beihui.market.entity.AnnounceDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.SysMsg;
+import com.beihui.market.entity.SysMsgAbstract;
+import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
@@ -11,6 +17,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -178,6 +185,62 @@ public class Api {
     }
 
 
+    /**
+     * 消息中心-公告
+     */
+    public Observable<ResultEntity<AnnounceAbstract>> queryAnnounceHome() {
+        return service.announceHome();
+    }
+
+    /**
+     * 查询公告列表
+     *
+     * @param pageNum  查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<Announce>> queryAnnounceList(int pageNum, int pageSize) {
+        return service.announceList(pageNum, pageSize);
+    }
+
+    /**
+     * 查询公告详情
+     *
+     * @param id 公告id
+     */
+    public Observable<ResultEntity<AnnounceDetail>> queryAnnounceDetail(String id) {
+        return service.announceDetail(id);
+    }
+
+    /**
+     * 消息中心-系统消息
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<SysMsgAbstract>> querySysMsgHome(String userId) {
+        return service.sysMsgHome(userId);
+    }
+
+    /**
+     * 查询系统消息列表
+     *
+     * @param userId   用户id
+     * @param pageNum  查询页数
+     * @param pageSize 查询每页带下
+     */
+    public Observable<ResultEntity<SysMsg>> querySysMsgList(String userId, int pageNum, int pageSize) {
+        return service.sysMsgList(userId, pageNum, pageSize);
+    }
+
+    /**
+     * 查询系统消息详情
+     *
+     * @param id 消息id
+     */
+    public Observable<ResultEntity<SysMsgDetail>> querySysMsgDetail(String id) {
+        return service.sysMsgDetail(id);
+    }
+
+    /*****generate method*****/
     //加密密码
     private String generatePwd(String pwd, String account) {
         String sha = new String(Hex.encodeHex(DigestUtils.sha512(pwd)));

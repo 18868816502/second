@@ -39,17 +39,19 @@ public class AccessHeadInterceptor implements Interceptor {
         Request.Builder builder = request.newBuilder()
                 .addHeader("reqTime", "" + reqTime)
                 .addHeader("accessKey", NetConstants.ACCESS_KEY);
+        StringBuilder sb = new StringBuilder(NetConstants.SECRET_KEY).append(reqTime);
         RequestBody requestBody = request.body();
         if (requestBody != null) {
             MediaType contentType = requestBody.contentType();
             if (contentType != null && contentType.toString().equals("application/x-www-form-urlencoded")) {
-                appendHeadWithBody(request, reqTime, builder);
+                appendHeadWithBody(request, sb);
             }
         }
+        builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
         return chain.proceed(builder.build());
     }
 
-    private void appendHeadWithBody(Request request, long reqTime, Request.Builder builder) {
+    private void appendHeadWithBody(Request request, StringBuilder sb) {
         try {
             RequestBody requestBody = request.body();
             Buffer buffer = new Buffer();
@@ -64,7 +66,6 @@ public class AccessHeadInterceptor implements Interceptor {
                 if (charset == null) {
                     charset = UTF8;
                 }
-                StringBuilder sb = new StringBuilder(NetConstants.SECRET_KEY).append(reqTime);
                 String param = buffer.readString(charset);
                 String[] pairs = param.split("&");
                 String[] keys = new String[pairs.length];
@@ -78,7 +79,6 @@ public class AccessHeadInterceptor implements Interceptor {
                 for (String key : keys) {
                     sb.append(key).append(keyValue.get(key));
                 }
-                builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
             }
 
         } catch (IOException e) {

@@ -37,7 +37,6 @@
             android:layout_alignBottom="@id/ann_title"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:text="12月4日"
             android:textColor="#B2B2B2"
             android:textSize="12sp" />
 
@@ -48,7 +47,6 @@
             android:layout_alignLeft="@id/ann_title"
             android:layout_below="@id/ann_title"
             android:layout_marginTop="6dp"
-            android:text="防守打法看到高度鬼地方个多个"
             android:textColor="@color/c_999999"
             android:textSize="12sp" />
     </RelativeLayout>
@@ -86,7 +84,6 @@
             android:layout_alignBottom="@id/msg_title"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:text="12月4日"
             android:textColor="#B2B2B2"
             android:textSize="12sp" />
 
@@ -97,7 +94,6 @@
             android:layout_alignLeft="@id/msg_title"
             android:layout_below="@id/msg_title"
             android:layout_marginTop="6dp"
-            android:text="防守打法看到高度鬼地方个多个"
             android:textColor="@color/c_999999"
             android:textSize="12sp" />
     </RelativeLayout>

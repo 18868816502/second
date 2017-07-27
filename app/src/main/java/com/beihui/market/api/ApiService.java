@@ -1,7 +1,13 @@
 package com.beihui.market.api;
 
+import com.beihui.market.entity.Announce;
+import com.beihui.market.entity.AnnounceAbstract;
+import com.beihui.market.entity.AnnounceDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.SysMsg;
+import com.beihui.market.entity.SysMsgAbstract;
+import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
@@ -88,4 +94,46 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/clientUser/logout")
     Observable<ResultEntity> logout(@Field("id") String id);
+
+    /**
+     * 消息中心-公告
+     */
+    @POST("/notice/home")
+    Observable<ResultEntity<AnnounceAbstract>> announceHome();
+
+    /**
+     * 公告列表
+     */
+    @FormUrlEncoded
+    @POST("/notice/list")
+    Observable<ResultEntity<Announce>> announceList(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
+
+    /**
+     * 公告详情
+     */
+    @FormUrlEncoded
+    @POST("notice/details")
+    Observable<ResultEntity<AnnounceDetail>> announceDetail(@Field("id") String id);
+
+    /**
+     * 消息中心-系统消息
+     */
+    @FormUrlEncoded
+    @POST("/systemMessage/home")
+    Observable<ResultEntity<SysMsgAbstract>> sysMsgHome(@Field("userId") String userId);
+
+    /**
+     * 系统消息列表
+     */
+    @FormUrlEncoded
+    @POST("/systemMessage/list")
+    Observable<ResultEntity<SysMsg>> sysMsgList(@Field("userId") String userId, @Field("pageNo") int pageNum,
+                                                @Field("pageSize") int pageSize);
+
+    /**
+     * 系统消息详情
+     */
+    @FormUrlEncoded
+    @POST("/systemMessage/details")
+    Observable<ResultEntity<SysMsgDetail>> sysMsgDetail(@Field("id") String id);
 }
