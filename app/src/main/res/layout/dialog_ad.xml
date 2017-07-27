@@ -4,17 +4,25 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/close"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:src="@mipmap/close_white" />
+        android:layout_gravity="right">
+
+        <View
+            android:id="@+id/close"
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/close_white" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="285dp"
         android:layout_height="345dp"
-        android:layout_marginTop="25dp"
         android:background="@drawable/round_white_shadow">
 
     </FrameLayout>
