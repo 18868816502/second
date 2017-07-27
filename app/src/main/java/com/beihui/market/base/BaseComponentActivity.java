@@ -76,7 +76,7 @@ public abstract class BaseComponentActivity extends AppCompatActivity {
      */
     protected void setupToolbar(Toolbar toolbar) {
         setupToolbar(toolbar, true);
-        setupToolbarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
+        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_white);
     }
 
     /**

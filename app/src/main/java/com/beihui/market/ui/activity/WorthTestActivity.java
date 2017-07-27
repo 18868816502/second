@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
-import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
@@ -24,11 +23,7 @@ public class WorthTestActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        ImmersionBar.with(this).titleBar(toolbar).init();
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.select_menu1);
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setupToolbar(toolbar);
     }
 
     @Override
@@ -48,7 +43,6 @@ public class WorthTestActivity extends BaseComponentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("menuId " + item.getItemId());
         return true;
     }
 }

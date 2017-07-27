@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/operation"
-        android:icon="@mipmap/toutiao_icon"
+        android:icon="@mipmap/share_white"
         android:title="@string/operation"
         app:showAsAction="always" />
 </menu>

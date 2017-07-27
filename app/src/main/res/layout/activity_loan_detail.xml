@@ -39,12 +39,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/loan_icon"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/home_big_pic" />
+                    android:background="@mipmap/product_logoshadow">
+
+                    <ImageView
+                        android:id="@+id/loan_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -115,11 +120,18 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
+
+                    <com.beihui.market.view.busineesrel.RateView
+                        android:id="@+id/rate_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:text="成功率"
                         android:textColor="@android:color/black"
                         android:textSize="12sp" />
@@ -334,8 +346,8 @@
         android:id="@+id/apply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/common_primary_rect_btn"
+        android:background="#FDC52E"
         android:text="@string/apply_for_loan"
-        android:textColor="@android:color/white" />
+        android:textColor="#9C5800" />
 
 </LinearLayout>

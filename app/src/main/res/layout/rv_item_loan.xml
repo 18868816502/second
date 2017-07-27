@@ -6,7 +6,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
-    android:background="@drawable/round_white"
+    android:background="@drawable/round_white_shadow"
     tools:ignore="RtlHardcoded">
 
 

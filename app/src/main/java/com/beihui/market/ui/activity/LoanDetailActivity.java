@@ -60,30 +60,17 @@ public class LoanDetailActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        setupToolbar(toolbar, false);
+        setupToolbarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
+        ImmersionBar.with(this).fitsSystemWindows(true).init();
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
-            boolean selected;
-
             @Override
             public void onScrolled(int dy) {
-                if (dy <= 5) {
-                    if (!selected) {
-                        changeToolBarIconState(true);
-                        selected = true;
-                    }
-                } else if (dy >= hitDistance) {
-                    if (selected) {
-                        changeToolBarIconState(false);
-                        selected = false;
-                    }
-                } else {
-                    renderBar((float) dy / hitDistance);
-                }
+                renderBar(dy / (float) hitDistance);
+                changeToolBarIconState(dy >= hitDistance / 2);
             }
         });
-
-        ImmersionBar.with(this).fitsSystemWindows(true).init();
     }
 
     @Override
@@ -98,18 +85,16 @@ public class LoanDetailActivity extends BaseComponentActivity {
 
     private void changeToolBarIconState(boolean selected) {
         int[] state = selected ? selectedState : noneState;
-        int color = selected ? Color.WHITE : getResources().getColor(R.color.colorPrimary);
         //noinspection ConstantConditions
         toolbar.getNavigationIcon().setState(state);
         toolbar.getMenu().findItem(R.id.share).getIcon().setState(state);
-        toolbar.setBackgroundColor(color);
-        ImmersionBar.with(this).statusBarColorInt(color).init();
-
-        loanNameTitleTv.setSelected(!selected);
+        loanNameTitleTv.setSelected(selected);
     }
 
     private void renderBar(float alpha) {
         int alphaInt = (int) (alpha * 255);
+        alphaInt = alphaInt < 10 ? 0 : alphaInt;
+        alphaInt = alphaInt > 255 ? 255 : alphaInt;
         int color = Color.argb(alphaInt, 85, 145, 255);
         toolbar.setBackgroundColor(color);
         ImmersionBar.with(this).statusBarColorInt(color).init();
@@ -118,7 +103,6 @@ public class LoanDetailActivity extends BaseComponentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_loan_detail, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 

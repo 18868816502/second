@@ -98,10 +98,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/round_alpha_primary_btn"
+        android:background="@drawable/round_shiming_gray_state_enable"
         android:enabled="false"
         android:text="@string/login"
-        android:textColor="@color/white"
+        android:textColor="@color/color_white_brown_state_enable"
         android:textSize="14sp" />
 
 

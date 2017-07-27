@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/dark_light_state_navigation"
+            android:src="@mipmap/left_arrow_white"
             android:visibility="gone" />
     </FrameLayout>
 
