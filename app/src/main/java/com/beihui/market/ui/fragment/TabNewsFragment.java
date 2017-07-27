@@ -1,37 +1,41 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.entity.News;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerNewsComponent;
+import com.beihui.market.injection.module.NewsModule;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
+import com.beihui.market.ui.contract.NewsContract;
+import com.beihui.market.ui.presenter.NewsPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class TabNewsFragment extends BaseTabFragment {
+public class TabNewsFragment extends BaseTabFragment implements NewsContract.View {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
     private NewsRVAdapter adapter;
 
+    @Inject
+    NewsPresenter presenter;
+
     public static TabNewsFragment newInstance() {
-        TabNewsFragment f = new TabNewsFragment();
-        Bundle b = new Bundle();
-        b.putString("type", "TabLoanFragment");
-        f.setArguments(b);
-        return f;
+        return new TabNewsFragment();
     }
 
     @Override
@@ -49,7 +53,12 @@ public class TabNewsFragment extends BaseTabFragment {
                 startActivity(intent);
             }
         });
-
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                presenter.loadMore();
+            }
+        }, recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         float density = getContext().getResources().getDisplayMetrics().density;
@@ -59,17 +68,39 @@ public class TabNewsFragment extends BaseTabFragment {
 
     @Override
     public void initDatas() {
-        List<String> tempList = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
-            tempList.add("" + i);
-        }
-        adapter.notifyNewsSetChanged(tempList);
+        presenter.onStart();
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
+        DaggerNewsComponent.builder()
+                .appComponent(appComponent)
+                .newsModule(new NewsModule(this))
+                .build()
+                .inject(this);
     }
 
 
+    @Override
+    public void setPresenter(NewsContract.Presenter presenter) {
+        //injected.nothing to do.
+    }
+
+    @Override
+    public void showNews(List<News.Row> news) {
+        adapter.notifyNewsSetChanged(news);
+        if (adapter.isLoading()) {
+            adapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void showNoNews() {
+
+    }
+
+    @Override
+    public void showNoMoreNews() {
+        adapter.loadMoreEnd(true);
+    }
 }

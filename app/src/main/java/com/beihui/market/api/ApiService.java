@@ -3,6 +3,7 @@ package com.beihui.market.api;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
+import com.beihui.market.entity.News;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.SysMsg;
@@ -136,4 +137,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/systemMessage/details")
     Observable<ResultEntity<SysMsgDetail>> sysMsgDetail(@Field("id") String id);
+
+    /**
+     * 资讯列表
+     */
+    @FormUrlEncoded
+    @POST("/information/list")
+    Observable<ResultEntity<News>> queryNews(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
 }

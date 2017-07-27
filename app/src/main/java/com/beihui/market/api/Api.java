@@ -4,6 +4,7 @@ package com.beihui.market.api;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
+import com.beihui.market.entity.News;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.SysMsg;
@@ -238,6 +239,16 @@ public class Api {
      */
     public Observable<ResultEntity<SysMsgDetail>> querySysMsgDetail(String id) {
         return service.sysMsgDetail(id);
+    }
+
+    /**
+     * 资讯列表
+     *
+     * @param pageNum  查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<News>> queryNews(int pageNum, int pageSize) {
+        return service.queryNews(pageNum, pageSize);
     }
 
     /*****generate method*****/
