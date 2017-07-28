@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -68,6 +69,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
                         }
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {

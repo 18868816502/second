@@ -11,8 +11,8 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
         android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
 
         <LinearLayout
@@ -90,7 +90,8 @@
                 android:layout_marginLeft="10dp"
                 android:background="@null"
                 android:hint="@string/input_verify_code"
-                android:inputType="text"
+                android:inputType="number"
+                android:maxLength="4"
                 android:textColor="@color/c_222222"
                 android:textColorHint="#B2B2B2"
                 android:textSize="15sp" />
@@ -105,9 +106,9 @@
         android:id="@+id/next_step"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/round_shiming_gray_state_enable"
         android:enabled="false"
         android:gravity="center"

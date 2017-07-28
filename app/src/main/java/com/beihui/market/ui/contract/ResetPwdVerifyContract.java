@@ -13,8 +13,6 @@ public interface ResetPwdVerifyContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showMsg(String msg);
-
         void showVerificationSend(String msg);
 
         void moveToNextStep(String requestPhone);

@@ -58,7 +58,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/clientUser/updatePwd")
-    Observable<ResultEntity> updatePwd(@Field("id") String id, @Field("account") String account, @Field("pwdType") int pwdType,
+    Observable<ResultEntity> updatePwd(@Field("userId") String id, @Field("account") String account, @Field("pwdType") int pwdType,
                                        @Field("pwd") String pwd, @Field("originPwd") String originPwd,
                                        @Field("pwd2") String pwd2);
 
@@ -67,35 +67,35 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/clientUserDetail/personalCenter")
-    Observable<ResultEntity<UserProfile>> userProfile(@Field("id") String id);
+    Observable<ResultEntity<UserProfile>> userProfile(@Field("userId") String id);
 
     /**
      * 修改用户名
      */
     @FormUrlEncoded
     @POST("/clientUserDetail/updateNickName")
-    Observable<ResultEntity> updateUsername(@Field("id") String id, @Field("userName") String userName);
+    Observable<ResultEntity> updateUsername(@Field("userId") String id, @Field("userName") String userName);
 
     /**
      * 获取职业列表
      */
     @FormUrlEncoded
     @POST("/clientUserDetail/showProfession")
-    Observable<ResultEntity<ArrayList<Profession>>> queryProfession(@Field("id") String id);
+    Observable<ResultEntity<ArrayList<Profession>>> queryProfession(@Field("userId") String id);
 
     /**
      * 修改职业
      */
     @FormUrlEncoded
     @POST("/clientUserDetail/updateProfession")
-    Observable<ResultEntity> updateProfession(@Field("id") String id, @Field("professionType") int professionType);
+    Observable<ResultEntity> updateProfession(@Field("userId") String id, @Field("professionType") int professionType);
 
     /**
      * 退出登录
      */
     @FormUrlEncoded
     @POST("/clientUser/logout")
-    Observable<ResultEntity> logout(@Field("id") String id);
+    Observable<ResultEntity> logout(@Field("userId") String id);
 
     /**
      * 消息中心-公告

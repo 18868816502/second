@@ -75,7 +75,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
                 } else {
                     fetchText.setEnabled(false);
                 }
-                boolean validateCode = verifyCodeEt.getText().length() > 0;
+                boolean validateCode = verifyCodeEt.getText().length() == 4;
 
                 nextStepBtn.setEnabled(validatePhone && validateCode);
             }

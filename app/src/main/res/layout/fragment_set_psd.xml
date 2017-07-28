@@ -27,8 +27,10 @@
             android:background="@null"
             android:hint="@string/set_login_psd"
             android:inputType="textPassword"
-            android:paddingLeft="30dp"
-            android:textColorHint="#b3b3b3" />
+            android:paddingLeft="10dp"
+            android:textColor="@color/c_222222"
+            android:textColorHint="#b3b3b3"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <Button

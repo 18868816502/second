@@ -74,7 +74,7 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
                 } else {
                     fetchText.setEnabled(false);
                 }
-                boolean validateCode = verifyCodeEt.getText().length() > 0;
+                boolean validateCode = verifyCodeEt.getText().length() == 4;
 
                 nextStepBtn.setEnabled(validatePhone && validateCode);
             }
@@ -117,17 +117,8 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
     }
 
     @Override
-    public void showErrorMsg(String msg) {
-
-    }
-
-    @Override
-    public void showMsg(String msg) {
-        ToastUtils.showShort(getContext(), msg, null);
-    }
-
-    @Override
     public void showVerificationSend(String msg) {
+        ToastUtils.showShort(getContext(), msg, null);
         fetchText.setEnabled(false);
         countDownTimer = new CountDownTimerUtils(fetchText, phoneNumberEt);
         countDownTimer.start();

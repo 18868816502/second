@@ -92,6 +92,7 @@ public abstract class BaseComponentFragment extends Fragment {
      * hook BaseView.showErrorMsg(String).
      */
     public void showErrorMsg(String msg) {
+        dismissProgress();
         ToastUtils.showShort(getContext(), msg, null);
     }
 }

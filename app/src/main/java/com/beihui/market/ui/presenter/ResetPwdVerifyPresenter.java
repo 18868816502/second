@@ -37,7 +37,7 @@ public class ResetPwdVerifyPresenter extends BaseRxPresenter implements ResetPwd
                                        if (result.isSuccess()) {
                                            mView.showVerificationSend("验证码已发送");
                                        } else {
-                                           mView.showMsg(result.getMsg());
+                                           mView.showErrorMsg(result.getMsg());
                                        }
                                    }
                                },
@@ -46,7 +46,7 @@ public class ResetPwdVerifyPresenter extends BaseRxPresenter implements ResetPwd
                                 public void accept(@NonNull Throwable throwable) throws Exception {
                                     isRequestingVerification = false;
                                     logError(ResetPwdVerifyPresenter.this, throwable);
-                                    mView.showMsg(generateErrorMsg(throwable));
+                                    mView.showErrorMsg(generateErrorMsg(throwable));
                                 }
                             });
             addDisposable(dis);
@@ -63,7 +63,7 @@ public class ResetPwdVerifyPresenter extends BaseRxPresenter implements ResetPwd
                                    if (result.isSuccess()) {
                                        mView.moveToNextStep(requestPhone);
                                    } else {
-                                       mView.showMsg(result.getMsg());
+                                       mView.showErrorMsg(result.getMsg());
                                    }
                                }
                            },
@@ -71,7 +71,7 @@ public class ResetPwdVerifyPresenter extends BaseRxPresenter implements ResetPwd
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(ResetPwdVerifyPresenter.this, throwable);
-                                mView.showMsg(generateErrorMsg(throwable));
+                                mView.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
         addDisposable(dis);

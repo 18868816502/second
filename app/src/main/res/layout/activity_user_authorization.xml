@@ -26,6 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:scaleType="centerInside"
             android:src="@mipmap/left_arrow_white"
             android:visibility="gone" />
@@ -43,15 +45,16 @@
             android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/round_white" />
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="17dp"
+            android:scaleType="centerCrop"
             android:src="@mipmap/authorization_logo" />
     </FrameLayout>
 
