@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.dialog.BrMoneyPopup;
 import com.beihui.market.ui.dialog.BrTimePopup;
 import com.beihui.market.ui.dialog.BrZhiyePopup;
-import com.beihui.market.view.AutoTextView;
+import com.beihui.market.view.drawable.BlurDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,33 +27,31 @@ import butterknife.OnClick;
 public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onBrMoneyListener,
         BrTimePopup.onBrTimeListener, BrZhiyePopup.onBrZhiyeListener {
 
+    @BindView(R.id.filter_container)
+    LinearLayout filterContainer;
+    @BindView(R.id.money_filter_text)
+    TextView moneyFilterText;
+    @BindView(R.id.money_filter_image)
+    ImageView moneyFilterImage;
+    @BindView(R.id.money_filter_content)
+    TextView moneyFilterContent;
+    @BindView(R.id.time_filter_text)
+    TextView timeFilterText;
+    @BindView(R.id.time_filter_image)
+    ImageView timeFilterImage;
+    @BindView(R.id.time_filter_content)
+    TextView timeFilterContent;
+    @BindView(R.id.pro_filter_text)
+    TextView proFilterText;
+    @BindView(R.id.pro_filter_image)
+    ImageView proFilterImage;
+    @BindView(R.id.pro_filter_content)
+    TextView proFilterContent;
 
-    @BindView(R.id.iv_1)
-    ImageView iv1;
-    @BindView(R.id.tv_1)
-    TextView tv1;
-    @BindView(R.id.tv_top_1)
-    TextView tvTop1;
-    @BindView(R.id.iv_2)
-    ImageView iv2;
-    @BindView(R.id.tv_2)
-    TextView tv2;
-    @BindView(R.id.tv_top_2)
-    TextView tvTop2;
-    @BindView(R.id.iv_3)
-    ImageView iv3;
-    @BindView(R.id.tv_3)
-    TextView tv3;
-    @BindView(R.id.tv_top_3)
-    TextView tvTop3;
-    @BindView(R.id.ly_top)
-    LinearLayout ly_top;
-    @BindView(R.id.shadow_view)
-    View shadowView;
-    @BindView(R.id.tv_tishi)
-    AutoTextView tvTishi;
-    @BindView(R.id.ly_tishi)
-    LinearLayout lyTishi;
+    @BindView(R.id.loan_container)
+    FrameLayout loanContainer;
+    @BindView(R.id.blur_view)
+    View blurView;
 
     @BindView(R.id.recycle_view)
     RecyclerView recycleView;
@@ -66,6 +65,8 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
     private String inputMoney = "5000";
     //记录选择的是什么范围的，一个月，三个月还是不限,从1 ~ 7
     public int selectTimeIndex = 1;
+
+    String tags[] = {"1个月及以下", "3个月", "6个月", "12个月", "24个月", "36个月及以上", "不限"};
 
     private LoanRVAdapter loanRVAdapter;
 
@@ -81,16 +82,14 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
 
     @Override
     public void configViews() {
-        tv1.setText(inputMoney);
-        tvTishi.setScrollMode(AutoTextView.SCROLL_FAST);
+        blurView.setBackgroundDrawable(new BlurDrawable(getContext(), loanContainer));
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recycleView.setLayoutManager(layoutManager);
+        moneyFilterContent.setText(inputMoney);
+        setOnTimeSelect(selectTimeIndex);
+
+        recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         loanRVAdapter = new LoanRVAdapter();
         recycleView.setAdapter(loanRVAdapter);
-
-        setOnTimeSelect(selectTimeIndex);
     }
 
     @Override
@@ -111,7 +110,7 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
     @Override
     public void onMoneyItemClick(String money) {
         this.inputMoney = money;
-        tv1.setText(money);
+        moneyFilterContent.setText(money);
     }
 
     @Override
@@ -129,72 +128,42 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
     public void onZhiyeItemClick(int selectIndex) {
         switch (selectIndex) {
             case 1:
-                tv3.setText("上班族");
+                proFilterContent.setText("上班族");
                 break;
             case 2:
-                tv3.setText("学生");
+                proFilterContent.setText("学生");
                 break;
             case 3:
-                tv3.setText("个体户");
+                proFilterContent.setText("个体户");
                 break;
             case 4:
-                tv3.setText("不限");
+                proFilterContent.setText("不限");
                 break;
         }
     }
 
-    /**
-     * 借款期限彈出框的文字改變
-     *
-     * @param selectTimeIndex
-     */
     public void setOnTimeSelect(int selectTimeIndex) {
-        switch (selectTimeIndex) {
-            case 1:
-                tv2.setText("1个月及以下");
-                break;
-            case 2:
-                tv2.setText("3个月");
-                break;
-            case 3:
-                tv2.setText("6个月");
-                break;
-            case 4:
-                tv2.setText("12个月");
-                break;
-            case 5:
-                tv2.setText("24个月");
-                break;
-            case 6:
-                tv2.setText("36个月及以上");
-                break;
-            case 7:
-                tv2.setText("不限");
-                break;
-        }
+        timeFilterContent.setText(tags[selectTimeIndex]);
     }
 
 
-    @OnClick({R.id.ly_1, R.id.ly_2, R.id.ly_3, R.id.iv_close})
+    @OnClick({R.id.money_filter, R.id.time_filter, R.id.pro_filter})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ly_1:
-                moneyPopup = new BrMoneyPopup(getActivity(), inputMoney, shadowView, tvTop1, iv1);
+            case R.id.money_filter:
+                moneyPopup = new BrMoneyPopup(getActivity(), inputMoney, blurView, moneyFilterText, moneyFilterImage);
                 moneyPopup.setShareItemListener(this);
-                moneyPopup.showAsDropDown(ly_top);
+                moneyPopup.showAsDropDown(filterContainer);
                 break;
-            case R.id.ly_2:
-                timePopup = new BrTimePopup(getActivity(), selectTimeIndex, shadowView, tvTop2, iv2);
+            case R.id.time_filter:
+                timePopup = new BrTimePopup(getActivity(), selectTimeIndex, blurView, timeFilterText, timeFilterImage, tags);
                 timePopup.setShareItemListener(this);
-                timePopup.showAsDropDown(ly_top);
+                timePopup.showAsDropDown(filterContainer);
                 break;
-            case R.id.ly_3:
-                zhiyePopup = new BrZhiyePopup(getActivity(), shadowView, tvTop3, iv3);
+            case R.id.pro_filter:
+                zhiyePopup = new BrZhiyePopup(getActivity(), blurView, proFilterText, proFilterImage);
                 zhiyePopup.setShareItemListener(this);
-                zhiyePopup.showAsDropDown(ly_top);
-                break;
-            case R.id.iv_close:
-                lyTishi.setVisibility(View.GONE);
+                zhiyePopup.showAsDropDown(filterContainer);
                 break;
         }
     }

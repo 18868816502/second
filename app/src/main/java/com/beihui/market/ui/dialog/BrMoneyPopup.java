@@ -23,10 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Administrator on 2017/3/7.
- */
-
 public class BrMoneyPopup extends PopupWindow {
 
     @BindView(R.id.et_money)
@@ -47,6 +43,7 @@ public class BrMoneyPopup extends PopupWindow {
 
 
         shadowView.setVisibility(View.VISIBLE);
+        shadowView.invalidate();
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.dialog_brmoney, null);
@@ -89,9 +86,7 @@ public class BrMoneyPopup extends PopupWindow {
 
         etMoney.setText(money);
         InputMethodUtil.setEditTextSelectionToEnd(etMoney);
-
     }
-
 
 
     @Override
@@ -115,8 +110,8 @@ public class BrMoneyPopup extends PopupWindow {
                 break;
             case R.id.tv_ok:
                 money = etMoney.getText().toString();
-                if (TextUtils.isEmpty(money)){
-                    ToastView.initToast().textToast(context,"请输入金额");
+                if (TextUtils.isEmpty(money)) {
+                    ToastView.initToast().textToast(context, "请输入金额");
                     return;
                 }
                 dismiss();
@@ -133,8 +128,6 @@ public class BrMoneyPopup extends PopupWindow {
     public void setShareItemListener(onBrMoneyListener listener) {
         this.listener = listener;
     }
-
-
 
 
     /**

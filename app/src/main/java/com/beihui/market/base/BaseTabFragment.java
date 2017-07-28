@@ -28,6 +28,12 @@ public abstract class BaseTabFragment extends BaseComponentFragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        fakedStatusBar = null;
+        super.onDestroyView();
+    }
+
     /**
      * whether BTF should render FakeStatusBar
      *
