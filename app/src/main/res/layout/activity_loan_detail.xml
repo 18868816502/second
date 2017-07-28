@@ -16,7 +16,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="现金巴士"
             android:textColor="@color/color_white_black_selected" />
     </android.support.v7.widget.Toolbar>
 
@@ -27,11 +26,12 @@
         android:layout_weight="1">
 
         <LinearLayout
+            android:id="@+id/detail_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@drawable/linear_vertical_divider_middle"
             android:orientation="vertical"
-            android:paddingTop="20dp"
+            android:paddingTop="15dp"
             android:showDividers="middle|end">
 
             <LinearLayout
@@ -48,7 +48,9 @@
                     <ImageView
                         android:id="@+id/loan_icon"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_launcher" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -62,7 +64,6 @@
                         android:id="@+id/loan_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="现金巴士"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
@@ -76,44 +77,19 @@
                         android:paddingLeft="3dp"
                         android:paddingRight="3dp"
                         android:paddingTop="2dp"
-                        android:text="上班族"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/tag_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:divider="@drawable/transparent_linear_divider"
                     android:orientation="horizontal"
-                    android:showDividers="middle">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/comm_tag_light_gray_bg"
-                        android:text="无抵押"
-                        android:textColor="#979797"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/comm_tag_light_gray_bg"
-                        android:text="无抵押"
-                        android:textColor="#979797"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/comm_tag_light_gray_bg"
-                        android:text="无抵押"
-                        android:textColor="#979797"
-                        android:textSize="10sp" />
-                </LinearLayout>
+                    android:showDividers="middle" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -123,26 +99,26 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.beihui.market.view.busineesrel.RateView
-                        android:id="@+id/rate_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="成功率"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black_1"
                         android:textSize="12sp" />
+
+                    <com.beihui.market.view.busineesrel.RateView
+                        android:id="@+id/rate_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="18dp" />
 
                     <TextView
                         android:id="@+id/loaned_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="成功借款9999人"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/black_1"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -150,9 +126,9 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="19dp"
                     android:background="@color/common_bg" />
 
                 <LinearLayout
@@ -161,9 +137,10 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:divider="@drawable/linear_vertical_divider_small"
+                    android:dividerPadding="10dp"
                     android:orientation="horizontal"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="20dp"
+                    android:paddingBottom="22dp"
+                    android:paddingTop="22dp"
                     android:showDividers="middle">
 
                     <LinearLayout
@@ -177,14 +154,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="50万元" />
+                            android:textColor="#ff395e"
+                            android:textSize="22sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="2dp"
-                            android:text="最高额度" />
+                            android:layout_marginTop="8dp"
+                            android:text="最高额度"
+                            android:textColor="#909298"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -198,14 +178,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="0.01%" />
+                            android:textColor="@color/black_1"
+                            android:textSize="22sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="2dp"
-                            android:text="参考月息" />
+                            android:layout_marginTop="8dp"
+                            android:text="参考月息"
+                            android:textColor="#909398"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -219,126 +202,65 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="12-48月" />
+                            android:textColor="@color/black_1"
+                            android:textSize="22sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="2dp"
-                            android:text="期限范围" />
+                            android:layout_marginTop="8dp"
+                            android:text="期限范围"
+                            android:textColor="#909298"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@color/common_bg" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="20dp">
+                    android:paddingBottom="14dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="14dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="24小时放款" />
+                        android:text="24小时放款"
+                        android:textColor="#909298"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="无抵押" />
+                        android:text="无抵押"
+                        android:textColor="#909298"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="等额本金还款" />
+                        android:text="等额本金还款"
+                        android:textColor="#909298"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/right_icon"
-                    android:drawablePadding="3dp"
-                    android:text="适用人群" />
-
-                <TextView
-                    android:id="@+id/for_people"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="富士康水电费科幻开发电商客户发大水" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/right_icon"
-                    android:drawablePadding="3dp"
-                    android:text="准备材料" />
-
-                <TextView
-                    android:id="@+id/stuff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="富士康水电费科幻开发电商客户发大水" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/right_icon"
-                    android:drawablePadding="3dp"
-                    android:text="审核说明" />
-
-                <TextView
-                    android:id="@+id/review_des"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="富士康水电费科幻开发电商客户发大水" />
-            </LinearLayout>
         </LinearLayout>
     </com.beihui.market.view.WatchableScrollView>
 

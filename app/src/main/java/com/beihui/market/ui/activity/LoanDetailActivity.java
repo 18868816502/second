@@ -2,16 +2,24 @@ package com.beihui.market.ui.activity;
 
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.view.WatchableScrollView;
+import com.beihui.market.view.busineesrel.RateView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
@@ -25,6 +33,8 @@ public class LoanDetailActivity extends BaseComponentActivity {
     @BindView(R.id.apply)
     Button applyBtn;
 
+    @BindView(R.id.detail_container)
+    LinearLayout detailContainer;
     @BindView(R.id.loan_name_title)
     TextView loanNameTitleTv;
     @BindView(R.id.loan_icon)
@@ -33,6 +43,10 @@ public class LoanDetailActivity extends BaseComponentActivity {
     TextView loanNameTv;
     @BindView(R.id.for_people_tag)
     TextView forPeopleTagTv;
+    @BindView(R.id.tag_container)
+    LinearLayout tagContainer;
+    @BindView(R.id.rate_view)
+    RateView rateView;
     @BindView(R.id.loaned_number)
     TextView loanedNumberTv;
     @BindView(R.id.loan_max_amount)
@@ -41,12 +55,6 @@ public class LoanDetailActivity extends BaseComponentActivity {
     TextView loanInterestsTv;
     @BindView(R.id.loan_time_range)
     TextView loanTimeRangeTv;
-    @BindView(R.id.for_people)
-    TextView forPeopleTv;
-    @BindView(R.id.stuff)
-    TextView stuffTv;
-    @BindView(R.id.review_des)
-    TextView reviewDesTv;
 
     private int hitDistance;
 
@@ -75,7 +83,7 @@ public class LoanDetailActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-
+        bindFakeData();
     }
 
     @Override
@@ -108,7 +116,42 @@ public class LoanDetailActivity extends BaseComponentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void bindFakeData() {
+        loanNameTitleTv.setText("现金巴士");
+        loanNameTv.setText("现金巴士");
+        forPeopleTagTv.setText("上班族");
+        inflateTag();
+        rateView.setRate(3, true);
+        String loanedNumber = "999";
+        SpannableString ss = new SpannableString("成功借款" + loanedNumber + "人");
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        loanedNumberTv.setText(ss);
+        loanMaxAmountTv.setText("50万元");
+        loanInterestsTv.setText("0.1%");
+        loanTimeRangeTv.setText("12-36月");
+        inflateFeature();
+    }
+
+    private void inflateTag() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < 3; ++i) {
+            TextView textView = (TextView) inflater.inflate(R.layout.layout_tag_text, null);
+            textView.setText("tag " + i);
+            tagContainer.addView(textView);
+        }
+    }
+
+    private void inflateFeature() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        String content = "<p>哈哈哈</p><br/><p>哈哈哈</p><br/><p>哈哈哈</p><br/>";
+        for (int i = 0; i < 6; ++i) {
+            View rootView = inflater.inflate(R.layout.layout_loan_detail_feature, null);
+            ((TextView) rootView.findViewById(R.id.feature_title)).setText("FeatureTitle " + i);
+            ((TextView) rootView.findViewById(R.id.feature_content)).setText(Html.fromHtml(content));
+            detailContainer.addView(rootView);
+        }
     }
 }
