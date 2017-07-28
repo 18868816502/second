@@ -7,6 +7,7 @@ import com.beihui.market.entity.AnnounceDetail;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
@@ -18,7 +19,6 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -226,7 +226,7 @@ public class Api {
      *
      * @param userId   用户id
      * @param pageNum  查询页数
-     * @param pageSize 查询每页带下
+     * @param pageSize 查询每页大小
      */
     public Observable<ResultEntity<SysMsg>> querySysMsgList(String userId, int pageNum, int pageSize) {
         return service.sysMsgList(userId, pageNum, pageSize);
@@ -249,6 +249,16 @@ public class Api {
      */
     public Observable<ResultEntity<News>> queryNews(int pageNum, int pageSize) {
         return service.queryNews(pageNum, pageSize);
+    }
+
+    /**
+     * 推荐资讯列表
+     *
+     * @param pageNum  查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<ReNews>> queryReNews(int pageNum, int pageSize) {
+        return service.queryReNews(pageNum, pageSize);
     }
 
     /*****generate method*****/

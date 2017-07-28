@@ -2,16 +2,19 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AnnounceAbstract;
+import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMessageCenterComponent;
@@ -19,10 +22,12 @@ import com.beihui.market.injection.module.MessageCenterModule;
 import com.beihui.market.ui.adapter.MessageCenterAdapter;
 import com.beihui.market.ui.contract.MessageCenterContract;
 import com.beihui.market.ui.presenter.MessageCenterPresenter;
+import com.beihui.market.ui.rvdecoration.MessageCenterItemDeco;
+import com.beihui.market.util.DateFormatUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,13 +39,9 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     Toolbar toolbar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.ignore_unread)
-    TextView ignoreUnreadTv;
 
     private MessageCenterAdapter adapter;
     private HeaderViewHolder headerViewHolder;
-
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("MM月dd日", Locale.CHINA);
 
     @Inject
     MessageCenterPresenter presenter;
@@ -48,6 +49,9 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     @Override
     protected void onDestroy() {
         presenter.onDestroy();
+        if (headerViewHolder.animatable.isRunning()) {
+            headerViewHolder.animatable.stop();
+        }
         super.onDestroy();
     }
 
@@ -63,13 +67,13 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new MessageCenterItemDeco(this));
         View view = LayoutInflater.from(this).inflate(R.layout.layout_message_center_header, recyclerView, false);
         headerViewHolder = new HeaderViewHolder(view);
         headerViewHolder.annItemView.setOnClickListener(this);
         headerViewHolder.msgItemView.setOnClickListener(this);
+        headerViewHolder.refreshNewsTv.setOnClickListener(this);
         adapter.setHeaderView(view);
-
-        ignoreUnreadTv.setOnClickListener(this);
     }
 
     @Override
@@ -94,8 +98,9 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         } else if (v.getId() == R.id.msg_item) {
             Intent intent = new Intent(this, SysMsgActivity.class);
             startActivity(intent);
-        } else if (v.getId() == R.id.ignore_unread) {
-
+        } else if (v.getId() == R.id.refresh_news) {
+            presenter.refreshNews();
+            headerViewHolder.animatable.start();
         }
     }
 
@@ -109,7 +114,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         if (announce.getTitle() != null) {
             headerViewHolder.annContentTv.setText(announce.getTitle());
         }
-        headerViewHolder.annDataTv.setText(dateFormatter.format(new Date(announce.getGmtCreate())));
+        headerViewHolder.annDataTv.setText(DateFormatUtils.getCN_MDFormat().format(new Date(announce.getGmtCreate())));
     }
 
     @Override
@@ -117,14 +122,34 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         if (sysMsg.getExplain() != null) {
             headerViewHolder.msgContentTv.setText(sysMsg.getExplain());
         }
-        headerViewHolder.annDataTv.setText(dateFormatter.format(new Date(sysMsg.getGmtCreate())));
+        headerViewHolder.annDataTv.setText(DateFormatUtils.getCN_MDFormat().format(new Date(sysMsg.getGmtCreate())));
+    }
+
+    @Override
+    public void showReNews(List<ReNews.Row> news) {
+        if (headerViewHolder.reNewsHeader.getVisibility() == View.GONE) {
+            headerViewHolder.reNewsHeader.setVisibility(View.VISIBLE);
+        }
+        if (headerViewHolder.animatable.isRunning()) {
+            headerViewHolder.animatable.stop();
+        }
+        adapter.notifyMessageChanged(news);
     }
 
     @Override
     public void showNoRecommend() {
+        headerViewHolder.reNewsHeader.setVisibility(View.GONE);
         adapter.notifyMessageChanged(null);
         View footer = LayoutInflater.from(this).inflate(R.layout.layout_message_center_no_message, null);
         adapter.setFooterView(footer);
+    }
+
+    @Override
+    public void showNoMoreReNews() {
+        if (headerViewHolder.animatable.isRunning()) {
+            headerViewHolder.animatable.stop();
+        }
+        ToastUtils.showShort(this, "没有更多推荐", null);
     }
 
     class HeaderViewHolder {
@@ -140,10 +165,17 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         TextView msgContentTv;
         @BindView(R.id.msg_date)
         TextView msgDateTv;
+        @BindView(R.id.re_news_header)
+        FrameLayout reNewsHeader;
+        @BindView(R.id.refresh_news)
+        TextView refreshNewsTv;
+
+        Animatable animatable;
 
 
         HeaderViewHolder(View view) {
             ButterKnife.bind(this, view);
+            animatable = (Animatable) refreshNewsTv.getCompoundDrawables()[0];
         }
     }
 }

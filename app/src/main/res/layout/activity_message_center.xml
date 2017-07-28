@@ -16,21 +16,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/message_center" />
-
-
-        <TextView
-            android:id="@+id/ignore_unread"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical"
-            android:minWidth="@dimen/tool_bar_height"
-            android:text="忽略未读" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:background="@android:color/white" />
 </LinearLayout>
