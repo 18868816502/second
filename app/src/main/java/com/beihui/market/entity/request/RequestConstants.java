@@ -25,4 +25,8 @@ public class RequestConstants {
      * 验证码-重置密码
      */
     public static final String VERIFICATION_TYPE_RESET_PWD = "2";
+
+    public static final int SUP_TYPE_AD = 1;
+    public static final int SUP_TYPE_BANNER = 2;
+    public static final int SUP_TYPE_DIALOG = 3;
 }

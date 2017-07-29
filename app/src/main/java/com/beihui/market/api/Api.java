@@ -1,6 +1,7 @@
 package com.beihui.market.api;
 
 
+import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
@@ -19,6 +20,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -259,6 +261,22 @@ public class Api {
      */
     public Observable<ResultEntity<ReNews>> queryReNews(int pageNum, int pageSize) {
         return service.queryReNews(pageNum, pageSize);
+    }
+
+    /**
+     * 查询启动页广告，banner，弹窗广告
+     *
+     * @param supernatantType 查询类型
+     */
+    public Observable<ResultEntity<List<AdBanner>>> querySupernatant(int supernatantType) {
+        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType);
+    }
+
+    /**
+     * 查询头条消息
+     */
+    public Observable<ResultEntity<List<String>>> queryBorrowingScroll() {
+        return service.queryBorrowingScroll();
     }
 
     /*****generate method*****/

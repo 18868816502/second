@@ -1,5 +1,6 @@
 package com.beihui.market.api;
 
+import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
@@ -13,7 +14,9 @@ import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -152,4 +155,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/pushInfo/list")
     Observable<ResultEntity<ReNews>> queryReNews(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
+
+    /**
+     * 启动页广告，banner，弹窗广告
+     */
+    @FormUrlEncoded
+    @POST("/supernatant/querySupernatant")
+    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType);
+
+    /**
+     * 头条滚动信息
+     */
+    @POST("supernatant/queryBorrowingScroll")
+    Observable<ResultEntity<List<String>>> queryBorrowingScroll();
+
+    
 }

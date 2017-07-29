@@ -12,10 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.beihui.market.R;
+import com.beihui.market.entity.AdBanner;
+import com.bumptech.glide.Glide;
 
 public class AdDialog extends DialogFragment {
+
+    private AdBanner ad;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +38,12 @@ public class AdDialog extends DialogFragment {
                 dismiss();
             }
         });
+        if (ad != null && ad.getImgUrl() != null) {
+            ImageView imageView = (ImageView) view.findViewById(R.id.ad_image);
+            Glide.with(getContext())
+                    .load(ad.getImgUrl())
+                    .into(imageView);
+        }
         return view;
     }
 
@@ -49,5 +60,10 @@ public class AdDialog extends DialogFragment {
 
             window.setGravity(Gravity.TOP);
         }
+    }
+
+    public AdDialog setAd(AdBanner ad) {
+        this.ad = ad;
+        return this;
     }
 }

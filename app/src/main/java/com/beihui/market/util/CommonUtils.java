@@ -321,7 +321,6 @@ public class CommonUtils {
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
-        Log.v("dbw", "Status height:" + height);
         return height;
     }
 

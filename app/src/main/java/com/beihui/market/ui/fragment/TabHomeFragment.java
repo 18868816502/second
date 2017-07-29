@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.entity.AdBanner;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabHomeComponent;
 import com.beihui.market.injection.module.TabHomeModule;
@@ -32,10 +33,9 @@ import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
 import com.beihui.market.ui.adapter.GonglueAdapter;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
-import com.beihui.market.ui.bean.BannerData;
-import com.beihui.market.ui.bean.GonglueData;
 import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.contract.TabHomeContract;
+import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.presenter.TabHomePresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
@@ -148,6 +148,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        if (inputMoney != null) {
+            headerViewHolder.etMoney.setText(inputMoney);
+        }
         loanRVAdapter = new LoanRVAdapter();
         loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -157,9 +160,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addOnScrollListener(onScrollListener);
         recyclerView.setAdapter(loanRVAdapter);
 
@@ -205,65 +206,6 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     @Override
     public void initDatas() {
         presenter.onStart();
-
-        List<BannerData> list = new ArrayList<>();
-        BannerData data1 = new BannerData();
-        data1.setImgUrl("http://p4.so.qhimgs1.com/t01769129c2d71c24aa.jpg");
-        BannerData data2 = new BannerData();
-        data2.setImgUrl("http://p0.so.qhmsg.com/sdr/1728_1080_/t01f9607473316946ef.jpg");
-        BannerData data3 = new BannerData();
-        data3.setImgUrl("http://p0.so.qhimgs1.com/t01c558f3d2bee4917c.jpg");
-        list.add(data1);
-        list.add(data2);
-        list.add(data3);
-        headerViewHolder.loadBanner(list);
-
-        List<String> info = new ArrayList<>();
-        info.add("187****0421在闪贷侠成功借款1000元");
-        info.add("150****7450在爱信钱包成功借款1000元");
-        info.add("176****2105在点融网成功借款700元");
-        info.add("150****1122在贷款王成功借款500元");
-        info.add("134****0123在爱信钱包成功借款2000元");
-        info.add("138****4422在闪贷侠成功借款800元");
-        headerViewHolder.marqueeView.startWithList(info);
-
-        List<GonglueData> gonglueDataList = new ArrayList<>();
-        GonglueData d1 = new GonglueData();
-        d1.setTitle("借款攻略");
-        d1.setImageUrl("http://p2.so.qhimgs1.com/sdr/1728_1080_/t01a93405bee16d9592.jpg");
-        GonglueData d2 = new GonglueData();
-        d2.setTitle("还款缓兵之计");
-        d2.setImageUrl("http://p3.so.qhmsg.com/sdr/1728_1080_/t01d81c186009d6aba8.jpg");
-        GonglueData d3 = new GonglueData();
-        d3.setTitle("如何提升信用");
-        d3.setImageUrl("http://p0.so.qhimgs1.com/sdr/1728_1080_/t01c73851a56941d220.jpg");
-        GonglueData d4 = new GonglueData();
-        d4.setTitle("如何借款");
-        d4.setImageUrl("http://p3.so.qhmsg.com/sdr/1728_1080_/t01af7e99f4d3abfc68.jpg");
-        GonglueData d5 = new GonglueData();
-        d5.setTitle("借款神器");
-        d5.setImageUrl("http://p1.so.qhimgs1.com/t01eb20327ed434696d.jpg");
-        GonglueData d6 = new GonglueData();
-        d6.setTitle("是你的借款");
-        d6.setImageUrl("http://p4.so.qhmsg.com/sdr/1728_1080_/t01e9dc7909923b9349.jpg");
-        gonglueDataList.add(d1);
-        gonglueDataList.add(d2);
-        gonglueDataList.add(d3);
-        gonglueDataList.add(d4);
-        gonglueDataList.add(d5);
-        gonglueDataList.add(d6);
-
-        gonglueAdapter.onReference(gonglueDataList);
-
-        List<String> tempList = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
-            tempList.add("" + i);
-        }
-        loanRVAdapter.notifyDataSetChanged(tempList);
-
-        if (inputMoney != null) {
-            headerViewHolder.etMoney.setText(inputMoney);
-        }
     }
 
     @Override
@@ -286,7 +228,6 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                     inputMoney = "0";
                 else
                     inputMoney = headerViewHolder.etMoney.getText().toString();
-
                 EventBus.getDefault().post(new NavigateLoan(inputMoney));
                 break;
             case R.id.tv_more:
@@ -314,12 +255,24 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void setPresenter(TabHomeContract.Presenter presenter) {
+        //injected.nothing to do.
     }
 
     @Override
-    public void showErrorMsg(String msg) {
-
+    public void showBanner(List<AdBanner> list) {
+        headerViewHolder.loadBanner(list);
     }
+
+    @Override
+    public void showBorrowingScroll(List<String> list) {
+        headerViewHolder.marqueeView.startWithList(list);
+    }
+
+    @Override
+    public void showAdDialog(AdBanner ad) {
+        new AdDialog().setAd(ad).show(getChildFragmentManager(), AdDialog.class.getSimpleName());
+    }
+
 
     class HeaderViewHolder {
         View itemView;
@@ -345,11 +298,11 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         @BindView(R.id.recycle_hor)
         RecyclerView recyclerView;
 
-        Unbinder headerUnbinder;
+        Unbinder unbinder;
 
         HeaderViewHolder(View itemView) {
             this.itemView = itemView;
-            headerUnbinder = ButterKnife.bind(this, itemView);
+            unbinder = ButterKnife.bind(this, itemView);
 
             banner.setDelayTime(1500);
             banner.setIndicatorGravity(BannerConfig.RIGHT);
@@ -357,7 +310,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         }
 
         void destroy() {
-            headerUnbinder.unbind();
+            marqueeView.stopFlipping();
+            unbinder.unbind();
         }
 
         void setOnClickListener(View.OnClickListener listener) {
@@ -366,7 +320,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
             tvMore.setOnClickListener(listener);
         }
 
-        void loadBanner(List<BannerData> list) {
+        void loadBanner(List<AdBanner> list) {
             List<String> images = new ArrayList<>();
             for (int i = 0; i < list.size(); ++i) {
                 images.add(list.get(i).getImgUrl());
