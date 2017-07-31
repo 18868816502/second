@@ -4,38 +4,31 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.RotateAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Administrator on 2017/3/7.
- */
+public class MoneyFilterPopup extends PopupWindow {
 
-public class BrZhiyePopup extends PopupWindow {
+    @BindView(R.id.et_money)
+    EditText etMoney;
 
-    @BindView(R.id.ly_1)
-    LinearLayout ly1;
-    @BindView(R.id.ly_2)
-    LinearLayout ly2;
-    @BindView(R.id.ly_3)
-    LinearLayout ly3;
-    @BindView(R.id.ly_4)
-    LinearLayout ly4;
-
-    private int selectIndex = 4;
+    private String money;
     private Activity context;
 
     private View mMenuView;
@@ -43,18 +36,17 @@ public class BrZhiyePopup extends PopupWindow {
     private TextView tv;
     private ImageView iv;
 
-
-    public BrZhiyePopup(final Activity context, View shadowView, TextView tv, ImageView iv) {
+    public MoneyFilterPopup(final Activity context, String money, View shadowView, TextView tv, ImageView iv) {
         super(context);
         this.context = context;
         this.shadowView = shadowView;
 
 
-
         shadowView.setVisibility(View.VISIBLE);
+        shadowView.invalidate();
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mMenuView = inflater.inflate(R.layout.dialog_brzhiye, null);
+        mMenuView = inflater.inflate(R.layout.dialog_brmoney, null);
         ButterKnife.bind(this, mMenuView);
 
         //设置SelectPicPopupWindow的View
@@ -90,6 +82,10 @@ public class BrZhiyePopup extends PopupWindow {
         tv.setTextColor(Color.parseColor("#5591FF"));
         iv.setImageResource(R.mipmap.daosanjiao_blue);
         rotateArrow(0, 180, iv);
+
+
+        etMoney.setText(money);
+        InputMethodUtil.setEditTextSelectionToEnd(etMoney);
     }
 
 
@@ -103,39 +99,35 @@ public class BrZhiyePopup extends PopupWindow {
     }
 
 
+    public onBrMoneyListener listener;
 
-    @OnClick({R.id.ly_1, R.id.ly_2, R.id.ly_3, R.id.ly_4})
+
+    @OnClick({R.id.tv_cancle, R.id.tv_ok})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ly_1:
-                selectIndex = 1;
+            case R.id.tv_cancle:
+                etMoney.setText("");
                 break;
-            case R.id.ly_2:
-                selectIndex = 2;
-                break;
-            case R.id.ly_3:
-                selectIndex = 3;
-                break;
-            case R.id.ly_4:
-                selectIndex = 4;
+            case R.id.tv_ok:
+                money = etMoney.getText().toString();
+                if (TextUtils.isEmpty(money)) {
+                    ToastUtils.showShort(context, "请输入金额", null);
+                    return;
+                }
+                dismiss();
+                if (listener != null)
+                    listener.onMoneyItemClick(money);
                 break;
         }
-
-        if (listener != null)
-            listener.onZhiyeItemClick(selectIndex);
-        dismiss();
     }
 
-
-    public onBrZhiyeListener listener;
-    public interface onBrZhiyeListener {
-        void onZhiyeItemClick(int selectIndex);
+    public interface onBrMoneyListener {
+        void onMoneyItemClick(String money);
     }
 
-    public void setShareItemListener(onBrZhiyeListener listener) {
+    public void setShareItemListener(onBrMoneyListener listener) {
         this.listener = listener;
     }
-
 
 
     /**

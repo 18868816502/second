@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:layout_marginTop="5dp"
     android:background="@drawable/round_white_shadow"
     tools:ignore="RtlHardcoded">
 
@@ -14,8 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="7dp"
-        android:paddingTop="7dp">
+        android:paddingBottom="15dp"
+        android:paddingLeft="11dp"
+        android:paddingRight="11dp"
+        android:paddingTop="11dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,14 +26,14 @@
 
             <ImageView
                 android:id="@+id/loan_image"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="9dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -44,38 +45,42 @@
                         android:id="@+id/loan_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="贷款王"
-                        android:textColor="@color/c_222222"
+                        android:textColor="@color/black_1"
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/tag_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/round_0_grey"
-                        android:padding="2dp"
-                        android:text="无抵押"
-                        android:textColor="#9c9fb8"
-                        android:textSize="10sp" />
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="2dp"
+                        android:textColor="#99323834"
+                        android:textSize="11sp" />
 
                     <TextView
+                        android:id="@+id/tag_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/round_0_grey"
-                        android:padding="2dp"
-                        android:text="1小时放款"
-                        android:textColor="#9c9fb8"
-                        android:textSize="10sp" />
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="2dp"
+                        android:textColor="#99323834"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/loaned_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="成功贷款人数34,456人"
-                    android:textColor="@color/c_222222"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#909298"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -90,94 +95,83 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
+            android:divider="@drawable/linear_vertical_divider_small"
+            android:dividerPadding="12dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:showDividers="middle">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/loan_max_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="50万元"
-                    android:textColor="@color/red"
-                    android:textSize="25sp" />
+                    android:textColor="#ff395e"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="7dp"
                     android:text="@string/loan_max_amount"
-                    android:textColor="@color/c_999999"
-                    android:textSize="12sp" />
+                    android:textColor="#909298"
+                    android:textSize="11sp" />
 
 
             </LinearLayout>
 
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="20dp"
-                android:background="@color/line" />
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/loan_interests"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.1%"
-                    android:textColor="@color/c_222222"
-                    android:textSize="25sp" />
+                    android:textColor="@color/black_1"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="7dp"
                     android:text="@string/loan_interests"
-                    android:textColor="@color/c_999999"
-                    android:textSize="12sp" />
+                    android:textColor="#909298"
+                    android:textSize="11sp" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="20dp"
-                android:background="@color/line" />
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/loan_time_range"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12-48月"
-                    android:textColor="@color/c_222222"
-                    android:textSize="25sp" />
+                    android:textColor="@color/black_1"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="7dp"
                     android:text="@string/loan_time_range"
-                    android:textColor="@color/c_999999"
-                    android:textSize="12sp" />
+                    android:textColor="#909298"
+                    android:textSize="11sp" />
 
             </LinearLayout>
 
@@ -189,7 +183,6 @@
         android:id="@+id/loan_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:src="@mipmap/label_featured" />
+        android:layout_gravity="right" />
 
 </FrameLayout>

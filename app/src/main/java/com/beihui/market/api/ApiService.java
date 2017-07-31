@@ -4,6 +4,8 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
+import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
@@ -14,13 +16,13 @@ import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
@@ -166,8 +168,35 @@ public interface ApiService {
     /**
      * 头条滚动信息
      */
-    @POST("supernatant/queryBorrowingScroll")
+    @POST("/supernatant/queryBorrowingScroll")
     Observable<ResultEntity<List<String>>> queryBorrowingScroll();
 
-    
+    /**
+     * 获取首页热门资讯
+     */
+    @GET("/information/hotList")
+    Observable<ResultEntity<List<News.Row>>> queryHotNews();
+
+    /**
+     * 获取首页热门贷款产品
+     */
+    @GET("/product/hotList")
+    Observable<ResultEntity<List<LoanProduct.Row>>> queryHotLoanProducts();
+
+
+    /**
+     * 查询贷款产品列表
+     */
+    @FormUrlEncoded
+    @POST("/product/list")
+    Observable<ResultEntity<LoanProduct>> queryLoanProduct(@Field("amount") double amount, @Field("due_time") String dueTime,
+                                                           @Field("orientCareer") String pro, @Field("pageNo") int pageNum,
+                                                           @Field("pageSize") int pageSize);
+
+    /**
+     * 查询贷款产品详情
+     */
+    @FormUrlEncoded
+    @POST("/product/details")
+    Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId);
 }

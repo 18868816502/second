@@ -37,7 +37,12 @@ public class MessageCenterAdapter extends BaseQuickAdapter<ReNews.Row, BaseViewH
     protected void convert(BaseViewHolder helper, ReNews.Row item) {
         if (item.getImage() != null) {
             Context context = helper.itemView.getContext();
-            Glide.with(context).load(item.getImage()).into((ImageView) helper.getView(R.id.news_image));
+            Glide.with(context)
+                    .load(item.getImage())
+                    .placeholder(R.drawable.image_place_holder)
+                    .into((ImageView) helper.getView(R.id.news_image));
+        } else {
+            helper.setImageResource(R.id.news_image, R.drawable.image_place_holder);
         }
         if (item.getTitle() != null) {
             helper.setText(R.id.news_title, item.getTitle());

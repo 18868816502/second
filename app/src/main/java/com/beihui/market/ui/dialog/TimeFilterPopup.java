@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/3/7.
  */
 
-public class BrTimePopup extends PopupWindow {
+public class TimeFilterPopup extends PopupWindow {
 
     @BindView(R.id.flow_layout)
     FlowTagLayout flowTagLayout;
@@ -41,8 +41,8 @@ public class BrTimePopup extends PopupWindow {
 
     private String[] tags;
 
-    public BrTimePopup(final Activity context, final int selectTimeIndex, View shadowView, TextView tv, ImageView iv,
-                       String[] tags) {
+    public TimeFilterPopup(final Activity context, final int selectTimeIndex, View shadowView, TextView tv, ImageView iv,
+                           String[] tags) {
         super(context);
         this.context = context;
         this.shadowView = shadowView;

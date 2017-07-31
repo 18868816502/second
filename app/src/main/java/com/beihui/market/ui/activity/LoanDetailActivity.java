@@ -1,11 +1,20 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ReplacementSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,15 +26,26 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerLoanDetailComponent;
+import com.beihui.market.injection.module.LoanDetailModule;
+import com.beihui.market.ui.contract.LoanProductDetailContract;
+import com.beihui.market.ui.presenter.LoanDetailPresenter;
 import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
 
-public class LoanDetailActivity extends BaseComponentActivity {
+public class LoanDetailActivity extends BaseComponentActivity implements LoanProductDetailContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.scroll_view)
@@ -55,8 +75,18 @@ public class LoanDetailActivity extends BaseComponentActivity {
     TextView loanInterestsTv;
     @BindView(R.id.loan_time_range)
     TextView loanTimeRangeTv;
+    @BindView(R.id.tab_1)
+    TextView tab1Tv;
+    @BindView(R.id.tab_2)
+    TextView tab2Tv;
+    @BindView(R.id.tab_3)
+    TextView tab3Tv;
+
 
     private int hitDistance;
+
+    @Inject
+    LoanDetailPresenter presenter;
 
     private int[] selectedState = new int[]{android.R.attr.state_selected};
     private int[] noneState = new int[]{};
@@ -83,12 +113,21 @@ public class LoanDetailActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        bindFakeData();
+        LoanProduct.Row loan = getIntent().getParcelableExtra("loan");
+        if (loan != null) {
+            bindAbstractInfo(loan);
+        }
+        presenter.onStart();
+        presenter.queryDetail(loan.getId());
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
+        DaggerLoanDetailComponent.builder()
+                .appComponent(appComponent)
+                .loanDetailModule(new LoanDetailModule(this))
+                .build()
+                .inject(this);
     }
 
     private void changeToolBarIconState(boolean selected) {
@@ -119,39 +158,143 @@ public class LoanDetailActivity extends BaseComponentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void bindFakeData() {
-        loanNameTitleTv.setText("现金巴士");
-        loanNameTv.setText("现金巴士");
-        forPeopleTagTv.setText("上班族");
-        inflateTag();
-        rateView.setRate(3, true);
-        String loanedNumber = "999";
-        SpannableString ss = new SpannableString("成功借款" + loanedNumber + "人");
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        loanedNumberTv.setText(ss);
-        loanMaxAmountTv.setText("50万元");
-        loanInterestsTv.setText("0.1%");
-        loanTimeRangeTv.setText("12-36月");
-        inflateFeature();
-    }
-
-    private void inflateTag() {
+    private void inflateTag(String[] tags) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        for (int i = 0; i < 3; ++i) {
+        for (String tag : tags) {
             TextView textView = (TextView) inflater.inflate(R.layout.layout_tag_text, null);
-            textView.setText("tag " + i);
+            textView.setText(tag);
             tagContainer.addView(textView);
         }
     }
 
-    private void inflateFeature() {
+    private void inflateFeature(List<LoanProductDetail.Explain> list) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        String content = "<p>哈哈哈</p><br/><p>哈哈哈</p><br/><p>哈哈哈</p><br/>";
-        for (int i = 0; i < 6; ++i) {
+        for (int i = 0; i < list.size(); ++i) {
             View rootView = inflater.inflate(R.layout.layout_loan_detail_feature, null);
-            ((TextView) rootView.findViewById(R.id.feature_title)).setText("FeatureTitle " + i);
-            ((TextView) rootView.findViewById(R.id.feature_content)).setText(Html.fromHtml(content));
+            LoanProductDetail.Explain explain = list.get(i);
+
+            if (explain.getExplainName() != null) {
+                ((TextView) rootView.findViewById(R.id.feature_title)).setText(explain.getExplainName());
+            }
+            if (explain.getExplainContent() != null) {
+                ((TextView) rootView.findViewById(R.id.feature_content)).setText(Html.fromHtml(explain.getExplainContent()));
+            }
             detailContainer.addView(rootView);
+        }
+    }
+
+    private void bindAbstractInfo(LoanProduct.Row loan) {
+        //name
+        if (loan.getProductName() != null) {
+            loanNameTitleTv.setText(loan.getProductName());
+            loanNameTv.setText(loan.getProductName());
+        }
+        //logo
+        if (loan.getLogo() != null) {
+            Glide.with(this)
+                    .load(loan.getLogo())
+                    .into(loanIconIv);
+        }
+        //tags
+        String[] feature = loan.getFeature() != null ? loan.getFeature().split(",") : null;
+        if (feature != null && feature.length > 0 && !feature[0].equals("")) {
+            inflateTag(feature);
+        }
+        //loaned number
+        SpannableString ss = new SpannableString("成功借款" + loan.getSuccessCount() + "人");
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        loanedNumberTv.setText(ss);
+        //loan max amount
+        if (loan.getBorrowingHighText() != null) {
+            String maxAmount = loan.getBorrowingHighText();
+            ss = new SpannableString(maxAmount);
+            ss.setSpan(new SizePosSpan(11), maxAmount.length() - 1, maxAmount.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            loanMaxAmountTv.setText(ss);
+        }
+        //loan interest
+        if (loan.getInterestLowText() != null) {
+            String interestText = loan.getInterestLowText();
+            ss = new SpannableString(interestText);
+            ss.setSpan(new SizePosSpan(11), interestText.length() - 1, interestText.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            loanInterestsTv.setText(ss);
+        }
+        //loan due time
+        if (loan.getDueTimeText() != null) {
+            String time = loan.getDueTimeText();
+            ss = new SpannableString(time);
+            ss.setSpan(new SizePosSpan(11), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            loanTimeRangeTv.setText(ss);
+        }
+
+    }
+
+    @Override
+    public void setPresenter(LoanProductDetailContract.Presenter presenter) {
+        //injected.nothing to do.
+    }
+
+    @Override
+    public void showLoanDetail(LoanProductDetail detail) {
+        LoanProductDetail.Base base = detail.getBase();
+        if (base != null) {
+            if (base.getSuccessCountPointText() != null) {
+                try {
+                    int rate = (int) (Double.parseDouble(base.getSuccessCountPointText()) * 10);
+                    int star = rate / 10;
+                    int tail = rate % 10;
+                    if (tail != 0) {
+                        rateView.setRate(star + 1, true);
+                    } else {
+                        rateView.setRate(star, false);
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (base.getOrientCareerText() != null && !base.getOrientCareerText().equals("全部")) {
+                forPeopleTagTv.setVisibility(View.VISIBLE);
+                forPeopleTagTv.setText(base.getOrientCareerText());
+            }
+            if (base.getFastestLoanTimeText() != null) {
+                tab1Tv.setText(base.getFastestLoanTimeText());
+            }
+            if (base.getMortgageMethodText() != null) {
+                tab2Tv.setText(base.getMortgageMethodText());
+            }
+            if (base.getRepayMethodText() != null) {
+                tab3Tv.setText(base.getRepayMethodText());
+            }
+        }
+        List<LoanProductDetail.Explain> list = detail.getExplain();
+        if (list != null && list.size() > 0) {
+            inflateFeature(list);
+        }
+    }
+
+    class SizePosSpan extends ReplacementSpan {
+
+        private int size;
+        private TextPaint textPaint;
+
+
+        SizePosSpan(int size) {
+            this.size = (int) (size * getResources().getDisplayMetrics().density);
+            textPaint = new TextPaint();
+            textPaint.setTextSize(this.size);
+        }
+
+        @Override
+        public int getSize(@NonNull Paint paint, CharSequence text, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @Nullable Paint.FontMetricsInt fm) {
+            text = text.subSequence(start, end);
+            return (int) paint.measureText(text.toString());
+        }
+
+        @Override
+        public void draw(@NonNull Canvas canvas, CharSequence text, @IntRange(from = 0) int start, @IntRange(from = 0) int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
+            text = text.subSequence(start, end);
+            Paint.FontMetricsInt fm = paint.getFontMetricsInt();
+            textPaint.setColor(paint.getColor());
+            canvas.drawText(text.toString(), x, top + (fm.bottom - fm.top) / 2, textPaint);
         }
     }
 }

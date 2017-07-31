@@ -5,6 +5,8 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
+import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
@@ -34,6 +36,8 @@ public class Api {
     private static Api sInstance;
     private ApiService service;
 
+    private ApiService serviceTemp;
+
     public static Api getInstance(OkHttpClient okHttpClient) {
         if (sInstance == null) {
             synchronized (Api.class) {
@@ -54,6 +58,15 @@ public class Api {
                 .client(okHttpClient)
                 .build();
         service = retrofit.create(ApiService.class);
+
+        Retrofit retrofit1 = new Retrofit.Builder()
+                .baseUrl("http://116.62.113.207:9080")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+        serviceTemp = retrofit1.create(ApiService.class);
     }
 
     /**
@@ -277,6 +290,42 @@ public class Api {
      */
     public Observable<ResultEntity<List<String>>> queryBorrowingScroll() {
         return service.queryBorrowingScroll();
+    }
+
+    /**
+     * 查询首页热门资讯
+     */
+    public Observable<ResultEntity<List<News.Row>>> queryHotNews() {
+        return service.queryHotNews();
+    }
+
+    /**
+     * 查询首页热门贷款产品
+     */
+    public Observable<ResultEntity<List<LoanProduct.Row>>> queryHotLoanProducts() {
+        return serviceTemp.queryHotLoanProducts();
+    }
+
+    /**
+     * 条件查询贷款产品列表
+     *
+     * @param amount   目标金额
+     * @param dueTime  借款期限
+     * @param pro      职业身份
+     * @param pageNum  查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<LoanProduct>> queryLoanProduct(double amount, int dueTime, int pro, int pageNum, int pageSize) {
+        return serviceTemp.queryLoanProduct(amount, dueTime + "", pro + "", pageNum, pageSize);
+    }
+
+    /**
+     * 查询贷款产品详情
+     *
+     * @param id 产品id
+     */
+    public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id) {
+        return serviceTemp.queryLoanProductDetail(id);
     }
 
     /*****generate method*****/

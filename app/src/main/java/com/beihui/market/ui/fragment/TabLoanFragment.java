@@ -1,5 +1,6 @@
 package com.beihui.market.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,22 +11,32 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerTabLoanComponent;
+import com.beihui.market.injection.module.TabLoanModule;
+import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
-import com.beihui.market.ui.dialog.BrMoneyPopup;
-import com.beihui.market.ui.dialog.BrTimePopup;
-import com.beihui.market.ui.dialog.BrZhiyePopup;
+import com.beihui.market.ui.contract.TabLoanContract;
+import com.beihui.market.ui.dialog.MoneyFilterPopup;
+import com.beihui.market.ui.dialog.ProFilterPopup;
+import com.beihui.market.ui.dialog.TimeFilterPopup;
+import com.beihui.market.ui.presenter.TabLoanPresenter;
+import com.beihui.market.ui.rvdecoration.LoanItemDeco;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.drawable.BlurDrawable;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onBrMoneyListener,
-        BrTimePopup.onBrTimeListener, BrZhiyePopup.onBrZhiyeListener {
+public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.View, MoneyFilterPopup.onBrMoneyListener,
+        TimeFilterPopup.onBrTimeListener, ProFilterPopup.onBrZhiyeListener {
 
     @BindView(R.id.filter_container)
     LinearLayout filterContainer;
@@ -52,24 +63,19 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
     FrameLayout loanContainer;
     @BindView(R.id.blur_view)
     View blurView;
-
     @BindView(R.id.recycle_view)
     RecyclerView recycleView;
 
+    @Inject
+    TabLoanPresenter presenter;
 
-    private BrMoneyPopup moneyPopup;
-    private BrTimePopup timePopup;
-    private BrZhiyePopup zhiyePopup;
+    private String pendingAmount;
 
-    //target money to query, default 5000
-    private String inputMoney = "5000";
-    //记录选择的是什么范围的，一个月，三个月还是不限,从1 ~ 7
-    public int selectTimeIndex = 1;
-
-    String tags[] = {"1个月及以下", "3个月", "6个月", "12个月", "24个月", "36个月及以上", "不限"};
+    private MoneyFilterPopup moneyFilterPopup;
+    private TimeFilterPopup timeFilterPopup;
+    private ProFilterPopup proFilterPopup;
 
     private LoanRVAdapter loanRVAdapter;
-
 
     public static TabLoanFragment newInstance() {
         return new TabLoanFragment();
@@ -83,67 +89,63 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
     @Override
     public void configViews() {
         blurView.setBackgroundDrawable(new BlurDrawable(getContext(), loanContainer));
-
-        moneyFilterContent.setText(inputMoney);
-        setOnTimeSelect(selectTimeIndex);
+        loanRVAdapter = new LoanRVAdapter();
+        loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
+                intent.putExtra("loan", (LoanProduct.Row) adapter.getItem(position));
+                startActivity(intent);
+            }
+        });
 
         recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-        loanRVAdapter = new LoanRVAdapter();
         recycleView.setAdapter(loanRVAdapter);
+        recycleView.addItemDecoration(new LoanItemDeco());
     }
 
     @Override
     public void initDatas() {
-        List<String> tempList = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
-            tempList.add("" + i);
+        presenter.onStart();
+        if (pendingAmount != null) {
+            try {
+                presenter.filterAmount(Double.parseDouble(pendingAmount));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                ToastUtils.showShort(getContext(), "查询金额不是数字", null);
+            }
+            pendingAmount = null;
         }
-        loanRVAdapter.notifyDataSetChanged(tempList);
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
+        DaggerTabLoanComponent.builder()
+                .appComponent(appComponent)
+                .tabLoanModule(new TabLoanModule(this))
+                .build()
+                .inject(this);
     }
 
 
     @Override
     public void onMoneyItemClick(String money) {
-        this.inputMoney = money;
-        moneyFilterContent.setText(money);
+        try {
+            presenter.filterAmount(Double.parseDouble(money));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            ToastUtils.showShort(getContext(), "输入的金额不是数字", null);
+        }
     }
 
     @Override
     public void onTimeItemClick(int selectTimeIndex) {
-        this.selectTimeIndex = selectTimeIndex;
-        setOnTimeSelect(selectTimeIndex);
+        presenter.filterDueTime(selectTimeIndex);
     }
 
-    /**
-     * 点击职业弹出框的选择
-     *
-     * @param selectIndex
-     */
     @Override
     public void onZhiyeItemClick(int selectIndex) {
-        switch (selectIndex) {
-            case 1:
-                proFilterContent.setText("上班族");
-                break;
-            case 2:
-                proFilterContent.setText("学生");
-                break;
-            case 3:
-                proFilterContent.setText("个体户");
-                break;
-            case 4:
-                proFilterContent.setText("不限");
-                break;
-        }
-    }
-
-    public void setOnTimeSelect(int selectTimeIndex) {
-        timeFilterContent.setText(tags[selectTimeIndex]);
+        presenter.filterPro(selectIndex);
     }
 
 
@@ -151,24 +153,60 @@ public class TabLoanFragment extends BaseTabFragment implements BrMoneyPopup.onB
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.money_filter:
-                moneyPopup = new BrMoneyPopup(getActivity(), inputMoney, blurView, moneyFilterText, moneyFilterImage);
-                moneyPopup.setShareItemListener(this);
-                moneyPopup.showAsDropDown(filterContainer);
+                if (moneyFilterPopup == null) {
+                    moneyFilterPopup = new MoneyFilterPopup(getActivity(), presenter.getFilterAmount(), blurView, moneyFilterText, moneyFilterImage);
+                    moneyFilterPopup.setShareItemListener(this);
+                }
+                moneyFilterPopup.showAsDropDown(filterContainer);
                 break;
             case R.id.time_filter:
-                timePopup = new BrTimePopup(getActivity(), selectTimeIndex, blurView, timeFilterText, timeFilterImage, tags);
-                timePopup.setShareItemListener(this);
-                timePopup.showAsDropDown(filterContainer);
+                if (timeFilterPopup == null) {
+                    timeFilterPopup = new TimeFilterPopup(getActivity(), presenter.getFilterDueTimeSelected(),
+                            blurView, timeFilterText, timeFilterImage, presenter.getFilterDueTime());
+                    timeFilterPopup.setShareItemListener(this);
+                }
+                timeFilterPopup.showAsDropDown(filterContainer);
                 break;
             case R.id.pro_filter:
-                zhiyePopup = new BrZhiyePopup(getActivity(), blurView, proFilterText, proFilterImage);
-                zhiyePopup.setShareItemListener(this);
-                zhiyePopup.showAsDropDown(filterContainer);
+                if (proFilterPopup == null) {
+                    proFilterPopup = new ProFilterPopup(getActivity(), blurView, proFilterText, proFilterImage);
+                    proFilterPopup.setShareItemListener(this);
+                }
+                proFilterPopup.showAsDropDown(filterContainer);
                 break;
         }
     }
 
     public void setQueryMoney(String queryMoney) {
-        this.inputMoney = queryMoney;
+        this.pendingAmount = queryMoney;
+    }
+
+    @Override
+    public void setPresenter(TabLoanContract.Presenter presenter) {
+        //injected.nothing to do.
+    }
+
+    @Override
+    public void showFilters(String amount, String dueTime, String pro) {
+        moneyFilterContent.setText(amount);
+        timeFilterContent.setText(dueTime);
+        proFilterContent.setText(pro);
+    }
+
+    @Override
+    public void showLoanProduct(List<LoanProduct.Row> list) {
+        loanRVAdapter.notifyLoanProductChanged(list);
+    }
+
+    @Override
+    public void showNoLoanProduct() {
+
+    }
+
+    @Override
+    public void showNoMoreLoanProduct() {
+        if (loanRVAdapter.isLoading()) {
+            loanRVAdapter.loadMoreEnd(true);
+        }
     }
 }

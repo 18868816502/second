@@ -4,49 +4,51 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.RotateAnimation;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.ToastView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BrMoneyPopup extends PopupWindow {
 
-    @BindView(R.id.et_money)
-    EditText etMoney;
+public class ProFilterPopup extends PopupWindow {
 
-    private String money;
-    private Activity context;
+    @BindView(R.id.ly_1)
+    LinearLayout ly1;
+    @BindView(R.id.ly_2)
+    LinearLayout ly2;
+    @BindView(R.id.ly_3)
+    LinearLayout ly3;
+    @BindView(R.id.ly_4)
+    LinearLayout ly4;
+
+    private int selectIndex;
 
     private View mMenuView;
     private View shadowView;
     private TextView tv;
     private ImageView iv;
 
-    public BrMoneyPopup(final Activity context, String money, View shadowView, TextView tv, ImageView iv) {
+
+    public ProFilterPopup(final Activity context, View shadowView, TextView tv, ImageView iv) {
         super(context);
-        this.context = context;
         this.shadowView = shadowView;
 
 
         shadowView.setVisibility(View.VISIBLE);
-        shadowView.invalidate();
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mMenuView = inflater.inflate(R.layout.dialog_brmoney, null);
+        mMenuView = inflater.inflate(R.layout.dialog_brzhiye, null);
         ButterKnife.bind(this, mMenuView);
 
         //设置SelectPicPopupWindow的View
@@ -82,10 +84,6 @@ public class BrMoneyPopup extends PopupWindow {
         tv.setTextColor(Color.parseColor("#5591FF"));
         iv.setImageResource(R.mipmap.daosanjiao_blue);
         rotateArrow(0, 180, iv);
-
-
-        etMoney.setText(money);
-        InputMethodUtil.setEditTextSelectionToEnd(etMoney);
     }
 
 
@@ -99,33 +97,36 @@ public class BrMoneyPopup extends PopupWindow {
     }
 
 
-    public onBrMoneyListener listener;
-
-
-    @OnClick({R.id.tv_cancle, R.id.tv_ok})
+    @OnClick({R.id.ly_1, R.id.ly_2, R.id.ly_3, R.id.ly_4})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_cancle:
-                etMoney.setText("");
+            case R.id.ly_1:
+                selectIndex = 0;
                 break;
-            case R.id.tv_ok:
-                money = etMoney.getText().toString();
-                if (TextUtils.isEmpty(money)) {
-                    ToastView.initToast().textToast(context, "请输入金额");
-                    return;
-                }
-                dismiss();
-                if (listener != null)
-                    listener.onMoneyItemClick(money);
+            case R.id.ly_2:
+                selectIndex = 1;
+                break;
+            case R.id.ly_3:
+                selectIndex = 2;
+                break;
+            case R.id.ly_4:
+                selectIndex = 3;
                 break;
         }
+
+        if (listener != null)
+            listener.onZhiyeItemClick(selectIndex);
+        dismiss();
     }
 
-    public interface onBrMoneyListener {
-        void onMoneyItemClick(String money);
+
+    public onBrZhiyeListener listener;
+
+    public interface onBrZhiyeListener {
+        void onZhiyeItemClick(int selectIndex);
     }
 
-    public void setShareItemListener(onBrMoneyListener listener) {
+    public void setShareItemListener(onBrZhiyeListener listener) {
         this.listener = listener;
     }
 

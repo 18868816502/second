@@ -24,19 +24,26 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.base.Constant;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.entity.News;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabHomeComponent;
 import com.beihui.market.injection.module.TabHomeModule;
 import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.MessageCenterActivity;
+import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
-import com.beihui.market.ui.adapter.GonglueAdapter;
+import com.beihui.market.ui.adapter.HotNewsAdapter;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.busevents.NavigateLoan;
+import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.contract.TabHomeContract;
 import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.presenter.TabHomePresenter;
+import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.bumptech.glide.Glide;
@@ -80,14 +87,12 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     //记录顶部banner的高度
     private int bannerHeight;
     //status and tool bar render
-    public int toolBarBgAlpha;
+    public float toolBarBgAlpha;
 
     private HeaderViewHolder headerViewHolder;
 
-    private GonglueAdapter gonglueAdapter;
-
     //记录输入的钱数
-    private String inputMoney;
+    private int inputMoney = Constant.DEFAULT_FILTER_MONEY;
 
     private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         int scrollY;
@@ -95,22 +100,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             scrollY += dy;
-
             int maxMove = bannerHeight / 2;
-            if (scrollY <= maxMove) {
-                if (scrollY < 5) {
-                    toolBarBgAlpha = 0;
-                } else if (scrollY >= 10 && scrollY < maxMove) {
-                    float ratio = (float) scrollY / maxMove;
-                    toolBarBgAlpha = (int) (ratio * 255);
-                } else {
-                    toolBarBgAlpha = 255;
-                }
-            } else {
-                toolBarBgAlpha = 255;
-            }
-
-            renderStatusAndToolBar(toolBarBgAlpha);
+            renderStatusAndToolBar(scrollY / (float) maxMove);
         }
 
     };
@@ -129,12 +120,17 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     public void onDestroyView() {
         headerViewHolder.banner.stopAutoPlay();
         headerViewHolder.destroy();
+        headerViewHolder = null;
         super.onDestroyView();
     }
 
-    void renderStatusAndToolBar(int textAlpha) {
-        toolBarContainer.setBackgroundColor(Color.argb(textAlpha, 85, 145, 255));
-        center_text.setTextColor(Color.argb(textAlpha, 255, 255, 255));
+    void renderStatusAndToolBar(float alpha) {
+        toolBarBgAlpha = alpha;
+        int alphaInt = (int) (alpha * 255);
+        alphaInt = alphaInt < 10 ? 0 : alphaInt;
+        alphaInt = alphaInt > 255 ? 255 : alphaInt;
+        toolBarContainer.setBackgroundColor(Color.argb(alphaInt, 85, 145, 255));
+        center_text.setTextColor(Color.argb(alphaInt, 255, 255, 255));
     }
 
     @Override
@@ -148,14 +144,12 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        if (inputMoney != null) {
-            headerViewHolder.etMoney.setText(inputMoney);
-        }
         loanRVAdapter = new LoanRVAdapter();
         loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
+                intent.putExtra("loan", (LoanProduct.Row) adapter.getItem(position));
                 startActivity(intent);
             }
         });
@@ -163,34 +157,18 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addOnScrollListener(onScrollListener);
         recyclerView.setAdapter(loanRVAdapter);
-
         LayoutInflater inflater =
                 (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View headerView =
                 inflater.inflate(R.layout.layout_tab_home_rv_header, recyclerView, false);
         headerViewHolder = new HeaderViewHolder(headerView);
 
-        headerViewHolder.worthTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), WorthTestActivity.class);
-                startActivity(intent);
-            }
-        });
+        headerViewHolder.worthTest.setOnClickListener(this);
+        headerViewHolder.lyEtbg.setOnClickListener(this);
+        headerViewHolder.tvTuiJian.setOnClickListener(this);
+        headerViewHolder.tvMore.setOnClickListener(this);
+        headerViewHolder.etMoney.setText(inputMoney + "");
 
-
-        LinearLayoutManager layoutHorManager = new LinearLayoutManager(getActivity());
-        layoutHorManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        headerViewHolder.recyclerView.setLayoutManager(layoutHorManager);
-        gonglueAdapter = new GonglueAdapter(getActivity());
-        headerViewHolder.recyclerView.setAdapter(gonglueAdapter);
-
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) headerViewHolder.lyBanner.getLayoutParams();
-        params.width = CommonUtils.getScreenMaxWidth(getActivity(), 0);
-        bannerHeight = (params.width * 530) / 975;
-        params.height = bannerHeight;
-
-        headerViewHolder.lyBanner.setLayoutParams(params);
         loanRVAdapter.setHeaderView(headerView);
 
         int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
@@ -198,9 +176,6 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         lp.height = statusHeight;
         fakedBar.setLayoutParams(lp);
         renderStatusAndToolBar(toolBarBgAlpha);
-
-        headerViewHolder.setOnClickListener(this);
-
     }
 
     @Override
@@ -220,17 +195,21 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.worth_test:
+                presenter.checkMyWorth();
+                break;
             case R.id.ly_etbg:
                 InputMethodUtil.openSoftKeyboard(getActivity(), headerViewHolder.etMoney);
                 break;
             case R.id.tv_tuijian:
                 if (TextUtils.isEmpty(headerViewHolder.etMoney.getText().toString()))
-                    inputMoney = "0";
+                    inputMoney = 0;
                 else
-                    inputMoney = headerViewHolder.etMoney.getText().toString();
-                EventBus.getDefault().post(new NavigateLoan(inputMoney));
+                    inputMoney = Integer.parseInt(headerViewHolder.etMoney.getText().toString());
+                EventBus.getDefault().post(new NavigateLoan(inputMoney + ""));
                 break;
             case R.id.tv_more:
+                EventBus.getDefault().post(new NavigateNews());
                 break;
         }
     }
@@ -249,7 +228,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        UserAuthorizationActivity.launch(getActivity(), rootContainer);
+        presenter.checkMsg();
         return super.onOptionsItemSelected(item);
     }
 
@@ -260,17 +239,52 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void showBanner(List<AdBanner> list) {
-        headerViewHolder.loadBanner(list);
+        if (headerViewHolder != null) {
+            headerViewHolder.loadBanner(list);
+        }
     }
 
     @Override
     public void showBorrowingScroll(List<String> list) {
-        headerViewHolder.marqueeView.startWithList(list);
+        if (headerViewHolder != null) {
+            headerViewHolder.marqueeView.startWithList(list);
+        }
+    }
+
+    @Override
+    public void showHotNews(List<News.Row> news) {
+        if (headerViewHolder != null) {
+            headerViewHolder.newsAdapter.notifyHotNewsChanged(news);
+        }
+    }
+
+    @Override
+    public void showHotLoanProducts(List<LoanProduct.Row> products) {
+        if (loanRVAdapter != null) {
+            loanRVAdapter.notifyLoanProductChanged(products);
+        }
     }
 
     @Override
     public void showAdDialog(AdBanner ad) {
         new AdDialog().setAd(ad).show(getChildFragmentManager(), AdDialog.class.getSimpleName());
+    }
+
+    @Override
+    public void navigateLogin() {
+        UserAuthorizationActivity.launch(getActivity(), rootContainer);
+    }
+
+    @Override
+    public void navigateWorthTest() {
+        Intent intent = new Intent(getContext(), WorthTestActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigateMessageCenter() {
+        Intent intent = new Intent(getContext(), MessageCenterActivity.class);
+        startActivity(intent);
     }
 
 
@@ -298,6 +312,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         @BindView(R.id.recycle_hor)
         RecyclerView recyclerView;
 
+        HotNewsAdapter newsAdapter;
+
         Unbinder unbinder;
 
         HeaderViewHolder(View itemView) {
@@ -307,17 +323,33 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
             banner.setDelayTime(1500);
             banner.setIndicatorGravity(BannerConfig.RIGHT);
             banner.isAutoPlay(true);
+
+            LinearLayoutManager llm = new LinearLayoutManager(getContext());
+            llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+            newsAdapter = new HotNewsAdapter();
+            newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    Intent intent = new Intent(getContext(), NewsDetailActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            recyclerView.setLayoutManager(llm);
+            recyclerView.addItemDecoration(new HotNewsItemDeco());
+            recyclerView.setAdapter(newsAdapter);
+
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lyBanner.getLayoutParams();
+            params.width = CommonUtils.getScreenMaxWidth(getActivity(), 0);
+            bannerHeight = (params.width * 530) / 975;
+            params.height = bannerHeight;
+
+            lyBanner.setLayoutParams(params);
         }
 
         void destroy() {
             marqueeView.stopFlipping();
             unbinder.unbind();
-        }
-
-        void setOnClickListener(View.OnClickListener listener) {
-            lyEtbg.setOnClickListener(listener);
-            tvTuiJian.setOnClickListener(listener);
-            tvMore.setOnClickListener(listener);
         }
 
         void loadBanner(List<AdBanner> list) {
@@ -333,7 +365,10 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(context).load((String) path).into(imageView);
+            Glide.with(context)
+                    .load((String) path)
+                    .placeholder(R.drawable.image_place_holder)
+                    .into(imageView);
         }
     }
 }

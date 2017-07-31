@@ -8,6 +8,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
+import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.fragment.TabHomeFragment;
 import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
@@ -81,6 +82,11 @@ public class MainActivity extends BaseComponentActivity {
         }
         mNavigationBar.select(R.id.tab_loan);
         queryMoney = null;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void navigateNews(NavigateNews event) {
+        mNavigationBar.select(R.id.tab_news);
     }
 
     private void selectTab(int id) {

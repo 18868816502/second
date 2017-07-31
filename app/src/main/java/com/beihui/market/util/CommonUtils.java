@@ -223,33 +223,6 @@ public class CommonUtils {
     }
 
 
-    /**
-     * HTTP请求签名
-     *
-     * @param parames
-     * @param reqTime
-     * @return
-     */
-    public static String generateSign(FwsHttpParames parames, String reqTime) {
-        StringBuilder builder = new StringBuilder(Constant.secretKey);
-        builder.append(reqTime);
-        if (parames != null && !parames.isEmpty()) {
-            for (Map.Entry<String, ?> entry : parames.entrySet()) {
-                Object value = entry.getValue();
-                String property = entry.getKey();
-                if (value != null) {
-                    builder.append(property + value);
-                }
-            }
-        }
-
-        System.out.println("************HTTP请求签名成功的数据*****************" + builder.toString());
-        String s = new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(builder.toString()))))));
-//        String s1 = MD5Utils.getMd5Value(MD5Utils.getMd5Value(builder.toString()));
-        return s;
-    }
-
-
     public static int getPixColor(Bitmap src) {
         int pixelColor;
         pixelColor = src.getPixel(5, 5);
