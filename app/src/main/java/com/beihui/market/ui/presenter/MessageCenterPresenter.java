@@ -29,7 +29,7 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
     private Api mApi;
     private MessageCenterContract.View mView;
     private UserHelper mUserHelper;
-    private int curPage;
+    private int curPage = 1;
     private List<ReNews.Row> reNews = new ArrayList<>();
 
     @Inject
@@ -68,7 +68,7 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
                 });
         addDisposable(dis);
 
-        curPage = -1;
+        curPage = 0;
         refreshNews();
     }
 

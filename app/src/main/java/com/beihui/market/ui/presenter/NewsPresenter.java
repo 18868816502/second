@@ -24,7 +24,7 @@ public class NewsPresenter extends BaseRxPresenter implements NewsContract.Prese
     private Api mApi;
     private NewsContract.View mView;
     private List<News.Row> news = new ArrayList<>();
-    private int curPage;
+    private int curPage = 1;
     //是否已经没有更多历史可加载
     private boolean reachEnd;
 
@@ -50,7 +50,7 @@ public class NewsPresenter extends BaseRxPresenter implements NewsContract.Prese
 
     @Override
     public void refresh() {
-        curPage = 0;
+        curPage = 1;
         Disposable dis = mApi.queryNews(curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<News>>io2main())
                 .subscribe(new Consumer<ResultEntity<News>>() {

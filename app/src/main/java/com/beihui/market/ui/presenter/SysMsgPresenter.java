@@ -27,7 +27,7 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
 
     private Api mApi;
     private SysMsgContract.View mView;
-    private int curPage;
+    private int curPage = 1;
     private List<SysMsg.Row> sysMsgList;
     private UserHelper mUserHelper;
 
@@ -42,7 +42,7 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
     @Override
     public void onStart() {
         super.onStart();
-        curPage = 0;
+        curPage = 1;
         Disposable dis = mApi.querySysMsgList(mUserHelper.getProfile().getId(), curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<SysMsg>>io2main())
                 .subscribe(new Consumer<ResultEntity<SysMsg>>() {
@@ -99,6 +99,8 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
                                        }
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
+                                       //请求失败，回溯页数
+                                       curPage--;
                                    }
                                }
                            },
@@ -107,6 +109,8 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(SysMsgPresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
+                                //请求失败，回溯页数
+                                curPage--;
                             }
                         });
         addDisposable(dis);
