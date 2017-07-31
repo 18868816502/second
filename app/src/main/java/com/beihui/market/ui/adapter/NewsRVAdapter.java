@@ -33,6 +33,7 @@ public class NewsRVAdapter extends BaseQuickAdapter<News.Row, BaseViewHolder> {
             Context context = helper.itemView.getContext();
             Glide.with(context)
                     .load(item.getImage())
+                    .centerCrop()
                     .placeholder(R.drawable.image_place_holder)
                     .into((ImageView) helper.getView(R.id.news_image));
         } else {

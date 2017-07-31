@@ -40,7 +40,7 @@ public class LoanProduct {
          * 期限范围
          */
         private String dueTimeText;
-        private String logo;
+        private String logoUrl;
         /**
          * 成功借款人数
          */
@@ -88,12 +88,12 @@ public class LoanProduct {
             this.dueTimeText = dueTimeText;
         }
 
-        public String getLogo() {
-            return logo;
+        public String getLogoUrl() {
+            return logoUrl;
         }
 
-        public void setLogo(String logo) {
-            this.logo = logo;
+        public void setLogoUrl(String logoUrl) {
+            this.logoUrl = logoUrl;
         }
 
         public int getSuccessCount() {
@@ -162,7 +162,7 @@ public class LoanProduct {
             dest.writeInt(this.quickCommend);
             dest.writeString(this.interestLowText);
             dest.writeString(this.dueTimeText);
-            dest.writeString(this.logo);
+            dest.writeString(this.logoUrl);
             dest.writeInt(this.successCount);
             dest.writeString(this.id);
             dest.writeInt(this.productSign);
@@ -179,7 +179,7 @@ public class LoanProduct {
             this.quickCommend = in.readInt();
             this.interestLowText = in.readString();
             this.dueTimeText = in.readString();
-            this.logo = in.readString();
+            this.logoUrl = in.readString();
             this.successCount = in.readInt();
             this.id = in.readString();
             this.productSign = in.readInt();

@@ -92,6 +92,8 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
     //Banner
     compile 'com.youth.banner:banner:1.4.9'
+    //round image view
+    compile 'com.makeramen:roundedimageview:2.3.0'
 
     //LeakCanary memory leak check, only exits while developing
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'

@@ -28,6 +28,7 @@ public class HotNewsAdapter extends BaseQuickAdapter<News.Row, BaseViewHolder> {
         if (item.getImage() != null) {
             Glide.with(helper.itemView.getContext())
                     .load(item.getImage())
+                    .centerCrop()
                     .placeholder(R.drawable.image_place_holder)
                     .into((ImageView) helper.getView(R.id.news_image));
         } else {

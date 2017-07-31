@@ -19,6 +19,13 @@ public class ComWebViewActivity extends BaseComponentActivity {
     @BindView(R.id.web_view)
     WebView webView;
 
+
+    @Override
+    protected void onDestroy() {
+        webView.destroy();
+        super.onDestroy();
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_comm_web_view;
@@ -27,11 +34,15 @@ public class ComWebViewActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        webView.getSettings().setJavaScriptEnabled(true);
     }
 
     @Override
     public void initDatas() {
-
+        String url = getIntent().getStringExtra("url");
+        if (url != null) {
+            webView.loadUrl(url);
+        }
     }
 
     @Override

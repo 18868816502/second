@@ -6,9 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -117,19 +114,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 .inject(this);
     }
 
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_tab_mine, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        presenter.checkMessage();
-        return super.onOptionsItemSelected(item);
-    }
-
     @Subscribe
     public void onLogout(UserLogoutEvent event) {
         loginTv.setVisibility(View.VISIBLE);
@@ -139,7 +123,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 .load(R.mipmap.mine_head_white_icon)
                 .into(avatarIv);
 
-        if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)) {
+        if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)
+                && getView() != null) {
             getView().post(new Runnable() {
                 @Override
                 public void run() {

@@ -1,6 +1,6 @@
 package com.beihui.market.ui.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,11 +8,9 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ReplacementSpan;
 import android.view.LayoutInflater;
@@ -82,11 +80,12 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @BindView(R.id.tab_3)
     TextView tab3Tv;
 
-
     private int hitDistance;
 
     @Inject
     LoanDetailPresenter presenter;
+
+    private LoanProductDetail productDetail;
 
     private int[] selectedState = new int[]{android.R.attr.state_selected};
     private int[] noneState = new int[]{};
@@ -109,16 +108,27 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 changeToolBarIconState(dy >= hitDistance / 2);
             }
         });
+        applyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (productDetail != null && productDetail.getBase() != null
+                        && productDetail.getBase().getUrl() != null) {
+                    Intent intent = new Intent(LoanDetailActivity.this, ComWebViewActivity.class);
+                    intent.putExtra("url", productDetail.getBase().getUrl());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
     public void initDatas() {
+        presenter.onStart();
         LoanProduct.Row loan = getIntent().getParcelableExtra("loan");
         if (loan != null) {
             bindAbstractInfo(loan);
+            presenter.queryDetail(loan.getId());
         }
-        presenter.onStart();
-        presenter.queryDetail(loan.getId());
     }
 
     @Override
@@ -177,7 +187,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 ((TextView) rootView.findViewById(R.id.feature_title)).setText(explain.getExplainName());
             }
             if (explain.getExplainContent() != null) {
-                ((TextView) rootView.findViewById(R.id.feature_content)).setText(Html.fromHtml(explain.getExplainContent()));
+                ((TextView) rootView.findViewById(R.id.feature_content)).setText(explain.getExplainContent());
+
             }
             detailContainer.addView(rootView);
         }
@@ -190,9 +201,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             loanNameTv.setText(loan.getProductName());
         }
         //logo
-        if (loan.getLogo() != null) {
+        if (loan.getLogoUrl() != null) {
             Glide.with(this)
-                    .load(loan.getLogo())
+                    .load(loan.getLogoUrl())
                     .into(loanIconIv);
         }
         //tags
@@ -235,6 +246,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showLoanDetail(LoanProductDetail detail) {
+        productDetail = detail;
         LoanProductDetail.Base base = detail.getBase();
         if (base != null) {
             if (base.getSuccessCountPointText() != null) {

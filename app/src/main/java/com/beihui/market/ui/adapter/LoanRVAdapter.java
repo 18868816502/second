@@ -28,10 +28,13 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
     @Override
     protected void convert(BaseViewHolder helper, LoanProduct.Row item) {
         //logo
-        if (item.getLogo() != null) {
+        if (item.getLogoUrl() != null) {
             Glide.with(helper.itemView.getContext())
-                    .load(item.getLogo())
+                    .load(item.getLogoUrl())
+                    .centerCrop()
                     .into((ImageView) helper.getView(R.id.loan_image));
+        } else {
+            helper.setImageResource(R.id.loan_image, R.drawable.image_place_holder);
         }
         //name
         if (item.getProductName() != null) {

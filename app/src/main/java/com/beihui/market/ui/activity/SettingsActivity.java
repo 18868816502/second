@@ -80,7 +80,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 break;
             case R.id.exit:
                 new CommNoneAndroidDialog().withMessage("确认退出爱信管家")
-                        .withPositiveBtn("在看看", null)
+                        .withPositiveBtn("再看看", null)
                         .withNegativeBtn("退出", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
