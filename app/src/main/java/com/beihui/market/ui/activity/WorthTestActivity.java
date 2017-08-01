@@ -3,8 +3,10 @@ package com.beihui.market.ui.activity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 
@@ -15,6 +17,14 @@ public class WorthTestActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.web_view)
+    WebView webView;
+
+    @Override
+    protected void onDestroy() {
+        webView.destroy();
+        super.onDestroy();
+    }
 
     @Override
     public int getLayoutId() {
@@ -24,11 +34,12 @@ public class WorthTestActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        webView.getSettings().setJavaScriptEnabled(true);
     }
 
     @Override
     public void initDatas() {
-
+        webView.loadUrl(NetConstants.H5_TEST);
     }
 
     @Override

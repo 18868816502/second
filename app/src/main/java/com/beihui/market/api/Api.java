@@ -5,6 +5,7 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
+import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.News;
@@ -326,6 +327,15 @@ public class Api {
      */
     public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id) {
         return serviceTemp.queryLoanProductDetail(id);
+    }
+
+    /**
+     * 查询邀请详细
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<Invitation>> queryInvitation(String userId) {
+        return service.queryInvitation(userId);
     }
 
     /*****generate method*****/

@@ -4,6 +4,7 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.Announce;
 import com.beihui.market.entity.AnnounceAbstract;
 import com.beihui.market.entity.AnnounceDetail;
+import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.News;
@@ -199,4 +200,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/product/details")
     Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId);
+
+    /**
+     * 查询邀请详细
+     */
+    @FormUrlEncoded
+    @POST("/clientUserDetail/invite")
+    Observable<ResultEntity<Invitation>> queryInvitation(@Field("userId") String userId);
 }

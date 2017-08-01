@@ -48,10 +48,11 @@
 
                     <com.beihui.market.view.CircleImageView
                         android:id="@+id/avatar"
-                        android:layout_width="79dp"
-                        android:layout_height="79dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/mine_head_white_icon" />
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/mine_head_icon" />
 
                 </FrameLayout>
 
@@ -60,8 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:orientation="vertical">
-
-
+                    
                     <TextView
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"

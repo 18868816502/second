@@ -45,4 +45,40 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/notice_container"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="bottom"
+        android:background="#ffe99e">
+
+        <com.beihui.market.view.AutoTextView
+            android:id="@+id/notice_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="30dp"
+            android:textColor="#ca6832"
+            android:textSize="14sp" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@mipmap/notice_shade">
+
+            <ImageView
+                android:id="@+id/notice_close"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="3dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/notice_close_icon" />
+        </FrameLayout>
+
+
+    </FrameLayout>
 </FrameLayout>

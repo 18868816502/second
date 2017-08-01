@@ -128,8 +128,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="25dp"
-        android:background="@drawable/round_shiming_gray_state_enable"
+        android:background="@drawable/round_alpha_primary_btn"
         android:enabled="false"
         android:text="@string/confirm_change"
-        android:textColor="@color/color_white_brown_state_enable" />
+        android:textColor="@android:color/white" />
 </LinearLayout>

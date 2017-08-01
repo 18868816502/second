@@ -79,6 +79,13 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     @BindView(R.id.center_text)
     TextView center_text;
 
+    @BindView(R.id.notice_container)
+    FrameLayout noticeContainer;
+    @BindView(R.id.notice_close)
+    ImageView noticeCloseIv;
+    @BindView(R.id.notice_text)
+    TextView noticeTv;
+
     @Inject
     TabHomePresenter presenter;
 
@@ -140,6 +147,13 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void configViews() {
+        noticeCloseIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noticeContainer.setVisibility(View.GONE);
+            }
+        });
+
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);

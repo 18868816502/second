@@ -7,7 +7,9 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.News;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -23,6 +25,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
     @BindView(R.id.web_view)
     WebView webView;
 
+    private News.Row news;
 
     @Override
     public int getLayoutId() {
@@ -37,7 +40,10 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-
+        news = getIntent().getParcelableExtra("news");
+        if (news != null) {
+            webView.loadUrl(NetConstants.generateNewsUrl(news.getId()));
+        }
     }
 
     @Override

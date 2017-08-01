@@ -63,6 +63,7 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                intent.putExtra("news", (News.Row) adapter.getData().get(position));
                 startActivity(intent);
             }
         });

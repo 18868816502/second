@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:src="@mipmap/mine_head_white_icon" />
+                android:src="@mipmap/mine_head_icon" />
         </FrameLayout>
 
         <ImageView

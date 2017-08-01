@@ -102,7 +102,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void initDatas() {
-
     }
 
     @Override
@@ -120,7 +119,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         userNameTv.setVisibility(View.GONE);
 
         Glide.with(this)
-                .load(R.mipmap.mine_head_white_icon)
+                .load(R.mipmap.mine_head_icon)
                 .into(avatarIv);
 
         if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)
