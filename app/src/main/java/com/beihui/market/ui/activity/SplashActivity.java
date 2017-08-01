@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -62,7 +64,19 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        checkAd();
+        try {
+            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            if (version.equals(SPUtils.getLastInstalledVersion(this))) {
+                checkAd();
+            } else {
+                SPUtils.setLastInstalledVersion(this, version);
+                Intent intent = new Intent(this, WelcomeActivity.class);
+                startActivity(intent);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            launch(null);
+        }
     }
 
     @Override

@@ -18,4 +18,16 @@ public class SPUtils {
         editor.apply();
     }
 
+    public static String getLastInstalledVersion(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString("lastInstalledVersion", null);
+    }
+
+    public static void setLastInstalledVersion(Context context, String version) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("lastInstalledVersion", version);
+        editor.apply();
+    }
+
 }
