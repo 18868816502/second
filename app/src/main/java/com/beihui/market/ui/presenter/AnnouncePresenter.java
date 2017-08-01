@@ -37,7 +37,7 @@ public class AnnouncePresenter extends BaseRxPresenter implements AnnounceContra
     @Override
     public void onStart() {
         super.onStart();
-        curPage = 0;
+        curPage = 1;
         Disposable dis = mApi.queryAnnounceList(curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<Announce>>io2main())
                 .subscribe(new Consumer<ResultEntity<Announce>>() {

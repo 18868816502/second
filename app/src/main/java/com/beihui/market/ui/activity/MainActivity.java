@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.busevents.NavigateNews;
@@ -37,8 +38,9 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        AppUpdateHelper.getInstance().destroy();
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -63,6 +65,8 @@ public class MainActivity extends BaseComponentActivity {
             }
         });
         mNavigationBar.select(R.id.tab_home);
+
+        AppUpdateHelper.getInstance().checkUpdate(this);
     }
 
     @Override
