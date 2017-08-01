@@ -16,7 +16,7 @@ import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
 import com.beihui.market.util.CommonUtils;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 import com.bumptech.glide.Glide;
 
 import java.util.List;

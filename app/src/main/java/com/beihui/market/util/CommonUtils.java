@@ -19,20 +19,12 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.beihui.market.App;
-import com.beihui.market.R;
-import com.beihui.market.base.Constant;
-import com.beihui.market.view.SplashView;
-
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,13 +36,9 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Administrator on 2016/11/22.
- */
 
 public class CommonUtils {
 
@@ -227,32 +215,6 @@ public class CommonUtils {
         int pixelColor;
         pixelColor = src.getPixel(5, 5);
         return pixelColor;
-    }
-
-
-    /**
-     * 是否展示广告位，如果是要展示就在那个Activity
-     * 调用，广告位就会在当前的Activity显示之前先显示
-     *
-     * @param context
-     */
-    public static void showAd(final Context context) {
-        SplashView.showSplashView((Activity) context, 3, R.mipmap.ad, new SplashView.OnSplashViewActionListener() {
-            @Override
-            public void onSplashImageClick(String actionUrl) {
-                Log.d("SplashView", "img clicked. actionUrl: " + actionUrl);
-                Toast.makeText(context, "img clicked." + actionUrl, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSplashViewDismiss(boolean initiativeDismiss) {
-                Log.d("SplashView", "dismissed, initiativeDismiss: " + initiativeDismiss);
-
-            }
-        });
-        // call this method anywhere to update splash view data
-        SplashView.updateSplashData((Activity) context, "http://img4.duitang.com/uploads/blog/201307/19/20130719214831_2uVyQ.jpeg",
-                "广告链接");
     }
 
 

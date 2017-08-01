@@ -6,7 +6,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.News;
 import com.beihui.market.ui.contract.TabNewsContract;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

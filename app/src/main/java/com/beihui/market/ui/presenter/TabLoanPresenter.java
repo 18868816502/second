@@ -7,7 +7,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.base.Constant;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.ui.contract.TabLoanContract;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

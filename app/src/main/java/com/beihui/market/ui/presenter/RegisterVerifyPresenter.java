@@ -6,7 +6,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.ui.contract.RegisterVerifyContract;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
 

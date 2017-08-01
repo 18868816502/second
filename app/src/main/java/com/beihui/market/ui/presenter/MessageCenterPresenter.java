@@ -11,7 +11,7 @@ import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.MessageCenterContract;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

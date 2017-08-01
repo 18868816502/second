@@ -9,12 +9,11 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.News;
-import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.TabHomeContract;
 import com.beihui.market.util.SPUtils;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

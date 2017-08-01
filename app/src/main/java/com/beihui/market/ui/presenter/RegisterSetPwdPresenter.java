@@ -11,7 +11,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
 

@@ -9,7 +9,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.EditProfessionContract;
-import com.beihui.market.util.update.RxUtil;
+import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
 

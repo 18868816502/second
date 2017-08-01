@@ -1,9 +1,5 @@
 package com.beihui.market.util;
 
-/**
- * Created by Administrator on 2017/3/20.
- */
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,18 +18,13 @@ import com.beihui.market.ui.activity.MainActivity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * 显示通知栏工具类
- * Created by Administrator on 2016-11-14.
- */
-
 public class NotificationUtil {
     /**
      * 显示一个普通的通知
      *
      * @param context 上下文
      */
-    public static void showNotification(Context context,String title,String content) {
+    public static void showNotification(Context context, String title, String content) {
         Notification notification = new NotificationCompat.Builder(context)
                 /**设置通知左边的大图标**/
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
@@ -113,7 +104,7 @@ public class NotificationUtil {
      *
      * @param context
      */
-    public static void showFullScreen(Context context,String content) {
+    public static void showFullScreen(Context context, String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://blog.csdn.net/itachi85/"));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mIntent, 0);
@@ -132,6 +123,7 @@ public class NotificationUtil {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         notificationManager.notify(3, builder.build());
     }
+
     /**
      * 折叠式
      *
