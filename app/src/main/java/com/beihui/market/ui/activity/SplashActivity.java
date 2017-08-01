@@ -14,6 +14,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.getui.GeTuiClient;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
 import com.beihui.market.util.CommonUtils;
@@ -64,6 +65,7 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
+        GeTuiClient.install(this);
         try {
             String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             if (version.equals(SPUtils.getLastInstalledVersion(this))) {

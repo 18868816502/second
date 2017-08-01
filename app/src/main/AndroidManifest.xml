@@ -95,6 +95,14 @@
             android:name=".ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
 
+        <!--getui setting-->
+        <service android:name="com.beihui.market.getui.PushReceiveIntentService" />
+        <service
+            android:name=".getui.PushService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":pushservice" />
+
         <!--share setting-->
         <activity
             android:name=".wxapi.WXEntryActivity"
