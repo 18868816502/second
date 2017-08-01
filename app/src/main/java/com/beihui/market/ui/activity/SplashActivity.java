@@ -72,6 +72,7 @@ public class SplashActivity extends BaseComponentActivity {
                 SPUtils.setLastInstalledVersion(this, version);
                 Intent intent = new Intent(this, WelcomeActivity.class);
                 startActivity(intent);
+                finish();
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
