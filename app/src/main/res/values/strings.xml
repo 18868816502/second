@@ -72,4 +72,7 @@
     <string name="comfirm_change">确认修改</string>
     <string name="select_profession">选择工作种类</string>
     <string name="refresh_renews">换一换</string>
+    <string name="state_empty">暂无消息</string>
+    <string name="state_net_error">网络错误</string>
+    <string name="reload">重新加载</string>
 </resources>

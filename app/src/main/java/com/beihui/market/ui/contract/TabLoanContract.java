@@ -16,6 +16,8 @@ public interface TabLoanContract {
 
         void filterPro(int selected);
 
+        void refresh();
+
         void loadMore();
 
         String getFilterAmount();
@@ -32,6 +34,8 @@ public interface TabLoanContract {
         void showFilters(String amount, String dueTime, String pro);
 
         void showLoanProduct(List<LoanProduct.Row> list);
+
+        void showNetError();
 
         void showNoLoanProduct();
 

@@ -46,7 +46,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
         if (loanProductList.size() > 0) {
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
         } else {
-            queryLoanProduct(false);
+            refresh();
         }
     }
 
@@ -56,10 +56,9 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
             this.amount = amount;
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
 
-            curPage = 1;
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
-            queryLoanProduct(false);
+            refresh();
         }
     }
 
@@ -69,10 +68,9 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
             dueTimeSelected = selected;
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
 
-            curPage = 1;
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
-            queryLoanProduct(false);
+            refresh();
         }
     }
 
@@ -82,17 +80,94 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
             proSelected = selected;
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
 
-            curPage = 1;
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
-            queryLoanProduct(false);
+            refresh();
         }
+    }
+
+    @Override
+    public void refresh() {
+        curPage = 1;
+        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(proSelected), curPage, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (result.getData() != null && result.getData().getTotal() > 0) {
+                                           loanProductList.clear();
+                                           loanProductList.addAll(result.getData().getRows());
+                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
+                                           //返回的数据少于请求的个数
+                                           if (result.getData().getTotal() < PAGE_SIZE) {
+                                               mView.showNoMoreLoanProduct();
+                                           }
+                                       } else {
+                                           mView.showNoLoanProduct();
+                                       }
+                                   } else {
+                                       //当前没有任何原始数据，切换至网络错误状态，否则只需提示信息
+                                       if (loanProductList.size() == 0) {
+                                           mView.showNetError();
+                                       } else {
+                                           mView.showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabLoanPresenter.this, throwable);
+                                //当前没有任何原始数据，切换至网络错误状态，否则只需提示信息
+                                if (loanProductList.size() == 0) {
+                                    mView.showNetError();
+                                } else {
+                                    mView.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override
     public void loadMore() {
         curPage++;
-        queryLoanProduct(false);
+        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(proSelected),
+                curPage, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (result.getData() != null && result.getData().getTotal() > 0) {
+                                           loanProductList.addAll(result.getData().getRows());
+                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
+                                           //返回的数据少于请求的个数
+                                           if (result.getData().getTotal() < PAGE_SIZE) {
+                                               mView.showNoMoreLoanProduct();
+                                           }
+                                       } else {
+                                           mView.showNoMoreLoanProduct();
+                                       }
+                                   } else {
+                                       mView.showErrorMsg(result.getMsg());
+                                       //请求失败，回溯页数
+                                       curPage--;
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabLoanPresenter.this, throwable);
+                                mView.showErrorMsg(generateErrorMsg(throwable));
+                                //请求失败，回溯页数
+                                curPage--;
+                            }
+                        });
+        addDisposable(dis);
     }
 
 
@@ -114,52 +189,6 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     @Override
     public String[] getFilterPro() {
         return pros;
-    }
-
-    private void queryLoanProduct(boolean clear) {
-        final boolean clearLoan = clear;
-        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(proSelected), curPage, PAGE_SIZE)
-                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
-                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().getTotal() > 0) {
-                                           //刷新时，true
-                                           if (clearLoan) {
-                                               loanProductList.clear();
-                                           }
-                                           loanProductList.addAll(result.getData().getRows());
-                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
-                                           //返回的数据少于请求的个数
-                                           if (result.getData().getTotal() < PAGE_SIZE) {
-                                               mView.showNoMoreLoanProduct();
-                                           }
-                                       } else {
-                                           //根据现有数据大小，判断是没有数据还是没有更多数据
-                                           if (loanProductList.size() == 0) {
-                                               mView.showNoLoanProduct();
-                                           } else {
-                                               mView.showNoMoreLoanProduct();
-                                           }
-                                       }
-                                   } else {
-                                       mView.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabLoanPresenter.this, throwable);
-                                mView.showErrorMsg(generateErrorMsg(throwable));
-                                //请求失败，回溯页数,只有在loadMore的时候，curPage才会大于1
-                                if (curPage > 0) {
-                                    curPage--;
-                                }
-                            }
-                        });
-        addDisposable(dis);
     }
 
     private int getProParamBySelected(int selected) {

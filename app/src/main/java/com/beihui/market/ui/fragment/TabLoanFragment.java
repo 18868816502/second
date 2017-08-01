@@ -24,6 +24,8 @@ import com.beihui.market.ui.dialog.TimeFilterPopup;
 import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.ui.rvdecoration.LoanItemDeco;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.CommStateViewProvider;
+import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.drawable.BlurDrawable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -59,6 +61,8 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @BindView(R.id.pro_filter_content)
     TextView proFilterContent;
 
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.loan_container)
     FrameLayout loanContainer;
     @BindView(R.id.blur_view)
@@ -88,6 +92,13 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new CommStateViewProvider(getContext(),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        presenter.refresh();
+                    }
+                }));
         blurView.setBackgroundDrawable(new BlurDrawable(getContext(), loanContainer));
         loanRVAdapter = new LoanRVAdapter();
         loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -195,12 +206,18 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void showLoanProduct(List<LoanProduct.Row> list) {
+        stateLayout.switchState(StateLayout.STATE_CONTENT);
         loanRVAdapter.notifyLoanProductChanged(list);
     }
 
     @Override
-    public void showNoLoanProduct() {
+    public void showNetError() {
+        stateLayout.switchState(StateLayout.STATE_NET_ERROR);
+    }
 
+    @Override
+    public void showNoLoanProduct() {
+        stateLayout.switchState(StateLayout.STATE_EMPTY);
     }
 
     @Override

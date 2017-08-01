@@ -13,9 +13,11 @@ import com.beihui.market.injection.component.DaggerNewsComponent;
 import com.beihui.market.injection.module.NewsModule;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
-import com.beihui.market.ui.contract.NewsContract;
-import com.beihui.market.ui.presenter.NewsPresenter;
+import com.beihui.market.ui.contract.TabNewsContract;
+import com.beihui.market.ui.presenter.TabNewsPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
+import com.beihui.market.view.CommStateViewProvider;
+import com.beihui.market.view.StateLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -23,16 +25,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class TabNewsFragment extends BaseTabFragment implements NewsContract.View {
+public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.View {
 
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
     private NewsRVAdapter adapter;
 
     @Inject
-    NewsPresenter presenter;
+    TabNewsPresenter presenter;
 
     public static TabNewsFragment newInstance() {
         return new TabNewsFragment();
@@ -45,6 +50,14 @@ public class TabNewsFragment extends BaseTabFragment implements NewsContract.Vie
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new CommStateViewProvider(getContext(),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        presenter.refresh();
+                    }
+                }));
+
         adapter = new NewsRVAdapter();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -64,6 +77,7 @@ public class TabNewsFragment extends BaseTabFragment implements NewsContract.Vie
         float density = getContext().getResources().getDisplayMetrics().density;
         int padding = (int) (density * 8);
         recyclerView.addItemDecoration(new NewsItemDeco((int) (density * 0.5), padding, padding));
+
     }
 
     @Override
@@ -82,12 +96,13 @@ public class TabNewsFragment extends BaseTabFragment implements NewsContract.Vie
 
 
     @Override
-    public void setPresenter(NewsContract.Presenter presenter) {
+    public void setPresenter(TabNewsContract.Presenter presenter) {
         //injected.nothing to do.
     }
 
     @Override
     public void showNews(List<News.Row> news) {
+        stateLayout.switchState(StateLayout.STATE_CONTENT);
         adapter.notifyNewsSetChanged(news);
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
@@ -96,7 +111,12 @@ public class TabNewsFragment extends BaseTabFragment implements NewsContract.Vie
 
     @Override
     public void showNoNews() {
+        stateLayout.switchState(StateLayout.STATE_EMPTY);
+    }
 
+    @Override
+    public void showNetError() {
+        stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.beihui.market.entity.News;
 
 import java.util.List;
 
-public interface NewsContract {
+public interface TabNewsContract {
 
     interface Presenter extends BasePresenter {
         void refresh();
@@ -19,6 +19,8 @@ public interface NewsContract {
         void showNews(List<News.Row> news);
 
         void showNoNews();
+
+        void showNetError();
 
         void showNoMoreNews();
     }
