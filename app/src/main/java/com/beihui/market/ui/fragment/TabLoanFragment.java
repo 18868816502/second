@@ -78,10 +78,6 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     private String pendingAmount;
 
-    private MoneyFilterPopup moneyFilterPopup;
-    private TimeFilterPopup timeFilterPopup;
-    private ProFilterPopup proFilterPopup;
-
     private LoanRVAdapter loanRVAdapter;
 
     public static TabLoanFragment newInstance() {
@@ -136,7 +132,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         presenter.onStart();
         if (pendingAmount != null) {
             try {
-                presenter.filterAmount(Double.parseDouble(pendingAmount));
+                presenter.filterAmount(Integer.parseInt(pendingAmount));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 ToastUtils.showShort(getContext(), "查询金额不是数字", null);
@@ -158,7 +154,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @Override
     public void onMoneyItemClick(String money) {
         try {
-            presenter.filterAmount(Double.parseDouble(money));
+            presenter.filterAmount(Integer.parseInt(money));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             ToastUtils.showShort(getContext(), "输入的金额不是数字", null);
@@ -180,25 +176,19 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.money_filter:
-                if (moneyFilterPopup == null) {
-                    moneyFilterPopup = new MoneyFilterPopup(getActivity(), presenter.getFilterAmount(), blurView, moneyFilterText, moneyFilterImage);
-                    moneyFilterPopup.setShareItemListener(this);
-                }
+                MoneyFilterPopup moneyFilterPopup = new MoneyFilterPopup(getActivity(), presenter.getFilterAmount(), blurView, moneyFilterText, moneyFilterImage);
+                moneyFilterPopup.setShareItemListener(this);
                 moneyFilterPopup.showAsDropDown(filterContainer);
                 break;
             case R.id.time_filter:
-                if (timeFilterPopup == null) {
-                    timeFilterPopup = new TimeFilterPopup(getActivity(), presenter.getFilterDueTimeSelected(),
-                            blurView, timeFilterText, timeFilterImage, presenter.getFilterDueTime());
-                    timeFilterPopup.setShareItemListener(this);
-                }
+                TimeFilterPopup timeFilterPopup = new TimeFilterPopup(getActivity(), presenter.getFilterDueTimeSelected(),
+                        blurView, timeFilterText, timeFilterImage, presenter.getFilterDueTime());
+                timeFilterPopup.setShareItemListener(this);
                 timeFilterPopup.showAsDropDown(filterContainer);
                 break;
             case R.id.pro_filter:
-                if (proFilterPopup == null) {
-                    proFilterPopup = new ProFilterPopup(getActivity(), blurView, proFilterText, proFilterImage);
-                    proFilterPopup.setShareItemListener(this);
-                }
+                ProFilterPopup proFilterPopup = new ProFilterPopup(getActivity(), blurView, proFilterText, proFilterImage);
+                proFilterPopup.setShareItemListener(this);
                 proFilterPopup.showAsDropDown(filterContainer);
                 break;
         }

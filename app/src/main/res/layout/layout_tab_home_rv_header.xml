@@ -142,6 +142,7 @@
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
                     android:inputType="number"
+                    android:maxLength="7"
                     android:textColor="#424251"
                     android:textColorHint="#909298"
                     android:textSize="27sp" />
@@ -231,7 +232,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/round_white"
+        android:background="@drawable/round_white_shadow"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -253,7 +254,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycle_hor"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:layout_marginTop="15dp" />
 
         <View

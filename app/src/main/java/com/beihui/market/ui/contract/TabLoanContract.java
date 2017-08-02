@@ -10,7 +10,7 @@ import java.util.List;
 public interface TabLoanContract {
 
     interface Presenter extends BasePresenter {
-        void filterAmount(double amount);
+        void filterAmount(int amount);
 
         void filterDueTime(int selected);
 

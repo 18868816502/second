@@ -27,7 +27,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     private Api mApi;
     private TabLoanContract.View mView;
 
-    private double amount = Constant.DEFAULT_FILTER_MONEY;
+    private int amount = Constant.DEFAULT_FILTER_MONEY;
     private int dueTimeSelected = 0;
     private int proSelected = 0;
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
@@ -53,7 +53,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     }
 
     @Override
-    public void filterAmount(double amount) {
+    public void filterAmount(int amount) {
         if (amount != this.amount) {
             this.amount = amount;
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);

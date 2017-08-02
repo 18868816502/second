@@ -72,10 +72,10 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             helper.setText(R.id.loan_time_range, item.getDueTimeText());
         }
         //badge
-        int sign = item.getProductSign();
-        if (sign == 2 || sign == 4) {
+        int sign = getLabelIcon(item.getProductSign());
+        if (sign != -1) {
             helper.setVisible(R.id.loan_badge, true);
-            helper.setImageResource(R.id.loan_badge, sign == 2 ? R.mipmap.label_hot : R.mipmap.label_featured);
+            helper.setImageResource(R.id.loan_badge, sign);
         } else {
             helper.setVisible(R.id.loan_badge, false);
         }
@@ -87,5 +87,18 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             dataSet.addAll(list);
         }
         notifyDataSetChanged();
+    }
+
+    private int getLabelIcon(int type) {
+        switch (type) {
+            case 1:
+                return R.mipmap.label_new;
+            case 2:
+                return R.mipmap.label_hot;
+            case 4:
+                return R.mipmap.label_featured;
+            default:
+                return -1;
+        }
     }
 }
