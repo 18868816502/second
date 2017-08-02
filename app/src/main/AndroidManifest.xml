@@ -95,6 +95,14 @@
             android:name=".ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.NoticeDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.SysMsgDetailActivity"
+            android:screenOrientation="portrait" />
+
         <!--getui setting-->
         <service android:name="com.beihui.market.getui.PushReceiveIntentService" />
         <service

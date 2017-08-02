@@ -45,10 +45,11 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     public void configViews() {
         setupToolbar(toolbar);
         adapter = new SysMsgAdapter();
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(SysMsgActivity.this, ComWebViewActivity.class);
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(SysMsgActivity.this, SysMsgDetailActivity.class);
+                intent.putExtra("sysMsg", (SysMsg.Row) adapter.getData().get(position));
                 startActivity(intent);
             }
         });
@@ -58,8 +59,9 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                 presenter.loadMore();
             }
         }, recyclerView);
-        recyclerView.setAdapter(adapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
         float density = getResources().getDisplayMetrics().density;
         int padding = (int) (density * 7);
         recyclerView.addItemDecoration(new NewsItemDeco((int) (density * 0.5), padding, padding));

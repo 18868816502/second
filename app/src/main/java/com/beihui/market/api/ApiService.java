@@ -131,7 +131,7 @@ public interface ApiService {
      * 公告详情
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "notice/details")
+    @POST(BASE_PATH + "/notice/details")
     Observable<ResultEntity<NoticeDetail>> noticeDetail(@Field("id") String id);
 
     /**

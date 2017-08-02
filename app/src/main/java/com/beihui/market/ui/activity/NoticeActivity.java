@@ -49,7 +49,8 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(NoticeActivity.this, ComWebViewActivity.class);
+                Intent intent = new Intent(NoticeActivity.this, NoticeDetailActivity.class);
+                intent.putExtra("id", (Notice.Row) adapter.getData().get(position));
                 startActivity(intent);
             }
         });

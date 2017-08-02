@@ -1,5 +1,8 @@
 package com.beihui.market.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 public class SysMsg {
@@ -23,7 +26,7 @@ public class SysMsg {
         this.rows = rows;
     }
 
-    public class Row {
+    public static class Row implements Parcelable {
         private String explain;
         private String id;
         private String title;
@@ -69,6 +72,44 @@ public class SysMsg {
         public void setIsRead(int isRead) {
             this.isRead = isRead;
         }
+
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.explain);
+            dest.writeString(this.id);
+            dest.writeString(this.title);
+            dest.writeLong(this.gmtCreate);
+            dest.writeInt(this.isRead);
+        }
+
+        public Row() {
+        }
+
+        protected Row(Parcel in) {
+            this.explain = in.readString();
+            this.id = in.readString();
+            this.title = in.readString();
+            this.gmtCreate = in.readLong();
+            this.isRead = in.readInt();
+        }
+
+        public static final Parcelable.Creator<Row> CREATOR = new Parcelable.Creator<Row>() {
+            @Override
+            public Row createFromParcel(Parcel source) {
+                return new Row(source);
+            }
+
+            @Override
+            public Row[] newArray(int size) {
+                return new Row[size];
+            }
+        };
     }
 
 }
