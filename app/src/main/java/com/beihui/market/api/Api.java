@@ -1,8 +1,11 @@
 package com.beihui.market.api;
 
 
+import android.util.Base64;
+
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -163,6 +166,17 @@ public class Api {
         return service.userProfile(id);
     }
 
+    /**
+     * 更新用户头像
+     *
+     * @param userId   用户id
+     * @param fileName 文件名
+     * @param avatar   头像
+     */
+    public Observable<ResultEntity<Avatar>> updateUserAvatar(String userId, String fileName, byte[] avatar) {
+        String avatarBase64 = Base64.encodeToString(avatar, Base64.DEFAULT);
+        return service.updateUserAvatar(userId, fileName, avatarBase64);
+    }
 
     /**
      * 修改用户名

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -28,9 +29,12 @@ import com.beihui.market.injection.module.UserProfileModule;
 import com.beihui.market.ui.contract.UserProfileContract;
 import com.beihui.market.ui.presenter.UserProfilePresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LogUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -93,20 +97,25 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            Bitmap avatar = null;
             if (requestCode == 1) {
                 //相机
                 if (avatarFile != null) {
-                    Bitmap avatar = BitmapFactory.decodeFile(avatarFile.getPath());
-                    avatarIv.setImageBitmap(avatar);
+                    avatar = BitmapFactory.decodeFile(avatarFile.getPath());
                 }
             } else if (requestCode == 2) {
                 //相册
                 String path = getRealPathFromURI(data.getData());
                 if (path != null) {
-                    Bitmap avatar = BitmapFactory.decodeFile(path);
-                    avatarIv.setImageBitmap(avatar);
+                    avatar = BitmapFactory.decodeFile(path);
                 }
             }
+            if (avatar != null) {
+                presenter.updateAvatar(avatar);
+            } else {
+                ToastUtils.showShort(this, "头像解析错误", null);
+            }
+
         }
     }
 
@@ -152,17 +161,49 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     @NeedsPermission(Manifest.permission.CAMERA)
     void openCamera() {
         Intent toCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        avatarFile = new File(getCacheDir().getPath() + "/" + System.currentTimeMillis() + ".jpg");
-        Uri uri;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(this, "com.beihui.market.fileprovider", avatarFile);
-            toCamera.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        String dirPath;
+        if (getExternalCacheDir() != null) {
+            dirPath = getExternalCacheDir().getAbsolutePath() + "/temp";
         } else {
-            uri = Uri.fromFile(avatarFile);
+            dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp";
         }
-        toCamera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        toCamera.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, 0);
-        startActivityForResult(toCamera, 1);
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            boolean result = dir.mkdirs();
+            LogUtils.i(this.getClass().getSimpleName(), "result of mkdirs " + result);
+        }
+        String filePath = dirPath + "/" + System.currentTimeMillis() + ".jpg";
+        avatarFile = new File(filePath);
+        if (!avatarFile.exists()) {
+            try {
+                boolean result = avatarFile.createNewFile();
+                LogUtils.i(this.getClass().getSimpleName(), "create new avatar file result " + result);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (avatarFile.exists()) {
+            Uri uri = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                try {
+                    uri = FileProvider.getUriForFile(this, "com.beihui.market.fileprovider", avatarFile);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+                toCamera.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } else {
+                uri = Uri.fromFile(avatarFile);
+            }
+            if (uri != null) {
+                toCamera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                toCamera.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, 0);
+                startActivityForResult(toCamera, 1);
+            } else {
+                ToastUtils.showShort(this, "创建头像文件失败", null);
+            }
+        } else {
+            ToastUtils.showShort(this, "创建头像文件失败", null);
+        }
     }
 
     void openAlbum() {
@@ -209,11 +250,6 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     }
 
     @Override
-    public void showErrorMsg(String msg) {
-
-    }
-
-    @Override
     public void showProfile(UserHelper.Profile profile) {
         if (profile.getHeadPortrait() != null) {
             Glide.with(this)
@@ -228,6 +264,16 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         }
         if (profile.getProfession() != null) {
             professionTv.setText(profile.getProfession());
+        }
+    }
+
+    @Override
+    public void showAvatarUpdateSuccess(String avatar) {
+        dismissProgress();
+        if (avatar != null) {
+            Glide.with(this)
+                    .load(avatar)
+                    .into(avatarIv);
         }
     }
 }

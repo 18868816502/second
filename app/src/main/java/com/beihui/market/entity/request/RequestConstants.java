@@ -29,4 +29,6 @@ public class RequestConstants {
     public static final int SUP_TYPE_AD = 1;
     public static final int SUP_TYPE_BANNER = 2;
     public static final int SUP_TYPE_DIALOG = 3;
+
+    public static final int AVATAR_BYTE_SIZE = 15 * 1024;
 }

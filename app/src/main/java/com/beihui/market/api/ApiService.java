@@ -2,6 +2,7 @@ package com.beihui.market.api;
 
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -75,6 +76,12 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/clientUserDetail/personalCenter")
     Observable<ResultEntity<UserProfile>> userProfile(@Field("userId") String id);
+
+
+    @FormUrlEncoded
+    @POST("/attach/uploadUserHeadPortrait")
+    Observable<ResultEntity<Avatar>> updateUserAvatar(@Field("userId") String userId, @Field("fileName") String fileName,
+                                                      @Field("fileBase64") String fileBase64);
 
     /**
      * 修改用户名
