@@ -1,7 +1,7 @@
 package com.beihui.market.entity;
 
 
-public class AnnounceAbstract {
+public class NoticeAbstract {
 
     private String title;
     private long gmtCreate;

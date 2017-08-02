@@ -4,8 +4,8 @@ package com.beihui.market.ui.presenter;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.entity.Announce;
-import com.beihui.market.ui.contract.AnnounceContract;
+import com.beihui.market.entity.Notice;
+import com.beihui.market.ui.contract.NoticeContract;
 import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
@@ -18,18 +18,18 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class AnnouncePresenter extends BaseRxPresenter implements AnnounceContract.Presenter {
+public class NoticePresenter extends BaseRxPresenter implements NoticeContract.Presenter {
 
     private static final int PAGE_SIZE = 10;
 
     private Api mApi;
-    private AnnounceContract.View mView;
+    private NoticeContract.View mView;
     private int curPage;
 
-    private List<Announce.Row> announceList;
+    private List<Notice.Row> announceList;
 
     @Inject
-    AnnouncePresenter(Api api, AnnounceContract.View view) {
+    NoticePresenter(Api api, NoticeContract.View view) {
         mApi = api;
         mView = view;
     }
@@ -38,11 +38,11 @@ public class AnnouncePresenter extends BaseRxPresenter implements AnnounceContra
     public void onStart() {
         super.onStart();
         curPage = 1;
-        Disposable dis = mApi.queryAnnounceList(curPage, PAGE_SIZE)
-                .compose(RxUtil.<ResultEntity<Announce>>io2main())
-                .subscribe(new Consumer<ResultEntity<Announce>>() {
+        Disposable dis = mApi.queryNoticeList(curPage, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<Notice>>io2main())
+                .subscribe(new Consumer<ResultEntity<Notice>>() {
                                @Override
-                               public void accept(@NonNull ResultEntity<Announce> result) throws Exception {
+                               public void accept(@NonNull ResultEntity<Notice> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().getTotal() > 0) {
                                            if (announceList == null) {
@@ -66,7 +66,7 @@ public class AnnouncePresenter extends BaseRxPresenter implements AnnounceContra
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(AnnouncePresenter.this, throwable);
+                                logError(NoticePresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
@@ -76,11 +76,11 @@ public class AnnouncePresenter extends BaseRxPresenter implements AnnounceContra
     @Override
     public void loadMore() {
         curPage++;
-        Disposable dis = mApi.queryAnnounceList(curPage, PAGE_SIZE)
-                .compose(RxUtil.<ResultEntity<Announce>>io2main())
-                .subscribe(new Consumer<ResultEntity<Announce>>() {
+        Disposable dis = mApi.queryNoticeList(curPage, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<Notice>>io2main())
+                .subscribe(new Consumer<ResultEntity<Notice>>() {
                                @Override
-                               public void accept(@NonNull ResultEntity<Announce> result) throws Exception {
+                               public void accept(@NonNull ResultEntity<Notice> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().getTotal() > 0) {
                                            announceList.addAll(result.getData().getRows());
@@ -100,7 +100,7 @@ public class AnnouncePresenter extends BaseRxPresenter implements AnnounceContra
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(AnnouncePresenter.this, throwable);
+                                logError(NoticePresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });

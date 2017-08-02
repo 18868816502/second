@@ -1,7 +1,7 @@
 package com.beihui.market.entity;
 
 
-public class AnnounceDetail {
+public class NoticeDetail {
 
     private String explain;
     private int readSum;

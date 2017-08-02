@@ -67,7 +67,7 @@
             android:name=".ui.activity.SysMsgActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.AnnouncementActivity"
+            android:name=".ui.activity.NoticeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ComWebViewActivity"

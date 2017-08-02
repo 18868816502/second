@@ -2,14 +2,14 @@ package com.beihui.market.api;
 
 
 import com.beihui.market.entity.AdBanner;
-import com.beihui.market.entity.Announce;
-import com.beihui.market.entity.AnnounceAbstract;
-import com.beihui.market.entity.AnnounceDetail;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.News;
+import com.beihui.market.entity.Notice;
+import com.beihui.market.entity.NoticeAbstract;
+import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.ReNews;
@@ -206,8 +206,8 @@ public class Api {
     /**
      * 消息中心-公告
      */
-    public Observable<ResultEntity<AnnounceAbstract>> queryAnnounceHome() {
-        return service.announceHome();
+    public Observable<ResultEntity<NoticeAbstract>> queryNoticeHome() {
+        return service.noticeHome();
     }
 
     /**
@@ -216,8 +216,8 @@ public class Api {
      * @param pageNum  查询页数
      * @param pageSize 查询每页大小
      */
-    public Observable<ResultEntity<Announce>> queryAnnounceList(int pageNum, int pageSize) {
-        return service.announceList(pageNum, pageSize);
+    public Observable<ResultEntity<Notice>> queryNoticeList(int pageNum, int pageSize) {
+        return service.noticeList(pageNum, pageSize);
     }
 
     /**
@@ -225,8 +225,8 @@ public class Api {
      *
      * @param id 公告id
      */
-    public Observable<ResultEntity<AnnounceDetail>> queryAnnounceDetail(String id) {
-        return service.announceDetail(id);
+    public Observable<ResultEntity<NoticeDetail>> queryNoticeDetail(String id) {
+        return service.noticeDetail(id);
     }
 
     /**

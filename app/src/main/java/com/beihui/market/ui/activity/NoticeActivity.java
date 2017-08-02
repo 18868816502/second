@@ -9,13 +9,13 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.entity.Announce;
+import com.beihui.market.entity.Notice;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAnnounceComponent;
 import com.beihui.market.injection.module.AnnounceModule;
 import com.beihui.market.ui.adapter.AnnouncementAdapter;
-import com.beihui.market.ui.contract.AnnounceContract;
-import com.beihui.market.ui.presenter.AnnouncePresenter;
+import com.beihui.market.ui.contract.NoticeContract;
+import com.beihui.market.ui.presenter.NoticePresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -25,7 +25,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class AnnouncementActivity extends BaseComponentActivity implements AnnounceContract.View {
+public class NoticeActivity extends BaseComponentActivity implements NoticeContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.recycler_view)
@@ -34,7 +34,7 @@ public class AnnouncementActivity extends BaseComponentActivity implements Annou
     private AnnouncementAdapter adapter;
 
     @Inject
-    AnnouncePresenter presenter;
+    NoticePresenter presenter;
 
 
     @Override
@@ -49,7 +49,7 @@ public class AnnouncementActivity extends BaseComponentActivity implements Annou
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(AnnouncementActivity.this, ComWebViewActivity.class);
+                Intent intent = new Intent(NoticeActivity.this, ComWebViewActivity.class);
                 startActivity(intent);
             }
         });
@@ -81,12 +81,12 @@ public class AnnouncementActivity extends BaseComponentActivity implements Annou
     }
 
     @Override
-    public void setPresenter(AnnounceContract.Presenter presenter) {
+    public void setPresenter(NoticeContract.Presenter presenter) {
         //injected.nothing to do.
     }
 
     @Override
-    public void showAnnounce(List<Announce.Row> announceList) {
+    public void showAnnounce(List<Notice.Row> announceList) {
         if (recyclerView.getVisibility() == View.GONE) {
             recyclerView.setVisibility(View.VISIBLE);
         }

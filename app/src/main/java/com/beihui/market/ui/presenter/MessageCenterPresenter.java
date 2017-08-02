@@ -6,7 +6,7 @@ import android.content.Context;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.entity.AnnounceAbstract;
+import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.helper.UserHelper;
@@ -42,7 +42,7 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
     @Override
     public void onStart() {
         super.onStart();
-        Disposable dis = Observable.concat(mApi.queryAnnounceHome(), mApi.querySysMsgHome(mUserHelper.getProfile().getId()))
+        Disposable dis = Observable.concat(mApi.queryNoticeHome(), mApi.querySysMsgHome(mUserHelper.getProfile().getId()))
                 .compose(RxUtil.io2main())
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -50,8 +50,8 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
                         ResultEntity result = (ResultEntity) o;
                         if (result.isSuccess()) {
                             Object data = result.getData();
-                            if (data instanceof AnnounceAbstract) {
-                                mView.showAnnounce((AnnounceAbstract) data);
+                            if (data instanceof NoticeAbstract) {
+                                mView.showAnnounce((NoticeAbstract) data);
                             } else if (data instanceof SysMsgAbstract) {
                                 mView.showSysMsg((SysMsgAbstract) data);
                             }

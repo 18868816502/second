@@ -3,7 +3,7 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
-import com.beihui.market.entity.AnnounceAbstract;
+import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 
@@ -16,7 +16,7 @@ public interface MessageCenterContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showAnnounce(AnnounceAbstract announce);
+        void showAnnounce(NoticeAbstract announce);
 
         void showSysMsg(SysMsgAbstract sysMsg);
 

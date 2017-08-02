@@ -1,14 +1,14 @@
 package com.beihui.market.api;
 
 import com.beihui.market.entity.AdBanner;
-import com.beihui.market.entity.Announce;
-import com.beihui.market.entity.AnnounceAbstract;
-import com.beihui.market.entity.AnnounceDetail;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.News;
+import com.beihui.market.entity.Notice;
+import com.beihui.market.entity.NoticeAbstract;
+import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.ReNews;
@@ -108,21 +108,21 @@ public interface ApiService {
      * 消息中心-公告
      */
     @POST("/notice/home")
-    Observable<ResultEntity<AnnounceAbstract>> announceHome();
+    Observable<ResultEntity<NoticeAbstract>> noticeHome();
 
     /**
      * 公告列表
      */
     @FormUrlEncoded
     @POST("/notice/list")
-    Observable<ResultEntity<Announce>> announceList(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<Notice>> noticeList(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
 
     /**
      * 公告详情
      */
     @FormUrlEncoded
     @POST("notice/details")
-    Observable<ResultEntity<AnnounceDetail>> announceDetail(@Field("id") String id);
+    Observable<ResultEntity<NoticeDetail>> noticeDetail(@Field("id") String id);
 
     /**
      * 消息中心-系统消息

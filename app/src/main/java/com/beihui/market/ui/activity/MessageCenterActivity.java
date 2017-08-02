@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.entity.AnnounceAbstract;
+import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.injection.component.AppComponent;
@@ -93,7 +93,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.ann_item) {
-            Intent intent = new Intent(this, AnnouncementActivity.class);
+            Intent intent = new Intent(this, NoticeActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.msg_item) {
             Intent intent = new Intent(this, SysMsgActivity.class);
@@ -110,7 +110,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     }
 
     @Override
-    public void showAnnounce(AnnounceAbstract announce) {
+    public void showAnnounce(NoticeAbstract announce) {
         if (announce.getTitle() != null) {
             headerViewHolder.annContentTv.setText(announce.getTitle());
         }

@@ -3,7 +3,7 @@ package com.beihui.market.entity;
 
 import java.util.List;
 
-public class Announce {
+public class Notice {
 
     private int total;
     private List<Row> rows;

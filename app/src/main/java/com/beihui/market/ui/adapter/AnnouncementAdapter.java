@@ -2,7 +2,7 @@ package com.beihui.market.ui.adapter;
 
 
 import com.beihui.market.R;
-import com.beihui.market.entity.Announce;
+import com.beihui.market.entity.Notice;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -12,16 +12,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AnnouncementAdapter extends BaseQuickAdapter<Announce.Row, BaseViewHolder> {
+public class AnnouncementAdapter extends BaseQuickAdapter<Notice.Row, BaseViewHolder> {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 mm:ss", Locale.CHINA);
-    private List<Announce.Row> dataSet;
+    private List<Notice.Row> dataSet;
 
     public AnnouncementAdapter() {
         super(R.layout.rv_item_announcement);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Announce.Row item) {
+    protected void convert(BaseViewHolder helper, Notice.Row item) {
         if (item.getTitle() != null) {
             helper.setText(R.id.title, item.getTitle());
         }
@@ -31,7 +31,7 @@ public class AnnouncementAdapter extends BaseQuickAdapter<Announce.Row, BaseView
         helper.setText(R.id.date, dateFormat.format(new Date(item.getGmtCreate())));
     }
 
-    public void notifyAnnounceDataChanged(List<Announce.Row> list) {
+    public void notifyAnnounceDataChanged(List<Notice.Row> list) {
         if (dataSet == null) {
             dataSet = new ArrayList<>();
         }

@@ -1,7 +1,7 @@
 package com.beihui.market.injection.module;
 
 
-import com.beihui.market.ui.contract.AnnounceContract;
+import com.beihui.market.ui.contract.NoticeContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -9,14 +9,14 @@ import dagger.Provides;
 @Module
 public class AnnounceModule {
 
-    private AnnounceContract.View mView;
+    private NoticeContract.View mView;
 
-    public AnnounceModule(AnnounceContract.View view) {
+    public AnnounceModule(NoticeContract.View view) {
         mView = view;
     }
 
     @Provides
-    public AnnounceContract.View provideAnnounceContractView() {
+    public NoticeContract.View provideAnnounceContractView() {
         return mView;
     }
 }
