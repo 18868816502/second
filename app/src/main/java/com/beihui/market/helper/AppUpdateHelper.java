@@ -113,7 +113,6 @@ public class AppUpdateHelper {
                     }
                     dialog.setCancelable(false);
                     dialog.show(context.getSupportFragmentManager(), "Update");
-
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
