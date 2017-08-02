@@ -28,6 +28,7 @@ import com.beihui.market.base.Constant;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.News;
+import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabHomeComponent;
@@ -285,6 +286,18 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     @Override
     public void showAdDialog(AdBanner ad) {
         new AdDialog().setAd(ad).show(getChildFragmentManager(), AdDialog.class.getSimpleName());
+    }
+
+    @Override
+    public void showNotice(NoticeAbstract notice) {
+        noticeContainer.setVisibility(View.VISIBLE);
+        noticeTv.setText(notice.getTitle());
+        noticeContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

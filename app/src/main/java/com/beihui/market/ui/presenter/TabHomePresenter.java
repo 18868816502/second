@@ -2,6 +2,7 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.text.SpannableString;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -9,6 +10,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.News;
+import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.TabHomeContract;
@@ -32,6 +34,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private Context mContext;
 
     private boolean hasAdInit = false;
+    private boolean hasNoticeInit = false;
     private List<AdBanner> banners = new ArrayList<>();
     private List<String> notices = new ArrayList<>();
     private List<News.Row> hotNews = new ArrayList<>();
@@ -48,24 +51,33 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     public void onStart() {
         super.onStart();
         //如果已经过初始化，则直接返回数据
+        //banner
         if (banners.size() == 0) {
             queryBanner();
         } else {
             mView.showBanner(Collections.unmodifiableList(banners));
         }
+        //ad dialog
         if (!hasAdInit) {
             queryAd();
         }
+        //notice
+        if (!hasNoticeInit) {
+            queryNotice();
+        }
+        //loan success notice
         if (notices.size() == 0) {
             queryScrolling();
         } else {
             mView.showBorrowingScroll(Collections.unmodifiableList(notices));
         }
+        //news
         if (hotNews.size() == 0) {
             queryHotNews();
         } else {
             mView.showHotNews(hotNews);
         }
+        //hot loan products
         if (hotLoanProducts.size() == 0) {
             queryHotLoanProducts();
         } else {
@@ -207,6 +219,33 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(TabHomePresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    private void queryNotice() {
+        Disposable dis = mApi.queryNoticeHome()
+                .compose(RxUtil.<ResultEntity<NoticeAbstract>>io2main())
+                .subscribe(new Consumer<ResultEntity<NoticeAbstract>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<NoticeAbstract> result) throws Exception {
+                                   if (result.isSuccess() && result.getData() != null) {
+                                       hasNoticeInit = true;
+                                       NoticeAbstract notice = result.getData();
+                                       if (notice.getId() != null) {
+                                           if (!notice.getId().equals(SPUtils.getLastNoticeId(mContext))) {
+                                               mView.showNotice(notice);
+                                           }
+                                           SPUtils.setLastNoticeId(mContext, notice.getId());
+                                       }
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabHomePresenter.this, throwable);
                             }
                         });
         addDisposable(dis);

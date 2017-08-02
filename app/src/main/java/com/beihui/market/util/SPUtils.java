@@ -30,4 +30,15 @@ public class SPUtils {
         editor.apply();
     }
 
+    public static String getLastNoticeId(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString("lastNoticeId", null);
+    }
+
+    public static void setLastNoticeId(Context context, String lastNoticeId) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("lastNoticeId", lastNoticeId);
+        editor.apply();
+    }
 }

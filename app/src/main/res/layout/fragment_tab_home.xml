@@ -50,16 +50,34 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_gravity="bottom"
-        android:background="#ffe99e">
+        android:background="#ffe99e"
+        android:visibility="gone">
 
-        <com.beihui.market.view.AutoTextView
-            android:id="@+id/notice_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="30dp"
-            android:textColor="#ca6832"
-            android:textSize="14sp" />
+            android:layout_marginRight="36dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="@string/notice"
+                android:textColor="#ca6832"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/notice_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical"
+                android:textColor="#ca6832"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="wrap_content"
