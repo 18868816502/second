@@ -41,8 +41,6 @@ public class Api {
     private static Api sInstance;
     private ApiService service;
 
-    private ApiService serviceTemp;
-
     public static Api getInstance(OkHttpClient okHttpClient) {
         if (sInstance == null) {
             synchronized (Api.class) {
@@ -63,15 +61,6 @@ public class Api {
                 .client(okHttpClient)
                 .build();
         service = retrofit.create(ApiService.class);
-
-        Retrofit retrofit1 = new Retrofit.Builder()
-                .baseUrl("http://116.62.113.207:9080")
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
-        serviceTemp = retrofit1.create(ApiService.class);
     }
 
     /**
@@ -319,7 +308,7 @@ public class Api {
      * 查询首页热门贷款产品
      */
     public Observable<ResultEntity<List<LoanProduct.Row>>> queryHotLoanProducts() {
-        return serviceTemp.queryHotLoanProducts();
+        return service.queryHotLoanProducts();
     }
 
     /**
@@ -332,7 +321,7 @@ public class Api {
      * @param pageSize 查询每页大小
      */
     public Observable<ResultEntity<LoanProduct>> queryLoanProduct(double amount, int dueTime, int pro, int pageNum, int pageSize) {
-        return serviceTemp.queryLoanProduct(amount, dueTime + "", pro + "", pageNum, pageSize);
+        return service.queryLoanProduct(amount, dueTime + "", pro + "", pageNum, pageSize);
     }
 
     /**
@@ -341,7 +330,7 @@ public class Api {
      * @param id 产品id
      */
     public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id) {
-        return serviceTemp.queryLoanProductDetail(id);
+        return service.queryLoanProductDetail(id);
     }
 
     /**
