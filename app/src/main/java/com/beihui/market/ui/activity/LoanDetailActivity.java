@@ -26,6 +26,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoanDetailComponent;
 import com.beihui.market.injection.module.LoanDetailModule;
@@ -315,6 +316,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void navigateLoan(LoanProductDetail detail) {
+        DataStatisticsHelper.getInstance().onProductClicked(detail.getBase().getId());
         Intent intent = new Intent(this, ComWebViewActivity.class);
         intent.putExtra("url", detail.getBase().getUrl());
         startActivity(intent);

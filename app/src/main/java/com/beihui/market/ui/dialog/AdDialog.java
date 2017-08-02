@@ -1,6 +1,7 @@
 package com.beihui.market.ui.dialog;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.ui.activity.ComWebViewActivity;
+import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.bumptech.glide.Glide;
 
 public class AdDialog extends DialogFragment {
@@ -42,6 +46,24 @@ public class AdDialog extends DialogFragment {
             Glide.with(getContext())
                     .load(ad.getImgUrl())
                     .into(imageView);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //统计点击
+                    DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
+                    //跳原生还是跳Web
+                    if (ad.isNative()) {
+                        Intent intent = new Intent(getContext(), LoanDetailActivity.class);
+                        intent.putExtra("loanId", ad.getLocalId());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getContext(), ComWebViewActivity.class);
+                        intent.putExtra("url", ad.getUrl());
+                        startActivity(intent);
+                    }
+                }
+            });
         }
         return view;
     }
@@ -57,7 +79,6 @@ public class AdDialog extends DialogFragment {
             lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
             window.setAttributes(lp);
-
         }
     }
 

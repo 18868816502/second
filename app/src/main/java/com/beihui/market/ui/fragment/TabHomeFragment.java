@@ -28,9 +28,11 @@ import com.beihui.market.base.Constant;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.News;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabHomeComponent;
 import com.beihui.market.injection.module.TabHomeModule;
+import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
@@ -51,6 +53,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -330,11 +333,13 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
         Unbinder unbinder;
 
+        private List<AdBanner> bannerAds = new ArrayList<>();
+
         HeaderViewHolder(View itemView) {
             this.itemView = itemView;
             unbinder = ButterKnife.bind(this, itemView);
 
-            banner.setDelayTime(1500);
+            banner.setDelayTime(5000);
             banner.setIndicatorGravity(BannerConfig.RIGHT);
             banner.isAutoPlay(true);
 
@@ -359,6 +364,25 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
             params.height = bannerHeight;
 
             lyBanner.setLayoutParams(params);
+
+            banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+                    AdBanner ad = bannerAds.get(position);
+                    //统计点击
+                    DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
+                    //跳原生还是跳Web
+                    if (ad.isNative()) {
+                        Intent intent = new Intent(getContext(), LoanDetailActivity.class);
+                        intent.putExtra("loanId", ad.getLocalId());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getContext(), ComWebViewActivity.class);
+                        intent.putExtra("url", ad.getUrl());
+                        startActivity(intent);
+                    }
+                }
+            });
         }
 
         void destroy() {
@@ -367,11 +391,14 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         }
 
         void loadBanner(List<AdBanner> list) {
-            List<String> images = new ArrayList<>();
-            for (int i = 0; i < list.size(); ++i) {
-                images.add(list.get(i).getImgUrl());
+            if (list != null) {
+                bannerAds.addAll(list);
+                List<String> images = new ArrayList<>();
+                for (int i = 0; i < list.size(); ++i) {
+                    images.add(list.get(i).getImgUrl());
+                }
+                banner.setImages(images).setImageLoader(new BannerImageLoader()).start();
             }
-            banner.setImages(images).setImageLoader(new BannerImageLoader()).start();
         }
     }
 

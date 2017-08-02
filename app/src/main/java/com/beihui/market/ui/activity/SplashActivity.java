@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
@@ -15,6 +16,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.getui.GeTuiClient;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
 import com.beihui.market.util.CommonUtils;
@@ -45,6 +47,8 @@ public class SplashActivity extends BaseComponentActivity {
     Api api;
 
     private Disposable disposable;
+
+    private boolean adClicked;
 
     @Override
     public int getLayoutId() {
@@ -103,10 +107,12 @@ public class SplashActivity extends BaseComponentActivity {
     }
 
     private void launch(String url) {
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        intent.putExtra("url", url);
-        startActivity(intent);
-        finish();
+        if (!adClicked) {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void checkAd() {
@@ -135,9 +141,9 @@ public class SplashActivity extends BaseComponentActivity {
     }
 
     private void startAd(AdBanner ad) {
+        final AdBanner adBanner = ad;
         ignoreTv.setVisibility(View.VISIBLE);
-        ignoreTv.setText("3  跳过");
-        adTimer = new AdTimer(3 * 1000, 1000);
+        adTimer = new AdTimer(5 * 1000, 1000);
         adTimer.start();
 
         if (ad != null && ad.getImgUrl() != null) {
@@ -145,7 +151,25 @@ public class SplashActivity extends BaseComponentActivity {
             adImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    adClicked = true;
+                    Context context = SplashActivity.this;
+                    //统计点击
+                    DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), adBanner.getType());
+                    //先跳转至首页，在跳转至广告页
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
 
+                    //跳Native还是跳Web
+                    if (adBanner.isNative()) {
+                        intent = new Intent(context, LoanDetailActivity.class);
+                        intent.putExtra("loanId", adBanner.getLocalId());
+                        startActivity(intent);
+                    } else {
+                        intent = new Intent(context, ComWebViewActivity.class);
+                        intent.putExtra("url", adBanner.getUrl());
+                        startActivity(intent);
+                    }
+                    finish();
                 }
             });
 

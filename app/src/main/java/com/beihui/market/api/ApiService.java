@@ -225,4 +225,24 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/version/queryVersion")
     Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType);
+
+
+    /*******数据统计********/
+
+    /**
+     * 点击第三方产品外链
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/productSkip")
+    Observable<ResultEntity> onProductClicked(@Field("id") String id);
+
+    /**
+     * 点击广告，包括启动页，弹窗，banner
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/supernatant/loadSupernatant")
+    Observable<ResultEntity> onAdClicked(@Field("id") String id, @Field("userId") String userId, @Field("supernatantType") int supernatantType);
+
+
+    /***************/
 }

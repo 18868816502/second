@@ -349,6 +349,29 @@ public class Api {
         return service.queryAppUpdate(RequestConstants.PLATFORM + "");
     }
 
+    /*********数据统计********/
+
+    /**
+     * 点击第三方产品外链
+     *
+     * @param id 产品id
+     */
+    public Observable<ResultEntity> onProductClicked(String id) {
+        return service.onProductClicked(id);
+    }
+
+    /**
+     * 点击广告，包括启动页，弹窗，banner
+     *
+     * @param id     广告id
+     * @param userId 用户id，可为空
+     * @param type   广告类型
+     */
+    public Observable<ResultEntity> onAdClicked(String id, String userId, int type) {
+        return service.onAdClicked(id, userId, type);
+    }
+    /*****************/
+
     /*****generate method*****/
     //加密密码
     private String generatePwd(String pwd, String account) {

@@ -2,11 +2,14 @@ package com.beihui.market.entity;
 
 
 public class AdBanner {
-
+    /**
+     * 广告类型，1 跳转url， 2跳转产品详情页
+     */
     private int type;
     private String url;
     private String localId;
     private String imgUrl;
+    private String id;
 
     public int getType() {
         return type;
@@ -38,5 +41,17 @@ public class AdBanner {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isNative() {
+        return getType() == 2;
     }
 }
