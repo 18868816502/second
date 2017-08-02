@@ -209,11 +209,19 @@
                     android:layout_height="match_parent"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycle_view"
+                    <android.support.v4.widget.SwipeRefreshLayout
+                        android:id="@+id/refresh_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycle_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    </android.support.v4.widget.SwipeRefreshLayout>
+
                 </com.beihui.market.view.StateLayout>
             </FrameLayout>
 

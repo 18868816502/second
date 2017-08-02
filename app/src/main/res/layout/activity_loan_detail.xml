@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/base_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -43,21 +44,19 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@mipmap/product_logoshadow">
+                    android:layout_gravity="center_horizontal">
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/loan_icon"
-                        android:layout_width="66dp"
-                        android:layout_height="66dp"
+                        android:layout_width="79dp"
+                        android:layout_height="79dp"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/splash_bottom_logo"
-                        app:riv_border_color="#f2f2f2"
+                        app:riv_border_color="#f6f6f6"
                         app:riv_border_width="0.5dp"
-                        app:riv_corner_radius="6dp"
+                        app:riv_corner_radius="17dp"
                         app:riv_mutate_background="true"
-                        app:riv_tile_mode="repeat" />
+                        app:riv_tile_mode="clamp" />
                 </FrameLayout>
 
                 <LinearLayout

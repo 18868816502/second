@@ -3,5 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/comm_tag_light_gray_bg"
+    android:ellipsize="end"
+    android:maxLines="1"
     android:textColor="#99323834"
     android:textSize="11sp" />

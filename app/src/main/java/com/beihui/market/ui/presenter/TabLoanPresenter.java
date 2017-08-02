@@ -33,6 +33,8 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
     private int curPage = 1;
 
+    private Disposable curTask;
+
     @Inject
     TabLoanPresenter(Api api, TabLoanContract.View view) {
         mApi = api;
@@ -44,7 +46,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
         super.onStart();
         mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
         if (loanProductList.size() > 0) {
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
+            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), loanProductList.size() >= PAGE_SIZE);
         } else {
             refresh();
         }
@@ -57,7 +59,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
 
             loanProductList.clear();
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
+            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
             refresh();
         }
     }
@@ -69,7 +71,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
 
             loanProductList.clear();
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
+            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
             refresh();
         }
     }
@@ -81,13 +83,14 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
             mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
 
             loanProductList.clear();
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
+            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
             refresh();
         }
     }
 
     @Override
     public void refresh() {
+        cancelCurTask();
         curPage = 1;
         Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(proSelected), curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
@@ -98,11 +101,9 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                                        if (result.getData() != null && result.getData().getTotal() > 0) {
                                            loanProductList.clear();
                                            loanProductList.addAll(result.getData().getRows());
-                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
-                                           //返回的数据少于请求的个数
-                                           if (result.getData().getTotal() < PAGE_SIZE) {
-                                               mView.showNoMoreLoanProduct();
-                                           }
+                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList),
+                                                   loanProductList.size() >= PAGE_SIZE);
+
                                        } else {
                                            mView.showNoLoanProduct();
                                        }
@@ -128,6 +129,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                                 }
                             }
                         });
+        curTask = dis;
         addDisposable(dis);
     }
 
@@ -143,11 +145,9 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().getTotal() > 0) {
                                            loanProductList.addAll(result.getData().getRows());
-                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList));
-                                           //返回的数据少于请求的个数
-                                           if (result.getData().getTotal() < PAGE_SIZE) {
-                                               mView.showNoMoreLoanProduct();
-                                           }
+                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList),
+                                                   result.getData().getTotal() >= PAGE_SIZE);
+
                                        } else {
                                            mView.showNoMoreLoanProduct();
                                        }
@@ -203,6 +203,12 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                 return 1;
             default:
                 return 0;
+        }
+    }
+
+    private void cancelCurTask() {
+        if (curTask != null && !curTask.isDisposed()) {
+            curTask.dispose();
         }
     }
 }

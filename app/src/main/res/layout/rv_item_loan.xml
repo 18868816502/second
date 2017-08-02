@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,11 +25,16 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/loan_image"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                app:riv_border_color="#f6f6f6"
+                app:riv_border_width="0.5dp"
+                app:riv_corner_radius="6dp"
+                app:riv_mutate_background="true"
+                app:riv_tile_mode="clamp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,6 +60,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/round_0_grey"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:paddingBottom="2dp"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
@@ -67,6 +75,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/round_0_grey"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:paddingBottom="2dp"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"

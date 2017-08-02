@@ -44,6 +44,9 @@ import butterknife.BindView;
 
 
 public class LoanDetailActivity extends BaseComponentActivity implements LoanProductDetailContract.View {
+
+    @BindView(R.id.base_container)
+    View baseContainer;
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.scroll_view)
@@ -85,8 +88,6 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @Inject
     LoanDetailPresenter presenter;
 
-    private LoanProductDetail productDetail;
-
     private int[] selectedState = new int[]{android.R.attr.state_selected};
     private int[] noneState = new int[]{};
 
@@ -111,12 +112,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (productDetail != null && productDetail.getBase() != null
-                        && productDetail.getBase().getUrl() != null) {
-                    Intent intent = new Intent(LoanDetailActivity.this, ComWebViewActivity.class);
-                    intent.putExtra("url", productDetail.getBase().getUrl());
-                    startActivity(intent);
-                }
+                presenter.checkLoan();
             }
         });
     }
@@ -125,9 +121,12 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     public void initDatas() {
         presenter.onStart();
         LoanProduct.Row loan = getIntent().getParcelableExtra("loan");
+        String loanId = getIntent().getStringExtra("loanId");
         if (loan != null) {
             bindAbstractInfo(loan);
             presenter.queryDetail(loan.getId());
+        } else {
+            presenter.queryDetail(loanId);
         }
     }
 
@@ -217,26 +216,24 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         loanedNumberTv.setText(ss);
         //loan max amount
         if (loan.getBorrowingHighText() != null) {
-            String maxAmount = loan.getBorrowingHighText();
-            ss = new SpannableString(maxAmount);
-            ss.setSpan(new SizePosSpan(11), maxAmount.length() - 1, maxAmount.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            loanMaxAmountTv.setText(ss);
+            loanMaxAmountTv.setText(getSpan(loan.getBorrowingHighText()));
         }
         //loan interest
         if (loan.getInterestLowText() != null) {
-            String interestText = loan.getInterestLowText();
-            ss = new SpannableString(interestText);
-            ss.setSpan(new SizePosSpan(11), interestText.length() - 1, interestText.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            loanInterestsTv.setText(ss);
+            loanInterestsTv.setText(getSpan(loan.getInterestLowText()));
         }
         //loan due time
         if (loan.getDueTimeText() != null) {
-            String time = loan.getDueTimeText();
-            ss = new SpannableString(time);
-            ss.setSpan(new SizePosSpan(11), time.length() - 1, time.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            loanTimeRangeTv.setText(ss);
+            loanTimeRangeTv.setText(getSpan(loan.getDueTimeText()));
         }
 
+    }
+
+    private SpannableString getSpan(String text) {
+        SpannableString ss = new SpannableString(text);
+        ss.setSpan(new SizePosSpan(11), text.length() - 1, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+        return ss;
     }
 
     @Override
@@ -246,9 +243,29 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showLoanDetail(LoanProductDetail detail) {
-        productDetail = detail;
         LoanProductDetail.Base base = detail.getBase();
         if (base != null) {
+            //name
+            if (base.getProductName() != null) {
+                loanNameTitleTv.setText(base.getProductName());
+                loanNameTv.setText(base.getProductName());
+            }
+            //logo
+            if (base.getLogo() != null) {
+                Glide.with(this)
+                        .load(base.getLogo())
+                        .into(loanIconIv);
+            }
+            //tags
+            String[] feature = base.getFeature() != null ? base.getFeature().split(",") : null;
+            if (feature != null && feature.length > 0 && !feature[0].equals("")) {
+                inflateTag(feature);
+            }
+            //loaned number
+            SpannableString ss = new SpannableString("成功借款" + base.getSuccessCount() + "人");
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            loanedNumberTv.setText(ss);
+            //success point
             if (base.getSuccessCountPointText() != null) {
                 try {
                     int rate = (int) (Double.parseDouble(base.getSuccessCountPointText()) * 10);
@@ -263,6 +280,19 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                     e.printStackTrace();
                 }
             }
+            //loan max amount
+            if (base.getBorrowingHighText() != null) {
+                loanMaxAmountTv.setText(getSpan(base.getBorrowingHighText()));
+            }
+            //loan interest
+            if (base.getInterestLowText() != null) {
+                loanInterestsTv.setText(getSpan(base.getInterestLowText()));
+            }
+            //loan due time
+            if (base.getDueTimeText() != null) {
+                loanTimeRangeTv.setText(getSpan(base.getDueTimeText()));
+            }
+            //tags
             if (base.getOrientCareerText() != null && !base.getOrientCareerText().equals("全部")) {
                 forPeopleTagTv.setVisibility(View.VISIBLE);
                 forPeopleTagTv.setText(base.getOrientCareerText());
@@ -283,7 +313,19 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         }
     }
 
-    class SizePosSpan extends ReplacementSpan {
+    @Override
+    public void navigateLoan(LoanProductDetail detail) {
+        Intent intent = new Intent(this, ComWebViewActivity.class);
+        intent.putExtra("url", detail.getBase().getUrl());
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigateLogin() {
+        UserAuthorizationActivity.launch(this, baseContainer);
+    }
+
+    private class SizePosSpan extends ReplacementSpan {
 
         private int size;
         private TextPaint textPaint;

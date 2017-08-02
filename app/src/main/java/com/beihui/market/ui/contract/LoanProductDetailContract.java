@@ -9,9 +9,15 @@ public interface LoanProductDetailContract {
 
     interface Presenter extends BasePresenter {
         void queryDetail(String id);
+
+        void checkLoan();
     }
 
     interface View extends BaseView<Presenter> {
         void showLoanDetail(LoanProductDetail detail);
+
+        void navigateLoan(LoanProductDetail detail);
+
+        void navigateLogin();
     }
 }

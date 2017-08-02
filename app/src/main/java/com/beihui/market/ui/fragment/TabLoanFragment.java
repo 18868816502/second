@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -69,6 +70,8 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     View blurView;
     @BindView(R.id.recycle_view)
     RecyclerView recycleView;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
 
     @Inject
     TabLoanPresenter presenter;
@@ -109,10 +112,23 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
                 startActivity(intent);
             }
         });
+        loanRVAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                presenter.loadMore();
+            }
+        }, recycleView);
 
         recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         recycleView.setAdapter(loanRVAdapter);
         recycleView.addItemDecoration(new LoanItemDeco());
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.refresh();
+            }
+        });
     }
 
     @Override
@@ -205,12 +221,6 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     }
 
     @Override
-    public void showLoanProduct(List<LoanProduct.Row> list) {
-        stateLayout.switchState(StateLayout.STATE_CONTENT);
-        loanRVAdapter.notifyLoanProductChanged(list);
-    }
-
-    @Override
     public void showNetError() {
         stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
@@ -221,9 +231,32 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     }
 
     @Override
-    public void showNoMoreLoanProduct() {
+    public void showLoanProduct(List<LoanProduct.Row> list, boolean enableLoadMore) {
         if (loanRVAdapter.isLoading()) {
-            loanRVAdapter.loadMoreEnd(true);
+            loanRVAdapter.loadMoreComplete();
+        }
+        loanRVAdapter.setEnableLoadMore(enableLoadMore);
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+        stateLayout.switchState(StateLayout.STATE_CONTENT);
+        loanRVAdapter.notifyLoanProductChanged(list);
+    }
+
+    @Override
+    public void showNoMoreLoanProduct() {
+        loanRVAdapter.setEnableLoadMore(false);
+        loanRVAdapter.loadMoreComplete();
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        super.showErrorMsg(msg);
+        if (loanRVAdapter.isLoading()) {
+            loanRVAdapter.loadMoreComplete();
+        }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
         }
     }
 }

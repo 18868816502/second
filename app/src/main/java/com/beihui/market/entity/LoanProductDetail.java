@@ -28,10 +28,10 @@ public class LoanProductDetail {
         private String dueTimeText;
         private int quickCommend;
         private String feature;
-        private String interestLow;
+        private String interestLowText;
         private String logo;
         private int successCount;
-        private String borrowing;
+        private String borrowingHighText;
         private String id;
         private int productSign;
         private String interestTimeTypeText;
@@ -67,12 +67,12 @@ public class LoanProductDetail {
             this.feature = feature;
         }
 
-        public String getInterestLow() {
-            return interestLow;
+        public String getInterestLowText() {
+            return interestLowText;
         }
 
-        public void setInterestLow(String interestLow) {
-            this.interestLow = interestLow;
+        public void setInterestLowText(String interestLowText) {
+            this.interestLowText = interestLowText;
         }
 
         public String getLogo() {
@@ -91,12 +91,12 @@ public class LoanProductDetail {
             this.successCount = successCount;
         }
 
-        public String getBorrowing() {
-            return borrowing;
+        public String getBorrowingHighText() {
+            return borrowingHighText;
         }
 
-        public void setBorrowing(String borrowing) {
-            this.borrowing = borrowing;
+        public void setBorrowingHighText(String borrowingHighText) {
+            this.borrowingHighText = borrowingHighText;
         }
 
         public String getId() {

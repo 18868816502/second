@@ -17,12 +17,13 @@ import java.util.List;
 
 public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHolder> {
 
-    private List<LoanProduct.Row> dataSet;
+    private List<LoanProduct.Row> dataSet = new ArrayList<>();
 
     private int[] tagIds = {R.id.tag_1, R.id.tag_2};
 
     public LoanRVAdapter() {
         super(R.layout.rv_item_loan);
+        setNewData(dataSet);
     }
 
     @Override
@@ -81,13 +82,10 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
     }
 
     public void notifyLoanProductChanged(List<LoanProduct.Row> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
         if (list != null) {
             dataSet.addAll(list);
         }
-        setNewData(dataSet);
+        notifyDataSetChanged();
     }
 }

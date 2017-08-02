@@ -33,7 +33,7 @@ public interface TabLoanContract {
     interface View extends BaseView<Presenter> {
         void showFilters(String amount, String dueTime, String pro);
 
-        void showLoanProduct(List<LoanProduct.Row> list);
+        void showLoanProduct(List<LoanProduct.Row> list, boolean enableLoadMore);
 
         void showNetError();
 

@@ -1,10 +1,13 @@
 package com.beihui.market.ui.presenter;
 
 
+import android.content.Context;
+
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.LoanProductDetailContract;
 import com.beihui.market.util.RxUtil;
 
@@ -18,11 +21,15 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
     private Api mApi;
     private LoanProductDetailContract.View mView;
+    private UserHelper mUserHelper;
+
+    private LoanProductDetail productDetail;
 
     @Inject
-    LoanDetailPresenter(Api api, LoanProductDetailContract.View view) {
+    LoanDetailPresenter(Api api, LoanProductDetailContract.View view, Context context) {
         mApi = api;
         mView = view;
+        mUserHelper = UserHelper.getInstance(context);
     }
 
 
@@ -34,6 +41,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                                @Override
                                public void accept(@NonNull ResultEntity<LoanProductDetail> result) throws Exception {
                                    if (result.isSuccess()) {
+                                       productDetail = result.getData();
                                        mView.showLoanDetail(result.getData());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
@@ -48,5 +56,16 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                             }
                         });
         addDisposable(dis);
+    }
+
+    @Override
+    public void checkLoan() {
+        if (mUserHelper.getProfile() != null) {
+            if (productDetail != null) {
+                mView.navigateLoan(productDetail);
+            }
+        } else {
+            mView.navigateLogin();
+        }
     }
 }
