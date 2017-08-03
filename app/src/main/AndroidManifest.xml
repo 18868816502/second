@@ -174,7 +174,10 @@
         <!--umeng setting-->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="596c4b3dbbea83542c001b01" />
+            android:value="${UMENG_APP_KEY}" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL}" />
         <!--umeng setting end-->
 
         <meta-data

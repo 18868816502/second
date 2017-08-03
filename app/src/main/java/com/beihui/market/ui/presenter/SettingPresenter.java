@@ -8,6 +8,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.SettingContract;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
@@ -46,6 +47,9 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                                    if (result.isSuccess()) {
                                        mUserHelper.clearUser(mContext);
                                        mView.showLogoutSuccess();
+
+                                       //umeng统计
+                                       Statistic.logout();
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

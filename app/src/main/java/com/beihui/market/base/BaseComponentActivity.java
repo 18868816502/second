@@ -11,6 +11,7 @@ import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -42,6 +43,17 @@ public abstract class BaseComponentActivity extends AppCompatActivity {
         initDatas();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Statistic.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Statistic.onPause(this);
+    }
 
     public abstract int getLayoutId();
 

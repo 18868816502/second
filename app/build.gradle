@@ -17,7 +17,10 @@ android {
         manifestPlaceholders = [
                 GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                 GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
-                GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA"
+                GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
+
+                UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
+                UMENG_CHANNEL   : "native"
         ]
     }
 
@@ -102,6 +105,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //个推
     compile 'com.getui:sdk:2.10.2.0'
+    //umeng统计
+    compile 'com.umeng.analytics:analytics:6.1.2'
 
     /*View Lib*/
     //MarqueeView

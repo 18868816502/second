@@ -11,6 +11,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
@@ -77,6 +78,8 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
                                        //登录成功后，将用户信息注册到本地
                                        mUserHelper.update(result.getData(), account, mContext);
                                        mView.showRegisterSuccess();
+                                       //umeng统计
+                                       Statistic.login(result.getData().getId());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

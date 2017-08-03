@@ -9,6 +9,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.LoginContract;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
@@ -44,6 +45,8 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                             //登录之后，将用户信息注册到本地
                             mUserHelper.update(result.getData(), phone, mContext);
                             mView.showLoginSuccess();
+                            //umeng统计
+                            Statistic.login(result.getData().getId());
                         } else {
                             mView.showErrorMsg(result.getMsg());
                         }
