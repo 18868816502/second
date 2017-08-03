@@ -7,13 +7,13 @@ import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.entity.Message;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
-import com.beihui.market.entity.Message;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
@@ -226,6 +226,12 @@ public interface ApiService {
     @POST(BASE_PATH + "/version/queryVersion")
     Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType);
 
+    /**
+     * 用户反馈
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/insertFeedback")
+    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content);
 
     /*******数据统计********/
 
@@ -234,7 +240,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/productSkip")
-    Observable<ResultEntity> onProductClicked(@Field("id") String id);
+    Observable<ResultEntity> onProductClicked(@Field("userId") String userId, @Field("id") String id);
 
     /**
      * 点击广告，包括启动页，弹窗，banner

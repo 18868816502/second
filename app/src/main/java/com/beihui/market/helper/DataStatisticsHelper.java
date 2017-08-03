@@ -44,7 +44,9 @@ public class DataStatisticsHelper {
     }
 
     public void onProductClicked(String id) {
-        api.onProductClicked(id).compose(RxUtil.<ResultEntity>io2main())
+        String userId = UserHelper.getInstance(context).getProfile() != null ?
+                UserHelper.getInstance(context).getProfile().getId() : null;
+        api.onProductClicked(userId, id).compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
                                public void accept(@NonNull ResultEntity resultEntity) throws Exception {

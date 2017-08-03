@@ -87,6 +87,7 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
         int padding = (int) (density * 8);
         recyclerView.addItemDecoration(new NewsItemDeco((int) (density * 0.5), padding, padding));
 
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

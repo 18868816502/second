@@ -347,15 +347,26 @@ public class Api {
         return service.queryAppUpdate(RequestConstants.PLATFORM + "");
     }
 
+    /**
+     * 提交用户反馈
+     *
+     * @param userId  用户id
+     * @param content 反馈内容
+     */
+    public Observable<ResultEntity> submitFeedback(String userId, String content) {
+        return service.submitFeedback(userId, content);
+    }
+
     /*********数据统计********/
 
     /**
      * 点击第三方产品外链
      *
-     * @param id 产品id
+     * @param userId 用户Id
+     * @param id     产品id
      */
-    public Observable<ResultEntity> onProductClicked(String id) {
-        return service.onProductClicked(id);
+    public Observable<ResultEntity> onProductClicked(String userId, String id) {
+        return service.onProductClicked(userId, id);
     }
 
     /**

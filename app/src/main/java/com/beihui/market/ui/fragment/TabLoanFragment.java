@@ -126,6 +126,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         recycleView.setAdapter(loanRVAdapter);
         recycleView.addItemDecoration(new LoanItemDeco());
 
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

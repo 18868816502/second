@@ -76,4 +76,5 @@
     <string name="state_net_error">网络错误</string>
     <string name="reload">重新加载</string>
     <string name="notice">公告</string>
+    <string name="submit">提交</string>
 </resources>

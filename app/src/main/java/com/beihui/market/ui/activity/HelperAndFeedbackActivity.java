@@ -2,20 +2,34 @@ package com.beihui.market.ui.activity;
 
 
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerFeedbackComponent;
+import com.beihui.market.util.LogUtils;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 public class HelperAndFeedbackActivity extends BaseComponentActivity implements View.OnClickListener {
     @BindView(R.id.tool_bar)
@@ -24,10 +38,27 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
     TextView helpTv;
     @BindView(R.id.feedback)
     TextView feedbackTv;
+
+    @BindView(R.id.helper_container)
+    View helperContainer;
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+
+    @BindView(R.id.feedback_container)
+    View feedbackContainer;
+    @BindView(R.id.content)
+    EditText contentEt;
+    @BindView(R.id.length)
+    TextView lengthTv;
+    @BindView(R.id.submit)
+    Button submitBtn;
+
+    @Inject
+    Api api;
+
+    private Disposable disposable;
 
     private View selected;
 
@@ -36,6 +67,10 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         webView.getSettings().setJavaScriptEnabled(false);
         webView.destroy();
         webView = null;
+
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
         super.onDestroy();
     }
 
@@ -50,18 +85,77 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         helpTv.setOnClickListener(this);
         feedbackTv.setOnClickListener(this);
         webView.setWebChromeClient(new ChromeClient());
-        webView.setWebViewClient(new ViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
+
+        contentEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int len = contentEt.getText().length();
+                lengthTv.setText(len + "/300");
+                submitBtn.setEnabled(len > 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        lengthTv.setText("0/300");
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disposable = api.submitFeedback(UserHelper.getInstance(getApplicationContext()).getProfile().getId(),
+                        contentEt.getText().toString())
+                        .compose(RxUtil.<ResultEntity>io2main())
+                        .subscribe(new Consumer<ResultEntity>() {
+                                       @Override
+                                       public void accept(@NonNull ResultEntity result) throws Exception {
+                                           if (result.isSuccess()) {
+                                               ToastUtils.showShort(HelperAndFeedbackActivity.this,
+                                                       "提交成功,感谢您的反馈", null);
+                                               submitBtn.postDelayed(new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       finish();
+                                                   }
+                                               }, 200);
+                                           } else {
+                                               ToastUtils.showShort(HelperAndFeedbackActivity.this,
+                                                       result.getMsg(), null);
+                                           }
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(@NonNull Throwable throwable) throws Exception {
+                                        LogUtils.e("Feedback", "error " + throwable);
+                                        ToastUtils.showShort(HelperAndFeedbackActivity.this,
+                                                "请求出错了", null);
+                                    }
+                                });
+            }
+        });
+
     }
 
     @Override
     public void initDatas() {
+        webView.loadUrl(NetConstants.H5_HELPER);
         select(helpTv);
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
+        DaggerFeedbackComponent.builder()
+                .appComponent(appComponent)
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -79,20 +173,13 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         if (selected != null) {
             selected.setSelected(true);
         }
-
-        if (view == helpTv) {
-            webView.loadUrl(NetConstants.H5_HELPER);
-        } else {
-            webView.loadUrl(NetConstants.H5_ADVICE);
-        }
-    }
-
-    @JavascriptInterface
-    void onSubmit() {
+        helperContainer.setVisibility(view == helpTv ? View.VISIBLE : View.GONE);
+        feedbackContainer.setVisibility(view == feedbackTv ? View.VISIBLE : View.GONE);
 
     }
 
-    class ChromeClient extends WebChromeClient {
+
+    private class ChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
@@ -104,9 +191,5 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
                 progressBar.setVisibility(View.GONE);
             }
         }
-    }
-
-    class ViewClient extends WebViewClient {
-
     }
 }
