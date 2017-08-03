@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -34,14 +35,25 @@ public class NewsDetailActivity extends BaseComponentActivity {
     private String newsUrl;
 
     @Override
+    protected void onDestroy() {
+        webView.getSettings().setJavaScriptEnabled(false);
+        webView.destroy();
+        webView = null;
+        super.onDestroy();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_news_detail;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).init();
+
+        webView.getSettings().setJavaScriptEnabled(true);
     }
 
     @Override
