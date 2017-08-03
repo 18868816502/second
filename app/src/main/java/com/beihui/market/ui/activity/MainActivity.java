@@ -34,7 +34,7 @@ public class MainActivity extends BaseComponentActivity {
     /**
      * param need passed to target fragment if navigating to TabLoanFragment.
      */
-    private String queryMoney;
+    private int queryMoney = -1;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -91,11 +91,11 @@ public class MainActivity extends BaseComponentActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateLoan(NavigateLoan event) {
-        if (event.queryMoney != null) {
+        if (event.queryMoney != -1) {
             queryMoney = event.queryMoney;
         }
         mNavigationBar.select(R.id.tab_loan);
-        queryMoney = null;
+        queryMoney = -1;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -134,7 +134,7 @@ public class MainActivity extends BaseComponentActivity {
         } else {
             ft.attach(newSelected);
         }
-        if (newSelected != null && newSelected instanceof TabLoanFragment && queryMoney != null) {
+        if (newSelected != null && newSelected instanceof TabLoanFragment && queryMoney != -1) {
             ((TabLoanFragment) newSelected).setQueryMoney(queryMoney);
         }
         ft.commit();

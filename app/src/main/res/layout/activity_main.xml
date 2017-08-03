@@ -37,7 +37,7 @@
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:focusable="false"
-                android:src="@drawable/select_menu1" />
+                android:src="@drawable/tab_home" />
 
             <TextView
                 android:id="@+id/tab_home_text"
@@ -65,7 +65,7 @@
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:focusable="false"
-                android:src="@drawable/select_menu2" />
+                android:src="@drawable/tab_loan" />
 
             <TextView
                 android:id="@+id/tab_loan_text"
@@ -92,7 +92,7 @@
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:focusable="false"
-                android:src="@drawable/select_menu3" />
+                android:src="@drawable/tab_news" />
 
             <TextView
                 android:id="@+id/tab_news_text"
@@ -120,7 +120,7 @@
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:focusable="false"
-                android:src="@drawable/select_menu4" />
+                android:src="@drawable/tab_mine" />
 
             <TextView
                 android:id="@+id/tab_mine_text"

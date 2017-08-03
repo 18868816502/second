@@ -26,8 +26,8 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.base.Constant;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
-import com.beihui.market.entity.News;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -37,6 +37,7 @@ import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
+import com.beihui.market.ui.activity.NoticeDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
 import com.beihui.market.ui.adapter.HotNewsAdapter;
@@ -49,6 +50,7 @@ import com.beihui.market.ui.presenter.TabHomePresenter;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sunfusheng.marqueeview.MarqueeView;
@@ -220,11 +222,22 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 InputMethodUtil.openSoftKeyboard(getActivity(), headerViewHolder.etMoney);
                 break;
             case R.id.tv_tuijian:
-                if (TextUtils.isEmpty(headerViewHolder.etMoney.getText().toString()))
-                    inputMoney = 0;
-                else
-                    inputMoney = Integer.parseInt(headerViewHolder.etMoney.getText().toString());
-                EventBus.getDefault().post(new NavigateLoan(inputMoney + ""));
+                String moneyStr = headerViewHolder.etMoney.getText().toString();
+                if (TextUtils.isEmpty(moneyStr)) {
+                    ToastUtils.showShort(getContext(), "请输入金额", null);
+                    return;
+                }
+                try {
+                    inputMoney = Integer.parseInt(moneyStr);
+                    if (inputMoney == 0) {
+                        ToastUtils.showShort(getContext(), "最低借款1元", null);
+                        return;
+                    }
+                    EventBus.getDefault().post(new NavigateLoan(inputMoney));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    ToastUtils.showShort(getContext(), "请输入正确金额", null);
+                }
                 break;
             case R.id.tv_more:
                 EventBus.getDefault().post(new NavigateNews());
@@ -270,7 +283,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     }
 
     @Override
-    public void showHotNews(List<News.Row> news) {
+    public void showHotNews(List<HotNews> news) {
         if (headerViewHolder != null) {
             headerViewHolder.newsAdapter.notifyHotNewsChanged(news);
         }
@@ -290,12 +303,15 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void showNotice(NoticeAbstract notice) {
+        final NoticeAbstract noticeAbstract = notice;
         noticeContainer.setVisibility(View.VISIBLE);
         noticeTv.setText(notice.getTitle());
         noticeContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getContext(), NoticeDetailActivity.class);
+                intent.putExtra("noticeId", noticeAbstract.getId());
+                startActivity(intent);
             }
         });
     }
@@ -363,6 +379,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     Intent intent = new Intent(getContext(), NewsDetailActivity.class);
+                    intent.putExtra("hotNews", (HotNews) adapter.getData().get(position));
                     startActivity(intent);
                 }
             });

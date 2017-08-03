@@ -92,11 +92,13 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
     private int getLabelIcon(int type) {
         switch (type) {
             case 1:
-                return R.mipmap.label_new;
+                return R.drawable.label_new;
             case 2:
-                return R.mipmap.label_hot;
+                return R.drawable.label_hot;
+            case 3:
+                return R.drawable.label_jian;
             case 4:
-                return R.mipmap.label_featured;
+                return R.drawable.label_featured;
             default:
                 return -1;
         }

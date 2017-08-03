@@ -8,6 +8,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.NoticeAbstract;
@@ -37,7 +38,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private boolean hasNoticeInit = false;
     private List<AdBanner> banners = new ArrayList<>();
     private List<String> notices = new ArrayList<>();
-    private List<News.Row> hotNews = new ArrayList<>();
+    private List<HotNews> hotNews = new ArrayList<>();
     private List<LoanProduct.Row> hotLoanProducts = new ArrayList<>();
 
     @Inject
@@ -171,10 +172,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
     private void queryHotNews() {
         Disposable dis = mApi.queryHotNews()
-                .compose(RxUtil.<ResultEntity<List<News.Row>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<News.Row>>>() {
+                .compose(RxUtil.<ResultEntity<List<HotNews>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<HotNews>>>() {
                                @Override
-                               public void accept(@NonNull ResultEntity<List<News.Row>> result) throws Exception {
+                               public void accept(@NonNull ResultEntity<List<HotNews>> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            hotNews.clear();

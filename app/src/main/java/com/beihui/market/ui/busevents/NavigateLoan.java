@@ -6,9 +6,9 @@ package com.beihui.market.ui.busevents;
  */
 public class NavigateLoan {
 
-    public String queryMoney;
+    public int queryMoney = -1;
 
-    public NavigateLoan(String queryMoney) {
+    public NavigateLoan(int queryMoney) {
         this.queryMoney = queryMoney;
     }
 

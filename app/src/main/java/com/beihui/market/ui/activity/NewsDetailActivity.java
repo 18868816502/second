@@ -9,11 +9,14 @@ import android.webkit.WebView;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.News;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
 
@@ -26,6 +29,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
     WebView webView;
 
     private News.Row news;
+    private HotNews hotNews;
 
     private String newsUrl;
 
@@ -43,9 +47,13 @@ public class NewsDetailActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         news = getIntent().getParcelableExtra("news");
+        hotNews = getIntent().getParcelableExtra("hotNews");
         String newsId = getIntent().getStringExtra("newsId");
         if (newsId == null && news != null) {
             newsId = news.getId();
+        }
+        if (newsId == null && hotNews != null) {
+            newsId = hotNews.getId();
         }
         newsUrl = NetConstants.generateNewsUrl(newsId);
         webView.loadUrl(newsUrl);
@@ -64,7 +72,31 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        new ShareDialog().show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
+        UMWeb web = new UMWeb(newsUrl);
+        String imageUrl = null;
+        String title = null;
+        String description = null;
+        if (hotNews != null) {
+            imageUrl = hotNews.getFilePath();
+            title = hotNews.getTitle();
+        } else if (news != null) {
+            imageUrl = news.getImage();
+            title = news.getTitle();
+            description = news.getExplain();
+        }
+        if (imageUrl != null) {
+            UMImage thumb = new UMImage(this, imageUrl);
+            web.setThumb(thumb);
+        }
+        if (title != null) {
+            web.setTitle(title);
+        }
+        if (description != null) {
+            web.setDescription(description);
+        }
+        new ShareDialog()
+                .setUmWeb(web)
+                .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         return super.onOptionsItemSelected(item);
     }
 

@@ -6,6 +6,7 @@ import android.util.Base64;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -297,7 +298,7 @@ public class Api {
     /**
      * 查询首页热门资讯
      */
-    public Observable<ResultEntity<List<News.Row>>> queryHotNews() {
+    public Observable<ResultEntity<List<HotNews>>> queryHotNews() {
         return service.queryHotNews();
     }
 

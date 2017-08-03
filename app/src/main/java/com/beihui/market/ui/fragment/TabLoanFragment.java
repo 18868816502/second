@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -76,7 +77,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @Inject
     TabLoanPresenter presenter;
 
-    private String pendingAmount;
+    private int pendingAmount = -1;
 
     private LoanRVAdapter loanRVAdapter;
 
@@ -130,14 +131,9 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @Override
     public void initDatas() {
         presenter.onStart();
-        if (pendingAmount != null) {
-            try {
-                presenter.filterAmount(Integer.parseInt(pendingAmount));
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                ToastUtils.showShort(getContext(), "查询金额不是数字", null);
-            }
-            pendingAmount = null;
+        if (pendingAmount != -1) {
+            presenter.filterAmount(pendingAmount);
+            pendingAmount = -1;
         }
     }
 
@@ -152,13 +148,8 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
 
     @Override
-    public void onMoneyItemClick(String money) {
-        try {
-            presenter.filterAmount(Integer.parseInt(money));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            ToastUtils.showShort(getContext(), "输入的金额不是数字", null);
-        }
+    public void onMoneyItemClick(int money) {
+        presenter.filterAmount(money);
     }
 
     @Override
@@ -194,7 +185,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         }
     }
 
-    public void setQueryMoney(String queryMoney) {
+    public void setQueryMoney(int queryMoney) {
         this.pendingAmount = queryMoney;
     }
 
@@ -205,6 +196,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void showFilters(String amount, String dueTime, String pro) {
+        Log.e("e", "amount " + amount + " dueTime " + dueTime + " pro " + pro);
         moneyFilterContent.setText(amount);
         timeFilterContent.setText(dueTime);
         proFilterContent.setText(pro);

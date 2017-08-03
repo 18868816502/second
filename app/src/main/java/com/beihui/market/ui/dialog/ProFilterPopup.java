@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.RotateAnimation;
@@ -32,13 +31,11 @@ public class ProFilterPopup extends PopupWindow {
     @BindView(R.id.ly_4)
     LinearLayout ly4;
 
-    private int selectIndex;
-
-    private View mMenuView;
     private View shadowView;
     private TextView tv;
     private ImageView iv;
 
+    private onBrZhiyeListener listener;
 
     public ProFilterPopup(final Activity context, View shadowView, TextView tv, ImageView iv) {
         super(context);
@@ -48,36 +45,14 @@ public class ProFilterPopup extends PopupWindow {
         shadowView.setVisibility(View.VISIBLE);
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mMenuView = inflater.inflate(R.layout.dialog_brzhiye, null);
-        ButterKnife.bind(this, mMenuView);
+        View view = inflater.inflate(R.layout.dialog_brzhiye, null);
+        ButterKnife.bind(this, view);
 
-        //设置SelectPicPopupWindow的View
-        this.setContentView(mMenuView);
-        //设置SelectPicPopupWindow弹出窗体的宽
+        this.setContentView(view);
         this.setWidth(LayoutParams.MATCH_PARENT);
-        //设置SelectPicPopupWindow弹出窗体的高
         this.setHeight(LayoutParams.WRAP_CONTENT);
-        //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
-        //实例化一个ColorDrawable颜色为半透明
-        ColorDrawable dw = new ColorDrawable(0xb0000000);
-        //设置SelectPicPopupWindow弹出窗体的背景
-        this.setBackgroundDrawable(dw);
-        //mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-        mMenuView.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-
-                int height = mMenuView.findViewById(R.id.pop_layout).getTop();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
-                        dismiss();
-                    }
-                }
-                return true;
-            }
-        });
+        this.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         this.tv = tv;
         this.iv = iv;
@@ -99,44 +74,33 @@ public class ProFilterPopup extends PopupWindow {
 
     @OnClick({R.id.ly_1, R.id.ly_2, R.id.ly_3, R.id.ly_4})
     public void onViewClicked(View view) {
+        int selectedIndex;
         switch (view.getId()) {
             case R.id.ly_1:
-                selectIndex = 0;
+                selectedIndex = 0;
                 break;
             case R.id.ly_2:
-                selectIndex = 1;
+                selectedIndex = 1;
                 break;
             case R.id.ly_3:
-                selectIndex = 2;
+                selectedIndex = 2;
                 break;
             case R.id.ly_4:
-                selectIndex = 3;
+                selectedIndex = 3;
                 break;
+            default:
+                selectedIndex = -1;
         }
 
         if (listener != null)
-            listener.onZhiyeItemClick(selectIndex);
+            listener.onZhiyeItemClick(selectedIndex);
         dismiss();
-    }
-
-
-    public onBrZhiyeListener listener;
-
-    public interface onBrZhiyeListener {
-        void onZhiyeItemClick(int selectIndex);
     }
 
     public void setShareItemListener(onBrZhiyeListener listener) {
         this.listener = listener;
     }
 
-
-    /**
-     * 旋转指示器
-     *
-     * @param fromDegrees
-     * @param toDegrees
-     */
     private void rotateArrow(float fromDegrees, float toDegrees, ImageView imageView) {
         RotateAnimation mRotateAnimation =
                 new RotateAnimation(fromDegrees, toDegrees,
@@ -147,4 +111,8 @@ public class ProFilterPopup extends PopupWindow {
         imageView.startAnimation(mRotateAnimation);
     }
 
+
+    public interface onBrZhiyeListener {
+        void onZhiyeItemClick(int selectIndex);
+    }
 }

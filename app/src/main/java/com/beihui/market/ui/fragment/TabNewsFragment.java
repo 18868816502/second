@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,12 +26,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.View {
 
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -79,6 +81,12 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
         int padding = (int) (density * 8);
         recyclerView.addItemDecoration(new NewsItemDeco((int) (density * 0.5), padding, padding));
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.refresh();
+            }
+        });
     }
 
     @Override
@@ -103,25 +111,49 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
 
     @Override
     public void showNews(List<News.Row> news) {
+        if (!isAdded())
+            return;
         stateLayout.switchState(StateLayout.STATE_CONTENT);
         adapter.notifyNewsSetChanged(news);
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
         }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        if (!isAdded())
+            return;
+        super.showErrorMsg(msg);
+        if (adapter.isLoading()) {
+            adapter.loadMoreComplete();
+        }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void showNoNews() {
+        if (!isAdded())
+            return;
         stateLayout.switchState(StateLayout.STATE_EMPTY);
     }
 
     @Override
     public void showNetError() {
+        if (!isAdded())
+            return;
         stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
 
     @Override
     public void showNoMoreNews() {
+        if (!isAdded())
+            return;
         adapter.loadMoreEnd(true);
     }
 }

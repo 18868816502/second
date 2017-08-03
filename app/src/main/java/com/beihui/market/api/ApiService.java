@@ -3,6 +3,7 @@ package com.beihui.market.api;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -186,7 +187,7 @@ public interface ApiService {
      * 获取首页热门资讯
      */
     @GET(BASE_PATH + "/information/hotList")
-    Observable<ResultEntity<List<News.Row>>> queryHotNews();
+    Observable<ResultEntity<List<HotNews>>> queryHotNews();
 
     /**
      * 获取首页热门贷款产品

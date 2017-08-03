@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    tools:ignore="RtlHardcoded">
 
     <LinearLayout
         android:id="@+id/ly_banner"
@@ -39,10 +39,10 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:src="@mipmap/toutiao_icon" />
+            android:src="@drawable/loan_top_line" />
 
         <View
             android:layout_width="8dp"
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="32dp"
-                android:src="@mipmap/home_privilege_icon_normal"
+                android:src="@drawable/home_privilege"
                 tools:ignore="RtlHardcoded" />
 
 
@@ -193,8 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="14dp"
-                android:orientation="vertical"
-                tools:ignore="RtlHardcoded">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -278,6 +277,5 @@
             android:textSize="13sp" />
 
     </LinearLayout>
-
 
 </LinearLayout>

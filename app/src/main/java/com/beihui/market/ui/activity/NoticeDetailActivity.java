@@ -44,6 +44,7 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     @Override
     public void initDatas() {
         Notice.Row notice = getIntent().getParcelableExtra("notice");
+        String noticeId = getIntent().getStringExtra("noticeId");
         if (notice != null) {
             if (notice.getId() != null) {
                 presenter.queryDetail(notice.getId());
@@ -51,6 +52,8 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
             if (notice.getTitle() != null) {
                 titleTv.setText(notice.getTitle());
             }
+        } else if (noticeId != null) {
+            presenter.queryDetail(noticeId);
         }
     }
 
@@ -70,8 +73,13 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
 
     @Override
     public void showDetail(NoticeDetail detail) {
-        if (detail != null && detail.getContent() != null) {
-            contentTv.setText(Html.fromHtml(detail.getContent()));
+        if (detail != null) {
+            if (detail.getTitle() != null) {
+                contentTv.setText(detail.getTitle());
+            }
+            if (detail.getContent() != null) {
+                contentTv.setText(Html.fromHtml(detail.getContent()));
+            }
         }
     }
 }

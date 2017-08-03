@@ -15,10 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.beihui.market.R;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.ButterKnife;
@@ -28,6 +28,8 @@ import butterknife.Unbinder;
 public class ShareDialog extends DialogFragment {
 
     Unbinder unbinder;
+
+    private UMWeb umWeb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,29 +87,37 @@ public class ShareDialog extends DialogFragment {
         }
     }
 
+    public ShareDialog setUmWeb(UMWeb umWeb) {
+        this.umWeb = umWeb;
+        return this;
+    }
+
     private void shareWeb(SHARE_MEDIA media) {
-        UMImage thumb = new UMImage(getActivity(), "http://bbs.umeng.com/template/yudi_moji/style/logo.png");
-        UMWeb web = new UMWeb("http://www.gfdgd.com");
-        web.setThumb(thumb);
-        web.setDescription("gfdg");
-        web.setTitle("fdfdf");
-        new ShareAction(getActivity()).withMedia(web).setPlatform(media).setCallback(new UMShareListener() {
+        if (umWeb == null) {
+            throw new IllegalStateException("未设置分享内容 ");
+        }
+        new ShareAction(getActivity()).withMedia(this.umWeb).setPlatform(media).setCallback(new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
             }
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
+                ToastUtils.showShort(getContext(), "分享成功", null);
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                ToastUtils.showShort(getContext(), "分享错误", null);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media) {
+                ToastUtils.showShort(getContext(), "分享取消", null);
             }
         }).share();
+
+        dismiss();
     }
 
 }
