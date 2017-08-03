@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,7 +24,6 @@ import com.beihui.market.ui.dialog.ProFilterPopup;
 import com.beihui.market.ui.dialog.TimeFilterPopup;
 import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.ui.rvdecoration.LoanItemDeco;
-import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CommStateViewProvider;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.drawable.BlurDrawable;
@@ -203,7 +201,6 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void showFilters(String amount, String dueTime, String pro) {
-        Log.e("e", "amount " + amount + " dueTime " + dueTime + " pro " + pro);
         moneyFilterContent.setText(amount);
         timeFilterContent.setText(dueTime);
         proFilterContent.setText(pro);

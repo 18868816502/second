@@ -201,7 +201,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/list")
-    Observable<ResultEntity<LoanProduct>> queryLoanProduct(@Field("amount") double amount, @Field("due_time") String dueTime,
+    Observable<ResultEntity<LoanProduct>> queryLoanProduct(@Field("amount") double amount, @Field("dueTime") String dueTime,
                                                            @Field("orientCareer") String pro, @Field("pageNo") int pageNum,
                                                            @Field("pageSize") int pageSize);
 
