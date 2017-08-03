@@ -71,6 +71,13 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     }
 
     @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        presenter = null;
+        super.onDestroy();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_user_profile;
     }

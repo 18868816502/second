@@ -46,6 +46,12 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_tab_news;
     }

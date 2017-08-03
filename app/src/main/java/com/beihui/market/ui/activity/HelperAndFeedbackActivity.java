@@ -33,7 +33,9 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
 
     @Override
     protected void onDestroy() {
+        webView.getSettings().setJavaScriptEnabled(false);
         webView.destroy();
+        webView = null;
         super.onDestroy();
     }
 

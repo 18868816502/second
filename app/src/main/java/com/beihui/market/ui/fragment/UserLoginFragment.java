@@ -48,9 +48,9 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         presenter.onDestroy();
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

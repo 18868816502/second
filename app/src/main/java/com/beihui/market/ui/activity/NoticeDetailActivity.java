@@ -32,6 +32,13 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     NoticeDetailPresenter presenter;
 
     @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        presenter = null;
+        super.onDestroy();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_notice_detail;
     }

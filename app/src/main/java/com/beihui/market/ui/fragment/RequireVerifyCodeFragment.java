@@ -48,6 +48,7 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
             countDownTimer.cancel();
         }
         countDownTimer = null;
+        presenter.onDestroy();
         super.onDestroyView();
     }
 

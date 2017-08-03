@@ -36,6 +36,13 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     SettingPresenter presenter;
 
     @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        presenter = null;
+        super.onDestroy();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_settings;
     }

@@ -33,6 +33,12 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     private String requestPhone;
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_set_psd;
     }

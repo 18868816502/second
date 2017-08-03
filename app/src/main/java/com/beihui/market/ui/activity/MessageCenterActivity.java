@@ -49,6 +49,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     @Override
     protected void onDestroy() {
         presenter.onDestroy();
+        presenter = null;
         if (headerViewHolder.animatable.isRunning()) {
             headerViewHolder.animatable.stop();
         }

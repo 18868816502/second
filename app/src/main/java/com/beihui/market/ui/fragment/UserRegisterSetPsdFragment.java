@@ -45,6 +45,12 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
     private String requestPhone;
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_register_set_psd;
     }

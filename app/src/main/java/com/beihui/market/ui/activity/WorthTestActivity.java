@@ -22,7 +22,9 @@ public class WorthTestActivity extends BaseComponentActivity {
 
     @Override
     protected void onDestroy() {
+        webView.getSettings().setJavaScriptEnabled(false);
         webView.destroy();
+        webView = null;
         super.onDestroy();
     }
 

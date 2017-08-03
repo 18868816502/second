@@ -49,6 +49,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
             countDownTimer.cancel();
         }
         countDownTimer = null;
+        presenter.onDestroy();
         super.onDestroyView();
     }
 

@@ -51,6 +51,18 @@ public class SplashActivity extends BaseComponentActivity {
     private boolean adClicked;
 
     @Override
+    protected void onDestroy() {
+        if (adTimer != null) {
+            adTimer.cancel();
+        }
+        adTimer = null;
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_splash;
     }
@@ -92,18 +104,6 @@ public class SplashActivity extends BaseComponentActivity {
                 .appComponent(appComponent)
                 .build()
                 .inject(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (adTimer != null) {
-            adTimer.cancel();
-        }
-        adTimer = null;
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-        super.onDestroy();
     }
 
     private void launch(String url) {

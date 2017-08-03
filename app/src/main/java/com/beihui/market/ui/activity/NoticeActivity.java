@@ -36,6 +36,12 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
     @Inject
     NoticePresenter presenter;
 
+    @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        presenter = null;
+        super.onDestroy();
+    }
 
     @Override
     public int getLayoutId() {

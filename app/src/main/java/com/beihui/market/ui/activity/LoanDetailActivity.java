@@ -89,6 +89,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @Inject
     LoanDetailPresenter presenter;
 
+    @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        presenter = null;
+        super.onDestroy();
+    }
+
     private int[] selectedState = new int[]{android.R.attr.state_selected};
     private int[] noneState = new int[]{};
 

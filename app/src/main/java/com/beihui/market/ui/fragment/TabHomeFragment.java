@@ -134,6 +134,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         headerViewHolder.banner.stopAutoPlay();
         headerViewHolder.destroy();
         headerViewHolder = null;
+        presenter.onDestroy();
         super.onDestroyView();
     }
 
