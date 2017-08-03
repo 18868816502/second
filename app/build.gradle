@@ -14,11 +14,10 @@ android {
 
         renderscriptTargetApi 25
         renderscriptSupportModeEnabled true
-
         manifestPlaceholders = [
-                GETUI_APP_ID    : "s6zvcqf7Vr87KxMT56o7A7",
-                GETUI_APP_KEY   : "AdIYYe091HAWCP4snudnU9",
-                GETUI_APP_SECRET: "rCc6Tmo7xC8WSEOsjxDx3A"
+                GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
+                GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
+                GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA"
         ]
 
 

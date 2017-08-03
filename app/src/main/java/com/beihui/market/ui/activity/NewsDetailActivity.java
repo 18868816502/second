@@ -27,6 +27,8 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     private News.Row news;
 
+    private String newsUrl;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_news_detail;
@@ -41,9 +43,12 @@ public class NewsDetailActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         news = getIntent().getParcelableExtra("news");
-        if (news != null) {
-            webView.loadUrl(NetConstants.generateNewsUrl(news.getId()));
+        String newsId = getIntent().getStringExtra("newsId");
+        if (newsId == null && news != null) {
+            newsId = news.getId();
         }
+        newsUrl = NetConstants.generateNewsUrl(newsId);
+        webView.loadUrl(newsUrl);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,6 +36,15 @@ public class MainActivity extends BaseComponentActivity {
      */
     private String queryMoney;
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (getIntent().getBooleanExtra("home", false)) {
+            if (mNavigationBar != null) {
+                mNavigationBar.select(R.id.tab_home);
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
