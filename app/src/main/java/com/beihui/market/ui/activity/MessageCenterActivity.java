@@ -133,7 +133,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         if (sysMsg.getExplain() != null) {
             headerViewHolder.msgContentTv.setText(sysMsg.getExplain());
         }
-        headerViewHolder.annDataTv.setText(DateFormatUtils.getCN_MDFormat().format(new Date(sysMsg.getGmtCreate())));
+        headerViewHolder.msgDateTv.setText(DateFormatUtils.getCN_MDFormat().format(new Date(sysMsg.getGmtCreate())));
     }
 
     @Override

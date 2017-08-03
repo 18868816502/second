@@ -2,6 +2,7 @@ package com.beihui.market.ui.adapter;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
@@ -49,6 +50,7 @@ public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHold
             helper.setText(R.id.news_title, item.getTitle());
         }
         helper.setText(R.id.news_publish_time, DateFormatUtils.generateNewsDate(item.getGmtCreate()));
+        helper.itemView.setBackgroundColor(Color.WHITE);
     }
 
 }

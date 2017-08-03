@@ -11,18 +11,18 @@ import android.view.View;
 
 public class MessageCenterItemDeco extends RecyclerView.ItemDecoration {
 
-    private int mDividerHeight;
+    private int dividerHeight;
     private int padding;
 
-    private Paint mPaint = new Paint();
-    private Rect mDrawRect = new Rect();
+    private Paint paint = new Paint();
+    private Rect drawRect = new Rect();
+
+    private int dividerColor = Color.parseColor("#b2b2b2");
 
     public MessageCenterItemDeco(Context context) {
         float density = context.getResources().getDisplayMetrics().density;
-        mDividerHeight = (int) (density * 0.5);
+        dividerHeight = (int) (density * 0.5);
         padding = (int) (density * 7);
-
-        mPaint.setColor(Color.parseColor("#f0f0f0"));
     }
 
     @Override
@@ -32,8 +32,14 @@ public class MessageCenterItemDeco extends RecyclerView.ItemDecoration {
             if (parent.getChildAdapterPosition(child) >= 2) {
                 int childTop = child.getTop();
                 int childWidth = child.getMeasuredWidth();
-                mDrawRect.set(padding, childTop - mDividerHeight, childWidth - padding, childTop);
-                c.drawRect(mDrawRect, mPaint);
+
+                paint.setColor(Color.WHITE);
+                drawRect.set(0, childTop - dividerHeight, childWidth, childTop);
+                c.drawRect(drawRect, paint);
+
+                paint.setColor(dividerColor);
+                drawRect.set(padding, childTop - dividerHeight, childWidth - padding, childTop);
+                c.drawRect(drawRect, paint);
             }
         }
     }
@@ -41,7 +47,7 @@ public class MessageCenterItemDeco extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (parent.getChildAdapterPosition(view) >= 2) {
-            outRect.set(0, mDividerHeight, 0, 0);
+            outRect.set(0, dividerHeight, 0, 0);
         }
     }
 }

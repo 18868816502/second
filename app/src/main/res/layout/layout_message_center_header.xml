@@ -12,7 +12,8 @@
     <RelativeLayout
         android:id="@+id/ann_item"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/ann_image"
@@ -63,7 +64,8 @@
     <RelativeLayout
         android:id="@+id/msg_item"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/msg_image"
