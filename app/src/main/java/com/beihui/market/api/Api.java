@@ -15,7 +15,7 @@ import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
-import com.beihui.market.entity.ReNews;
+import com.beihui.market.entity.Message;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
@@ -272,13 +272,10 @@ public class Api {
     }
 
     /**
-     * 推荐资讯列表
-     *
-     * @param pageNum  查询页数
-     * @param pageSize 查询每页大小
+     * 站内信
      */
-    public Observable<ResultEntity<ReNews>> queryReNews(int pageNum, int pageSize) {
-        return service.queryReNews(pageNum, pageSize);
+    public Observable<ResultEntity<List<Message>>> queryMessage() {
+        return service.queryMessages();
     }
 
     /**

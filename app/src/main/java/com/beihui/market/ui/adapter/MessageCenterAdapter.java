@@ -5,7 +5,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.ReNews;
+import com.beihui.market.entity.Message;
 import com.beihui.market.util.DateFormatUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -14,15 +14,15 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageCenterAdapter extends BaseQuickAdapter<ReNews.Row, BaseViewHolder> {
-    private List<ReNews.Row> dataSet;
+public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHolder> {
+    private List<Message> dataSet;
 
     public MessageCenterAdapter() {
         super(R.layout.rv_item_news);
     }
 
 
-    public void notifyMessageChanged(List<ReNews.Row> list) {
+    public void notifyMessageChanged(List<Message> list) {
         if (dataSet == null) {
             dataSet = new ArrayList<>();
         }
@@ -34,7 +34,7 @@ public class MessageCenterAdapter extends BaseQuickAdapter<ReNews.Row, BaseViewH
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ReNews.Row item) {
+    protected void convert(BaseViewHolder helper, Message item) {
         if (item.getImage() != null) {
             Context context = helper.itemView.getContext();
             Glide.with(context)

@@ -43,6 +43,10 @@ public class ComWebViewActivity extends BaseComponentActivity {
         if (url != null) {
             webView.loadUrl(url);
         }
+        String title = getIntent().getStringExtra("title");
+        if (title != null) {
+            titleTv.setText(title);
+        }
     }
 
     @Override

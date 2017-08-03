@@ -6,8 +6,8 @@ import android.content.Context;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.entity.Message;
 import com.beihui.market.entity.NoticeAbstract;
-import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.MessageCenterContract;
@@ -25,12 +25,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class MessageCenterPresenter extends BaseRxPresenter implements MessageCenterContract.Presenter {
-    private static final int PAGE_SIZE = 3;
     private Api mApi;
     private MessageCenterContract.View mView;
     private UserHelper mUserHelper;
-    private int curPage = 1;
-    private List<ReNews.Row> reNews = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
     @Inject
     MessageCenterPresenter(Api api, MessageCenterContract.View view, Context context) {
@@ -68,29 +66,23 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
                 });
         addDisposable(dis);
 
-        curPage = 0;
-        refreshNews();
+        refreshMessage();
     }
 
     @Override
-    public void refreshNews() {
-        curPage++;
-        Disposable dis = mApi.queryReNews(curPage, PAGE_SIZE)
-                .compose(RxUtil.<ResultEntity<ReNews>>io2main())
-                .subscribe(new Consumer<ResultEntity<ReNews>>() {
+    public void refreshMessage() {
+        Disposable dis = mApi.queryMessage()
+                .compose(RxUtil.<ResultEntity<List<Message>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<Message>>>() {
                                @Override
-                               public void accept(@NonNull ResultEntity<ReNews> result) throws Exception {
+                               public void accept(@NonNull ResultEntity<List<Message>> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().getTotal() > 0) {
-                                           reNews.clear();
-                                           reNews.addAll(result.getData().getRows());
-                                           mView.showReNews(Collections.unmodifiableList(reNews));
+                                       if (result.getData() != null && result.getData().size() > 0) {
+                                           messages.clear();
+                                           messages.addAll(result.getData());
+                                           mView.showMessages(Collections.unmodifiableList(messages));
                                        } else {
-                                           if (reNews.size() > 0) {
-                                               mView.showNoMoreReNews();
-                                           } else {
-                                               mView.showNoRecommend();
-                                           }
+                                           mView.showNoMessage();
                                        }
                                    } else {
                                        mView.showErrorMsg(result.getMsg());

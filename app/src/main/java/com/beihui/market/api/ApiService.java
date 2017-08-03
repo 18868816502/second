@@ -12,7 +12,7 @@ import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
-import com.beihui.market.entity.ReNews;
+import com.beihui.market.entity.Message;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
@@ -164,11 +164,10 @@ public interface ApiService {
     Observable<ResultEntity<News>> queryNews(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
 
     /**
-     * 推荐资讯
+     * 站内信
      */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/pushInfo/list")
-    Observable<ResultEntity<ReNews>> queryReNews(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
+    @POST(BASE_PATH + "/pushInfo/queryMessage")
+    Observable<ResultEntity<List<Message>>> queryMessages();
 
     /**
      * 启动页广告，banner，弹窗广告

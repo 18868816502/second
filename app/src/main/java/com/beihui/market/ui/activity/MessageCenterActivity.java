@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.Message;
 import com.beihui.market.entity.NoticeAbstract;
-import com.beihui.market.entity.ReNews;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMessageCenterComponent;
@@ -24,7 +24,7 @@ import com.beihui.market.ui.contract.MessageCenterContract;
 import com.beihui.market.ui.presenter.MessageCenterPresenter;
 import com.beihui.market.ui.rvdecoration.MessageCenterItemDeco;
 import com.beihui.market.util.DateFormatUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.Date;
 import java.util.List;
@@ -64,6 +64,16 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     public void configViews() {
         setupToolbar(toolbar);
         adapter = new MessageCenterAdapter();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(MessageCenterActivity.this, ComWebViewActivity.class);
+                Message message = (Message) adapter.getData().get(position);
+                intent.putExtra("url", message.getUrl());
+                intent.putExtra("title", message.getTitle());
+                startActivity(intent);
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -99,7 +109,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
             Intent intent = new Intent(this, SysMsgActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.refresh_news) {
-            presenter.refreshNews();
+            presenter.refreshMessage();
             headerViewHolder.animatable.start();
         }
     }
@@ -126,30 +136,22 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     }
 
     @Override
-    public void showReNews(List<ReNews.Row> news) {
+    public void showMessages(List<Message> messages) {
         if (headerViewHolder.reNewsHeader.getVisibility() == View.GONE) {
             headerViewHolder.reNewsHeader.setVisibility(View.VISIBLE);
         }
         if (headerViewHolder.animatable.isRunning()) {
             headerViewHolder.animatable.stop();
         }
-        adapter.notifyMessageChanged(news);
+        adapter.notifyMessageChanged(messages);
     }
 
     @Override
-    public void showNoRecommend() {
+    public void showNoMessage() {
         headerViewHolder.reNewsHeader.setVisibility(View.GONE);
         adapter.notifyMessageChanged(null);
         View footer = LayoutInflater.from(this).inflate(R.layout.layout_message_center_no_message, null);
         adapter.setFooterView(footer);
-    }
-
-    @Override
-    public void showNoMoreReNews() {
-        if (headerViewHolder.animatable.isRunning()) {
-            headerViewHolder.animatable.stop();
-        }
-        ToastUtils.showShort(this, "没有更多推荐", null);
     }
 
     class HeaderViewHolder {

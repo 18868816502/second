@@ -50,7 +50,7 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(NoticeActivity.this, NoticeDetailActivity.class);
-                intent.putExtra("id", (Notice.Row) adapter.getData().get(position));
+                intent.putExtra("notice", (Notice.Row) adapter.getData().get(position));
                 startActivity(intent);
             }
         });
