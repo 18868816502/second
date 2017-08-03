@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">贷款超市</string>
+    <string name="app_name">爱信管家</string>
     <string name="tab_home">首页</string>
     <string name="tab_loan">借款</string>
     <string name="tab_news">资讯</string>
@@ -44,7 +44,7 @@
     <string name="input_new_psd_again">请再次输入新密码</string>
     <string name="confirm_change">确认修改</string>
     <string name="welcome_page">欢迎页</string>
-    <string name="know_us">了解贷款超市</string>
+    <string name="know_us">了解爱信管家</string>
     <string name="user_agreement">用户注册协议</string>
     <string name="loan_max_amount">最高额度</string>
     <string name="loan_interests">参考月息</string>
