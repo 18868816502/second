@@ -28,6 +28,10 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder helper, LoanProduct.Row item) {
+        //参考日月息
+        if (item.getInterestTimeText() != null) {
+            helper.setText(R.id.interest_text, item.getInterestTimeText());
+        }
         //logo
         if (item.getLogoUrl() != null) {
             Glide.with(helper.itemView.getContext())

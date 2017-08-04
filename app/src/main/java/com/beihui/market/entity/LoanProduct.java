@@ -64,6 +64,8 @@ public class LoanProduct {
          */
         private String interestTimeTypeText;
 
+        private String interestTimeText;
+
         public int getQuickCommend() {
             return quickCommend;
         }
@@ -150,6 +152,14 @@ public class LoanProduct {
 
         public void setInterestTimeTypeText(String interestTimeTypeText) {
             this.interestTimeTypeText = interestTimeTypeText;
+        }
+
+        public String getInterestTimeText() {
+            return interestTimeText;
+        }
+
+        public void setInterestTimeText(String interestTimeText) {
+            this.interestTimeText = interestTimeText;
         }
 
         @Override

@@ -88,6 +88,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @BindView(R.id.tab_3)
     TextView tab3Tv;
 
+    @BindView(R.id.interest_text)
+    TextView interestText;
+
     private int hitDistance;
 
     private LoanProduct.Row productAbstract;
@@ -201,6 +204,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     }
 
     private void inflateTag(String[] tags) {
+        tagContainer.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
         for (String tag : tags) {
             TextView textView = (TextView) inflater.inflate(R.layout.layout_tag_text, null);
@@ -280,6 +284,10 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         productDetail = detail;
         LoanProductDetail.Base base = detail.getBase();
         if (base != null) {
+            //参考日，月息
+            if (detail.getBase().getInterestTimeText() != null) {
+                interestText.setText(detail.getBase().getInterestTimeText());
+            }
             //name
             if (base.getProductName() != null) {
                 loanNameTitleTv.setText(base.getProductName());
@@ -327,7 +335,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             if (base.getDueTimeText() != null) {
                 loanTimeRangeTv.setText(getSpan(base.getDueTimeText()));
             }
-            //tags
+            //bottom tags
             if (base.getOrientCareerText() != null && !base.getOrientCareerText().equals("全部")) {
                 forPeopleTagTv.setVisibility(View.VISIBLE);
                 forPeopleTagTv.setText(base.getOrientCareerText());
@@ -365,12 +373,12 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
         private int size;
         private TextPaint textPaint;
-
-
+        
         SizePosSpan(int size) {
             this.size = (int) (size * getResources().getDisplayMetrics().density);
             textPaint = new TextPaint();
             textPaint.setTextSize(this.size);
+            textPaint.setFakeBoldText(true);
         }
 
         @Override

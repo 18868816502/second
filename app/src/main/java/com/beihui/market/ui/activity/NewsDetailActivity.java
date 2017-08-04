@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -26,6 +27,8 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.title)
+    TextView titleTv;
     @BindView(R.id.web_view)
     WebView webView;
 
@@ -61,11 +64,17 @@ public class NewsDetailActivity extends BaseComponentActivity {
         news = getIntent().getParcelableExtra("news");
         hotNews = getIntent().getParcelableExtra("hotNews");
         String newsId = getIntent().getStringExtra("newsId");
+        String newsTitle = getIntent().getStringExtra("newsTitle");
         if (newsId == null && news != null) {
             newsId = news.getId();
+            titleTv.setText(news.getTitle());
         }
         if (newsId == null && hotNews != null) {
             newsId = hotNews.getId();
+            titleTv.setText(hotNews.getTitle());
+        }
+        if (newsTitle != null) {
+            titleTv.setText(newsTitle);
         }
         newsUrl = NetConstants.generateNewsUrl(newsId);
         webView.loadUrl(newsUrl);

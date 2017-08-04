@@ -10,6 +10,7 @@ public class AdBanner {
     private String localId;
     private String imgUrl;
     private String id;
+    private String title;
 
     public int getType() {
         return type;
@@ -49,6 +50,14 @@ public class AdBanner {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public boolean isNative() {

@@ -52,20 +52,11 @@
             android:layout_marginRight="36dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp"
-                android:text="@string/notice"
-                android:textColor="#ca6832"
-                android:textSize="14sp" />
-
-            <TextView
+            <com.beihui.market.view.AutoTextView
                 android:id="@+id/notice_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:textColor="#ca6832"
                 android:textSize="14sp" />

@@ -50,7 +50,9 @@ import com.beihui.market.ui.presenter.TabHomePresenter;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.AutoTextView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sunfusheng.marqueeview.MarqueeView;
@@ -90,7 +92,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     @BindView(R.id.notice_close)
     ImageView noticeCloseIv;
     @BindView(R.id.notice_text)
-    TextView noticeTv;
+    AutoTextView noticeTv;
 
     @Inject
     TabHomePresenter presenter;
@@ -158,6 +160,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 noticeContainer.setVisibility(View.GONE);
+                SPUtils.setNoticeClosed(getContext(), true);
             }
         });
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -305,6 +308,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     public void showNotice(NoticeAbstract notice) {
         final NoticeAbstract noticeAbstract = notice;
         noticeContainer.setVisibility(View.VISIBLE);
+        noticeTv.setScrollMode(AutoTextView.SCROLL_FAST);
         noticeTv.setText(notice.getTitle());
         noticeContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -409,6 +413,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                     } else {
                         Intent intent = new Intent(getContext(), ComWebViewActivity.class);
                         intent.putExtra("url", ad.getUrl());
+                        intent.putExtra("title", ad.getTitle());
                         startActivity(intent);
                     }
                 }

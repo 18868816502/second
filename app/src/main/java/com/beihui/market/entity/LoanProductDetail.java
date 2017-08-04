@@ -29,6 +29,7 @@ public class LoanProductDetail {
         private int quickCommend;
         private String feature;
         private String interestLowText;
+        private String interestTimeText;
         private String logoUrl;
         private int successCount;
         private String borrowingHighText;
@@ -177,6 +178,14 @@ public class LoanProductDetail {
 
         public void setMortgageMethodText(String mortgageMethodText) {
             this.mortgageMethodText = mortgageMethodText;
+        }
+
+        public String getInterestTimeText() {
+            return interestTimeText;
+        }
+
+        public void setInterestTimeText(String interestTimeText) {
+            this.interestTimeText = interestTimeText;
         }
     }
 

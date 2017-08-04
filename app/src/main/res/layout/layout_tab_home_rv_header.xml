@@ -73,90 +73,86 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@color/white"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/maqian" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginLeft="8dp"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@mipmap/maqian" />
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="想借多少"
-                        android:textColor="#424251"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="预期借款金额"
-                        android:textColor="#909298"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ly_etbg"
-                android:layout_width="275dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/round_0_moneybg"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/icon_money" />
-
-                <EditText
-                    android:id="@+id/et_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/transparent"
-                    android:gravity="center_vertical"
-                    android:inputType="number"
-                    android:maxLength="7"
+                    android:text="想借多少"
                     android:textColor="#424251"
-                    android:textColorHint="#909298"
-                    android:textSize="27sp" />
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="预期借款金额"
+                    android:textColor="#909298"
+                    android:textSize="10sp" />
             </LinearLayout>
+
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ly_etbg"
+            android:layout_width="275dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/round_0_moneybg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/icon_money" />
+
+            <EditText
+                android:id="@+id/et_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:inputType="number"
+                android:maxLength="7"
+                android:textColor="#424251"
+                android:textColorHint="#909298"
+                android:textSize="27sp" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_tuijian"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/round_login_select"
             android:gravity="center"
             android:text="给我推荐"

@@ -35,7 +35,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private Context mContext;
 
     private boolean hasAdInit = false;
-    private boolean hasNoticeInit = false;
+    private NoticeAbstract notice;
     private List<AdBanner> banners = new ArrayList<>();
     private List<String> notices = new ArrayList<>();
     private List<HotNews> hotNews = new ArrayList<>();
@@ -63,8 +63,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
             queryAd();
         }
         //notice
-        if (!hasNoticeInit) {
+        if (notice == null) {
             queryNotice();
+        } else if (!SPUtils.getNoticeClosed(mContext)) {
+            mView.showNotice(notice);
         }
         //loan success notice
         if (notices.size() == 0) {
@@ -232,10 +234,12 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                @Override
                                public void accept(@NonNull ResultEntity<NoticeAbstract> result) throws Exception {
                                    if (result.isSuccess() && result.getData() != null) {
-                                       hasNoticeInit = true;
-                                       NoticeAbstract notice = result.getData();
+                                       notice = result.getData();
                                        if (notice.getId() != null) {
                                            if (!notice.getId().equals(SPUtils.getLastNoticeId(mContext))) {
+                                               mView.showNotice(notice);
+                                               SPUtils.setNoticeClosed(mContext, false);
+                                           } else if (!SPUtils.getNoticeClosed(mContext)) {
                                                mView.showNotice(notice);
                                            }
                                            SPUtils.setLastNoticeId(mContext, notice.getId());

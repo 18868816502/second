@@ -41,4 +41,16 @@ public class SPUtils {
         editor.putString("lastNoticeId", lastNoticeId);
         editor.apply();
     }
+
+    public static boolean getNoticeClosed(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("noticeClose", false);
+    }
+
+    public static void setNoticeClosed(Context context, boolean closed) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("noticeClose", closed);
+        editor.apply();
+    }
 }
