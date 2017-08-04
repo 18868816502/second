@@ -54,7 +54,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
     }
 
     @Subscribe
-    void navigation(ResetPsdNavigationEvent event) {
+    public void navigation(ResetPsdNavigationEvent event) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 

@@ -146,7 +146,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     }
 
     @Subscribe
-    void onAuthorizationNavigation(AuthNavigationEvent event) {
+    public void onAuthorizationNavigation(AuthNavigationEvent event) {
         if (event.navigationTag == AuthNavigationEvent.TAG_REGISTER) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
