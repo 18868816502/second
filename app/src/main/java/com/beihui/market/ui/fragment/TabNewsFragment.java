@@ -148,6 +148,9 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     public void showNoNews() {
         if (!isAdded())
             return;
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
         stateLayout.switchState(StateLayout.STATE_EMPTY);
     }
 
@@ -155,6 +158,9 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     public void showNetError() {
         if (!isAdded())
             return;
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
         stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
 

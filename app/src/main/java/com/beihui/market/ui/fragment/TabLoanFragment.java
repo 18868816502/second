@@ -209,11 +209,21 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void showNetError() {
+        if (!isAdded())
+            return;
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
         stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
 
     @Override
     public void showNoLoanProduct() {
+        if (!isAdded())
+            return;
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
         stateLayout.switchState(StateLayout.STATE_EMPTY);
     }
 
