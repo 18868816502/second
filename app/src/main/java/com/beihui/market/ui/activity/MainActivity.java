@@ -1,9 +1,12 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -35,6 +38,8 @@ public class MainActivity extends BaseComponentActivity {
      * param need passed to target fragment if navigating to TabLoanFragment.
      */
     private int queryMoney = -1;
+
+    private InputMethodManager inputMethodManager;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -142,6 +147,22 @@ public class MainActivity extends BaseComponentActivity {
 
     private String makeTag(int id) {
         return "TabFragmentId=" + id;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mSelectedFragmentId == R.id.tab_home) {
+            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                if (inputMethodManager == null) {
+                    inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                }
+                if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
+                    getCurrentFocus().clearFocus();
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
 }

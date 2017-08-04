@@ -48,11 +48,11 @@ public class MoneyFilterPopup extends PopupWindow {
         View view = inflater.inflate(R.layout.dialog_brmoney, null);
         ButterKnife.bind(this, view);
 
-        this.setContentView(view);
-        this.setWidth(LayoutParams.MATCH_PARENT);
-        this.setHeight(LayoutParams.WRAP_CONTENT);
-        this.setFocusable(true);
-        this.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        setContentView(view);
+        setWidth(LayoutParams.MATCH_PARENT);
+        setHeight(LayoutParams.WRAP_CONTENT);
+        setFocusable(true);
+        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         this.tv = tv;
         this.iv = iv;
@@ -61,12 +61,20 @@ public class MoneyFilterPopup extends PopupWindow {
         rotateArrow(0, 180, iv);
 
         etMoney.setText(money);
-        InputMethodUtil.setEditTextSelectionToEnd(etMoney);
+        etMoney.setSelection(etMoney.getText().length());
+        etMoney.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodUtil.openSoftKeyboard(context, etMoney);
+            }
+        }, 200);
+
     }
 
 
     @Override
     public void dismiss() {
+        InputMethodUtil.closeSoftKeyboard(context, etMoney);
         super.dismiss();
         shadowView.setVisibility(View.GONE);
         tv.setTextColor(Color.parseColor("#424251"));

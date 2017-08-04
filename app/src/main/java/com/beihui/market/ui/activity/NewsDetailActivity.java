@@ -84,7 +84,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        UMWeb web = new UMWeb(newsUrl);
+        UMWeb web = new UMWeb(newsUrl.replace("&isApp=1", ""));
         String imageUrl = null;
         String title = null;
         String description = null;

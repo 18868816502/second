@@ -160,7 +160,6 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 noticeContainer.setVisibility(View.GONE);
             }
         });
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);

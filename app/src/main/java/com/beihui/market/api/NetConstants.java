@@ -30,7 +30,7 @@ public class NetConstants {
 
     public static final String H5_ABOUT_US = H5_DOMAIN + "/";
 
-    public static final String H5_USER_AGREEMENT = H5_DOMAIN + "/";
+    public static final String H5_USER_AGREEMENT = H5_DOMAIN + "/registrationProtocol.html?isApp=1";
 
     public static String generateNewsUrl(String id) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";
