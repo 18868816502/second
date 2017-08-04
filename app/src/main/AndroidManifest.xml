@@ -103,6 +103,8 @@
             android:name=".ui.activity.SysMsgDetailActivity"
             android:screenOrientation="portrait" />
 
+        <service android:name=".helper.updatehelper.DownloadService" />
+
         <!--getui setting-->
         <service android:name=".getui.PushReceiveIntentService" />
         <service

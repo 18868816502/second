@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.helper.AppUpdateHelper;
+import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.busevents.NavigateNews;

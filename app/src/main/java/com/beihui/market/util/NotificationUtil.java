@@ -9,14 +9,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.beihui.market.R;
 import com.beihui.market.ui.activity.MainActivity;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class NotificationUtil {
     public static void showNotification(Context context, String title, String content, Intent contentIntent) {
@@ -48,54 +44,34 @@ public class NotificationUtil {
 
     /**
      * 显示一个下载带进度条的通知
-     *
-     * @param context 上下文
      */
-    public static void showNotificationProgress(Context context) {
+    public static NotificationCompat.Builder showNotificationProgress(Context context) {
         //进度条通知
         final NotificationCompat.Builder builderProgress = new NotificationCompat.Builder(context);
         builderProgress.setContentTitle("下载中");
-        builderProgress.setSmallIcon(R.mipmap.ic_launcher);
-        builderProgress.setTicker("进度条通知");
+        builderProgress.setSmallIcon(R.drawable.push_small);
+        builderProgress.setTicker("下载中");
         builderProgress.setProgress(100, 0, false);
-        final Notification notification = builderProgress.build();
-        final NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        //发送一个通知
+        Notification notification = builderProgress.build();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(2, notification);
-        /**创建一个计时器,模拟下载进度**/
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            int progress = 0;
 
-            @Override
-            public void run() {
-                Log.i("progress", progress + "");
-                while (progress <= 100) {
-                    progress++;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    //更新进度条
-                    builderProgress.setProgress(100, progress, false);
-                    //再次通知
-                    notificationManager.notify(2, builderProgress.build());
-                }
-                //计时器退出
-                this.cancel();
-                //进度条退出
-                notificationManager.cancel(2);
-                return;//结束方法
-            }
-        }, 0);
+        return builderProgress;
+    }
+
+    public static void updateProgress(Context context, NotificationCompat.Builder builder, int progress) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        builder.setProgress(100, progress, false);
+        notificationManager.notify(2, builder.build());
+    }
+
+    public static void dismissProgress(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(2);
     }
 
     /**
      * 悬挂式，支持6.0以上系统
-     *
-     * @param context
      */
     public static void showFullScreen(Context context, String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -119,10 +95,8 @@ public class NotificationUtil {
 
     /**
      * 折叠式
-     *
-     * @param context
      */
-    public static void shwoNotify(Context context) {
+    public static void showNotify(Context context) {
         //先设定RemoteViews
         RemoteViews view_custom = new RemoteViews(context.getPackageName(), R.layout.view_custom);
         //设置对应IMAGEVIEW的ID的资源图片

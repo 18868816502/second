@@ -1,7 +1,7 @@
 package com.beihui.market.injection.component;
 
 
-import com.beihui.market.helper.AppUpdateHelper;
+import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 
 import dagger.Component;
 
