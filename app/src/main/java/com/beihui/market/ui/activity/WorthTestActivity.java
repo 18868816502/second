@@ -9,6 +9,8 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.dialog.ShareDialog;
+import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
 
@@ -56,6 +58,11 @@ public class WorthTestActivity extends BaseComponentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        UMWeb web = new UMWeb(NetConstants.H5_TEST);
+        web.setTitle("我能贷多少");
+        new ShareDialog()
+                .setUmWeb(web)
+                .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         return true;
     }
 }

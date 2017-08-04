@@ -2,6 +2,7 @@ package com.beihui.market.api;
 
 
 import com.beihui.market.BuildConfig;
+import com.igexin.sdk.PushBuildConfig;
 
 public class NetConstants {
 
@@ -18,15 +19,25 @@ public class NetConstants {
     /**********H5 static field********/
     public static final String H5_DOMAIN = BuildConfig.H5_DOMAIN;
 
-    public static final String H5_ADVICE = H5_DOMAIN + "/advice?isApp=1";
+    public static final String H5_HELPER = H5_DOMAIN + "/helpcenter.html?isApp=1";
 
-    public static final String H5_HELPER = H5_DOMAIN + "/helpcenter?isApp=1";
-
-    public static final String H5_TEST = H5_DOMAIN + "/test?isApp=1";
+    public static final String H5_TEST = H5_DOMAIN + "/test.html?isApp=1";
 
     public static final String H5_NEWS_DETAIL = H5_DOMAIN + "/newsDetail.html";
 
+    public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
+
+    public static final String H5_INVITATION = H5_DOMAIN + "regist_h5.html";
+
     public static String generateNewsUrl(String id) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";
+    }
+
+    public static String generateProductUrl(String id) {
+        return H5_LOAN_DETAIL + "?id=" + id + "&isApp=1";
+    }
+
+    public static String generateInvitationUrl(String userId) {
+        return H5_INVITATION + "?id=" + userId;
     }
 }

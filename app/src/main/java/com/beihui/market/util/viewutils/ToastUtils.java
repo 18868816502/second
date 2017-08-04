@@ -27,7 +27,9 @@ public class ToastUtils {
     public static void showShort(Context context, String msg, Drawable drawable) {
         cancel();
         toast = new WeakReference<>(createToast(context, msg, drawable));
-        toast.get().show();
+        if (toast.get() != null) {
+            toast.get().show();
+        }
     }
 
     public static void cancel() {
@@ -37,6 +39,8 @@ public class ToastUtils {
     }
 
     private static Toast createToast(Context context, String msg, Drawable drawable) {
+        if (context == null)
+            return null;
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.CENTER, 0, 0);
         View view = LayoutInflater.from(context).inflate(R.layout.layout_toast_as_alert, null);

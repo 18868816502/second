@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -31,11 +32,14 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoanDetailComponent;
 import com.beihui.market.injection.module.LoanDetailModule;
 import com.beihui.market.ui.contract.LoanProductDetailContract;
+import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
 import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.List;
 
@@ -85,6 +89,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     TextView tab3Tv;
 
     private int hitDistance;
+
+    private LoanProduct.Row productAbstract;
+    private LoanProductDetail productDetail;
 
     @Inject
     LoanDetailPresenter presenter;
@@ -172,6 +179,24 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        UMWeb umWeb = null;
+        if (productDetail != null && productDetail.getBase() != null) {
+            umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));
+            UMImage image = new UMImage(this, productDetail.getBase().getLogo());
+            umWeb.setThumb(image);
+            umWeb.setTitle(productDetail.getBase().getProductName());
+        } else if (productAbstract != null) {
+            umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
+            UMImage image = new UMImage(this, productAbstract.getLogoUrl());
+            umWeb.setThumb(image);
+            umWeb.setTitle(productAbstract.getProductName());
+        }
+
+        if (umWeb != null) {
+            new ShareDialog()
+                    .setUmWeb(umWeb)
+                    .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -202,6 +227,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     }
 
     private void bindAbstractInfo(LoanProduct.Row loan) {
+        productAbstract = loan;
         //name
         if (loan.getProductName() != null) {
             loanNameTitleTv.setText(loan.getProductName());
@@ -251,6 +277,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showLoanDetail(LoanProductDetail detail) {
+        productDetail = detail;
         LoanProductDetail.Base base = detail.getBase();
         if (base != null) {
             //name
