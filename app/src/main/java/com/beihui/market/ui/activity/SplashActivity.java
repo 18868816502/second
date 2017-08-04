@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.bumptech.glide.Glide;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,6 +53,8 @@ public class SplashActivity extends BaseComponentActivity {
     private Disposable disposable;
 
     private boolean adClicked;
+
+    private SplashHandler handler;
 
     @Override
     protected void onDestroy() {
@@ -81,6 +87,11 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
+        handler = new SplashHandler(this);
+        Message msg = Message.obtain();
+        msg.what = 1;
+        handler.sendMessageDelayed(msg, 1000 * 5);
+
         GeTuiClient.install(this);
         try {
             String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -121,6 +132,9 @@ public class SplashActivity extends BaseComponentActivity {
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
+                                   if (handler.hasMessages(1)) {
+                                       handler.removeMessages(1);
+                                   }
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            startAd(result.getData().get(0));
@@ -193,6 +207,22 @@ public class SplashActivity extends BaseComponentActivity {
         @Override
         public void onFinish() {
             launch(null);
+        }
+    }
+
+    private static class SplashHandler extends Handler {
+        private WeakReference<SplashActivity> weakReference;
+
+        public SplashHandler(SplashActivity splashActivity) {
+            super(Looper.getMainLooper());
+            weakReference = new WeakReference<>(splashActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1 && weakReference.get() != null) {
+                weakReference.get().launch(null);
+            }
         }
     }
 }
