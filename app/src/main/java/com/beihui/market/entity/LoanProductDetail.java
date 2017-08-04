@@ -29,7 +29,7 @@ public class LoanProductDetail {
         private int quickCommend;
         private String feature;
         private String interestLowText;
-        private String logo;
+        private String logoUrl;
         private int successCount;
         private String borrowingHighText;
         private String id;
@@ -75,12 +75,12 @@ public class LoanProductDetail {
             this.interestLowText = interestLowText;
         }
 
-        public String getLogo() {
-            return logo;
+        public String getLogoUrl() {
+            return logoUrl;
         }
 
-        public void setLogo(String logo) {
-            this.logo = logo;
+        public void setLogoUrl(String logo) {
+            this.logoUrl = logo;
         }
 
         public int getSuccessCount() {

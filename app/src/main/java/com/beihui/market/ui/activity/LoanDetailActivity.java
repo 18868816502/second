@@ -182,7 +182,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         UMWeb umWeb = null;
         if (productDetail != null && productDetail.getBase() != null) {
             umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));
-            UMImage image = new UMImage(this, productDetail.getBase().getLogo());
+            UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
             umWeb.setThumb(image);
             umWeb.setTitle(productDetail.getBase().getProductName());
         } else if (productAbstract != null) {
@@ -286,9 +286,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 loanNameTv.setText(base.getProductName());
             }
             //logo
-            if (base.getLogo() != null) {
+            if (base.getLogoUrl() != null) {
                 Glide.with(this)
-                        .load(base.getLogo())
+                        .load(base.getLogoUrl())
                         .into(loanIconIv);
             }
             //tags

@@ -2,7 +2,6 @@ package com.beihui.market.api;
 
 
 import com.beihui.market.BuildConfig;
-import com.igexin.sdk.PushBuildConfig;
 
 public class NetConstants {
 
@@ -27,7 +26,7 @@ public class NetConstants {
 
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 
-    public static final String H5_INVITATION = H5_DOMAIN + "regist_h5.html";
+    public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
 
     public static String generateNewsUrl(String id) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";

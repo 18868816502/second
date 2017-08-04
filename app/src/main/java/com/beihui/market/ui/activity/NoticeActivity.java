@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,8 @@ import butterknife.BindView;
 public class NoticeActivity extends BaseComponentActivity implements NoticeContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -72,6 +75,13 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
         int padding = (int) (density * 7);
         recyclerView.addItemDecoration(new NewsItemDeco((int) (density * 0.5), padding, padding));
 
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.onStart();
+            }
+        });
     }
 
     @Override
@@ -101,6 +111,9 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
         }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -117,6 +130,9 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
         super.showErrorMsg(msg);
         if (adapter != null && adapter.isLoading()) {
             adapter.loadMoreEnd(true);
+        }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
         }
     }
 }
