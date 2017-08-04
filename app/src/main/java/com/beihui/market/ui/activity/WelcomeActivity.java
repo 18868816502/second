@@ -20,6 +20,7 @@ import java.util.LinkedList;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    private boolean fromAboutUs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +32,8 @@ public class WelcomeActivity extends AppCompatActivity {
         indicatorView.setupWithViewPager(viewPager);
 
         ImmersionBar.with(this).init();
+
+        fromAboutUs = getIntent().getBooleanExtra("fromAboutUs", false);
     }
 
     @Override
@@ -65,9 +68,14 @@ public class WelcomeActivity extends AppCompatActivity {
                 holder.startView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (fromAboutUs) {
+                            finish();
+                        } else {
+                            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
                     }
                 });
                 view.setTag(holder);

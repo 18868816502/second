@@ -28,6 +28,10 @@ public class NetConstants {
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
 
+    public static final String H5_ABOUT_US = H5_DOMAIN + "/";
+
+    public static final String H5_USER_AGREEMENT = H5_DOMAIN + "/";
+
     public static String generateNewsUrl(String id) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";
     }

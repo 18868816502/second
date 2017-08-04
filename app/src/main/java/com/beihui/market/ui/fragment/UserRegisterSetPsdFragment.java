@@ -1,20 +1,25 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerRegisterSetPwdComponent;
 import com.beihui.market.injection.module.RegisterSetPwdModule;
+import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
 import com.beihui.market.ui.presenter.RegisterSetPwdPresenter;
@@ -38,6 +43,8 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
     Button registerBtn;
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
+    @BindView(R.id.contract)
+    TextView contractTv;
 
     @Inject
     RegisterSetPwdPresenter presenter;
@@ -82,6 +89,15 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+        contractTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ComWebViewActivity.class);
+                intent.putExtra("title", "用户协议");
+                intent.putExtra("url", NetConstants.H5_USER_AGREEMENT);
+                startActivity(intent);
             }
         });
     }

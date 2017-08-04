@@ -6,6 +6,7 @@ import android.content.Context;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.SettingContract;
 import com.beihui.market.umeng.Statistic;
@@ -35,6 +36,23 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
     @Override
     public void onStart() {
         super.onStart();
+        Disposable disposable = mApi.queryUpdate()
+                .compose(RxUtil.<ResultEntity<AppUpdate>>io2main())
+                .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
+                                   if (result.isSuccess() && result.getData() != null) {
+                                       mView.showLatestVersion("最新版" + result.getData().getVersion());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(SettingPresenter.this, throwable);
+                            }
+                        });
+        addDisposable(disposable);
     }
 
     @Override

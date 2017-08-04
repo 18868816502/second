@@ -54,7 +54,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void initDatas() {
-
+        presenter.onStart();
     }
 
     @Override
@@ -105,7 +105,9 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showLatestVersion(String version) {
-        versionNameTv.setText(version);
+        if (version != null) {
+            versionNameTv.setText(version);
+        }
     }
 
     @Override
