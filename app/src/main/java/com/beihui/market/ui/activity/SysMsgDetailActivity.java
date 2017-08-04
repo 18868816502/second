@@ -13,6 +13,7 @@ import com.beihui.market.injection.component.DaggerSysMsgDetailComponent;
 import com.beihui.market.injection.module.SysMsgDetailModule;
 import com.beihui.market.ui.contract.SysMsgDetailContract;
 import com.beihui.market.ui.presenter.SysMsgDetailPresenter;
+import com.beihui.market.util.DateFormatUtils;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,10 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     Toolbar toolbar;
     @BindView(R.id.title)
     TextView titleTv;
+    @BindView(R.id.date)
+    TextView dateTv;
+    @BindView(R.id.read_sum)
+    TextView readSumTv;
     @BindView(R.id.content)
     TextView contentTv;
 
@@ -55,9 +60,6 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
             if (sysMsg.getId() != null) {
                 presenter.queryMsgDetail(sysMsg.getId());
             }
-            if (sysMsg.getTitle() != null) {
-                titleTv.setText(sysMsg.getTitle());
-            }
         }
     }
 
@@ -77,8 +79,14 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void showSysMsgDetail(SysMsgDetail detail) {
-        if (detail != null && detail.getContent() != null) {
-            contentTv.setText(detail.getContent());
+        if (detail != null) {
+            if (detail.getTitle() != null) {
+                titleTv.setText(detail.getTitle());
+            }
+            dateTv.setText(DateFormatUtils.formatMMddHHmm(detail.getGmtCreate()));
+            if (detail.getContent() != null) {
+                contentTv.setText(detail.getContent());
+            }
         }
     }
 }

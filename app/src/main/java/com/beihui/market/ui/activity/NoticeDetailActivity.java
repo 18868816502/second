@@ -14,6 +14,7 @@ import com.beihui.market.injection.component.DaggerNoticeDetailComponent;
 import com.beihui.market.injection.module.NoticeDetailModule;
 import com.beihui.market.ui.contract.NoticeDetailContract;
 import com.beihui.market.ui.presenter.NoticeDetailPresenter;
+import com.beihui.market.util.DateFormatUtils;
 
 import javax.inject.Inject;
 
@@ -25,6 +26,10 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     Toolbar toolbar;
     @BindView(R.id.title)
     TextView titleTv;
+    @BindView(R.id.date)
+    TextView dateTv;
+    @BindView(R.id.read_sum)
+    TextView readSumTv;
     @BindView(R.id.content)
     TextView contentTv;
 
@@ -56,9 +61,6 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
             if (notice.getId() != null) {
                 presenter.queryDetail(notice.getId());
             }
-            if (notice.getTitle() != null) {
-                titleTv.setText(notice.getTitle());
-            }
         } else if (noticeId != null) {
             presenter.queryDetail(noticeId);
         }
@@ -82,8 +84,10 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     public void showDetail(NoticeDetail detail) {
         if (detail != null) {
             if (detail.getTitle() != null) {
-                contentTv.setText(detail.getTitle());
+                titleTv.setText(detail.getTitle());
             }
+            dateTv.setText(DateFormatUtils.formatMMddHHmm(detail.getGmtCreate()));
+            readSumTv.setText("阅读 " + detail.getReadSum());
             if (detail.getContent() != null) {
                 contentTv.setText(Html.fromHtml(detail.getContent()));
             }

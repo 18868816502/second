@@ -9,6 +9,7 @@ import java.util.Locale;
 public class DateFormatUtils {
 
     private static SimpleDateFormat newsDateFormat;
+    private static SimpleDateFormat MMddHHmmFormat;
     private static Date date;
     private static Calendar dateCal;
     private static Calendar nowCal;
@@ -55,6 +56,13 @@ public class DateFormatUtils {
             newsDateFormat = new SimpleDateFormat("MM月dd日", Locale.CHINA);
         }
         return newsDateFormat;
+    }
+
+    public static String formatMMddHHmm(long timestamp) {
+        if (MMddHHmmFormat == null) {
+            MMddHHmmFormat = new SimpleDateFormat("MM月dd日 HH:mm", Locale.CHINA);
+        }
+        return MMddHHmmFormat.format(new Date(timestamp));
     }
 
 }
