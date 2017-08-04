@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AnnouncementAdapter extends BaseQuickAdapter<Notice.Row, BaseViewHolder> {
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 mm:ss", Locale.CHINA);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 HH:mm", Locale.CHINA);
     private List<Notice.Row> dataSet;
 
     public AnnouncementAdapter() {

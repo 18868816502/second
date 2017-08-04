@@ -98,6 +98,7 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
 
     @Override
     public void initDatas() {
+        refreshLayout.setRefreshing(true);
         presenter.onStart();
     }
 

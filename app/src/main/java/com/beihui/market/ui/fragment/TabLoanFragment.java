@@ -135,9 +135,10 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void initDatas() {
+        refreshLayout.setRefreshing(true);
         presenter.onStart();
         if (pendingAmount != -1) {
-            presenter.filterAmount(pendingAmount);
+            onMoneyItemClick(pendingAmount);
             pendingAmount = -1;
         }
     }

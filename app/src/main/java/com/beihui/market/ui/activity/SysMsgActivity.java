@@ -87,6 +87,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void initDatas() {
+        refreshLayout.setRefreshing(true);
         presenter.onStart();
     }
 
@@ -117,7 +118,9 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void showNoSysMsg() {
-
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override

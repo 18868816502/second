@@ -86,6 +86,7 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
 
     @Override
     public void initDatas() {
+        refreshLayout.setRefreshing(true);
         presenter.onStart();
     }
 
