@@ -24,9 +24,10 @@ import com.beihui.market.ui.dialog.ProFilterPopup;
 import com.beihui.market.ui.dialog.TimeFilterPopup;
 import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.ui.rvdecoration.LoanItemDeco;
-import com.beihui.market.view.CommStateViewProvider;
+import com.beihui.market.view.stateprovider.NewsStateViewProvider;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.drawable.BlurDrawable;
+import com.beihui.market.view.stateprovider.ProductStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -96,7 +97,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void configViews() {
-        stateLayout.setStateViewProvider(new CommStateViewProvider(getContext(),
+        stateLayout.setStateViewProvider(new ProductStateProvider(getContext(),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

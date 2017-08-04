@@ -17,7 +17,7 @@ import com.beihui.market.ui.adapter.NewsRVAdapter;
 import com.beihui.market.ui.contract.TabNewsContract;
 import com.beihui.market.ui.presenter.TabNewsPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
-import com.beihui.market.view.CommStateViewProvider;
+import com.beihui.market.view.stateprovider.NewsStateViewProvider;
 import com.beihui.market.view.StateLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -58,7 +58,7 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
 
     @Override
     public void configViews() {
-        stateLayout.setStateViewProvider(new CommStateViewProvider(getContext(),
+        stateLayout.setStateViewProvider(new NewsStateViewProvider(getContext(),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
