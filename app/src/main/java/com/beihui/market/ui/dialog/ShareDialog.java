@@ -1,6 +1,8 @@
 package com.beihui.market.ui.dialog;
 
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -45,12 +47,15 @@ public class ShareDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+        getDialog().setCanceledOnTouchOutside(true);
         Window window = getDialog().getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setAttributes(lp);
-
-        window.setGravity(Gravity.BOTTOM);
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setAttributes(lp);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setGravity(Gravity.BOTTOM);
+        }
     }
 
     @Override

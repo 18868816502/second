@@ -18,6 +18,8 @@ import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
 import com.beihui.market.ui.presenter.SysMsgPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
+import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.MessageStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -29,6 +31,8 @@ import butterknife.BindView;
 public class SysMsgActivity extends BaseComponentActivity implements SysMsgContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
@@ -83,6 +87,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                 presenter.onStart();
             }
         });
+
+        stateLayout.setStateViewProvider(new MessageStateViewProvider());
     }
 
     @Override
@@ -107,6 +113,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void showSysMsg(List<SysMsg.Row> sysMsg) {
+        stateLayout.switchState(StateLayout.STATE_CONTENT);
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
@@ -121,6 +128,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
+        stateLayout.switchState(StateLayout.STATE_EMPTY);
     }
 
     @Override

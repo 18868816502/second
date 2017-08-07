@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.Message;
 import com.beihui.market.entity.NoticeAbstract;
@@ -70,8 +71,12 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(MessageCenterActivity.this, ComWebViewActivity.class);
                 Message message = (Message) adapter.getData().get(position);
-                intent.putExtra("url", message.getUrl());
                 intent.putExtra("title", message.getTitle());
+                if (message.getHttpType() == 2) {//网页
+                    intent.putExtra("url", message.getUrl());
+                } else {//推送内容
+                    intent.putExtra("url", NetConstants.generateInternalMessageUrl(message.getId()));
+                }
                 startActivity(intent);
             }
         });

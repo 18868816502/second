@@ -13,6 +13,7 @@ public class Message {
     private String url;
     private long gmtCreate;
     private String imgUrl;
+    private int httpType;
 
     public String getId() {
         return id;
@@ -92,5 +93,13 @@ public class Message {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public int getHttpType() {
+        return httpType;
+    }
+
+    public void setHttpType(int httpType) {
+        this.httpType = httpType;
     }
 }

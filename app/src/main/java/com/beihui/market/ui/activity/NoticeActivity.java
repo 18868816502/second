@@ -18,6 +18,8 @@ import com.beihui.market.ui.adapter.AnnouncementAdapter;
 import com.beihui.market.ui.contract.NoticeContract;
 import com.beihui.market.ui.presenter.NoticePresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
+import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.MessageStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -29,6 +31,8 @@ import butterknife.BindView;
 public class NoticeActivity extends BaseComponentActivity implements NoticeContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
@@ -82,6 +86,8 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
                 presenter.onStart();
             }
         });
+
+        stateLayout.setStateViewProvider(new MessageStateViewProvider());
     }
 
     @Override
@@ -105,6 +111,7 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
 
     @Override
     public void showAnnounce(List<Notice.Row> announceList) {
+        stateLayout.switchState(StateLayout.STATE_CONTENT);
         if (recyclerView.getVisibility() == View.GONE) {
             recyclerView.setVisibility(View.VISIBLE);
         }
@@ -119,6 +126,10 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
 
     @Override
     public void showNoAnnounce() {
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+        stateLayout.switchState(StateLayout.STATE_EMPTY);
     }
 
     @Override

@@ -28,9 +28,11 @@ public class NetConstants {
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
 
-    public static final String H5_ABOUT_US = H5_DOMAIN + "/";
+    public static final String H5_ABOUT_US = H5_DOMAIN + "/knowaixin.html?isApp=1";
 
     public static final String H5_USER_AGREEMENT = H5_DOMAIN + "/registrationProtocol.html?isApp=1";
+
+    public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
 
     public static String generateNewsUrl(String id) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";
@@ -42,5 +44,9 @@ public class NetConstants {
 
     public static String generateInvitationUrl(String userId) {
         return H5_INVITATION + "?id=" + userId;
+    }
+
+    public static String generateInternalMessageUrl(String id) {
+        return H5_INTERNAL_MESSAGE + "?id=" + id;
     }
 }

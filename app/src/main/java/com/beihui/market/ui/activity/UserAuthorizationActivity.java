@@ -201,7 +201,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             cancelTv.setVisibility(View.GONE);
             navigationIv.setVisibility(View.VISIBLE);
         } else if (event.navigationTag == AuthNavigationEvent.TAG_HEAD_TO_LOGIN) {
-            onBackPressed();
+            getSupportFragmentManager().popBackStack();
         }
     }
 

@@ -1,7 +1,9 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -33,10 +35,16 @@ public class ComWebViewActivity extends BaseComponentActivity {
         return R.layout.activity_comm_web_view;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
         setupToolbar(toolbar);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+            }
+        });
     }
 
     @Override
