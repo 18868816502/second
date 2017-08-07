@@ -52,6 +52,7 @@ import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.presenter.TabHomePresenter;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
@@ -254,7 +255,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.worth_test:
-                presenter.checkMyWorth();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkMyWorth();
+                }
                 break;
             case R.id.ly_etbg:
                 InputMethodUtil.openSoftKeyboard(getActivity(), headerViewHolder.etMoney);
@@ -297,7 +300,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        presenter.checkMsg();
+        if (!FastClickUtils.isFastClick()) {
+            presenter.checkMsg();
+        }
         return super.onOptionsItemSelected(item);
     }
 

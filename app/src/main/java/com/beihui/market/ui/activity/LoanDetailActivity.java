@@ -34,6 +34,7 @@ import com.beihui.market.injection.module.LoanDetailModule;
 import com.beihui.market.ui.contract.LoanProductDetailContract;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
 import com.bumptech.glide.Glide;
@@ -133,7 +134,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.checkLoan();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkLoan();
+                }
             }
         });
     }

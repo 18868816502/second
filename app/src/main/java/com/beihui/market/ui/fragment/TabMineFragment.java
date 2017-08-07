@@ -26,6 +26,7 @@ import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -139,22 +140,34 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.avatar:
-                presenter.checkUserProfile();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkUserProfile();
+                }
                 break;
             case R.id.mine_msg:
-                presenter.checkMessage();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkMessage();
+                }
                 break;
             case R.id.invite_friend:
-                presenter.checkInvitation();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkInvitation();
+                }
                 break;
             case R.id.helper_feedback:
-                presenter.checkHelpAndFeedback();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkHelpAndFeedback();
+                }
                 break;
             case R.id.settings:
-                presenter.checkSetting();
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkSetting();
+                }
                 break;
             case R.id.login:
-                navigateLogin();
+                if (!FastClickUtils.isFastClick()) {
+                    navigateLogin();
+                }
                 break;
         }
     }
