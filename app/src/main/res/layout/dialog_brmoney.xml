@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pop_layout"
+    android:id="@+id/base_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -26,12 +26,12 @@
             android:paddingRight="10dp">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@mipmap/icon_money" />
 
-            <EditText
-                android:id="@+id/et_money"
+            <com.beihui.market.view.ClearEditText
+                android:id="@+id/money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -65,7 +65,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_cancle"
+                android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginLeft="10dp"
@@ -73,12 +73,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/select_cancle"
                 android:gravity="center"
-                android:text="清空"
+                android:text="@string/cancel"
                 android:textColor="#909298"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tv_ok"
+                android:id="@+id/confirm"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginLeft="5dp"
@@ -86,7 +86,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/select_tuijian"
                 android:gravity="center"
-                android:text="确定"
+                android:text="@string/confirm"
                 android:textColor="#9c5800"
                 android:textSize="14sp" />
         </LinearLayout>

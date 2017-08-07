@@ -36,10 +36,10 @@ public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHold
 
     @Override
     protected void convert(BaseViewHolder helper, Message item) {
-        if (item.getImage() != null) {
+        if (item.getImgUrl() != null) {
             Context context = helper.itemView.getContext();
             Glide.with(context)
-                    .load(item.getImage())
+                    .load(item.getImgUrl())
                     .centerCrop()
                     .placeholder(R.drawable.image_place_holder)
                     .into((ImageView) helper.getView(R.id.news_image));

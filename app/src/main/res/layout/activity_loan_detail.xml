@@ -280,7 +280,7 @@
         android:id="@+id/apply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FDC52E"
+        android:background="@drawable/rect_sunglow"
         android:text="@string/apply_for_loan"
         android:textColor="#9C5800" />
 

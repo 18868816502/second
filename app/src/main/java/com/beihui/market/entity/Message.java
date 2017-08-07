@@ -12,6 +12,7 @@ public class Message {
     private String image;
     private String url;
     private long gmtCreate;
+    private String imgUrl;
 
     public String getId() {
         return id;
@@ -83,5 +84,13 @@ public class Message {
 
     public void setGmtCreate(long gmtCreate) {
         this.gmtCreate = gmtCreate;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.base.Constant;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -24,7 +25,7 @@ import butterknife.OnClick;
 
 public class MoneyFilterPopup extends PopupWindow {
 
-    @BindView(R.id.et_money)
+    @BindView(R.id.money)
     EditText etMoney;
 
     private Activity context;
@@ -39,7 +40,8 @@ public class MoneyFilterPopup extends PopupWindow {
         super(context);
         this.context = context;
         this.shadowView = shadowView;
-
+        this.tv = tv;
+        this.iv = iv;
 
         shadowView.setVisibility(View.VISIBLE);
         shadowView.invalidate();
@@ -54,8 +56,6 @@ public class MoneyFilterPopup extends PopupWindow {
         setFocusable(true);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        this.tv = tv;
-        this.iv = iv;
         tv.setTextColor(Color.parseColor("#5591FF"));
         iv.setImageResource(R.mipmap.daosanjiao_blue);
         rotateArrow(0, 180, iv);
@@ -83,13 +83,13 @@ public class MoneyFilterPopup extends PopupWindow {
     }
 
 
-    @OnClick({R.id.tv_cancle, R.id.tv_ok})
+    @OnClick({R.id.cancel, R.id.confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_cancle:
-                etMoney.setText("");
+            case R.id.cancel:
+                dismiss();
                 break;
-            case R.id.tv_ok:
+            case R.id.confirm:
                 String money = etMoney.getText().toString();
                 if (TextUtils.isEmpty(money)) {
                     ToastUtils.showShort(context, "请输入金额", null);
@@ -97,8 +97,8 @@ public class MoneyFilterPopup extends PopupWindow {
                 }
                 try {
                     int amount = Integer.parseInt(money);
-                    if (amount == 0) {
-                        ToastUtils.showShort(context, "最低借款1元", null);
+                    if (amount <= Constant.MIN_FILTER_MONEY) {
+                        ToastUtils.showShort(context, "最低借款" + Constant.MIN_FILTER_MONEY + "元", null);
                         return;
                     }
                     dismiss();

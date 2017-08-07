@@ -232,8 +232,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 }
                 try {
                     inputMoney = Integer.parseInt(moneyStr);
-                    if (inputMoney == 0) {
-                        ToastUtils.showShort(getContext(), "最低借款1元", null);
+                    if (inputMoney <= Constant.MIN_FILTER_MONEY) {
+                        ToastUtils.showShort(getContext(), "最低借款" + Constant.MIN_FILTER_MONEY + "元", null);
                         return;
                     }
                     EventBus.getDefault().post(new NavigateLoan(inputMoney));
@@ -316,6 +316,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 Intent intent = new Intent(getContext(), NoticeDetailActivity.class);
                 intent.putExtra("noticeId", noticeAbstract.getId());
                 startActivity(intent);
+
+                noticeContainer.setVisibility(View.GONE);
             }
         });
     }
