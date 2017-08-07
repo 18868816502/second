@@ -11,6 +11,6 @@ public interface ChangePsdContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showUpdateSuccess();
+        void showUpdateSuccess(String msg, String account);
     }
 }

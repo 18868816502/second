@@ -71,7 +71,7 @@ public class EditProfessionPresenter extends BaseRxPresenter implements EditProf
                                    public void accept(@NonNull ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
                                            mUserHelper.updateProfession(pr.getText(), mContext);
-                                           mView.showUpdateSuccess();
+                                           mView.showUpdateSuccess(result.getMsg());
                                        } else {
                                            mView.showErrorMsg(result.getMsg());
                                        }

@@ -56,6 +56,13 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         context.startActivity(intent);
     }
 
+    public static void launch(Context context, View blurredView, String phone) {
+        blurredView = blurredView.getRootView();
+        Intent intent = new Intent(context, UserAuthorizationActivity.class);
+        intent.putExtra("phone", phone);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +87,17 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        Bundle bundle = null;
+        if (getIntent() != null && getIntent().getStringExtra("phone") != null) {
+            bundle = new Bundle();
+            bundle.putString("phone", getIntent().getStringExtra("phone"));
+        }
+        UserLoginFragment fragment = new UserLoginFragment();
+        if (bundle != null) {
+            fragment.setArguments(bundle);
+        }
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.content_container, new UserLoginFragment(), UserLoginFragment.class.getSimpleName())
+                .add(R.id.content_container, fragment, UserLoginFragment.class.getSimpleName())
                 .commit();
         decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

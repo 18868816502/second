@@ -17,6 +17,6 @@ public interface EditProfessionContract {
     interface View extends BaseView<Presenter> {
         void showProfession(List<Profession> professions);
 
-        void showUpdateSuccess();
+        void showUpdateSuccess(String msg);
     }
 }

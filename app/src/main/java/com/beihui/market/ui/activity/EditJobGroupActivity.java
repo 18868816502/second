@@ -109,9 +109,9 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
     }
 
     @Override
-    public void showUpdateSuccess() {
+    public void showUpdateSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, "职业身份修改成功", null);
+        ToastUtils.showShort(this, msg, null);
         finish();
     }
 }

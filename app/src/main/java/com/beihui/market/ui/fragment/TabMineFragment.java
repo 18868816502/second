@@ -56,6 +56,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Inject
     TabMinePresenter presenter;
 
+    private String pendingPhone;
 
     public static TabMineFragment newInstance() {
         return new TabMineFragment();
@@ -122,14 +123,15 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 .load(R.mipmap.mine_head_icon)
                 .into(avatarIv);
 
+        pendingPhone = event.pendingPhone;
         if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)
                 && getView() != null) {
-            getView().post(new Runnable() {
+            getView().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     navigateLogin();
                 }
-            });
+            }, 100);
         }
     }
 
@@ -188,7 +190,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void navigateLogin() {
-        UserAuthorizationActivity.launch(getContext(), getView());
+        if (pendingPhone != null) {
+            UserAuthorizationActivity.launch(getContext(), getView(), pendingPhone);
+            pendingPhone = null;
+        } else {
+            UserAuthorizationActivity.launch(getContext(), getView());
+        }
     }
 
     @Override

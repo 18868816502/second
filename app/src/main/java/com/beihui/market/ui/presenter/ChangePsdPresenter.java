@@ -46,8 +46,9 @@ public class ChangePsdPresenter extends BaseRxPresenter implements ChangePsdCont
                                    @Override
                                    public void accept(@NonNull ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
+                                           String account = mUserHelper.getProfile().getAccount();
                                            mUserHelper.clearUser(mContext);
-                                           mView.showUpdateSuccess();
+                                           mView.showUpdateSuccess(result.getMsg(), account);
                                        } else {
                                            mView.showErrorMsg(result.getMsg());
                                        }

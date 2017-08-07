@@ -3,6 +3,7 @@ package com.beihui.market.ui.activity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -102,9 +103,9 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     }
 
     @Override
-    public void showUpdateNameSuccess() {
+    public void showUpdateNameSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, "昵称修改成功", null);
+        ToastUtils.showShort(this, msg, null);
         finish();
     }
 }

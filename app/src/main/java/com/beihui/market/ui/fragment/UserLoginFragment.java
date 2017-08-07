@@ -98,6 +98,15 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
         };
         phoneNumberEt.addTextChangedListener(textWatcher);
         passwordEt.addTextChangedListener(textWatcher);
+
+
+        String phone = null;
+        if (getArguments() != null) {
+            phone = getArguments().getString("phone");
+        }
+        if (phone != null) {
+            phoneNumberEt.setText(phone);
+        }
     }
 
     @Override

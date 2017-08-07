@@ -39,7 +39,7 @@ public class RegisterVerifyPresenter extends BaseRxPresenter implements Register
                                    public void accept(@NonNull ResultEntity<Phone> result) throws Exception {
                                        isRequestingVerification = false;
                                        if (result.isSuccess()) {
-                                           mView.showVerificationSend("验证码已发送");
+                                           mView.showVerificationSend(result.getMsg());
                                        } else {
                                            mView.showErrorMsg(result.getMsg());
                                        }

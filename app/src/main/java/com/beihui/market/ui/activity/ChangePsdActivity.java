@@ -112,11 +112,12 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     }
 
     @Override
-    public void showUpdateSuccess() {
-        ToastUtils.showShort(this, "密码修改成功", null);
+    public void showUpdateSuccess(String msg, String account) {
+        ToastUtils.showShort(this, msg, null);
         //发送用户退出全局事件，并要求用户重新登录
         UserLogoutEvent event = new UserLogoutEvent();
         event.pendingAction = UserLogoutEvent.ACTION_START_LOGIN;
+        event.pendingPhone = account;
         EventBus.getDefault().post(event);
 
         Intent intent = new Intent(this, MainActivity.class);
