@@ -79,4 +79,21 @@ public class DataStatisticsHelper {
                             }
                         });
     }
+
+    public void onInternalMessageClicked(String id) {
+        api.onInternalMessageClicked(id)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity resultEntity) throws Exception {
+
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                LogUtils.e(TAG, "internal message statistic error " + throwable);
+                            }
+                        });
+    }
 }

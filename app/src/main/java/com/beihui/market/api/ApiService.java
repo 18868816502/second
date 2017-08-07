@@ -249,6 +249,12 @@ public interface ApiService {
     @POST(BASE_PATH + "/supernatant/loadSupernatant")
     Observable<ResultEntity> onAdClicked(@Field("id") String id, @Field("userId") String userId, @Field("supernatantType") int supernatantType);
 
+    /**
+     * 统计站内信点击次数
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/pushInfo/details")
+    Observable<ResultEntity> onInternalMessageClicked(@Field("id") String id);
 
     /***************/
 }

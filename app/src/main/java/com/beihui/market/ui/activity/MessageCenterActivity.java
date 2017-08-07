@@ -17,6 +17,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.Message;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.SysMsgAbstract;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMessageCenterComponent;
 import com.beihui.market.injection.module.MessageCenterModule;
@@ -69,8 +70,11 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(MessageCenterActivity.this, ComWebViewActivity.class);
                 Message message = (Message) adapter.getData().get(position);
+                //统计次数
+                DataStatisticsHelper.getInstance().onInternalMessageClicked(message.getId());
+                
+                Intent intent = new Intent(MessageCenterActivity.this, ComWebViewActivity.class);
                 intent.putExtra("title", message.getTitle());
                 if (message.getHttpType() == 2) {//网页
                     intent.putExtra("url", message.getUrl());

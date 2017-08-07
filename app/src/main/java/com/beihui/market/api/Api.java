@@ -10,13 +10,13 @@ import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.entity.Message;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
-import com.beihui.market.entity.Message;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
@@ -378,6 +378,15 @@ public class Api {
      */
     public Observable<ResultEntity> onAdClicked(String id, String userId, int type) {
         return service.onAdClicked(id, userId, type);
+    }
+
+    /**
+     * 统计站内信点击次数
+     *
+     * @param id 站内信id
+     */
+    public Observable<ResultEntity> onInternalMessageClicked(String id) {
+        return service.onInternalMessageClicked(id);
     }
     /*****************/
 
