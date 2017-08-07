@@ -24,6 +24,7 @@ import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.fragment.UserLoginFragment;
 import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
 import com.beihui.market.ui.fragment.UserRegisterVerifyCodeFragment;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.drawable.BlurringDrawable;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -217,5 +218,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             navigationIv.setVisibility(View.GONE);
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.finish();
     }
 }

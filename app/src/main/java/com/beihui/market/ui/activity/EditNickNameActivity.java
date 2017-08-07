@@ -3,7 +3,6 @@ package com.beihui.market.ui.activity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,6 +13,7 @@ import com.beihui.market.injection.component.DaggerEditUserNameComponent;
 import com.beihui.market.injection.module.EditUserNameModule;
 import com.beihui.market.ui.contract.EditUserNameContract;
 import com.beihui.market.ui.presenter.EditUserNamePresenter;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 
 import javax.inject.Inject;
@@ -107,5 +107,11 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
         dismissProgress();
         ToastUtils.showShort(this, msg, null);
         finish();
+    }
+
+    @Override
+    public void finish() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.finish();
     }
 }

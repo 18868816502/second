@@ -16,6 +16,7 @@ import com.beihui.market.injection.module.ChangePsdModule;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.ChangePsdContract;
 import com.beihui.market.ui.presenter.ChangePsdPresenter;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -123,5 +124,11 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void finish() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.finish();
     }
 }

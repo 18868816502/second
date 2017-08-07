@@ -17,6 +17,7 @@ import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 import com.beihui.market.ui.contract.ResetPwdVerifyContract;
 import com.beihui.market.ui.presenter.ResetPwdVerifyPresenter;
 import com.beihui.market.util.CountDownTimerUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -44,6 +45,7 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
 
     @Override
     public void onDestroyView() {
+        InputMethodUtil.closeSoftKeyboard(getActivity());
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }

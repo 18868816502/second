@@ -20,6 +20,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerFeedbackComponent;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
@@ -165,6 +166,12 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         }
     }
 
+    @Override
+    public void finish() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.finish();
+    }
+
     private void select(View view) {
         if (selected != null) {
             selected.setSelected(false);
@@ -176,6 +183,13 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         helperContainer.setVisibility(view == helpTv ? View.VISIBLE : View.GONE);
         feedbackContainer.setVisibility(view == feedbackTv ? View.VISIBLE : View.GONE);
 
+        if (feedbackContainer.getVisibility() == View.VISIBLE) {
+            contentEt.requestFocus();
+            InputMethodUtil.openSoftKeyboard(this, contentEt);
+        } else {
+            InputMethodUtil.closeSoftKeyboard(this, contentEt);
+            contentEt.clearFocus();
+        }
     }
 
 

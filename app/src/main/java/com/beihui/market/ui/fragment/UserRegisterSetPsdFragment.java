@@ -24,6 +24,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
 import com.beihui.market.ui.presenter.RegisterSetPwdPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -53,6 +54,7 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
 
     @Override
     public void onDestroyView() {
+        InputMethodUtil.closeSoftKeyboard(getActivity());
         presenter.onDestroy();
         super.onDestroyView();
     }

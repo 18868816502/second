@@ -46,7 +46,7 @@ public class InputMethodUtil {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         //如果软键盘已经开启
-        if (inputMethodManager.isActive()) {
+        if (inputMethodManager.isActive() && activity.getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }

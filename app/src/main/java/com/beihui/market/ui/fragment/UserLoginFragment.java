@@ -22,6 +22,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
 import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -49,6 +50,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void onDestroyView() {
+        InputMethodUtil.closeSoftKeyboard(getActivity());
         presenter.onDestroy();
         super.onDestroyView();
     }

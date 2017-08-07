@@ -17,6 +17,7 @@ import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.contract.RegisterVerifyContract;
 import com.beihui.market.ui.presenter.RegisterVerifyPresenter;
 import com.beihui.market.util.CountDownTimerUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -45,6 +46,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
 
     @Override
     public void onDestroyView() {
+        InputMethodUtil.closeSoftKeyboard(getActivity());
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }

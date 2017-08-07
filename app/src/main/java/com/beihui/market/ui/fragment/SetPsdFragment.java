@@ -13,6 +13,7 @@ import com.beihui.market.injection.component.DaggerSetPwdComponent;
 import com.beihui.market.injection.module.SetPwdModule;
 import com.beihui.market.ui.contract.ResetPwdSetPwdContract;
 import com.beihui.market.ui.presenter.ResetPwdSetPwdPresenter;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -34,6 +35,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     @Override
     public void onDestroyView() {
+        InputMethodUtil.closeSoftKeyboard(getActivity());
         presenter.onDestroy();
         super.onDestroyView();
     }

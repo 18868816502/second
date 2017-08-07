@@ -12,6 +12,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 import com.beihui.market.ui.fragment.RequireVerifyCodeFragment;
 import com.beihui.market.ui.fragment.SetPsdFragment;
+import com.beihui.market.util.InputMethodUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,5 +76,11 @@ public class ResetPsdActivity extends BaseComponentActivity {
         setPsd.setArguments(bundle);
         ft.addToBackStack(setPsdTag);
         ft.commit();
+    }
+
+    @Override
+    public void finish() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.finish();
     }
 }
