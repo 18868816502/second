@@ -1,8 +1,11 @@
 package com.beihui.market.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.beihui.market.R;
@@ -36,10 +39,19 @@ public class WorthTestActivity extends BaseComponentActivity {
         return R.layout.activity_worth_test;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
         setupToolbar(toolbar);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    webView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override

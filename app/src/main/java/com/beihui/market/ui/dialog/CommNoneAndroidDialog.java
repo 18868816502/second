@@ -33,6 +33,8 @@ public class CommNoneAndroidDialog extends DialogFragment {
     private String negativeStr;
     private View.OnClickListener negativeClick;
 
+    private boolean dimBackground;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,10 @@ public class CommNoneAndroidDialog extends DialogFragment {
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.width = (int) (getResources().getDisplayMetrics().density * 270);
             window.setAttributes(lp);
+            if (dimBackground) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                window.setDimAmount(0.6f);
+            }
         }
     }
 
@@ -130,6 +136,11 @@ public class CommNoneAndroidDialog extends DialogFragment {
     public CommNoneAndroidDialog withNegativeBtn(String negativeStr, View.OnClickListener clickListener) {
         this.negativeStr = negativeStr;
         this.negativeClick = clickListener;
+        return this;
+    }
+
+    public CommNoneAndroidDialog dimBackground(boolean dim) {
+        dimBackground = dim;
         return this;
     }
 }

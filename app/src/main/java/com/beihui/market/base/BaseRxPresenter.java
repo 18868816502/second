@@ -7,6 +7,7 @@ import com.beihui.market.util.LogUtils;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import retrofit2.HttpException;
 
 public abstract class BaseRxPresenter implements BasePresenter {
     private CompositeDisposable compositeDisposable;
@@ -36,6 +37,9 @@ public abstract class BaseRxPresenter implements BasePresenter {
     }
 
     protected String generateErrorMsg(Throwable throwable) {
+        if (throwable instanceof HttpException) {
+            return "网络错误";
+        }
         return throwable != null ? throwable.getMessage() : "未知错误";
     }
 }

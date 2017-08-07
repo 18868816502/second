@@ -21,6 +21,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
+import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.fragment.UserLoginFragment;
 import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
 import com.beihui.market.ui.fragment.UserRegisterVerifyCodeFragment;
@@ -57,8 +58,8 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         context.startActivity(intent);
     }
 
-    public static void launch(Context context, View blurredView, String phone) {
-        blurredView = blurredView.getRootView();
+    public static void launch(Context context, View blurView, String phone) {
+        blurredView = blurView.getRootView();
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
         intent.putExtra("phone", phone);
         context.startActivity(intent);
@@ -151,15 +152,8 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
 
     @OnClick({R.id.cancel, R.id.navigation})
-    void OnViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.cancel:
-                finish();
-                break;
-            case R.id.navigation:
-                onBackPressed();
-                break;
-        }
+    void OnViewClicked() {
+        onBackPressed();
     }
 
     @Subscribe
@@ -216,6 +210,19 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
             cancelTv.setVisibility(View.VISIBLE);
             navigationIv.setVisibility(View.GONE);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            new CommNoneAndroidDialog()
+                    .withMessage("是否放弃注册？")
+                    .withNegativeBtn("放弃", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getSupportFragmentManager().popBackStack();
+                        }
+                    })
+                    .withPositiveBtn("继续注册", null)
+                    .dimBackground(true)
+                    .show(getSupportFragmentManager(), "CancelRegister");
+            return;
         }
         super.onBackPressed();
     }

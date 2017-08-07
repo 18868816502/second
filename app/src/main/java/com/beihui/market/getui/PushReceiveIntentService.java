@@ -59,6 +59,7 @@ public class PushReceiveIntentService extends GTIntentService {
                     //资讯
                     intent = new Intent(context, NewsDetailActivity.class);
                     intent.putExtra("newsId", localId);
+                    intent.putExtra("newsTitle", title);
                 }
             } else if (type == 2 || type == 3) {//跳转网页
                 intent = new Intent(context, ComWebViewActivity.class);

@@ -373,12 +373,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
         private int size;
         private TextPaint textPaint;
-        
+
         SizePosSpan(int size) {
             this.size = (int) (size * getResources().getDisplayMetrics().density);
             textPaint = new TextPaint();
             textPaint.setTextSize(this.size);
             textPaint.setFakeBoldText(true);
+            textPaint.setAntiAlias(true);
         }
 
         @Override
@@ -392,7 +393,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             text = text.subSequence(start, end);
             Paint.FontMetricsInt fm = paint.getFontMetricsInt();
             textPaint.setColor(paint.getColor());
-            canvas.drawText(text.toString(), x, top + (fm.bottom - fm.top) / 2, textPaint);
+            canvas.drawText(text.toString(), x + 6, top + (fm.bottom - fm.top) / 2, textPaint);
         }
     }
 }
