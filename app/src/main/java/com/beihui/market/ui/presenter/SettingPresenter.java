@@ -2,6 +2,7 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -25,6 +26,8 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
     private Context mContext;
     private UserHelper mUserHelper;
 
+    private AppUpdate appUpdate;
+
     @Inject
     SettingPresenter(Api api, SettingContract.View view, Context context) {
         mApi = api;
@@ -41,8 +44,14 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                 .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
-                                   if (result.isSuccess() && result.getData() != null) {
-                                       mView.showLatestVersion("最新版" + result.getData().getVersion());
+                                   if (result.isSuccess()) {
+                                       if (result.getData() != null) {
+                                           appUpdate = result.getData();
+                                           mView.showLatestVersion("最新版" + appUpdate.getVersion());
+                                       } else {
+                                           mView.showLatestVersion("最新版" + mContext.getPackageManager()
+                                                   .getPackageInfo(mContext.getPackageName(), 0).versionName);
+                                       }
                                    }
                                }
                            },
@@ -53,6 +62,35 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                             }
                         });
         addDisposable(disposable);
+    }
+
+    @Override
+    public void checkVersion() {
+        if (appUpdate != null) {
+            handleAppUpdate(appUpdate);
+        } else {
+            Disposable disposable = mApi.queryUpdate()
+                    .compose(RxUtil.<ResultEntity<AppUpdate>>io2main())
+                    .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
+                                   @Override
+                                   public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           appUpdate = result.getData();
+                                           handleAppUpdate(appUpdate);
+                                       } else {
+                                           mView.showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    logError(SettingPresenter.this, throwable);
+                                    mView.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(disposable);
+        }
     }
 
     @Override
@@ -81,5 +119,22 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                             }
                         });
         addDisposable(dis);
+    }
+
+    private void handleAppUpdate(AppUpdate update) {
+        if (update != null) {
+            try {
+                String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+                if (version.compareTo(update.getVersion()) < 0) {
+                    mView.showUpdate(appUpdate);
+                } else {
+                    mView.showHasBeenLatest("已经是最新版本");
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mView.showHasBeenLatest("已经是最新版了");
+        }
     }
 }

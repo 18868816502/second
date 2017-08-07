@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.helper.updatehelper.DownloadService;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSettingComponent;
 import com.beihui.market.injection.module.SettingModule;
@@ -17,6 +19,7 @@ import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.SettingContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.SettingPresenter;
+import com.beihui.market.util.viewutils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,7 +69,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 .inject(this);
     }
 
-    @OnClick({R.id.change_psd, R.id.star_me, R.id.about_us, R.id.exit})
+    @OnClick({R.id.change_psd, R.id.star_me, R.id.about_us, R.id.exit, R.id.version_container})
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.change_psd:
@@ -95,6 +98,9 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                             }
                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                 break;
+            case R.id.version_container:
+                presenter.checkVersion();
+                break;
         }
     }
 
@@ -118,6 +124,31 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void showUpdate(AppUpdate update) {
+        final String appVersion = update.getVersion();
+        final String appUrl = update.getVersionUrl();
+        CommNoneAndroidDialog dialog = new CommNoneAndroidDialog()
+                .withMessage(update.getContent())
+                .withPositiveBtn("立即更新", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(SettingsActivity.this, DownloadService.class);
+                        intent.putExtra("url", appUrl);
+                        intent.putExtra("fileName", appVersion.replace(".", "_"));
+                        SettingsActivity.this.startService(intent);
+                    }
+                })
+                .withNegativeBtn("稍后再说", null);
+        dialog.setCancelable(false);
+        dialog.show(getSupportFragmentManager(), "Update");
+    }
+
+    @Override
+    public void showHasBeenLatest(String msg) {
+        ToastUtils.showShort(this, msg, null);
     }
 }
 
