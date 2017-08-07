@@ -59,6 +59,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @BindView(R.id.apply)
     Button applyBtn;
 
+    @BindView(R.id.product_off_sell_container)
+    View productOffSellContainer;
+
     @BindView(R.id.detail_container)
     LinearLayout detailContainer;
     @BindView(R.id.loan_name_title)
@@ -140,6 +143,10 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         presenter.onStart();
         LoanProduct.Row loan = getIntent().getParcelableExtra("loan");
         String loanId = getIntent().getStringExtra("loanId");
+        String loanName = getIntent().getStringExtra("loanName");
+        if (loanName != null) {
+            loanNameTitleTv.setText(loanName);
+        }
         if (loan != null) {
             bindAbstractInfo(loan);
             presenter.queryDetail(loan.getId());
@@ -354,6 +361,12 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         if (list != null && list.size() > 0) {
             inflateFeature(list);
         }
+    }
+
+    @Override
+    public void showLoanOffSell() {
+        scrollView.setVisibility(View.GONE);
+        productOffSellContainer.setVisibility(View.VISIBLE);
     }
 
     @Override

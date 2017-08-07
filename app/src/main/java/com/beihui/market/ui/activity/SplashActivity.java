@@ -177,10 +177,12 @@ public class SplashActivity extends BaseComponentActivity {
                     if (adBanner.isNative()) {
                         intent = new Intent(context, LoanDetailActivity.class);
                         intent.putExtra("loanId", adBanner.getLocalId());
+                        intent.putExtra("loanName", adBanner.getTitle());
                         startActivity(intent);
                     } else {
                         intent = new Intent(context, ComWebViewActivity.class);
                         intent.putExtra("url", adBanner.getUrl());
+                        intent.putExtra("title", adBanner.getTitle());
                         startActivity(intent);
                     }
                     finish();

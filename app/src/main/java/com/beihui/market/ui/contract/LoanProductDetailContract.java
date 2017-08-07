@@ -16,6 +16,8 @@ public interface LoanProductDetailContract {
     interface View extends BaseView<Presenter> {
         void showLoanDetail(LoanProductDetail detail);
 
+        void showLoanOffSell();
+
         void navigateLoan(LoanProductDetail detail);
 
         void navigateLogin();

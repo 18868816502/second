@@ -43,6 +43,9 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                                    if (result.isSuccess()) {
                                        productDetail = result.getData();
                                        mView.showLoanDetail(result.getData());
+                                   } else if (result.getCode() == 2000039) {
+                                       //产品已经下架
+                                       mView.showLoanOffSell();
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }
