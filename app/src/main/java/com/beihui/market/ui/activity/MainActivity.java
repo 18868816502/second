@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -157,8 +158,10 @@ public class MainActivity extends BaseComponentActivity {
                     inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 }
                 if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
-                    getCurrentFocus().clearFocus();
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    if (getCurrentFocus() instanceof EditText) {
+                        getCurrentFocus().clearFocus();
+                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
                 }
             }
         }
