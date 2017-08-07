@@ -40,7 +40,7 @@ public class ResetPwdSetPwdPresenter extends BaseRxPresenter implements ResetPwd
                                public void accept(@NonNull ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
                                        mUserHelper.clearUser(mContext);
-                                       mView.showRestPwdSuccess();
+                                       mView.showRestPwdSuccess(result.getMsg());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

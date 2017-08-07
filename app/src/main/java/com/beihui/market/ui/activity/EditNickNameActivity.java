@@ -56,7 +56,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                confirmBtn.setEnabled(editText.getText().length() > 0);
+                confirmBtn.setEnabled(editText.getText().toString().trim().length() > 0);
             }
 
             @Override

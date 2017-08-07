@@ -11,6 +11,6 @@ public interface ResetPwdSetPwdContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showRestPwdSuccess();
+        void showRestPwdSuccess(String msg);
     }
 }

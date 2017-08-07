@@ -97,9 +97,9 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     }
 
     @Override
-    public void showRestPwdSuccess() {
+    public void showRestPwdSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), "重置密码成功", R.mipmap.white_success);
+        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         getActivity().finish();
     }
 }
