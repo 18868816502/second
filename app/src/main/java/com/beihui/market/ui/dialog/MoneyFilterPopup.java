@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,29 @@ public class MoneyFilterPopup extends PopupWindow {
         iv.setImageResource(R.mipmap.daosanjiao_blue);
         rotateArrow(0, 180, iv);
 
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (dstart == 0 && !TextUtils.isEmpty(source)) {
+                    if (source.equals("0")) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        InputFilter[] filters = etMoney.getFilters();
+        if (filters == null) {
+            filters = new InputFilter[]{filter};
+        } else {
+            InputFilter[] temp = filters;
+            filters = new InputFilter[temp.length + 1];
+            for (int i = 0; i < temp.length; ++i) {
+                filters[i] = temp[i];
+            }
+            filters[temp.length] = filter;
+        }
+        etMoney.setFilters(filters);
         etMoney.setText(money);
         etMoney.setSelection(etMoney.getText().length());
         etMoney.postDelayed(new Runnable() {

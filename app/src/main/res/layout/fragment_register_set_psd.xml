@@ -85,7 +85,7 @@
             android:digits="0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"
             android:hint="请输入邀请码(可不填)"
             android:inputType="text"
-            android:maxLength="16"
+            android:maxLength="11"
             android:textColor="@color/c_222222"
             android:textColorHint="#B2B2B2"
             android:textSize="15sp" />

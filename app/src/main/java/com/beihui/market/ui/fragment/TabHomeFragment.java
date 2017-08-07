@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -82,6 +85,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     View toolBarContainer;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
     @BindView(R.id.center_text)
@@ -191,6 +196,29 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         headerViewHolder.tvTuiJian.setOnClickListener(this);
         headerViewHolder.tvMore.setOnClickListener(this);
         headerViewHolder.etMoney.setText(inputMoney + "");
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (dstart == 0 && !TextUtils.isEmpty(source)) {
+                    if (source.equals("0")) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        InputFilter[] filters = headerViewHolder.etMoney.getFilters();
+        if (filters == null) {
+            filters = new InputFilter[]{filter};
+        } else {
+            InputFilter[] temp = filters;
+            filters = new InputFilter[temp.length + 1];
+            for (int i = 0; i < temp.length; ++i) {
+                filters[i] = temp[i];
+            }
+            filters[temp.length] = filter;
+        }
+        headerViewHolder.etMoney.setFilters(filters);
 
         loanRVAdapter.setHeaderView(headerView);
 
@@ -199,6 +227,13 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         lp.height = statusHeight;
         fakedBar.setLayoutParams(lp);
         renderStatusAndToolBar(toolBarBgAlpha);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.refresh();
+            }
+        });
     }
 
     @Override
@@ -276,12 +311,18 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         if (headerViewHolder != null) {
             headerViewHolder.loadBanner(list);
         }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void showBorrowingScroll(List<String> list) {
         if (headerViewHolder != null) {
             headerViewHolder.marqueeView.startWithList(list);
+        }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
         }
     }
 
@@ -290,12 +331,18 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         if (headerViewHolder != null) {
             headerViewHolder.newsAdapter.notifyHotNewsChanged(news);
         }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void showHotLoanProducts(List<LoanProduct.Row> products) {
         if (loanRVAdapter != null) {
             loanRVAdapter.notifyLoanProductChanged(products);
+        }
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
         }
     }
 

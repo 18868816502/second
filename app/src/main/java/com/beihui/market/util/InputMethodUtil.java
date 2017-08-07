@@ -30,10 +30,10 @@ public class InputMethodUtil {
     public static void openSoftKeyboard(Context context, EditText editText) {
         if (context != null && editText != null) {
             editText.requestFocus();
+            setEditTextSelectionToEnd(editText);
             InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-            setEditTextSelectionToEnd(editText);
         }
     }
 

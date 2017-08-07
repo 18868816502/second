@@ -6,7 +6,6 @@ import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
-import com.beihui.market.entity.News;
 import com.beihui.market.entity.NoticeAbstract;
 
 import java.util.List;
@@ -14,6 +13,8 @@ import java.util.List;
 public interface TabHomeContract {
 
     interface Presenter extends BasePresenter {
+        void refresh();
+
         void checkMsg();
 
         void checkMyWorth();

@@ -2,7 +2,6 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
-import android.text.SpannableString;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -10,13 +9,12 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
-import com.beihui.market.entity.News;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.TabHomeContract;
-import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +83,32 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
             queryHotLoanProducts();
         } else {
             mView.showHotLoanProducts(hotLoanProducts);
+        }
+    }
+
+    @Override
+    public void refresh() {
+        queryBanner();
+        queryScrolling();
+        queryHotNews();
+        queryHotLoanProducts();
+    }
+
+    @Override
+    public void checkMsg() {
+        if (UserHelper.getInstance(mContext).getProfile() != null) {
+            mView.navigateMessageCenter();
+        } else {
+            mView.navigateLogin();
+        }
+    }
+
+    @Override
+    public void checkMyWorth() {
+        if (UserHelper.getInstance(mContext).getProfile() != null) {
+            mView.navigateWorthTest();
+        } else {
+            mView.navigateLogin();
         }
     }
 
@@ -259,23 +283,5 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private void handleThrowable(Throwable throwable) {
         logError(TabHomePresenter.this, throwable);
         mView.showErrorMsg(generateErrorMsg(throwable));
-    }
-
-    @Override
-    public void checkMsg() {
-        if (UserHelper.getInstance(mContext).getProfile() != null) {
-            mView.navigateMessageCenter();
-        } else {
-            mView.navigateLogin();
-        }
-    }
-
-    @Override
-    public void checkMyWorth() {
-        if (UserHelper.getInstance(mContext).getProfile() != null) {
-            mView.navigateWorthTest();
-        } else {
-            mView.navigateLogin();
-        }
     }
 }
