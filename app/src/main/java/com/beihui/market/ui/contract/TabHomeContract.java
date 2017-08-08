@@ -21,6 +21,7 @@ public interface TabHomeContract {
     }
 
     interface View extends BaseView<Presenter> {
+
         void showBanner(List<AdBanner> list);
 
         void showBorrowingScroll(List<String> list);
@@ -33,10 +34,13 @@ public interface TabHomeContract {
 
         void showNotice(NoticeAbstract notice);
 
+        void showError();
+
         void navigateLogin();
 
         void navigateWorthTest();
 
         void navigateMessageCenter();
+
     }
 }

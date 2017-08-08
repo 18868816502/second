@@ -83,4 +83,5 @@
     <string name="input_new_pwd">请输入新密码</string>
     <string name="confirm_new_pwd">请确认新密码</string>
     <string name="loan">借款</string>
+    <string name="net_connection_error">网络连接失败</string>
 </resources>

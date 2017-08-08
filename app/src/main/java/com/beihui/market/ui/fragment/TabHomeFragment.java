@@ -58,6 +58,8 @@ import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.AutoTextView;
+import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.HomeStateViewProvider;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sunfusheng.marqueeview.MarqueeView;
@@ -87,6 +89,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     View toolBarContainer;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycle_view)
@@ -163,6 +167,12 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new HomeStateViewProvider(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onStart();
+            }
+        }));
         noticeCloseIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,6 +252,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void initDatas() {
+        refreshLayout.setRefreshing(true);
         presenter.onStart();
     }
 
@@ -316,41 +327,33 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void showBanner(List<AdBanner> list) {
+        handleShowContent();
         if (headerViewHolder != null) {
             headerViewHolder.loadBanner(list);
-        }
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void showBorrowingScroll(List<String> list) {
+        handleShowContent();
         if (headerViewHolder != null) {
             headerViewHolder.marqueeView.startWithList(list);
-        }
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void showHotNews(List<HotNews> news) {
+        handleShowContent();
         if (headerViewHolder != null) {
             headerViewHolder.newsAdapter.notifyHotNewsChanged(news);
-        }
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void showHotLoanProducts(List<LoanProduct.Row> products) {
+        handleShowContent();
         if (loanRVAdapter != null) {
             loanRVAdapter.notifyLoanProductChanged(products);
-        }
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
         }
     }
 
@@ -378,6 +381,22 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     }
 
     @Override
+    public void showErrorMsg(String msg) {
+        super.showErrorMsg(msg);
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void showError() {
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+        stateLayout.switchState(StateLayout.STATE_NET_ERROR);
+    }
+
+    @Override
     public void navigateLogin() {
         UserAuthorizationActivity.launch(getActivity(), rootContainer);
     }
@@ -394,6 +413,14 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         startActivity(intent);
     }
 
+    private void handleShowContent() {
+        if (stateLayout != null) {
+            stateLayout.switchState(StateLayout.STATE_CONTENT);
+        }
+        if (refreshLayout != null && refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
 
     class HeaderViewHolder {
         View itemView;

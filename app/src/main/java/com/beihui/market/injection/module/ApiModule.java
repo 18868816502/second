@@ -23,7 +23,7 @@ public class ApiModule {
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)

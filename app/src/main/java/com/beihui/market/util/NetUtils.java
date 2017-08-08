@@ -15,24 +15,20 @@ public class NetUtils {
     /**
      * wap网络
      */
-    public static final int NETWORK_TYPE_WAP     = 1;
+    public static final int NETWORK_TYPE_WAP = 1;
     /**
      * 2G网络
      */
-    public static final int NETWORK_TYPE_2G      = 2;
+    public static final int NETWORK_TYPE_2G = 2;
     /**
      * 3G和3G以上网络，或统称为快速网络
      */
-    public static final int NETWORK_TYPE_3G      = 3;
+    public static final int NETWORK_TYPE_3G = 3;
     /**
      * wifi网络
      */
-    public static final int NETWORK_TYPE_WIFI    = 4;
+    public static final int NETWORK_TYPE_WIFI = 4;
 
-    private NetUtils() {
-        /* cannot be instantiated */
-        throw new UnsupportedOperationException("cannot be instantiated");
-    }
 
     /**
      * 判断网络是否连接
@@ -61,8 +57,8 @@ public class NetUtils {
      * {@link #NETWORK_TYPE_INVALID},{@link #NETWORK_TYPE_WAP},{@link #NETWORK_TYPE_WIFI}
      */
     public static int getNetWorkType(Context context) {
-        int                 netWorkType = -1;
-        ConnectivityManager manager     = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        int netWorkType = -1;
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             String type = networkInfo.getTypeName();

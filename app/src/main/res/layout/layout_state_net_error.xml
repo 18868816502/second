@@ -14,8 +14,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="@string/state_net_error"
+        android:layout_marginTop="16dp"
+        android:text="@string/net_connection_error"
         android:textColor="#b2b2b2"
         android:textSize="18sp" />
 

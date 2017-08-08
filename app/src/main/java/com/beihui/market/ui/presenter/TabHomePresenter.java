@@ -50,12 +50,6 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     public void onStart() {
         super.onStart();
         //如果已经过初始化，则直接返回数据
-        //banner
-        if (banners.size() == 0) {
-            queryBanner();
-        } else {
-            mView.showBanner(Collections.unmodifiableList(banners));
-        }
         //ad dialog
         if (!hasAdInit) {
             queryAd();
@@ -65,6 +59,13 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
             queryNotice();
         } else if (!SPUtils.getNoticeClosed(mContext)) {
             mView.showNotice(notice);
+        }
+
+        //banner
+        if (banners.size() == 0) {
+            queryBanner();
+        } else {
+            mView.showBanner(Collections.unmodifiableList(banners));
         }
         //loan success notice
         if (notices.size() == 0) {
@@ -283,5 +284,17 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private void handleThrowable(Throwable throwable) {
         logError(TabHomePresenter.this, throwable);
         mView.showErrorMsg(generateErrorMsg(throwable));
+
+        if (isAllDataEmpty()) {
+            mView.showError();
+        }
+    }
+
+    private boolean isAllDataEmpty() {
+        return notice == null
+                && banners.size() == 0
+                && notices.size() == 0
+                && hotNews.size() == 0
+                && hotLoanProducts.size() == 0;
     }
 }
