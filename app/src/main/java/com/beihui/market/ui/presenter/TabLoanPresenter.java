@@ -28,8 +28,8 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     private TabLoanContract.View mView;
 
     private int amount = Constant.DEFAULT_FILTER_MONEY;
-    private int dueTimeSelected = 0;
-    private int proSelected = 0;
+    private int dueTimeSelected = 6;
+    private int proSelected = 3;
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
     private int curPage = 1;
 
