@@ -9,6 +9,8 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.beihui.market.R;
+
 public class MessageCenterItemDeco extends RecyclerView.ItemDecoration {
 
     private int dividerHeight;
@@ -17,12 +19,13 @@ public class MessageCenterItemDeco extends RecyclerView.ItemDecoration {
     private Paint paint = new Paint();
     private Rect drawRect = new Rect();
 
-    private int dividerColor = Color.parseColor("#b2b2b2");
+    private int dividerColor;
 
     public MessageCenterItemDeco(Context context) {
         float density = context.getResources().getDisplayMetrics().density;
         dividerHeight = (int) (density * 0.5);
         padding = (int) (density * 7);
+        dividerColor = context.getResources().getColor(R.color.common_bg);
     }
 
     @Override

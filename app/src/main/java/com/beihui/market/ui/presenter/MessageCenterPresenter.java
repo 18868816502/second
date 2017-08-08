@@ -30,6 +30,8 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
     private UserHelper mUserHelper;
     private List<Message> messages = new ArrayList<>();
 
+    private int curPage = 0;
+
     @Inject
     MessageCenterPresenter(Api api, MessageCenterContract.View view, Context context) {
         mApi = api;
@@ -71,7 +73,8 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
 
     @Override
     public void refreshMessage() {
-        Disposable dis = mApi.queryMessage()
+        curPage++;
+        Disposable dis = mApi.queryMessage(curPage, 3)
                 .compose(RxUtil.<ResultEntity<List<Message>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<Message>>>() {
                                @Override

@@ -275,8 +275,8 @@ public class Api {
     /**
      * 站内信
      */
-    public Observable<ResultEntity<List<Message>>> queryMessage() {
-        return service.queryMessages();
+    public Observable<ResultEntity<List<Message>>> queryMessage(int pageNum, int pageSize) {
+        return service.queryMessages(pageNum, pageSize);
     }
 
     /**

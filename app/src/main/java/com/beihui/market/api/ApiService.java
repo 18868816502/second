@@ -167,8 +167,9 @@ public interface ApiService {
     /**
      * 站内信
      */
+    @FormUrlEncoded
     @POST(BASE_PATH + "/pushInfo/queryMessage")
-    Observable<ResultEntity<List<Message>>> queryMessages();
+    Observable<ResultEntity<List<Message>>> queryMessages(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
 
     /**
      * 启动页广告，banner，弹窗广告
