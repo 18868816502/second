@@ -35,10 +35,10 @@ public class ChangePsdPresenter extends BaseRxPresenter implements ChangePsdCont
     public void updatePsd(String origin, String newPsd, String confirm) {
         if (origin != null && newPsd != null && confirm != null) {
             if (!newPsd.equals(confirm)) {
-                mView.showErrorMsg("两次输入的密码不一致");
+                mView.showErrorMsg("新密码与确认新密码不一致");
                 return;
             }
-
+            mView.showLoading();
             UserHelper.Profile profile = mUserHelper.getProfile();
             Disposable dis = mApi.updatePwd(profile.getId(), profile.getAccount(), newPsd, origin)
                     .compose(RxUtil.<ResultEntity>io2main())
@@ -47,7 +47,7 @@ public class ChangePsdPresenter extends BaseRxPresenter implements ChangePsdCont
                                    public void accept(@NonNull ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
                                            String account = mUserHelper.getProfile().getAccount();
-                                           mUserHelper.clearUser(mContext);
+//                                           mUserHelper.clearUser(mContext);
                                            mView.showUpdateSuccess(result.getMsg(), account);
                                        } else {
                                            mView.showErrorMsg(result.getMsg());

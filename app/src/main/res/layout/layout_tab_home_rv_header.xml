@@ -13,22 +13,10 @@
         android:layout_height="200dip"
         android:orientation="vertical">
 
-        <FrameLayout
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/iv_banner_one"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:visibility="gone" />
-        </FrameLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,8 +59,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/rect_white_shadow"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingLeft="7dp"
@@ -160,13 +148,12 @@
             android:textColor="@color/white"
             android:textSize="17sp" />
 
-
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="78dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:background="@mipmap/home_test_bg">
 
         <LinearLayout
@@ -227,7 +214,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/round_white_shadow"
         android:gravity="center"
         android:orientation="vertical">

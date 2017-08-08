@@ -50,6 +50,7 @@ import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.contract.TabHomeContract;
 import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.presenter.TabHomePresenter;
+import com.beihui.market.ui.rvdecoration.HomeItemDeco;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
@@ -186,6 +187,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addOnScrollListener(onScrollListener);
         recyclerView.setAdapter(loanRVAdapter);
+        recyclerView.addItemDecoration(new HomeItemDeco());
         LayoutInflater inflater =
                 (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View headerView =
@@ -229,6 +231,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         fakedBar.setLayoutParams(lp);
         renderStatusAndToolBar(toolBarBgAlpha);
 
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -397,8 +400,6 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
         @BindView(R.id.banner)
         Banner banner;
-        @BindView(R.id.iv_banner_one)
-        ImageView ivBannerOne;
         @BindView(R.id.ly_banner)
         LinearLayout lyBanner;
         @BindView(R.id.marqueeView)

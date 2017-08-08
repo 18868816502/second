@@ -136,7 +136,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         }
     }
 
-    @OnClick({R.id.avatar, R.id.mine_msg, R.id.invite_friend, R.id.helper_feedback, R.id.settings, R.id.login})
+    @OnClick({R.id.avatar, R.id.mine_msg, R.id.invite_friend, R.id.helper_feedback, R.id.settings, R.id.login,
+            R.id.user_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.avatar:
@@ -168,6 +169,13 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 if (!FastClickUtils.isFastClick()) {
                     navigateLogin();
                 }
+                break;
+            case R.id.user_name:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.checkUserProfile();
+                }
+                break;
+            default:
                 break;
         }
     }

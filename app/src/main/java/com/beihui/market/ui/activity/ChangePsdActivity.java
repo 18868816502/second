@@ -1,7 +1,6 @@
 package com.beihui.market.ui.activity;
 
 
-import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,14 +12,11 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerChangePsdComponent;
 import com.beihui.market.injection.module.ChangePsdModule;
-import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.ChangePsdContract;
 import com.beihui.market.ui.presenter.ChangePsdPresenter;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -108,22 +104,20 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     }
 
     @Override
-    public void showErrorMsg(String msg) {
-        ToastUtils.showShort(this, msg, null);
-    }
-
-    @Override
     public void showUpdateSuccess(String msg, String account) {
+        dismissProgress();
         ToastUtils.showShort(this, msg, null);
         //发送用户退出全局事件，并要求用户重新登录
-        UserLogoutEvent event = new UserLogoutEvent();
-        event.pendingAction = UserLogoutEvent.ACTION_START_LOGIN;
-        event.pendingPhone = account;
-        EventBus.getDefault().post(event);
+//        UserLogoutEvent event = new UserLogoutEvent();
+//        event.pendingAction = UserLogoutEvent.ACTION_START_LOGIN;
+//        event.pendingPhone = account;
+//        EventBus.getDefault().post(event);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+
+        finish();
     }
 
     @Override

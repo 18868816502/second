@@ -80,4 +80,6 @@
     <string name="sys_msg_place_holder">您的最新动态提醒都会出现在这里。</string>
     <string name="notice_place_holder">重要消息都会出现在这里。</string>
     <string name="confirm">确认</string>
+    <string name="input_new_pwd">请输入新密码</string>
+    <string name="confirm_new_pwd">请确认新密码</string>
 </resources>
