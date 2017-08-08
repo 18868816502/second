@@ -6,10 +6,10 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
@@ -40,7 +40,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @BindView(R.id.password)
     EditText passwordEt;
     @BindView(R.id.login)
-    Button loginBtn;
+    TextView loginBtn;
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
 

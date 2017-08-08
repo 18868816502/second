@@ -99,16 +99,14 @@
         android:background="@color/line" />
 
 
-    <Button
+    <TextView
         android:id="@+id/register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/TextButtonStyle"
         android:layout_marginTop="20dp"
         android:background="@drawable/round_alpha_primary_btn"
         android:enabled="false"
         android:text="注册"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textColor="@android:color/white" />
 
 
     <LinearLayout

@@ -15,32 +15,19 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
+                style="@style/ToolBarStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
+                android:layout_height="@dimen/tool_bar_height"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/center_text"
+                    style="@style/ToolBarTitleTextAppearance.Light"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/center_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="借款"
-                            android:textColor="#ffffff"
-                            android:textSize="17sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_gravity="center"
+                    android:text="@string/loan" />
 
             </android.support.v7.widget.Toolbar>
 

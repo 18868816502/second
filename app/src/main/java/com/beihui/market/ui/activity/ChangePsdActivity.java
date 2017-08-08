@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -33,7 +34,7 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     @BindView(R.id.new_psd_confirm)
     EditText newPsdConfirmEt;
     @BindView(R.id.confirm)
-    Button confirmBtn;
+    TextView confirmBtn;
 
     @Inject
     ChangePsdPresenter presenter;

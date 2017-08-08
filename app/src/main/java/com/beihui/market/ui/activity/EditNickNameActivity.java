@@ -3,8 +3,8 @@ package com.beihui.market.ui.activity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -28,7 +28,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     @BindView(R.id.edit_text)
     EditText editText;
     @BindView(R.id.confirm)
-    Button confirmBtn;
+    TextView confirmBtn;
 
     @Inject
     EditUserNamePresenter presenter;

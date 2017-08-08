@@ -41,7 +41,7 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
     @BindView(R.id.invitation_code)
     EditText invitationCodeEt;
     @BindView(R.id.register)
-    Button registerBtn;
+    TextView registerBtn;
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
     @BindView(R.id.contract)

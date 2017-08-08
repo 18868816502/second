@@ -23,7 +23,8 @@
                 android:layout_height="29dp"
                 android:background="@drawable/help_feed_left"
                 android:gravity="center"
-                android:text="@string/help" />
+                android:text="@string/help"
+                android:textColor="@color/color_white_black_select" />
 
             <TextView
                 android:id="@+id/feedback"
@@ -31,7 +32,8 @@
                 android:layout_height="29dp"
                 android:background="@drawable/help_feed_right"
                 android:gravity="center"
-                android:text="@string/feedback" />
+                android:text="@string/feedback"
+                android:textColor="@color/color_white_black_select" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -99,10 +101,9 @@
 
         </LinearLayout>
 
-        <Button
+        <TextView
             android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextButtonStyle"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/round_alpha_primary_btn"

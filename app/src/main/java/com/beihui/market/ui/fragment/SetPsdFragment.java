@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
@@ -26,7 +27,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     @BindView(R.id.password)
     EditText passwordEt;
     @BindView(R.id.confirm)
-    Button confirmBtn;
+    TextView confirmBtn;
 
     @Inject
     ResetPwdSetPwdPresenter presenter;

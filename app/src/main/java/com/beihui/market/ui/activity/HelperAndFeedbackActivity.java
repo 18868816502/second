@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -54,7 +53,7 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
     @BindView(R.id.length)
     TextView lengthTv;
     @BindView(R.id.submit)
-    Button submitBtn;
+    TextView submitBtn;
 
     @Inject
     Api api;

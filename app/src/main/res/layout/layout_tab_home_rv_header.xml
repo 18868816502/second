@@ -138,8 +138,7 @@
 
         <TextView
             android:id="@+id/tv_tuijian"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            style="@style/TextButtonStyle"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/round_login_select"

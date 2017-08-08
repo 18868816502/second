@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -37,7 +36,7 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.invite)
-    Button inviteBtn;
+    TextView inviteBtn;
 
     private InvitationAdapter adapter;
 

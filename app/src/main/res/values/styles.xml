@@ -146,4 +146,10 @@
     <style name="DownloadProgressDialogStyle" parent="Base.Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="TextButtonStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/text_button_height</item>
+    </style>
 </resources>

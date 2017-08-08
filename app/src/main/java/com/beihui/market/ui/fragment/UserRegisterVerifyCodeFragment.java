@@ -4,7 +4,6 @@ package com.beihui.market.ui.fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,7 +36,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
     @BindView(R.id.fetch_text)
     TextView fetchText;
     @BindView(R.id.next_step)
-    Button nextStepBtn;
+    TextView nextStepBtn;
 
     @Inject
     RegisterVerifyPresenter presenter;

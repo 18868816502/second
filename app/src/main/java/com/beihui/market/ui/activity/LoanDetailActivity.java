@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,7 +57,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @BindView(R.id.scroll_view)
     WatchableScrollView scrollView;
     @BindView(R.id.apply)
-    Button applyBtn;
+    TextView applyBtn;
 
     @BindView(R.id.product_off_sell_container)
     View productOffSellContainer;
