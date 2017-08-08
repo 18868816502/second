@@ -98,6 +98,7 @@ public class SplashActivity extends BaseComponentActivity {
             if (version.equals(SPUtils.getLastInstalledVersion(this))) {
                 checkAd();
             } else {
+                handler.removeMessages(1);
                 SPUtils.setLastInstalledVersion(this, version);
                 Intent intent = new Intent(this, WelcomeActivity.class);
                 startActivity(intent);
@@ -215,7 +216,7 @@ public class SplashActivity extends BaseComponentActivity {
     private static class SplashHandler extends Handler {
         private WeakReference<SplashActivity> weakReference;
 
-        public SplashHandler(SplashActivity splashActivity) {
+        SplashHandler(SplashActivity splashActivity) {
             super(Looper.getMainLooper());
             weakReference = new WeakReference<>(splashActivity);
         }

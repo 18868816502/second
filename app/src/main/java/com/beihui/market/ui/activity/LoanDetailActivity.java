@@ -64,6 +64,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @BindView(R.id.detail_container)
     LinearLayout detailContainer;
+    @BindView(R.id.product_detail_container)
+    LinearLayout productDetailContainer;
     @BindView(R.id.loan_name_title)
     TextView loanNameTitleTv;
     @BindView(R.id.loan_icon)
@@ -367,8 +369,10 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showLoanOffSell() {
-        scrollView.setVisibility(View.GONE);
+        productDetailContainer.setVisibility(View.GONE);
         productOffSellContainer.setVisibility(View.VISIBLE);
+
+        toolbar.getMenu().clear();
     }
 
     @Override
