@@ -43,6 +43,7 @@ public class LoanProductDetail {
         private String repayMethodText;
         private String fastestLoanTimeText;
         private String mortgageMethodText;
+        private String explain;
 
         public String getDueTimeText() {
             return dueTimeText;
@@ -186,6 +187,14 @@ public class LoanProductDetail {
 
         public void setInterestTimeText(String interestTimeText) {
             this.interestTimeText = interestTimeText;
+        }
+
+        public String getExplain() {
+            return explain;
+        }
+
+        public void setExplain(String explain) {
+            this.explain = explain;
         }
     }
 

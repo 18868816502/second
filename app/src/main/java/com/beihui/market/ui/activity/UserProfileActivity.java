@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -247,8 +248,12 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         view.findViewById(R.id.from_album).setOnClickListener(this);
         view.findViewById(R.id.cancel).setOnClickListener(this);
         avatarSelector.setContentView(view);
+        avatarSelector.setCanceledOnTouchOutside(true);
         Window window = avatarSelector.getWindow();
         if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setAttributes(lp);
             window.setGravity(Gravity.BOTTOM);
         }
         avatarSelector.show();

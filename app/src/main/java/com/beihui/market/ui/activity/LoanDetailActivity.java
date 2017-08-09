@@ -199,6 +199,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
             umWeb.setThumb(image);
             umWeb.setTitle(productDetail.getBase().getProductName());
+            umWeb.setDescription(productDetail.getBase().getExplain());
         } else if (productAbstract != null) {
             umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
             UMImage image = new UMImage(this, productAbstract.getLogoUrl());
