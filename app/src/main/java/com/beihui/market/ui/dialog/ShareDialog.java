@@ -1,11 +1,17 @@
 package com.beihui.market.ui.dialog;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +19,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
-import com.beihui.market.util.viewutils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -25,6 +31,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class ShareDialog extends DialogFragment {
+
+    private static final String TAG = ShareDialog.class.getSimpleName();
 
     Unbinder unbinder;
 
@@ -64,6 +72,7 @@ public class ShareDialog extends DialogFragment {
         super.onDestroyView();
     }
 
+    @SuppressLint("InlinedApi")
     @OnClick({R.id.share_wechat, R.id.share_wechat_moment, R.id.share_qq, R.id.share_weibo, R.id.cancel})
     void OnViewClicked(View view) {
         switch (view.getId()) {
@@ -74,13 +83,19 @@ public class ShareDialog extends DialogFragment {
                 shareWeb(SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
             case R.id.share_qq:
-                shareWeb(SHARE_MEDIA.QQ);
+                //qq分享需要存储权限
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    this.requestPermissions(permission, 1);
+                } else {
+                    shareWeb(SHARE_MEDIA.QQ);
+                }
                 break;
             case R.id.share_weibo:
                 shareWeb(SHARE_MEDIA.SINA);
                 break;
             case R.id.cancel:
-                dismiss();
                 break;
         }
     }
@@ -91,31 +106,50 @@ public class ShareDialog extends DialogFragment {
     }
 
     private void shareWeb(SHARE_MEDIA media) {
+        dismiss();
         if (umWeb == null) {
             throw new IllegalStateException("未设置分享内容 ");
         }
         new ShareAction(getActivity()).withMedia(this.umWeb).setPlatform(media).setCallback(new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "share action start");
+                }
             }
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
-                ToastUtils.showShort(getContext(), "分享成功", null);
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "share action result " + share_media);
+                }
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                ToastUtils.showShort(getContext(), "分享错误", null);
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, "share action error " + share_media + " throwable " + throwable);
+                }
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media) {
-                ToastUtils.showShort(getContext(), "分享取消", null);
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "share action cancel " + share_media);
+                }
             }
         }).share();
-
-        dismiss();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.e("e", "permission result ");
+
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                shareWeb(SHARE_MEDIA.QQ);
+            }
+
+        }
+    }
 }
