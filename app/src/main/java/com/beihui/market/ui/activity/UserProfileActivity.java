@@ -1,11 +1,11 @@
 package com.beihui.market.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -29,6 +29,7 @@ import com.beihui.market.injection.module.UserProfileModule;
 import com.beihui.market.ui.contract.UserProfileContract;
 import com.beihui.market.ui.presenter.UserProfilePresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -62,7 +63,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     private Dialog avatarSelector;
 
-    private File avatarFile;
+    private String avatarFilePath;
 
     @Override
     protected void onResume() {
@@ -105,17 +106,16 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Bitmap avatar = null;
+            String path = null;
             if (requestCode == 1) {
                 //相机
-                if (avatarFile != null) {
-                    avatar = BitmapFactory.decodeFile(avatarFile.getPath());
-                }
+                path = avatarFilePath;
             } else if (requestCode == 2) {
                 //相册
-                String path = getRealPathFromURI(data.getData());
-                if (path != null) {
-                    avatar = BitmapFactory.decodeFile(path);
-                }
+                path = getRealPathFromURI(data.getData());
+            }
+            if (path != null) {
+                avatar = ImageUtils.getFixedBitmap(path, 512);
             }
             if (avatar != null) {
                 presenter.updateAvatar(avatar);
@@ -160,12 +160,13 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 UserProfileActivityPermissionsDispatcher.openCameraWithCheck(this);
                 break;
             case R.id.from_album:
-                openAlbum();
+                UserProfileActivityPermissionsDispatcher.openAlbumWithCheck(this);
                 break;
         }
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA)
+    @SuppressLint("InlinedApi")
+    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void openCamera() {
         Intent toCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String dirPath;
@@ -180,7 +181,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             LogUtils.i(this.getClass().getSimpleName(), "result of mkdirs " + result);
         }
         String filePath = dirPath + "/" + System.currentTimeMillis() + ".jpg";
-        avatarFile = new File(filePath);
+        File avatarFile = new File(filePath);
         if (!avatarFile.exists()) {
             try {
                 boolean result = avatarFile.createNewFile();
@@ -201,9 +202,9 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             } else {
                 uri = Uri.fromFile(avatarFile);
             }
+            avatarFilePath = avatarFile.getPath();
             if (uri != null) {
                 toCamera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                toCamera.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, 0);
                 startActivityForResult(toCamera, 1);
             } else {
                 ToastUtils.showShort(this, "创建头像文件失败", null);
@@ -213,6 +214,8 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         }
     }
 
+    @SuppressLint("InlinedApi")
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void openAlbum() {
         Intent toAlbum = new Intent(Intent.ACTION_PICK);
         toAlbum.setType("image/*");

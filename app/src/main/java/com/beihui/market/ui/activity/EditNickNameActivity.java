@@ -99,7 +99,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     @Override
     public void showUserName(String name) {
         editText.setText(name);
-        editText.setSelection(name.length());
+        editText.setSelection(editText.getText().length());
     }
 
     @Override

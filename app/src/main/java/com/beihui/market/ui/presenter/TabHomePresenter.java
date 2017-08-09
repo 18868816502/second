@@ -140,7 +140,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     private void queryAd() {
-        Disposable dis = mApi.querySupernatant(RequestConstants.SUP_TYPE_AD)
+        Disposable dis = mApi.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
                 .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                @Override

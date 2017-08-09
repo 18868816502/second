@@ -81,27 +81,16 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
                 .map(new Function<Bitmap, byte[]>() {
                     @Override
                     public byte[] apply(@io.reactivex.annotations.NonNull Bitmap source) throws Exception {
-                        //从中心裁剪最大512的图片
-                        int width = source.getWidth() >= 512 ? 512 : source.getWidth();
-                        int height = source.getHeight() >= 512 ? 512 : source.getHeight();
-                        int anchorX = source.getWidth() / 2;
-                        int anchorY = source.getHeight() / 2;
-                        int leftOffset = anchorX - width / 2;
-                        int topOffset = anchorY - height / 2;
-                        Bitmap bitmap = Bitmap.createBitmap(source, leftOffset, topOffset, width, height);
-                        if (bitmap != source) {
-                            source.recycle();
-                        }
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         int quality = 100;
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                        source.compress(Bitmap.CompressFormat.JPEG, quality, baos);
                         while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
                             quality -= 5;
                             if (quality <= 0) {
                                 quality = 0;
                             }
                             baos.reset();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                            source.compress(Bitmap.CompressFormat.JPEG, quality, baos);
                             if (quality == 0) {
                                 break;
                             }
