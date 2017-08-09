@@ -25,7 +25,7 @@
         android:layout_width="130dp"
         android:layout_height="@dimen/text_button_height"
         android:layout_marginTop="25dp"
-        android:background="@drawable/round_shiming_gray_state_enable"
+        android:background="@drawable/round_sunglow_gray_state_enable"
         android:text="@string/reload"
         android:textColor="@color/color_white_brown_state_enable" />
 </LinearLayout>

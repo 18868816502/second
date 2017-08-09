@@ -59,7 +59,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/round_shiming_gray_state_enable"
+                android:background="@drawable/round_sunglow_gray_state_enable"
                 android:text="@string/invite_friend"
                 android:textColor="@color/color_white_brown_state_enable" />
 

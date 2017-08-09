@@ -65,6 +65,7 @@ public class SplashActivity extends BaseComponentActivity {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+        handler.removeMessages(1);
         super.onDestroy();
     }
 
@@ -119,6 +120,8 @@ public class SplashActivity extends BaseComponentActivity {
     }
 
     private void launch(String url) {
+        handler.removeMessages(1);
+        
         if (!adClicked) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             intent.putExtra("url", url);
@@ -133,9 +136,8 @@ public class SplashActivity extends BaseComponentActivity {
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
-                                   if (handler.hasMessages(1)) {
-                                       handler.removeMessages(1);
-                                   }
+                                   handler.removeMessages(1);
+
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            startAd(result.getData().get(0));

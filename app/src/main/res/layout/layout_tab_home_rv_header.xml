@@ -141,10 +141,10 @@
             style="@style/TextButtonStyle"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/round_login_select"
+            android:background="@drawable/round_alpha_primary_btn"
             android:gravity="center"
             android:text="给我推荐"
-            android:textColor="@color/white"
+            android:textColor="@color/color_alpha_white"
             android:textSize="17sp" />
 
     </LinearLayout>

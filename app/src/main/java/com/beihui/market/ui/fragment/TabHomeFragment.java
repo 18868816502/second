@@ -376,6 +376,8 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 startActivity(intent);
 
                 noticeContainer.setVisibility(View.GONE);
+
+                SPUtils.setNoticeClosed(getContext(), true);
             }
         });
     }
