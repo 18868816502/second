@@ -50,6 +50,7 @@ public class AdDialog extends DialogFragment {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    dismiss();
                     //统计点击
                     DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
                     //跳原生还是跳Web

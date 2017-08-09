@@ -1,12 +1,14 @@
 package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -25,6 +27,8 @@ public class WorthTestActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.web_view)
     WebView webView;
+
+    private String pattern = NetConstants.H5_LOAN_DETAIL + "?id";
 
     @Override
     protected void onDestroy() {
@@ -50,6 +54,20 @@ public class WorthTestActivity extends BaseComponentActivity {
                 if (newProgress == 100) {
                     webView.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.contains(pattern)) {
+                    String id = url.substring(pattern.length(), url.length());
+                    Intent intent = new Intent(WorthTestActivity.this, LoanDetailActivity.class);
+                    intent.putExtra("loanId", id);
+                    startActivity(intent);
+
+                    finish();
+                }
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
     }

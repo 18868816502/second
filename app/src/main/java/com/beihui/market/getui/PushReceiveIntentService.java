@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.beihui.market.BuildConfig;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
@@ -61,9 +62,13 @@ public class PushReceiveIntentService extends GTIntentService {
                     intent.putExtra("newsId", localId);
                     intent.putExtra("newsTitle", title);
                 }
-            } else if (type == 2 || type == 3) {//跳转网页
+            } else if (type == 2) {//跳转网页
                 intent = new Intent(context, ComWebViewActivity.class);
                 intent.putExtra("url", obj.getString("url"));
+                intent.putExtra("title", title);
+            } else if (type == 3) { //站内推送内容
+                intent = new Intent(context, ComWebViewActivity.class);
+                intent.putExtra("url", NetConstants.generateInternalMessageUrl(obj.getString("localId")));
                 intent.putExtra("title", title);
             } else if (type == 4) {//跳转到首页
                 intent = new Intent(context, MainActivity.class);
