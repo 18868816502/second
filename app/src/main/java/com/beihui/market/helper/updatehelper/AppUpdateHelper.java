@@ -163,6 +163,7 @@ public class AppUpdateHelper {
         } else {
             uri = Uri.fromFile(apkFile);
         }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         context.startActivity(intent);
     }

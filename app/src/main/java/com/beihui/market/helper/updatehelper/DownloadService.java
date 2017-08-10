@@ -58,6 +58,7 @@ public class DownloadService extends IntentService {
                     } else {
                         uri = Uri.fromFile(apkFile);
                     }
+                    install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     install.setDataAndType(uri, "application/vnd.android.package-archive");
                     startActivity(install);
                 }
