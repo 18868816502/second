@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -19,6 +20,7 @@ import com.beihui.market.ui.fragment.TabHomeFragment;
 import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsFragment;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -168,4 +170,12 @@ public class MainActivity extends BaseComponentActivity {
         return super.dispatchTouchEvent(ev);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (FastClickUtils.isFastBackPress()) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
