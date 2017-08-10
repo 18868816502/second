@@ -212,7 +212,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                     .setUmWeb(umWeb)
                     .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void inflateTag(String[] tags) {
@@ -381,6 +381,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         DataStatisticsHelper.getInstance().onProductClicked(detail.getBase().getId());
         Intent intent = new Intent(this, ComWebViewActivity.class);
         intent.putExtra("url", detail.getBase().getUrl());
+        intent.putExtra("title", detail.getBase().getProductName());
         startActivity(intent);
     }
 

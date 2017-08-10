@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -45,6 +46,7 @@ public class ComWebViewActivity extends BaseComponentActivity {
             public void onProgressChanged(WebView view, int newProgress) {
             }
         });
+        webView.setWebViewClient(new WebViewClient());
     }
 
     @Override
