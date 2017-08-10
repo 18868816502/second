@@ -18,11 +18,6 @@
             android:text="@string/sys_msg" />
     </android.support.v7.widget.Toolbar>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/common_bg" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

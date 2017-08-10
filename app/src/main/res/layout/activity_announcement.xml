@@ -32,7 +32,6 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@android:color/white" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </com.beihui.market.view.StateLayout>

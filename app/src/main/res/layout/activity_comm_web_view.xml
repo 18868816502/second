@@ -20,11 +20,6 @@
             android:maxLines="1" />
     </android.support.v7.widget.Toolbar>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/common_bg" />
-
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
