@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.umeng.socialize.media.UMImage;
@@ -28,7 +29,7 @@ public class WorthTestActivity extends BaseComponentActivity {
     @BindView(R.id.web_view)
     WebView webView;
 
-    private String pattern = NetConstants.H5_LOAN_DETAIL + "?id";
+    private String pattern = NetConstants.H5_LOAN_DETAIL + "?id=";
 
     @Override
     protected void onDestroy() {
@@ -74,7 +75,7 @@ public class WorthTestActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        webView.loadUrl(NetConstants.H5_TEST);
+        webView.loadUrl(NetConstants.generateTestUrl(UserHelper.getInstance(this).getProfile().getId()));
     }
 
     @Override

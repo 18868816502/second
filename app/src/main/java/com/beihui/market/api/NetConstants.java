@@ -49,4 +49,8 @@ public class NetConstants {
     public static String generateInternalMessageUrl(String id) {
         return H5_INTERNAL_MESSAGE + "?id=" + id;
     }
+
+    public static String generateTestUrl(String id) {
+        return H5_TEST + "?isApp=1&id=" + id;
+    }
 }
