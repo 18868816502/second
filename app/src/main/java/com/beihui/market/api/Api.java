@@ -3,6 +3,9 @@ package com.beihui.market.api;
 
 import android.util.Base64;
 
+import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
+import com.beihui.market.api.interceptor.AccessHeadInterceptor;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
@@ -27,11 +30,15 @@ import com.beihui.market.entity.request.RequestConstants;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,15 +49,37 @@ public class Api {
     private static Api sInstance;
     private ApiService service;
 
-    public static Api getInstance(OkHttpClient okHttpClient) {
+    public static Api getInstance() {
         if (sInstance == null) {
             synchronized (Api.class) {
                 if (sInstance == null) {
-                    sInstance = new Api(okHttpClient);
+                    sInstance = new Api(createHttpClient());
                 }
             }
         }
         return sInstance;
+    }
+
+    private static OkHttpClient createHttpClient() {
+        File cacheFile = new File(App.getInstance().getCacheDir().getAbsolutePath(), "MarketCache");
+        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .cache(cache)
+                .addInterceptor(new AccessHeadInterceptor());
+
+
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(logging);
+        }
+
+        return builder.build();
     }
 
     private Api(OkHttpClient okHttpClient) {
