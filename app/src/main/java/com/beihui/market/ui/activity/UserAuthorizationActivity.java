@@ -176,6 +176,9 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             }
             ft.addToBackStack(registerTag);
             ft.commit();
+
+            cancelTv.setVisibility(View.GONE);
+            navigationIv.setVisibility(View.VISIBLE);
         } else if (event.navigationTag == AuthNavigationEvent.TAG_SET_PSD) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -202,15 +205,15 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             navigationIv.setVisibility(View.VISIBLE);
         } else if (event.navigationTag == AuthNavigationEvent.TAG_HEAD_TO_LOGIN) {
             getSupportFragmentManager().popBackStack();
+
+            cancelTv.setVisibility(View.VISIBLE);
+            navigationIv.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
-            cancelTv.setVisibility(View.VISIBLE);
-            navigationIv.setVisibility(View.GONE);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             new CommNoneAndroidDialog()
                     .withMessage("是否放弃注册？")
                     .withNegativeBtn("放弃", new View.OnClickListener() {
@@ -223,6 +226,10 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
                     .dimBackground(true)
                     .show(getSupportFragmentManager(), "CancelRegister");
             return;
+        }
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            cancelTv.setVisibility(View.VISIBLE);
+            navigationIv.setVisibility(View.GONE);
         }
         super.onBackPressed();
     }
