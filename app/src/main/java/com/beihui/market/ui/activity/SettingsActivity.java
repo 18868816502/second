@@ -19,6 +19,8 @@ import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.SettingContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.SettingPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.viewutils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,6 +75,10 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.change_psd:
+                //umeng统计
+                Statistic.onEvent(Events.SETTING_CHANGE_PASSWORD);
+
+
                 Intent toChangePsd = new Intent(this, ChangePsdActivity.class);
                 startActivity(toChangePsd);
                 break;
@@ -89,11 +95,23 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 startActivity(toAboutUs);
                 break;
             case R.id.exit:
+                //umeng统计
+                Statistic.onEvent(Events.SETTING_EXIT);
+
                 new CommNoneAndroidDialog().withMessage("确认退出爱信管家")
-                        .withPositiveBtn("再看看", null)
+                        .withPositiveBtn("再看看", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //umeng统计
+                                Statistic.onEvent(Events.EXIT_DISMISS);
+                            }
+                        })
                         .withNegativeBtn("退出", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                //umeng统计
+                                Statistic.onEvent(Events.EXIT_CONFIRM);
+
                                 presenter.logout();
                             }
                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());

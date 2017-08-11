@@ -52,6 +52,8 @@ import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.presenter.TabHomePresenter;
 import com.beihui.market.ui.rvdecoration.HomeItemDeco;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
@@ -140,6 +142,15 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_HOME_PAGE);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -269,6 +280,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.worth_test:
+                //umeng统计
+                Statistic.onEvent(Events.HOME_CLICK_TEST);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkMyWorth();
                 }
@@ -277,6 +291,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 InputMethodUtil.openSoftKeyboard(getActivity(), headerViewHolder.etMoney);
                 break;
             case R.id.tv_tuijian:
+                //umeng统计
+                Statistic.onEvent(Events.HOME_CLICK_RECOMMEND);
+
                 String moneyStr = headerViewHolder.etMoney.getText().toString();
                 if (TextUtils.isEmpty(moneyStr)) {
                     ToastUtils.showShort(getContext(), "请输入金额", null);
@@ -295,6 +312,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 }
                 break;
             case R.id.tv_more:
+                //umeng统计
+                Statistic.onEvent(Events.HOME_CLICK_VIEW_MORE);
+
                 EventBus.getDefault().post(new NavigateNews());
                 break;
         }
@@ -314,6 +334,9 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //umeng统计
+        Statistic.onEvent(Events.HOME_CLICK_MESSAGE);
+
         if (!FastClickUtils.isFastClick()) {
             presenter.checkMsg();
         }

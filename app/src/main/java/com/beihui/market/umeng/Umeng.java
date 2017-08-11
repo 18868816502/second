@@ -27,7 +27,10 @@ public class Umeng {
         MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         //统计错误
         MobclickAgent.setCatchUncaughtExceptions(true);
+        //统计自定义事件
+        Statistic.registerContext(context);
 
         MobclickAgent.setDebugMode(BuildConfig.DEBUG);
+
     }
 }

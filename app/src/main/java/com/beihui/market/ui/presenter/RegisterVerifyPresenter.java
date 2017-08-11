@@ -6,6 +6,8 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.ui.contract.RegisterVerifyContract;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
@@ -39,8 +41,14 @@ public class RegisterVerifyPresenter extends BaseRxPresenter implements Register
                                    public void accept(@NonNull ResultEntity<Phone> result) throws Exception {
                                        isRequestingVerification = false;
                                        if (result.isSuccess()) {
+                                           //umeng统计
+                                           Statistic.onEvent(Events.REGISTER_GET_VERIFY_SUCCESS);
+
                                            mView.showVerificationSend(result.getMsg());
                                        } else {
+                                           //umeng统计
+                                           Statistic.onEvent(Events.REGISTER_GET_VERIFY_FAILED);
+
                                            mView.showErrorMsg(result.getMsg());
                                        }
                                    }
@@ -65,8 +73,14 @@ public class RegisterVerifyPresenter extends BaseRxPresenter implements Register
                                @Override
                                public void accept(@NonNull ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
+
                                        mView.moveToNextStep(requestPhone);
                                    } else {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
+
                                        mView.showErrorMsg(result.getMsg());
                                    }
                                }

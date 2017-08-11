@@ -19,6 +19,8 @@ import com.beihui.market.ui.adapter.InvitationAdapter;
 import com.beihui.market.ui.contract.InvitationContract;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.InvitationPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -65,6 +67,9 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
         inviteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.INVITATION_INVITE);
+
                 UMWeb umWeb = new UMWeb(NetConstants.generateInvitationUrl(UserHelper.getInstance(InvitationActivity.this).getProfile().getId()));
                 umWeb.setTitle("告诉你一个手机借款神器");
                 umWeb.setDescription("急用钱？秒到账！超给力新口子，下款快，额度高，注册极简.");

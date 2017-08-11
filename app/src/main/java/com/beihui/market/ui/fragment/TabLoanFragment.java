@@ -1,10 +1,14 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +28,8 @@ import com.beihui.market.ui.dialog.ProFilterPopup;
 import com.beihui.market.ui.dialog.TimeFilterPopup;
 import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.ui.rvdecoration.LoanItemDeco;
-import com.beihui.market.view.stateprovider.NewsStateViewProvider;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.drawable.BlurDrawable;
 import com.beihui.market.view.stateprovider.ProductStateProvider;
@@ -84,6 +89,15 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         return new TabLoanFragment();
     }
 
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_LOAN_PAGE);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @Override
     public void onDestroyView() {
         presenter.onDestroy();
@@ -109,9 +123,16 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                LoanProduct.Row loan = (LoanProduct.Row) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
-                intent.putExtra("loan", (LoanProduct.Row) adapter.getItem(position));
+                intent.putExtra("loan", loan);
                 startActivity(intent);
+
+                if (loan != null) {
+                    //umeng统计
+                    Statistic.onEvent(Events.ENTER_LOAN_DETAIL_PAGE, loan.getId());
+                }
             }
         });
         loanRVAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -174,17 +195,26 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.money_filter:
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_CLICK_AMOUNT_FILTER);
+
                 MoneyFilterPopup moneyFilterPopup = new MoneyFilterPopup(getActivity(), presenter.getFilterAmount(), blurView, moneyFilterText, moneyFilterImage);
                 moneyFilterPopup.setShareItemListener(this);
                 moneyFilterPopup.showAsDropDown(filterContainer);
                 break;
             case R.id.time_filter:
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_CLICK_TIME_FILTER);
+
                 TimeFilterPopup timeFilterPopup = new TimeFilterPopup(getActivity(), presenter.getFilterDueTimeSelected(),
                         blurView, timeFilterText, timeFilterImage, presenter.getFilterDueTime());
                 timeFilterPopup.setShareItemListener(this);
                 timeFilterPopup.showAsDropDown(filterContainer);
                 break;
             case R.id.pro_filter:
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_CLICK_PRO_FILTER);
+
                 ProFilterPopup proFilterPopup = new ProFilterPopup(getActivity(), blurView, proFilterText, proFilterImage);
                 proFilterPopup.setShareItemListener(this);
                 proFilterPopup.showAsDropDown(filterContainer);

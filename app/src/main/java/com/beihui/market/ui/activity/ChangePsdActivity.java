@@ -15,6 +15,8 @@ import com.beihui.market.injection.component.DaggerChangePsdComponent;
 import com.beihui.market.injection.module.ChangePsdModule;
 import com.beihui.market.ui.contract.ChangePsdContract;
 import com.beihui.market.ui.presenter.ChangePsdPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
@@ -96,6 +98,9 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
 
     @OnClick(R.id.confirm)
     void onViewClicked() {
+        //umeng统计
+        Statistic.onEvent(Events.CHANGE_PASSWORD_CONFIRM);
+
         presenter.updatePsd(originPsdEt.getText().toString(), newPsdEt.getText().toString(), newPsdConfirmEt.getText().toString());
     }
 

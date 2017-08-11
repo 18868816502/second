@@ -15,6 +15,8 @@ import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.News;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
@@ -93,6 +95,9 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //umeng统计
+        Statistic.onEvent(Events.NEWS_DETAIL_SHARE);
+
         UMWeb web = new UMWeb(newsUrl.replace("&isApp=1", ""));
         String imageUrl = null;
         String title = null;

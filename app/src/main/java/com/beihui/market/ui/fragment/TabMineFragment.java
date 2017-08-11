@@ -25,6 +25,8 @@ import com.beihui.market.ui.activity.UserProfileActivity;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.presenter.TabMinePresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.LegalInputUtils;
@@ -72,6 +74,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_MINE_PAGE);
+
         EventBus.getDefault().register(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -146,21 +151,33 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
             case R.id.mine_msg:
+                //umeng统计
+                Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkMessage();
                 }
                 break;
             case R.id.invite_friend:
+                //umeng统计
+                Statistic.onEvent(Events.MINE_CLICK_INVITATION);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkInvitation();
                 }
                 break;
             case R.id.helper_feedback:
+                //umeng统计
+                Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkHelpAndFeedback();
                 }
                 break;
             case R.id.settings:
+                //umeng统计
+                Statistic.onEvent(Events.MINE_CLICK_SETTING);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkSetting();
                 }

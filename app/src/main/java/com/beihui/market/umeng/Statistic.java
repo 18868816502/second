@@ -1,11 +1,22 @@
 package com.beihui.market.umeng;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.umeng.analytics.MobclickAgent;
 
 public class Statistic {
+
+    @SuppressLint("StaticFieldLeak")
+    private static Context sContext;
+
+    public static void registerContext(Context context) {
+        if (context != null) {
+            sContext = context.getApplicationContext();
+        }
+    }
+
 
     public static void onResume(Context context) {
         MobclickAgent.onResume(context);
@@ -32,7 +43,11 @@ public class Statistic {
     }
 
 
-    public static void onEvent(Context context, String eventId) {
+    public static void onEvent(String eventId) {
+        MobclickAgent.onEvent(sContext, eventId);
+    }
 
+    public static void onEvent(String eventId, String associatedId) {
+        MobclickAgent.onEvent(sContext, eventId, associatedId);
     }
 }

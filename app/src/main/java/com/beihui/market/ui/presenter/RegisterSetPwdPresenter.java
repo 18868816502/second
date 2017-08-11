@@ -11,6 +11,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.RegisterSetPwdContract;
+import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
@@ -62,8 +63,14 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
                     public ObservableSource<ResultEntity<UserProfileAbstract>> apply(@NonNull ResultEntity resultEntity) throws Exception {
                         //注册成功后，执行登录
                         if (resultEntity.isSuccess()) {
+                            //umeng统计
+                            Statistic.onEvent(Events.REGISTER_SUCCESS);
+
                             return mApi.login(account, password).subscribeOn(Schedulers.io());
                         } else {
+                            //umeng统计
+                            Statistic.onEvent(Events.REGISTER_FAILED);
+
                             //注册失败则停止
                             mView.showErrorMsg(resultEntity.getMsg());
                             return Observable.empty();

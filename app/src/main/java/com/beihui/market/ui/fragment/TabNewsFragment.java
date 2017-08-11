@@ -1,10 +1,14 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
@@ -17,8 +21,10 @@ import com.beihui.market.ui.adapter.NewsRVAdapter;
 import com.beihui.market.ui.contract.TabNewsContract;
 import com.beihui.market.ui.presenter.TabNewsPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
-import com.beihui.market.view.stateprovider.NewsStateViewProvider;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.NewsStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -43,6 +49,15 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
 
     public static TabNewsFragment newInstance() {
         return new TabNewsFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_NEWS_PAGE);
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -70,9 +85,16 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                News.Row news = (News.Row) adapter.getData().get(position);
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                intent.putExtra("news", (News.Row) adapter.getData().get(position));
+                intent.putExtra("news", news);
                 startActivity(intent);
+
+                if (news != null) {
+                    //Umeng统计
+                    Statistic.onEvent(Events.ENTER_NEWS_DETAIL, news.getId());
+                }
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

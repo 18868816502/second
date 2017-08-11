@@ -33,6 +33,8 @@ import com.beihui.market.injection.module.LoanDetailModule;
 import com.beihui.market.ui.contract.LoanProductDetailContract;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
@@ -135,6 +137,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_DETAIL_CLICK_LOAN);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkLoan();
                 }
@@ -193,6 +198,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //umeng统计
+        Statistic.onEvent(Events.LOAN_DETAIL_CLICK_SHARE);
+
         UMWeb umWeb = null;
         if (productDetail != null && productDetail.getBase() != null) {
             umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));

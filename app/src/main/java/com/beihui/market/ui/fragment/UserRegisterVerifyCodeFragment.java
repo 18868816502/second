@@ -1,6 +1,8 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.beihui.market.injection.module.RegisterVerifyModule;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.contract.RegisterVerifyContract;
 import com.beihui.market.ui.presenter.RegisterVerifyPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
@@ -42,6 +46,13 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
     RegisterVerifyPresenter presenter;
 
     private CountDownTimerUtils countDownTimer;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_REGISTER);
+    }
 
     @Override
     public void onDestroyView() {
@@ -112,9 +123,15 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
                 EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_HEAD_TO_LOGIN));
                 break;
             case R.id.fetch_text:
+                //umeng统计
+                Statistic.onEvent(Events.REGISTER_GET_VERIFY);
+
                 presenter.requestVerification(phoneNumberEt.getText().toString());
                 break;
             case R.id.next_step:
+                //umeng统计
+                Statistic.onEvent(Events.REGISTER_NEXT_STEP);
+
                 presenter.nextMove(phoneNumberEt.getText().toString(), verifyCodeEt.getText().toString());
                 break;
         }

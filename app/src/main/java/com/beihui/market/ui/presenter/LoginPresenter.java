@@ -9,6 +9,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.LoginContract;
+import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
@@ -42,12 +43,18 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                     @Override
                     public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
                         if (result.isSuccess()) {
+                            //umeng统计
+                            Statistic.onEvent(Events.LOGIN_SUCCESS);
+
                             //登录之后，将用户信息注册到本地
                             mUserHelper.update(result.getData(), phone, mContext);
                             mView.showLoginSuccess();
                             //umeng统计
                             Statistic.login(result.getData().getId());
                         } else {
+                            //umeng统计
+                            Statistic.onEvent(Events.LOGIN_FAILED);
+
                             mView.showErrorMsg(result.getMsg());
                         }
                     }

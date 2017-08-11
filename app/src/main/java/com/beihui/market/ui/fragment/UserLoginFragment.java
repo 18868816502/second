@@ -1,6 +1,8 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -21,6 +23,8 @@ import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
 import com.beihui.market.ui.presenter.LoginPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
@@ -47,6 +51,12 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @Inject
     LoginPresenter presenter;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_LOGIN);
+    }
 
     @Override
     public void onDestroyView() {
@@ -129,6 +139,9 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.register:
+                //umeng统计
+                Statistic.onEvent(Events.LOGIN_REGISTER);
+
                 EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_REGISTER));
                 break;
             case R.id.forget_psd:
@@ -136,6 +149,9 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
                 startActivity(toResetPsd);
                 break;
             case R.id.login:
+                //umeng统计
+                Statistic.onEvent(Events.LOGIN_LOGIN);
+
                 presenter.login(phoneNumberEt.getText().toString(), passwordEt.getText().toString());
                 break;
         }

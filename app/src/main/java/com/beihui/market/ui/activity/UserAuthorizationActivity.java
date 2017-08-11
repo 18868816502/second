@@ -25,6 +25,8 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.fragment.UserLoginFragment;
 import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
 import com.beihui.market.ui.fragment.UserRegisterVerifyCodeFragment;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.drawable.BlurringDrawable;
 import com.gyf.barlibrary.ImmersionBar;
@@ -152,7 +154,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
 
     @OnClick({R.id.cancel, R.id.navigation})
-    void OnViewClicked() {
+    void OnViewClicked(View view) {
+        if (view.getId() == R.id.cancel) {
+            //umeng统计
+            Statistic.onEvent(Events.LOGIN_CANCEL);
+        }
         onBackPressed();
     }
 
