@@ -32,5 +32,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:background="@android:color/white"
-        android:src="@mipmap/splash_bottom_logo" />
+        android:src="@drawable/splash_bottom_logo" />
 </FrameLayout>

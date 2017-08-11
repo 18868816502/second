@@ -183,8 +183,8 @@
         <!--umeng setting end-->
 
         <meta-data
-            android:name="channelId"
-            android:value="native" />
+            android:name="CHANNEL_ID"
+            android:value="{CHANNEL_ID}" />
     </application>
 
 </manifest>

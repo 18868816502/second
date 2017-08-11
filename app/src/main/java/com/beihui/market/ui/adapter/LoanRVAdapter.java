@@ -59,8 +59,8 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             helper.setVisible(tagIds[i], false);
         }
         //loaned number
-        SpannableString ss = new SpannableString("成功贷款人数" + item.getSuccessCount() + "人");
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 6, ss.length() - 1,
+        SpannableString ss = new SpannableString("成功借款" + item.getSuccessCount() + "人");
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1,
                 SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
         helper.setText(R.id.loaned_number, ss);
         //amount

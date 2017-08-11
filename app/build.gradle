@@ -20,7 +20,9 @@ android {
                 GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
 
                 UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-                UMENG_CHANNEL   : "native"
+                UMENG_CHANNEL   : "native",
+
+                CHANNEL_ID      : "native"
         ]
     }
 

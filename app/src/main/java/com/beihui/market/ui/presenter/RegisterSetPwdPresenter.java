@@ -45,7 +45,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
         String channelId = "unknown";
         try {
             channelId = mContext.getPackageManager()
-                    .getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA).metaData.getString("channelId");
+                    .getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

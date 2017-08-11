@@ -10,6 +10,6 @@
         android:gravity="bottom">
         <bitmap
             android:gravity="center_horizontal|bottom"
-            android:src="@mipmap/splash_bottom_logo" />
+            android:src="@drawable/splash_bottom_logo" />
     </item>
 </layer-list>
