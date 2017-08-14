@@ -105,6 +105,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
         if (hotNews != null) {
             imageUrl = hotNews.getFilePath();
             title = hotNews.getTitle();
+            description = hotNews.getExplain();
         } else if (news != null) {
             imageUrl = news.getImage();
             title = news.getTitle();

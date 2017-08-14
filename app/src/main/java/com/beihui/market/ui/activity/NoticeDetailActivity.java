@@ -1,7 +1,9 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     protected void onDestroy() {
         presenter.onDestroy();
         presenter = null;
+        webView.destroy();
         super.onDestroy();
     }
 
@@ -49,12 +52,18 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
         return R.layout.activity_notice_detail;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
         setupToolbar(toolbar);
 
         webView.setWebViewClient(new WebViewClient());
-        webView.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
     }
 
     @Override

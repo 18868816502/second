@@ -10,6 +10,7 @@ public class HotNews implements Parcelable {
     private String title;
     private String fileName;
     private String filePath;
+    private String explain;
 
     public String getId() {
         return id;
@@ -43,6 +44,13 @@ public class HotNews implements Parcelable {
         this.filePath = filePath;
     }
 
+    public String getExplain() {
+        return explain;
+    }
+
+    public void setExplain(String explain) {
+        this.explain = explain;
+    }
 
     @Override
     public int describeContents() {
@@ -55,6 +63,7 @@ public class HotNews implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.fileName);
         dest.writeString(this.filePath);
+        dest.writeString(this.explain);
     }
 
     public HotNews() {
@@ -65,6 +74,7 @@ public class HotNews implements Parcelable {
         this.title = in.readString();
         this.fileName = in.readString();
         this.filePath = in.readString();
+        this.explain = in.readString();
     }
 
     public static final Parcelable.Creator<HotNews> CREATOR = new Parcelable.Creator<HotNews>() {

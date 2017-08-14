@@ -51,6 +51,10 @@ android {
         }
         release {
             minifyEnabled false
+            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:9898\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+
+            signingConfig signingConfigs.release
         }
     }
 
