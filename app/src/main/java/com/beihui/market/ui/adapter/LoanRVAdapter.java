@@ -2,6 +2,7 @@ package com.beihui.market.ui.adapter;
 
 import android.graphics.Color;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.widget.ImageView;
 
@@ -33,9 +34,10 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             helper.setText(R.id.interest_text, item.getInterestTimeText());
         }
         //logo
-        if (item.getLogoUrl() != null) {
+        if (!TextUtils.isEmpty(item.getLogoUrl())) {
             Glide.with(helper.itemView.getContext())
                     .load(item.getLogoUrl())
+                    .placeholder(R.drawable.image_place_holder)
                     .centerCrop()
                     .into((ImageView) helper.getView(R.id.loan_image));
         } else {

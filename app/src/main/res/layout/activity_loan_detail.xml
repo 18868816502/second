@@ -57,17 +57,16 @@
                             android:layout_gravity="center_horizontal"
                             android:background="@mipmap/product_logo_shadow">
 
-                            <com.makeramen.roundedimageview.RoundedImageView
+                            <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
                                 android:id="@+id/loan_icon"
                                 android:layout_width="79dp"
                                 android:layout_height="79dp"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                app:riv_border_color="#f6f6f6"
-                                app:riv_border_width="0.5dp"
-                                app:riv_corner_radius="17dp"
-                                app:riv_mutate_background="false"
-                                app:riv_tile_mode="repeat" />
+                                app:round_radius="17dp"
+                                app:shape_mode="round_rect"
+                                app:stroke_color="#f6f6f6"
+                                app:stroke_width="0.5dp" />
                         </FrameLayout>
 
                         <LinearLayout

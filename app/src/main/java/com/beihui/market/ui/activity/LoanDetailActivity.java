@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ReplacementSpan;
 import android.view.LayoutInflater;
@@ -258,10 +259,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             loanNameTv.setText(loan.getProductName());
         }
         //logo
-        if (loan.getLogoUrl() != null) {
+        if (!TextUtils.isEmpty(loan.getLogoUrl())) {
             Glide.with(this)
                     .load(loan.getLogoUrl())
+                    .placeholder(R.drawable.image_place_holder)
                     .into(loanIconIv);
+        } else {
+            loanIconIv.setImageResource(R.drawable.image_place_holder);
         }
         //tags
         String[] feature = loan.getFeature() != null ? loan.getFeature().split(",") : null;
@@ -314,10 +318,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 loanNameTv.setText(base.getProductName());
             }
             //logo
-            if (base.getLogoUrl() != null) {
+            if (!TextUtils.isEmpty(base.getLogoUrl())) {
                 Glide.with(this)
                         .load(base.getLogoUrl())
+                        .placeholder(R.drawable.image_place_holder)
                         .into(loanIconIv);
+            } else {
+                loanIconIv.setImageResource(R.drawable.image_place_holder);
             }
             //tags
             String[] feature = base.getFeature() != null ? base.getFeature().split(",") : null;

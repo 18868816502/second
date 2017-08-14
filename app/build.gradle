@@ -120,6 +120,8 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.9'
     //round image view
     compile 'com.makeramen:roundedimageview:2.3.0'
+    //shaped image view
+    compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.4'
 
     //LeakCanary memory leak check, only exits while developing
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'

@@ -24,16 +24,15 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
                 android:id="@+id/loan_image"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:scaleType="centerCrop"
-                app:riv_border_color="#f6f6f6"
-                app:riv_border_width="0.5dp"
-                app:riv_corner_radius="6dp"
-                app:riv_mutate_background="true"
-                app:riv_tile_mode="clamp" />
+                app:round_radius="6dp"
+                app:shape_mode="round_rect"
+                app:stroke_color="#f6f6f6"
+                app:stroke_width="0.5dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
