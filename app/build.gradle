@@ -44,8 +44,8 @@ android {
             signingConfig signingConfigs.release
         }
         preview {
-            buildConfigField("String", "DOMAIN", "\"http://172.16.235.181:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://172.16.235.183\"")
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
             signingConfig signingConfigs.release
         }

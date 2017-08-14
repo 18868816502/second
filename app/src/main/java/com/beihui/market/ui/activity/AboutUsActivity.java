@@ -62,7 +62,7 @@ public class AboutUsActivity extends BaseComponentActivity {
             case R.id.get_know_us:
             case R.id.user_agreement:
                 Intent intent = new Intent(this, ComWebViewActivity.class);
-                String title = view.getId() == R.id.get_know_us ? "关于我们" : "用户协议";
+                String title = view.getId() == R.id.get_know_us ? "了解爱信管家" : "用户协议";
                 String url = view.getId() == R.id.get_know_us ? NetConstants.H5_ABOUT_US : NetConstants.H5_USER_AGREEMENT;
                 intent.putExtra("title", title);
                 intent.putExtra("url", url);

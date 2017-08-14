@@ -122,7 +122,7 @@ public class MoneyFilterPopup extends PopupWindow {
                 }
                 try {
                     int amount = Integer.parseInt(money);
-                    if (amount <= Constant.MIN_FILTER_MONEY) {
+                    if (amount < Constant.MIN_FILTER_MONEY) {
                         ToastUtils.showShort(context, "最低借款" + Constant.MIN_FILTER_MONEY + "元", null);
                         return;
                     }

@@ -2,6 +2,8 @@ package com.beihui.market.ui.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +17,8 @@ import com.beihui.market.ui.contract.EditUserNameContract;
 import com.beihui.market.ui.presenter.EditUserNamePresenter;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+
+import java.io.UnsupportedEncodingException;
 
 import javax.inject.Inject;
 
@@ -48,6 +52,43 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source != null) {
+                    try {
+                        String destStr = dest.toString();
+                        String srcStr = source.toString();
+                        String result = srcStr + destStr;
+                        byte[] bytes = result.getBytes("GBK");
+                        //10个中文或者20个字符
+                        if (bytes.length > 20) {
+                            int srcEnd = srcStr.length() - 1;
+                            bytes = (destStr + srcStr.substring(0, srcEnd)).getBytes("GBk");
+                            while (bytes.length > 20) {
+                                srcEnd--;
+                                bytes = (destStr + srcStr.substring(0, srcEnd)).getBytes("GBk");
+                            }
+                            return srcStr.substring(0, srcEnd);
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        };
+
+        InputFilter[] filters = editText.getFilters();
+        if (filters == null) {
+            filters = new InputFilter[]{filter};
+        } else {
+            InputFilter[] temp = filters;
+            filters = new InputFilter[temp.length + 1];
+            System.arraycopy(temp, 0, filters, 0, temp.length);
+            filters[temp.length] = filter;
+        }
+        editText.setFilters(filters);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

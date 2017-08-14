@@ -301,7 +301,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
                 }
                 try {
                     inputMoney = Integer.parseInt(moneyStr);
-                    if (inputMoney <= Constant.MIN_FILTER_MONEY) {
+                    if (inputMoney < Constant.MIN_FILTER_MONEY) {
                         ToastUtils.showShort(getContext(), "最低借款" + Constant.MIN_FILTER_MONEY + "元", null);
                         return;
                     }

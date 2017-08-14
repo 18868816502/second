@@ -47,10 +47,14 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                                    if (result.isSuccess()) {
                                        if (result.getData() != null) {
                                            appUpdate = result.getData();
-                                           mView.showLatestVersion("最新版" + appUpdate.getVersion());
+                                           String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+                                           if (version.compareTo(appUpdate.getVersion()) < 0) {
+                                               mView.showLatestVersion("有更新");
+                                           } else {
+                                               mView.showLatestVersion("已是最新版");
+                                           }
                                        } else {
-                                           mView.showLatestVersion("最新版" + mContext.getPackageManager()
-                                                   .getPackageInfo(mContext.getPackageName(), 0).versionName);
+                                           mView.showLatestVersion("已是最新版");
                                        }
                                    }
                                }
@@ -128,7 +132,7 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                 if (version.compareTo(update.getVersion()) < 0) {
                     mView.showUpdate(appUpdate);
                 } else {
-                    mView.showHasBeenLatest("已经是最新版本");
+                    mView.showHasBeenLatest("已经是最新版本了");
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();

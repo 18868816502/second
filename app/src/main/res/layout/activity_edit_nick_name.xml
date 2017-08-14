@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="center_vertical"
-            android:maxLength="10"
+            android:maxLength="20"
             android:paddingLeft="15dp" />
     </FrameLayout>
 

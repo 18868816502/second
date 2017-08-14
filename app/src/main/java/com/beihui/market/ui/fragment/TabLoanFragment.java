@@ -1,5 +1,6 @@
 package com.beihui.market.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -231,9 +232,10 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         //injected.nothing to do.
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showFilters(String amount, String dueTime, String pro) {
-        moneyFilterContent.setText(amount);
+        moneyFilterContent.setText(amount + "元");
         timeFilterContent.setText(dueTime);
         proFilterContent.setText(pro);
     }
