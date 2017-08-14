@@ -19,7 +19,7 @@ public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHold
     private List<Message> dataSet;
 
     public MessageCenterAdapter() {
-        super(R.layout.rv_item_news);
+        super(R.layout.rv_item_internal_message);
     }
 
 

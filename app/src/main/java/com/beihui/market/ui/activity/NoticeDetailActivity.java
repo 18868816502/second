@@ -2,7 +2,8 @@ package com.beihui.market.ui.activity;
 
 
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -30,8 +31,8 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     TextView dateTv;
     @BindView(R.id.read_sum)
     TextView readSumTv;
-    @BindView(R.id.content)
-    TextView contentTv;
+    @BindView(R.id.web_view)
+    WebView webView;
 
     @Inject
     NoticeDetailPresenter presenter;
@@ -51,6 +52,9 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
             dateTv.setText(DateFormatUtils.formatMMddHHmm(detail.getGmtCreate()));
             readSumTv.setText("阅读 " + detail.getReadSum());
             if (detail.getContent() != null) {
-                contentTv.setText(Html.fromHtml(detail.getContent()));
+                webView.loadData(detail.getContent(), "text/html;charset=UTF-8", null);
             }
         }
     }
