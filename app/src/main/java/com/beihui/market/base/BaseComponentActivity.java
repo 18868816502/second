@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.beihui.market.App;
 import com.beihui.market.R;
+import com.beihui.market.getui.GeTuiClient;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.beihui.market.umeng.Statistic;
@@ -30,6 +31,9 @@ public abstract class BaseComponentActivity extends AppCompatActivity {
         configureComponent(App.getInstance().getAppComponent());
 
         super.onCreate(savedInstanceState);
+        //初始化个推
+        GeTuiClient.install(this);
+
         setContentView(getLayoutId());
 
         ImmersionBar.with(this).init();

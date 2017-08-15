@@ -14,10 +14,14 @@ import android.widget.RemoteViews;
 import com.beihui.market.R;
 import com.beihui.market.ui.activity.MainActivity;
 
+import java.util.Random;
+
 public class NotificationUtil {
-    public static void showNotification(Context context, String title, String content, Intent contentIntent) {
+    public static void showNotification(Context context, String title, String content, Intent contentIntent, String group) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
+                //设置群组
+                .setGroup(group)
                 .setSmallIcon(R.drawable.push_small)
                 //通知首次出现在通知栏，带上升动画效果的
                 .setTicker(title)
@@ -37,9 +41,12 @@ public class NotificationUtil {
         if (contentIntent != null) {
             builder.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
         }
+
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //发起通知
-        notificationManager.notify(0, builder.build());
+        Random random = new Random(System.currentTimeMillis());
+        notificationManager.notify(random.nextInt(), builder.build());
+
     }
 
     /**
@@ -75,7 +82,7 @@ public class NotificationUtil {
      */
     public static void showFullScreen(Context context, String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://blog.csdn.net/itachi85/"));
+        Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mIntent, 0);
         builder.setContentIntent(pendingIntent);
         builder.setSmallIcon(R.mipmap.ic_launcher);
@@ -101,9 +108,9 @@ public class NotificationUtil {
         RemoteViews view_custom = new RemoteViews(context.getPackageName(), R.layout.view_custom);
         //设置对应IMAGEVIEW的ID的资源图片
         view_custom.setImageViewResource(R.id.custom_icon, R.mipmap.ic_launcher);
-        view_custom.setTextViewText(R.id.tv_custom_title, "今日头条");
+        view_custom.setTextViewText(R.id.tv_custom_title, "");
         view_custom.setTextColor(R.id.tv_custom_title, Color.BLACK);
-        view_custom.setTextViewText(R.id.tv_custom_content, "金州勇士官方宣布球队已经解雇了主帅马克-杰克逊，随后宣布了最后的结果。");
+        view_custom.setTextViewText(R.id.tv_custom_content, "");
         view_custom.setTextColor(R.id.tv_custom_content, Color.BLACK);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContent(view_custom)

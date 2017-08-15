@@ -74,7 +74,7 @@ public class PushReceiveIntentService extends GTIntentService {
                 intent = new Intent(context, MainActivity.class);
                 intent.putExtra("home", true);
             }
-            NotificationUtil.showNotification(context, title, content, intent);
+            NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message");
         } catch (Exception e) {
             e.printStackTrace();
         }

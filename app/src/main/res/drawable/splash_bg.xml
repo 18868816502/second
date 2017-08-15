@@ -6,7 +6,7 @@
         </shape>
     </item>
     <item
-        android:bottom="80dp"
+        android:bottom="35dp"
         android:gravity="bottom">
         <bitmap
             android:gravity="center_horizontal|bottom"

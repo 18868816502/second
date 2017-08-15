@@ -18,7 +18,6 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.request.RequestConstants;
-import com.beihui.market.getui.GeTuiClient;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
@@ -77,7 +76,7 @@ public class SplashActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         int height = CommonUtils.getBottomStatusHeight(this);
-        bottomLogoIv.setPadding(0, 0, 0, ((int) getResources().getDisplayMetrics().density * 80) - height);
+        bottomLogoIv.setPadding(0, 0, 0, ((int) getResources().getDisplayMetrics().density * 35) - height);
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +92,6 @@ public class SplashActivity extends BaseComponentActivity {
         msg.what = 1;
         handler.sendMessageDelayed(msg, 1000 * 5);
 
-        GeTuiClient.install(this);
         try {
             String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             if (version.equals(SPUtils.getLastInstalledVersion(this))) {
@@ -121,7 +119,7 @@ public class SplashActivity extends BaseComponentActivity {
 
     private void launch(String url) {
         handler.removeMessages(1);
-        
+
         if (!adClicked) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             intent.putExtra("url", url);
