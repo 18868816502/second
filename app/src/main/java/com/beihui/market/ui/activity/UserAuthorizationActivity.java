@@ -78,7 +78,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         EventBus.getDefault().unregister(this);
         if (blurringDrawable != null) {
             blurringDrawable.unbindBlurredView(blurredView);
-            blurringDrawable.stop();
         }
         blurredView = null;
         super.onDestroy();
@@ -148,7 +147,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
         blurringDrawable = new BlurringDrawable(this);
         blurringDrawable.bindBlurredView(blurredView);
-        blurringDrawable.start();
         window.setBackgroundDrawable(blurringDrawable);
     }
 

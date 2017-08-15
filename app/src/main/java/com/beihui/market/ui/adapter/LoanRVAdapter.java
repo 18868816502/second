@@ -37,8 +37,9 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
         if (!TextUtils.isEmpty(item.getLogoUrl())) {
             Glide.with(helper.itemView.getContext())
                     .load(item.getLogoUrl())
-                    .placeholder(R.drawable.image_place_holder)
+                    .asBitmap()
                     .centerCrop()
+                    .placeholder(R.drawable.image_place_holder)
                     .into((ImageView) helper.getView(R.id.loan_image));
         } else {
             helper.setImageResource(R.id.loan_image, R.drawable.image_place_holder);

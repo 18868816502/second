@@ -1,7 +1,6 @@
 package com.beihui.market.view.drawable;
 
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -23,7 +21,7 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-public class BlurringDrawable extends Drawable implements Animatable {
+public class BlurringDrawable extends Drawable {
 
     private int downSampleFactor;
     private int overlayColor;
@@ -48,8 +46,6 @@ public class BlurringDrawable extends Drawable implements Animatable {
             invalidateSelf();
         }
     };
-
-    private ValueAnimator animator;
 
     public BlurringDrawable(Context context) {
         this(context, 6, 10, Color.parseColor("#88000000"));
@@ -84,36 +80,6 @@ public class BlurringDrawable extends Drawable implements Animatable {
             int alpha = Math.round(Color.alpha(overlayColor) * (paint.getAlpha() / (float) 255.0));
             canvas.drawColor(Color.argb(alpha, Color.red(overlayColor), Color.green(overlayColor), Color.blue(overlayColor)));
         }
-    }
-
-
-    @Override
-    public void start() {
-        if (animator == null) {
-            animator = ValueAnimator.ofInt(0, 255);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    setAlpha((Integer) animation.getAnimatedValue());
-                }
-            });
-            animator.setDuration(800);
-        }
-        if (!animator.isRunning()) {
-            animator.start();
-        }
-    }
-
-    @Override
-    public void stop() {
-        if (animator != null && animator.isRunning()) {
-            animator.cancel();
-        }
-    }
-
-    @Override
-    public boolean isRunning() {
-        return animator != null && animator.isRunning();
     }
 
     @Override
