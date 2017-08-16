@@ -118,7 +118,7 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
                                        public void accept(@NonNull ResultEntity result) throws Exception {
                                            if (result.isSuccess()) {
                                                ToastUtils.showShort(HelperAndFeedbackActivity.this,
-                                                       "提交成功,感谢您的反馈", null);
+                                                       result.getMsg(), null);
                                                submitBtn.postDelayed(new Runnable() {
                                                    @Override
                                                    public void run() {

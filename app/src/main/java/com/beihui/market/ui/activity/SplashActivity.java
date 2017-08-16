@@ -21,7 +21,6 @@ import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.bumptech.glide.Glide;
@@ -75,8 +74,8 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        int height = CommonUtils.getBottomStatusHeight(this);
-        bottomLogoIv.setPadding(0, 0, 0, ((int) getResources().getDisplayMetrics().density * 35) - height);
+        int padding = (int) getResources().getDisplayMetrics().density * 35;
+        bottomLogoIv.setPadding(0, padding, 0, padding);
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

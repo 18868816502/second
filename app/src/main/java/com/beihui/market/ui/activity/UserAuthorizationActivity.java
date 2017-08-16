@@ -90,6 +90,8 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        ImmersionBar.with(this).fitsSystemWindows(true).init();
+
         Bundle bundle = null;
         if (getIntent() != null && getIntent().getStringExtra("phone") != null) {
             bundle = new Bundle();
@@ -128,7 +130,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        ImmersionBar.with(this).fitsSystemWindows(true).init();
+
     }
 
     @Override

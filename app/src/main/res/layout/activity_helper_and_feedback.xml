@@ -24,7 +24,7 @@
                 android:background="@drawable/help_feed_left"
                 android:gravity="center"
                 android:text="@string/help"
-                android:textColor="@color/color_white_black_select" />
+                android:textColor="@color/color_white_primary_select" />
 
             <TextView
                 android:id="@+id/feedback"
@@ -33,7 +33,7 @@
                 android:background="@drawable/help_feed_right"
                 android:gravity="center"
                 android:text="@string/feedback"
-                android:textColor="@color/color_white_black_select" />
+                android:textColor="@color/color_white_primary_select" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -86,7 +86,8 @@
                     android:hint="请输入您的建议，我们将不断改进"
                     android:maxLength="300"
                     android:padding="10dp"
-                    android:textColor="#b2b2b2"
+                    android:textColor="@color/black_1"
+                    android:textColorHighlight="#b2b2b2"
                     android:textSize="12sp" />
 
                 <TextView
