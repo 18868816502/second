@@ -1,10 +1,15 @@
 package com.beihui.market.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -21,12 +26,15 @@ import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsFragment;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -43,6 +51,12 @@ public class MainActivity extends BaseComponentActivity {
     private int queryMoney = -1;
 
     private InputMethodManager inputMethodManager;
+
+    @SuppressLint("InlinedApi")
+    private String[] needPermission = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -70,10 +84,6 @@ public class MainActivity extends BaseComponentActivity {
     public void configViews() {
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
-    }
-
-    @Override
-    public void initDatas() {
         mNavigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
@@ -83,7 +93,11 @@ public class MainActivity extends BaseComponentActivity {
             }
         });
         mNavigationBar.select(R.id.tab_home);
+    }
 
+    @Override
+    public void initDatas() {
+        checkPermission();
         AppUpdateHelper.getInstance().checkUpdate(this);
     }
 
@@ -176,6 +190,27 @@ public class MainActivity extends BaseComponentActivity {
             super.onBackPressed();
         } else {
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!SPUtils.getCheckPermission(this)) {
+                ArrayList<String> permission = new ArrayList<>();
+                for (int i = 0; i < needPermission.length; ++i) {
+                    if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
+                        permission.add(needPermission[i]);
+                    }
+                }
+                if (permission.size() > 0) {
+                    try {
+                        ActivityCompat.requestPermissions(this, permission.toArray(needPermission), 1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                SPUtils.setCheckPermission(this, true);
+            }
         }
     }
 }

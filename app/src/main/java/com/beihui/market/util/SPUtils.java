@@ -53,4 +53,16 @@ public class SPUtils {
         editor.putBoolean("noticeClose", closed);
         editor.apply();
     }
+
+    public static boolean getCheckPermission(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("checkPermission", false);
+    }
+
+    public static void setCheckPermission(Context context, boolean check) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("checkPermission", check);
+        editor.apply();
+    }
 }

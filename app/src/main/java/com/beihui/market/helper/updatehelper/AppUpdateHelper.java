@@ -26,8 +26,10 @@ import com.beihui.market.injection.component.DaggerAppUpdateHelperComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
@@ -126,7 +128,7 @@ public class AppUpdateHelper {
                         dialog.withNegativeBtn("稍后再说", null);
                     }
                     dialog.setCancelable(false);
-                    dialog.show(context.getSupportFragmentManager(), "Update");
+                    dialog.show(context.getSupportFragmentManager(), "update");
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
@@ -135,23 +137,45 @@ public class AppUpdateHelper {
     }
 
     private void startDownload(Context context, String url, String version, boolean isForce) {
+        if (weakReference.get() == null)
+            return;
         String name = version.replace(".", "_");
+        String filePath = Environment.getExternalStorageDirectory() + "/temp/" + name + ".apk";
+        try {
+            File dir = new File(Environment.getExternalStorageDirectory() + "/temp");
+            if (!dir.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                dir.mkdirs();
+            }
+            File file = new File(filePath);
+            if (!file.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            ToastUtils.showShort(weakReference.get(), "文件读取失败，请检查应用权限", null);
+            //重新弹窗
+            handleUpdate(app, weakReference);
+            return;
+        }
+
         //如果是强制更新，则在当前界面下载，禁止用户其他操作
         if (isForce) {
-            task = new DownloadAppTask(this, name);
+            task = new DownloadAppTask(this, filePath);
             task.execute(url);
         } else {//如果非强制更新，则进入service下载
             Intent intent = new Intent(context, DownloadService.class);
             intent.putExtra("url", url);
-            intent.putExtra("fileName", name);
+            intent.putExtra("filePath", filePath);
             context.startService(intent);
         }
     }
 
-    private void install(String fileName) {
+    private void install(String filePath) {
         Context context = weakReference.get();
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        File apkFile = new File(Environment.getExternalStorageDirectory() + "/temp", fileName + ".apk");
+        File apkFile = new File(filePath);
         Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
@@ -204,11 +228,11 @@ public class AppUpdateHelper {
 
         private AppUpdateHelper helper;
 
-        private String fileName;
+        private String filePath;
 
-        public DownloadAppTask(AppUpdateHelper helper, String fileName) {
+        public DownloadAppTask(AppUpdateHelper helper, String filePath) {
             this.helper = helper;
-            this.fileName = fileName;
+            this.filePath = filePath;
         }
 
         @Override
@@ -222,7 +246,7 @@ public class AppUpdateHelper {
         @Override
         protected Boolean doInBackground(String... params) {
             String url = params[0];
-            return DownloadHelper.download(url, fileName, new ProgressResponseListener() {
+            return DownloadHelper.download(url, filePath, new ProgressResponseListener() {
                 @Override
                 public void onResponseProgress(long bytesRead, long contentLength, boolean done) {
                     publishProgress((100 * bytesRead) / contentLength);
@@ -241,9 +265,15 @@ public class AppUpdateHelper {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if (helper != null) {
-                helper.dismissDownloadProgress();
-                helper.install(fileName);
+            if (aBoolean) {
+                if (helper != null) {
+                    helper.dismissDownloadProgress();
+                    helper.install(filePath);
+                }
+            } else {
+                if (helper != null && helper.weakReference.get() != null) {
+                    ToastUtils.showShort(helper.weakReference.get(), "下载失败，请检查网络或者应用权限", null);
+                }
             }
         }
     }

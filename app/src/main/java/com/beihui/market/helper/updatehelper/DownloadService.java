@@ -5,7 +5,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.NotificationCompat;
@@ -33,10 +32,10 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
             String url = intent.getStringExtra("url");
-            String fileName = intent.getStringExtra("fileName");
-            if (url != null && fileName != null) {
+            String filePath = intent.getStringExtra("filePath");
+            if (url != null && filePath != null) {
                 final NotificationCompat.Builder builder = NotificationUtil.showNotificationProgress(getApplicationContext());
-                boolean res = DownloadHelper.download(url, fileName, new ProgressResponseListener() {
+                boolean res = DownloadHelper.download(url, filePath, new ProgressResponseListener() {
                     @Override
                     public void onResponseProgress(long bytesRead, long contentLength, boolean done) {
                         NotificationUtil.updateProgress(getApplicationContext(), builder, (int) ((100 * bytesRead) / contentLength));
@@ -46,7 +45,7 @@ public class DownloadService extends IntentService {
                     NotificationUtil.dismissProgress(getApplicationContext());
 
                     Intent install = new Intent(Intent.ACTION_VIEW);
-                    File apkFile = new File(Environment.getExternalStorageDirectory() + "/temp", fileName + ".apk");
+                    File apkFile = new File(filePath);
                     Uri uri = null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         try {

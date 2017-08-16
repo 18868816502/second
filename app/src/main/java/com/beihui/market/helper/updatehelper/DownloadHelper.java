@@ -1,9 +1,6 @@
 package com.beihui.market.helper.updatehelper;
 
 
-import android.os.Environment;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -13,7 +10,7 @@ import okhttp3.Response;
 
 public class DownloadHelper {
 
-    public static boolean download(String url, String fileName, ProgressResponseListener listener) {
+    public static boolean download(String url, String filePath, ProgressResponseListener listener) {
         boolean res = false;
         if (url != null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -27,19 +24,12 @@ public class DownloadHelper {
                 Response response = client.newCall(request).execute();
                 if (response.code() == 200) {
                     res = true;
-                    File dir = new File(Environment.getExternalStorageDirectory() + "/temp");
-                    if (!dir.exists()) {
-                        //noinspection ResultOfMethodCallIgnored
-                        dir.mkdirs();
+                    fos = new FileOutputStream(filePath);
+                    if (response.body() != null) {
+                        fos.write(response.body().bytes());
                     }
-                    File file = new File(Environment.getExternalStorageDirectory() + "/temp", fileName + ".apk");
-                    if (!file.exists()) {
-                        res = file.createNewFile();
-                    }
-                    fos = new FileOutputStream(file);
-                    fos.write(response.body().bytes());
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 if (fos != null) {
