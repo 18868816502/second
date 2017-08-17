@@ -68,6 +68,42 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
 
+    productFlavors {
+        baidu {}
+        market91 {}
+        anzhuomarket {}
+        market360 {}
+        yingyongbao {}
+        xiaomi {}
+        huawei {}
+        VIVO {}
+        OPPO {}
+        meizu {}
+        chuizi {}
+        wandoujia {}
+        lianxiang {}
+        samsung {}
+        jifeng {}
+        mumayi {}
+        Nduo {}
+        anzhi {}
+        sougou {}
+        letv {}
+        liqumarket {}
+        youyi {}
+        anfen {}
+        anzhuoyuan {}
+        anbei {}
+        lvan {}
+        PC6 {}
+        H5 {}
+
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL: name,
+                                           CHANNEL_ID   : name]
+        }
+
+    }
 }
 
 dependencies {
