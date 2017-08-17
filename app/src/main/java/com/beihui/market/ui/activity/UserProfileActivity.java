@@ -269,6 +269,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         if (profile.getHeadPortrait() != null) {
             Glide.with(this)
                     .load(profile.getHeadPortrait())
+                    .asBitmap()
                     .into(avatarIv);
         }
         if (profile.getUserName() != null) {
@@ -288,6 +289,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         if (avatar != null) {
             Glide.with(this)
                     .load(avatar)
+                    .asBitmap()
                     .into(avatarIv);
         }
     }

@@ -127,6 +127,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
         Glide.with(this)
                 .load(R.mipmap.mine_head_icon)
+                .asBitmap()
                 .into(avatarIv);
 
         pendingPhone = event.pendingPhone;
@@ -209,6 +210,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         if (profile.getHeadPortrait() != null) {
             Glide.with(getContext())
                     .load(profile.getHeadPortrait())
+                    .asBitmap()
                     .into(avatarIv);
         }
         String username = profile.getUserName();

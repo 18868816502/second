@@ -191,6 +191,7 @@ public class SplashActivity extends BaseComponentActivity {
 
             Glide.with(this)
                     .load(ad.getImgUrl())
+                    .asBitmap()
                     .into(adImageView);
         }
     }

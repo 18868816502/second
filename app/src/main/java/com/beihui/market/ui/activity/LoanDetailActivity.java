@@ -262,6 +262,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         if (!TextUtils.isEmpty(loan.getLogoUrl())) {
             Glide.with(this)
                     .load(loan.getLogoUrl())
+                    .asBitmap()
                     .placeholder(R.drawable.image_place_holder)
                     .into(loanIconIv);
         } else {
@@ -321,6 +322,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             if (!TextUtils.isEmpty(base.getLogoUrl())) {
                 Glide.with(this)
                         .load(base.getLogoUrl())
+                        .asBitmap()
                         .placeholder(R.drawable.image_place_holder)
                         .into(loanIconIv);
             } else {

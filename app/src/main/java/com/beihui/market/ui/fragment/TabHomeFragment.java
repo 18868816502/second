@@ -550,6 +550,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
         public void displayImage(Context context, Object path, ImageView imageView) {
             Glide.with(context)
                     .load((String) path)
+                    .asBitmap()
                     .centerCrop()
                     .placeholder(R.mipmap.banner_place_holder)
                     .into(imageView);

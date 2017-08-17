@@ -27,6 +27,7 @@ public class HotNewsAdapter extends BaseQuickAdapter<HotNews, BaseViewHolder> {
         if (item.getFilePath() != null) {
             Glide.with(helper.itemView.getContext())
                     .load(item.getFilePath())
+                    .asBitmap()
                     .centerCrop()
                     .placeholder(R.drawable.image_place_holder)
                     .into((ImageView) helper.getView(R.id.news_image));

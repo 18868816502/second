@@ -40,6 +40,7 @@ public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHold
             Context context = helper.itemView.getContext();
             Glide.with(context)
                     .load(item.getImgUrl())
+                    .asBitmap()
                     .centerCrop()
                     .placeholder(R.drawable.image_place_holder)
                     .into((ImageView) helper.getView(R.id.news_image));
