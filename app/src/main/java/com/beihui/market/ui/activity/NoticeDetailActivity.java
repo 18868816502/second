@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -64,6 +65,9 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
         settings.setBuiltInZoomControls(true);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
     }
 
     @Override
