@@ -4,6 +4,7 @@ package com.beihui.market.helper.updatehelper;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -15,6 +16,7 @@ public class DownloadHelper {
         if (url != null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             Request request = new Request.Builder()
+                    .cacheControl(CacheControl.FORCE_NETWORK)
                     .url(url)
                     .get()
                     .build();

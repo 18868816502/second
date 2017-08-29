@@ -200,9 +200,6 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if (progressBar.getVisibility() == View.GONE) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
             progressBar.setProgress(newProgress);
             if (newProgress == 100) {
                 progressBar.setVisibility(View.GONE);

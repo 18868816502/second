@@ -6,8 +6,11 @@ import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -20,7 +23,6 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.view.slidepanel.SlidePanel;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
@@ -37,6 +39,8 @@ public class NewsDetailActivity extends BaseComponentActivity {
     TextView titleTv;
     @BindView(R.id.web_view)
     WebView webView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private News.Row news;
     private HotNews hotNews;
@@ -74,6 +78,15 @@ public class NewsDetailActivity extends BaseComponentActivity {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
         SlidePanelHelper.attach(this);
     }
 

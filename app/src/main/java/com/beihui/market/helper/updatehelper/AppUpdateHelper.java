@@ -40,8 +40,6 @@ import io.reactivex.functions.Consumer;
 
 public class AppUpdateHelper {
 
-    private static AppUpdateHelper sInstance;
-
     @Inject
     Api api;
 
@@ -53,15 +51,8 @@ public class AppUpdateHelper {
     private Dialog progressDialog;
     private ProgressBar progressBar;
 
-    public static AppUpdateHelper getInstance() {
-        if (sInstance == null) {
-            synchronized (AppUpdateHelper.class) {
-                if (sInstance == null) {
-                    sInstance = new AppUpdateHelper();
-                }
-            }
-        }
-        return sInstance;
+    public static AppUpdateHelper newInstance() {
+        return new AppUpdateHelper();
     }
 
     private AppUpdateHelper() {
@@ -104,6 +95,11 @@ public class AppUpdateHelper {
             task.cancel(true);
         }
         task = null;
+    }
+
+    public void processAppUpdate(AppUpdate appUpdate, AppCompatActivity activity) {
+        weakReference = new WeakReference<>(activity);
+        startDownload(activity, appUpdate.getVersionUrl(), appUpdate.getVersion(), appUpdate.getHasForcedUpgrade() == 1);
     }
 
     private void handleUpdate(AppUpdate app, WeakReference<AppCompatActivity> wr) {

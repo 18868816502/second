@@ -96,6 +96,7 @@ public class ShareDialog extends DialogFragment {
                 shareWeb(SHARE_MEDIA.SINA);
                 break;
             case R.id.cancel:
+                dismiss();
                 break;
         }
     }
@@ -143,8 +144,6 @@ public class ShareDialog extends DialogFragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.e("e", "permission result ");
-
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 shareWeb(SHARE_MEDIA.QQ);

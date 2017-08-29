@@ -52,6 +52,8 @@ public class MainActivity extends BaseComponentActivity {
 
     private InputMethodManager inputMethodManager;
 
+    private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
+
     @SuppressLint("InlinedApi")
     private String[] needPermission = {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -70,7 +72,7 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     protected void onDestroy() {
-        AppUpdateHelper.getInstance().destroy();
+        updateHelper.destroy();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
@@ -98,7 +100,7 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         checkPermission();
-        AppUpdateHelper.getInstance().checkUpdate(this);
+        updateHelper.checkUpdate(this);
     }
 
     @Override

@@ -154,8 +154,21 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
     }
 
     @Override
-    public void onDestroyView() {
+    public void onResume() {
+        super.onResume();
+        if (headerViewHolder != null) {
+            headerViewHolder.banner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         headerViewHolder.banner.stopAutoPlay();
+    }
+
+    @Override
+    public void onDestroyView() {
         headerViewHolder.destroy();
         headerViewHolder = null;
         presenter.onDestroy();

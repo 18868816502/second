@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -144,6 +145,7 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
         if (!isAdded())
             return;
         stateLayout.switchState(StateLayout.STATE_CONTENT);
+        recyclerView.setBackgroundColor(Color.WHITE);
         adapter.notifyNewsSetChanged(news);
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();

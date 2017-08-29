@@ -12,6 +12,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.helper.updatehelper.DownloadService;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSettingComponent;
@@ -41,8 +42,11 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Inject
     SettingPresenter presenter;
 
+    private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
+
     @Override
     protected void onDestroy() {
+        updateHelper.destroy();
         presenter.onDestroy();
         presenter = null;
         super.onDestroy();
@@ -149,17 +153,13 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showUpdate(AppUpdate update) {
-        final String appVersion = update.getVersion();
-        final String appUrl = update.getVersionUrl();
+        final AppUpdate appInfo = update;
         CommNoneAndroidDialog dialog = new CommNoneAndroidDialog()
                 .withMessage(update.getContent())
                 .withPositiveBtn("立即更新", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(SettingsActivity.this, DownloadService.class);
-                        intent.putExtra("url", appUrl);
-                        intent.putExtra("fileName", appVersion.replace(".", "_"));
-                        SettingsActivity.this.startService(intent);
+                        updateHelper.processAppUpdate(appInfo, SettingsActivity.this);
                     }
                 })
                 .withNegativeBtn("稍后再说", null);

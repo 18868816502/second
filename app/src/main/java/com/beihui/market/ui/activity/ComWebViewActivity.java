@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -28,6 +30,8 @@ public class ComWebViewActivity extends BaseComponentActivity {
     TextView titleTv;
     @BindView(R.id.web_view)
     WebView webView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
 
     @Override
@@ -50,6 +54,10 @@ public class ComWebViewActivity extends BaseComponentActivity {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         });
 
