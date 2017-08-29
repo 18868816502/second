@@ -13,6 +13,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeDetail;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerNoticeDetailComponent;
 import com.beihui.market.injection.module.NoticeDetailModule;
@@ -70,6 +71,8 @@ public class NoticeDetailActivity extends BaseComponentActivity implements Notic
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

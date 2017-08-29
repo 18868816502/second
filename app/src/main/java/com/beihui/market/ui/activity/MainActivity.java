@@ -213,4 +213,10 @@ public class MainActivity extends BaseComponentActivity {
             }
         }
     }
+
+    @Override
+    public void finish() {
+        override = false;
+        super.finish();
+    }
 }

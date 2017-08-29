@@ -11,6 +11,7 @@ import android.view.View;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.Notice;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAnnounceComponent;
 import com.beihui.market.injection.module.AnnounceModule;
@@ -88,6 +89,8 @@ public class NoticeActivity extends BaseComponentActivity implements NoticeContr
         });
 
         stateLayout.setStateViewProvider(new MessageStateViewProvider());
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

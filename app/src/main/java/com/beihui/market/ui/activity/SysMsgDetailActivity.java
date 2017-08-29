@@ -8,6 +8,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgDetail;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSysMsgDetailComponent;
 import com.beihui.market.injection.module.SysMsgDetailModule;
@@ -51,6 +52,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     public void configViews() {
         setupToolbar(toolbar);
 
+        SlidePanelHelper.attach(this);
     }
 
     @Override

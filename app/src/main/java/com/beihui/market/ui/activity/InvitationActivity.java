@@ -11,6 +11,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerInvitationComponent;
@@ -80,6 +81,8 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
                         .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
             }
         });
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 import com.beihui.market.ui.fragment.RequireVerifyCodeFragment;
@@ -43,6 +44,8 @@ public class ResetPsdActivity extends BaseComponentActivity {
                 .beginTransaction()
                 .add(R.id.content_container, new RequireVerifyCodeFragment(), RequireVerifyCodeFragment.class.getSimpleName())
                 .commit();
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

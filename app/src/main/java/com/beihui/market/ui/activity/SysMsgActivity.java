@@ -11,6 +11,7 @@ import android.view.View;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.SysMsg;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSysMsgComponent;
 import com.beihui.market.injection.module.SysMsgModule;
@@ -89,6 +90,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         });
 
         stateLayout.setStateViewProvider(new MessageStateViewProvider());
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

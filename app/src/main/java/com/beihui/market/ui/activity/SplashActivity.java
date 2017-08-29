@@ -196,6 +196,12 @@ public class SplashActivity extends BaseComponentActivity {
         }
     }
 
+    @Override
+    public void finish() {
+        override = false;
+        super.finish();
+    }
+
     private class AdTimer extends CountDownTimer {
 
         AdTimer(long millisInFuture, long countDownInterval) {

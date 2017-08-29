@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +17,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerFeedbackComponent;
@@ -79,6 +81,7 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
         return R.layout.activity_helper_and_feedback;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
         setupToolbar(toolbar);
@@ -142,6 +145,7 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
             }
         });
 
+        SlidePanelHelper.attach(this);
     }
 
     @Override

@@ -19,7 +19,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.ButterKnife;
 
 
-public abstract class BaseComponentActivity extends AppCompatActivity {
+public abstract class BaseComponentActivity extends BaseActivity {
 
 
     protected CommNoneAndroidLoading loading;

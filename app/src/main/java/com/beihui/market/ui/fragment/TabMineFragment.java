@@ -231,10 +231,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateLogin() {
         if (pendingPhone != null) {
-            UserAuthorizationActivity.launch(getContext(), getView(), pendingPhone);
+            UserAuthorizationActivity.launch(getActivity(), getView(), pendingPhone);
             pendingPhone = null;
         } else {
-            UserAuthorizationActivity.launch(getContext(), getView());
+            UserAuthorizationActivity.launch(getActivity(), getView());
         }
     }
 

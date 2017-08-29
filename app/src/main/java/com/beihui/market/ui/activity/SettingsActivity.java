@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.updatehelper.DownloadService;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSettingComponent;
@@ -55,6 +56,8 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override
@@ -85,7 +88,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
             case R.id.star_me:
                 try {
                     Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName));
-                    startActivity(toMarket);
+                    startActivityWithoutOverride(toMarket);
                 } catch (ActivityNotFoundException e) {
                     e.printStackTrace();
                 }

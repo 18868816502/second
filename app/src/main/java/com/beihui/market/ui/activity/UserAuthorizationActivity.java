@@ -2,7 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,17 +54,19 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     private BlurringDrawable blurringDrawable;
 
-    public static void launch(Context context, View blurView) {
+    public static void launch(Activity context, View blurView) {
         blurredView = blurView.getRootView();
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
         context.startActivity(intent);
+        context.overridePendingTransition(0, 0);
     }
 
-    public static void launch(Context context, View blurView, String phone) {
+    public static void launch(Activity context, View blurView, String phone) {
         blurredView = blurView.getRootView();
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
         intent.putExtra("phone", phone);
         context.startActivity(intent);
+        context.overridePendingTransition(0, 0);
     }
 
     @Override

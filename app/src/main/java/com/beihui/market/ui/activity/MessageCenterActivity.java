@@ -18,6 +18,7 @@ import com.beihui.market.entity.Message;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMessageCenterComponent;
 import com.beihui.market.injection.module.MessageCenterModule;
@@ -73,7 +74,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
                 Message message = (Message) adapter.getData().get(position);
                 //统计次数
                 DataStatisticsHelper.getInstance().onInternalMessageClicked(message.getId());
-                
+
                 Intent intent = new Intent(MessageCenterActivity.this, ComWebViewActivity.class);
                 intent.putExtra("title", message.getTitle());
                 if (message.getHttpType() == 2) {//网页
@@ -94,6 +95,8 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         headerViewHolder.msgItemView.setOnClickListener(this);
         headerViewHolder.refreshNewsTv.setOnClickListener(this);
         adapter.setHeaderView(view);
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

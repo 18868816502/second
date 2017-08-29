@@ -28,6 +28,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoanDetailComponent;
 import com.beihui.market.injection.module.LoanDetailModule;
@@ -126,7 +127,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     public void configViews() {
         setupToolbar(toolbar, false);
         setupToolbarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
-        ImmersionBar.with(this).fitsSystemWindows(true).init();
+        ImmersionBar.with(this).titleBar(toolbar).init();
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             @Override
@@ -146,6 +147,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 }
             }
         });
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override
@@ -188,7 +191,6 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         alphaInt = alphaInt > 255 ? 255 : alphaInt;
         int color = Color.argb(alphaInt, 85, 145, 255);
         toolbar.setBackgroundColor(color);
-        ImmersionBar.with(this).statusBarColorInt(color).init();
     }
 
     @Override

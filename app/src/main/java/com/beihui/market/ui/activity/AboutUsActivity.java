@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 
 import butterknife.BindView;
@@ -39,6 +40,8 @@ public class AboutUsActivity extends BaseComponentActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

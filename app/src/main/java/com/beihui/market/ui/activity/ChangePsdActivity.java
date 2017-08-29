@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerChangePsdComponent;
 import com.beihui.market.injection.module.ChangePsdModule;
@@ -80,6 +81,8 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
         originPsdEt.addTextChangedListener(textWatcher);
         newPsdEt.addTextChangedListener(textWatcher);
         newPsdConfirmEt.addTextChangedListener(textWatcher);
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

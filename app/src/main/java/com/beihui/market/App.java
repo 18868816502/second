@@ -2,6 +2,7 @@ package com.beihui.market;
 
 import android.app.Application;
 
+import com.beihui.market.helper.ActivityTracker;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAppComponent;
 import com.beihui.market.injection.module.ApiModule;
@@ -17,7 +18,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-
+        registerActivityLifecycleCallbacks(ActivityTracker.getInstance());
         initComponent();
 
         Umeng.install(this);
