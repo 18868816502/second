@@ -8,10 +8,11 @@ import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
-public class DownloadHelper {
+class DownloadHelper {
 
-    public static boolean download(String url, String filePath, ProgressResponseListener listener) {
+    static boolean download(String url, String filePath, ProgressResponseListener listener) {
         boolean res = false;
         if (url != null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -20,6 +21,7 @@ public class DownloadHelper {
                     .url(url)
                     .get()
                     .build();
+
             OkHttpClient client = ProgressHelper.addProgressResponseListener(builder, listener);
             FileOutputStream fos = null;
             try {
@@ -27,12 +29,14 @@ public class DownloadHelper {
                 if (response.code() == 200) {
                     res = true;
                     fos = new FileOutputStream(filePath);
-                    if (response.body() != null) {
-                        fos.write(response.body().bytes());
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        fos.write(body.bytes());
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                res = false;
             } finally {
                 if (fos != null) {
                     try {
@@ -45,4 +49,5 @@ public class DownloadHelper {
         }
         return res;
     }
+
 }

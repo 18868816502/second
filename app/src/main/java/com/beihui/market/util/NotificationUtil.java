@@ -77,6 +77,16 @@ public class NotificationUtil {
         notificationManager.cancel(2);
     }
 
+    public static void showDownloadApkFailed(Context context) {
+        final NotificationCompat.Builder builderProgress = new NotificationCompat.Builder(context);
+        builderProgress.setContentTitle("安装包下载失败");
+        builderProgress.setSmallIcon(R.drawable.push_small);
+        builderProgress.setTicker("安装包下载失败");
+        Notification notification = builderProgress.build();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(2, notification);
+    }
+
     /**
      * 悬挂式，支持6.0以上系统
      */
@@ -96,7 +106,7 @@ public class NotificationUtil {
         //如果描述的PendingIntent已经存在，则在产生新的Intent之前会先取消掉当前的
         PendingIntent hangPendingIntent = PendingIntent.getActivity(context, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setFullScreenIntent(hangPendingIntent, true);
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(3, builder.build());
     }
 
@@ -116,12 +126,12 @@ public class NotificationUtil {
         mBuilder.setContent(view_custom)
                 .setContentIntent(PendingIntent.getActivity(context, 4, new Intent(context, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT))
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
-                .setTicker("有新资讯")
+                .setTicker("")
                 .setPriority(Notification.PRIORITY_HIGH)// 设置该通知优先级
                 .setOngoing(false)//不是正在进行的   true为正在进行  效果和.flag一样
                 .setSmallIcon(R.mipmap.ic_launcher);
         Notification notify = mBuilder.build();
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(4, notify);
     }
 }

@@ -41,9 +41,9 @@ public class DownloadService extends IntentService {
                         NotificationUtil.updateProgress(getApplicationContext(), builder, (int) ((100 * bytesRead) / contentLength));
                     }
                 });
-                if (res) {
-                    NotificationUtil.dismissProgress(getApplicationContext());
 
+                NotificationUtil.dismissProgress(getApplicationContext());
+                if (res) {
                     Intent install = new Intent(Intent.ACTION_VIEW);
                     File apkFile = new File(filePath);
                     Uri uri = null;
@@ -60,6 +60,8 @@ public class DownloadService extends IntentService {
                     install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     install.setDataAndType(uri, "application/vnd.android.package-archive");
                     startActivity(install);
+                } else {
+                    NotificationUtil.showDownloadApkFailed(getApplicationContext());
                 }
             }
         }

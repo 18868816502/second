@@ -148,11 +148,17 @@ public class AppUpdateHelper {
                 //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             }
+
         } catch (IOException e) {
             e.printStackTrace();
-            ToastUtils.showShort(weakReference.get(), "文件读取失败，请检查应用权限", null);
-            //重新弹窗
-            handleUpdate(app, weakReference);
+            weakReference.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastUtils.showShort(weakReference.get(), "文件读取失败，请检查应用权限", null);
+                    //重新弹窗
+                    handleUpdate(app, weakReference);
+                }
+            });
             return;
         }
 
