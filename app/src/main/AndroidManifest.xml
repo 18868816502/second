@@ -42,7 +42,19 @@
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="beihui.com"
+                    android:pathPrefix="/home"
+                    android:scheme="loanmarket" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.WorthTestActivity"
             android:screenOrientation="portrait" />
@@ -107,6 +119,17 @@
 
         <service android:name=".helper.updatehelper.DownloadService" />
 
+        <!--file provider, N feature-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.beihui.market.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
         <!--getui setting-->
         <service android:name=".getui.PushReceiveIntentService" />
         <service
@@ -163,17 +186,6 @@
 
         </activity>
         <!--share setting end-->
-
-        <!--file provider, N feature-->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.beihui.market.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path" />
-        </provider>
 
         <!--umeng setting-->
         <meta-data

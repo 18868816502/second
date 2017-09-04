@@ -81,9 +81,7 @@ android {
         meizu {}
         chuizi {}
         wandoujia {}
-        lianxiang {}
         samsung {}
-        jifeng {}
         mumayi {}
         Nduo {}
         anzhi {}
