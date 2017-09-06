@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -134,7 +135,6 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         UserProfileActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-
     }
 
     @OnClick({R.id.avatar_item, R.id.nick_name_item, R.id.profession_item})
@@ -173,12 +173,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void openCamera() {
         Intent toCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        String dirPath;
-        if (getExternalCacheDir() != null) {
-            dirPath = getExternalCacheDir().getAbsolutePath() + "/temp";
-        } else {
-            dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp";
-        }
+        String dirPath = FileProviderHelper.getTempDirPath(this);
         File dir = new File(dirPath);
         if (!dir.exists()) {
             boolean result = dir.mkdirs();
@@ -198,7 +193,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             Uri uri = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 try {
-                    uri = FileProvider.getUriForFile(this, "com.beihui.market.fileprovider", avatarFile);
+                    uri = FileProvider.getUriForFile(this, FileProviderHelper.getFileProvider(this), avatarFile);
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 }

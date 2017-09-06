@@ -122,7 +122,7 @@
         <!--file provider, N feature-->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.beihui.market.fileprovider"
+            android:authorities="${PACKAGE_NAME}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -155,7 +155,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1106217443" />
+                <data android:scheme="${TENCENT_DATA}" />
             </intent-filter>
         </activity>
         <activity

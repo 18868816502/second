@@ -18,7 +18,7 @@ public class NetConstants {
     /**********H5 static field********/
     public static final String H5_DOMAIN = BuildConfig.H5_DOMAIN;
 
-    public static final String H5_HELPER = H5_DOMAIN + "/helpcenter.html?isApp=1";
+    public static final String H5_HELPER = H5_DOMAIN + BuildConfig.PATH_HELPER_CENTER + "?isApp=1";
 
     public static final String H5_TEST = H5_DOMAIN + "/test.html?isApp=1";
 
@@ -28,9 +28,9 @@ public class NetConstants {
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
 
-    public static final String H5_ABOUT_US = H5_DOMAIN + "/knowaixin.html?isApp=1";
+    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1";
 
-    public static final String H5_USER_AGREEMENT = H5_DOMAIN + "/registrationProtocol.html?isApp=1";
+    public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1";
 
     public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
 

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.NotificationCompat;
 
+import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.util.NotificationUtil;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class DownloadService extends IntentService {
                     Uri uri = null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         try {
-                            uri = FileProvider.getUriForFile(getApplicationContext(), "com.beihui.market.fileprovider", apkFile);
+                            uri = FileProvider.getUriForFile(getApplicationContext(), FileProviderHelper.getFileProvider(this), apkFile);
                             install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         } catch (IllegalArgumentException e) {
                             e.printStackTrace();

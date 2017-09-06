@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:text="《爱信管家用户协议》"
+            android:text="@string/check_user_agreement"
             android:textColor="@color/login1"
             android:textSize="12sp" />
 

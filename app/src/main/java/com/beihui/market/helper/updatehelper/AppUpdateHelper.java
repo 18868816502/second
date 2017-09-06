@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.injection.component.DaggerAppUpdateHelperComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.util.LogUtils;
@@ -136,9 +136,10 @@ public class AppUpdateHelper {
         if (weakReference.get() == null)
             return;
         String name = version.replace(".", "_");
-        String filePath = Environment.getExternalStorageDirectory() + "/temp/" + name + ".apk";
+        String dirPath = FileProviderHelper.getTempDirPath(context);
+        String filePath = dirPath + "/" + name + ".apk";
         try {
-            File dir = new File(Environment.getExternalStorageDirectory() + "/temp");
+            File dir = new File(dirPath);
             if (!dir.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 dir.mkdirs();
@@ -181,7 +182,7 @@ public class AppUpdateHelper {
         Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
-                uri = FileProvider.getUriForFile(context, "com.beihui.market.fileprovider", apkFile);
+                uri = FileProvider.getUriForFile(context, FileProviderHelper.getFileProvider(context), apkFile);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();

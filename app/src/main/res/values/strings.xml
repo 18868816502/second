@@ -84,4 +84,5 @@
     <string name="confirm_new_pwd">请确认新密码</string>
     <string name="loan">借款</string>
     <string name="net_connection_error">网络连接失败</string>
+    <string name="check_user_agreement">《爱信管家用户协议》</string>
 </resources>

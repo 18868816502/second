@@ -105,7 +105,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 //umeng统计
                 Statistic.onEvent(Events.SETTING_EXIT);
 
-                new CommNoneAndroidDialog().withMessage("确认退出爱信管家")
+                new CommNoneAndroidDialog().withMessage("确认退出" + getString(R.string.app_name))
                         .withPositiveBtn("再看看", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">信用管家</string>
+    <string name="know_us">了解信用管家</string>
+    <string name="check_user_agreement">《信用管家用户协议》</string>
+</resources>
