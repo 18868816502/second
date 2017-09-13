@@ -169,10 +169,11 @@ android {
         H5 { dimension "channel" }
 
         productFlavors.all { flavor ->
-            manifestPlaceholders.getProperties().putAll([
+            manifestPlaceholders.putAll([
                     UMENG_CHANNEL: name,
                     CHANNEL_ID   : name
             ])
+
         }
     }
 
