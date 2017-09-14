@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 //assemble specified package,if empty then apply no filter
-def applyFilter = false
 def filterVest = ""
 def vests = ["xinyongguanjia", "wannengqianbao"] as String[]
 def vest2Channel = [
@@ -40,7 +39,7 @@ android {
     }
 
     signingConfigs {
-        release {
+        loanmarket {
             storeFile file('../loanMarket.jks')
             storePassword "123456"
             keyAlias "loanMarket"
@@ -67,21 +66,14 @@ android {
         debug {
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-
-            signingConfig signingConfigs.release
         }
         preview {
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-
-            signingConfig signingConfigs.release
         }
         release {
-            minifyEnabled false
             buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
             buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
-
-            signingConfig signingConfigs.release
         }
 
     }
@@ -107,15 +99,24 @@ android {
 
     flavorDimensions("id", "channel")
     productFlavors {
+
         loanmarket {
             dimension "id"
+
+            applicationId "com.beihui.market"
+            manifestPlaceholders = [
+                    PACKAGE_NAME: applicationId
+            ]
 
             buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
             buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
             buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+
+            signingConfig signingConfigs.loanmarket
         }
         xinyongguanjia {
             dimension "id"
+
             applicationId "com.beihui.market.xinyongguanjia"
             manifestPlaceholders = [
                     PACKAGE_NAME: applicationId
@@ -129,6 +130,7 @@ android {
         }
         wannengqianbao {
             dimension "id"
+
             applicationId "com.beihui.market.wannengqianbao"
             manifestPlaceholders = [
                     PACKAGE_NAME: applicationId
@@ -177,35 +179,29 @@ android {
         }
     }
 
-    if (applyFilter) {
-        variantFilter { variant ->
-            if (variant.buildType.name == "release") {
-                def vest = variant.flavors[0].name
-                def channel = variant.flavors[1].name
-                if ("" != filterVest && vest != filterVest) {
+    variantFilter { variant ->
+        def vest = variant.flavors[0].name
+        def channel = variant.flavors[1].name
+        //过滤马甲
+        if ("" != filterVest && vest != filterVest) {
+            variant.setIgnore(true)
+        } else {
+            //过滤渠道
+            if (vests.contains(vest)) {
+                def channels = vest2Channel.get(vest)
+                if (!channels.contains(channel)) {
                     variant.setIgnore(true)
-                } else {
-                    if (vests.contains(vest)) {
-                        def channels = vest2Channel.get(vest)
-                        if (!channels.contains(channel)) {
-                            variant.setIgnore(true)
-                        }
-                    }
                 }
-            } else {
-                variant.setIgnore(true)
             }
         }
     }
 
-    if (applyFilter) {
-        applicationVariants.all { variant ->
-            def items = variant.baseName.split("-")
-            def path = "../loanMarket-apks/" + items[0] + "/" + variant.getBaseName() + ".apk"
-            def file = new File(path)
-            variant.outputs.each { output ->
-                output.setOutputFile(file)
-            }
+    applicationVariants.all { variant ->
+        def items = variant.baseName.split("-")
+        def path = "../loanMarket-apks/" + items[0] + "/" + variant.getBaseName() + ".apk"
+        def file = new File(path)
+        variant.outputs.each { output ->
+            output.setOutputFile(file)
         }
     }
 }
