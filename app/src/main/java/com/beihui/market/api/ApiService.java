@@ -211,7 +211,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/details")
-    Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId);
+    Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId, @Field("userId") String userId);
 
     /**
      * 查询邀请详细

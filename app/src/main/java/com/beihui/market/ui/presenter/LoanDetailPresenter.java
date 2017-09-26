@@ -35,7 +35,11 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
     @Override
     public void queryDetail(String id) {
-        Disposable dis = mApi.queryLoanProductDetail(id)
+        String userId = null;
+        if (mUserHelper.getProfile() != null) {
+            userId = mUserHelper.getProfile().getId();
+        }
+        Disposable dis = mApi.queryLoanProductDetail(id, userId)
                 .compose(RxUtil.<ResultEntity<LoanProductDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProductDetail>>() {
                                @Override

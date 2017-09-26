@@ -70,7 +70,7 @@ public class ComWebViewActivity extends BaseComponentActivity {
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+                startActivityWithoutOverride(intent);
             }
         });
 

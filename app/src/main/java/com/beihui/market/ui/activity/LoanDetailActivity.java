@@ -127,7 +127,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     public void configViews() {
         setupToolbar(toolbar, false);
         setupToolbarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
-        ImmersionBar.with(this).titleBar(toolbar).init();
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             @Override

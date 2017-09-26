@@ -354,10 +354,11 @@ public class Api {
     /**
      * 查询贷款产品详情
      *
-     * @param id 产品id
+     * @param id     产品id
+     * @param userId 用户id
      */
-    public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id) {
-        return service.queryLoanProductDetail(id);
+    public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id, String userId) {
+        return service.queryLoanProductDetail(id, userId);
     }
 
     /**
