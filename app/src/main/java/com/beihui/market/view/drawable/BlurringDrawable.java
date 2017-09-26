@@ -130,8 +130,8 @@ public class BlurringDrawable extends Drawable {
         }
     }
 
-    public void unbindBlurredView(View blurredView) {
-        if (this.blurredView == blurredView && this.blurredView != null) {
+    public void unbindBlurredView() {
+        if (this.blurredView != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 this.blurredView.getViewTreeObserver().removeOnDrawListener(onDrawListener);
             }

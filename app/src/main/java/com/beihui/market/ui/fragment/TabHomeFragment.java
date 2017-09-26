@@ -436,7 +436,7 @@ public class TabHomeFragment extends BaseTabFragment implements View.OnClickList
 
     @Override
     public void navigateLogin() {
-        UserAuthorizationActivity.launch(getActivity(), rootContainer);
+        UserAuthorizationActivity.launch(getActivity(), null);
     }
 
     @Override

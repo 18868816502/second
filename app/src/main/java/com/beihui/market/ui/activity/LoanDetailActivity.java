@@ -406,7 +406,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void navigateLogin() {
-        UserAuthorizationActivity.launch(this, baseContainer);
+        UserAuthorizationActivity.launch(this, null);
     }
 
     private class SizePosSpan extends ReplacementSpan {

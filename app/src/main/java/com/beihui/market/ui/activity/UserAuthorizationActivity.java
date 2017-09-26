@@ -1,7 +1,6 @@
 package com.beihui.market.ui.activity;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.ActivityTracker;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
@@ -39,9 +39,6 @@ import butterknife.OnClick;
 
 public class UserAuthorizationActivity extends BaseComponentActivity {
 
-    @SuppressLint("StaticFieldLeak")
-    private static View blurredView;
-
     @BindView(R.id.root_container)
     View rootContainer;
     @BindView(R.id.deco_container)
@@ -54,17 +51,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     private BlurringDrawable blurringDrawable;
 
-    public static void launch(Activity context, View blurView) {
-        blurredView = blurView.getRootView();
+    public static void launch(Activity context, String phone) {
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
-        context.startActivity(intent);
-        context.overridePendingTransition(0, 0);
-    }
-
-    public static void launch(Activity context, View blurView, String phone) {
-        blurredView = blurView.getRootView();
-        Intent intent = new Intent(context, UserAuthorizationActivity.class);
-        intent.putExtra("phone", phone);
+        if (phone != null) {
+            intent.putExtra("phone", phone);
+        }
         context.startActivity(intent);
         context.overridePendingTransition(0, 0);
     }
@@ -79,9 +70,8 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         if (blurringDrawable != null) {
-            blurringDrawable.unbindBlurredView(blurredView);
+            blurringDrawable.unbindBlurredView();
         }
-        blurredView = null;
         super.onDestroy();
     }
 
@@ -149,9 +139,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
 
-        blurringDrawable = new BlurringDrawable(this);
-        blurringDrawable.bindBlurredView(blurredView);
-        window.setBackgroundDrawable(blurringDrawable);
+        if (ActivityTracker.getInstance().getLastActivity() != null) {
+            blurringDrawable = new BlurringDrawable(this);
+            blurringDrawable.bindBlurredView(ActivityTracker.getInstance().getLastActivity().getWindow().getDecorView());
+            window.setBackgroundDrawable(blurringDrawable);
+        }
     }
 
 
