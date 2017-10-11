@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
-//assemble specified package,if empty then apply no filter
-def filterVest = ""
-def vests = ["xinyongguanjia", "wannengqianbao"] as String[]
+def vests = ["loanmarket", "daikuankuai"] as String[]
 def vest2Channel = [
-        "xinyongguanjia": [],
-        "wannengqianbao": []
+        "loanmarket" : ["baidu", "market91", "anzhuomarket", "market360", "yingyongbao", "xiaomi", "huawei", "VIVO", "OPPO", "meizu",
+                        "chuizi", "wandoujia", "samsung", "mumayi", "Nduo", "anzhi", "sougou", "letv", "liqumarket", "youyi", "anfen",
+                        "anzhuoyuan", "anbei", "lvan", "PC6", "H5"],
+
+        "daikuankuai": ["baidu002", "market360_002", "yingyongbao002", "xiaomi002", "huawei002", "VIVO002", "OPPO002", "meizu002", "alibaba002"]
 ]
 
 android {
@@ -46,17 +47,10 @@ android {
             keyPassword "123456"
         }
 
-        xinyongguanjia {
-            storeFile file('../app/src/xinyongguanjia/xinyongguanjia.jks')
+        daikuankuai {
+            storeFile file('../app/src/daikuankuai/daikuankuai.jks')
             storePassword "123456"
-            keyAlias "xinyongguanjia"
-            keyPassword "123456"
-        }
-
-        wannengqianbao {
-            storeFile file('../app/src/wannengqianbao/wannengqianbao.jks')
-            storePassword "123456"
-            keyAlias "wannengqianbao"
+            keyAlias "daikuankuai"
             keyPassword "123456"
         }
     }
@@ -85,11 +79,9 @@ android {
         loanmarket {
             java.srcDir 'src/common/java'
         }
-        xinyongguanjia {
-            java.srcDir 'src/common/java'
-        }
-        wannengqianbao {
-            java.srcDir 'src/common/java'
+        daikuankuai {
+            java.srcDir 'src/commonvest/java'
+            res.srcDirs 'src/commonvest/res'
         }
     }
 
@@ -114,33 +106,20 @@ android {
 
             signingConfig signingConfigs.loanmarket
         }
-        xinyongguanjia {
+
+        daikuankuai {
             dimension "id"
 
-            applicationId "com.beihui.market.xinyongguanjia"
+            applicationId "com.beiwo.daikuankuai"
             manifestPlaceholders = [
                     PACKAGE_NAME: applicationId
             ]
 
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registProtocol.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/knowxinyong.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"help.html\"")
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/quickloan_registe.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/quickloan_know.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"quickloan_helpcenter.html\"")
 
-            signingConfig signingConfigs.xinyongguanjia
-        }
-        wannengqianbao {
-            dimension "id"
-
-            applicationId "com.beihui.market.wannengqianbao"
-            manifestPlaceholders = [
-                    PACKAGE_NAME: applicationId
-            ]
-
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\".html\"")
-
-            signingConfig signingConfigs.wannengqianbao
+            signingConfig signingConfigs.daikuankuai
         }
 
         baidu { dimension "channel" }
@@ -170,6 +149,16 @@ android {
         PC6 { dimension "channel" }
         H5 { dimension "channel" }
 
+        baidu002 { dimension "channel" }
+        market360_002 { dimension "channel" }
+        yingyongbao002 { dimension "channel" }
+        xiaomi002 { dimension "channel" }
+        huawei002 { dimension "channel" }
+        VIVO002 { dimension "channel" }
+        OPPO002 { dimension "channel" }
+        meizu002 { dimension "channel" }
+        alibaba002 { dimension "channel" }
+
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
                     UMENG_CHANNEL: name,
@@ -182,16 +171,11 @@ android {
     variantFilter { variant ->
         def vest = variant.flavors[0].name
         def channel = variant.flavors[1].name
-        //过滤马甲
-        if ("" != filterVest && vest != filterVest) {
-            variant.setIgnore(true)
-        } else {
-            //过滤渠道
-            if (vests.contains(vest)) {
-                def channels = vest2Channel.get(vest)
-                if (!channels.contains(channel)) {
-                    variant.setIgnore(true)
-                }
+        //过滤渠道
+        if (vests.contains(vest)) {
+            def channels = vest2Channel.get(vest)
+            if (!channels.contains(channel)) {
+                variant.setIgnore(true)
             }
         }
     }
