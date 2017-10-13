@@ -117,7 +117,7 @@ android {
 
             buildConfigField("String", "PATH_USER_AGREEMENT", "\"/quickloan_registe.html\"")
             buildConfigField("String", "PATH_ABOUT_US", "\"/quickloan_know.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"quickloan_helpcenter.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/quickloan_helpcenter.html\"")
 
             signingConfig signingConfigs.daikuankuai
         }
