@@ -16,6 +16,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
+import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
@@ -142,8 +143,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         }
     }
 
-    @OnClick({R.id.avatar, R.id.mine_msg, R.id.invite_friend, R.id.helper_feedback, R.id.settings, R.id.login,
-            R.id.user_name})
+    @OnClick({R.id.avatar, R.id.mine_msg, R.id.my_collection, R.id.invite_friend, R.id.contact_kefu, R.id.helper_feedback, R.id.settings,
+            R.id.wechat_public, R.id.login, R.id.user_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.avatar:
@@ -151,6 +152,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.checkUserProfile();
                 }
                 break;
+
             case R.id.mine_msg:
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
@@ -159,6 +161,11 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.checkMessage();
                 }
                 break;
+
+            case R.id.my_collection:
+                presenter.checkCollection();
+                break;
+
             case R.id.invite_friend:
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
@@ -167,6 +174,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.checkInvitation();
                 }
                 break;
+
+            case R.id.contact_kefu:
+                break;
+
             case R.id.helper_feedback:
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
@@ -175,6 +186,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.checkHelpAndFeedback();
                 }
                 break;
+
             case R.id.settings:
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
@@ -183,16 +195,22 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.checkSetting();
                 }
                 break;
+
+            case R.id.wechat_public:
+                break;
+
             case R.id.login:
                 if (!FastClickUtils.isFastClick()) {
                     navigateLogin();
                 }
                 break;
+
             case R.id.user_name:
                 if (!FastClickUtils.isFastClick()) {
                     presenter.checkUserProfile();
                 }
                 break;
+
             default:
                 break;
         }
@@ -240,31 +258,31 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void navigateUserProfile(String userId) {
-        Intent toUserProfile = new Intent(getActivity(), UserProfileActivity.class);
-        startActivity(toUserProfile);
+        startActivity(new Intent(getActivity(), UserProfileActivity.class));
     }
 
     @Override
     public void navigateMessage(String userId) {
-        Intent toMsg = new Intent(getActivity(), MessageCenterActivity.class);
-        startActivity(toMsg);
+        startActivity(new Intent(getActivity(), MessageCenterActivity.class));
+    }
+
+    @Override
+    public void navigateCollection(String userId) {
+        startActivity(new Intent(getActivity(), CollectionActivity.class));
     }
 
     @Override
     public void navigateInvitation(String userId) {
-        Intent toInviteFriend = new Intent(getActivity(), InvitationActivity.class);
-        startActivity(toInviteFriend);
+        startActivity(new Intent(getActivity(), InvitationActivity.class));
     }
 
     @Override
     public void navigateHelpAndFeedback(String userId) {
-        Intent toHelp = new Intent(getActivity(), HelperAndFeedbackActivity.class);
-        startActivity(toHelp);
+        startActivity(new Intent(getActivity(), HelperAndFeedbackActivity.class));
     }
 
     @Override
     public void navigateSetting(String userId) {
-        Intent toSettings = new Intent(getActivity(), SettingsActivity.class);
-        startActivity(toSettings);
+        startActivity(new Intent(getActivity(), SettingsActivity.class));
     }
 }

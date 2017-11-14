@@ -13,6 +13,8 @@ public interface TabMineContract {
 
         void checkUserProfile();
 
+        void checkCollection();
+
         void checkInvitation();
 
         void checkHelpAndFeedback();
@@ -31,6 +33,8 @@ public interface TabMineContract {
         void navigateUserProfile(String userId);
 
         void navigateMessage(String userId);
+
+        void navigateCollection(String userId);
 
         void navigateInvitation(String userId);
 

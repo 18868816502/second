@@ -13,18 +13,18 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
 
     private TabMineContract.View mView;
 
-    private UserHelper mUserHelper;
+    private UserHelper userHelper;
 
     @Inject
     TabMinePresenter(TabMineContract.View view, Context context) {
         mView = view;
-        mUserHelper = UserHelper.getInstance(context);
+        userHelper = UserHelper.getInstance(context);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        UserHelper.Profile profile = mUserHelper.getProfile();
+        UserHelper.Profile profile = userHelper.getProfile();
         if (profile != null) {
             mView.showProfile(profile);
         }
@@ -33,28 +33,35 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     @Override
     public void checkMessage() {
         if (checkValidUser()) {
-            mView.navigateMessage(mUserHelper.getProfile().getId());
+            mView.navigateMessage(userHelper.getProfile().getId());
         }
     }
 
     @Override
     public void checkUserProfile() {
         if (checkValidUser()) {
-            mView.navigateUserProfile(mUserHelper.getProfile().getId());
+            mView.navigateUserProfile(userHelper.getProfile().getId());
+        }
+    }
+
+    @Override
+    public void checkCollection() {
+        if (checkValidUser()) {
+            mView.navigateCollection(userHelper.getProfile().getId());
         }
     }
 
     @Override
     public void checkInvitation() {
         if (checkValidUser()) {
-            mView.navigateInvitation(mUserHelper.getProfile().getId());
+            mView.navigateInvitation(userHelper.getProfile().getId());
         }
     }
 
     @Override
     public void checkHelpAndFeedback() {
         if (checkValidUser()) {
-            mView.navigateHelpAndFeedback(mUserHelper.getProfile().getId());
+            mView.navigateHelpAndFeedback(userHelper.getProfile().getId());
         }
     }
 
@@ -66,7 +73,7 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     }
 
     private boolean checkValidUser() {
-        if (mUserHelper.getProfile() == null) {
+        if (userHelper.getProfile() == null) {
             mView.navigateLogin();
             return false;
         }
