@@ -18,27 +18,26 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 
-public class TimeFilterPopup extends PopupWindow {
 
+public class SortPopup extends PopupWindow {
 
     private View shadowView;
     private TextView tv;
     private ImageView iv;
 
-    private TimeSelectionListener listener;
+    private SortSelectionListener listener;
 
-    public TimeFilterPopup(final Activity context, final int selectTimeIndex, View shadowView, TextView tv, ImageView iv,
-                           final String[] tags) {
+    public SortPopup(final Activity context, View shadowView, TextView tv, ImageView iv, final String[] tags, int selectedIndex) {
         super(context);
         this.shadowView = shadowView;
+
 
         shadowView.setVisibility(View.VISIBLE);
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.pupup_window_time_selection, null);
+        View view = inflater.inflate(R.layout.popup_window_sort, null);
         final ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setAdapter(new BaseAdapter() {
-
             @Override
             public int getCount() {
                 return tags.length;
@@ -63,18 +62,17 @@ public class TimeFilterPopup extends PopupWindow {
                 return convertView;
             }
         });
+        listView.setItemChecked(selectedIndex, true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listView.setItemChecked(position, true);
                 if (listener != null) {
-                    listener.onTimeSelected(position);
+                    listener.onSortSelected(position);
                 }
                 dismiss();
             }
         });
-        listView.setItemChecked(selectTimeIndex, true);
-
         setContentView(view);
 
         setWidth(LayoutParams.MATCH_PARENT);
@@ -87,7 +85,6 @@ public class TimeFilterPopup extends PopupWindow {
         tv.setTextColor(Color.parseColor("#5591FF"));
         iv.setImageResource(R.mipmap.daosanjiao_blue);
         rotateArrow(0, 180, iv);
-
     }
 
 
@@ -100,7 +97,7 @@ public class TimeFilterPopup extends PopupWindow {
         rotateArrow(180, 0, iv);
     }
 
-    public void setShareItemListener(TimeSelectionListener listener) {
+    public void setShareItemListener(SortSelectionListener listener) {
         this.listener = listener;
     }
 
@@ -115,8 +112,7 @@ public class TimeFilterPopup extends PopupWindow {
     }
 
 
-    public interface TimeSelectionListener {
-        void onTimeSelected(int selectTimeIndex);
+    public interface SortSelectionListener {
+        void onSortSelected(int selectIndex);
     }
-
 }

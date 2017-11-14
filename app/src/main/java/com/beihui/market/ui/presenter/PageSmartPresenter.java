@@ -6,7 +6,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.base.Constant;
 import com.beihui.market.entity.LoanProduct;
-import com.beihui.market.ui.contract.TabLoanContract;
+import com.beihui.market.ui.contract.PageSmartContract;
 import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
@@ -19,24 +19,24 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract.Presenter {
+public class PageSmartPresenter extends BaseRxPresenter implements PageSmartContract.Presenter {
     private static final int PAGE_SIZE = 10;
     private String dueTimes[] = {"1个月及以下", "3个月", "6个月", "12个月", "24个月", "36个月及以上", "不限"};
-    private String pros[] = {"上班族", "自由职业", "个体户", "不限"};
+    private String sortGroup[] = {"默认排序", "借款利率", "最高额度"};
 
     private Api mApi;
-    private TabLoanContract.View mView;
+    private PageSmartContract.View mView;
 
     private int amount = Constant.DEFAULT_FILTER_MONEY;
     private int dueTimeSelected = 6;
-    private int proSelected = 3;
+    private int sortSelected = 0;
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
     private int curPage = 1;
 
     private Disposable curTask;
 
     @Inject
-    TabLoanPresenter(Api api, TabLoanContract.View view) {
+    PageSmartPresenter(Api api, PageSmartContract.View view) {
         mApi = api;
         mView = view;
     }
@@ -44,7 +44,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     @Override
     public void onStart() {
         super.onStart();
-        mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
+        mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
         if (loanProductList.size() > 0) {
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), loanProductList.size() >= PAGE_SIZE);
         } else {
@@ -56,7 +56,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     public void filterAmount(int amount) {
         if (amount != this.amount) {
             this.amount = amount;
-            mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
+            mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
@@ -68,7 +68,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     public void filterDueTime(int selected) {
         if (selected != dueTimeSelected) {
             dueTimeSelected = selected;
-            mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
+            mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
@@ -78,9 +78,9 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
 
     @Override
     public void filterPro(int selected) {
-        if (selected != proSelected) {
-            proSelected = selected;
-            mView.showFilters(amount + "", dueTimes[dueTimeSelected], pros[proSelected]);
+        if (selected != sortSelected) {
+            sortSelected = selected;
+            mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
@@ -92,7 +92,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     public void refresh() {
         cancelCurTask();
         curPage = 1;
-        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(proSelected), curPage, PAGE_SIZE)
+        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(sortSelected), curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override
@@ -120,7 +120,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabLoanPresenter.this, throwable);
+                                logError(PageSmartPresenter.this, throwable);
                                 //当前没有任何原始数据，切换至网络错误状态，否则只需提示信息
                                 if (loanProductList.size() == 0) {
                                     mView.showNetError();
@@ -136,7 +136,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     @Override
     public void loadMore() {
         curPage++;
-        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(proSelected),
+        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(sortSelected),
                 curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
@@ -161,7 +161,7 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabLoanPresenter.this, throwable);
+                                logError(PageSmartPresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
                                 //请求失败，回溯页数
                                 curPage--;
@@ -187,8 +187,13 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
     }
 
     @Override
-    public String[] getFilterPro() {
-        return pros;
+    public String[] getSortGroup() {
+        return sortGroup;
+    }
+
+    @Override
+    public int getSortGroupIndex() {
+        return sortSelected;
     }
 
     private int getProParamBySelected(int selected) {

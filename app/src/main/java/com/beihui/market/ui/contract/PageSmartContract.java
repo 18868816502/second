@@ -7,7 +7,7 @@ import com.beihui.market.entity.LoanProduct;
 
 import java.util.List;
 
-public interface TabLoanContract {
+public interface PageSmartContract {
 
     interface Presenter extends BasePresenter {
         void filterAmount(int amount);
@@ -26,7 +26,9 @@ public interface TabLoanContract {
 
         int getFilterDueTimeSelected();
 
-        String[] getFilterPro();
+        String[] getSortGroup();
+
+        int getSortGroupIndex();
 
     }
 

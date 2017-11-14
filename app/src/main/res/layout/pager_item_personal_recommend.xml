@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#ffe99e"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/notice_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="30dp"
+            android:textColor="#ca6832"
+            android:textSize="11sp"
+            tools:text="精胜多负少的发斯蒂芬斯蒂芬sfsdfsdfdsf dsf s" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:scaleType="centerInside"
+            android:src="@drawable/loan_notice_close_icon" />
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recommend_group_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:background="@android:color/white"
+        android:paddingLeft="2dp"
+        android:paddingTop="9dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recommend_product_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

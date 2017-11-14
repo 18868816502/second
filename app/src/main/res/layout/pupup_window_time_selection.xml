@@ -11,9 +11,12 @@
         android:layout_height="0.5dp"
         android:background="@color/line" />
 
-    <com.beihui.market.view.busineesrel.FlowTagLayout
-        android:id="@+id/flow_layout"
+    <ListView
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp" />
+        android:choiceMode="singleChoice"
+        android:divider="@null"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" />
 </LinearLayout>

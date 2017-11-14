@@ -36,7 +36,7 @@ public class MoneyFilterPopup extends PopupWindow {
     private TextView tv;
     private ImageView iv;
 
-    private onBrMoneyListener listener;
+    private MoneySelectionListener listener;
 
     public MoneyFilterPopup(final Activity context, String money, View shadowView, TextView tv, ImageView iv) {
         super(context);
@@ -128,7 +128,7 @@ public class MoneyFilterPopup extends PopupWindow {
                     }
                     dismiss();
                     if (listener != null) {
-                        listener.onMoneyItemClick(amount);
+                        listener.onMoneySelected(amount);
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -138,7 +138,7 @@ public class MoneyFilterPopup extends PopupWindow {
         }
     }
 
-    public void setShareItemListener(onBrMoneyListener listener) {
+    public void setShareItemListener(MoneySelectionListener listener) {
         this.listener = listener;
     }
 
@@ -152,8 +152,8 @@ public class MoneyFilterPopup extends PopupWindow {
         imageView.startAnimation(mRotateAnimation);
     }
 
-    public interface onBrMoneyListener {
-        void onMoneyItemClick(int money);
+    public interface MoneySelectionListener {
+        void onMoneySelected(int money);
     }
 
 }

@@ -45,11 +45,6 @@ public class MainActivity extends BaseComponentActivity {
 
     private int mSelectedFragmentId = -1;
 
-    /**
-     * param need passed to target fragment if navigating to TabLoanFragment.
-     */
-    private int queryMoney = -1;
-
     private InputMethodManager inputMethodManager;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
@@ -115,11 +110,7 @@ public class MainActivity extends BaseComponentActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateLoan(NavigateLoan event) {
-        if (event.queryMoney != -1) {
-            queryMoney = event.queryMoney;
-        }
         mNavigationBar.select(R.id.tab_loan);
-        queryMoney = -1;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -157,9 +148,6 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, newSelected, newTag);
         } else {
             ft.attach(newSelected);
-        }
-        if (newSelected != null && newSelected instanceof TabLoanFragment && queryMoney != -1) {
-            ((TabLoanFragment) newSelected).setQueryMoney(queryMoney);
         }
         ft.commit();
     }
