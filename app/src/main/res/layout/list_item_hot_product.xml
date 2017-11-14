@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    tools:background="@android:color/white"
+    tools:ignore="RtlHardcoded">
+
+    <com.beihui.market.view.CircleImageView
+        android:id="@+id/product_logo"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop"
+        app:civ_border_color="#18000000"
+        app:civ_border_width="0.5dp"
+        tools:src="@drawable/about_us_logo" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_1"
+            android:textSize="16sp"
+            tools:text="点融网" />
+
+        <TextView
+            android:id="@+id/product_loan_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black_2"
+            android:textSize="10sp"
+            tools:text="1000-5万" />
+
+        <TextView
+            android:id="@+id/loaned_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/black_2"
+            android:textSize="10sp"
+            tools:text="已借款34456人" />
+
+    </LinearLayout>
+</LinearLayout>

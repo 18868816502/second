@@ -15,9 +15,9 @@ public interface TabHomeContract {
     interface Presenter extends BasePresenter {
         void refresh();
 
-        void checkMsg();
-
         void checkMyWorth();
+
+        void refreshHotProduct();
     }
 
     interface View extends BaseView<Presenter> {
@@ -26,9 +26,11 @@ public interface TabHomeContract {
 
         void showBorrowingScroll(List<String> list);
 
-        void showHotNews(List<HotNews> news);
+        void showHotProducts(List<LoanProduct.Row> products);
 
-        void showHotLoanProducts(List<LoanProduct.Row> products);
+        void showChoiceProducts(List<LoanProduct.Row> products);
+
+        void showHotNews(List<HotNews> news);
 
         void showAdDialog(AdBanner ad);
 
@@ -39,8 +41,6 @@ public interface TabHomeContract {
         void navigateLogin();
 
         void navigateWorthTest();
-
-        void navigateMessageCenter();
 
     }
 }

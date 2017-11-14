@@ -28,22 +28,23 @@ import io.reactivex.functions.Consumer;
 
 public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract.Presenter {
 
-    private Api mApi;
-    private TabHomeContract.View mView;
-    private Context mContext;
+    private Api api;
+    private TabHomeContract.View view;
+    private Context context;
 
     private boolean hasAdInit = false;
     private NoticeAbstract notice;
     private List<AdBanner> banners = new ArrayList<>();
-    private List<String> notices = new ArrayList<>();
+    private List<LoanProduct.Row> hotProducts = new ArrayList<>();
+    private List<LoanProduct.Row> choiceProducts = new ArrayList<>();
     private List<HotNews> hotNews = new ArrayList<>();
-    private List<LoanProduct.Row> hotLoanProducts = new ArrayList<>();
+    private List<String> notices = new ArrayList<>();
 
     @Inject
     TabHomePresenter(Api api, TabHomeContract.View view, Context context) {
-        mApi = api;
-        mView = view;
-        mContext = context;
+        this.api = api;
+        this.view = view;
+        this.context = context;
     }
 
     @Override
@@ -57,33 +58,39 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         //notice
         if (notice == null) {
             queryNotice();
-        } else if (!SPUtils.getNoticeClosed(mContext)) {
-            mView.showNotice(notice);
+        } else if (!SPUtils.getNoticeClosed(context)) {
+            view.showNotice(notice);
         }
 
         //banner
         if (banners.size() == 0) {
             queryBanner();
         } else {
-            mView.showBanner(Collections.unmodifiableList(banners));
+            view.showBanner(Collections.unmodifiableList(banners));
         }
-        //loan success notice
-        if (notices.size() == 0) {
-            queryScrolling();
+        //hot loan products
+        if (hotProducts.size() == 0) {
+            queryHotLoanProducts();
         } else {
-            mView.showBorrowingScroll(Collections.unmodifiableList(notices));
+            view.showHotProducts(hotProducts);
+        }
+        //choice products
+        if (choiceProducts.size() == 0) {
+            queryChoiceProducts();
+        } else {
+            view.showChoiceProducts(choiceProducts);
         }
         //news
         if (hotNews.size() == 0) {
             queryHotNews();
         } else {
-            mView.showHotNews(hotNews);
+            view.showHotNews(hotNews);
         }
-        //hot loan products
-        if (hotLoanProducts.size() == 0) {
-            queryHotLoanProducts();
+        //loan success notice
+        if (notices.size() == 0) {
+            queryScrolling();
         } else {
-            mView.showHotLoanProducts(hotLoanProducts);
+            view.showBorrowingScroll(Collections.unmodifiableList(notices));
         }
     }
 
@@ -91,30 +98,27 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     public void refresh() {
         queryBanner();
         queryScrolling();
+        queryHotLoanProducts();
+        queryChoiceProducts();
         queryHotNews();
+    }
+
+    @Override
+    public void refreshHotProduct() {
         queryHotLoanProducts();
     }
 
     @Override
-    public void checkMsg() {
-        if (UserHelper.getInstance(mContext).getProfile() != null) {
-            mView.navigateMessageCenter();
-        } else {
-            mView.navigateLogin();
-        }
-    }
-
-    @Override
     public void checkMyWorth() {
-        if (UserHelper.getInstance(mContext).getProfile() != null) {
-            mView.navigateWorthTest();
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            view.navigateWorthTest();
         } else {
-            mView.navigateLogin();
+            view.navigateLogin();
         }
     }
 
     private void queryBanner() {
-        Disposable dis = mApi.querySupernatant(RequestConstants.SUP_TYPE_BANNER)
+        Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_BANNER)
                 .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                @Override
@@ -123,10 +127,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            banners.clear();
                                            banners.addAll(result.getData());
-                                           mView.showBanner(Collections.unmodifiableList(banners));
+                                           view.showBanner(Collections.unmodifiableList(banners));
                                        }
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                    }
                                }
                            },
@@ -140,7 +144,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     private void queryAd() {
-        Disposable dis = mApi.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
+        Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
                 .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                @Override
@@ -149,16 +153,16 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                        hasAdInit = true;
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            AdBanner adBanner = result.getData().get(0);
-                                           String lastId = SPUtils.getLastDialogAdId(mContext);
+                                           String lastId = SPUtils.getLastDialogAdId(context);
                                            //同一个广告只显示一次
                                            if (lastId == null || !lastId.equals(adBanner.getLocalId())) {
-                                               mView.showAdDialog(result.getData().get(0));
+                                               view.showAdDialog(result.getData().get(0));
                                            }
                                            //记录已展示的id
-                                           SPUtils.setLastDialogAdId(mContext, adBanner.getLocalId());
+                                           SPUtils.setLastDialogAdId(context, adBanner.getLocalId());
                                        }
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                    }
                                }
                            },
@@ -172,7 +176,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     private void queryScrolling() {
-        Disposable dis = mApi.queryBorrowingScroll()
+        Disposable dis = api.queryBorrowingScroll()
                 .compose(RxUtil.<ResultEntity<List<String>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<String>>>() {
                                @Override
@@ -181,10 +185,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            notices.clear();
                                            notices.addAll(result.getData());
-                                           mView.showBorrowingScroll(Collections.unmodifiableList(notices));
+                                           view.showBorrowingScroll(Collections.unmodifiableList(notices));
                                        }
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                    }
                                }
                            },
@@ -198,7 +202,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     private void queryHotNews() {
-        Disposable dis = mApi.queryHotNews()
+        Disposable dis = api.queryHotNews()
                 .compose(RxUtil.<ResultEntity<List<HotNews>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<HotNews>>>() {
                                @Override
@@ -207,10 +211,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            hotNews.clear();
                                            hotNews.addAll(result.getData());
-                                           mView.showHotNews(Collections.unmodifiableList(hotNews));
+                                           view.showHotNews(Collections.unmodifiableList(hotNews));
                                        }
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                    }
 
                                }
@@ -219,26 +223,26 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(TabHomePresenter.this, throwable);
-                                mView.showErrorMsg(generateErrorMsg(throwable));
+                                view.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
         addDisposable(dis);
     }
 
     private void queryHotLoanProducts() {
-        Disposable dis = mApi.queryHotLoanProducts()
+        Disposable dis = api.queryHotLoanProducts()
                 .compose(RxUtil.<ResultEntity<List<LoanProduct.Row>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<LoanProduct.Row>>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<List<LoanProduct.Row>> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().size() > 0) {
-                                           hotLoanProducts.clear();
-                                           hotLoanProducts.addAll(result.getData());
-                                           mView.showHotLoanProducts(Collections.unmodifiableList(hotLoanProducts));
+                                           hotProducts.clear();
+                                           hotProducts.addAll(result.getData());
+                                           view.showHotProducts(Collections.unmodifiableList(hotProducts));
                                        }
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                    }
                                }
                            },
@@ -246,14 +250,41 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(TabHomePresenter.this, throwable);
-                                mView.showErrorMsg(generateErrorMsg(throwable));
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    private void queryChoiceProducts() {
+        Disposable dis = api.queryHotLoanProducts()
+                .compose(RxUtil.<ResultEntity<List<LoanProduct.Row>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<LoanProduct.Row>>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<List<LoanProduct.Row>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (result.getData() != null && result.getData().size() > 0) {
+                                           choiceProducts.clear();
+                                           choiceProducts.addAll(result.getData());
+                                           view.showChoiceProducts(Collections.unmodifiableList(choiceProducts));
+                                       }
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabHomePresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
         addDisposable(dis);
     }
 
     private void queryNotice() {
-        Disposable dis = mApi.queryNoticeHome()
+        Disposable dis = api.queryNoticeHome()
                 .compose(RxUtil.<ResultEntity<NoticeAbstract>>io2main())
                 .subscribe(new Consumer<ResultEntity<NoticeAbstract>>() {
                                @Override
@@ -261,13 +292,13 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                    if (result.isSuccess() && result.getData() != null) {
                                        notice = result.getData();
                                        if (notice.getId() != null) {
-                                           if (!notice.getId().equals(SPUtils.getLastNoticeId(mContext))) {
-                                               mView.showNotice(notice);
-                                               SPUtils.setNoticeClosed(mContext, false);
-                                           } else if (!SPUtils.getNoticeClosed(mContext)) {
-                                               mView.showNotice(notice);
+                                           if (!notice.getId().equals(SPUtils.getLastNoticeId(context))) {
+                                               view.showNotice(notice);
+                                               SPUtils.setNoticeClosed(context, false);
+                                           } else if (!SPUtils.getNoticeClosed(context)) {
+                                               view.showNotice(notice);
                                            }
-                                           SPUtils.setLastNoticeId(mContext, notice.getId());
+                                           SPUtils.setLastNoticeId(context, notice.getId());
                                        }
                                    }
                                }
@@ -283,10 +314,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
     private void handleThrowable(Throwable throwable) {
         logError(TabHomePresenter.this, throwable);
-        mView.showErrorMsg(generateErrorMsg(throwable));
+        view.showErrorMsg(generateErrorMsg(throwable));
 
         if (isAllDataEmpty()) {
-            mView.showError();
+            view.showError();
         }
     }
 
@@ -295,6 +326,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                 && banners.size() == 0
                 && notices.size() == 0
                 && hotNews.size() == 0
-                && hotLoanProducts.size() == 0;
+                && hotProducts.size() == 0
+                && choiceProducts.size() == 0;
     }
 }
