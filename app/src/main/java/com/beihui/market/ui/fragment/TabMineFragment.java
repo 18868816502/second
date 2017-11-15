@@ -25,6 +25,7 @@ import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabMineContract;
+import com.beihui.market.ui.dialog.WeChatPublicDialog;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -197,6 +198,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 break;
 
             case R.id.wechat_public:
+                new WeChatPublicDialog().show(getChildFragmentManager(), WeChatPublicDialog.class.getSimpleName());
                 break;
 
             case R.id.login:
