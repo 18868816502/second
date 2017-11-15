@@ -11,6 +11,7 @@ public class AdBanner {
     private String imgUrl;
     private String id;
     private String title;
+    private int needLoading;
 
     public int getType() {
         return type;
@@ -58,6 +59,14 @@ public class AdBanner {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getNeedLoading() {
+        return needLoading;
+    }
+
+    public void setNeedLoading(int needLoading) {
+        this.needLoading = needLoading;
     }
 
     public boolean isNative() {

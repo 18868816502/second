@@ -334,13 +334,6 @@ public class Api {
     }
 
     /**
-     * 查询首页热门贷款产品
-     */
-    public Observable<ResultEntity<List<LoanProduct.Row>>> queryHotLoanProducts() {
-        return service.queryHotLoanProducts();
-    }
-
-    /**
      * 查询首页热门产品
      *
      * @param pageNo 查询页数

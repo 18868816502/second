@@ -7,6 +7,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.NoticeAbstract;
@@ -28,6 +29,8 @@ import io.reactivex.functions.Consumer;
 
 public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract.Presenter {
 
+    private static final int DEFAULT_PAGE_SIZE = 10;
+
     private Api api;
     private TabHomeContract.View view;
     private Context context;
@@ -38,7 +41,16 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private List<LoanProduct.Row> hotProducts = new ArrayList<>();
     private List<LoanProduct.Row> choiceProducts = new ArrayList<>();
     private List<HotNews> hotNews = new ArrayList<>();
-    private List<String> notices = new ArrayList<>();
+    private List<String> headlines = new ArrayList<>();
+
+    /**
+     * 热门产品查询页，初始值1，之后依据server传回的值更新
+     */
+    private int hotProductPageNo = 1;
+    /**
+     * 精选产品查询页
+     */
+    private int choiceProductPageNo = 1;
 
     @Inject
     TabHomePresenter(Api api, TabHomeContract.View view, Context context) {
@@ -64,71 +76,59 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
         //banner
         if (banners.size() == 0) {
-            queryBanner();
+            loadBanner();
         } else {
             view.showBanner(Collections.unmodifiableList(banners));
         }
-        //hot loan products
+        //hot products
         if (hotProducts.size() == 0) {
-            queryHotLoanProducts();
+            loadHotProducts();
         } else {
             view.showHotProducts(hotProducts);
         }
         //choice products
         if (choiceProducts.size() == 0) {
-            queryChoiceProducts();
+            loadChoiceProducts();
         } else {
             view.showChoiceProducts(choiceProducts);
         }
         //news
         if (hotNews.size() == 0) {
-            queryHotNews();
+            loadHotNews();
         } else {
             view.showHotNews(hotNews);
         }
-        //loan success notice
-        if (notices.size() == 0) {
-            queryScrolling();
+        //headlines
+        if (headlines.size() == 0) {
+            loadHeadline();
         } else {
-            view.showBorrowingScroll(Collections.unmodifiableList(notices));
+            view.showHeadline(Collections.unmodifiableList(headlines));
         }
     }
 
     @Override
     public void refresh() {
-        queryBanner();
-        queryScrolling();
-        queryHotLoanProducts();
-        queryChoiceProducts();
-        queryHotNews();
+        loadBanner();
+        loadHeadline();
+
+        loadHotProducts();
+        loadChoiceProducts();
+        loadHotNews();
     }
 
     @Override
-    public void refreshHotProduct() {
-        queryHotLoanProducts();
-    }
-
-    @Override
-    public void checkMyWorth() {
-        if (UserHelper.getInstance(context).getProfile() != null) {
-            view.navigateWorthTest();
-        } else {
-            view.navigateLogin();
-        }
-    }
-
-    private void queryBanner() {
+    public void loadBanner() {
         Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_BANNER)
                 .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
                                    if (result.isSuccess()) {
+                                       banners.clear();
                                        if (result.getData() != null && result.getData().size() > 0) {
-                                           banners.clear();
                                            banners.addAll(result.getData());
-                                           view.showBanner(Collections.unmodifiableList(banners));
                                        }
+                                       view.showBanner(Collections.unmodifiableList(banners));
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -141,6 +141,166 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                             }
                         });
         addDisposable(dis);
+    }
+
+    @Override
+    public void loadHeadline() {
+        Disposable dis = api.queryBorrowingScroll()
+                .compose(RxUtil.<ResultEntity<List<String>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<String>>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<List<String>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       headlines.clear();
+                                       if (result.getData() != null && result.getData().size() > 0) {
+                                           headlines.addAll(result.getData());
+                                       }
+                                       view.showHeadline(Collections.unmodifiableList(headlines));
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                handleThrowable(throwable);
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void loadHotProducts() {
+        Disposable dis = api.queryHotProduct(hotProductPageNo)
+                .compose(RxUtil.<ResultEntity<HotLoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<HotLoanProduct>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<HotLoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       hotProducts.clear();
+                                       if (result.getData() != null) {
+                                           hotProductPageNo = result.getData().getPageNo();
+                                           hotProducts.addAll(result.getData().getRows());
+                                       }
+                                       view.showHotProducts(Collections.unmodifiableList(hotProducts));
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabHomePresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void loadChoiceProducts() {
+        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, DEFAULT_PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       choiceProductPageNo++;
+                                       if (result.getData() != null && result.getData().getRows() != null
+                                               && result.getData().getRows().size() > 0) {
+                                           choiceProducts.addAll(result.getData().getRows());
+                                       }
+                                       view.showChoiceProducts(Collections.unmodifiableList(choiceProducts));
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabHomePresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void loadHotNews() {
+        Disposable dis = api.queryHotNews()
+                .compose(RxUtil.<ResultEntity<List<HotNews>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<HotNews>>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<List<HotNews>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       hotNews.clear();
+                                       if (result.getData() != null && result.getData().size() > 0) {
+                                           hotNews.addAll(result.getData());
+                                       }
+                                       view.showHotNews(Collections.unmodifiableList(hotNews));
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(TabHomePresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void clickQualityTest() {
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            view.navigateWorthTest();
+        } else {
+            view.navigateLogin();
+        }
+    }
+
+    @Override
+    public void clickBanner(int position) {
+        AdBanner adBanner = banners.get(position);
+        //需要先登录
+        if (adBanner.getNeedLoading() == 1) {
+            if (UserHelper.getInstance(context).getProfile() == null) {
+                view.navigateLogin();
+                return;
+            }
+        }
+        //跳原生还是跳Web
+        if (adBanner.isNative()) {
+            view.navigateProductDetail(null, adBanner.getLocalId());
+        } else {
+            view.navigateWeb(adBanner.getTitle(), adBanner.getUrl());
+        }
+
+    }
+
+    @Override
+    public void clickHotProduct(int position) {
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            view.navigateProductDetail(hotProducts.get(position), null);
+        } else {
+            view.navigateLogin();
+        }
+    }
+
+    @Override
+    public void clickChoiceProduct(int position) {
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            view.navigateProductDetail(choiceProducts.get(position), null);
+        } else {
+            view.navigateLogin();
+        }
     }
 
     private void queryAd() {
@@ -170,114 +330,6 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 handleThrowable(throwable);
-                            }
-                        });
-        addDisposable(dis);
-    }
-
-    private void queryScrolling() {
-        Disposable dis = api.queryBorrowingScroll()
-                .compose(RxUtil.<ResultEntity<List<String>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<String>>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<List<String>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           notices.clear();
-                                           notices.addAll(result.getData());
-                                           view.showBorrowingScroll(Collections.unmodifiableList(notices));
-                                       }
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                handleThrowable(throwable);
-                            }
-                        });
-        addDisposable(dis);
-    }
-
-    private void queryHotNews() {
-        Disposable dis = api.queryHotNews()
-                .compose(RxUtil.<ResultEntity<List<HotNews>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<HotNews>>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<List<HotNews>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           hotNews.clear();
-                                           hotNews.addAll(result.getData());
-                                           view.showHotNews(Collections.unmodifiableList(hotNews));
-                                       }
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
-    }
-
-    private void queryHotLoanProducts() {
-        Disposable dis = api.queryHotLoanProducts()
-                .compose(RxUtil.<ResultEntity<List<LoanProduct.Row>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<LoanProduct.Row>>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<List<LoanProduct.Row>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           hotProducts.clear();
-                                           hotProducts.addAll(result.getData());
-                                           view.showHotProducts(Collections.unmodifiableList(hotProducts));
-                                       }
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
-    }
-
-    private void queryChoiceProducts() {
-        Disposable dis = api.queryHotLoanProducts()
-                .compose(RxUtil.<ResultEntity<List<LoanProduct.Row>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<LoanProduct.Row>>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<List<LoanProduct.Row>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           choiceProducts.clear();
-                                           choiceProducts.addAll(result.getData());
-                                           view.showChoiceProducts(Collections.unmodifiableList(choiceProducts));
-                                       }
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
         addDisposable(dis);
@@ -324,7 +376,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private boolean isAllDataEmpty() {
         return notice == null
                 && banners.size() == 0
-                && notices.size() == 0
+                && headlines.size() == 0
                 && hotNews.size() == 0
                 && hotProducts.size() == 0
                 && choiceProducts.size() == 0;

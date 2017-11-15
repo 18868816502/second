@@ -193,13 +193,6 @@ public interface ApiService {
     Observable<ResultEntity<List<HotNews>>> queryHotNews();
 
     /**
-     * 获取首页热门贷款产品
-     */
-    @Deprecated
-    @GET(PRODUCT_PATH + "/product/hotList")
-    Observable<ResultEntity<List<LoanProduct.Row>>> queryHotLoanProducts();
-
-    /**
      * 查看首页热门产品
      */
     @FormUrlEncoded

@@ -3,6 +3,8 @@ package com.beihui.market.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -87,7 +89,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @BindView(R.id.marquee_view)
     MarqueeView marqueeView;
     @BindView(R.id.refresh_hot)
-    View refreshHot;
+    TextView refreshHot;
     @BindView(R.id.hot_recycler_view)
     RecyclerView hotRecyclerView;
     @BindView(R.id.choice_recycler_view)
@@ -111,8 +113,6 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     private HotChoiceRVAdapter choiceAdapter;
     private HotNewsAdapter newsAdapter;
 
-    //记录顶部banner的高度
-    private int bannerHeight;
     //status and tool bar render
     public float toolBarBgAlpha;
 
@@ -200,41 +200,33 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             @Override
             public void onScrolled(int dy) {
-                int maxMove = bannerHeight / 2;
+                int maxMove = banner.getHeight() / 2;
                 renderStatusAndToolBar(dy / (float) maxMove);
             }
         });
 
+        /*轮播*/
         banner.setDelayTime(5000);
         banner.setIndicatorGravity(BannerConfig.RIGHT);
         banner.isAutoPlay(true);
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                AdBanner ad = bannerAds.get(position);
                 //统计点击
+                AdBanner ad = bannerAds.get(position);
                 DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
-                //跳原生还是跳Web
-                if (ad.isNative()) {
-                    Intent intent = new Intent(getContext(), LoanDetailActivity.class);
-                    intent.putExtra("loanId", ad.getLocalId());
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getContext(), ComWebViewActivity.class);
-                    intent.putExtra("url", ad.getUrl());
-                    intent.putExtra("title", ad.getTitle());
-                    startActivity(intent);
-                }
+
+                presenter.clickBanner(position);
+
             }
         });
 
+        /*热门产品*/
         hotAdapter = new HotChoiceRVAdapter(R.layout.list_item_hot_product);
         hotAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
-                intent.putExtra("loan", (LoanProduct.Row) adapter.getItem(position));
-                startActivity(intent);
+                presenter.clickHotProduct(position);
             }
         });
         hotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2) {
@@ -245,19 +237,33 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         });
         hotRecyclerView.setAdapter(hotAdapter);
 
+        /*精选产品*/
         choiceAdapter = new HotChoiceRVAdapter(R.layout.list_item_product_choice);
         choiceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
-                intent.putExtra("loan", (LoanProduct.Row) adapter.getItem(position));
-                startActivity(intent);
+                presenter.clickChoiceProduct(position);
             }
         });
+        choiceAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                presenter.loadChoiceProducts();
+            }
+        }, choiceRecyclerView);
         choiceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         choiceRecyclerView.setAdapter(choiceAdapter);
 
+        /*热门产品刷新*/
+        refreshHot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Animatable) refreshHot.getCompoundDrawables()[2]).start();
+                presenter.loadHotProducts();
+            }
+        });
 
+        /*借款攻略*/
         newsAdapter = new HotNewsAdapter();
         newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -275,7 +281,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         qualityTestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.checkMyWorth();
+                presenter.clickQualityTest();
             }
         });
 
@@ -329,7 +335,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     }
 
     @Override
-    public void showBorrowingScroll(List<String> list) {
+    public void showHeadline(List<String> list) {
         handleShowContent();
         marqueeView.startWithList(list);
     }
@@ -344,6 +350,10 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Override
     public void showChoiceProducts(List<LoanProduct.Row> products) {
+        Drawable d = refreshHot.getCompoundDrawables()[2];
+        if (d != null) {
+            ((Animatable) d).stop();
+        }
         if (choiceAdapter != null) {
             choiceAdapter.notifyHotProductChanged(products);
         }
@@ -389,12 +399,20 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
+        Drawable d = refreshHot.getCompoundDrawables()[2];
+        if (d != null) {
+            ((Animatable) d).stop();
+        }
     }
 
     @Override
     public void showError() {
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
+        }
+        Drawable d = refreshHot.getCompoundDrawables()[2];
+        if (d != null) {
+            ((Animatable) d).stop();
         }
         stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
@@ -408,6 +426,25 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     public void navigateWorthTest() {
         Intent intent = new Intent(getContext(), WorthTestActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void navigateProductDetail(LoanProduct.Row loan, String loanId) {
+        Intent toDetail = new Intent(getContext(), LoanDetailActivity.class);
+        if (loan != null) {
+            toDetail.putExtra("loan", loan);
+        } else {
+            toDetail.putExtra("loanId", loanId);
+        }
+        startActivity(toDetail);
+    }
+
+    @Override
+    public void navigateWeb(String title, String url) {
+        Intent toWeb = new Intent(getContext(), ComWebViewActivity.class);
+        toWeb.putExtra("title", title);
+        toWeb.putExtra("url", url);
+        startActivity(toWeb);
     }
 
     private void handleShowContent() {
