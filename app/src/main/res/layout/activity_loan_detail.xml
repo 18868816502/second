@@ -12,6 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
+        <ImageView
+            android:id="@+id/navigate"
+            style="@style/ToolBarIconStyle"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/dark_light_state_navigation" />
+
         <TextView
             android:id="@+id/loan_name_title"
             style="@style/ToolBarTitleTextAppearance.Dark"
@@ -19,6 +26,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/color_white_black_selected" />
+
+        <ImageView
+            android:id="@+id/share"
+            style="@style/ToolBarIconStyle"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/dark_light_state_share" />
+
+        <ImageView
+            android:id="@+id/collect"
+            style="@style/ToolBarIconStyle"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/collection" />
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

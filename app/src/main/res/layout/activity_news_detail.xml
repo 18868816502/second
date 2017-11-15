@@ -20,6 +20,12 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/tab_news" />
+
+        <ImageView
+            android:id="@+id/collect"
+            style="@style/ToolBarIconStyle"
+            android:layout_gravity="center_vertical|right"
+            android:src="@drawable/collection" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

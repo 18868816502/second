@@ -10,7 +10,12 @@ public interface LoanProductDetailContract {
     interface Presenter extends BasePresenter {
         void queryDetail(String id);
 
+        void addCollection(String id);
+
+        void deleteCollection(String id);
+
         void checkLoan();
+
     }
 
     interface View extends BaseView<Presenter> {
@@ -18,8 +23,11 @@ public interface LoanProductDetailContract {
 
         void showLoanOffSell();
 
+        void showAddCollectionSuccess(String msg);
+
         void navigateLoan(LoanProductDetail detail);
 
         void navigateLogin();
+
     }
 }

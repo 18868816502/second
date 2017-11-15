@@ -21,12 +21,15 @@ import com.beihui.market.entity.News;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
+import com.beihui.market.ui.presenter.NewsDetailPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -37,6 +40,8 @@ public class NewsDetailActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.title)
     TextView titleTv;
+    @BindView(R.id.collect)
+    View collectView;
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
@@ -46,6 +51,9 @@ public class NewsDetailActivity extends BaseComponentActivity {
     private HotNews hotNews;
 
     private String newsUrl;
+
+    @Inject
+    NewsDetailPresenter presenter;
 
     @Override
     protected void onDestroy() {
@@ -65,6 +73,8 @@ public class NewsDetailActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).init();
+
+        collectView.setSelected(true);
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);

@@ -15,8 +15,6 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ReplacementSpan;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +36,7 @@ import com.beihui.market.ui.presenter.LoanDetailPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
 import com.bumptech.glide.Glide;
@@ -50,9 +49,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class LoanDetailActivity extends BaseComponentActivity implements LoanProductDetailContract.View {
+
+    @BindView(R.id.navigate)
+    View navigateView;
+    @BindView(R.id.collect)
+    View collectView;
+    @BindView(R.id.share)
+    View shareView;
 
     @BindView(R.id.base_container)
     View baseContainer;
@@ -115,9 +122,6 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         super.onDestroy();
     }
 
-    private int[] selectedState = new int[]{android.R.attr.state_selected};
-    private int[] noneState = new int[]{};
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_loan_detail;
@@ -125,15 +129,17 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar, false);
-        setupToolbarBackNavigation(toolbar, R.drawable.dark_light_state_navigation);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             @Override
             public void onScrolled(int dy) {
                 renderBar(dy / (float) hitDistance);
-                changeToolBarIconState(dy >= hitDistance / 2);
+                boolean selected = dy >= hitDistance / 2;
+                navigateView.setSaveEnabled(selected);
+                collectView.setSelected(selected);
+                shareView.setSelected(selected);
+                loanNameTitleTv.setSelected(selected);
             }
         });
         applyBtn.setOnClickListener(new View.OnClickListener() {
@@ -177,53 +183,12 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 .inject(this);
     }
 
-    private void changeToolBarIconState(boolean selected) {
-        int[] state = selected ? selectedState : noneState;
-        //noinspection ConstantConditions
-        toolbar.getNavigationIcon().setState(state);
-        toolbar.getMenu().findItem(R.id.share).getIcon().setState(state);
-        loanNameTitleTv.setSelected(selected);
-    }
-
     private void renderBar(float alpha) {
         int alphaInt = (int) (alpha * 255);
         alphaInt = alphaInt < 10 ? 0 : alphaInt;
         alphaInt = alphaInt > 255 ? 255 : alphaInt;
         int color = Color.argb(alphaInt, 85, 145, 255);
         toolbar.setBackgroundColor(color);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_loan_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //umeng统计
-        Statistic.onEvent(Events.LOAN_DETAIL_CLICK_SHARE);
-
-        UMWeb umWeb = null;
-        if (productDetail != null && productDetail.getBase() != null) {
-            umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));
-            UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
-            umWeb.setThumb(image);
-            umWeb.setTitle(productDetail.getBase().getProductName());
-            umWeb.setDescription(productDetail.getBase().getExplain());
-        } else if (productAbstract != null) {
-            umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
-            UMImage image = new UMImage(this, productAbstract.getLogoUrl());
-            umWeb.setThumb(image);
-            umWeb.setTitle(productAbstract.getProductName());
-        }
-
-        if (umWeb != null) {
-            new ShareDialog()
-                    .setUmWeb(umWeb)
-                    .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
-        }
-        return true;
     }
 
     private void inflateTag(String[] tags) {
@@ -304,6 +269,38 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @Override
     public void setPresenter(LoanProductDetailContract.Presenter presenter) {
         //injected.nothing to do.
+    }
+
+    @OnClick({R.id.collect, R.id.share})
+    void onToolbarIconClicked(View view) {
+        switch (view.getId()) {
+            case R.id.collect:
+                break;
+            case R.id.share:
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_DETAIL_CLICK_SHARE);
+
+                UMWeb umWeb = null;
+                if (productDetail != null && productDetail.getBase() != null) {
+                    umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));
+                    UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
+                    umWeb.setThumb(image);
+                    umWeb.setTitle(productDetail.getBase().getProductName());
+                    umWeb.setDescription(productDetail.getBase().getExplain());
+                } else if (productAbstract != null) {
+                    umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
+                    UMImage image = new UMImage(this, productAbstract.getLogoUrl());
+                    umWeb.setThumb(image);
+                    umWeb.setTitle(productAbstract.getProductName());
+                }
+
+                if (umWeb != null) {
+                    new ShareDialog()
+                            .setUmWeb(umWeb)
+                            .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
+                }
+                break;
+        }
     }
 
     @Override
@@ -396,6 +393,11 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     }
 
     @Override
+    public void showAddCollectionSuccess(String msg) {
+        ToastUtils.showShort(this, msg, null);
+    }
+
+    @Override
     public void navigateLoan(LoanProductDetail detail) {
         DataStatisticsHelper.getInstance().onProductClicked(detail.getBase().getId());
         Intent intent = new Intent(this, ComWebViewActivity.class);
@@ -408,6 +410,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     public void navigateLogin() {
         UserAuthorizationActivity.launch(this, null);
     }
+
 
     private class SizePosSpan extends ReplacementSpan {
 

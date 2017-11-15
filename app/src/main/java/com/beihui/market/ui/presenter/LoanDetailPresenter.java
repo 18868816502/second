@@ -19,39 +19,39 @@ import io.reactivex.functions.Consumer;
 
 public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductDetailContract.Presenter {
 
-    private Api mApi;
-    private LoanProductDetailContract.View mView;
-    private UserHelper mUserHelper;
+    private Api api;
+    private LoanProductDetailContract.View view;
+    private UserHelper userHelper;
 
     private LoanProductDetail productDetail;
 
     @Inject
     LoanDetailPresenter(Api api, LoanProductDetailContract.View view, Context context) {
-        mApi = api;
-        mView = view;
-        mUserHelper = UserHelper.getInstance(context);
+        this.api = api;
+        this.view = view;
+        userHelper = UserHelper.getInstance(context);
     }
 
 
     @Override
     public void queryDetail(String id) {
         String userId = null;
-        if (mUserHelper.getProfile() != null) {
-            userId = mUserHelper.getProfile().getId();
+        if (userHelper.getProfile() != null) {
+            userId = userHelper.getProfile().getId();
         }
-        Disposable dis = mApi.queryLoanProductDetail(id, userId)
+        Disposable dis = api.queryLoanProductDetail(id, userId)
                 .compose(RxUtil.<ResultEntity<LoanProductDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProductDetail>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<LoanProductDetail> result) throws Exception {
                                    if (result.isSuccess()) {
                                        productDetail = result.getData();
-                                       mView.showLoanDetail(result.getData());
+                                       view.showLoanDetail(result.getData());
                                    } else if (result.getCode() == 2000039) {
                                        //产品已经下架
-                                       mView.showLoanOffSell();
+                                       view.showLoanOffSell();
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                    }
                                }
                            },
@@ -59,20 +59,30 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(LoanDetailPresenter.this, throwable);
-                                mView.showErrorMsg(generateErrorMsg(throwable));
+                                view.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
         addDisposable(dis);
     }
 
     @Override
+    public void addCollection(String id) {
+
+    }
+
+    @Override
+    public void deleteCollection(String id) {
+
+    }
+
+    @Override
     public void checkLoan() {
-        if (mUserHelper.getProfile() != null) {
+        if (userHelper.getProfile() != null) {
             if (productDetail != null) {
-                mView.navigateLoan(productDetail);
+                view.navigateLoan(productDetail);
             }
         } else {
-            mView.navigateLogin();
+            view.navigateLogin();
         }
     }
 }

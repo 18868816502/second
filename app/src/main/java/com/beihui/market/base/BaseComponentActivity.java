@@ -3,7 +3,6 @@ package com.beihui.market.base;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -17,6 +16,8 @@ import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 
 
 public abstract class BaseComponentActivity extends BaseActivity {
@@ -153,5 +154,11 @@ public abstract class BaseComponentActivity extends BaseActivity {
         super.onDestroy();
         //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
         ImmersionBar.with(this).destroy();
+    }
+
+    @Optional
+    @OnClick(R.id.navigate)
+    void navigate() {
+        onBackPressed();
     }
 }
