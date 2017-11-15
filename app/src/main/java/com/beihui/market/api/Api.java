@@ -9,8 +9,10 @@ import com.beihui.market.api.interceptor.AccessHeadInterceptor;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.Message;
@@ -339,16 +341,61 @@ public class Api {
     }
 
     /**
-     * 条件查询贷款产品列表
+     * 查询首页热门产品
+     *
+     * @param pageNo 查询页数
+     */
+    public Observable<ResultEntity<HotLoanProduct>> queryHotProduct(int pageNo) {
+        return service.queryHotProduct(pageNo);
+    }
+
+    /**
+     * 查询首页精选产品
+     *
+     * @param pageNo   查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<LoanProduct>> queryChoiceProduct(int pageNo, int pageSize) {
+        return service.queryChoiceProduct(pageNo, pageSize);
+    }
+
+
+    /**
+     * 查询个人推荐产品提示语
+     */
+    public Observable<ResultEntity<List<String>>> queryLoanHint() {
+        return service.queryLoanHint();
+    }
+
+    /**
+     * 查询个性推荐产品分组
+     */
+    public Observable<ResultEntity<List<LoanGroup>>> queryLoanGroup() {
+        return service.queryLoanGroup();
+    }
+
+    /**
+     * 查询个性推荐产品
+     *
+     * @param groupId  个人推荐group id
+     * @param pageNo   查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<LoanProduct>> queryPersonalProducts(String groupId, int pageNo, int pageSize) {
+        return service.queryPersonalProducts(groupId, pageNo, pageSize);
+    }
+
+    /**
+     * 查询智能推荐产品
      *
      * @param amount   目标金额
      * @param dueTime  借款期限
-     * @param pro      职业身份
+     * @param sortType 排序规则
      * @param pageNum  查询页数
      * @param pageSize 查询每页大小
      */
-    public Observable<ResultEntity<LoanProduct>> queryLoanProduct(double amount, int dueTime, int pro, int pageNum, int pageSize) {
-        return service.queryLoanProduct(amount, dueTime + "", pro + "", pageNum, pageSize);
+    public Observable<ResultEntity<LoanProduct>> queryLoanProduct(double amount, int dueTime, int sortType, int pageNum, int pageSize) {
+        return service.queryLoanProduct(amount, dueTime + "", sortType, pageNum, pageSize);
     }
 
     /**
@@ -359,6 +406,40 @@ public class Api {
      */
     public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id, String userId) {
         return service.queryLoanProductDetail(id, userId);
+    }
+
+    /**
+     * 添加或者删除收藏（产品，资讯）
+     *
+     * @param userId        用户id
+     * @param productId     产品id
+     * @param informationId 资讯id
+     * @param status        0.删除 1.添加
+     */
+    public Observable<ResultEntity> addOrDeleteCollection(String userId, String productId, String informationId, int status) {
+        return service.addOrDeleteCollection(userId, productId, informationId, status);
+    }
+
+    /**
+     * 查询产品收藏
+     *
+     * @param userId   用户id
+     * @param pageNo   查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<LoanProduct>> queryProductionCollection(String userId, String pageNo, String pageSize) {
+        return service.queryProductionCollection(0, userId, pageNo, pageSize);
+    }
+
+    /**
+     * 查询资讯收藏
+     *
+     * @param userId   用户id
+     * @param pageNo   查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<News>> queryNewsCollection(String userId, String pageNo, String pageSize) {
+        return service.queryNewsCollection(1, userId, pageNo, pageSize);
     }
 
     /**
@@ -387,7 +468,7 @@ public class Api {
         return service.submitFeedback(userId, content);
     }
 
-    /*********数据统计********/
+    /*****+******************************************************数据统计***********************************************+*****+*****/
 
     /**
      * 点击第三方产品外链
@@ -418,7 +499,7 @@ public class Api {
     public Observable<ResultEntity> onInternalMessageClicked(String id) {
         return service.onInternalMessageClicked(id);
     }
-    /*****************/
+    /**************+***************************************************+******************************************************/
 
     /*****generate method*****/
     //加密密码

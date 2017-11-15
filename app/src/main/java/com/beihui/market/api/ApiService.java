@@ -3,8 +3,10 @@ package com.beihui.market.api;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.Message;
@@ -193,17 +195,53 @@ public interface ApiService {
     /**
      * 获取首页热门贷款产品
      */
+    @Deprecated
     @GET(PRODUCT_PATH + "/product/hotList")
     Observable<ResultEntity<List<LoanProduct.Row>>> queryHotLoanProducts();
 
+    /**
+     * 查看首页热门产品
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/dynamicList")
+    Observable<ResultEntity<HotLoanProduct>> queryHotProduct(@Field("pageNo") int pageNo);
 
     /**
-     * 查询贷款产品列表
+     * 查询首页精选产品
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/selectedList")
+    Observable<ResultEntity<LoanProduct>> queryChoiceProduct(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * 查询产品提示语
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/queryBorrowingPrompt")
+    Observable<ResultEntity<List<String>>> queryLoanHint();
+
+    /**
+     * 查询个性推荐产品分组
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/groupList")
+    Observable<ResultEntity<List<LoanGroup>>> queryLoanGroup();
+
+    /**
+     * 查询个性推荐产品
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/groupProductList")
+    Observable<ResultEntity<LoanProduct>> queryPersonalProducts(@Field("groupId") String groupId,
+                                                                @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * 查询智能推荐产品
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/list")
     Observable<ResultEntity<LoanProduct>> queryLoanProduct(@Field("amount") double amount, @Field("dueTime") String dueTime,
-                                                           @Field("orientCareer") String pro, @Field("pageNo") int pageNum,
+                                                           @Field("sortType") int sortType, @Field("pageNo") int pageNum,
                                                            @Field("pageSize") int pageSize);
 
     /**
@@ -212,6 +250,31 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/details")
     Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId, @Field("userId") String userId);
+
+    /**
+     * 添加或者删除产品，资讯收藏
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/editUserCollection")
+    Observable<ResultEntity> addOrDeleteCollection(@Field("userId") String userId, @Field("productId") String productId,
+                                                   @Field("informationId") String informationId, @Field("status") int status);
+
+
+    /**
+     * 查询收藏的产品
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/queryUserCollection")
+    Observable<ResultEntity<LoanProduct>> queryProductionCollection(@Field("type") int type, @Field("userId") String userId,
+                                                                    @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
+
+    /**
+     * 查询收藏的资讯
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/queryUserCollection")
+    Observable<ResultEntity<News>> queryNewsCollection(@Field("type") int type, @Field("userId") String userId,
+                                                       @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
 
     /**
      * 查询邀请详细
@@ -234,7 +297,7 @@ public interface ApiService {
     @POST(BASE_PATH + "/clientUser/insertFeedback")
     Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content);
 
-    /*******数据统计********/
+    /****************************************************数据统计*****************************************************/
 
     /**
      * 点击第三方产品外链
@@ -257,5 +320,5 @@ public interface ApiService {
     @POST(BASE_PATH + "/pushInfo/details")
     Observable<ResultEntity> onInternalMessageClicked(@Field("id") String id);
 
-    /***************/
+    /**********************************************************************************************************/
 }
