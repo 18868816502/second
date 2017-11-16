@@ -10,31 +10,85 @@ import java.util.List;
 public interface PageSmartContract {
 
     interface Presenter extends BasePresenter {
-        void filterAmount(int amount);
+        /**
+         * 修改金额查询条件
+         *
+         * @param selected 选择的金额位置
+         */
+        void clickAmount(int selected);
 
-        void filterDueTime(int selected);
+        /**
+         * 修改借款期限查询条件
+         *
+         * @param selected 选择的日期位置
+         */
+        void clickDueTime(int selected);
 
-        void filterPro(int selected);
+        /**
+         * 修改排序条件
+         *
+         * @param selected 选择的排序条件位置
+         */
+        void clickSort(int selected);
 
+        /**
+         * 刷新产品列表
+         */
         void refresh();
 
+        /**
+         * 加载更多产品列表
+         */
         void loadMore();
 
-        String getFilterAmount();
+        /**
+         * @return 可选择的金额选项
+         */
+        String[] getMoneySelection();
 
-        String[] getFilterDueTime();
+        /**
+         * @return 当前选择的金额选项
+         */
+        int getMoneySelected();
 
-        int getFilterDueTimeSelected();
+        /**
+         * @return 可选择的借款期限选项
+         */
+        String[] getDueTimeSelection();
 
+        /**
+         * @return 当前选择的借款期限选项
+         */
+        int getDueTimeSelected();
+
+        /**
+         * @return 可选择的排序选项
+         */
         String[] getSortGroup();
 
+        /**
+         * @return 当前选择的排序选项
+         */
         int getSortGroupIndex();
 
     }
 
     interface View extends BaseView<Presenter> {
-        void showFilters(String amount, String dueTime, String pro);
+        /**
+         * 显示当前搜索选项
+         *
+         * @param amount  当前选择的金额
+         * @param dueTime 当前选择的借款期限
+         * @param sort    当前选择的排序方式
+         */
+        void showFilters(String amount, String dueTime, String sort);
 
+        /**
+         * 产品列表加载完成
+         *
+         * @param list           产品列表
+         * @param enableLoadMore 是否还能加载更多产品
+         */
         void showLoanProduct(List<LoanProduct.Row> list, boolean enableLoadMore);
 
         void showNetError();

@@ -6,11 +6,13 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/notice_container"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="#ffe99e"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingRight="15dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/notice_content"
@@ -23,7 +25,7 @@
             tools:text="精胜多负少的发斯蒂芬斯蒂芬sfsdfsdfdsf dsf s" />
 
         <ImageView
-            android:id="@+id/close"
+            android:id="@+id/notice_close"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right"
@@ -39,8 +41,9 @@
         android:paddingLeft="2dp"
         android:paddingTop="9dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recommend_product_recycler_view"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>

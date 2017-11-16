@@ -32,6 +32,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.LegalInputUtils;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 
@@ -54,6 +55,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     TextView userNameTv;
     @BindView(R.id.login)
     TextView loginTv;
+    @BindView(R.id.wechat_surprise)
+    View wechatSurpriseView;
 
     @BindView(R.id.has_message)
     TextView hasMessageTv;
@@ -107,6 +110,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         activity.setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        wechatSurpriseView.setVisibility(SPUtils.getWechatSurpriseClicked(getContext()) ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -199,6 +204,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
             case R.id.wechat_public:
                 new WeChatPublicDialog().show(getChildFragmentManager(), WeChatPublicDialog.class.getSimpleName());
+                if (wechatSurpriseView.getVisibility() != View.GONE) {
+                    wechatSurpriseView.setVisibility(View.GONE);
+                    SPUtils.setWechatSurpriseClicked(getContext(), true);
+                }
                 break;
 
             case R.id.login:

@@ -4,7 +4,6 @@ package com.beihui.market.ui.presenter;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.base.Constant;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.ui.contract.PageSmartContract;
 import com.beihui.market.util.RxUtil;
@@ -21,15 +20,17 @@ import io.reactivex.functions.Consumer;
 
 public class PageSmartPresenter extends BaseRxPresenter implements PageSmartContract.Presenter {
     private static final int PAGE_SIZE = 10;
+    private String moneySelection[] = {"1000元", "3000元", "5000元", "1万元", "不限"};
+    private int moneyList[] = {1000, 3000, 5000, 10000, 0};
     private String dueTimes[] = {"1个月及以下", "3个月", "6个月", "12个月", "24个月", "36个月及以上", "不限"};
     private String sortGroup[] = {"默认排序", "借款利率", "最高额度"};
 
-    private Api mApi;
+    private Api api;
     private PageSmartContract.View mView;
 
-    private int amount = Constant.DEFAULT_FILTER_MONEY;
     private int dueTimeSelected = 6;
     private int sortSelected = 0;
+    private int moneySelected = 0;
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
     private int curPage = 1;
 
@@ -37,14 +38,14 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
 
     @Inject
     PageSmartPresenter(Api api, PageSmartContract.View view) {
-        mApi = api;
+        this.api = api;
         mView = view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+        mView.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
         if (loanProductList.size() > 0) {
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), loanProductList.size() >= PAGE_SIZE);
         } else {
@@ -52,11 +53,12 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
         }
     }
 
+
     @Override
-    public void filterAmount(int amount) {
-        if (amount != this.amount) {
-            this.amount = amount;
-            mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+    public void clickAmount(int selected) {
+        if (selected != moneySelected) {
+            moneySelected = selected;
+            mView.showFilters(moneySelection[selected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
@@ -65,10 +67,10 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     }
 
     @Override
-    public void filterDueTime(int selected) {
+    public void clickDueTime(int selected) {
         if (selected != dueTimeSelected) {
             dueTimeSelected = selected;
-            mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+            mView.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
@@ -77,10 +79,10 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     }
 
     @Override
-    public void filterPro(int selected) {
+    public void clickSort(int selected) {
         if (selected != sortSelected) {
             sortSelected = selected;
-            mView.showFilters(amount + "", dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+            mView.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
             mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
@@ -92,7 +94,7 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     public void refresh() {
         cancelCurTask();
         curPage = 1;
-        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(sortSelected), curPage, PAGE_SIZE)
+        Disposable dis = api.queryLoanProduct(moneyList[moneySelected], dueTimeSelected + 1, sortSelected, curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override
@@ -136,8 +138,7 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     @Override
     public void loadMore() {
         curPage++;
-        Disposable dis = mApi.queryLoanProduct(amount, dueTimeSelected + 1, getProParamBySelected(sortSelected),
-                curPage, PAGE_SIZE)
+        Disposable dis = api.queryLoanProduct(moneyList[moneySelected], dueTimeSelected + 1, sortSelected, curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override
@@ -170,19 +171,23 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
         addDisposable(dis);
     }
 
-
     @Override
-    public String getFilterAmount() {
-        return amount + "";
+    public String[] getMoneySelection() {
+        return moneySelection;
     }
 
     @Override
-    public String[] getFilterDueTime() {
+    public int getMoneySelected() {
+        return moneySelected;
+    }
+
+    @Override
+    public String[] getDueTimeSelection() {
         return dueTimes;
     }
 
     @Override
-    public int getFilterDueTimeSelected() {
+    public int getDueTimeSelected() {
         return dueTimeSelected;
     }
 
@@ -196,20 +201,6 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
         return sortSelected;
     }
 
-    private int getProParamBySelected(int selected) {
-        switch (selected) {
-            case 0:
-                return 2;
-            case 1:
-                return 4;
-            case 2:
-                return 3;
-            case 3:
-                return 1;
-            default:
-                return 0;
-        }
-    }
 
     private void cancelCurTask() {
         if (curTask != null && !curTask.isDisposed()) {

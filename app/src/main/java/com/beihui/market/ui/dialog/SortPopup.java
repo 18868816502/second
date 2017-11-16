@@ -56,7 +56,7 @@ public class SortPopup extends PopupWindow {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_time_filter_selection, parent, false);
+                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_loan_common_selection, parent, false);
                 }
                 ((TextView) convertView).setText(tags[position]);
                 return convertView;

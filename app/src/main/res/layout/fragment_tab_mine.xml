@@ -236,30 +236,6 @@
                     android:background="@color/line" />
 
                 <FrameLayout
-                    android:id="@+id/settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:drawableLeft="@drawable/mine_list_setting_icon"
-                        android:drawablePadding="10dp"
-                        android:drawableRight="@mipmap/right_icon"
-                        android:gravity="center_vertical"
-                        android:text="@string/settings"
-                        android:textColor="@color/black_1"
-                        android:textSize="14sp" />
-
-                </FrameLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/line" />
-
-                <FrameLayout
                     android:id="@+id/wechat_public"
                     android:layout_width="match_parent"
                     android:layout_height="54dp">
@@ -273,6 +249,53 @@
                         android:drawableRight="@mipmap/right_icon"
                         android:gravity="center_vertical"
                         android:text="@string/wechat_public"
+                        android:textColor="@color/black_1"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/wechat_surprise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="这里能借好多钱"
+                            android:textColor="@color/black_2"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="9dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/mine_wechat_light" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/line" />
+
+                <FrameLayout
+                    android:id="@+id/settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/mine_list_setting_icon"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@mipmap/right_icon"
+                        android:gravity="center_vertical"
+                        android:text="@string/settings"
                         android:textColor="@color/black_1"
                         android:textSize="14sp" />
 

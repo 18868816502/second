@@ -209,14 +209,12 @@ public interface ApiService {
     /**
      * 查询产品提示语
      */
-    @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/queryBorrowingPrompt")
     Observable<ResultEntity<List<String>>> queryLoanHint();
 
     /**
      * 查询个性推荐产品分组
      */
-    @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/groupList")
     Observable<ResultEntity<List<LoanGroup>>> queryLoanGroup();
 

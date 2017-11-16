@@ -159,26 +159,26 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
     }
 
     @Override
-    public void onMoneySelected(int money) {
-        presenter.filterAmount(money);
+    public void onMoneySelected(int selectIndex) {
+        presenter.clickAmount(selectIndex);
     }
 
     @Override
-    public void onTimeSelected(int selectTimeIndex) {
-        presenter.filterDueTime(selectTimeIndex);
+    public void onTimeSelected(int selectIndex) {
+        presenter.clickDueTime(selectIndex);
     }
 
     @Override
     public void onSortSelected(int selectIndex) {
-        presenter.filterPro(selectIndex);
+        presenter.clickSort(selectIndex);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void showFilters(String amount, String dueTime, String pro) {
-        moneyFilterContent.setText(amount + "元");
+    public void showFilters(String amount, String dueTime, String sort) {
+        moneyFilterContent.setText(amount);
         timeFilterContent.setText(dueTime);
-        sortContent.setText(pro);
+        sortContent.setText(sort);
     }
 
     @Override
@@ -238,7 +238,8 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
                 //umeng统计
                 Statistic.onEvent(Events.LOAN_CLICK_AMOUNT_FILTER);
 
-                MoneyFilterPopup moneyFilterPopup = new MoneyFilterPopup(getActivity(), presenter.getFilterAmount(), blurView, moneyFilterText, moneyFilterImage);
+                MoneyFilterPopup moneyFilterPopup = new MoneyFilterPopup(getActivity(), blurView, moneyFilterText, moneyFilterImage,
+                        presenter.getMoneySelection(), presenter.getMoneySelected());
                 moneyFilterPopup.setShareItemListener(this);
                 moneyFilterPopup.showAsDropDown(filterContainer);
                 break;
@@ -246,8 +247,8 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
                 //umeng统计
                 Statistic.onEvent(Events.LOAN_CLICK_TIME_FILTER);
 
-                TimeFilterPopup timeFilterPopup = new TimeFilterPopup(getActivity(), presenter.getFilterDueTimeSelected(),
-                        blurView, timeFilterText, timeFilterImage, presenter.getFilterDueTime());
+                TimeFilterPopup timeFilterPopup = new TimeFilterPopup(getActivity(), blurView, timeFilterText, timeFilterImage,
+                        presenter.getDueTimeSelection(), presenter.getDueTimeSelected());
                 timeFilterPopup.setShareItemListener(this);
                 timeFilterPopup.showAsDropDown(filterContainer);
                 break;
@@ -255,7 +256,8 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
                 //umeng统计
                 Statistic.onEvent(Events.LOAN_CLICK_PRO_FILTER);
 
-                SortPopup proFilterPopup = new SortPopup(getActivity(), blurView, sortText, sortImage, presenter.getSortGroup(), presenter.getSortGroupIndex());
+                SortPopup proFilterPopup = new SortPopup(getActivity(), blurView, sortText, sortImage,
+                        presenter.getSortGroup(), presenter.getSortGroupIndex());
                 proFilterPopup.setShareItemListener(this);
                 proFilterPopup.showAsDropDown(filterContainer);
                 break;

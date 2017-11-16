@@ -27,8 +27,8 @@ public class TimeFilterPopup extends PopupWindow {
 
     private TimeSelectionListener listener;
 
-    public TimeFilterPopup(final Activity context, final int selectTimeIndex, View shadowView, TextView tv, ImageView iv,
-                           final String[] tags) {
+    public TimeFilterPopup(final Activity context, View shadowView, TextView tv, ImageView iv,
+                           final String[] tags, final int selectTimeIndex) {
         super(context);
         this.shadowView = shadowView;
 
@@ -57,7 +57,7 @@ public class TimeFilterPopup extends PopupWindow {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_time_filter_selection, parent, false);
+                    convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_loan_common_selection, parent, false);
                 }
                 ((TextView) convertView).setText(tags[position]);
                 return convertView;

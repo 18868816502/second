@@ -65,4 +65,16 @@ public class SPUtils {
         editor.putBoolean("checkPermission", check);
         editor.apply();
     }
+
+    public static boolean getWechatSurpriseClicked(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("wechatSurpriseClicked", false);
+    }
+
+    public static void setWechatSurpriseClicked(Context context, boolean clicked) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("wechatSurpriseClicked", clicked);
+        editor.apply();
+    }
 }
