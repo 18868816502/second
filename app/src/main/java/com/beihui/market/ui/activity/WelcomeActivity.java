@@ -26,14 +26,49 @@ public class WelcomeActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         IndicatorView indicatorView = (IndicatorView) findViewById(R.id.indicator_view);
+        final View startNowView = findViewById(R.id.start_now);
+
         viewPager.setAdapter(new WelcomeAdapter());
         indicatorView.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                startNowView.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        startNowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fromAboutUs) {
+                    finish();
+                } else {
+                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
+
 
         ImmersionBar.with(this).init();
 
         fromAboutUs = getIntent().getBooleanExtra("fromAboutUs", false);
+
+
     }
 
     @Override
@@ -45,7 +80,7 @@ public class WelcomeActivity extends BaseActivity {
     private class WelcomeAdapter extends PagerAdapter {
 
         private LinkedList<View> cachedView = new LinkedList<>();
-        private int[] imageId = {R.mipmap.page_1, R.mipmap.page_2, R.mipmap.page_3};
+        private int[] imageId = {R.drawable.welcome_page_1, R.drawable.welcome_page_2, R.drawable.welcome_page_3};
 
         @Override
         public int getCount() {
@@ -64,25 +99,10 @@ public class WelcomeActivity extends BaseActivity {
                         .inflate(R.layout.viewpager_item_welcom, container, false);
                 holder = new ViewHolder();
                 holder.imageView = (ImageView) view.findViewById(R.id.image);
-                holder.startView = (ImageView) view.findViewById(R.id.start_now);
-                holder.startView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (fromAboutUs) {
-                            finish();
-                        } else {
-                            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                    }
-                });
                 view.setTag(holder);
             }
 
             holder.imageView.setImageResource(imageId[position]);
-            holder.startView.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
             container.addView(view);
             return view;
         }
@@ -102,7 +122,5 @@ public class WelcomeActivity extends BaseActivity {
 
     private class ViewHolder {
         ImageView imageView;
-        ImageView startView;
-
     }
 }
