@@ -247,8 +247,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/editUserCollection")
-    Observable<ResultEntity> addOrDeleteCollection(@Field("userId") String userId, @Field("productId") String productId,
-                                                   @Field("informationId") String informationId, @Field("status") int status);
+    Observable<ResultEntity> addOrDeleteCollection(@Field("userId") String userId, @Field("productId") String productId, @Field("status") int status);
 
 
     /**
@@ -256,16 +255,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/queryUserCollection")
-    Observable<ResultEntity<LoanProduct>> queryProductionCollection(@Field("type") int type, @Field("userId") String userId,
-                                                                    @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
-
-    /**
-     * 查询收藏的资讯
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/clientUser/queryUserCollection")
-    Observable<ResultEntity<News>> queryNewsCollection(@Field("type") int type, @Field("userId") String userId,
-                                                       @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
+    Observable<ResultEntity<LoanProduct>> queryProductionCollection(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
      * 查询邀请详细

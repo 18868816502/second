@@ -404,13 +404,12 @@ public class Api {
     /**
      * 添加或者删除收藏（产品，资讯）
      *
-     * @param userId        用户id
-     * @param productId     产品id
-     * @param informationId 资讯id
-     * @param status        0.删除 1.添加
+     * @param userId    用户id
+     * @param productId 产品id
+     * @param status    0.删除 1.添加
      */
-    public Observable<ResultEntity> addOrDeleteCollection(String userId, String productId, String informationId, int status) {
-        return service.addOrDeleteCollection(userId, productId, informationId, status);
+    public Observable<ResultEntity> addOrDeleteCollection(String userId, String productId, int status) {
+        return service.addOrDeleteCollection(userId, productId, status);
     }
 
     /**
@@ -420,19 +419,8 @@ public class Api {
      * @param pageNo   查询页数
      * @param pageSize 查询每页大小
      */
-    public Observable<ResultEntity<LoanProduct>> queryProductionCollection(String userId, String pageNo, String pageSize) {
-        return service.queryProductionCollection(0, userId, pageNo, pageSize);
-    }
-
-    /**
-     * 查询资讯收藏
-     *
-     * @param userId   用户id
-     * @param pageNo   查询页数
-     * @param pageSize 查询每页大小
-     */
-    public Observable<ResultEntity<News>> queryNewsCollection(String userId, String pageNo, String pageSize) {
-        return service.queryNewsCollection(1, userId, pageNo, pageSize);
+    public Observable<ResultEntity<LoanProduct>> queryProductionCollection(String userId, int pageNo, int pageSize) {
+        return service.queryProductionCollection(userId, pageNo, pageSize);
     }
 
     /**

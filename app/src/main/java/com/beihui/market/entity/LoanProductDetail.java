@@ -43,7 +43,8 @@ public class LoanProductDetail {
         private String repayMethodText;
         private String fastestLoanTimeText;
         private String mortgageMethodText;
-        private String explain;
+        private String explains;
+        private int isCollection;
 
         public String getDueTimeText() {
             return dueTimeText;
@@ -189,12 +190,24 @@ public class LoanProductDetail {
             this.interestTimeText = interestTimeText;
         }
 
-        public String getExplain() {
-            return explain;
+        public String getExplains() {
+            return explains;
         }
 
-        public void setExplain(String explain) {
-            this.explain = explain;
+        public void setExplains(String explains) {
+            this.explains = explains;
+        }
+
+        public int getIsCollection() {
+            return isCollection;
+        }
+
+        public void setIsCollection(int isCollection) {
+            this.isCollection = isCollection;
+        }
+
+        public boolean isCollected() {
+            return this.isCollection == 1;
         }
     }
 

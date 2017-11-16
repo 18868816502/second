@@ -149,7 +149,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 Statistic.onEvent(Events.LOAN_DETAIL_CLICK_LOAN);
 
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkLoan();
+                    if (productDetail != null && productDetail.getBase() != null) {
+                        DataStatisticsHelper.getInstance().onProductClicked(productDetail.getBase().getId());
+                        Intent intent = new Intent(LoanDetailActivity.this, ComWebViewActivity.class);
+                        intent.putExtra("url", productDetail.getBase().getUrl());
+                        intent.putExtra("title", productDetail.getBase().getProductName());
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -275,6 +281,15 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     void onToolbarIconClicked(View view) {
         switch (view.getId()) {
             case R.id.collect:
+                if (productDetail != null && productDetail.getBase() != null) {
+                    if (productDetail.getBase().isCollected()) {
+                        //取消收藏
+                        presenter.deleteCollection(productDetail.getBase().getId());
+                    } else {
+                        //添加收藏
+                        presenter.addCollection(productDetail.getBase().getId());
+                    }
+                }
                 break;
             case R.id.share:
                 //umeng统计
@@ -286,7 +301,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                     UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
                     umWeb.setThumb(image);
                     umWeb.setTitle(productDetail.getBase().getProductName());
-                    umWeb.setDescription(productDetail.getBase().getExplain());
+                    umWeb.setDescription(productDetail.getBase().getExplains());
                 } else if (productAbstract != null) {
                     umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
                     UMImage image = new UMImage(this, productAbstract.getLogoUrl());
@@ -377,6 +392,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             if (base.getRepayMethodText() != null) {
                 tab3Tv.setText(base.getRepayMethodText());
             }
+            //是否已经收藏
+            collectView.setActivated(base.isCollected());
         }
         List<LoanProductDetail.Explain> list = detail.getExplain();
         if (list != null && list.size() > 0) {
@@ -395,22 +412,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @Override
     public void showAddCollectionSuccess(String msg) {
         ToastUtils.showShort(this, msg, null);
+        collectView.setActivated(true);
     }
 
     @Override
-    public void navigateLoan(LoanProductDetail detail) {
-        DataStatisticsHelper.getInstance().onProductClicked(detail.getBase().getId());
-        Intent intent = new Intent(this, ComWebViewActivity.class);
-        intent.putExtra("url", detail.getBase().getUrl());
-        intent.putExtra("title", detail.getBase().getProductName());
-        startActivity(intent);
+    public void showDeleteCollectionSuccess(String msg) {
+        collectView.setActivated(false);
     }
-
-    @Override
-    public void navigateLogin() {
-        UserAuthorizationActivity.launch(this, null);
-    }
-
 
     private class SizePosSpan extends ReplacementSpan {
 

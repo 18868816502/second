@@ -67,22 +67,51 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
     @Override
     public void addCollection(String id) {
+        Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 1)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       view.showAddCollectionSuccess("收藏成功");
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(LoanDetailPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
 
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override
     public void deleteCollection(String id) {
+        Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 0)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       view.showDeleteCollectionSuccess("取消收藏成功");
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(LoanDetailPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
 
-    }
-
-    @Override
-    public void checkLoan() {
-        if (userHelper.getProfile() != null) {
-            if (productDetail != null) {
-                view.navigateLoan(productDetail);
-            }
-        } else {
-            view.navigateLogin();
-        }
+                            }
+                        });
+        addDisposable(dis);
     }
 }
