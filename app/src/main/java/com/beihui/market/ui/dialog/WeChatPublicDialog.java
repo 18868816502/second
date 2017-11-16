@@ -3,7 +3,9 @@ package com.beihui.market.ui.dialog;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -35,6 +37,11 @@ public class WeChatPublicDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_we_chat_public, container, false);
         ButterKnife.bind(this, view);
+        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        if (cm != null) {
+            cm.setPrimaryClip(ClipData.newPlainText("loan_market", "爱信管家"));
+            ToastUtils.showShort(getContext(), "公众号复制成功", null);
+        }
         return view;
     }
 
@@ -59,10 +66,19 @@ public class WeChatPublicDialog extends DialogFragment {
                 dismiss();
                 break;
             case R.id.goto_wechat:
-                ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                if (cm != null) {
-                    cm.setPrimaryClip(ClipData.newPlainText("loan_market", "爱信管家"));
-                    ToastUtils.showShort(getContext(), "公众号复制成功", null);
+                try {
+                    Intent intent = new Intent();
+                    ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setComponent(cmp);
+                    startActivityForResult(intent, 0);
+
+                    dismiss();
+                } catch (Exception e) {
+                    //若无法正常跳转，在此进行错误处理
+                    ToastUtils.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
                 }
                 break;
         }

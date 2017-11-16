@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.base.Constant;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
@@ -43,6 +44,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.xiaoneng.uiapi.Ntalker;
 
 
 public class TabMineFragment extends BaseTabFragment implements TabMineContract.View {
@@ -116,6 +118,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void initDatas() {
+        Ntalker.getBaseInstance().enableDebug(true);
     }
 
     @Override
@@ -155,7 +158,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         switch (view.getId()) {
             case R.id.avatar:
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkUserProfile();
+                    presenter.clickUserProfile();
                 }
                 break;
 
@@ -164,12 +167,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
 
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkMessage();
+                    presenter.clickMessage();
                 }
                 break;
 
             case R.id.my_collection:
-                presenter.checkCollection();
+                presenter.clickCollection();
                 break;
 
             case R.id.invite_friend:
@@ -177,11 +180,14 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
 
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkInvitation();
+                    presenter.clickInvitation();
                 }
                 break;
 
             case R.id.contact_kefu:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickContactKefu();
+                }
                 break;
 
             case R.id.helper_feedback:
@@ -189,7 +195,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
 
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkHelpAndFeedback();
+                    presenter.clickHelpAndFeedback();
                 }
                 break;
 
@@ -198,7 +204,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
 
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkSetting();
+                    presenter.clickSetting();
                 }
                 break;
 
@@ -218,7 +224,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
             case R.id.user_name:
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.checkUserProfile();
+                    presenter.clickUserProfile();
                 }
                 break;
 
@@ -253,11 +259,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     }
 
     @Override
-    public void showHasMessage(boolean hasMessage) {
-        hasMessageTv.setSelected(hasMessage);
-    }
-
-    @Override
     public void navigateLogin() {
         if (pendingPhone != null) {
             UserAuthorizationActivity.launch(getActivity(), pendingPhone);
@@ -285,6 +286,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateInvitation(String userId) {
         startActivity(new Intent(getActivity(), InvitationActivity.class));
+    }
+
+    @Override
+    public void navigateContactKefu(String userId, String userName) {
+        Ntalker.getSimpleInstance().startChat(getContext(), Constant.XN_SITE_ID, Constant.XN_SITE_KEY,
+                userId, userName, Constant.XN_CUSTOMER);
     }
 
     @Override

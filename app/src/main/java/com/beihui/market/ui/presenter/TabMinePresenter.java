@@ -11,13 +11,13 @@ import javax.inject.Inject;
 
 public class TabMinePresenter extends BaseRxPresenter implements TabMineContract.Presenter {
 
-    private TabMineContract.View mView;
+    private TabMineContract.View view;
 
     private UserHelper userHelper;
 
     @Inject
     TabMinePresenter(TabMineContract.View view, Context context) {
-        mView = view;
+        this.view = view;
         userHelper = UserHelper.getInstance(context);
     }
 
@@ -26,55 +26,62 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
         super.onStart();
         UserHelper.Profile profile = userHelper.getProfile();
         if (profile != null) {
-            mView.showProfile(profile);
+            view.showProfile(profile);
         }
     }
 
     @Override
-    public void checkMessage() {
+    public void clickUserProfile() {
         if (checkValidUser()) {
-            mView.navigateMessage(userHelper.getProfile().getId());
+            view.navigateUserProfile(userHelper.getProfile().getId());
         }
     }
 
     @Override
-    public void checkUserProfile() {
+    public void clickMessage() {
         if (checkValidUser()) {
-            mView.navigateUserProfile(userHelper.getProfile().getId());
+            view.navigateMessage(userHelper.getProfile().getId());
         }
     }
 
     @Override
-    public void checkCollection() {
+    public void clickCollection() {
         if (checkValidUser()) {
-            mView.navigateCollection(userHelper.getProfile().getId());
+            view.navigateCollection(userHelper.getProfile().getId());
         }
     }
 
     @Override
-    public void checkInvitation() {
+    public void clickInvitation() {
         if (checkValidUser()) {
-            mView.navigateInvitation(userHelper.getProfile().getId());
+            view.navigateInvitation(userHelper.getProfile().getId());
         }
     }
 
     @Override
-    public void checkHelpAndFeedback() {
+    public void clickContactKefu() {
         if (checkValidUser()) {
-            mView.navigateHelpAndFeedback(userHelper.getProfile().getId());
+            view.navigateContactKefu(userHelper.getProfile().getId(), userHelper.getProfile().getUserName());
         }
     }
 
     @Override
-    public void checkSetting() {
+    public void clickHelpAndFeedback() {
         if (checkValidUser()) {
-            mView.navigateSetting(null);
+            view.navigateHelpAndFeedback(userHelper.getProfile().getId());
+        }
+    }
+
+    @Override
+    public void clickSetting() {
+        if (checkValidUser()) {
+            view.navigateSetting(null);
         }
     }
 
     private boolean checkValidUser() {
         if (userHelper.getProfile() == null) {
-            mView.navigateLogin();
+            view.navigateLogin();
             return false;
         }
         return true;
