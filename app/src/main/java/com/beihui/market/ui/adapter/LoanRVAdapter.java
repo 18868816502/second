@@ -18,12 +18,17 @@ import java.util.List;
 
 public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHolder> {
 
-    private List<LoanProduct.Row> dataSet = new ArrayList<>();
+    protected List<LoanProduct.Row> dataSet = new ArrayList<>();
 
-    private int[] tagIds = {R.id.tag_1, R.id.tag_2};
+    protected int[] tagIds = {R.id.tag_1, R.id.tag_2};
 
     public LoanRVAdapter() {
         super(R.layout.rv_item_loan);
+        setNewData(dataSet);
+    }
+
+    public LoanRVAdapter(int layoutId) {
+        super(layoutId);
         setNewData(dataSet);
     }
 

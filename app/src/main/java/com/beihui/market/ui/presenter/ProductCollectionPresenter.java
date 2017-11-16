@@ -69,14 +69,16 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
     }
 
     @Override
-    public void deleteCollection(String id) {
-        Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 0)
+    public void deleteCollection(final int index) {
+        Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), products.get(index).getId(), 0)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
                                public void accept(ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
                                        view.showDeleteCollectionSuccess(null);
+                                       products.remove(index);
+                                       view.showProductCollection(Collections.unmodifiableList(products));
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

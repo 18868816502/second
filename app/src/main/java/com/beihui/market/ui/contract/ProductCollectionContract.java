@@ -21,7 +21,7 @@ public interface ProductCollectionContract {
          *
          * @param id 产品id
          */
-        void deleteCollection(String id);
+        void deleteCollection(int index);
     }
 
     interface View extends BaseView<Presenter> {

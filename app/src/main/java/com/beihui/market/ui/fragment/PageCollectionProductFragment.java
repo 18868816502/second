@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
@@ -10,7 +11,7 @@ import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerProductCollectionComponent;
 import com.beihui.market.injection.module.ProductCollectionModule;
-import com.beihui.market.ui.adapter.LoanRVAdapter;
+import com.beihui.market.ui.adapter.CollectionLoanRVAdapter;
 import com.beihui.market.ui.contract.ProductCollectionContract;
 import com.beihui.market.ui.presenter.ProductCollectionPresenter;
 import com.beihui.market.util.viewutils.ToastUtils;
@@ -33,7 +34,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
     @Inject
     ProductCollectionPresenter presenter;
 
-    private LoanRVAdapter adapter;
+    private CollectionLoanRVAdapter adapter;
 
     @Override
     public int getLayoutResId() {
@@ -42,13 +43,21 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
 
     @Override
     public void configViews() {
-        adapter = new LoanRVAdapter();
+        adapter = new CollectionLoanRVAdapter();
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 presenter.loadCollection();
             }
         }, recyclerView);
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId() == R.id.delete) {
+                    presenter.deleteCollection(position);
+                }
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
