@@ -96,9 +96,10 @@ public interface TabHomeContract {
         /**
          * 精选产品加载完成
          *
-         * @param products 精选产品
+         * @param products    精选产品
+         * @param canLoadMore 是否还能加载更多
          */
-        void showChoiceProducts(List<LoanProduct.Row> products);
+        void showChoiceProducts(List<LoanProduct.Row> products, boolean canLoadMore);
 
         /**
          * 借款攻略加载完成

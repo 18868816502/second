@@ -118,10 +118,10 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     private List<AdBanner> bannerAds = new ArrayList<>();
 
-
     public static TabHomeFragment newInstance() {
         return new TabHomeFragment();
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -349,12 +349,19 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     }
 
     @Override
-    public void showChoiceProducts(List<LoanProduct.Row> products) {
+    public void showChoiceProducts(List<LoanProduct.Row> products, boolean canLoadMore) {
         Drawable d = refreshHot.getCompoundDrawables()[2];
         if (d != null) {
             ((Animatable) d).stop();
         }
         if (choiceAdapter != null) {
+            if (choiceAdapter.isLoading()) {
+                if (canLoadMore) {
+                    choiceAdapter.loadMoreComplete();
+                } else {
+                    choiceAdapter.loadMoreEnd(true);
+                }
+            }
             choiceAdapter.notifyHotProductChanged(products);
         }
     }

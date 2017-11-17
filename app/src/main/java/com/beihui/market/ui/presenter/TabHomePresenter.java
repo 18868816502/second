@@ -29,7 +29,7 @@ import io.reactivex.functions.Consumer;
 
 public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract.Presenter {
 
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 10;
 
     private Api api;
     private TabHomeContract.View view;
@@ -42,6 +42,11 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private List<LoanProduct.Row> choiceProducts = new ArrayList<>();
     private List<HotNews> hotNews = new ArrayList<>();
     private List<String> headlines = new ArrayList<>();
+
+    /**
+     * 精选产品是否还能加载更多
+     */
+    private boolean canChoiceLoadMore;
 
     /**
      * 热门产品查询页，初始值1，之后依据server传回的值更新
@@ -90,7 +95,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         if (choiceProducts.size() == 0) {
             loadChoiceProducts();
         } else {
-            view.showChoiceProducts(choiceProducts);
+            view.showChoiceProducts(choiceProducts, canChoiceLoadMore);
         }
         //news
         if (hotNews.size() == 0) {
@@ -201,18 +206,21 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
     @Override
     public void loadChoiceProducts() {
-        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, DEFAULT_PAGE_SIZE)
+        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
                                    if (result.isSuccess()) {
                                        choiceProductPageNo++;
+                                       int size = 0;
                                        if (result.getData() != null && result.getData().getRows() != null
                                                && result.getData().getRows().size() > 0) {
                                            choiceProducts.addAll(result.getData().getRows());
+                                           size = result.getData().getRows().size();
                                        }
-                                       view.showChoiceProducts(Collections.unmodifiableList(choiceProducts));
+                                       canChoiceLoadMore = size == PAGE_SIZE;
+                                       view.showChoiceProducts(Collections.unmodifiableList(choiceProducts), canChoiceLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -313,13 +321,13 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                        hasAdInit = true;
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            AdBanner adBanner = result.getData().get(0);
-                                           String lastId = SPUtils.getLastDialogAdId(context);
-                                           //同一个广告只显示一次
-                                           if (lastId == null || !lastId.equals(adBanner.getLocalId())) {
+                                           //距离上次展示时间超过设定的间隔才显示广告
+                                           if ((adBanner.getEndTime() - adBanner.getBeginTime()) / adBanner.getShowTimes()
+                                                   + SPUtils.getLastAdShowTime(context) > System.currentTimeMillis()) {
                                                view.showAdDialog(result.getData().get(0));
                                            }
-                                           //记录已展示的id
-                                           SPUtils.setLastDialogAdId(context, adBanner.getLocalId());
+                                           //更新广告展示时间
+                                           SPUtils.setLastAdShowTime(context, System.currentTimeMillis());
                                        }
                                    } else {
                                        view.showErrorMsg(result.getMsg());

@@ -65,7 +65,7 @@ public interface ApiService {
     @POST(BASE_PATH + "/clientUser/register")
     Observable<ResultEntity> register(@Field("platform") int platform, @Field("account") String account,
                                       @Field("pwd") String pwd, @Field("channelId") String channelId,
-                                      @Field("inviteCode") String inviteCode);
+                                      @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
 
     /**
      * 更新密码，重置或者修改
@@ -178,7 +178,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/supernatant/querySupernatant")
-    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType);
+    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType,
+                                                              @Field("packageId") String packageId);
 
     /**
      * 头条滚动信息

@@ -12,6 +12,9 @@ public class AdBanner {
     private String id;
     private String title;
     private int needLoading;
+    private long beginTime;
+    private long endTime;
+    private int showTimes;
 
     public int getType() {
         return type;
@@ -67,6 +70,30 @@ public class AdBanner {
 
     public void setNeedLoading(int needLoading) {
         this.needLoading = needLoading;
+    }
+
+    public long getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(long beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getShowTimes() {
+        return showTimes;
+    }
+
+    public void setShowTimes(int showTimes) {
+        this.showTimes = showTimes;
     }
 
     public boolean isNative() {

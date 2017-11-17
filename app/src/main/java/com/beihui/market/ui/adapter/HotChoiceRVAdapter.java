@@ -18,10 +18,11 @@ import java.util.List;
 
 public class HotChoiceRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHolder> {
 
-    private List<LoanProduct.Row> dataSet;
+    private List<LoanProduct.Row> dataSet = new ArrayList<>();
 
     public HotChoiceRVAdapter(int resId) {
         super(resId);
+        setNewData(dataSet);
     }
 
     @Override
@@ -51,13 +52,10 @@ public class HotChoiceRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseVi
     }
 
     public void notifyHotProductChanged(List<LoanProduct.Row> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
-        setNewData(dataSet);
+        notifyDataSetChanged();
     }
 }

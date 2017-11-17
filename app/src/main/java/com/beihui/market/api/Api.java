@@ -152,7 +152,8 @@ public class Api {
      * @param inviteCode 邀请码，可控
      */
     public Observable<ResultEntity> register(String phone, String pwd, String channelId, String inviteCode) {
-        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), channelId, inviteCode);
+        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), channelId, inviteCode,
+                App.getInstance().getPackageName());
     }
 
     /**
@@ -316,7 +317,7 @@ public class Api {
      * @param supernatantType 查询类型
      */
     public Observable<ResultEntity<List<AdBanner>>> querySupernatant(int supernatantType) {
-        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType);
+        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType, App.getInstance().getPackageName());
     }
 
     /**

@@ -11,6 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
+        <TextView
+            style="@style/ToolBarTitleTextAppearance.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="我的收藏" />
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

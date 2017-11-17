@@ -6,15 +6,15 @@ import android.content.SharedPreferences;
 public class SPUtils {
     private static final String TAG = "Info";
 
-    public static String getLastDialogAdId(Context context) {
+    public static long getLastAdShowTime(Context context) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        return sp.getString("lastDialogAdId", null);
+        return sp.getLong("lastAdShowTime", 0);
     }
 
-    public static void setLastDialogAdId(Context context, String id) {
+    public static void setLastAdShowTime(Context context, long showTime) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("lastDialogAdId", id);
+        editor.putLong("lastAdShowTime", showTime);
         editor.apply();
     }
 
