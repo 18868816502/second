@@ -45,6 +45,7 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
     PagePersonalPresenter presenter;
 
     private ProductGroupAdapter groupAdapter;
+    private PersonalPageAdapter pagerAdapter;
 
     @Override
     public int getLayoutResId() {
@@ -63,7 +64,8 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         groupRecyclerView.setAdapter(groupAdapter);
 
-        viewPager.setAdapter(new PersonalPageAdapter(getChildFragmentManager()));
+        pagerAdapter = new PersonalPageAdapter(getChildFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
     }
 
     @Override
@@ -107,6 +109,9 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
         if (isAdded()) {
             if (groupAdapter != null) {
                 groupAdapter.notifyLoanGroupChanged(groups);
+            }
+            if (pagerAdapter != null) {
+                pagerAdapter.notifyDataSetChanged();
             }
         }
     }

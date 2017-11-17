@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,8 @@ import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerPagePersonalProductComponent;
 import com.beihui.market.injection.module.PagePersonalProductModule;
+import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.contract.PagePersonalProductContract;
 import com.beihui.market.ui.presenter.PagePersonalProductPresenter;
@@ -45,7 +48,7 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                presenter.clickProduct(position);
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -65,7 +68,7 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-        if(groupId == null){
+        if (groupId == null) {
             groupId = getArguments().getString("groupId");
         }
         DaggerPagePersonalProductComponent.builder()
@@ -82,14 +85,30 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
     }
 
     @Override
-    public void showGroupProducts(List<LoanProduct.Row> products) {
+    public void showGroupProducts(List<LoanProduct.Row> products, boolean canLoadMore) {
         if (isAdded()) {
             if (adapter != null) {
                 if (adapter.isLoading()) {
-                    adapter.loadMoreComplete();
+                    if (canLoadMore) {
+                        adapter.loadMoreComplete();
+                    } else {
+                        adapter.loadMoreEnd(true);
+                    }
                 }
                 adapter.notifyLoanProductChanged(products);
             }
         }
+    }
+
+    @Override
+    public void navigateLogin() {
+        UserAuthorizationActivity.launch(getActivity(), null);
+    }
+
+    @Override
+    public void navigateProductDetail(LoanProduct.Row loan) {
+        Intent intent = new Intent(getContext(), LoanDetailActivity.class);
+        intent.putExtra("loan", loan);
+        startActivity(intent);
     }
 }

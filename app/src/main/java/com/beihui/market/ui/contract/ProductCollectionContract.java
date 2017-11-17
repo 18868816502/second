@@ -19,7 +19,7 @@ public interface ProductCollectionContract {
         /**
          * 删除产品收藏
          *
-         * @param id 产品id
+         * @param index 点击位置
          */
         void deleteCollection(int index);
     }
@@ -31,7 +31,7 @@ public interface ProductCollectionContract {
          *
          * @param list 产品列表
          */
-        void showProductCollection(List<LoanProduct.Row> list);
+        void showProductCollection(List<LoanProduct.Row> list, boolean canLoadMore);
 
         /**
          * 删除收藏成功

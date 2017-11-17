@@ -44,6 +44,7 @@ public class LoanProductDetail {
         private String fastestLoanTimeText;
         private String mortgageMethodText;
         private String explains;
+        //0.未收藏 1.已收藏
         private int isCollection;
 
         public String getDueTimeText() {

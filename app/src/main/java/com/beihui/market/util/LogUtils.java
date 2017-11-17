@@ -142,21 +142,35 @@ public class LogUtils {
         if (sts == null) {
             return null;
         }
+        StringBuilder sb = new StringBuilder();
         for (StackTraceElement st : sts) {
-            if (st.isNativeMethod()) {
-                continue;
-            }
-            if (st.getClassName().equals(Thread.class.getName())) {
-                continue;
-            }
-            if (st.getFileName().equals("LogUtils.java")) {
-                continue;
-            }
-            return "[" + Thread.currentThread().getName() + "("
-                    + Thread.currentThread().getId() + "): " + st.getFileName()
-                    + ":" + st.getLineNumber() + "]";
+//            if (st.isNativeMethod()) {
+//                continue;
+//            }
+//            if (st.getClassName().equals(Thread.class.getName())) {
+//                continue;
+//            }
+//            if (st.getFileName().equals("LogUtils.java")) {
+//                continue;
+//            }
+//            if (st.getFileName().equals("BaseRxPresenter.java")) {
+//                continue;
+//            }
+//            return "[" + Thread.currentThread().getName() + "("
+//                    + Thread.currentThread().getId() + "): " + st.getFileName()
+//                    + ":" + st.getLineNumber() + "]";
+            sb.append("[")
+                    .append(Thread.currentThread().getName())
+                    .append("(")
+                    .append(Thread.currentThread().getId())
+                    .append("): ")
+                    .append(st.getFileName())
+                    .append(":")
+                    .append(st.getLineNumber())
+                    .append("]")
+                    .append("\n");
         }
-        return null;
+        return sb.toString();
     }
 
     private static String createMessage(String msg) {

@@ -18,9 +18,9 @@ import java.util.List;
 
 public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHolder> {
 
-    protected List<LoanProduct.Row> dataSet = new ArrayList<>();
+    private List<LoanProduct.Row> dataSet = new ArrayList<>();
 
-    protected int[] tagIds = {R.id.tag_1, R.id.tag_2};
+    private int[] tagIds = {R.id.tag_1, R.id.tag_2};
 
     public LoanRVAdapter() {
         super(R.layout.rv_item_loan);
@@ -95,7 +95,7 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
 
     public void notifyLoanProductChanged(List<LoanProduct.Row> list) {
         dataSet.clear();
-        if (list != null) {
+        if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         notifyDataSetChanged();

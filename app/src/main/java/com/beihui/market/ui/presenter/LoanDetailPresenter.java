@@ -66,6 +66,19 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
     }
 
     @Override
+    public void clickCollection() {
+        if (productDetail != null && productDetail.getBase() != null) {
+            if (productDetail.getBase().isCollected()) {
+                //取消收藏
+                deleteCollection(productDetail.getBase().getId());
+            } else {
+                //添加收藏
+                addCollection(productDetail.getBase().getId());
+            }
+        }
+    }
+
+    @Override
     public void addCollection(String id) {
         Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 1)
                 .compose(RxUtil.<ResultEntity>io2main())
@@ -73,6 +86,8 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                                @Override
                                public void accept(ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       //置为已收藏
+                                       productDetail.getBase().setIsCollection(1);
                                        view.showAddCollectionSuccess("收藏成功");
                                    } else {
                                        view.showErrorMsg(result.getMsg());
@@ -98,6 +113,8 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                                @Override
                                public void accept(ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       //置为未收藏
+                                       productDetail.getBase().setIsCollection(0);
                                        view.showDeleteCollectionSuccess("取消收藏成功");
                                    } else {
                                        view.showErrorMsg(result.getMsg());

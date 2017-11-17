@@ -16,6 +16,11 @@ public interface LoanProductDetailContract {
         void queryDetail(String id);
 
         /**
+         * 点击收藏或取消收藏
+         */
+        void clickCollection();
+
+        /**
          * 添加收藏
          *
          * @param id 产品id

@@ -322,8 +322,8 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            AdBanner adBanner = result.getData().get(0);
                                            //距离上次展示时间超过设定的间隔才显示广告
-                                           if ((adBanner.getEndTime() - adBanner.getBeginTime()) / adBanner.getShowTimes()
-                                                   + SPUtils.getLastAdShowTime(context) > System.currentTimeMillis()) {
+                                           if (System.currentTimeMillis() - SPUtils.getLastAdShowTime(context)
+                                                   > (adBanner.getEndTime() - adBanner.getBeginTime()) / adBanner.getShowTimes()) {
                                                view.showAdDialog(result.getData().get(0));
                                            }
                                            //更新广告展示时间

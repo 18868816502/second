@@ -83,14 +83,17 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
     }
 
     @Override
-    public void showProductCollection(List<LoanProduct.Row> list) {
+    public void showProductCollection(List<LoanProduct.Row> list, boolean canLoadMore) {
         if (isAdded()) {
             if (adapter != null) {
-                adapter.notifyLoanProductChanged(list);
-
                 if (adapter.isLoading()) {
-                    adapter.loadMoreComplete();
+                    if (canLoadMore) {
+                        adapter.loadMoreComplete();
+                    } else {
+                        adapter.loadMoreEnd(true);
+                    }
                 }
+                adapter.notifyLoanProductChanged(list);
             }
         }
     }

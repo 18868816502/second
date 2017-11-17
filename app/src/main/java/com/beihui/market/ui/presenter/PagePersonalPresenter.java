@@ -5,14 +5,11 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.LoanGroup;
-import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.ui.contract.PagePersonalContract;
 import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -21,15 +18,11 @@ import io.reactivex.functions.Consumer;
 
 public class PagePersonalPresenter extends BaseRxPresenter implements PagePersonalContract.Presenter {
 
-    private static final int DEFAULT_PAGE_SIZE = 10;
-
     private PagePersonalContract.View view;
     private Api api;
 
     private List<String> productHints = new ArrayList<>();
     private List<LoanGroup> groups = new ArrayList<>();
-    private Map<String, List<LoanProduct.Row>> group2products = new HashMap<>();
-    private Map<String, Integer> group2pageNo = new HashMap<>();
 
     @Inject
     PagePersonalPresenter(Api api, PagePersonalContract.View view) {

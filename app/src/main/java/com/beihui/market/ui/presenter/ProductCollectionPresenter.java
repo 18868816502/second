@@ -31,6 +31,10 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
     private List<LoanProduct.Row> products = new ArrayList<>();
 
     private int pageNo = 1;
+    /**
+     * 是否还能加载更多收藏
+     */
+    private boolean canLoadMore;
 
     @Inject
     ProductCollectionPresenter(Context context, Api api, ProductCollectionContract.View view) {
@@ -48,11 +52,14 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
                                public void accept(ResultEntity<LoanProduct> result) throws Exception {
                                    if (result.isSuccess()) {
                                        pageNo++;
+                                       int size = 0;
                                        if (result.getData() != null && result.getData().getRows() != null
                                                && result.getData().getRows().size() > 0) {
                                            products.addAll(result.getData().getRows());
+                                           size = result.getData().getRows().size();
                                        }
-                                       view.showProductCollection(Collections.unmodifiableList(products));
+                                       canLoadMore = size == PAGE_SIZE;
+                                       view.showProductCollection(Collections.unmodifiableList(products), canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -78,7 +85,7 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
                                    if (result.isSuccess()) {
                                        view.showDeleteCollectionSuccess(null);
                                        products.remove(index);
-                                       view.showProductCollection(Collections.unmodifiableList(products));
+                                       view.showProductCollection(Collections.unmodifiableList(products), canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

@@ -281,15 +281,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     void onToolbarIconClicked(View view) {
         switch (view.getId()) {
             case R.id.collect:
-                if (productDetail != null && productDetail.getBase() != null) {
-                    if (productDetail.getBase().isCollected()) {
-                        //取消收藏
-                        presenter.deleteCollection(productDetail.getBase().getId());
-                    } else {
-                        //添加收藏
-                        presenter.addCollection(productDetail.getBase().getId());
-                    }
-                }
+                presenter.clickCollection();
                 break;
             case R.id.share:
                 //umeng统计
