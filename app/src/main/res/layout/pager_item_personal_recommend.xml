@@ -8,8 +8,9 @@
     <FrameLayout
         android:id="@+id/notice_container"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:background="#ffe99e"
+        android:minHeight="30dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:visibility="gone">
@@ -28,7 +29,7 @@
             android:id="@+id/notice_close"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="right"
+            android:layout_gravity="right|center_vertical"
             android:scaleType="centerInside"
             android:src="@drawable/loan_notice_close_icon" />
     </FrameLayout>
@@ -36,10 +37,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recommend_group_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="59dp"
+        android:layout_height="60dp"
         android:background="@android:color/white"
-        android:paddingLeft="2dp"
-        android:paddingTop="9dp" />
+        android:paddingLeft="2dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

@@ -16,6 +16,8 @@ public class ProductGroupAdapter extends BaseQuickAdapter<LoanGroup, BaseViewHol
 
     private List<LoanGroup> dataSet = new ArrayList<>();
 
+    private int curSelected;
+
     public ProductGroupAdapter() {
         super(R.layout.list_item_product_group);
     }
@@ -25,6 +27,11 @@ public class ProductGroupAdapter extends BaseQuickAdapter<LoanGroup, BaseViewHol
         Glide.with(helper.itemView.getContext())
                 .load(item.getUrl())
                 .into((ImageView) helper.getView(R.id.group_image));
+        if (curSelected == helper.getAdapterPosition()) {
+            helper.itemView.setAlpha(1);
+        } else {
+            helper.itemView.setAlpha(0.6f);
+        }
 
     }
 
@@ -34,5 +41,14 @@ public class ProductGroupAdapter extends BaseQuickAdapter<LoanGroup, BaseViewHol
             dataSet.addAll(list);
         }
         setNewData(dataSet);
+    }
+
+    public boolean select(int index) {
+        if (curSelected != index) {
+            curSelected = index;
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
     }
 }

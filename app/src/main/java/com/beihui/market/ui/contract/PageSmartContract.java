@@ -32,6 +32,13 @@ public interface PageSmartContract {
         void clickSort(int selected);
 
         /**
+         * 点击产品
+         *
+         * @param index 点击的位置
+         */
+        void clickLoanProduct(int index);
+
+        /**
          * 刷新产品列表
          */
         void refresh();
@@ -96,5 +103,15 @@ public interface PageSmartContract {
         void showNoLoanProduct();
 
         void showNoMoreLoanProduct();
+
+        /**
+         * 导航至登录
+         */
+        void navigateLogin();
+
+        /**
+         * 导航至产品详情
+         */
+        void navigateProductDetail(LoanProduct.Row loan);
     }
 }

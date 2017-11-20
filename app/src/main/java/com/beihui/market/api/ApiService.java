@@ -64,8 +64,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/register")
     Observable<ResultEntity> register(@Field("platform") int platform, @Field("account") String account,
-                                      @Field("pwd") String pwd, @Field("channelId") String channelId,
-                                      @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
+                                      @Field("pwd") String pwd, @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
 
     /**
      * 更新密码，重置或者修改

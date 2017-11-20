@@ -17,6 +17,7 @@ import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.contract.PagePersonalProductContract;
 import com.beihui.market.ui.presenter.PagePersonalProductPresenter;
+import com.beihui.market.ui.rvdecoration.LoanItemDeco;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
         }, recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new LoanItemDeco());
     }
 
     @Override

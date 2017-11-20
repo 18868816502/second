@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,10 @@ public class WeChatPublicDialog extends DialogFragment {
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.gravity = Gravity.TOP;
+            lp.y = (int) (65 * getResources().getDisplayMetrics().density);
             window.setAttributes(lp);
+
         }
     }
 

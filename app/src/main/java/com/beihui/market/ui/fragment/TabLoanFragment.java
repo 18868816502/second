@@ -2,7 +2,6 @@ package com.beihui.market.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,6 +15,7 @@ import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.view.copytablayout.CopyTabLayout;
 
 import butterknife.BindView;
 
@@ -23,7 +23,7 @@ import butterknife.BindView;
 public class TabLoanFragment extends BaseTabFragment {
 
     @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+    CopyTabLayout tabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 

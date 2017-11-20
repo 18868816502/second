@@ -24,6 +24,8 @@ public class PagePersonalPresenter extends BaseRxPresenter implements PagePerson
     private List<String> productHints = new ArrayList<>();
     private List<LoanGroup> groups = new ArrayList<>();
 
+    private boolean hasNoticeInit = false;
+
     @Inject
     PagePersonalPresenter(Api api, PagePersonalContract.View view) {
         this.api = api;
@@ -32,6 +34,9 @@ public class PagePersonalPresenter extends BaseRxPresenter implements PagePerson
 
     @Override
     public void loadProductHint() {
+        if (hasNoticeInit) {
+            return;
+        }
         Disposable dis = api.queryLoanHint()
                 .compose(RxUtil.<ResultEntity<List<String>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<String>>>() {
@@ -41,8 +46,9 @@ public class PagePersonalPresenter extends BaseRxPresenter implements PagePerson
                                        productHints.clear();
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            productHints.addAll(result.getData());
+                                           view.showProductHint(productHints);
                                        }
-                                       view.showProductHint(productHints);
+                                       hasNoticeInit = true;
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

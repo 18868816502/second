@@ -37,8 +37,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.title)
     TextView titleTv;
-    @BindView(R.id.collect)
-    View collectView;
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
@@ -67,8 +65,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).init();
-
-        collectView.setSelected(true);
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);

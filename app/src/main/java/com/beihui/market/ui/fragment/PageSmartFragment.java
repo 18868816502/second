@@ -19,6 +19,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerPageSmartComponent;
 import com.beihui.market.injection.module.PageSmartModule;
 import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.contract.PageSmartContract;
 import com.beihui.market.ui.dialog.MoneyFilterPopup;
@@ -105,16 +106,13 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
         loanRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
                 LoanProduct.Row loan = (LoanProduct.Row) adapter.getItem(position);
-                Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
-                intent.putExtra("loan", loan);
-                startActivity(intent);
-
                 if (loan != null) {
                     //umeng统计
                     Statistic.onEvent(Events.ENTER_LOAN_DETAIL_PAGE, loan.getId());
                 }
+
+                presenter.clickLoanProduct(position);
             }
         });
         loanRVAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -218,6 +216,18 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
     public void showNoMoreLoanProduct() {
         loanRVAdapter.setEnableLoadMore(false);
         loanRVAdapter.loadMoreComplete();
+    }
+
+    @Override
+    public void navigateLogin() {
+        UserAuthorizationActivity.launch(getActivity(), null);
+    }
+
+    @Override
+    public void navigateProductDetail(LoanProduct.Row loan) {
+        Intent intent = new Intent(getActivity(), LoanDetailActivity.class);
+        intent.putExtra("loan", loan);
+        startActivity(intent);
     }
 
     @Override

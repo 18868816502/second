@@ -52,6 +52,7 @@ import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.stateprovider.HomeStateViewProvider;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -239,6 +240,27 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
         /*精选产品*/
         choiceAdapter = new HotChoiceRVAdapter(R.layout.list_item_product_choice);
+        choiceAdapter.setLoadMoreView(new LoadMoreView() {
+            @Override
+            public int getLayoutId() {
+                return R.layout.layout_choice_load_more;
+            }
+
+            @Override
+            protected int getLoadingViewId() {
+                return R.id.loading;
+            }
+
+            @Override
+            protected int getLoadFailViewId() {
+                return R.id.failed;
+            }
+
+            @Override
+            protected int getLoadEndViewId() {
+                return R.id.complete;
+            }
+        });
         choiceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -343,6 +365,10 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @Override
     public void showHotProducts(List<LoanProduct.Row> products) {
         handleShowContent();
+        Drawable d = refreshHot.getCompoundDrawables()[2];
+        if (((Animatable) d).isRunning()) {
+            ((Animatable) d).stop();
+        }
         if (hotAdapter != null) {
             hotAdapter.notifyHotProductChanged(products);
         }
@@ -350,10 +376,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Override
     public void showChoiceProducts(List<LoanProduct.Row> products, boolean canLoadMore) {
-        Drawable d = refreshHot.getCompoundDrawables()[2];
-        if (d != null) {
-            ((Animatable) d).stop();
-        }
+        handleShowContent();
         if (choiceAdapter != null) {
             if (choiceAdapter.isLoading()) {
                 if (canLoadMore) {

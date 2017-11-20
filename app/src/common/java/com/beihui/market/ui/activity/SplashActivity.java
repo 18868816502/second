@@ -3,7 +3,6 @@ package com.beihui.market.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -155,7 +154,7 @@ public class SplashActivity extends BaseComponentActivity {
                         });
     }
 
-    private void startAd(AdBanner ad) {
+    private void startAd(final AdBanner ad) {
         final AdBanner adBanner = ad;
         ignoreTv.setVisibility(View.VISIBLE);
         adTimer = new AdTimer(5 * 1000, 1000);
@@ -173,19 +172,26 @@ public class SplashActivity extends BaseComponentActivity {
                     //先跳转至首页，在跳转至广告页
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);
-
-                    //跳Native还是跳Web
-                    if (adBanner.isNative()) {
-                        intent = new Intent(context, LoanDetailActivity.class);
-                        intent.putExtra("loanId", adBanner.getLocalId());
-                        intent.putExtra("loanName", adBanner.getTitle());
-                        startActivity(intent);
+                    //是否需要先登录
+                    if (adBanner.needLogin()) {
+                        Intent toLogin = new Intent(SplashActivity.this, UserAuthorizationActivity.class);
+                        startActivity(toLogin);
+                        overridePendingTransition(0, 0);
                     } else {
-                        intent = new Intent(context, ComWebViewActivity.class);
-                        intent.putExtra("url", adBanner.getUrl());
-                        intent.putExtra("title", adBanner.getTitle());
-                        startActivity(intent);
+                        //跳Native还是跳Web
+                        if (adBanner.isNative()) {
+                            intent = new Intent(context, LoanDetailActivity.class);
+                            intent.putExtra("loanId", adBanner.getLocalId());
+                            intent.putExtra("loanName", adBanner.getTitle());
+                            startActivity(intent);
+                        } else {
+                            intent = new Intent(context, ComWebViewActivity.class);
+                            intent.putExtra("url", adBanner.getUrl());
+                            intent.putExtra("title", adBanner.getTitle());
+                            startActivity(intent);
+                        }
                     }
+
                     finish();
                 }
             });

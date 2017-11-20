@@ -2,7 +2,6 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.beihui.market.api.Api;
@@ -42,13 +41,6 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
 
     @Override
     public void register(String phone, String pwd, String inviteCode) {
-        String channelId = "unknown";
-        try {
-            channelId = mContext.getPackageManager()
-                    .getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
         final String account = phone;
         final String password = pwd;
         //do not pass empty str to retrofit query annotation, if empty then set null
@@ -56,7 +48,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
             inviteCode = null;
         }
         mView.showLoading();
-        Disposable dis = mApi.register(phone, pwd, channelId, inviteCode)
+        Disposable dis = mApi.register(phone, pwd, inviteCode)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .flatMap(new Function<ResultEntity, ObservableSource<ResultEntity<UserProfileAbstract>>>() {
                     @Override

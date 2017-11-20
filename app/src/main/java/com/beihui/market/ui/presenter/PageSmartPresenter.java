@@ -1,10 +1,13 @@
 package com.beihui.market.ui.presenter;
 
 
+import android.content.Context;
+
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.PageSmartContract;
 import com.beihui.market.util.RxUtil;
 
@@ -26,7 +29,8 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     private String sortGroup[] = {"默认排序", "借款利率", "最高额度"};
 
     private Api api;
-    private PageSmartContract.View mView;
+    private PageSmartContract.View view;
+    private UserHelper userHelper;
 
     private int dueTimeSelected = 6;
     private int sortSelected = 0;
@@ -37,17 +41,18 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     private Disposable curTask;
 
     @Inject
-    PageSmartPresenter(Api api, PageSmartContract.View view) {
+    PageSmartPresenter(Context context, Api api, PageSmartContract.View view) {
         this.api = api;
-        mView = view;
+        this.view = view;
+        userHelper = UserHelper.getInstance(context);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mView.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+        view.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
         if (loanProductList.size() > 0) {
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), loanProductList.size() >= PAGE_SIZE);
+            view.showLoanProduct(Collections.unmodifiableList(loanProductList), loanProductList.size() >= PAGE_SIZE);
         } else {
             refresh();
         }
@@ -58,10 +63,10 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     public void clickAmount(int selected) {
         if (selected != moneySelected) {
             moneySelected = selected;
-            mView.showFilters(moneySelection[selected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+            view.showFilters(moneySelection[selected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
+            view.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
             refresh();
         }
     }
@@ -70,10 +75,10 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     public void clickDueTime(int selected) {
         if (selected != dueTimeSelected) {
             dueTimeSelected = selected;
-            mView.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+            view.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
+            view.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
             refresh();
         }
     }
@@ -82,11 +87,20 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     public void clickSort(int selected) {
         if (selected != sortSelected) {
             sortSelected = selected;
-            mView.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
+            view.showFilters(moneySelection[moneySelected], dueTimes[dueTimeSelected], sortGroup[sortSelected]);
 
             loanProductList.clear();
-            mView.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
+            view.showLoanProduct(Collections.unmodifiableList(loanProductList), false);
             refresh();
+        }
+    }
+
+    @Override
+    public void clickLoanProduct(int index) {
+        if (userHelper.getProfile() != null) {
+            view.navigateProductDetail(loanProductList.get(index));
+        } else {
+            view.navigateLogin();
         }
     }
 
@@ -103,18 +117,18 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                                        if (result.getData() != null && result.getData().getTotal() > 0) {
                                            loanProductList.clear();
                                            loanProductList.addAll(result.getData().getRows());
-                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList),
+                                           view.showLoanProduct(Collections.unmodifiableList(loanProductList),
                                                    loanProductList.size() >= PAGE_SIZE);
 
                                        } else {
-                                           mView.showNoLoanProduct();
+                                           view.showNoLoanProduct();
                                        }
                                    } else {
                                        //当前没有任何原始数据，切换至网络错误状态，否则只需提示信息
                                        if (loanProductList.size() == 0) {
-                                           mView.showNetError();
+                                           view.showNetError();
                                        } else {
-                                           mView.showErrorMsg(result.getMsg());
+                                           view.showErrorMsg(result.getMsg());
                                        }
                                    }
                                }
@@ -125,9 +139,9 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                                 logError(PageSmartPresenter.this, throwable);
                                 //当前没有任何原始数据，切换至网络错误状态，否则只需提示信息
                                 if (loanProductList.size() == 0) {
-                                    mView.showNetError();
+                                    view.showNetError();
                                 } else {
-                                    mView.showErrorMsg(generateErrorMsg(throwable));
+                                    view.showErrorMsg(generateErrorMsg(throwable));
                                 }
                             }
                         });
@@ -146,14 +160,14 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().getTotal() > 0) {
                                            loanProductList.addAll(result.getData().getRows());
-                                           mView.showLoanProduct(Collections.unmodifiableList(loanProductList),
+                                           view.showLoanProduct(Collections.unmodifiableList(loanProductList),
                                                    result.getData().getTotal() >= PAGE_SIZE);
 
                                        } else {
-                                           mView.showNoMoreLoanProduct();
+                                           view.showNoMoreLoanProduct();
                                        }
                                    } else {
-                                       mView.showErrorMsg(result.getMsg());
+                                       view.showErrorMsg(result.getMsg());
                                        //请求失败，回溯页数
                                        curPage--;
                                    }
@@ -163,7 +177,7 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(PageSmartPresenter.this, throwable);
-                                mView.showErrorMsg(generateErrorMsg(throwable));
+                                view.showErrorMsg(generateErrorMsg(throwable));
                                 //请求失败，回溯页数
                                 curPage--;
                             }

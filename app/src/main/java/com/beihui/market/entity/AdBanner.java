@@ -11,10 +11,10 @@ public class AdBanner {
     private String imgUrl;
     private String id;
     private String title;
-    private int needLoading;
     private long beginTime;
     private long endTime;
     private int showTimes;
+    private int needLogin;
 
     public int getType() {
         return type;
@@ -64,13 +64,6 @@ public class AdBanner {
         this.title = title;
     }
 
-    public int getNeedLoading() {
-        return needLoading;
-    }
-
-    public void setNeedLoading(int needLoading) {
-        this.needLoading = needLoading;
-    }
 
     public long getBeginTime() {
         return beginTime;
@@ -96,7 +89,26 @@ public class AdBanner {
         this.showTimes = showTimes;
     }
 
+    public int getNeedLogin() {
+        return needLogin;
+    }
+
+    public void setNeedLogin(int needLogin) {
+        this.needLogin = needLogin;
+    }
+
+    /**
+     * 是否是跳转产品
+     */
     public boolean isNative() {
         return getType() == 2;
     }
+
+    /**
+     * 是否需要登录
+     */
+    public boolean needLogin() {
+        return needLogin == 1;
+    }
+
 }

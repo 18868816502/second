@@ -1,6 +1,7 @@
 package com.beihui.market.api;
 
 
+import android.content.pm.PackageManager;
 import android.util.Base64;
 
 import com.beihui.market.App;
@@ -148,12 +149,17 @@ public class Api {
      *
      * @param phone      注册手机号
      * @param pwd        用户密码
-     * @param channelId  app渠道
-     * @param inviteCode 邀请码，可控
+     * @param inviteCode 邀请码，可空
      */
-    public Observable<ResultEntity> register(String phone, String pwd, String channelId, String inviteCode) {
-        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), channelId, inviteCode,
-                App.getInstance().getPackageName());
+    public Observable<ResultEntity> register(String phone, String pwd, String inviteCode) {
+        String channelId = "unknown";
+        try {
+            channelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), inviteCode, channelId);
     }
 
     /**
@@ -317,7 +323,14 @@ public class Api {
      * @param supernatantType 查询类型
      */
     public Observable<ResultEntity<List<AdBanner>>> querySupernatant(int supernatantType) {
-        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType, App.getInstance().getPackageName());
+        String channelId = "unknown";
+        try {
+            channelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType, channelId);
     }
 
     /**

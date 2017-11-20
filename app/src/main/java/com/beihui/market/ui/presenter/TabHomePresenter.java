@@ -278,7 +278,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     public void clickBanner(int position) {
         AdBanner adBanner = banners.get(position);
         //需要先登录
-        if (adBanner.getNeedLoading() == 1) {
+        if (adBanner.needLogin()) {
             if (UserHelper.getInstance(context).getProfile() == null) {
                 view.navigateLogin();
                 return;

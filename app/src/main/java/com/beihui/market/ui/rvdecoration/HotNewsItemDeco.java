@@ -14,8 +14,8 @@ public class HotNewsItemDeco extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (margin == -1) {
             float density = parent.getContext().getResources().getDisplayMetrics().density;
-            margin = (int) (density * 7);
-            padding = (int) (density * 5);
+            margin = (int) (density * 14);
+            padding = (int) (density * 8);
         }
         if (parent.getChildAdapterPosition(view) == 0) {
             outRect.left = margin;

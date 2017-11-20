@@ -28,7 +28,7 @@
         android:background="@drawable/goto_wechat_btn"
         android:gravity="center"
         android:text="去微信"
-        android:textColor="@android:color/white"
+        android:textColor="#9c5800"
         android:textSize="15sp" />
 
 </FrameLayout>

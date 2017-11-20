@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -63,9 +64,41 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
         });
         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         groupRecyclerView.setAdapter(groupAdapter);
+        groupRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            int padding = (int) (getResources().getDisplayMetrics().density * 5);
+
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.right = padding;
+            }
+        });
+        groupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (groupAdapter.select(position)) {
+                    viewPager.setCurrentItem(position);
+                }
+            }
+        });
 
         pagerAdapter = new PersonalPageAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                groupAdapter.select(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -99,7 +132,7 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
         });
         StringBuilder sb = new StringBuilder();
         for (String item : msg) {
-            sb.append(item).append("\n");
+            sb.append(item);
         }
         noticeContentView.setText(sb);
     }
