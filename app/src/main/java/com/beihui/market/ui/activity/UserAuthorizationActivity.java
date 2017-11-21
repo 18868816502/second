@@ -238,5 +238,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.finish();
+        overridePendingTransition(0, R.anim.slide_to_bottom);
     }
+
 }
