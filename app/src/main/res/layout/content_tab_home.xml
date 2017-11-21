@@ -69,19 +69,31 @@
                 android:textColor="@color/black_1"
                 android:textSize="15sp" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/refresh_hot"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:drawablePadding="5dp"
-                android:drawableRight="@drawable/home_change_icon_animation"
-                android:gravity="center"
+                android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="换一换"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="换一换"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/refresh_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/home_change_icon" />
+            </LinearLayout>
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView

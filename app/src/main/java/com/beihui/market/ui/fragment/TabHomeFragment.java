@@ -3,8 +3,6 @@ package com.beihui.market.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -90,7 +90,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @BindView(R.id.marquee_view)
     MarqueeView marqueeView;
     @BindView(R.id.refresh_hot)
-    TextView refreshHot;
+    View refreshHot;
+    @BindView(R.id.refresh_icon)
+    ImageView refreshIcon;
     @BindView(R.id.hot_recycler_view)
     RecyclerView hotRecyclerView;
     @BindView(R.id.choice_recycler_view)
@@ -109,6 +111,8 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Inject
     TabHomePresenter presenter;
+
+    private Animation animation;
 
     private HotChoiceRVAdapter hotAdapter;
     private HotChoiceRVAdapter choiceAdapter;
@@ -280,8 +284,15 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         refreshHot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Animatable) refreshHot.getCompoundDrawables()[2]).start();
-                presenter.loadHotProducts();
+                animation = AnimationUtils.loadAnimation(getContext(), R.anim.refresh_animation);
+                refreshIcon.startAnimation(animation);
+                //确保动画至少持续一秒钟
+                refreshHot.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        presenter.loadHotProducts();
+                    }
+                }, 1000);
             }
         });
 
@@ -365,9 +376,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @Override
     public void showHotProducts(List<LoanProduct.Row> products) {
         handleShowContent();
-        Drawable d = refreshHot.getCompoundDrawables()[2];
-        if (((Animatable) d).isRunning()) {
-            ((Animatable) d).stop();
+        if (animation != null && animation.hasStarted()) {
+            animation.cancel();
+            animation = null;
         }
         if (hotAdapter != null) {
             hotAdapter.notifyHotProductChanged(products);
@@ -429,9 +440,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
-        Drawable d = refreshHot.getCompoundDrawables()[2];
-        if (d != null) {
-            ((Animatable) d).stop();
+        if (animation != null && animation.hasStarted()) {
+            animation.cancel();
+            animation = null;
         }
     }
 
@@ -440,9 +451,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
-        Drawable d = refreshHot.getCompoundDrawables()[2];
-        if (d != null) {
-            ((Animatable) d).stop();
+        if (animation != null && animation.hasStarted()) {
+            animation.cancel();
+            animation = null;
         }
         stateLayout.switchState(StateLayout.STATE_NET_ERROR);
     }
