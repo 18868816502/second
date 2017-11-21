@@ -2,6 +2,7 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -287,7 +288,8 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         //跳原生还是跳Web
         if (adBanner.isNative()) {
             view.navigateProductDetail(null, adBanner.getLocalId());
-        } else {
+        } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
+            //url地址不为空才跳转
             view.navigateWeb(adBanner.getTitle(), adBanner.getUrl());
         }
 

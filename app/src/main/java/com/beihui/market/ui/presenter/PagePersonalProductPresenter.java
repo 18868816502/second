@@ -47,6 +47,37 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
     }
 
     @Override
+    public void refresh() {
+        Disposable dis = api.queryPersonalProducts(groupId, 1, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
+                               @Override
+                               public void accept(ResultEntity<LoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       pageNo = 2;
+                                       products.clear();
+                                       if (result.getData() != null && result.getData().getRows() != null
+                                               && result.getData().getRows().size() > 0) {
+                                           products.addAll(result.getData().getRows());
+                                       }
+                                       canLoadMore = products.size() == PAGE_SIZE;
+                                       view.showGroupProducts(Collections.unmodifiableList(products), canLoadMore);
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(PagePersonalProductPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
     public void loadGroupProduct() {
         if (products.size() > 0) {
             view.showGroupProducts(Collections.unmodifiableList(products), canLoadMore);

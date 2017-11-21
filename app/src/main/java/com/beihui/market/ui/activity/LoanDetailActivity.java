@@ -136,7 +136,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             public void onScrolled(int dy) {
                 renderBar(dy / (float) hitDistance);
                 boolean selected = dy >= hitDistance / 2;
-                navigateView.setSaveEnabled(selected);
+                navigateView.setSelected(selected);
                 collectView.setSelected(selected);
                 shareView.setSelected(selected);
                 loanNameTitleTv.setSelected(selected);
@@ -409,6 +409,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showDeleteCollectionSuccess(String msg) {
+        ToastUtils.showShort(this, msg, null);
         collectView.setActivated(false);
     }
 

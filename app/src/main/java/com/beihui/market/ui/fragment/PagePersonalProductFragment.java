@@ -2,6 +2,7 @@ package com.beihui.market.ui.fragment;
 
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.beihui.market.ui.adapter.LoanRVAdapter;
 import com.beihui.market.ui.contract.PagePersonalProductContract;
 import com.beihui.market.ui.presenter.PagePersonalProductPresenter;
 import com.beihui.market.ui.rvdecoration.LoanItemDeco;
+import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.ProductStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -27,7 +30,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class PagePersonalProductFragment extends BaseComponentFragment implements PagePersonalProductContract.View {
-
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -45,6 +51,19 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new ProductStateProvider(getContext(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.loadGroupProduct();
+            }
+        }));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.loadMoreGroupProduct();
+            }
+        });
+
         adapter = new LoanRVAdapter();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -89,6 +108,10 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
     @Override
     public void showGroupProducts(List<LoanProduct.Row> products, boolean canLoadMore) {
         if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_CONTENT);
+            if (refreshLayout.isRefreshing()) {
+                refreshLayout.setRefreshing(false);
+            }
             if (adapter != null) {
                 if (adapter.isLoading()) {
                     if (canLoadMore) {
@@ -98,6 +121,30 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
                     }
                 }
                 adapter.notifyLoanProductChanged(products);
+            }
+        }
+    }
+
+    @Override
+    public void showNoGroupProducts() {
+        if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_EMPTY);
+        }
+    }
+
+    @Override
+    public void showNetError() {
+        if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_NET_ERROR);
+        }
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        super.showErrorMsg(msg);
+        if (isAdded()) {
+            if (refreshLayout.isRefreshing()) {
+                refreshLayout.setRefreshing(false);
             }
         }
     }

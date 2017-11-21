@@ -4,6 +4,7 @@
     android:layout_height="wrap_content">
 
     <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+        android:id="@+id/swipe_menu_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

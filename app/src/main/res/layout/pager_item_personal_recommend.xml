@@ -1,49 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.beihui.market.view.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/state_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/notice_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffe99e"
-        android:minHeight="30dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/notice_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="30dp"
-            android:textColor="#ca6832"
-            android:textSize="11sp"
-            tools:text="精胜多负少的发斯蒂芬斯蒂芬sfsdfsdfdsf dsf s" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recommend_group_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@android:color/white"
+            android:paddingLeft="2dp" />
 
-        <ImageView
-            android:id="@+id/notice_close"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|center_vertical"
-            android:scaleType="centerInside"
-            android:src="@drawable/loan_notice_close_icon" />
-    </FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recommend_group_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@android:color/white"
-        android:paddingLeft="2dp" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+    </LinearLayout>
+</com.beihui.market.view.StateLayout>

@@ -13,10 +13,12 @@ import com.beihui.market.injection.component.DaggerProductCollectionComponent;
 import com.beihui.market.injection.module.ProductCollectionModule;
 import com.beihui.market.ui.adapter.CollectionLoanRVAdapter;
 import com.beihui.market.ui.contract.ProductCollectionContract;
+import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.ProductCollectionPresenter;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.StateLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
@@ -52,9 +54,18 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
         }, recyclerView);
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 if (view.getId() == R.id.delete) {
-                    presenter.deleteCollection(position);
+                    ((SwipeMenuLayout) view.getParent()).smoothClose();
+                    new CommNoneAndroidDialog().withMessage("确认删除收藏")
+                            .withNegativeBtn("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    presenter.deleteCollection(position);
+                                }
+                            })
+                            .withPositiveBtn("取消", null)
+                            .show(getChildFragmentManager(), "ConfirmDelete");
                 }
             }
         });

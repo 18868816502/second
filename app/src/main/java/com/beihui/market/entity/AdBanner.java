@@ -1,7 +1,10 @@
 package com.beihui.market.entity;
 
 
-public class AdBanner {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AdBanner implements Parcelable {
     /**
      * 广告类型，1 跳转url， 2跳转产品详情页
      */
@@ -111,4 +114,51 @@ public class AdBanner {
         return needLogin == 1;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.type);
+        dest.writeString(this.url);
+        dest.writeString(this.localId);
+        dest.writeString(this.imgUrl);
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeLong(this.beginTime);
+        dest.writeLong(this.endTime);
+        dest.writeInt(this.showTimes);
+        dest.writeInt(this.needLogin);
+    }
+
+    public AdBanner() {
+    }
+
+    protected AdBanner(Parcel in) {
+        this.type = in.readInt();
+        this.url = in.readString();
+        this.localId = in.readString();
+        this.imgUrl = in.readString();
+        this.id = in.readString();
+        this.title = in.readString();
+        this.beginTime = in.readLong();
+        this.endTime = in.readLong();
+        this.showTimes = in.readInt();
+        this.needLogin = in.readInt();
+    }
+
+    public static final Parcelable.Creator<AdBanner> CREATOR = new Parcelable.Creator<AdBanner>() {
+        @Override
+        public AdBanner createFromParcel(Parcel source) {
+            return new AdBanner(source);
+        }
+
+        @Override
+        public AdBanner[] newArray(int size) {
+            return new AdBanner[size];
+        }
+    };
 }

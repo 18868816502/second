@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.AdBanner;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
@@ -40,6 +44,8 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseComponentActivity {
 
+    private static final int PENDING_LOGIN = 1;
+
     @BindView(R.id.navigation_bar)
     BottomNavigationBar mNavigationBar;
 
@@ -49,11 +55,25 @@ public class MainActivity extends BaseComponentActivity {
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
 
+    private AdBanner adBanner;
+
     @SuppressLint("InlinedApi")
     private String[] needPermission = {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adBanner = getIntent().getParcelableExtra("pendingAd");
+        if (adBanner != null) {
+            //启动页点击需要登录查看的广告，且用户没有登录
+            Intent toLogin = new Intent(this, UserAuthorizationActivity.class);
+            startActivityForResult(toLogin, PENDING_LOGIN);
+            overridePendingTransition(0, 0);
+        }
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -70,6 +90,29 @@ public class MainActivity extends BaseComponentActivity {
         updateHelper.destroy();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PENDING_LOGIN) {
+            if (UserHelper.getInstance(this).getProfile() != null) {
+                //认为用户登录成功
+                //跳Native还是跳Web
+                if (adBanner.isNative()) {
+                    Intent intent = new Intent(this, LoanDetailActivity.class);
+                    intent.putExtra("loanId", adBanner.getLocalId());
+                    intent.putExtra("loanName", adBanner.getTitle());
+                    startActivity(intent);
+                } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
+                    //跳转网页时，url不为空情况下才跳转
+                    Intent intent = new Intent(this, ComWebViewActivity.class);
+                    intent.putExtra("url", adBanner.getUrl());
+                    intent.putExtra("title", adBanner.getTitle());
+                    startActivity(intent);
+                }
+                adBanner = null;
+            }
+        }
     }
 
     @Override

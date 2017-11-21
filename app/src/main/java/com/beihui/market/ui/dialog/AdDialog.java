@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,10 @@ import android.widget.ImageView;
 import com.beihui.market.R;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.bumptech.glide.Glide;
 
 public class AdDialog extends DialogFragment {
@@ -53,12 +56,21 @@ public class AdDialog extends DialogFragment {
                     dismiss();
                     //统计点击
                     DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
+
+                    //是否需要登录
+                    if (ad.needLogin()) {
+                        if (UserHelper.getInstance(getContext()).getProfile() == null) {
+                            UserAuthorizationActivity.launch(getActivity(), null);
+                            return;
+                        }
+                    }
+
                     //跳原生还是跳Web
                     if (ad.isNative()) {
                         Intent intent = new Intent(getContext(), LoanDetailActivity.class);
                         intent.putExtra("loanId", ad.getLocalId());
                         startActivity(intent);
-                    } else {
+                    } else if (!TextUtils.isEmpty(ad.getUrl())) {
                         Intent intent = new Intent(getContext(), ComWebViewActivity.class);
                         intent.putExtra("url", ad.getUrl());
                         startActivity(intent);

@@ -11,6 +11,11 @@ public interface PagePersonalProductContract {
 
     interface Presenter extends BasePresenter {
         /**
+         * 刷新
+         */
+        void refresh();
+
+        /**
          * 加载特定分组的产品
          */
         void loadGroupProduct();
@@ -36,6 +41,16 @@ public interface PagePersonalProductContract {
          * @param canLoadMore 能否还能加载更多
          */
         void showGroupProducts(List<LoanProduct.Row> products, boolean canLoadMore);
+
+        /**
+         * 没有分组产品数据
+         */
+        void showNoGroupProducts();
+
+        /**
+         * 请求错误
+         */
+        void showNetError();
 
         /**
          * 导航至登录

@@ -34,7 +34,7 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
 
     private int dueTimeSelected = 6;
     private int sortSelected = 0;
-    private int moneySelected = 0;
+    private int moneySelected = 4;
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
     private int curPage = 1;
 

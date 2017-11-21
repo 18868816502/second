@@ -115,7 +115,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                                    if (result.isSuccess()) {
                                        //置为未收藏
                                        productDetail.getBase().setIsCollection(0);
-                                       view.showDeleteCollectionSuccess("取消收藏成功");
+                                       view.showDeleteCollectionSuccess("取消收藏");
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

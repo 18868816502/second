@@ -9,23 +9,42 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerTabLoanComponent;
+import com.beihui.market.injection.module.TabLoanModule;
+import com.beihui.market.ui.contract.TabLoanContract;
+import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
 
-public class TabLoanFragment extends BaseTabFragment {
+public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.View {
 
     @BindView(R.id.tab_layout)
     CopyTabLayout tabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
+
+    @BindView(R.id.notice_container)
+    View noticeContainer;
+    @BindView(R.id.notice_content)
+    TextView noticeContentView;
+    @BindView(R.id.notice_close)
+    View noticeCloseView;
+
+    @Inject
+    TabLoanPresenter presenter;
 
     public static TabLoanFragment newInstance() {
         return new TabLoanFragment();
@@ -52,10 +71,37 @@ public class TabLoanFragment extends BaseTabFragment {
 
     @Override
     public void initDatas() {
+        presenter.loadProductNotice();
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+        DaggerTabLoanComponent.builder()
+                .appComponent(appComponent)
+                .tabLoanModule(new TabLoanModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
+    public void setPresenter(TabLoanContract.Presenter presenter) {
+        //
+    }
+
+    @Override
+    public void showProductNotice(List<String> notice) {
+        noticeContainer.setVisibility(View.VISIBLE);
+        noticeCloseView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noticeContainer.setVisibility(View.GONE);
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        for (String item : notice) {
+            sb.append(item);
+        }
+        noticeContentView.setText(sb);
     }
 
     class RecommendPagerAdapter extends FragmentPagerAdapter {

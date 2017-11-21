@@ -9,6 +9,7 @@ import com.beihui.market.ui.contract.PagePersonalContract;
 import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,49 +22,12 @@ public class PagePersonalPresenter extends BaseRxPresenter implements PagePerson
     private PagePersonalContract.View view;
     private Api api;
 
-    private List<String> productHints = new ArrayList<>();
     private List<LoanGroup> groups = new ArrayList<>();
-
-    private boolean hasNoticeInit = false;
 
     @Inject
     PagePersonalPresenter(Api api, PagePersonalContract.View view) {
         this.api = api;
         this.view = view;
-    }
-
-    @Override
-    public void loadProductHint() {
-        if (hasNoticeInit) {
-            return;
-        }
-        Disposable dis = api.queryLoanHint()
-                .compose(RxUtil.<ResultEntity<List<String>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<String>>>() {
-                               @Override
-                               public void accept(ResultEntity<List<String>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       productHints.clear();
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           productHints.addAll(result.getData());
-                                           view.showProductHint(productHints);
-                                       }
-                                       hasNoticeInit = true;
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(PagePersonalPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-
-                            }
-                        });
-        addDisposable(dis);
     }
 
     @Override
@@ -80,10 +44,13 @@ public class PagePersonalPresenter extends BaseRxPresenter implements PagePerson
                                            groups.clear();
                                            if (result.getData() != null && result.getData().size() > 0) {
                                                groups.addAll(result.getData());
+                                               view.showProductGroup(Collections.unmodifiableList(groups));
+                                           } else {
+                                               view.showNoProductGroup();
                                            }
-                                           view.showProductGroup(groups);
                                        } else {
                                            view.showErrorMsg(result.getMsg());
+                                           view.showNoProductGroup();
                                        }
 
                                    }
@@ -93,6 +60,7 @@ public class PagePersonalPresenter extends BaseRxPresenter implements PagePerson
                                 public void accept(Throwable throwable) throws Exception {
                                     logError(PagePersonalPresenter.this, throwable);
                                     view.showErrorMsg(generateErrorMsg(throwable));
+                                    view.showNetError();
                                 }
                             });
             addDisposable(dis);

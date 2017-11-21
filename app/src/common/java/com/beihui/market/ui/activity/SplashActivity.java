@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSplashComponent;
 import com.beihui.market.util.RxUtil;
@@ -169,22 +171,25 @@ public class SplashActivity extends BaseComponentActivity {
                     Context context = SplashActivity.this;
                     //统计点击
                     DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), adBanner.getType());
-                    //先跳转至首页，在跳转至广告页
-                    Intent intent = new Intent(context, MainActivity.class);
-                    startActivity(intent);
-                    //是否需要先登录
-                    if (adBanner.needLogin()) {
-                        Intent toLogin = new Intent(SplashActivity.this, UserAuthorizationActivity.class);
-                        startActivity(toLogin);
-                        overridePendingTransition(0, 0);
+
+                    //需要先登录并且用户还没登录
+                    if (adBanner.needLogin() && UserHelper.getInstance(SplashActivity.this).getProfile() == null) {
+                        //跳转至首页，将广告数据带过去，并由首页进行处理
+                        Intent toMain = new Intent(SplashActivity.this, MainActivity.class);
+                        toMain.putExtra("pendingAd", adBanner);
+                        startActivity(toMain);
                     } else {
+                        //先跳转至首页，在跳转至广告页
+                        Intent intent = new Intent(context, MainActivity.class);
+                        startActivity(intent);
                         //跳Native还是跳Web
                         if (adBanner.isNative()) {
                             intent = new Intent(context, LoanDetailActivity.class);
                             intent.putExtra("loanId", adBanner.getLocalId());
                             intent.putExtra("loanName", adBanner.getTitle());
                             startActivity(intent);
-                        } else {
+                        } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
+                            //跳转网页时，url不为空情况下才跳转
                             intent = new Intent(context, ComWebViewActivity.class);
                             intent.putExtra("url", adBanner.getUrl());
                             intent.putExtra("title", adBanner.getTitle());

@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
@@ -21,6 +20,8 @@ import com.beihui.market.injection.module.PagePersonalModule;
 import com.beihui.market.ui.adapter.ProductGroupAdapter;
 import com.beihui.market.ui.contract.PagePersonalContract;
 import com.beihui.market.ui.presenter.PagePersonalPresenter;
+import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.ProductStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -31,12 +32,8 @@ import butterknife.BindView;
 
 public class PagePersonalFragment extends BaseComponentFragment implements PagePersonalContract.View {
 
-    @BindView(R.id.notice_container)
-    View noticeContainer;
-    @BindView(R.id.notice_content)
-    TextView noticeContentView;
-    @BindView(R.id.notice_close)
-    View noticeCloseView;
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.recommend_group_recycler_view)
     RecyclerView groupRecyclerView;
     @BindView(R.id.view_pager)
@@ -55,6 +52,12 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new ProductStateProvider(getContext(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.loadProductGroup();
+            }
+        }));
         groupAdapter = new ProductGroupAdapter();
         groupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -104,7 +107,6 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
     @Override
     public void initDatas() {
         presenter.loadProductGroup();
-        presenter.loadProductHint();
     }
 
     @Override
@@ -122,30 +124,29 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
     }
 
     @Override
-    public void showProductHint(List<String> msg) {
-        noticeContainer.setVisibility(View.VISIBLE);
-        noticeCloseView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                noticeContainer.setVisibility(View.GONE);
-            }
-        });
-        StringBuilder sb = new StringBuilder();
-        for (String item : msg) {
-            sb.append(item);
-        }
-        noticeContentView.setText(sb);
-    }
-
-    @Override
     public void showProductGroup(List<LoanGroup> groups) {
         if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_CONTENT);
             if (groupAdapter != null) {
                 groupAdapter.notifyLoanGroupChanged(groups);
             }
             if (pagerAdapter != null) {
                 pagerAdapter.notifyDataSetChanged();
             }
+        }
+    }
+
+    @Override
+    public void showNoProductGroup() {
+        if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_EMPTY);
+        }
+    }
+
+    @Override
+    public void showNetError() {
+        if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_NET_ERROR);
         }
     }
 

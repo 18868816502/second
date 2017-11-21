@@ -99,6 +99,7 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             dataSet.addAll(list);
         }
         notifyDataSetChanged();
+        disableLoadMoreIfNotFullPage(getRecyclerView());
     }
 
     private int getLabelIcon(int type) {
