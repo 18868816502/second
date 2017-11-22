@@ -62,7 +62,9 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
         groupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (groupAdapter.select(position)) {
+                    viewPager.setCurrentItem(position);
+                }
             }
         });
         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -73,14 +75,6 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 outRect.right = padding;
-            }
-        });
-        groupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (groupAdapter.select(position)) {
-                    viewPager.setCurrentItem(position);
-                }
             }
         });
 

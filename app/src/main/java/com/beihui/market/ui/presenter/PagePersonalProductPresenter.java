@@ -59,11 +59,14 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
                                        if (result.getData() != null && result.getData().getRows() != null
                                                && result.getData().getRows().size() > 0) {
                                            products.addAll(result.getData().getRows());
+                                           canLoadMore = products.size() == PAGE_SIZE;
+                                           view.showGroupProducts(Collections.unmodifiableList(products), canLoadMore);
+                                       } else {
+                                           view.showNoGroupProducts();
                                        }
-                                       canLoadMore = products.size() == PAGE_SIZE;
-                                       view.showGroupProducts(Collections.unmodifiableList(products), canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
+                                       view.showNetError();
                                    }
                                }
                            },
@@ -72,6 +75,7 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
                             public void accept(Throwable throwable) throws Exception {
                                 logError(PagePersonalProductPresenter.this, throwable);
                                 view.showErrorMsg(generateErrorMsg(throwable));
+                                view.showNetError();
                             }
                         });
         addDisposable(dis);
@@ -82,7 +86,7 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
         if (products.size() > 0) {
             view.showGroupProducts(Collections.unmodifiableList(products), canLoadMore);
         } else {
-            loadMoreGroupProduct();
+            refresh();
         }
     }
 

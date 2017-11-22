@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
@@ -20,6 +19,7 @@ import com.beihui.market.ui.contract.TabLoanContract;
 import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @BindView(R.id.notice_container)
     View noticeContainer;
     @BindView(R.id.notice_content)
-    TextView noticeContentView;
+    AutoTextView noticeContentView;
     @BindView(R.id.notice_close)
     View noticeCloseView;
 
@@ -65,6 +65,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void configViews() {
+        noticeContentView.setScrollMode(AutoTextView.SCROLL_NORM);
         viewPager.setAdapter(new RecommendPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
     }

@@ -14,13 +14,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
+            <com.beihui.market.view.VpSwipeRefreshLayout
                 android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <include layout="@layout/content_tab_home" />
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </com.beihui.market.view.VpSwipeRefreshLayout>
 
             <LinearLayout
                 android:id="@+id/tool_bar_container"

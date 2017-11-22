@@ -26,7 +26,7 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     private String moneySelection[] = {"1000元", "3000元", "5000元", "1万元", "不限"};
     private int moneyList[] = {1000, 3000, 5000, 10000, 0};
     private String dueTimes[] = {"1个月及以下", "3个月", "6个月", "12个月", "24个月", "36个月及以上", "不限"};
-    private String sortGroup[] = {"默认排序", "借款利率", "最高额度"};
+    private String sortGroup[] = {"默认", "借款利率", "最高额度"};
 
     private Api api;
     private PageSmartContract.View view;

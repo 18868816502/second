@@ -22,6 +22,13 @@ public interface ProductCollectionContract {
          * @param index 点击位置
          */
         void deleteCollection(int index);
+
+        /**
+         * 点击收藏
+         *
+         * @param index 点击位置
+         */
+        void clickCollection(int index);
     }
 
     interface View extends BaseView<Presenter> {
@@ -37,5 +44,12 @@ public interface ProductCollectionContract {
          * 删除收藏成功
          */
         void showDeleteCollectionSuccess(String msg);
+
+        /**
+         * 导航至产品详情页
+         *
+         * @param loan 收藏的产品
+         */
+        void navigateLoanDetail(LoanProduct.Row loan);
     }
 }

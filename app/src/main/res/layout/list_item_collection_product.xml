@@ -3,22 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    <com.daimajia.swipe.SwipeLayout
         android:id="@+id/swipe_menu_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/rv_item_loan" />
-
         <ImageView
             android:id="@+id/delete"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:scaleType="centerInside"
             android:src="@drawable/collection_delete" />
-    </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+
+        <include layout="@layout/rv_item_loan" />
+    </com.daimajia.swipe.SwipeLayout>
 
 </FrameLayout>

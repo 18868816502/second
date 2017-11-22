@@ -116,7 +116,8 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     public void refresh() {
         loadBanner();
         loadHeadline();
-
+        //刷新时，热门产品刷新到第一页
+        hotProductPageNo = 1;
         loadHotProducts();
         loadChoiceProducts();
         loadHotNews();

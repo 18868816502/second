@@ -100,4 +100,9 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
                         });
         addDisposable(dis);
     }
+
+    @Override
+    public void clickCollection(int index) {
+        view.navigateLoanDetail(products.get(index));
+    }
 }

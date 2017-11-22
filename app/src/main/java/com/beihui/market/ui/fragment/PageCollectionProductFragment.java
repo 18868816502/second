@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerProductCollectionComponent;
 import com.beihui.market.injection.module.ProductCollectionModule;
+import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.adapter.CollectionLoanRVAdapter;
 import com.beihui.market.ui.contract.ProductCollectionContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
@@ -18,7 +20,7 @@ import com.beihui.market.ui.presenter.ProductCollectionPresenter;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.StateLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+import com.daimajia.swipe.SwipeLayout;
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 if (view.getId() == R.id.delete) {
-                    ((SwipeMenuLayout) view.getParent()).smoothClose();
+                    ((SwipeLayout) view.getParent()).close(true);
                     new CommNoneAndroidDialog().withMessage("确认删除收藏")
                             .withNegativeBtn("确定", new View.OnClickListener() {
                                 @Override
@@ -66,10 +68,11 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
                             })
                             .withPositiveBtn("取消", null)
                             .show(getChildFragmentManager(), "ConfirmDelete");
+                } else if (view.getId() == R.id.swipe_menu_layout) {
+                    presenter.clickCollection(position);
                 }
             }
         });
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
@@ -114,5 +117,12 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
         if (msg != null) {
             ToastUtils.showShort(getContext(), msg, null);
         }
+    }
+
+    @Override
+    public void navigateLoanDetail(LoanProduct.Row loan) {
+        Intent toDetail = new Intent(getContext(), LoanDetailActivity.class);
+        toDetail.putExtra("loan", loan);
+        startActivity(toDetail);
     }
 }
