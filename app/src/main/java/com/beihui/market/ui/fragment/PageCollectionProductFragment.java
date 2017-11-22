@@ -68,7 +68,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
                             })
                             .withPositiveBtn("取消", null)
                             .show(getChildFragmentManager(), "ConfirmDelete");
-                } else if (view.getId() == R.id.swipe_menu_layout) {
+                } else if (view.getId() == R.id.base_container) {
                     presenter.clickCollection(position);
                 }
             }

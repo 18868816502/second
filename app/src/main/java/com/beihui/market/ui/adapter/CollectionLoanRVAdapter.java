@@ -16,6 +16,6 @@ public class CollectionLoanRVAdapter extends LoanRVAdapter {
     protected void convert(BaseViewHolder helper, LoanProduct.Row item) {
         super.convert(helper, item);
         helper.addOnClickListener(R.id.delete);
-        helper.addOnClickListener(R.id.swipe_menu_layout);
+        helper.addOnClickListener(R.id.base_container);
     }
 }
