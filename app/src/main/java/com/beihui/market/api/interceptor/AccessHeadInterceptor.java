@@ -51,7 +51,7 @@ public class AccessHeadInterceptor implements Interceptor {
         return chain.proceed(builder.build());
     }
 
-    private void appendHeadWithBody(Request request, StringBuilder sb) {
+    private synchronized void appendHeadWithBody(Request request, StringBuilder sb) {
         try {
             RequestBody requestBody = request.body();
             Buffer buffer = new Buffer();
