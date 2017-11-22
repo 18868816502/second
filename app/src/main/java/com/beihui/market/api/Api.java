@@ -49,6 +49,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Api {
 
+    private static final String PLATFORM = "Android";
+
     private static Api sInstance;
     private ApiService service;
 
@@ -353,7 +355,7 @@ public class Api {
      * @param pageNo 查询页数
      */
     public Observable<ResultEntity<HotLoanProduct>> queryHotProduct(int pageNo) {
-        return service.queryHotProduct(pageNo);
+        return service.queryHotProduct(pageNo, PLATFORM);
     }
 
     /**
@@ -363,7 +365,7 @@ public class Api {
      * @param pageSize 查询每页大小
      */
     public Observable<ResultEntity<LoanProduct>> queryChoiceProduct(int pageNo, int pageSize) {
-        return service.queryChoiceProduct(pageNo, pageSize);
+        return service.queryChoiceProduct(pageNo, pageSize, PLATFORM);
     }
 
 
@@ -389,7 +391,7 @@ public class Api {
      * @param pageSize 查询每页大小
      */
     public Observable<ResultEntity<LoanProduct>> queryPersonalProducts(String groupId, int pageNo, int pageSize) {
-        return service.queryPersonalProducts(groupId, pageNo, pageSize);
+        return service.queryPersonalProducts(groupId, pageNo, pageSize, PLATFORM);
     }
 
     /**
@@ -402,7 +404,7 @@ public class Api {
      * @param pageSize 查询每页大小
      */
     public Observable<ResultEntity<LoanProduct>> queryLoanProduct(double amount, int dueTime, int sortType, int pageNum, int pageSize) {
-        return service.queryLoanProduct(amount, dueTime + "", sortType, pageNum, pageSize);
+        return service.queryLoanProduct(amount, dueTime + "", sortType, pageNum, pageSize, PLATFORM);
     }
 
     /**

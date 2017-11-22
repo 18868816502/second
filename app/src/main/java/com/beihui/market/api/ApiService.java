@@ -197,14 +197,15 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/dynamicList")
-    Observable<ResultEntity<HotLoanProduct>> queryHotProduct(@Field("pageNo") int pageNo);
+    Observable<ResultEntity<HotLoanProduct>> queryHotProduct(@Field("pageNo") int pageNo, @Field("platform") String platform);
 
     /**
      * 查询首页精选产品
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/selectedList")
-    Observable<ResultEntity<LoanProduct>> queryChoiceProduct(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<LoanProduct>> queryChoiceProduct(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize,
+                                                             @Field("platform") String platform);
 
     /**
      * 查询产品提示语
@@ -224,7 +225,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/groupProductList")
     Observable<ResultEntity<LoanProduct>> queryPersonalProducts(@Field("groupId") String groupId,
-                                                                @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+                                                                @Field("pageNo") int pageNo, @Field("pageSize") int pageSize,
+                                                                @Field("platform") String platform);
 
     /**
      * 查询智能推荐产品
@@ -233,7 +235,7 @@ public interface ApiService {
     @POST(PRODUCT_PATH + "/product/list")
     Observable<ResultEntity<LoanProduct>> queryLoanProduct(@Field("amount") double amount, @Field("dueTime") String dueTime,
                                                            @Field("sortType") int sortType, @Field("pageNo") int pageNum,
-                                                           @Field("pageSize") int pageSize);
+                                                           @Field("pageSize") int pageSize, @Field("platform") String platform);
 
     /**
      * 查询贷款产品详情
