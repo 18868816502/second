@@ -65,7 +65,6 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     public void configViews() {
-        noticeContentView.setScrollMode(AutoTextView.SCROLL_NORM);
         viewPager.setAdapter(new RecommendPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -101,6 +100,11 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
         StringBuilder sb = new StringBuilder();
         for (String item : notice) {
             sb.append(item);
+        }
+        if (sb.length() > 25) {
+            noticeContentView.setScrollMode(AutoTextView.SCROLL_NORM);
+        } else {
+            noticeContentView.setScrollMode(AutoTextView.SCROLL_STILL);
         }
         noticeContentView.setText(sb);
     }

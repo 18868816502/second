@@ -41,7 +41,7 @@ public class InvitationAdapter extends BaseQuickAdapter<Invitation.Row, BaseView
             dataSet = new ArrayList<>();
         }
         dataSet.clear();
-        if (list != null) {
+        if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         setNewData(dataSet);
