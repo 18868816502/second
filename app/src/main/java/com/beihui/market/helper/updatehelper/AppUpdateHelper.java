@@ -113,7 +113,7 @@ public class AppUpdateHelper {
                 if (version.compareTo(appVersion) < 0) {
                     CommNoneAndroidDialog dialog = new CommNoneAndroidDialog()
                             .withMessage(app.getContent())
-                            .withPositiveBtn("立即更新", new View.OnClickListener() {
+                            .withNegativeBtn("立即更新", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     startDownload(context, appUrl, appVersion, isForce);
@@ -121,7 +121,7 @@ public class AppUpdateHelper {
                             });
                     //非强制更新
                     if (!isForce) {
-                        dialog.withNegativeBtn("稍后再说", null);
+                        dialog.withPositiveBtn("稍后再说", null);
                     }
                     dialog.setCancelable(false);
                     dialog.show(context.getSupportFragmentManager(), "update");
