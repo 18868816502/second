@@ -35,6 +35,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.WatchableScrollView;
@@ -247,8 +248,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             inflateTag(feature);
         }
         //loaned number
-        SpannableString ss = new SpannableString("成功借款" + loan.getSuccessCount() + "人");
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        SpannableString ss = new SpannableString("已借款" + CommonUtils.getFormatNumber(loan.getSuccessCount()) + "人");
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 3, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         loanedNumberTv.setText(ss);
         //loan max amount
         if (loan.getBorrowingHighText() != null) {
@@ -340,8 +341,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 inflateTag(feature);
             }
             //loaned number
-            SpannableString ss = new SpannableString("成功借款" + base.getSuccessCount() + "人");
-            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            SpannableString ss = new SpannableString("已借款" + CommonUtils.getFormatNumber(base.getSuccessCount()) + "人");
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 3, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             loanedNumberTv.setText(ss);
             //success point
             if (base.getSuccessCountPointText() != null) {
