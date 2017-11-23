@@ -51,6 +51,7 @@
             android:layout_alignLeft="@id/ann_title"
             android:layout_below="@id/ann_title"
             android:layout_marginTop="6dp"
+            android:paddingRight="15dp"
             android:text="@string/notice_place_holder"
             android:textColor="@color/c_999999"
             android:textSize="12sp" />
@@ -104,6 +105,7 @@
             android:layout_alignLeft="@id/msg_title"
             android:layout_below="@id/msg_title"
             android:layout_marginTop="6dp"
+            android:paddingRight="15dp"
             android:text="@string/sys_msg_place_holder"
             android:textColor="@color/c_999999"
             android:textSize="12sp" />
