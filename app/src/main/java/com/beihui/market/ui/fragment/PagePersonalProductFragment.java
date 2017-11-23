@@ -57,6 +57,7 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
                 presenter.loadGroupProduct();
             }
         }));
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
