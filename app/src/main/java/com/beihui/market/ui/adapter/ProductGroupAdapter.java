@@ -26,6 +26,9 @@ public class ProductGroupAdapter extends BaseQuickAdapter<LoanGroup, BaseViewHol
     protected void convert(BaseViewHolder helper, LoanGroup item) {
         Glide.with(helper.itemView.getContext())
                 .load(item.getUrl())
+                .asBitmap()
+                .centerCrop()
+                .placeholder(R.drawable.borrow_classify_placeholder)
                 .into((ImageView) helper.getView(R.id.group_image));
         if (curSelected == helper.getAdapterPosition()) {
             helper.itemView.setAlpha(1);

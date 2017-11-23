@@ -207,6 +207,10 @@ android {
     variantFilter { variant ->
         def vest = variant.flavors[0].name
         def channel = variant.flavors[1].name
+        //不打包非release包
+//        if (variant.buildType.name != "release") {
+//            variant.setIgnore(true)
+//        }
         //过滤渠道
         if (vests.contains(vest)) {
             def channels = vest2Channel.get(vest)
