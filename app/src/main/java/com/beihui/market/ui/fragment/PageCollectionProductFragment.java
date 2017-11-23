@@ -53,7 +53,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                presenter.loadCollection();
+                presenter.loadMoreCollection();
             }
         }, recyclerView);
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {

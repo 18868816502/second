@@ -45,6 +45,7 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
 
     @Override
     public void loadCollection() {
+        pageNo = 1;
         Disposable dis = api.queryProductionCollection(userHelper.getProfile().getId(), pageNo, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
@@ -60,6 +61,38 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
                                        } else {
                                            view.showNoCollection();
                                        }
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(ProductCollectionPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void loadMoreCollection() {
+        Disposable dis = api.queryProductionCollection(userHelper.getProfile().getId(), pageNo, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
+                               @Override
+                               public void accept(ResultEntity<LoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       pageNo++;
+                                       int size = 0;
+                                       if (result.getData() != null && result.getData().getRows() != null
+                                               && result.getData().getRows().size() > 0) {
+                                           products.addAll(result.getData().getRows());
+                                           size = result.getData().getRows().size();
+                                       }
+                                       canLoadMore = size == PAGE_SIZE;
+                                       view.showProductCollection(Collections.unmodifiableList(products), canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

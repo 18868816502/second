@@ -107,7 +107,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     class RecommendPagerAdapter extends FragmentPagerAdapter {
 
-        private String[] recommendTitle = {"个性化推荐", "智能推荐"};
+        private String[] recommendTitle = {"精选好借", "智能推荐"};
 
 
         public RecommendPagerAdapter(FragmentManager fm) {

@@ -17,6 +17,11 @@ public interface ProductCollectionContract {
         void loadCollection();
 
         /**
+         * 加载更过收藏列表
+         */
+        void loadMoreCollection();
+
+        /**
          * 删除产品收藏
          *
          * @param index 点击位置
