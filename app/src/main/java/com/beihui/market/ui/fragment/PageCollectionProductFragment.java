@@ -21,7 +21,7 @@ import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.CollectionStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.daimajia.swipe.SwipeLayout;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                 if (view.getId() == R.id.delete) {
-                    ((SwipeLayout) view.getParent()).close(true);
+                    ((SwipeMenuLayout) view.getParent()).smoothClose();
                     new CommNoneAndroidDialog().withMessage("确认删除收藏")
                             .withNegativeBtn("确定", new View.OnClickListener() {
                                 @Override

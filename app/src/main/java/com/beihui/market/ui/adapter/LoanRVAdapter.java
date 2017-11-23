@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.util.CommonUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -67,7 +68,7 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             helper.setVisible(tagIds[i], false);
         }
         //loaned number
-        SpannableString ss = new SpannableString("成功借款" + item.getSuccessCount() + "人");
+        SpannableString ss = new SpannableString("已借款" + CommonUtils.getFormatNumber(item.getSuccessCount()) + "人");
         ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1,
                 SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
         helper.setText(R.id.loaned_number, ss);

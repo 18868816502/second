@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabHomeComponent;
 import com.beihui.market.injection.module.TabHomeModule;
@@ -410,8 +412,34 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
 
     @Override
-    public void showAdDialog(AdBanner ad) {
-        new AdDialog().setAd(ad).show(getChildFragmentManager(), AdDialog.class.getSimpleName());
+    public void showAdDialog(final AdBanner ad) {
+        new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //统计点击
+                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
+
+                //是否需要登录
+                if (ad.needLogin()) {
+                    if (UserHelper.getInstance(getContext()).getProfile() == null) {
+                        UserAuthorizationActivity.launchWithPending(getActivity(), ad);
+                        return;
+                    }
+                }
+
+                //跳原生还是跳Web
+                if (ad.isNative()) {
+                    Intent intent = new Intent(getContext(), LoanDetailActivity.class);
+                    intent.putExtra("loanId", ad.getLocalId());
+                    startActivity(intent);
+                } else if (!TextUtils.isEmpty(ad.getUrl())) {
+                    Intent intent = new Intent(getContext(), ComWebViewActivity.class);
+                    intent.putExtra("title", ad.getTitle());
+                    intent.putExtra("url", ad.getUrl());
+                    startActivity(intent);
+                }
+            }
+        }).show(getChildFragmentManager(), AdDialog.class.getSimpleName());
     }
 
     @Override
@@ -461,6 +489,11 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @Override
     public void navigateLogin() {
         UserAuthorizationActivity.launch(getActivity(), null);
+    }
+
+    @Override
+    public void navigateLoginWithPending(AdBanner adBanner) {
+        UserAuthorizationActivity.launchWithPending(getActivity(), adBanner);
     }
 
     @Override

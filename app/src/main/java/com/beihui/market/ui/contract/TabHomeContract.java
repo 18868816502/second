@@ -133,6 +133,13 @@ public interface TabHomeContract {
         void navigateLogin();
 
         /**
+         * 导航至登录页
+         *
+         * @param adBanner 后续动作
+         */
+        void navigateLoginWithPending(AdBanner adBanner);
+
+        /**
          * 导航至身价测试页
          */
         void navigateWorthTest();

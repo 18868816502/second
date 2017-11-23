@@ -18,9 +18,12 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.AdBanner;
 import com.beihui.market.helper.ActivityTracker;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
+import com.beihui.market.ui.busevents.UserLoginEvent;
+import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.fragment.UserLoginFragment;
 import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
@@ -51,6 +54,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     private BlurringDrawable blurringDrawable;
 
+    /**
+     * 点击广告跳转到登录页面，登录完成后需要完成后续跳转动作
+     */
+    private AdBanner pendingAd;
+
     public static void launch(Activity context, String phone) {
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
         if (phone != null) {
@@ -60,10 +68,21 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         context.overridePendingTransition(0, 0);
     }
 
+    public static void launchWithPending(Activity context, AdBanner adBanner) {
+        Intent intent = new Intent(context, UserAuthorizationActivity.class);
+        if (adBanner != null) {
+            intent.putExtra("pendingAd", adBanner);
+        }
+        context.startActivity(intent);
+        context.overridePendingTransition(0, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+
+        pendingAd = getIntent().getParcelableExtra("pendingAd");
     }
 
     @Override
@@ -208,6 +227,14 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
             cancelTv.setVisibility(View.VISIBLE);
             navigationIv.setVisibility(View.GONE);
+        }
+    }
+
+    @Subscribe
+    public void onLogin(UserLoginEvent event) {
+        //成功登录后，检查是否存在后续动作，有则完成该动作
+        if (pendingAd != null) {
+            EventBus.getDefault().post(new UserLoginWithPendingTaskEvent(pendingAd));
         }
     }
 

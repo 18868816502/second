@@ -172,16 +172,14 @@ public class SplashActivity extends BaseComponentActivity {
                     //统计点击
                     DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), adBanner.getType());
 
+                    //先跳转至首页
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+
                     //需要先登录并且用户还没登录
                     if (adBanner.needLogin() && UserHelper.getInstance(SplashActivity.this).getProfile() == null) {
-                        //跳转至首页，将广告数据带过去，并由首页进行处理
-                        Intent toMain = new Intent(SplashActivity.this, MainActivity.class);
-                        toMain.putExtra("pendingAd", adBanner);
-                        startActivity(toMain);
+                        UserAuthorizationActivity.launchWithPending(SplashActivity.this, adBanner);
                     } else {
-                        //先跳转至首页，在跳转至广告页
-                        Intent intent = new Intent(context, MainActivity.class);
-                        startActivity(intent);
                         //跳Native还是跳Web
                         if (adBanner.isNative()) {
                             intent = new Intent(context, LoanDetailActivity.class);

@@ -286,7 +286,7 @@ dependencies {
     //shaped image view
     compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.4'
     //swipe menu
-    compile "com.daimajia.swipelayout:library:1.2.0"
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 
     //Permission
     compile "com.github.hotchemi:permissionsdispatcher:2.4.0"

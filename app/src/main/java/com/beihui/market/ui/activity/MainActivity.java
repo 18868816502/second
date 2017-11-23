@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +19,11 @@ import android.widget.Toast;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
-import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.busevents.NavigateNews;
+import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.fragment.TabHomeFragment;
 import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
@@ -44,18 +43,14 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseComponentActivity {
 
-    private static final int PENDING_LOGIN = 1;
-
     @BindView(R.id.navigation_bar)
-    BottomNavigationBar mNavigationBar;
+    BottomNavigationBar navigationBar;
 
-    private int mSelectedFragmentId = -1;
+    private int selectedFragmentId = -1;
 
     private InputMethodManager inputMethodManager;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
-
-    private AdBanner adBanner;
 
     @SuppressLint("InlinedApi")
     private String[] needPermission = {
@@ -64,24 +59,10 @@ public class MainActivity extends BaseComponentActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        adBanner = getIntent().getParcelableExtra("pendingAd");
-        if (adBanner != null) {
-            //启动页点击需要登录查看的广告，且用户没有登录
-            Intent toLogin = new Intent(this, UserAuthorizationActivity.class);
-            startActivityForResult(toLogin, PENDING_LOGIN);
-            overridePendingTransition(0, 0);
-        }
-    }
-
-    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (getIntent().getBooleanExtra("home", false)) {
-            if (mNavigationBar != null) {
-                mNavigationBar.select(R.id.tab_home);
-            }
+            navigationBar.select(R.id.tab_home);
         }
     }
 
@@ -93,29 +74,6 @@ public class MainActivity extends BaseComponentActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PENDING_LOGIN) {
-            if (UserHelper.getInstance(this).getProfile() != null) {
-                //认为用户登录成功
-                //跳Native还是跳Web
-                if (adBanner.isNative()) {
-                    Intent intent = new Intent(this, LoanDetailActivity.class);
-                    intent.putExtra("loanId", adBanner.getLocalId());
-                    intent.putExtra("loanName", adBanner.getTitle());
-                    startActivity(intent);
-                } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
-                    //跳转网页时，url不为空情况下才跳转
-                    Intent intent = new Intent(this, ComWebViewActivity.class);
-                    intent.putExtra("url", adBanner.getUrl());
-                    intent.putExtra("title", adBanner.getTitle());
-                    startActivity(intent);
-                }
-                adBanner = null;
-            }
-        }
-    }
-
-    @Override
     public int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -124,15 +82,15 @@ public class MainActivity extends BaseComponentActivity {
     public void configViews() {
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
-        mNavigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
+        navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
-                if (selectedId != mSelectedFragmentId) {
+                if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }
             }
         });
-        mNavigationBar.select(R.id.tab_home);
+        navigationBar.select(R.id.tab_home);
     }
 
     @Override
@@ -153,21 +111,48 @@ public class MainActivity extends BaseComponentActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateLoan(NavigateLoan event) {
-        mNavigationBar.select(R.id.tab_loan);
+        navigationBar.select(R.id.tab_loan);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateNews(NavigateNews event) {
-        mNavigationBar.select(R.id.tab_news);
+        navigationBar.select(R.id.tab_news);
+    }
+
+    /**
+     * 点击广告要求登录，登录成功之后收到事件完成后续动作
+     * 事件由UserAuthorizationActivity发出
+     */
+    @Subscribe
+    public void onLoginWithPendingTask(UserLoginWithPendingTaskEvent event) {
+        final AdBanner ad = event.adBanner;
+        navigationBar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //跳Native还是跳Web
+                if (ad.isNative()) {
+                    Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
+                    intent.putExtra("loanId", ad.getLocalId());
+                    intent.putExtra("loanName", ad.getTitle());
+                    startActivity(intent);
+                } else if (!TextUtils.isEmpty(ad.getUrl())) {
+                    //跳转网页时，url不为空情况下才跳转
+                    Intent intent = new Intent(MainActivity.this, ComWebViewActivity.class);
+                    intent.putExtra("url", ad.getUrl());
+                    intent.putExtra("title", ad.getTitle());
+                    startActivity(intent);
+                }
+            }
+        }, 400);
     }
 
     private void selectTab(int id) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        String oldTag = makeTag(mSelectedFragmentId);
-        mSelectedFragmentId = id;
-        String newTag = makeTag(mSelectedFragmentId);
+        String oldTag = makeTag(selectedFragmentId);
+        selectedFragmentId = id;
+        String newTag = makeTag(selectedFragmentId);
         Fragment lastSelected = fm.findFragmentByTag(oldTag);
         if (lastSelected != null) {
             ft.detach(lastSelected);
@@ -201,7 +186,7 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (mSelectedFragmentId == R.id.tab_home) {
+        if (selectedFragmentId == R.id.tab_home) {
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 if (inputMethodManager == null) {
                     inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

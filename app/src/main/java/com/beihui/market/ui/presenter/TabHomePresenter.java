@@ -282,7 +282,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         //需要先登录
         if (adBanner.needLogin()) {
             if (UserHelper.getInstance(context).getProfile() == null) {
-                view.navigateLogin();
+                view.navigateLoginWithPending(adBanner);
                 return;
             }
         }
