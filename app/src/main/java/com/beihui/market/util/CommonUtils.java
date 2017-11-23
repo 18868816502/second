@@ -532,13 +532,13 @@ public class CommonUtils {
 
     public static String getFormatNumber(long number) {
         if (number >= 100000000) {
-            String numStr = ((int) (number / 100000000.0) * 10) / 10.0 + "";
+            String numStr = ((int) ((number / 100000000.0) * 10)) / 10.0 + "";
             if (numStr.charAt(numStr.length() - 1) == '0') {
                 numStr = numStr.substring(0, numStr.length() - 2);
             }
             return numStr + "亿";
-        } else if (number >= 1000000.0) {
-            String numStr = ((int) (number / 10000) * 10) / 10.0 + "";
+        } else if (number >= 1000000) {
+            String numStr = ((int) ((number / 10000.0) * 10)) / 10.0 + "";
             if (numStr.charAt(numStr.length() - 1) == '0') {
                 numStr = numStr.substring(0, numStr.length() - 2);
             }

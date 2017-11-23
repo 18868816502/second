@@ -221,7 +221,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
             public void OnBannerClick(int position) {
                 //统计点击
                 AdBanner ad = bannerAds.get(position);
-                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
+                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 2);
 
                 presenter.clickBanner(position);
 
@@ -289,12 +289,13 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
                 animation = AnimationUtils.loadAnimation(getContext(), R.anim.refresh_animation);
                 refreshIcon.startAnimation(animation);
                 //确保动画至少持续一秒钟
-                refreshHot.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        presenter.loadHotProducts();
-                    }
-                }, 1000);
+//                refreshHot.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        presenter.loadHotProducts();
+//                    }
+//                }, 1000);
+                presenter.loadHotProducts();
             }
         });
 
@@ -417,7 +418,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
             @Override
             public void onClick(View v) {
                 //统计点击
-                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), ad.getType());
+                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
 
                 //是否需要登录
                 if (ad.needLogin()) {

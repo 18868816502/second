@@ -69,7 +69,7 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
         }
         //loaned number
         SpannableString ss = new SpannableString("已借款" + CommonUtils.getFormatNumber(item.getSuccessCount()) + "人");
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 4, ss.length() - 1,
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 3, ss.length() - 1,
                 SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
         helper.setText(R.id.loaned_number, ss);
         //amount

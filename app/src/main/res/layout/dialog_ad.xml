@@ -24,8 +24,8 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="285dp"
-        android:layout_height="345dp"
+        android:layout_width="290dp"
+        android:layout_height="410dp"
         android:background="@drawable/round_white_shadow">
 
         <com.makeramen.roundedimageview.RoundedImageView

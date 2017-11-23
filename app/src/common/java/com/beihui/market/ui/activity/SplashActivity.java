@@ -170,7 +170,7 @@ public class SplashActivity extends BaseComponentActivity {
                     adClicked = true;
                     Context context = SplashActivity.this;
                     //统计点击
-                    DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), adBanner.getType());
+                    DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), 1);
 
                     //先跳转至首页
                     Intent intent = new Intent(context, MainActivity.class);
