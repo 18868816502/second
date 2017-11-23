@@ -46,6 +46,12 @@ public interface ProductCollectionContract {
         void showDeleteCollectionSuccess(String msg);
 
         /**
+         * 没有收藏
+         */
+        void showNoCollection();
+
+
+        /**
          * 导航至产品详情页
          *
          * @param loan 收藏的产品

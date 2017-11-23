@@ -19,6 +19,7 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.ProductCollectionPresenter;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.CollectionStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.daimajia.swipe.SwipeLayout;
 
@@ -47,6 +48,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new CollectionStateViewProvider());
         adapter = new CollectionLoanRVAdapter();
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -99,6 +101,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
     @Override
     public void showProductCollection(List<LoanProduct.Row> list, boolean canLoadMore) {
         if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_CONTENT);
             if (adapter != null) {
                 if (adapter.isLoading()) {
                     if (canLoadMore) {
@@ -116,6 +119,13 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
     public void showDeleteCollectionSuccess(String msg) {
         if (msg != null) {
             ToastUtils.showShort(getContext(), msg, null);
+        }
+    }
+
+    @Override
+    public void showNoCollection() {
+        if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_EMPTY);
         }
     }
 

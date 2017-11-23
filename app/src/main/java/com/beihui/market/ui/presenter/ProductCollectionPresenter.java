@@ -22,7 +22,7 @@ import io.reactivex.functions.Consumer;
 
 public class ProductCollectionPresenter extends BaseRxPresenter implements ProductCollectionContract.Presenter {
 
-    private static final int PAGE_SIZE = 15;
+    private static final int PAGE_SIZE = 10;
 
     private Api api;
     private ProductCollectionContract.View view;
@@ -52,14 +52,14 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
                                public void accept(ResultEntity<LoanProduct> result) throws Exception {
                                    if (result.isSuccess()) {
                                        pageNo++;
-                                       int size = 0;
                                        if (result.getData() != null && result.getData().getRows() != null
                                                && result.getData().getRows().size() > 0) {
                                            products.addAll(result.getData().getRows());
-                                           size = result.getData().getRows().size();
+                                           canLoadMore = result.getData().getRows().size() == PAGE_SIZE;
+                                           view.showProductCollection(Collections.unmodifiableList(products), canLoadMore);
+                                       } else {
+                                           view.showNoCollection();
                                        }
-                                       canLoadMore = size == PAGE_SIZE;
-                                       view.showProductCollection(Collections.unmodifiableList(products), canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -86,6 +86,9 @@ public class ProductCollectionPresenter extends BaseRxPresenter implements Produ
                                        view.showDeleteCollectionSuccess(null);
                                        products.remove(index);
                                        view.showProductCollection(Collections.unmodifiableList(products), canLoadMore);
+                                       if (products.size() == 0) {
+                                           view.showNoCollection();
+                                       }
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
