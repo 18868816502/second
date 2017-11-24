@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -223,6 +222,10 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     String getRealPathFromURI(Uri uri) {
         if (uri != null) {
+            //小米手机
+            if (uri.getScheme().equals("file")) {
+                return uri.getEncodedPath();
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                 if (cursor != null) {
