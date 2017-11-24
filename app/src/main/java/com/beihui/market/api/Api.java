@@ -452,7 +452,14 @@ public class Api {
      * 查询版本更新
      */
     public Observable<ResultEntity<AppUpdate>> queryUpdate() {
-        return service.queryAppUpdate(RequestConstants.PLATFORM + "");
+        String channelId = "unknown";
+        try {
+            channelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return service.queryAppUpdate(RequestConstants.PLATFORM + "", channelId);
     }
 
     /**

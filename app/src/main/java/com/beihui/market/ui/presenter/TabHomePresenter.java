@@ -30,7 +30,7 @@ import io.reactivex.functions.Consumer;
 
 public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract.Presenter {
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 20;
 
     private Api api;
     private TabHomeContract.View view;
@@ -119,6 +119,8 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         //刷新时，热门产品刷新到第一页
         hotProductPageNo = 1;
         loadHotProducts();
+        //刷新时，精选产品刷到到第一页
+        choiceProductPageNo = 1;
         loadChoiceProducts();
         loadHotNews();
     }

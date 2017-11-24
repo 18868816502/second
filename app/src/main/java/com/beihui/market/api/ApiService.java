@@ -271,7 +271,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/version/queryVersion")
-    Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType);
+    Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType, @Field("packageId") String packageId);
 
     /**
      * 用户反馈

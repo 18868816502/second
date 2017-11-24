@@ -182,6 +182,7 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                                 curPage--;
                             }
                         });
+        curTask = dis;
         addDisposable(dis);
     }
 
