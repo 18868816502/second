@@ -29,14 +29,14 @@ public interface TabHomeContract {
         void loadHeadline();
 
         /**
-         * 加载热门产品
+         * 刷新热门产品
          */
-        void loadHotProducts();
+        void refreshHotProducts();
 
         /**
-         * 加载精选产品
+         * 加载更多精选产品
          */
-        void loadChoiceProducts();
+        void loadMoreChoiceProducts();
 
         /**
          * 加载借款攻略

@@ -88,13 +88,13 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         }
         //hot products
         if (hotProducts.size() == 0) {
-            loadHotProducts();
+            refreshHotProducts();
         } else {
             view.showHotProducts(hotProducts);
         }
         //choice products
         if (choiceProducts.size() == 0) {
-            loadChoiceProducts();
+            loadChoiceProducts(true);
         } else {
             view.showChoiceProducts(choiceProducts, canChoiceLoadMore);
         }
@@ -118,10 +118,11 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         loadHeadline();
         //刷新时，热门产品刷新到第一页
         hotProductPageNo = 1;
-        loadHotProducts();
+        refreshHotProducts();
         //刷新时，精选产品刷到到第一页
         choiceProductPageNo = 1;
-        loadChoiceProducts();
+        canChoiceLoadMore = true;
+        loadChoiceProducts(true);
         loadHotNews();
     }
 
@@ -180,7 +181,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     @Override
-    public void loadHotProducts() {
+    public void refreshHotProducts() {
         Disposable dis = api.queryHotProduct(hotProductPageNo)
                 .compose(RxUtil.<ResultEntity<HotLoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<HotLoanProduct>>() {
@@ -201,43 +202,15 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
+                                handleThrowable(throwable);
                             }
                         });
         addDisposable(dis);
     }
 
     @Override
-    public void loadChoiceProducts() {
-        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, PAGE_SIZE)
-                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
-                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       choiceProductPageNo++;
-                                       int size = 0;
-                                       if (result.getData() != null && result.getData().getRows() != null
-                                               && result.getData().getRows().size() > 0) {
-                                           choiceProducts.addAll(result.getData().getRows());
-                                           size = result.getData().getRows().size();
-                                       }
-                                       canChoiceLoadMore = size == PAGE_SIZE;
-                                       view.showChoiceProducts(Collections.unmodifiableList(choiceProducts), canChoiceLoadMore);
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
+    public void loadMoreChoiceProducts() {
+        loadChoiceProducts(false);
     }
 
     @Override
@@ -262,8 +235,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
+                                handleThrowable(throwable);
                             }
                         });
         addDisposable(dis);
@@ -314,6 +286,44 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         } else {
             view.navigateLogin();
         }
+    }
+
+    /**
+     * 加载精选产品
+     *
+     * @param refresh 是否是刷新动作，如果是，则先清除原数据，否则就直接添加新数据
+     */
+    private void loadChoiceProducts(boolean refresh) {
+        if (refresh) {
+            choiceProducts.clear();
+        }
+        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
+                .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       choiceProductPageNo++;
+                                       int size = 0;
+                                       if (result.getData() != null && result.getData().getRows() != null
+                                               && result.getData().getRows().size() > 0) {
+                                           choiceProducts.addAll(result.getData().getRows());
+                                           size = result.getData().getRows().size();
+                                       }
+                                       canChoiceLoadMore = size == PAGE_SIZE;
+                                       view.showChoiceProducts(Collections.unmodifiableList(choiceProducts), canChoiceLoadMore);
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                handleThrowable(throwable);
+                            }
+                        });
+        addDisposable(dis);
     }
 
     private void queryAd() {

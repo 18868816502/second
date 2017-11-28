@@ -276,7 +276,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         choiceAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                presenter.loadChoiceProducts();
+                presenter.loadMoreChoiceProducts();
             }
         }, choiceRecyclerView);
         choiceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -288,14 +288,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
             public void onClick(View v) {
                 animation = AnimationUtils.loadAnimation(getContext(), R.anim.refresh_animation);
                 refreshIcon.startAnimation(animation);
-                //确保动画至少持续一秒钟
-//                refreshHot.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        presenter.loadHotProducts();
-//                    }
-//                }, 1000);
-                presenter.loadHotProducts();
+                presenter.refreshHotProducts();
             }
         });
 
