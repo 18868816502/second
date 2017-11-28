@@ -36,8 +36,9 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
     private int sortSelected = 0;
     private int moneySelected = 4;
     private List<LoanProduct.Row> loanProductList = new ArrayList<>();
-    private int curPage = 1;
 
+    private int curPage = 1;
+    private boolean canLoadMore = true;
     private Disposable curTask;
 
     @Inject
@@ -106,7 +107,11 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
 
     @Override
     public void refresh() {
+        //弱网下，加载更多可能跟刷新重叠，先取消当前正在进行的一个任务
         cancelCurTask();
+        view.showLoanProduct(Collections.unmodifiableList(loanProductList), canLoadMore);
+
+        canLoadMore = true;
         curPage = 1;
         Disposable dis = api.queryLoanProduct(moneyList[moneySelected], dueTimeSelected + 1, sortSelected, curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
@@ -114,12 +119,14 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                                @Override
                                public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().getTotal() > 0) {
-                                           loanProductList.clear();
+                                       loanProductList.clear();
+                                       curPage++;
+                                       if (result.getData() != null && result.getData().getRows() != null &&
+                                               result.getData().getRows().size() > 0) {
                                            loanProductList.addAll(result.getData().getRows());
+                                           canLoadMore = result.getData().getRows().size() == PAGE_SIZE;
                                            view.showLoanProduct(Collections.unmodifiableList(loanProductList),
-                                                   loanProductList.size() >= PAGE_SIZE);
-
+                                                   canLoadMore);
                                        } else {
                                            view.showNoLoanProduct();
                                        }
@@ -151,25 +158,29 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
 
     @Override
     public void loadMore() {
-        curPage++;
+        //弱网下，加载更多可能跟刷新重叠，先取消当前正在进行的一个任务
+        cancelCurTask();
+        view.showLoanProduct(Collections.unmodifiableList(loanProductList), canLoadMore);
+
         Disposable dis = api.queryLoanProduct(moneyList[moneySelected], dueTimeSelected + 1, sortSelected, curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override
                                public void accept(@NonNull ResultEntity<LoanProduct> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().getTotal() > 0) {
+                                       curPage++;
+                                       if (result.getData() != null && result.getData().getRows() != null &&
+                                               result.getData().getTotal() > 0) {
                                            loanProductList.addAll(result.getData().getRows());
+                                           canLoadMore = result.getData().getRows().size() == PAGE_SIZE;
                                            view.showLoanProduct(Collections.unmodifiableList(loanProductList),
-                                                   result.getData().getTotal() >= PAGE_SIZE);
-
+                                                   canLoadMore);
                                        } else {
+                                           canLoadMore = false;
                                            view.showNoMoreLoanProduct();
                                        }
                                    } else {
                                        view.showErrorMsg(result.getMsg());
-                                       //请求失败，回溯页数
-                                       curPage--;
                                    }
                                }
                            },
@@ -178,8 +189,6 @@ public class PageSmartPresenter extends BaseRxPresenter implements PageSmartCont
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 logError(PageSmartPresenter.this, throwable);
                                 view.showErrorMsg(generateErrorMsg(throwable));
-                                //请求失败，回溯页数
-                                curPage--;
                             }
                         });
         curTask = dis;

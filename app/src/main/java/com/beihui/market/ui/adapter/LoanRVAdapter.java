@@ -28,7 +28,7 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
         setNewData(dataSet);
     }
 
-    public LoanRVAdapter(int layoutId) {
+    LoanRVAdapter(int layoutId) {
         super(layoutId);
         setNewData(dataSet);
     }
@@ -99,7 +99,7 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
-        notifyDataSetChanged();
+        setNewData(dataSet);
         disableLoadMoreIfNotFullPage(getRecyclerView());
     }
 

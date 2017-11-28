@@ -57,7 +57,7 @@ public class HotChoiceRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseVi
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
-        notifyDataSetChanged();
+        setNewData(dataSet);
         disableLoadMoreIfNotFullPage(getRecyclerView());
     }
 }

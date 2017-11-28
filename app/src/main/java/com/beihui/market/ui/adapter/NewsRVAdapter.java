@@ -16,7 +16,8 @@ import java.util.List;
 
 
 public class NewsRVAdapter extends BaseQuickAdapter<News.Row, BaseViewHolder> {
-    private List<News.Row> dataSet;
+
+    private List<News.Row> dataSet = new ArrayList<>();
 
     public NewsRVAdapter() {
         super(R.layout.rv_item_news);
@@ -52,11 +53,8 @@ public class NewsRVAdapter extends BaseQuickAdapter<News.Row, BaseViewHolder> {
 
 
     public void notifyNewsSetChanged(List<News.Row> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
-        if (list != null) {
+        if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         setNewData(dataSet);

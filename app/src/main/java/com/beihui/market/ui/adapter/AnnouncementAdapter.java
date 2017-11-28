@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class AnnouncementAdapter extends BaseQuickAdapter<Notice.Row, BaseViewHolder> {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 HH:mm", Locale.CHINA);
-    private List<Notice.Row> dataSet;
+    private List<Notice.Row> dataSet = new ArrayList<>();
 
     public AnnouncementAdapter() {
         super(R.layout.rv_item_announcement);
@@ -32,11 +32,8 @@ public class AnnouncementAdapter extends BaseQuickAdapter<Notice.Row, BaseViewHo
     }
 
     public void notifyAnnounceDataChanged(List<Notice.Row> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
-        if (list != null) {
+        if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         setNewData(dataSet);

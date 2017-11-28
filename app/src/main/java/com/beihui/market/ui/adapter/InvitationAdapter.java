@@ -13,7 +13,7 @@ import java.util.List;
 
 public class InvitationAdapter extends BaseQuickAdapter<Invitation.Row, BaseViewHolder> {
 
-    private List<Invitation.Row> dataSet;
+    private List<Invitation.Row> dataSet = new ArrayList<>();
 
     public InvitationAdapter() {
         super(R.layout.rv_item_invitation);
@@ -37,9 +37,6 @@ public class InvitationAdapter extends BaseQuickAdapter<Invitation.Row, BaseView
     }
 
     public void notifyInvitationChanged(List<Invitation.Row> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);

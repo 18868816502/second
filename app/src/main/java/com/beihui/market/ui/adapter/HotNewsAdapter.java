@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotNewsAdapter extends BaseQuickAdapter<HotNews, BaseViewHolder> {
-    private List<HotNews> dataSet;
+    private List<HotNews> dataSet = new ArrayList<>();
 
     public HotNewsAdapter() {
         super(R.layout.rv_item_hot_news);
@@ -37,11 +37,8 @@ public class HotNewsAdapter extends BaseQuickAdapter<HotNews, BaseViewHolder> {
     }
 
     public void notifyHotNewsChanged(List<HotNews> news) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
-        if (news != null) {
+        if (news != null && news.size() > 0) {
             dataSet.addAll(news);
         }
         setNewData(dataSet);

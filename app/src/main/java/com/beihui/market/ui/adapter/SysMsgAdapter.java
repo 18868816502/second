@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 HH:mm", Locale.CHINA);
-    private List<SysMsg.Row> dataSet;
+    private List<SysMsg.Row> dataSet = new ArrayList<>();
 
     public SysMsgAdapter() {
         super(R.layout.rv_sys_msg);
@@ -32,11 +32,8 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
     }
 
     public void notifySysMsgChanged(List<SysMsg.Row> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
         dataSet.clear();
-        if (list != null) {
+        if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         setNewData(dataSet);

@@ -215,7 +215,6 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
     @Override
     public void showNoMoreLoanProduct() {
         loanRVAdapter.setEnableLoadMore(false);
-        loanRVAdapter.loadMoreComplete();
     }
 
     @Override
@@ -234,7 +233,7 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
     public void showErrorMsg(String msg) {
         super.showErrorMsg(msg);
         if (loanRVAdapter.isLoading()) {
-            loanRVAdapter.loadMoreComplete();
+            loanRVAdapter.setEnableLoadMore(false);
         }
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);

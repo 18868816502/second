@@ -16,22 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHolder> {
-    private List<Message> dataSet;
+    private List<Message> dataSet = new ArrayList<>();
 
     public MessageCenterAdapter() {
         super(R.layout.rv_item_internal_message);
-    }
-
-
-    public void notifyMessageChanged(List<Message> list) {
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-        }
-        dataSet.clear();
-        if (list != null) {
-            dataSet.addAll(list);
-        }
-        setNewData(dataSet);
     }
 
     @Override
@@ -52,6 +40,14 @@ public class MessageCenterAdapter extends BaseQuickAdapter<Message, BaseViewHold
         }
         helper.setText(R.id.news_publish_time, DateFormatUtils.generateNewsDate(item.getGmtCreate()));
         helper.itemView.setBackgroundColor(Color.WHITE);
+    }
+
+    public void notifyMessageChanged(List<Message> list) {
+        dataSet.clear();
+        if (list != null && list.size() > 0) {
+            dataSet.addAll(list);
+        }
+        setNewData(dataSet);
     }
 
 }
