@@ -25,7 +25,6 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
-import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoanDetailComponent;
@@ -146,17 +145,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //umeng统计
-                Statistic.onEvent(Events.LOAN_DETAIL_CLICK_LOAN);
-
                 if (!FastClickUtils.isFastClick()) {
-                    if (productDetail != null && productDetail.getBase() != null) {
-                        DataStatisticsHelper.getInstance().onProductClicked(productDetail.getBase().getId());
-                        Intent intent = new Intent(LoanDetailActivity.this, ComWebViewActivity.class);
-                        intent.putExtra("url", productDetail.getBase().getUrl());
-                        intent.putExtra("title", productDetail.getBase().getProductName());
-                        startActivity(intent);
-                    }
+                    presenter.clickLoanRequested();
                 }
             }
         });
@@ -190,125 +180,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 .inject(this);
     }
 
-    private void renderBar(float alpha) {
-        int alphaInt = (int) (alpha * 255);
-        alphaInt = alphaInt < 10 ? 0 : alphaInt;
-        alphaInt = alphaInt > 255 ? 255 : alphaInt;
-        int color = Color.argb(alphaInt, 85, 145, 255);
-        toolbar.setBackgroundColor(color);
-    }
-
-    private void inflateTag(String[] tags) {
-        tagContainer.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(this);
-        for (String tag : tags) {
-            TextView textView = (TextView) inflater.inflate(R.layout.layout_tag_text, null);
-            textView.setText(tag);
-            tagContainer.addView(textView);
-        }
-    }
-
-    private void inflateFeature(List<LoanProductDetail.Explain> list) {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        for (int i = 0; i < list.size(); ++i) {
-            View rootView = inflater.inflate(R.layout.layout_loan_detail_feature, null);
-            LoanProductDetail.Explain explain = list.get(i);
-
-            if (explain.getExplainName() != null) {
-                ((TextView) rootView.findViewById(R.id.feature_title)).setText(explain.getExplainName());
-            }
-            if (explain.getExplainContent() != null) {
-                ((TextView) rootView.findViewById(R.id.feature_content)).setText(explain.getExplainContent());
-
-            }
-            detailContainer.addView(rootView);
-        }
-    }
-
-    private void bindAbstractInfo(LoanProduct.Row loan) {
-        productAbstract = loan;
-        //name
-        if (loan.getProductName() != null) {
-            loanNameTitleTv.setText(loan.getProductName());
-            loanNameTv.setText(loan.getProductName());
-        }
-        //logo
-        if (!TextUtils.isEmpty(loan.getLogoUrl())) {
-            Glide.with(this)
-                    .load(loan.getLogoUrl())
-                    .asBitmap()
-                    .placeholder(R.drawable.image_place_holder)
-                    .into(loanIconIv);
-        } else {
-            loanIconIv.setImageResource(R.drawable.image_place_holder);
-        }
-        //tags
-        String[] feature = loan.getFeature() != null ? loan.getFeature().split(",") : null;
-        if (feature != null && feature.length > 0 && !feature[0].equals("")) {
-            inflateTag(feature);
-        }
-        //loaned number
-        SpannableString ss = new SpannableString("已借款" + CommonUtils.getFormatNumber(loan.getSuccessCount()) + "人");
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 3, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        loanedNumberTv.setText(ss);
-        //loan max amount
-        if (loan.getBorrowingHighText() != null) {
-            loanMaxAmountTv.setText(getSpan(loan.getBorrowingHighText()));
-        }
-        //loan interest
-        if (loan.getInterestLowText() != null) {
-            loanInterestsTv.setText(getSpan(loan.getInterestLowText()));
-        }
-        //loan due time
-        if (loan.getDueTimeText() != null) {
-            loanTimeRangeTv.setText(getSpan(loan.getDueTimeText()));
-        }
-
-    }
-
-    private SpannableString getSpan(String text) {
-        SpannableString ss = new SpannableString(text);
-        ss.setSpan(new SizePosSpan(11), text.length() - 1, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-
-        return ss;
-    }
-
     @Override
     public void setPresenter(LoanProductDetailContract.Presenter presenter) {
         //injected.nothing to do.
-    }
-
-    @OnClick({R.id.collect, R.id.share})
-    void onToolbarIconClicked(View view) {
-        switch (view.getId()) {
-            case R.id.collect:
-                presenter.clickCollection();
-                break;
-            case R.id.share:
-                //umeng统计
-                Statistic.onEvent(Events.LOAN_DETAIL_CLICK_SHARE);
-
-                UMWeb umWeb = null;
-                if (productDetail != null && productDetail.getBase() != null) {
-                    umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));
-                    UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
-                    umWeb.setThumb(image);
-                    umWeb.setTitle(productDetail.getBase().getProductName());
-                    umWeb.setDescription(productDetail.getBase().getExplains());
-                } else if (productAbstract != null) {
-                    umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
-                    UMImage image = new UMImage(this, productAbstract.getLogoUrl());
-                    umWeb.setThumb(image);
-                    umWeb.setTitle(productAbstract.getProductName());
-                }
-
-                if (umWeb != null) {
-                    new ShareDialog()
-                            .setUmWeb(umWeb)
-                            .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
-                }
-                break;
-        }
     }
 
     @Override
@@ -395,6 +269,11 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     }
 
     @Override
+    public void showLoanRequestText(String text) {
+
+    }
+
+    @Override
     public void showLoanOffSell() {
         productDetailContainer.setVisibility(View.GONE);
         productOffSellContainer.setVisibility(View.VISIBLE);
@@ -413,6 +292,141 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         ToastUtils.showShort(this, msg, null);
         collectView.setActivated(false);
     }
+
+    @Override
+    public void navigateThirdPartLoanPage(String title, String url) {
+        Intent intent = new Intent(LoanDetailActivity.this, ComWebViewActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", title);
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigateAuthorizationPage(String id) {
+
+    }
+
+    @Override
+    public void showLoanRequestReject() {
+
+    }
+
+    @OnClick({R.id.collect, R.id.share})
+    void onToolbarIconClicked(View view) {
+        switch (view.getId()) {
+            case R.id.collect:
+                presenter.clickCollection();
+                break;
+            case R.id.share:
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_DETAIL_CLICK_SHARE);
+
+                UMWeb umWeb = null;
+                if (productDetail != null && productDetail.getBase() != null) {
+                    umWeb = new UMWeb(NetConstants.generateProductUrl(productDetail.getBase().getId()));
+                    UMImage image = new UMImage(this, productDetail.getBase().getLogoUrl());
+                    umWeb.setThumb(image);
+                    umWeb.setTitle(productDetail.getBase().getProductName());
+                    umWeb.setDescription(productDetail.getBase().getExplains());
+                } else if (productAbstract != null) {
+                    umWeb = new UMWeb(NetConstants.generateProductUrl(productAbstract.getId()));
+                    UMImage image = new UMImage(this, productAbstract.getLogoUrl());
+                    umWeb.setThumb(image);
+                    umWeb.setTitle(productAbstract.getProductName());
+                }
+
+                if (umWeb != null) {
+                    new ShareDialog()
+                            .setUmWeb(umWeb)
+                            .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
+                }
+                break;
+        }
+    }
+
+    private void renderBar(float alpha) {
+        int alphaInt = (int) (alpha * 255);
+        alphaInt = alphaInt < 10 ? 0 : alphaInt;
+        alphaInt = alphaInt > 255 ? 255 : alphaInt;
+        int color = Color.argb(alphaInt, 85, 145, 255);
+        toolbar.setBackgroundColor(color);
+    }
+
+    private void inflateTag(String[] tags) {
+        tagContainer.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (String tag : tags) {
+            TextView textView = (TextView) inflater.inflate(R.layout.layout_tag_text, null);
+            textView.setText(tag);
+            tagContainer.addView(textView);
+        }
+    }
+
+    private void inflateFeature(List<LoanProductDetail.Explain> list) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < list.size(); ++i) {
+            View rootView = inflater.inflate(R.layout.layout_loan_detail_feature, null);
+            LoanProductDetail.Explain explain = list.get(i);
+
+            if (explain.getExplainName() != null) {
+                ((TextView) rootView.findViewById(R.id.feature_title)).setText(explain.getExplainName());
+            }
+            if (explain.getExplainContent() != null) {
+                ((TextView) rootView.findViewById(R.id.feature_content)).setText(explain.getExplainContent());
+
+            }
+            detailContainer.addView(rootView);
+        }
+    }
+
+    private void bindAbstractInfo(LoanProduct.Row loan) {
+        productAbstract = loan;
+        //name
+        if (loan.getProductName() != null) {
+            loanNameTitleTv.setText(loan.getProductName());
+            loanNameTv.setText(loan.getProductName());
+        }
+        //logo
+        if (!TextUtils.isEmpty(loan.getLogoUrl())) {
+            Glide.with(this)
+                    .load(loan.getLogoUrl())
+                    .asBitmap()
+                    .placeholder(R.drawable.image_place_holder)
+                    .into(loanIconIv);
+        } else {
+            loanIconIv.setImageResource(R.drawable.image_place_holder);
+        }
+        //tags
+        String[] feature = loan.getFeature() != null ? loan.getFeature().split(",") : null;
+        if (feature != null && feature.length > 0 && !feature[0].equals("")) {
+            inflateTag(feature);
+        }
+        //loaned number
+        SpannableString ss = new SpannableString("已借款" + CommonUtils.getFormatNumber(loan.getSuccessCount()) + "人");
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 3, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        loanedNumberTv.setText(ss);
+        //loan max amount
+        if (loan.getBorrowingHighText() != null) {
+            loanMaxAmountTv.setText(getSpan(loan.getBorrowingHighText()));
+        }
+        //loan interest
+        if (loan.getInterestLowText() != null) {
+            loanInterestsTv.setText(getSpan(loan.getInterestLowText()));
+        }
+        //loan due time
+        if (loan.getDueTimeText() != null) {
+            loanTimeRangeTv.setText(getSpan(loan.getDueTimeText()));
+        }
+
+    }
+
+    private SpannableString getSpan(String text) {
+        SpannableString ss = new SpannableString(text);
+        ss.setSpan(new SizePosSpan(11), text.length() - 1, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+        return ss;
+    }
+
 
     private class SizePosSpan extends ReplacementSpan {
 

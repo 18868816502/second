@@ -21,18 +21,9 @@ public interface LoanProductDetailContract {
         void clickCollection();
 
         /**
-         * 添加收藏
-         *
-         * @param id 产品id
+         * 点击我要借款
          */
-        void addCollection(String id);
-
-        /**
-         * 删除收藏
-         *
-         * @param id 产品id
-         */
-        void deleteCollection(String id);
+        void clickLoanRequested();
 
     }
 
@@ -43,6 +34,13 @@ public interface LoanProductDetailContract {
          * @param detail 产品详情
          */
         void showLoanDetail(LoanProductDetail detail);
+
+        /**
+         * 更新借款按钮文案
+         *
+         * @param text 更新的文案
+         */
+        void showLoanRequestText(String text);
 
         /**
          * 产品已下架
@@ -62,6 +60,27 @@ public interface LoanProductDetailContract {
          * @param msg 提示语
          */
         void showDeleteCollectionSuccess(String msg);
+
+        /**
+         * 导航至第三方借款界面
+         *
+         * @param title 产品名字
+         * @param url   借款页面url
+         */
+        void navigateThirdPartLoanPage(String title, String url);
+
+        /**
+         * 跳转至联合注册授权界面.如果该产品是联合注册产品且用户尚未在本平台注册，则让用户注册该平台
+         *
+         * @param id 产品id
+         */
+        void navigateAuthorizationPage(String id);
+
+        /**
+         * 拒绝借款请求
+         */
+        void showLoanRequestReject();
+
 
     }
 }

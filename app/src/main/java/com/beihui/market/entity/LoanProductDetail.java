@@ -46,6 +46,10 @@ public class LoanProductDetail {
         private String explains;
         //0.未收藏 1.已收藏
         private int isCollection;
+        //1.常规 2.联合注册
+        private int coopType;
+        //1.未注册 2.在本平台注册 3.非平台注册
+        private int detailStatus;
 
         public String getDueTimeText() {
             return dueTimeText;
@@ -207,6 +211,25 @@ public class LoanProductDetail {
             this.isCollection = isCollection;
         }
 
+        public int getCoopType() {
+            return coopType;
+        }
+
+        public void setCoopType(int coopType) {
+            this.coopType = coopType;
+        }
+
+        public int getDetailStatus() {
+            return detailStatus;
+        }
+
+        public void setDetailStatus(int detailStatus) {
+            this.detailStatus = detailStatus;
+        }
+
+        /**
+         * 是否已收藏
+         */
         public boolean isCollected() {
             return this.isCollection == 1;
         }
