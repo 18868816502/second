@@ -303,5 +303,15 @@ public interface ApiService {
     @POST(BASE_PATH + "/pushInfo/details")
     Observable<ResultEntity> onInternalMessageClicked(@Field("id") String id);
 
+    /**
+     * 数据统计
+     *
+     * @param type   点击类型
+     * @param userId 用户id
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/dataDictionary/countUv")
+    Observable<ResultEntity> onCountUv(@Field("type") String type, @Field("userId") String userId);
+
     /**********************************************************************************************************/
 }

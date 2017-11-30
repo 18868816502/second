@@ -503,6 +503,16 @@ public class Api {
     public Observable<ResultEntity> onInternalMessageClicked(String id) {
         return service.onInternalMessageClicked(id);
     }
+
+    /**
+     * 数据统计，各类pv/uv
+     *
+     * @param id     事件id
+     * @param userId 用户Id
+     */
+    public Observable<ResultEntity> onCountUv(String id, String userId) {
+        return service.onCountUv(id, userId);
+    }
     /**************+***************************************************+******************************************************/
 
     /*****generate method*****/
