@@ -1,13 +1,15 @@
 package com.beihui.market.ui.adapter;
 
+
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.entity.MyProduct;
 import com.beihui.market.util.CommonUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -16,25 +18,19 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+public class MyProductRVAdapter extends BaseQuickAdapter<MyProduct.Row, BaseViewHolder> {
 
-public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHolder> {
+    private int[] tagIds = LoanRVAdapter.tagIds;
 
-    static int[] tagIds = {R.id.tag_1, R.id.tag_2};
+    private List<MyProduct.Row> dataSet = new ArrayList<>();
 
-    private List<LoanProduct.Row> dataSet = new ArrayList<>();
-
-    public LoanRVAdapter() {
-        super(R.layout.rv_item_loan);
-        setNewData(dataSet);
-    }
-
-    LoanRVAdapter(int layoutId) {
-        super(layoutId);
+    public MyProductRVAdapter() {
+        super(R.layout.list_item_my_product);
         setNewData(dataSet);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LoanProduct.Row item) {
+    protected void convert(BaseViewHolder helper, MyProduct.Row item) {
         //参考日月息
         if (item.getInterestTimeText() != null) {
             helper.setText(R.id.interest_text, item.getInterestTimeText());
@@ -85,36 +81,29 @@ public class LoanRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHol
             helper.setText(R.id.loan_time_range, item.getDueTimeText());
         }
         //badge
-        int sign = getLabelIcon(item.getProductSign());
+        int sign = LoanRVAdapter.getLabelIcon(item.getProductSign());
         if (sign != -1) {
             helper.setVisible(R.id.loan_badge, true);
             helper.setImageResource(R.id.loan_badge, sign);
         } else {
             helper.setVisible(R.id.loan_badge, false);
         }
+        //注册状态
+        View hasRegisterView = helper.getView(R.id.has_register);
+        if (item.getStatus() == 1 || item.getStatus() == 2) {
+            hasRegisterView.setVisibility(View.VISIBLE);
+            hasRegisterView.setSelected(item.getStatus() == 2);
+        } else {
+            hasRegisterView.setVisibility(View.GONE);
+        }
     }
 
-    public void notifyLoanProductChanged(List<LoanProduct.Row> list) {
+    public void notifyMyProductChanged(List<MyProduct.Row> list) {
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         setNewData(dataSet);
-        disableLoadMoreIfNotFullPage(getRecyclerView());
-    }
-
-    static int getLabelIcon(int type) {
-        switch (type) {
-            case 1:
-                return R.drawable.label_new;
-            case 2:
-                return R.drawable.label_hot;
-            case 3:
-                return R.drawable.label_jian;
-            case 4:
-                return R.drawable.label_featured;
-            default:
-                return -1;
-        }
+        disableLoadMoreIfNotFullPage();
     }
 }

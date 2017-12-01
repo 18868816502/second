@@ -8,15 +8,26 @@ import com.beihui.market.helper.UserHelper;
 public interface TabMineContract {
 
     interface Presenter extends BasePresenter {
+
+        /**
+         * 点击联系客服
+         */
+        void clickContactKefu();
+
+        /**
+         * 点击消息
+         */
+        void clickMessage();
+
         /**
          * 点击用户资料
          */
         void clickUserProfile();
 
         /**
-         * 点击消息
+         * 点击我的借款
          */
-        void clickMessage();
+        void clickMyProduct();
 
         /**
          * 点击我的收藏
@@ -27,11 +38,6 @@ public interface TabMineContract {
          * 点击邀请朋友
          */
         void clickInvitation();
-
-        /**
-         * 点击联系客服
-         */
-        void clickContactKefu();
 
         /**
          * 点击帮助与反馈
@@ -71,6 +77,13 @@ public interface TabMineContract {
          * @param userId 用户id
          */
         void navigateMessage(String userId);
+
+        /**
+         * 导航至我的借款
+         *
+         * @param userId 用户id
+         */
+        void navigateMyThirdProduct(String userId);
 
         /**
          * 导航至我的收藏

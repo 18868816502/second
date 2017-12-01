@@ -125,6 +125,10 @@
             android:name=".ui.activity.ChoiceProductActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.MyProductActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <!--file provider, N feature-->

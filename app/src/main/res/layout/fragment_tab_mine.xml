@@ -11,12 +11,9 @@
         android:layout_gravity="center_horizontal|bottom"
         android:src="@mipmap/home_big_pic" />
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="RtlHardcoded">
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,8 +31,20 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/tool_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/tool_bar_height"
-                    android:gravity="center_vertical|right" />
+                    android:layout_height="@dimen/tool_bar_height">
+
+                    <ImageView
+                        android:id="@+id/contact_kefu"
+                        style="@style/ToolBarIconStyle"
+                        android:src="@drawable/mine_contact_kefu" />
+
+                    <ImageView
+                        android:id="@+id/mine_msg"
+                        style="@style/ToolBarIconStyle"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/mine_message" />
+                </android.support.v7.widget.Toolbar>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -92,35 +101,34 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/mine_msg"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_marginTop="-10dp"
                 android:background="@drawable/round_white_shadow"
-                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
                 android:paddingRight="9dp">
 
-                <TextView
-                    android:id="@+id/has_message"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/mine_msg_black"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@drawable/msg_spot"
-                    android:gravity="center_vertical"
-                    android:text="@string/msg"
-                    android:textColor="@color/black_1"
-                    android:textSize="15sp" />
+                <FrameLayout
+                    android:id="@+id/mine_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/right_icon" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/mine_list_bankcard"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@mipmap/right_icon"
+                        android:gravity="center_vertical"
+                        android:text="@string/my_product"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp" />
+
+                </FrameLayout>
 
             </LinearLayout>
 
@@ -189,32 +197,6 @@
                 android:orientation="vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="9dp">
-
-                <FrameLayout
-                    android:id="@+id/contact_kefu"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:drawableLeft="@drawable/mine_list_kefu_icon"
-                        android:drawablePadding="10dp"
-                        android:drawableRight="@mipmap/right_icon"
-                        android:gravity="center_vertical"
-                        android:text="@string/contact_kefu"
-                        android:textColor="@color/black_1"
-                        android:textSize="15sp" />
-
-                </FrameLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/line"
-                    android:visibility="gone" />
 
                 <FrameLayout
                     android:id="@+id/helper_feedback"

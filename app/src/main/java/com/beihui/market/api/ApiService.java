@@ -10,6 +10,7 @@ import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.Message;
+import com.beihui.market.entity.MyProduct;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
@@ -265,6 +266,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/queryUserCollection")
     Observable<ResultEntity<LoanProduct>> queryProductionCollection(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * 查询我的产品
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/queryUserLoan")
+    Observable<ResultEntity<MyProduct>> queryMyProduct(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
      * 查询邀请详细

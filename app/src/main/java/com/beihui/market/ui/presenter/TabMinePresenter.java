@@ -38,6 +38,13 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     }
 
     @Override
+    public void clickMyProduct() {
+        if (checkValidUser()) {
+            view.navigateMyThirdProduct(userHelper.getProfile().getId());
+        }
+    }
+
+    @Override
     public void clickMessage() {
         if (checkValidUser()) {
             view.navigateMessage(userHelper.getProfile().getId());

@@ -21,6 +21,7 @@ import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
+import com.beihui.market.ui.activity.MyProductActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
@@ -59,9 +60,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     TextView loginTv;
     @BindView(R.id.wechat_surprise)
     View wechatSurpriseView;
-
-    @BindView(R.id.has_message)
-    TextView hasMessageTv;
 
     @Inject
     TabMinePresenter presenter;
@@ -152,13 +150,16 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         }
     }
 
-    @OnClick({R.id.avatar, R.id.mine_msg, R.id.my_collection, R.id.invite_friend, R.id.contact_kefu, R.id.helper_feedback, R.id.settings,
-            R.id.wechat_public, R.id.login, R.id.user_name})
+    @OnClick({R.id.contact_kefu, R.id.mine_msg,
+            R.id.mine_product,
+            R.id.login, R.id.avatar, R.id.user_name,
+            R.id.my_collection, R.id.invite_friend,
+            R.id.helper_feedback, R.id.settings, R.id.wechat_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.avatar:
+            case R.id.contact_kefu:
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickUserProfile();
+                    presenter.clickContactKefu();
                 }
                 break;
 
@@ -168,6 +169,30 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickMessage();
+                }
+                break;
+
+            case R.id.login:
+                if (!FastClickUtils.isFastClick()) {
+                    navigateLogin();
+                }
+                break;
+
+            case R.id.avatar:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickUserProfile();
+                }
+                break;
+
+            case R.id.user_name:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickUserProfile();
+                }
+                break;
+
+            case R.id.mine_product:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickMyProduct();
                 }
                 break;
 
@@ -184,27 +209,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
 
-            case R.id.contact_kefu:
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickContactKefu();
-                }
-                break;
-
             case R.id.helper_feedback:
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
 
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickHelpAndFeedback();
-                }
-                break;
-
-            case R.id.settings:
-                //umeng统计
-                Statistic.onEvent(Events.MINE_CLICK_SETTING);
-
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickSetting();
                 }
                 break;
 
@@ -216,15 +226,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
 
-            case R.id.login:
-                if (!FastClickUtils.isFastClick()) {
-                    navigateLogin();
-                }
-                break;
+            case R.id.settings:
+                //umeng统计
+                Statistic.onEvent(Events.MINE_CLICK_SETTING);
 
-            case R.id.user_name:
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickUserProfile();
+                    presenter.clickSetting();
                 }
                 break;
 
@@ -276,6 +283,11 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateMessage(String userId) {
         startActivity(new Intent(getActivity(), MessageCenterActivity.class));
+    }
+
+    @Override
+    public void navigateMyThirdProduct(String userId) {
+        startActivity(new Intent(getActivity(), MyProductActivity.class));
     }
 
     @Override

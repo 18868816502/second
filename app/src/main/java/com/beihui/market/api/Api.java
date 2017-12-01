@@ -17,6 +17,7 @@ import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
 import com.beihui.market.entity.Message;
+import com.beihui.market.entity.MyProduct;
 import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
@@ -452,6 +453,17 @@ public class Api {
      */
     public Observable<ResultEntity<LoanProduct>> queryProductionCollection(String userId, int pageNo, int pageSize) {
         return service.queryProductionCollection(userId, pageNo, pageSize);
+    }
+
+    /**
+     * 查询我的产品
+     *
+     * @param userId   用户id
+     * @param pageNo   查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<MyProduct>> queryMyProduct(String userId, int pageNo, int pageSize) {
+        return service.queryMyProduct(userId, pageNo, pageSize);
     }
 
     /**
