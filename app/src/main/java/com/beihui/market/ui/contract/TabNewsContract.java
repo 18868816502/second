@@ -16,6 +16,8 @@ public interface TabNewsContract {
     }
 
     interface View extends BaseView<Presenter> {
+        void showRefreshHint(String refreshHint);
+
         void showNews(List<News.Row> news);
 
         void showNoNews();

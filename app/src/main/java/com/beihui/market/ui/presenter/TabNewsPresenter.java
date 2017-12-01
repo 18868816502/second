@@ -61,6 +61,7 @@ public class TabNewsPresenter extends BaseRxPresenter implements TabNewsContract
                                            news.clear();
                                            news.addAll(result.getData().getRows());
                                            mView.showNews(Collections.unmodifiableList(news));
+                                           mView.showRefreshHint("成功为您更新" + result.getData().getRows().size() + "条内容");
                                            //返回的数据少于请求的个数
                                            if (result.getData().getTotal() < PAGE_SIZE) {
                                                reachEnd();

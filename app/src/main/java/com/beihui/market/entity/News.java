@@ -30,11 +30,13 @@ public class News {
     public static class Row implements Parcelable {
         private String explain;
         private String image;
+        private List<String> imageList;
         private int pv;
         private String source;
         private long gmtCreate;
         private String title;
         private String id;
+        private int showType;
 
         public String getExplain() {
             return explain;
@@ -50,6 +52,14 @@ public class News {
 
         public void setImage(String image) {
             this.image = image;
+        }
+
+        public List<String> getImageList() {
+            return imageList;
+        }
+
+        public void setImageList(List<String> imageList) {
+            this.imageList = imageList;
         }
 
         public int getPv() {
@@ -92,6 +102,15 @@ public class News {
             this.id = id;
         }
 
+        public int getShowType() {
+            return showType;
+        }
+
+        public void setShowType(int showType) {
+            this.showType = showType;
+        }
+
+
         @Override
         public int describeContents() {
             return 0;
@@ -101,11 +120,13 @@ public class News {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(this.explain);
             dest.writeString(this.image);
+            dest.writeStringList(this.imageList);
             dest.writeInt(this.pv);
             dest.writeString(this.source);
             dest.writeLong(this.gmtCreate);
             dest.writeString(this.title);
             dest.writeString(this.id);
+            dest.writeInt(this.showType);
         }
 
         public Row() {
@@ -114,11 +135,13 @@ public class News {
         protected Row(Parcel in) {
             this.explain = in.readString();
             this.image = in.readString();
+            this.imageList = in.createStringArrayList();
             this.pv = in.readInt();
             this.source = in.readString();
             this.gmtCreate = in.readLong();
             this.title = in.readString();
             this.id = in.readString();
+            this.showType = in.readInt();
         }
 
         public static final Parcelable.Creator<Row> CREATOR = new Parcelable.Creator<Row>() {

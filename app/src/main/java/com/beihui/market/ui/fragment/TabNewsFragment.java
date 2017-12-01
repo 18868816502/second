@@ -1,5 +1,8 @@
 package com.beihui.market.ui.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
@@ -19,6 +24,7 @@ import com.beihui.market.injection.component.DaggerNewsComponent;
 import com.beihui.market.injection.module.NewsModule;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.adapter.NewsRVAdapter;
+import com.beihui.market.ui.adapter.multipleentity.MultipleNewsItem;
 import com.beihui.market.ui.contract.TabNewsContract;
 import com.beihui.market.ui.presenter.TabNewsPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
@@ -40,6 +46,8 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     StateLayout stateLayout;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.refresh_hint)
+    TextView refreshHintView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -47,6 +55,9 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
 
     @Inject
     TabNewsPresenter presenter;
+
+    private ValueAnimator inAnimator;
+    private ValueAnimator outAnimator;
 
     public static TabNewsFragment newInstance() {
         return new TabNewsFragment();
@@ -64,6 +75,14 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     @Override
     public void onDestroyView() {
         presenter.onDestroy();
+        if (inAnimator != null) {
+            inAnimator.cancel();
+            inAnimator = null;
+        }
+        if (outAnimator != null) {
+            outAnimator.cancel();
+            outAnimator = null;
+        }
         super.onDestroyView();
     }
 
@@ -87,7 +106,7 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                News.Row news = (News.Row) adapter.getData().get(position);
+                News.Row news = ((MultipleNewsItem) adapter.getData().get(position)).getNews();
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
                 intent.putExtra("news", news);
                 startActivity(intent);
@@ -117,6 +136,14 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
                 presenter.refresh();
             }
         });
+
+        refreshHintView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                refreshHintView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                refreshHintView.setTranslationY(refreshHintView.getMeasuredHeight());
+            }
+        });
     }
 
     @Override
@@ -141,17 +168,62 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     }
 
     @Override
+    public void showRefreshHint(String refreshHint) {
+//        refreshHintView.setText(refreshHint);
+//
+//        final int hintHeight = (int) (getResources().getDisplayMetrics().density * 35);
+//        inAnimator = ValueAnimator.ofFloat(0, 1);
+//        inAnimator.setDuration(100);
+//        inAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                ViewGroup.LayoutParams lp = refreshHintView.getLayoutParams();
+//                lp.height = (int) (hintHeight * (float) animation.getAnimatedValue());
+//                refreshHintView.setLayoutParams(lp);
+//                refreshHintView.requestLayout();
+//            }
+//        });
+//        inAnimator.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                inAnimator = null;
+//            }
+//        });
+//        inAnimator.start();
+//
+//        outAnimator = ValueAnimator.ofFloat(1, 0);
+//        outAnimator.setDuration(200);
+//        outAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                ViewGroup.LayoutParams lp = refreshHintView.getLayoutParams();
+//                lp.height = (int) (hintHeight * (float) animation.getAnimatedValue());
+//                refreshHintView.setLayoutParams(lp);
+//                refreshHintView.requestLayout();
+//            }
+//        });
+//        outAnimator.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                outAnimator = null;
+//            }
+//        });
+//        outAnimator.setStartDelay(1100);
+//        outAnimator.start();
+    }
+
+    @Override
     public void showNews(List<News.Row> news) {
-        if (!isAdded())
-            return;
-        stateLayout.switchState(StateLayout.STATE_CONTENT);
-        recyclerView.setBackgroundColor(Color.WHITE);
-        adapter.notifyNewsSetChanged(news);
-        if (adapter.isLoading()) {
-            adapter.loadMoreComplete();
-        }
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
+        if (isAdded()) {
+            stateLayout.switchState(StateLayout.STATE_CONTENT);
+            recyclerView.setBackgroundColor(Color.WHITE);
+            if (refreshLayout.isRefreshing()) {
+                refreshLayout.setRefreshing(false);
+            }
+            if (adapter.isLoading()) {
+                adapter.loadMoreComplete();
+            }
+            adapter.notifyNewsDataSetChanged(news);
         }
     }
 

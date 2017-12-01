@@ -30,7 +30,7 @@ import io.reactivex.functions.Consumer;
 
 public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract.Presenter {
 
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 10;
 
     private Api api;
     private TabHomeContract.View view;
