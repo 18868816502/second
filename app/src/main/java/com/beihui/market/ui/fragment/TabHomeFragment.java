@@ -382,6 +382,11 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     }
 
     @Override
+    public void updateOneKeyLoanVisibility(boolean visible) {
+        
+    }
+
+    @Override
     public void showChoiceProducts(List<LoanProduct.Row> products, boolean canLoadMore) {
         handleShowContent();
         if (choiceAdapter != null) {
@@ -505,6 +510,16 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
             toDetail.putExtra("loanId", loanId);
         }
         startActivity(toDetail);
+    }
+
+    @Override
+    public void navigateThirdAuthorization(String[] ids) {
+
+    }
+
+    @Override
+    public void navigateChoiceProduct() {
+
     }
 
     @Override

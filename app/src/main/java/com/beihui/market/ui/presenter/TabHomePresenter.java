@@ -43,6 +43,10 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private List<LoanProduct.Row> choiceProducts = new ArrayList<>();
     private List<HotNews> hotNews = new ArrayList<>();
     private List<String> headlines = new ArrayList<>();
+    /**
+     * 一键借款是否显示
+     */
+    private boolean oneKeyLoanVisible = false;
 
     /**
      * 精选产品是否还能加载更多
@@ -86,6 +90,8 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         } else {
             view.showBanner(Collections.unmodifiableList(banners));
         }
+        //一键借款状态
+        view.updateOneKeyLoanVisibility(oneKeyLoanVisible);
         //hot products
         if (hotProducts.size() == 0) {
             refreshHotProducts();
@@ -190,10 +196,14 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                    if (result.isSuccess()) {
                                        hotProducts.clear();
                                        if (result.getData() != null) {
+                                           //下次刷新的页码
                                            hotProductPageNo = result.getData().getPageNo();
+                                           //一键借款是否显示
+                                           oneKeyLoanVisible = result.getData().getButton() == 1;
                                            hotProducts.addAll(result.getData().getRows());
                                        }
                                        view.showHotProducts(Collections.unmodifiableList(hotProducts));
+                                       view.updateOneKeyLoanVisibility(oneKeyLoanVisible);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -280,6 +290,43 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     @Override
+    public void clickOneKeyLoan() {
+        if (hotProducts != null && hotProducts.size() > 0) {
+            final String[] ids = new String[hotProducts.size()];
+            for (int i = 0; i < hotProducts.size(); ++i) {
+                ids[i] = hotProducts.get(i).getId();
+            }
+
+            Disposable dis = api.queryOneKeyLoanQuality(ids)
+                    .compose(RxUtil.<ResultEntity<Integer>>io2main())
+                    .subscribe(new Consumer<ResultEntity<Integer>>() {
+                                   @Override
+                                   public void accept(ResultEntity<Integer> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           //有数据
+                                           if (result.getData() == 1) {
+                                               view.navigateThirdAuthorization(ids);
+                                           } else {
+                                               //无数据
+                                               view.navigateChoiceProduct();
+                                           }
+                                       } else {
+                                           view.showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(TabHomePresenter.this, throwable);
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(dis);
+        }
+    }
+
+    @Override
     public void clickChoiceProduct(int position) {
         if (UserHelper.getInstance(context).getProfile() != null) {
             view.navigateProductDetail(choiceProducts.get(position), null);
@@ -297,7 +344,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         if (refresh) {
             choiceProducts.clear();
         }
-        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, PAGE_SIZE)
+        Disposable dis = api.queryChoiceProduct(choiceProductPageNo, PAGE_SIZE, 0) //正序查询
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override

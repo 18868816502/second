@@ -359,13 +359,28 @@ public class Api {
     }
 
     /**
+     * 查询一键借款的资质
+     *
+     * @param ids 需要查询的产品id
+     */
+    public Observable<ResultEntity<Integer>> queryOneKeyLoanQuality(String[] ids) {
+        StringBuilder sb = new StringBuilder();
+        for (String id : ids) {
+            sb.append(id).append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return service.queryOneKeyLoanQuality(sb.toString());
+    }
+
+    /**
      * 查询首页精选产品
      *
      * @param pageNo   查询页数
      * @param pageSize 查询每页大小
+     * @param sortType 排序方式
      */
-    public Observable<ResultEntity<LoanProduct>> queryChoiceProduct(int pageNo, int pageSize) {
-        return service.queryChoiceProduct(pageNo, pageSize, PLATFORM);
+    public Observable<ResultEntity<LoanProduct>> queryChoiceProduct(int pageNo, int pageSize, int sortType) {
+        return service.queryChoiceProduct(pageNo, pageSize, sortType, PLATFORM);
     }
 
 

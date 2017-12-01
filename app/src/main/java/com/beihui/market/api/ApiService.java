@@ -200,11 +200,18 @@ public interface ApiService {
     Observable<ResultEntity<HotLoanProduct>> queryHotProduct(@Field("pageNo") int pageNo, @Field("platform") String platform);
 
     /**
-     * 查询首页精选产品
+     * 查询一键借款资质
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/product/queryButton")
+    Observable<ResultEntity<Integer>> queryOneKeyLoanQuality(@Field("pid") String pid);
+
+    /**
+     * 查询精选产品
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/selectedList")
-    Observable<ResultEntity<LoanProduct>> queryChoiceProduct(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize,
+    Observable<ResultEntity<LoanProduct>> queryChoiceProduct(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize, @Field("type") int sortType,
                                                              @Field("platform") String platform);
 
     /**

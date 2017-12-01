@@ -63,6 +63,11 @@ public interface TabHomeContract {
         void clickHotProduct(int position);
 
         /**
+         * 点击一键借款
+         */
+        void clickOneKeyLoan();
+
+        /**
          * 点击精选产品
          *
          * @param position 点击位置
@@ -92,6 +97,13 @@ public interface TabHomeContract {
          * @param products 热门产品
          */
         void showHotProducts(List<LoanProduct.Row> products);
+
+        /**
+         * 更新一键借款按钮状态
+         *
+         * @param visible 是否显示
+         */
+        void updateOneKeyLoanVisibility(boolean visible);
 
         /**
          * 精选产品加载完成
@@ -151,6 +163,18 @@ public interface TabHomeContract {
          * @param loanId 产品id，如果loan为null，则使用该值
          */
         void navigateProductDetail(LoanProduct.Row loan, String loanId);
+
+        /**
+         * 导航至产品授权页
+         *
+         * @param ids 产品id数组
+         */
+        void navigateThirdAuthorization(String[] ids);
+
+        /**
+         * 导航至精选产品页
+         */
+        void navigateChoiceProduct();
 
         /**
          * 导航至Web页面
