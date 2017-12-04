@@ -125,6 +125,8 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @Inject
     TabHomePresenter presenter;
 
+    private boolean oneKeyLoanClosed;
+
     private Animation animation;
 
     private HotChoiceRVAdapter hotAdapter;
@@ -289,6 +291,8 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         oneKeyLoanHintClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //记录关闭状态
+                oneKeyLoanClosed = true;
                 oneKeyLoanHintHolder.setVisibility(View.GONE);
             }
         });
@@ -434,7 +438,10 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         int visibility = visible ? View.VISIBLE : View.GONE;
         oneKeyLoanHolder.setVisibility(visibility);
         oneKeyLoan.setVisibility(visibility);
-        oneKeyLoanHintHolder.setVisibility(visibility);
+
+        if (visible && !oneKeyLoanClosed) {
+            oneKeyLoanHintHolder.setVisibility(visibility);
+        }
     }
 
     @Override
@@ -572,7 +579,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @Override
     public void navigateThirdAuthorization(List<String> ids) {
         Intent intent = new Intent(getContext(), ThirdAuthorizationActivity.class);
-        intent.putStringArrayListExtra("id", (ArrayList<String>) ids);
+        intent.putStringArrayListExtra("ids", (ArrayList<String>) ids);
         startActivity(intent);
     }
 

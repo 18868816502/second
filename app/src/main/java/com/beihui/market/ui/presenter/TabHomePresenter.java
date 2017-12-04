@@ -291,10 +291,6 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
     @Override
     public void clickOneKeyLoan() {
-        if (true) {
-            view.navigateChoiceProduct();
-            return;
-        }
         if (UserHelper.getInstance(context).getProfile() != null) {
             final List<String> ids = new ArrayList<>();
 

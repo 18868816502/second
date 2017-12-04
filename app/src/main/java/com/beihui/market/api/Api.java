@@ -435,6 +435,15 @@ public class Api {
     }
 
     /**
+     * 查询相关推荐产品
+     *
+     * @param amount 相关金额
+     */
+    public Observable<ResultEntity<LoanProduct>> queryRecommendProduct(int amount) {
+        return service.queryRecommendProduct(amount, PLATFORM);
+    }
+
+    /**
      * 添加或者删除收藏（产品，资讯）
      *
      * @param userId    用户id

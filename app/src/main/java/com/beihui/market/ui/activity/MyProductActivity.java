@@ -1,13 +1,12 @@
 package com.beihui.market.ui.activity;
 
 
-import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -33,25 +32,17 @@ import butterknife.BindView;
 
 public class MyProductActivity extends BaseComponentActivity implements MyProductContract.View {
 
-    @BindView(R.id.root_container)
-    View rootContainer;
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.nested_scroll_view)
-    NestedScrollView nestedScrollView;
-    @BindView(R.id.content_container)
-    View contentContainer;
-    @BindView(R.id.success_count_holder)
-    View successCountHolder;
-    @BindView(R.id.success_count)
-    TextView successCountView;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    private TextView successCountView;
 
     @Inject
     MyProductPresenter presenter;
@@ -77,6 +68,11 @@ public class MyProductActivity extends BaseComponentActivity implements MyProduc
         });
 
         adapter = new MyProductRVAdapter();
+        View view = LayoutInflater.from(this)
+                .inflate(R.layout.layout_my_product_header, null);
+        successCountView = (TextView) view.findViewById(R.id.success_count);
+        adapter.setHeaderView(view);
+
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -85,14 +81,6 @@ public class MyProductActivity extends BaseComponentActivity implements MyProduc
         }, recyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                contentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                contentContainer.setMinimumHeight(rootContainer.getMeasuredHeight() + successCountHolder.getMeasuredHeight() - toolbar.getMeasuredHeight());
-            }
-        });
 
         SlidePanelHelper.attach(this);
 
@@ -121,13 +109,6 @@ public class MyProductActivity extends BaseComponentActivity implements MyProduc
     public void showSuccessCount(int count) {
         stateLayout.switchState(StateLayout.STATE_CONTENT);
         successCountView.setText("" + count);
-
-        nestedScrollView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                nestedScrollView.scrollTo(0, 0);
-            }
-        }, 200);
     }
 
     @Override

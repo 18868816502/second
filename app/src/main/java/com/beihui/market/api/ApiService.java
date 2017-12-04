@@ -253,6 +253,13 @@ public interface ApiService {
     Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId, @Field("userId") String userId);
 
     /**
+     * 查询相关推荐产品
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/queryRelevant")
+    Observable<ResultEntity<LoanProduct>> queryRecommendProduct(@Field("borrowingHigh") int amount, @Field("platform") String platform);
+
+    /**
      * 添加或者删除产品，资讯收藏
      */
     @FormUrlEncoded
