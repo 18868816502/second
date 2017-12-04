@@ -25,6 +25,7 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoanDetailComponent;
@@ -146,6 +147,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             @Override
             public void onClick(View v) {
                 if (!FastClickUtils.isFastClick()) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_LOAN_REQUESTED);
+
                     presenter.clickLoanRequested();
                 }
             }

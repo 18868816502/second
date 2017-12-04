@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.base.Constant;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
@@ -203,6 +204,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
             case R.id.mine_product:
                 if (!FastClickUtils.isFastClick()) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_MY_LOAN);
+
                     presenter.clickMyProduct();
                 }
                 break;
@@ -230,6 +234,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 break;
 
             case R.id.wechat_public:
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_WECHAT);
+
                 new WeChatPublicDialog().show(getChildFragmentManager(), WeChatPublicDialog.class.getSimpleName());
                 if (wechatSurpriseView.getVisibility() != View.GONE) {
                     wechatSurpriseView.setVisibility(View.GONE);

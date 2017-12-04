@@ -146,6 +146,8 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ENTER_HOME);
     }
 
     @Nullable
@@ -234,6 +236,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
                 AdBanner ad = bannerAds.get(position);
                 DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 2);
 
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_BANNER);
+
                 presenter.clickBanner(position);
 
             }
@@ -244,6 +249,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         hotAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HOT_PRODUCT);
+
                 presenter.clickHotProduct(position);
             }
         });
@@ -259,6 +267,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         refreshHot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_REFRESH_HOT_PRODUCT);
+
                 animation = AnimationUtils.loadAnimation(getContext(), R.anim.refresh_animation);
                 refreshIcon.startAnimation(animation);
                 presenter.refreshHotProducts();
@@ -268,6 +279,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         oneKeyLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ONE_KEY_LOAN);
+
                 presenter.clickOneKeyLoan();
             }
         });
@@ -305,6 +319,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         choiceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_CHOICE_PRODUCT);
+
                 presenter.clickChoiceProduct(position);
             }
         });
@@ -322,6 +339,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HOT_NEWS);
+
                 Intent intent = new Intent(getContext(), NewsDetailActivity.class);
                 intent.putExtra("hotNews", (HotNews) adapter.getData().get(position));
                 startActivity(intent);
@@ -335,6 +355,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         qualityTestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_QUALITY_TEST);
+
                 presenter.clickQualityTest();
             }
         });
@@ -440,11 +463,17 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Override
     public void showAdDialog(final AdBanner ad) {
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
+
         new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //统计点击
                 DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
 
                 //是否需要登录
                 if (ad.needLogin()) {

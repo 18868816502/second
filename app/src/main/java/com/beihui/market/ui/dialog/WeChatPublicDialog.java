@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.beihui.market.R;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.util.viewutils.ToastUtils;
 
 import butterknife.ButterKnife;
@@ -70,6 +71,9 @@ public class WeChatPublicDialog extends DialogFragment {
                 dismiss();
                 break;
             case R.id.goto_wechat:
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_GO_WECHAT);
+
                 try {
                     Intent intent = new Intent();
                     ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");

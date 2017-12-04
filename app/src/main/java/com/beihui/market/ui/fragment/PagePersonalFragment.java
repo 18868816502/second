@@ -14,6 +14,7 @@ import android.view.View;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.LoanGroup;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerPagePersonalComponent;
 import com.beihui.market.injection.module.PagePersonalModule;
@@ -44,6 +45,15 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
 
     private ProductGroupAdapter groupAdapter;
     private PersonalPageAdapter pagerAdapter;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //pv，uv统计
+            DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_RESUME_PERSONAL_PRODUCT);
+        }
+    }
 
     @Override
     public int getLayoutResId() {
@@ -89,6 +99,8 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
             @Override
             public void onPageSelected(int position) {
                 groupAdapter.select(position);
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SELECT_PERSONAL_GROUP);
             }
 
             @Override

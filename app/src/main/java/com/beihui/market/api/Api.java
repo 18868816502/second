@@ -407,8 +407,8 @@ public class Api {
      * @param pageNo   查询页数
      * @param pageSize 查询每页大小
      */
-    public Observable<ResultEntity<LoanProduct>> queryPersonalProducts(String groupId, int pageNo, int pageSize) {
-        return service.queryPersonalProducts(groupId, pageNo, pageSize, PLATFORM);
+    public Observable<ResultEntity<LoanProduct>> queryPersonalProducts(String groupId, String userId, int pageNo, int pageSize) {
+        return service.queryPersonalProducts(groupId, userId, pageNo, pageSize, PLATFORM);
     }
 
     /**

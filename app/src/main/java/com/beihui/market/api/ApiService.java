@@ -232,7 +232,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/groupProductList")
-    Observable<ResultEntity<LoanProduct>> queryPersonalProducts(@Field("groupId") String groupId,
+    Observable<ResultEntity<LoanProduct>> queryPersonalProducts(@Field("groupId") String groupId, @Field("userId") String userId,
                                                                 @Field("pageNo") int pageNo, @Field("pageSize") int pageSize,
                                                                 @Field("platform") String platform);
 

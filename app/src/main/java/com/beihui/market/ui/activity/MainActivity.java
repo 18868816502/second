@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
@@ -164,9 +165,15 @@ public class MainActivity extends BaseComponentActivity {
                     newSelected = TabHomeFragment.newInstance();
                     break;
                 case R.id.tab_loan:
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_LOAN);
+
                     newSelected = TabLoanFragment.newInstance();
                     break;
                 case R.id.tab_news:
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
+
                     newSelected = TabNewsFragment.newInstance();
                     break;
                 case R.id.tab_mine:

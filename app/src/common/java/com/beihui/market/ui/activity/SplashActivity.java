@@ -172,6 +172,9 @@ public class SplashActivity extends BaseComponentActivity {
                     //统计点击
                     DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), 1);
 
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_SPLASH_AD);
+
                     //先跳转至首页
                     Intent intent = new Intent(context, MainActivity.class);
                     startActivity(intent);

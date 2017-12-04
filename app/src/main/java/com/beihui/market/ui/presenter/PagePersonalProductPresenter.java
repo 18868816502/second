@@ -48,7 +48,11 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
 
     @Override
     public void refresh() {
-        Disposable dis = api.queryPersonalProducts(groupId, 1, PAGE_SIZE)
+        String userId = null;
+        if (userHelper.getProfile() != null) {
+            userId = userHelper.getProfile().getId();
+        }
+        Disposable dis = api.queryPersonalProducts(groupId, userId, 1, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override
@@ -92,7 +96,11 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
 
     @Override
     public void loadMoreGroupProduct() {
-        Disposable dis = api.queryPersonalProducts(groupId, pageNo, PAGE_SIZE)
+        String userId = null;
+        if (userHelper.getProfile() != null) {
+            userId = userHelper.getProfile().getId();
+        }
+        Disposable dis = api.queryPersonalProducts(groupId, userId, pageNo, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanProduct>>() {
                                @Override

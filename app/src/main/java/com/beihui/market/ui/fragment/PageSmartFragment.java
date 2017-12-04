@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerPageSmartComponent;
 import com.beihui.market.injection.module.PageSmartModule;
@@ -80,6 +81,15 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
     PageSmartPresenter presenter;
 
     private LoanRVAdapter loanRVAdapter;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //pv，uv统计
+            DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_RESUME_SMART_PRODUCT);
+        }
+    }
 
     @Override
     public void onDestroyView() {
