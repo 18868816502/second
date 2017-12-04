@@ -362,15 +362,16 @@ public class Api {
     /**
      * 查询一键借款的资质
      *
-     * @param ids 需要查询的产品id
+     * @param userId 用户id
+     * @param ids    需要查询的产品id
      */
-    public Observable<ResultEntity<Integer>> queryOneKeyLoanQuality(String[] ids) {
+    public Observable<ResultEntity<List<String>>> queryOneKeyLoanQuality(String userId, List<String> ids) {
         StringBuilder sb = new StringBuilder();
         for (String id : ids) {
             sb.append(id).append(",");
         }
         sb.deleteCharAt(sb.length() - 1);
-        return service.queryOneKeyLoanQuality(sb.toString());
+        return service.queryOneKeyLoanQuality(userId, sb.toString());
     }
 
     /**

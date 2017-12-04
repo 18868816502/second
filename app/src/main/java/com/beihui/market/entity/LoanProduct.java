@@ -65,6 +65,10 @@ public class LoanProduct {
         private String interestTimeTypeText;
 
         private String interestTimeText;
+        /**
+         * 合作类型。 1.常规 2.联合注册
+         */
+        private int coopType;
 
         public int getQuickCommend() {
             return quickCommend;
@@ -162,6 +166,24 @@ public class LoanProduct {
             this.interestTimeText = interestTimeText;
         }
 
+        public int getCoopType() {
+            return coopType;
+        }
+
+        public void setCoopType(int coopType) {
+            this.coopType = coopType;
+        }
+
+        /**
+         * 是否是联合注册类型
+         */
+        public boolean isUnionRegister() {
+            return this.getCoopType() == 2;
+        }
+
+        public Row() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -180,9 +202,8 @@ public class LoanProduct {
             dest.writeString(this.feature);
             dest.writeString(this.borrowingHighText);
             dest.writeString(this.interestTimeTypeText);
-        }
-
-        public Row() {
+            dest.writeString(this.interestTimeText);
+            dest.writeInt(this.coopType);
         }
 
         protected Row(Parcel in) {
@@ -197,9 +218,11 @@ public class LoanProduct {
             this.feature = in.readString();
             this.borrowingHighText = in.readString();
             this.interestTimeTypeText = in.readString();
+            this.interestTimeText = in.readString();
+            this.coopType = in.readInt();
         }
 
-        public static final Parcelable.Creator<Row> CREATOR = new Parcelable.Creator<Row>() {
+        public static final Creator<Row> CREATOR = new Creator<Row>() {
             @Override
             public Row createFromParcel(Parcel source) {
                 return new Row(source);

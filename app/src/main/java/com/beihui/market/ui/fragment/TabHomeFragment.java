@@ -32,10 +32,12 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabHomeComponent;
 import com.beihui.market.injection.module.TabHomeModule;
+import com.beihui.market.ui.activity.ChoiceProductActivity;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.activity.NoticeDetailActivity;
+import com.beihui.market.ui.activity.ThirdAuthorizationActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
 import com.beihui.market.ui.adapter.HotChoiceRVAdapter;
@@ -110,6 +112,15 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     ImageView noticeCloseIv;
     @BindView(R.id.notice_text)
     AutoTextView noticeTv;
+
+    @BindView(R.id.one_key_loan_holder)
+    View oneKeyLoanHolder;
+    @BindView(R.id.one_key_loan)
+    View oneKeyLoan;
+    @BindView(R.id.one_key_loan_hint_holder)
+    View oneKeyLoanHintHolder;
+    @BindView(R.id.one_key_loan_hint_close)
+    View oneKeyLoanHintClose;
 
     @Inject
     TabHomePresenter presenter;
@@ -244,6 +255,30 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         });
         hotRecyclerView.setAdapter(hotAdapter);
 
+         /*热门产品刷新*/
+        refreshHot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animation = AnimationUtils.loadAnimation(getContext(), R.anim.refresh_animation);
+                refreshIcon.startAnimation(animation);
+                presenter.refreshHotProducts();
+            }
+        });
+        /*一键借款*/
+        oneKeyLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clickOneKeyLoan();
+            }
+        });
+        /*关闭一键借款提示*/
+        oneKeyLoanHintClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                oneKeyLoanHintHolder.setVisibility(View.GONE);
+            }
+        });
+
         /*精选产品*/
         choiceAdapter = new HotChoiceRVAdapter(R.layout.list_item_product_choice);
         choiceAdapter.setLoadMoreView(new LoadMoreView() {
@@ -281,16 +316,6 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         }, choiceRecyclerView);
         choiceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         choiceRecyclerView.setAdapter(choiceAdapter);
-
-        /*热门产品刷新*/
-        refreshHot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animation = AnimationUtils.loadAnimation(getContext(), R.anim.refresh_animation);
-                refreshIcon.startAnimation(animation);
-                presenter.refreshHotProducts();
-            }
-        });
 
         /*借款攻略*/
         newsAdapter = new HotNewsAdapter();
@@ -383,7 +408,10 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Override
     public void updateOneKeyLoanVisibility(boolean visible) {
-        
+        int visibility = visible ? View.VISIBLE : View.GONE;
+        oneKeyLoanHolder.setVisibility(visibility);
+        oneKeyLoan.setVisibility(visibility);
+        oneKeyLoanHintHolder.setVisibility(visibility);
     }
 
     @Override
@@ -513,13 +541,15 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     }
 
     @Override
-    public void navigateThirdAuthorization(String[] ids) {
-
+    public void navigateThirdAuthorization(List<String> ids) {
+        Intent intent = new Intent(getContext(), ThirdAuthorizationActivity.class);
+        intent.putStringArrayListExtra("id", (ArrayList<String>) ids);
+        startActivity(intent);
     }
 
     @Override
     public void navigateChoiceProduct() {
-
+        startActivity(new Intent(getContext(), ChoiceProductActivity.class));
     }
 
     @Override

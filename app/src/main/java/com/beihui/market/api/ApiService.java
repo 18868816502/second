@@ -204,8 +204,8 @@ public interface ApiService {
      * 查询一键借款资质
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/product/queryButton")
-    Observable<ResultEntity<Integer>> queryOneKeyLoanQuality(@Field("pid") String pid);
+    @POST(PRODUCT_PATH + "/product/queryButton")
+    Observable<ResultEntity<List<String>>> queryOneKeyLoanQuality(@Field("userId") String userId, @Field("pids") String pids);
 
     /**
      * 查询精选产品

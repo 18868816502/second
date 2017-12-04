@@ -291,38 +291,54 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
     @Override
     public void clickOneKeyLoan() {
-        if (hotProducts != null && hotProducts.size() > 0) {
-            final String[] ids = new String[hotProducts.size()];
-            for (int i = 0; i < hotProducts.size(); ++i) {
-                ids[i] = hotProducts.get(i).getId();
-            }
+        if (true) {
+            view.navigateChoiceProduct();
+            return;
+        }
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            final List<String> ids = new ArrayList<>();
 
-            Disposable dis = api.queryOneKeyLoanQuality(ids)
-                    .compose(RxUtil.<ResultEntity<Integer>>io2main())
-                    .subscribe(new Consumer<ResultEntity<Integer>>() {
-                                   @Override
-                                   public void accept(ResultEntity<Integer> result) throws Exception {
-                                       if (result.isSuccess()) {
-                                           //有数据
-                                           if (result.getData() == 1) {
-                                               view.navigateThirdAuthorization(ids);
-                                           } else {
-                                               //无数据
-                                               view.navigateChoiceProduct();
+            if (hotProducts != null && hotProducts.size() > 0) {
+                //删选联合注册类型
+                for (int i = 0; i < hotProducts.size(); ++i) {
+                    if (hotProducts.get(i).isUnionRegister())
+                        ids.add(hotProducts.get(i).getId());
+                }
+                if (ids.size() > 0) {
+                    //当前热门产品中存在联合注册类型，查询是否存在未注册平台
+                    Disposable dis = api.queryOneKeyLoanQuality(UserHelper.getInstance(context).getProfile().getId(), ids)
+                            .compose(RxUtil.<ResultEntity<List<String>>>io2main())
+                            .subscribe(new Consumer<ResultEntity<List<String>>>() {
+                                           @Override
+                                           public void accept(ResultEntity<List<String>> result) throws Exception {
+                                               if (result.isSuccess()) {
+                                                   //有数据
+                                                   if (result.getData() != null && result.getData().size() > 0) {
+                                                       view.navigateThirdAuthorization(result.getData());
+                                                   } else {
+                                                       //无数据
+                                                       view.navigateChoiceProduct();
+                                                   }
+                                               } else {
+                                                   view.showErrorMsg(result.getMsg());
+                                               }
                                            }
-                                       } else {
-                                           view.showErrorMsg(result.getMsg());
-                                       }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    logError(TabHomePresenter.this, throwable);
-                                    view.showErrorMsg(generateErrorMsg(throwable));
-                                }
-                            });
-            addDisposable(dis);
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(Throwable throwable) throws Exception {
+                                            logError(TabHomePresenter.this, throwable);
+                                            view.showErrorMsg(generateErrorMsg(throwable));
+                                        }
+                                    });
+                    addDisposable(dis);
+                } else {
+                    //当前热门产品中没有联合注册类型产品,导航至精选推荐
+                    view.navigateChoiceProduct();
+                }
+            }
+        } else {
+            view.navigateLogin();
         }
     }
 

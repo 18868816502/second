@@ -3,6 +3,8 @@ package com.beihui.market.api;
 
 import com.beihui.market.BuildConfig;
 
+import java.util.List;
+
 public class NetConstants {
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
@@ -34,6 +36,8 @@ public class NetConstants {
 
     public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
 
+    public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";
+
     public static String generateNewsUrl(String id) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";
     }
@@ -52,5 +56,16 @@ public class NetConstants {
 
     public static String generateTestUrl(String id) {
         return H5_TEST + "?isApp=1&id=" + id;
+    }
+
+    public static String generateOneKeyLoanUrl(List<String> ids) {
+        StringBuilder sb = new StringBuilder();
+        if (ids != null && ids.size() > 0) {
+            for (String id : ids) {
+                sb.append(id).append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return H5_ONE_KEY_LOAN + "?isApp=1&pids=" + sb.toString();
     }
 }

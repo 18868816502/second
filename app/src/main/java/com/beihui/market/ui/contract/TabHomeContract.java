@@ -169,7 +169,7 @@ public interface TabHomeContract {
          *
          * @param ids 产品id数组
          */
-        void navigateThirdAuthorization(String[] ids);
+        void navigateThirdAuthorization(List<String> ids);
 
         /**
          * 导航至精选产品页

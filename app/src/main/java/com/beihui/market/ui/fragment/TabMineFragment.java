@@ -25,6 +25,7 @@ import com.beihui.market.ui.activity.MyProductActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
+import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.dialog.WeChatPublicDialog;
@@ -116,7 +117,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void initDatas() {
-        Ntalker.getBaseInstance().enableDebug(true);
+
     }
 
     @Override
@@ -129,7 +130,17 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     }
 
     @Subscribe
+    public void onLogin(UserLoginEvent event) {
+        //登录小能客服
+        UserHelper.Profile profile = UserHelper.getInstance(getContext()).getProfile();
+        Ntalker.getBaseInstance().login(profile.getId(), profile.getUserName());
+    }
+
+    @Subscribe
     public void onLogout(UserLogoutEvent event) {
+        //登出小能客服
+        Ntalker.getBaseInstance().logout();
+
         loginTv.setVisibility(View.VISIBLE);
         userNameTv.setVisibility(View.GONE);
 
@@ -302,8 +313,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void navigateContactKefu(String userId, String userName) {
-        Ntalker.getSimpleInstance().startChat(getContext(), Constant.XN_SITE_ID, Constant.XN_SITE_KEY,
-                userId, userName, Constant.XN_CUSTOMER);
+        //调起聊天窗口
+        Ntalker.getBaseInstance().startChat(getContext(), Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
     }
 
     @Override
