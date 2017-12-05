@@ -1,7 +1,5 @@
 package com.beihui.market.ui.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +17,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.News;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerNewsComponent;
 import com.beihui.market.injection.module.NewsModule;
@@ -66,6 +65,9 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
+
         //umeng统计
         Statistic.onEvent(Events.ENTER_NEWS_PAGE);
 

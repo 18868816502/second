@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
@@ -68,6 +69,12 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
                     speedinessRefresh.setVisibility(View.VISIBLE);
                     return false;
                 } else if (url.contains("relevantRecommendations.html")) {
+                    String[] str = url.split("borrowingHighText");
+                    String lastStr = str[str.length - 1];
+
+                    Intent intent = new Intent(ThirdAuthorizationActivity.this, RecommendProductActivity.class);
+                    intent.putExtra("amount", Integer.parseInt(lastStr.substring(1, lastStr.length())));
+                    startActivity(intent);
 
                     return true;
                 }

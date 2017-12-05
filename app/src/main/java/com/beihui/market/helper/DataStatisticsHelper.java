@@ -98,6 +98,10 @@ public class DataStatisticsHelper {
      */
     public static final String ID_CLICK_TAB_NEWS = "资讯栏";
     /**
+     * 进入资讯详情页
+     */
+    public static final String ID_RESUME_NEWS = "资讯详情";
+    /**
      * 点击微信公众号
      */
     public static final String ID_CLICK_WECHAT = "微信按钮";
