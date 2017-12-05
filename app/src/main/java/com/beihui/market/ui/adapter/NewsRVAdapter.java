@@ -48,7 +48,7 @@ public class NewsRVAdapter extends BaseMultiItemQuickAdapter<MultipleNewsItem, B
                         String url = item.getImageList().get(i);
                         if (!TextUtils.isEmpty(url)) {
                             Glide.with(helper.itemView.getContext())
-                                    .load(item.getImage())
+                                    .load(item.getImageList().get(i))
                                     .asBitmap()
                                     .centerCrop()
                                     .placeholder(R.drawable.image_place_holder)
@@ -61,10 +61,11 @@ public class NewsRVAdapter extends BaseMultiItemQuickAdapter<MultipleNewsItem, B
                 break;
             default:
                 //normal image item and big image item
-                if (item.getImage() != null) {
+                if (item.getImage() != null && item.getImageList().size() > 0
+                        && !TextUtils.isEmpty(item.getImageList().get(0))) {
                     Context context = helper.itemView.getContext();
                     Glide.with(context)
-                            .load(item.getImage())
+                            .load(item.getImageList().get(0))
                             .asBitmap()
                             .centerCrop()
                             .placeholder(R.drawable.image_place_holder)
