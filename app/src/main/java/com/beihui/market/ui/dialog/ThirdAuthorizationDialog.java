@@ -19,6 +19,8 @@ import com.beihui.market.R;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,6 +84,9 @@ public class ThirdAuthorizationDialog extends DialogFragment {
                 dismiss();
                 break;
             case R.id.authorize:
+                //umeng统计
+                Statistic.onEvent(Events.LOAN_AUTHORIZE_CONFIRM);
+
                 presenter.clickConfirmAuthorize();
                 break;
             case R.id.user_agreement:

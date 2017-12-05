@@ -234,6 +234,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_BANNER);
+
                 //统计点击
                 AdBanner ad = bannerAds.get(position);
                 DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 2);
@@ -251,6 +254,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         hotAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_HOT_PRODUCT);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HOT_PRODUCT);
 
@@ -269,6 +275,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         refreshHot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_REFRESH_HOT);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_REFRESH_HOT_PRODUCT);
 
@@ -281,6 +290,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         oneKeyLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_ONE_KEY_LOAN);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ONE_KEY_LOAN);
 
@@ -323,6 +335,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         choiceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_CHOICE_PRODUCT);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_CHOICE_PRODUCT);
 
@@ -343,6 +358,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         newsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_HOT_NEWS);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HOT_NEWS);
 
@@ -359,6 +377,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         qualityTestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.HOME_CLICK_TEST);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_QUALITY_TEST);
 
@@ -470,12 +491,18 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Override
     public void showAdDialog(final AdBanner ad) {
+        //umeng统计
+        Statistic.onEvent(Events.RESUME_AD_DIALOG);
+
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
 
         new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_AD_DIALOG);
+
                 //统计点击
                 DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
 

@@ -171,6 +171,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         switch (view.getId()) {
             case R.id.contact_kefu:
                 if (!FastClickUtils.isFastClick()) {
+                    //umeng统计
+                    Statistic.onEvent(Events.CLICK_CONTACT_KEFU);
+
                     presenter.clickContactKefu();
                 }
                 break;
@@ -204,6 +207,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
             case R.id.mine_product:
                 if (!FastClickUtils.isFastClick()) {
+                    //umeng统计
+                    Statistic.onEvent(Events.CLICK_MY_PRODUCT);
+
                     //pv，uv统计
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_MY_LOAN);
 
@@ -212,7 +218,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 break;
 
             case R.id.my_collection:
-                presenter.clickCollection();
+                if (!FastClickUtils.isFastClick()) {
+                    //umeng统计
+                    Statistic.onEvent(Events.CLICK_MY_COLLECTION);
+
+                    presenter.clickCollection();
+                }
                 break;
 
             case R.id.invite_friend:
@@ -234,6 +245,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 break;
 
             case R.id.wechat_public:
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_WECHAT);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_WECHAT);
 

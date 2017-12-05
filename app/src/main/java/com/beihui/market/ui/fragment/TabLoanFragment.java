@@ -54,7 +54,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //umeng统计
-        Statistic.onEvent(Events.ENTER_LOAN_PAGE);
+        Statistic.onEvent(Events.CLICK_TAB_LOAN);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

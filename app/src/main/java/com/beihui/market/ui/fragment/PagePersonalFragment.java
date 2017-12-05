@@ -21,6 +21,8 @@ import com.beihui.market.injection.module.PagePersonalModule;
 import com.beihui.market.ui.adapter.ProductGroupAdapter;
 import com.beihui.market.ui.contract.PagePersonalContract;
 import com.beihui.market.ui.presenter.PagePersonalPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.ProductStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -50,6 +52,9 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            //umeng统计
+            Statistic.onEvent(Events.RESUME_PERSONAL_PRODUCT);
+
             //pv，uv统计
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_RESUME_PERSONAL_PRODUCT);
         }
@@ -99,6 +104,9 @@ public class PagePersonalFragment extends BaseComponentFragment implements PageP
             @Override
             public void onPageSelected(int position) {
                 groupAdapter.select(position);
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_GROUP);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SELECT_PERSONAL_GROUP);
             }

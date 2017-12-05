@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,8 @@ import com.beihui.market.injection.module.RecommendProductModule;
 import com.beihui.market.ui.adapter.HotChoiceRVAdapter;
 import com.beihui.market.ui.contract.RecommendProductContract;
 import com.beihui.market.ui.presenter.RecommendProductPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -38,6 +41,13 @@ public class RecommendProductActivity extends BaseComponentActivity implements R
     RecommendProductPresenter presenter;
 
     private HotChoiceRVAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //umeng统计
+        Statistic.onEvent(Events.RESUME_RECOMMEND_PRODUCT);
+    }
 
     @Override
     public int getLayoutId() {

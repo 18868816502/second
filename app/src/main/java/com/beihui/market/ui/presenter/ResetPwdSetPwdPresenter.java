@@ -7,6 +7,8 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.ResetPwdSetPwdContract;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
@@ -39,10 +41,16 @@ public class ResetPwdSetPwdPresenter extends BaseRxPresenter implements ResetPwd
                                @Override
                                public void accept(@NonNull ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.CHANGE_PASSWORD_SUCCESS);
+
                                        mUserHelper.clearUser(mContext);
                                        mView.showRestPwdSuccess(result.getMsg());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
+
+                                       //umeng统计
+                                       Statistic.onEvent(Events.CHANGE_PASSWORD_FAILED);
                                    }
                                }
                            },

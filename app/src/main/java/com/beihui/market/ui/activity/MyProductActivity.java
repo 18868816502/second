@@ -20,6 +20,8 @@ import com.beihui.market.injection.module.MyProductModule;
 import com.beihui.market.ui.adapter.MyProductRVAdapter;
 import com.beihui.market.ui.contract.MyProductContract;
 import com.beihui.market.ui.presenter.MyProductPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.MyProductStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -72,6 +74,9 @@ public class MyProductActivity extends BaseComponentActivity implements MyProduc
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_MY_PRODUCT_ITEM);
+
                 presenter.clickMyProduct(position);
             }
         });

@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,8 @@ import com.beihui.market.injection.module.ChoiceProductModule;
 import com.beihui.market.ui.adapter.HotChoiceRVAdapter;
 import com.beihui.market.ui.contract.ChoiceProductContract;
 import com.beihui.market.ui.presenter.ChoiceProductPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -41,6 +44,13 @@ public class ChoiceProductActivity extends BaseComponentActivity implements Choi
     ChoiceProductPresenter presenter;
 
     private HotChoiceRVAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //umeng统计
+        Statistic.onEvent(Events.RESUME_CHOICE_PRODUCT);
+    }
 
     @Override
     public int getLayoutId() {

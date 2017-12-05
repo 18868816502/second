@@ -86,6 +86,9 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            //umeng统计
+            Statistic.onEvent(Events.RESUME_SMART_PRODUCT);
+
             //pv，uv统计
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_RESUME_SMART_PRODUCT);
         }
@@ -273,7 +276,7 @@ public class PageSmartFragment extends BaseComponentFragment implements PageSmar
                 break;
             case R.id.sort:
                 //umeng统计
-                Statistic.onEvent(Events.LOAN_CLICK_PRO_FILTER);
+                Statistic.onEvent(Events.LOAN_CLICK_SORT);
 
                 SortPopup proFilterPopup = new SortPopup(getActivity(), blurView, sortText, sortImage,
                         presenter.getSortGroup(), presenter.getSortGroupIndex());

@@ -20,6 +20,8 @@ import android.view.WindowManager;
 
 import com.beihui.market.R;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.viewutils.ToastUtils;
 
 import butterknife.ButterKnife;
@@ -71,6 +73,9 @@ public class WeChatPublicDialog extends DialogFragment {
                 dismiss();
                 break;
             case R.id.goto_wechat:
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_WECHAT_GO);
+
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_GO_WECHAT);
 

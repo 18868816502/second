@@ -17,6 +17,8 @@ import com.beihui.market.ui.adapter.CollectionLoanRVAdapter;
 import com.beihui.market.ui.contract.ProductCollectionContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.ProductCollectionPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.CollectionStateViewProvider;
@@ -71,6 +73,9 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
                             .withPositiveBtn("取消", null)
                             .show(getChildFragmentManager(), "ConfirmDelete");
                 } else if (view.getId() == R.id.base_container) {
+                    //umeng统计
+                    Statistic.onEvent(Events.CLICK_MY_COLLECTION_ITEM);
+
                     presenter.clickCollection(position);
                 }
             }

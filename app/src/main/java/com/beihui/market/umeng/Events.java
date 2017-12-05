@@ -2,6 +2,7 @@ package com.beihui.market.umeng;
 
 
 public class Events {
+    /********************************注册，认证*********************************************/
     /**
      * 进入登录界面
      */
@@ -65,32 +66,101 @@ public class Events {
     public static final String REGISTER_FAILED = "register_failed";
 
 
+    /********************************首页*********************************************/
     /**
      * 进入首页Tab
      */
     public static final String ENTER_HOME_PAGE = "home_enter";
     /**
-     * 首页点击消息中心
+     * banner-点击
      */
-    public static final String HOME_CLICK_MESSAGE = "home_click_message";
+    public static final String CLICK_BANNER = "click_banner";
     /**
-     * 首页点击给我推荐
+     * 首页广告弹窗出现
      */
-    public static final String HOME_CLICK_RECOMMEND = "home_click_recommend";
+    public static final String RESUME_AD_DIALOG = "resume_ad_dialog";
+    /**
+     * 首页广告弹窗-点击
+     */
+    public static final String CLICK_AD_DIALOG = "click_ad_dialog";
+    /**
+     * 首页-换一换-点击
+     */
+    public static final String CLICK_REFRESH_HOT = "click_refresh_hot";
+    /**
+     * 首页热门产品-点击
+     */
+    public static final String CLICK_HOT_PRODUCT = "click_hot_product";
+    /**
+     * 首页-一键借款-点击
+     */
+    public static final String CLICK_ONE_KEY_LOAN = "click_one_key_loan";
+    /**
+     * 首页-精选产品-点击
+     */
+    public static final String CLICK_CHOICE_PRODUCT = "click_choice_product";
+    /**
+     * 精选产品-进入
+     */
+    public static final String RESUME_CHOICE_PRODUCT = "resume_choice_product";
     /**
      * 首页点击测身价
      */
     public static final String HOME_CLICK_TEST = "home_click_test";
     /**
-     * 首页点击查看更多
+     * 借款攻略-点击
      */
-    public static final String HOME_CLICK_VIEW_MORE = "home_click_view_more";
+    public static final String CLICK_HOT_NEWS = "click_hot_news";
 
-
+    /********************************借款*********************************************/
     /**
-     * 进入产品列表Tab
+     * tab-借款-点击
      */
-    public static final String ENTER_LOAN_PAGE = "loan_enter";
+    public static final String CLICK_TAB_LOAN = "click_tab_loan";
+    /**
+     * 精选好借-进入
+     */
+    public static final String RESUME_PERSONAL_PRODUCT = "resume_personal_product";
+    /**
+     * 智能推荐-进入
+     */
+    public static final String RESUME_SMART_PRODUCT = "resume_smart_product";
+    /**
+     * 分组-点击
+     */
+    public static final String CLICK_GROUP = "click_group";
+    /**
+     * 产品详情页-进入
+     */
+    public static final String ENTER_LOAN_DETAIL_PAGE = "loanDetail_enter";
+    /**
+     * 产品详情页-我要借款-点击
+     */
+    public static final String LOAN_DETAIL_CLICK_LOAN = "loanDetail_click_loan";
+    /**
+     * 产品详情页-收藏-点击
+     */
+    public static final String CLICK_LOAN_COLLECT = "click_loan_collect";
+    /**
+     * 产品详情页-取消收藏-点击
+     */
+    public static final String CLICK_LOAN_DELETE_COLLECTION = "click_loan_delete_collection";
+    /**
+     * 产品详情页-分享
+     */
+    public static final String LOAN_DETAIL_CLICK_SHARE = "loanDetail_click_share";
+    /**
+     * 产品详情页-授权-进入
+     */
+    public static final String LOAN_ENTER_AUTHORIZE = "loan_enter_authorize";
+    /**
+     * 产品详情页-授权-确认-点击
+     */
+    public static final String LOAN_AUTHORIZE_CONFIRM = "loan_authorization_confirm";
+    /**
+     * 相关推荐-进入
+     */
+    public static final String RESUME_RECOMMEND_PRODUCT = "resume_recommend_product";
     /**
      * 产品列表Tab-借款金额
      */
@@ -100,22 +170,11 @@ public class Events {
      */
     public static final String LOAN_CLICK_TIME_FILTER = "loan_click_time_filter";
     /**
-     * 产品列表Tab-职业身份
+     * 产品列表Tab-排序
      */
-    public static final String LOAN_CLICK_PRO_FILTER = "loan_click_pro_filter";
-    /**
-     * 进入产品详情页
-     */
-    public static final String ENTER_LOAN_DETAIL_PAGE = "loanDetail_enter";
-    /**
-     * 产品详情页-分享
-     */
-    public static final String LOAN_DETAIL_CLICK_SHARE = "loanDetail_click_share";
-    /**
-     * 产品详情页-我要借款
-     */
-    public static final String LOAN_DETAIL_CLICK_LOAN = "loanDetail_click_loan";
+    public static final String LOAN_CLICK_SORT = "loan_click_sort";
 
+    /********************************资讯*********************************************/
     /**
      * 进入资讯Tab
      */
@@ -129,19 +188,59 @@ public class Events {
      */
     public static final String NEWS_DETAIL_SHARE = "newsDetail_click_share";
 
-
+    /********************************我的*********************************************/
     /**
      * 进入我的Tab
      */
     public static final String ENTER_MINE_PAGE = "mine_enter";
     /**
-     * 我的Tab-消息
+     * 在线客服-点击
+     */
+    public static final String CLICK_CONTACT_KEFU = "click_contact_kefu";
+    /**
+     * 消息-点击
      */
     public static final String MINE_CLICK_MESSAGE = "mine_click_message";
     /**
-     * 我的Tab-邀请好友
+     * 我的借款-点击
+     */
+    public static final String CLICK_MY_PRODUCT = "click_my_product";
+    /**
+     * 我的借款产品-点击
+     */
+    public static final String CLICK_MY_PRODUCT_ITEM = "click_my_product_item";
+    /**
+     * 我的收藏-点击
+     */
+    public static final String CLICK_MY_COLLECTION = "click_my_collection";
+    /**
+     * 我的收藏产品-点击
+     */
+    public static final String CLICK_MY_COLLECTION_ITEM = "click_my_collection_item";
+    /**
+     * 邀请好友-点击
      */
     public static final String MINE_CLICK_INVITATION = "mine_click_invitation";
+    /**
+     * 微信公众号-点击
+     */
+    public static final String CLICK_WECHAT = "click_wechat";
+    /**
+     * 微信公众号-去微信-点击
+     */
+    public static final String CLICK_WECHAT_GO = "click_wechat_go";
+    /**
+     * 设置-安全退出-点击
+     */
+    public static final String SETTING_EXIT = "setting_exit";
+    /**
+     * 安全退出-确认-点击
+     */
+    public static final String EXIT_CONFIRM = "exit_confirm";
+    /**
+     * 安全退出-取消-点击
+     */
+    public static final String EXIT_DISMISS = "exit_dismiss";
     /**
      * 我的Tab-帮助反馈
      */
@@ -155,26 +254,20 @@ public class Events {
      * 邀请好友-邀请
      */
     public static final String INVITATION_INVITE = "invitation_invite";
-
     /**
-     * 设置-修改密码
+     * 设置-修改密码-点击
      */
     public static final String SETTING_CHANGE_PASSWORD = "setting_change_password";
     /**
      * 修改密码-确认
      */
     public static final String CHANGE_PASSWORD_CONFIRM = "changePassword_confirm";
-
     /**
-     * 设置-安全退出
+     * 修改密码-成功
      */
-    public static final String SETTING_EXIT = "setting_exit";
+    public static final String CHANGE_PASSWORD_SUCCESS = "change_psd_success";
     /**
-     * 安全退出-确认
+     * 修改密码-失败
      */
-    public static final String EXIT_CONFIRM = "exit_confirm";
-    /**
-     * 安全退出-取消
-     */
-    public static final String EXIT_DISMISS = "exit_dismiss";
+    public static final String CHANGE_PASSWORD_FAILED = "change_psd_failed";
 }

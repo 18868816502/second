@@ -291,12 +291,18 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showAddCollectionSuccess(String msg) {
+        //umeng统计
+        Statistic.onEvent(Events.CLICK_LOAN_COLLECT);
+
         ToastUtils.showShort(this, msg, null);
         collectView.setActivated(true);
     }
 
     @Override
     public void showDeleteCollectionSuccess(String msg) {
+        //umeng统计
+        Statistic.onEvent(Events.CLICK_LOAN_DELETE_COLLECTION);
+
         ToastUtils.showShort(this, msg, null);
         collectView.setActivated(false);
     }
@@ -311,6 +317,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void navigateAuthorizationPage(String id) {
+        //umeng统计
+        Statistic.onEvent(Events.LOAN_ENTER_AUTHORIZE);
+
         authDialog = new ThirdAuthorizationDialog();
         authDialog.setPresenter(presenter);
         authDialog.show(getSupportFragmentManager(), "Auth");
