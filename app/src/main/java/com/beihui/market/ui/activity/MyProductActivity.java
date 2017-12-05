@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,6 +69,12 @@ public class MyProductActivity extends BaseComponentActivity implements MyProduc
         });
 
         adapter = new MyProductRVAdapter();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                presenter.clickMyProduct(position);
+            }
+        });
         View view = LayoutInflater.from(this)
                 .inflate(R.layout.layout_my_product_header, null);
         successCountView = (TextView) view.findViewById(R.id.success_count);
@@ -127,6 +134,21 @@ public class MyProductActivity extends BaseComponentActivity implements MyProduc
     @Override
     public void showMyProductEmpty() {
         stateLayout.switchState(StateLayout.STATE_EMPTY);
+    }
+
+    @Override
+    public void navigateRecommendProduct(int amount) {
+        Intent intent = new Intent(this, RecommendProductActivity.class);
+        intent.putExtra("amount", amount);
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigateThirdProduct(String name, String url) {
+        Intent intent = new Intent(this, ComWebViewActivity.class);
+        intent.putExtra("title", name);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
 
     @Override

@@ -72,7 +72,7 @@ public class DataStatisticsHelper {
     /**
      * 进入首页
      */
-    public static final String ID_ENTER_HOME = "进入首页";
+    public static final String ID_ENTER_HOME = "首页";
     /**
      * 点击banner
      */

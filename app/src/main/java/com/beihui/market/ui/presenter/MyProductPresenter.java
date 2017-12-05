@@ -9,6 +9,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.MyProduct;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.MyProductContract;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class MyProductPresenter extends BaseRxPresenter implements MyProductCont
                                            product.addAll(result.getData().getRows());
                                            canLoadMore = result.getData().getRows().size() == PAGE_SIZE;
                                            view.showMyProduct(Collections.unmodifiableList(product), canLoadMore);
+
+                                           view.showSuccessCount(result.getData().getSuccess());
                                        } else {
                                            view.showMyProductEmpty();
                                        }
@@ -105,5 +108,16 @@ public class MyProductPresenter extends BaseRxPresenter implements MyProductCont
                             }
                         });
         addDisposable(dis);
+    }
+
+    @Override
+    public void clickMyProduct(int position) {
+        MyProduct.Row data = product.get(position);
+        if (data.getStatus() == 1) {
+            //注册成功
+            view.navigateThirdProduct(data.getProductName(), data.getUrl());
+        } else {
+            view.navigateRecommendProduct(CommonUtils.convertStringAmount2Int(data.getBorrowingHighText()));
+        }
     }
 }

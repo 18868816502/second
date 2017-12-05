@@ -27,6 +27,8 @@ import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
+import com.beihui.market.entity.ThirdAuthResult;
+import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
@@ -432,6 +434,36 @@ public class Api {
      */
     public Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(String id, String userId) {
         return service.queryLoanProductDetail(id, userId);
+    }
+
+    /**
+     * 查询授权产品信息
+     *
+     * @param userId 用户id
+     * @param pids   产品id
+     */
+    public Observable<ResultEntity<List<ThirdAuthorization>>> queryThirdAuthorization(String userId, String pids) {
+        return service.queryThirdAuthorization(userId, pids);
+    }
+
+    /**
+     * 确认授权第三方产品
+     *
+     * @param userId 用户id
+     * @param pids   产品id
+     */
+    public Observable<ResultEntity> authorize(String userId, String pids) {
+        return service.authorize(userId, pids);
+    }
+
+    /**
+     * 查询第三方产品授权结果
+     *
+     * @param userId 用户id
+     * @param pids   产品id
+     */
+    public Observable<ResultEntity<ThirdAuthResult>> authorizationResult(String userId, String pids) {
+        return service.authorizationResult(userId, pids);
     }
 
     /**

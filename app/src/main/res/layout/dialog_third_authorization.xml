@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="355dp"
+    android:padding="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/third_party_bg"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tool_bar_height">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="第三方授权"
+                android:textColor="@color/black_1"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="@dimen/tool_bar_height"
+                android:layout_height="@dimen/tool_bar_height"
+                android:layout_gravity="right"
+                android:scaleType="centerInside"
+                android:src="@drawable/third_party_close" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="将使用您的爱信管家手机号注册该应用"
+            android:textColor="@color/black_2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/authorize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/third_party_btn"
+            android:gravity="center"
+            android:text="授权注册并登录"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击授权注册并登录即同意"
+                android:textColor="@color/black_2"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/user_agreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#98BAFD"
+                android:textSize="12sp"
+                tools:text="《点融网用户协议》" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

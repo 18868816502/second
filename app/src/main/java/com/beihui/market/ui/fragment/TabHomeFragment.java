@@ -125,7 +125,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     @Inject
     TabHomePresenter presenter;
 
-    private boolean oneKeyLoanClosed;
+    private boolean oneKeyLoanHintClosed;
 
     private Animation animation;
 
@@ -292,7 +292,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
             @Override
             public void onClick(View v) {
                 //记录关闭状态
-                oneKeyLoanClosed = true;
+                oneKeyLoanHintClosed = true;
                 oneKeyLoanHintHolder.setVisibility(View.GONE);
             }
         });
@@ -439,7 +439,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         oneKeyLoanHolder.setVisibility(visibility);
         oneKeyLoan.setVisibility(visibility);
 
-        if (visible && !oneKeyLoanClosed) {
+        if (visible && !oneKeyLoanHintClosed) {
             oneKeyLoanHintHolder.setVisibility(visibility);
         }
     }

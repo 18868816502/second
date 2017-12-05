@@ -25,6 +25,7 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -32,6 +33,7 @@ import com.beihui.market.injection.component.DaggerLoanDetailComponent;
 import com.beihui.market.injection.module.LoanDetailModule;
 import com.beihui.market.ui.contract.LoanProductDetailContract;
 import com.beihui.market.ui.dialog.ShareDialog;
+import com.beihui.market.ui.dialog.ThirdAuthorizationDialog;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -115,6 +117,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Inject
     LoanDetailPresenter presenter;
+
+    private ThirdAuthorizationDialog authDialog;
 
     @Override
     protected void onDestroy() {
@@ -274,7 +278,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void showLoanRequestText(String text) {
-
+        applyBtn.setText(text);
     }
 
     @Override
@@ -307,12 +311,39 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void navigateAuthorizationPage(String id) {
-
+        authDialog = new ThirdAuthorizationDialog();
+        authDialog.setPresenter(presenter);
+        authDialog.show(getSupportFragmentManager(), "Auth");
     }
 
     @Override
-    public void showLoanRequestReject() {
+    public void navigateRecommendProduct(int amount) {
+        Intent intent = new Intent(this, RecommendProductActivity.class);
+        intent.putExtra("amount", amount);
+        startActivity(intent);
+    }
 
+    @Override
+    public void showThirdAuthorization(ThirdAuthorization auth) {
+        if (authDialog != null && authDialog.isAdded()) {
+            authDialog.updateAuthorization(auth);
+        }
+    }
+
+    @Override
+    public void showAuthorizeResult(boolean success, String msg) {
+        if (authDialog != null) {
+            authDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void updateRegisterDialogVisibility(boolean visible) {
+        if (visible) {
+            showProgress(null);
+        } else {
+            dismissProgress();
+        }
     }
 
     @OnClick({R.id.collect, R.id.share})

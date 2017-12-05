@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -59,7 +61,21 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.contains("oneKeyRegistrationResult.html")) {
+                    //一键借款结果页
+                    speedinessBack.setVisibility(View.GONE);
+                    speedinessCancel.setVisibility(View.VISIBLE);
+                    speedinessRefresh.setVisibility(View.VISIBLE);
+                    return false;
+                } else if (url.contains("relevantRecommendations.html")) {
+
+                    return true;
+                }
                 return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
             }
         });
 
@@ -100,7 +116,7 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         List<String> ids = getIntent().getStringArrayListExtra("ids");
-        String url = NetConstants.generateOneKeyLoanUrl(ids);
+        String url = NetConstants.generateOneKeyLoanUrl(ids, UserHelper.getInstance(this).getProfile().getId());
         webView.loadUrl(url);
     }
 

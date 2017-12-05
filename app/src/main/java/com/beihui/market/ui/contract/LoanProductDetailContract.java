@@ -4,6 +4,7 @@ package com.beihui.market.ui.contract;
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.LoanProductDetail;
+import com.beihui.market.entity.ThirdAuthorization;
 
 public interface LoanProductDetailContract {
 
@@ -24,6 +25,16 @@ public interface LoanProductDetailContract {
          * 点击我要借款
          */
         void clickLoanRequested();
+
+        /**
+         * 查询第三方产品授权信息
+         */
+        void queryThirdAuthorization();
+
+        /**
+         * 点击确认授权
+         */
+        void clickConfirmAuthorize();
 
     }
 
@@ -77,9 +88,31 @@ public interface LoanProductDetailContract {
         void navigateAuthorizationPage(String id);
 
         /**
-         * 拒绝借款请求
+         * 用户已在其他平台注册，导航至相关推荐页面
+         *
+         * @param amount 相关金额
          */
-        void showLoanRequestReject();
+        void navigateRecommendProduct(int amount);
+
+        /**
+         * 第三方产品用户协议等资料加载完成
+         *
+         * @param auth 用户协议等资料
+         */
+        void showThirdAuthorization(ThirdAuthorization auth);
+
+        /**
+         * 返回授权结果
+         *
+         * @param success 是否成功
+         * @param msg     提示信息
+         */
+        void showAuthorizeResult(boolean success, String msg);
+
+        /**
+         * 授权注册等待dialog
+         */
+        void updateRegisterDialogVisibility(boolean visible);
 
 
     }

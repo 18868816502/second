@@ -58,7 +58,7 @@ public class NetConstants {
         return H5_TEST + "?isApp=1&id=" + id;
     }
 
-    public static String generateOneKeyLoanUrl(List<String> ids) {
+    public static String generateOneKeyLoanUrl(List<String> ids, String userId) {
         StringBuilder sb = new StringBuilder();
         if (ids != null && ids.size() > 0) {
             for (String id : ids) {
@@ -66,6 +66,6 @@ public class NetConstants {
             }
             sb.deleteCharAt(sb.length() - 1);
         }
-        return H5_ONE_KEY_LOAN + "?isApp=1&pids=" + sb.toString();
+        return H5_ONE_KEY_LOAN + "?isApp=1&pids=" + sb.toString() + "&userId=" + userId;
     }
 }

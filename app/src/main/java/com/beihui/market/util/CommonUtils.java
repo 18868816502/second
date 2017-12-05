@@ -548,4 +548,20 @@ public class CommonUtils {
         }
     }
 
+    public static int convertStringAmount2Int(String amount) {
+        int value = 0;
+        if (amount.contains("万")) {
+            try {
+                value = Integer.valueOf(amount.substring(0, amount.length() - 2)) * 10000;
+            } catch (NumberFormatException e) {
+            }
+        } else {
+            try {
+                value = Integer.valueOf(amount.substring(0, amount.length() - 1));
+            } catch (NumberFormatException e) {
+            }
+        }
+        return value;
+    }
+
 }

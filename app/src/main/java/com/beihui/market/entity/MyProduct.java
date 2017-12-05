@@ -37,6 +37,7 @@ public class MyProduct {
 
     public static class Row extends LoanProduct.Row {
         private int status;
+        private String url;
 
         public int getStatus() {
             return status;
@@ -46,19 +47,46 @@ public class MyProduct {
             this.status = status;
         }
 
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeInt(status);
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public Row() {
             super();
         }
 
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeInt(this.status);
+            dest.writeString(this.url);
+        }
+
         protected Row(Parcel in) {
             super(in);
-            status = in.readInt();
+            this.status = in.readInt();
+            this.url = in.readString();
         }
+
+        public static final Creator<Row> CREATOR = new Creator<Row>() {
+            @Override
+            public Row createFromParcel(Parcel source) {
+                return new Row(source);
+            }
+
+            @Override
+            public Row[] newArray(int size) {
+                return new Row[size];
+            }
+        };
     }
 }

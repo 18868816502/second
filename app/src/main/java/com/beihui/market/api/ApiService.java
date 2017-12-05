@@ -20,6 +20,8 @@ import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
+import com.beihui.market.entity.ThirdAuthResult;
+import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
@@ -251,6 +253,28 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/details")
     Observable<ResultEntity<LoanProductDetail>> queryLoanProductDetail(@Field("id") String productId, @Field("userId") String userId);
+
+    /**
+     * 查询授权产品
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/queryJurisdiction")
+    Observable<ResultEntity<List<ThirdAuthorization>>> queryThirdAuthorization(@Field("userId") String userId, @Field("pids") String pids);
+
+    /**
+     * 授权第三方产品
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/clickJurisdiction")
+    Observable<ResultEntity> authorize(@Field("userId") String userId, @Field("pids") String pids);
+
+    /**
+     * 查询第三方产品授权结果
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/queryOneLoan")
+    Observable<ResultEntity<ThirdAuthResult>> authorizationResult(@Field("userId") String userId, @Field("pids") String pids);
+
 
     /**
      * 查询相关推荐产品

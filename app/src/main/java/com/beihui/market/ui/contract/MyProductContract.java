@@ -19,6 +19,13 @@ public interface MyProductContract {
          * 加载更多我的借款产品
          */
         void loadMoreMyProduct();
+
+        /**
+         * 点击我的产品
+         *
+         * @param position 点击位置
+         */
+        void clickMyProduct(int position);
     }
 
     interface View extends BaseView<Presenter> {
@@ -42,5 +49,20 @@ public interface MyProductContract {
          * 暂无我的产品
          */
         void showMyProductEmpty();
+
+        /**
+         * 导航至相关推荐
+         *
+         * @param amount 相关金额
+         */
+        void navigateRecommendProduct(int amount);
+
+        /**
+         * 导航至第三方产品h5
+         *
+         * @param name 产品名字
+         * @param url  产品url
+         */
+        void navigateThirdProduct(String name, String url);
     }
 }
