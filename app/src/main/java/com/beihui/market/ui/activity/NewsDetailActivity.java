@@ -21,6 +21,7 @@ import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.News;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
@@ -116,7 +117,11 @@ public class NewsDetailActivity extends BaseComponentActivity {
         if (newsTitle != null) {
             titleTv.setText(newsTitle);
         }
-        newsUrl = NetConstants.generateNewsUrl(newsId);
+        String userId = null;
+        if (UserHelper.getInstance(this).getProfile() != null) {
+            userId = UserHelper.getInstance(this).getProfile().getId();
+        }
+        newsUrl = NetConstants.generateNewsUrl(newsId, userId);
         webView.loadUrl(newsUrl);
     }
 

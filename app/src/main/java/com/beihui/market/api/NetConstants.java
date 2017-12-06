@@ -38,8 +38,8 @@ public class NetConstants {
 
     public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";
 
-    public static String generateNewsUrl(String id) {
-        return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1";
+    public static String generateNewsUrl(String id, String userId) {
+        return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
     }
 
     public static String generateProductUrl(String id) {
