@@ -61,7 +61,7 @@ public class NewsRVAdapter extends BaseMultiItemQuickAdapter<MultipleNewsItem, B
                 break;
             default:
                 //normal image item and big image item
-                if (item.getImage() != null && item.getImageList().size() > 0
+                if (item.getImageList() != null && item.getImageList().size() > 0
                         && !TextUtils.isEmpty(item.getImageList().get(0))) {
                     Context context = helper.itemView.getContext();
                     Glide.with(context)
