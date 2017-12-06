@@ -80,14 +80,8 @@ public class MyProductRVAdapter extends BaseQuickAdapter<MyProduct.Row, BaseView
         if (item.getDueTimeText() != null) {
             helper.setText(R.id.loan_time_range, item.getDueTimeText());
         }
-        //badge
-        int sign = LoanRVAdapter.getLabelIcon(item.getProductSign());
-        if (sign != -1) {
-            helper.setVisible(R.id.loan_badge, true);
-            helper.setImageResource(R.id.loan_badge, sign);
-        } else {
-            helper.setVisible(R.id.loan_badge, false);
-        }
+        //hide badge
+        helper.setVisible(R.id.loan_badge, false);
         //注册状态
         View hasRegisterView = helper.getView(R.id.has_register);
         if (item.getStatus() == 1 || item.getStatus() == 2) {

@@ -22,7 +22,7 @@ public class NewsItemDeco extends RecyclerView.ItemDecoration {
         mPaddingLeft = paddingLeft;
         mPaddingRight = paddingRight;
 
-        mPaint.setColor(Color.parseColor("#f0f0f0"));
+        mPaint.setColor(Color.parseColor("#e7e7e7"));
 
     }
 
