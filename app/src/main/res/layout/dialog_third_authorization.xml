@@ -37,21 +37,24 @@
             android:layout_height="0.5dp"
             android:background="@color/line" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="将使用您的爱信管家手机号注册该应用"
-            android:textColor="@color/black_2"
-            android:textSize="15sp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="将使用您的爱信管家手机号注册该应用"
+                android:textColor="@color/black_2"
+                android:textSize="15sp" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/authorize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
             android:background="@drawable/third_party_btn"
             android:gravity="center"
             android:text="授权注册并登录"

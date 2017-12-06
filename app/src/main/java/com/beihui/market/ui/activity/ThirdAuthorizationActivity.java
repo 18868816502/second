@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -62,27 +63,24 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.contains("oneKeyRegistrationResult.html")) {
-                    //一键借款结果页
-                    speedinessBack.setVisibility(View.GONE);
-                    speedinessCancel.setVisibility(View.VISIBLE);
-                    speedinessRefresh.setVisibility(View.VISIBLE);
-                    return false;
-                } else if (url.contains("relevantRecommendations.html")) {
+                if (url.contains("relevantRecommendations.html")) {
                     String[] str = url.split("borrowingHighText");
                     String lastStr = str[str.length - 1];
 
                     Intent intent = new Intent(ThirdAuthorizationActivity.this, RecommendProductActivity.class);
                     intent.putExtra("amount", Integer.parseInt(lastStr.substring(1, lastStr.length())));
                     startActivity(intent);
-
                     return true;
                 }
-                return super.shouldOverrideUrlLoading(view, url);
+                return super.shouldOverrideUrlLoading(webView, url);
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                boolean isResult = url.contains("oneKeyRegistrationResult.html");
+                speedinessBack.setVisibility(isResult ? View.GONE : View.VISIBLE);
+                speedinessCancel.setVisibility(isResult ? View.VISIBLE : View.GONE);
+                speedinessRefresh.setVisibility(isResult ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -101,7 +99,11 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
         speedinessBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    onBackPressed();
+                }
             }
         });
         speedinessCancel.setOnClickListener(new View.OnClickListener() {
@@ -130,5 +132,17 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN
+                && speedinessBack.getVisibility() == View.VISIBLE && webView.canGoBack()) {
+            //有返回键时才返回
+            webView.goBack();
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }
