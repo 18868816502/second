@@ -10,6 +10,7 @@ import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.PagePersonalProductContract;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,7 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
 
     private static final int PAGE_SIZE = 10;
 
+    private Context context;
     private Api api;
     private PagePersonalProductContract.View view;
     private UserHelper userHelper;
@@ -40,6 +42,7 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
 
     @Inject
     PagePersonalProductPresenter(Context context, Api api, PagePersonalProductContract.View view, String groupId) {
+        this.context = context;
         this.api = api;
         this.view = view;
         this.groupId = groupId;
@@ -48,9 +51,11 @@ public class PagePersonalProductPresenter extends BaseRxPresenter implements Pag
 
     @Override
     public void refresh() {
-        String userId = null;
+        String userId;
         if (userHelper.getProfile() != null) {
             userId = userHelper.getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(context);
         }
         Disposable dis = api.queryPersonalProducts(groupId, userId, 1, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanProduct>>io2main())

@@ -77,4 +77,16 @@ public class SPUtils {
         editor.putBoolean("wechatSurpriseClicked", clicked);
         editor.apply();
     }
+
+    public static void setCacheUserId(Context context, String userId) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("cacheUserId", userId);
+        editor.apply();
+    }
+
+    public static String getCacheUserId(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString("cacheUserId", null);
+    }
 }

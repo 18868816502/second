@@ -13,6 +13,7 @@ import com.beihui.market.ui.contract.RegisterSetPwdContract;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 
 import javax.inject.Inject;
 
@@ -79,6 +80,9 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
                                        mView.showRegisterSuccess();
                                        //umeng统计
                                        Statistic.login(result.getData().getId());
+
+                                       //保存用户id
+                                       SPUtils.setCacheUserId(mContext, result.getData().getId());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

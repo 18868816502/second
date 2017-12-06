@@ -12,6 +12,7 @@ import com.beihui.market.ui.contract.LoginContract;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 
 import javax.inject.Inject;
 
@@ -51,6 +52,9 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                             mView.showLoginSuccess();
                             //umeng统计
                             Statistic.login(result.getData().getId());
+
+                            //保存用户id
+                            SPUtils.setCacheUserId(mContext, result.getData().getId());
                         } else {
                             //umeng统计
                             Statistic.onEvent(Events.LOGIN_FAILED);

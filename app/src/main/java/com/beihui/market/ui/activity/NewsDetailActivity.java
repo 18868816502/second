@@ -26,6 +26,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.SPUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
@@ -117,9 +118,11 @@ public class NewsDetailActivity extends BaseComponentActivity {
         if (newsTitle != null) {
             titleTv.setText(newsTitle);
         }
-        String userId = null;
+        String userId;
         if (UserHelper.getInstance(this).getProfile() != null) {
             userId = UserHelper.getInstance(this).getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(this);
         }
         newsUrl = NetConstants.generateNewsUrl(newsId, userId);
         webView.loadUrl(newsUrl);

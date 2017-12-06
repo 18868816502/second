@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.ThirdAuthorization;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.presenter.LoanDetailPresenter;
 import com.beihui.market.umeng.Events;
@@ -86,6 +87,9 @@ public class ThirdAuthorizationDialog extends DialogFragment {
             case R.id.authorize:
                 //umeng统计
                 Statistic.onEvent(Events.LOAN_AUTHORIZE_CONFIRM);
+
+                //pv,uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_THIRD_AUTHORIZATION);
 
                 presenter.clickConfirmAuthorize();
                 break;

@@ -10,6 +10,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.injection.component.DaggerDataStatisticHelperComponent;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 
 import javax.inject.Inject;
 
@@ -135,8 +136,12 @@ public class DataStatisticsHelper {
     }
 
     public void onProductClicked(String id) {
-        String userId = UserHelper.getInstance(context).getProfile() != null ?
-                UserHelper.getInstance(context).getProfile().getId() : null;
+        String userId;
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            userId = UserHelper.getInstance(context).getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(App.getInstance());
+        }
         api.onProductClicked(userId, id).compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
@@ -155,8 +160,12 @@ public class DataStatisticsHelper {
     }
 
     public void onAdClicked(String id, int type) {
-        String userId = UserHelper.getInstance(context).getProfile() != null ?
-                UserHelper.getInstance(context).getProfile().getId() : null;
+        String userId;
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            userId = UserHelper.getInstance(context).getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(App.getInstance());
+        }
         api.onAdClicked(id, userId, type)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
@@ -200,8 +209,12 @@ public class DataStatisticsHelper {
      * @param id 事件id
      */
     public void onCountUv(final String id) {
-        String userId = UserHelper.getInstance(context).getProfile() != null ?
-                UserHelper.getInstance(context).getProfile().getId() : null;
+        String userId;
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            userId = UserHelper.getInstance(context).getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(context);
+        }
         api.onCountUv(id, userId)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
