@@ -344,6 +344,10 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         if (authDialog != null) {
             authDialog.dismiss();
         }
+        //注册不成功，并且有提示
+        if (!success && msg != null) {
+            ToastUtils.showShort(this, msg, null);
+        }
     }
 
     @Override

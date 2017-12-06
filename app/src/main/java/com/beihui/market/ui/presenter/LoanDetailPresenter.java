@@ -208,7 +208,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
 
                             ResultEntity<ThirdAuthResult> entity = new ResultEntity<>();
-                            entity.setCode(100000);
+                            entity.setCode(1000000);
                             entity.setData(thirdAuthResult);
 
                             Log.e("LoanDetailPresenter", "轮询超时，失败处理");
@@ -232,26 +232,38 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                             if (result.getData() != null && result.getData().getRows() != null
                                     && result.getData().getRows().size() > 0) {
                                 ThirdAuthResult.Row res = result.getData().getRows().get(0);
-                                if (res.getStatus() == 1) {
-                                    //注册成功
-                                    view.showAuthorizeResult(true, null);
-                                    view.updateRegisterDialogVisibility(false);
+                                switch (res.getStatus()) {
+                                    case 1://注册成功
+                                        view.updateRegisterDialogVisibility(false);
+                                        view.showAuthorizeResult(true, null);
 
-                                    view.navigateThirdPartLoanPage(productDetail.getBase().getProductName(), productDetail.getBase().getUrl());
+                                        view.navigateThirdPartLoanPage(productDetail.getBase().getProductName(), productDetail.getBase().getUrl());
 
-                                    //结束流程，刷新数据
-                                    disposable.dispose();
-                                    onComplete();
-                                } else if (res.getStatus() == 2 || res.getStatus() == 4) {
-                                    //用户已在其他平台注册或者用户注册失败
-                                    view.showAuthorizeResult(false, res.getStatus() == 2 ? "已注册" : "注册失败");
-                                    view.updateRegisterDialogVisibility(false);
+                                        //结束流程，刷新数据
+                                        disposable.dispose();
+                                        onComplete();
+                                        break;
+                                    case 2://已注册
+                                        view.updateRegisterDialogVisibility(false);
+                                        view.showAuthorizeResult(false, null);
 
-                                    view.navigateRecommendProduct(CommonUtils.convertStringAmount2Int(productDetail.getBase().getBorrowingHighText()));
+                                        view.navigateRecommendProduct(CommonUtils.convertStringAmount2Int(productDetail.getBase().getBorrowingHighText()));
 
-                                    //结束流程，刷新数据
-                                    disposable.dispose();
-                                    onComplete();
+                                        //结束流程，刷新数据
+                                        disposable.dispose();
+                                        onComplete();
+                                        break;
+                                    case 3://注册中
+                                        break;
+                                    case 4://注册失败
+                                        view.updateRegisterDialogVisibility(false);
+                                        view.showAuthorizeResult(false, "请求超时或者注册失败");
+
+                                        //结束流程，刷新数据
+                                        disposable.dispose();
+                                        onComplete();
+                                    default:
+                                        break;
                                 }
                             }
                         } else {
