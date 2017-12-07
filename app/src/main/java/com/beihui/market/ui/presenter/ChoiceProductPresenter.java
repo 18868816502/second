@@ -19,7 +19,7 @@ import io.reactivex.functions.Consumer;
 
 public class ChoiceProductPresenter extends BaseRxPresenter implements ChoiceProductContract.Presenter {
 
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 1000;
 
     private Api api;
     private ChoiceProductContract.View view;

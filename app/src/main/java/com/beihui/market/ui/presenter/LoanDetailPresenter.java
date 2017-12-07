@@ -194,7 +194,8 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                 .flatMap(new Function<Long, ObservableSource<ResultEntity<ThirdAuthResult>>>() {
                     @Override
                     public ObservableSource<ResultEntity<ThirdAuthResult>> apply(Long aLong) throws Exception {
-                        if (aLong <= 5) {
+                        //3秒超时
+                        if (aLong <= 3) {
                             return api.authorizationResult(userId, pids);
                         } else {
                             //轮询最长5秒钟，超时后当做注册失败处理

@@ -4,6 +4,7 @@ package com.beihui.market.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -14,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -31,6 +33,8 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.title)
+    TextView title;
     @BindView(R.id.speediness_back)
     ImageView speedinessBack;
     @BindView(R.id.speediness_cancel)
@@ -71,6 +75,18 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
                     intent.putExtra("amount", Integer.parseInt(lastStr.substring(1, lastStr.length())));
                     startActivity(intent);
                     return true;
+                } else if (url.contains("?title=")) {
+                    int index = url.lastIndexOf("?title=");
+                    String realUrl = url.substring(0, index);
+                    title.setText(Uri.decode(url.substring(index + 7, url.length())));
+                    webView.loadUrl(realUrl);
+                    return true;
+                } else if (url.contains("&title=")) {
+                    int index = url.lastIndexOf("&title=");
+                    String realUrl = url.substring(0, index);
+                    title.setText(Uri.decode(url.substring(index + 7, url.length())));
+                    webView.loadUrl(realUrl);
+                    return true;
                 }
                 return super.shouldOverrideUrlLoading(webView, url);
             }
@@ -81,6 +97,12 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
                 speedinessBack.setVisibility(isResult ? View.GONE : View.VISIBLE);
                 speedinessCancel.setVisibility(isResult ? View.VISIBLE : View.GONE);
                 speedinessRefresh.setVisibility(isResult ? View.VISIBLE : View.GONE);
+
+                if (url.contains("oneKeyRegistration.html") || url.contains("oneKeyRegistrationResult.html")) {
+                    title.setVisibility(View.GONE);
+                } else {
+                    title.setVisibility(View.VISIBLE);
+                }
             }
         });
 
