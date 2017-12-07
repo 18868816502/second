@@ -386,35 +386,38 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     private void queryAd() {
-        Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
-                .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       hasAdInit = true;
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           AdBanner adBanner = result.getData().get(0);
-                                           //距离上次展示时间超过设定的间隔才显示广告
-                                           if (System.currentTimeMillis() - SPUtils.getLastAdShowTime(context)
-                                                   > (adBanner.getEndTime() - adBanner.getBeginTime()) / adBanner.getShowTimes()) {
-                                               view.showAdDialog(result.getData().get(0));
+        //用户登录的情况下才弹出广告窗
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
+                    .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
+                    .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
+                                   @Override
+                                   public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           hasAdInit = true;
+                                           if (result.getData() != null && result.getData().size() > 0) {
+                                               AdBanner adBanner = result.getData().get(0);
+                                               //距离上次展示时间超过设定的间隔才显示广告
+                                               if (System.currentTimeMillis() - SPUtils.getLastAdShowTime(context)
+                                                       > (adBanner.getEndTime() - adBanner.getBeginTime()) / adBanner.getShowTimes()) {
+                                                   view.showAdDialog(result.getData().get(0));
+                                               }
+                                               //更新广告展示时间
+                                               SPUtils.setLastAdShowTime(context, System.currentTimeMillis());
                                            }
-                                           //更新广告展示时间
-                                           SPUtils.setLastAdShowTime(context, System.currentTimeMillis());
+                                       } else {
+                                           view.showErrorMsg(result.getMsg());
                                        }
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
                                    }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                handleThrowable(throwable);
-                            }
-                        });
-        addDisposable(dis);
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    handleThrowable(throwable);
+                                }
+                            });
+            addDisposable(dis);
+        }
     }
 
     private void queryNotice() {

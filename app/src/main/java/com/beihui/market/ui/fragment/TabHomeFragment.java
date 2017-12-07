@@ -460,9 +460,14 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         oneKeyLoanHolder.setVisibility(visibility);
         oneKeyLoan.setVisibility(visibility);
 
-        if (visible && !oneKeyLoanHintClosed) {
-            oneKeyLoanHintHolder.setVisibility(visibility);
+        if (visible) {
+            if (!oneKeyLoanHintClosed) {
+                oneKeyLoanHintHolder.setVisibility(visibility);
+            }
+        } else {
+            oneKeyLoanHintHolder.setVisibility(View.GONE);
         }
+
     }
 
     @Override
