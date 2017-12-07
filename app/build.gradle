@@ -239,6 +239,7 @@ dependencies {
     })
     compile project(':socialshare')
     compile project(':xiaonengchat')
+    compile project(':banner')
 
     //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -285,8 +286,6 @@ dependencies {
     compile 'com.gyf.barlibrary:barlibrary:2.2.9'
     //RecyclerView Adapter Helper
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
-    //Banner
-    compile 'com.youth.banner:banner:1.4.9'
     //round image view
     compile 'com.makeramen:roundedimageview:2.3.0'
     //shaped image view

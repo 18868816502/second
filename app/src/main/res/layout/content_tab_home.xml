@@ -14,7 +14,11 @@
         <com.youth.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/home_banner_height" />
+            android:layout_height="@dimen/home_banner_height"
+            app:image_scale_type="center_inside"
+            app:indicator_drawable_selected="@drawable/banner_indicator_selected"
+            app:indicator_drawable_unselected="@drawable/banner_indicator_unselected"
+            app:indicator_margin="1.5dp" />
 
         <LinearLayout
             android:id="@+id/headline"
