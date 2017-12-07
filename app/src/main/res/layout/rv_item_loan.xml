@@ -65,7 +65,7 @@
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
-                        android:textColor="#99323834"
+                        android:textColor="#99323874"
                         android:textSize="11sp" />
 
                     <TextView
@@ -80,7 +80,7 @@
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
-                        android:textColor="#99323834"
+                        android:textColor="#99323874"
                         android:textSize="11sp" />
                 </LinearLayout>
 

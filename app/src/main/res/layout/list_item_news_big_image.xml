@@ -16,6 +16,7 @@
         android:lineSpacingExtra="8dp"
         android:maxLines="2"
         android:textColor="@color/black_1"
+        android:textSize="17sp"
         tools:text="新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新" />
 
     <ImageView

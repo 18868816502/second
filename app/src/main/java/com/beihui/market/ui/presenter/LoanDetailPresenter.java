@@ -257,7 +257,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                                         break;
                                     case 4://注册失败
                                         view.updateRegisterDialogVisibility(false);
-                                        view.showAuthorizeResult(false, "请求超时或者注册失败");
+                                        view.showAuthorizeResult(false, "注册失败，请稍后再试");
 
                                         //结束流程，刷新数据
                                         disposable.dispose();
