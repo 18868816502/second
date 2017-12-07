@@ -186,13 +186,9 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             ft.detach(login);
 
             String registerTag = UserRegisterVerifyCodeFragment.class.getSimpleName();
-            Fragment verifyCode = fm.findFragmentByTag(registerTag);
-            if (verifyCode == null) {
-                verifyCode = new UserRegisterVerifyCodeFragment();
-                ft.add(R.id.content_container, verifyCode, registerTag);
-            } else {
-                ft.attach(verifyCode);
-            }
+            Fragment verifyCode = new UserRegisterVerifyCodeFragment();
+            ft.add(R.id.content_container, verifyCode, registerTag);
+            ft.attach(verifyCode);
             ft.addToBackStack(registerTag);
             ft.commit();
 
@@ -246,17 +242,13 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
                     .withNegativeBtn("放弃", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            getSupportFragmentManager().popBackStack();
+                            onAuthorizationNavigation(new AuthNavigationEvent(AuthNavigationEvent.TAG_HEAD_TO_LOGIN));
                         }
                     })
                     .withPositiveBtn("继续注册", null)
                     .dimBackground(true)
                     .show(getSupportFragmentManager(), "CancelRegister");
             return;
-        }
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            cancelTv.setVisibility(View.VISIBLE);
-            navigationIv.setVisibility(View.GONE);
         }
         super.onBackPressed();
     }

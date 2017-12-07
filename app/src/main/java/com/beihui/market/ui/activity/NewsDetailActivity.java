@@ -12,7 +12,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -39,8 +38,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.title)
-    TextView titleTv;
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
@@ -109,14 +106,9 @@ public class NewsDetailActivity extends BaseComponentActivity {
         String newsTitle = getIntent().getStringExtra("newsTitle");
         if (newsId == null && news != null) {
             newsId = news.getId();
-            titleTv.setText(news.getTitle());
         }
         if (newsId == null && hotNews != null) {
             newsId = hotNews.getId();
-            titleTv.setText(hotNews.getTitle());
-        }
-        if (newsTitle != null) {
-            titleTv.setText(newsTitle);
         }
         String userId;
         if (UserHelper.getInstance(this).getProfile() != null) {
