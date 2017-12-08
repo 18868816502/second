@@ -156,8 +156,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="25dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -171,6 +171,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:gravity="left"
+                    android:minWidth="45dp"
                     android:textColor="@color/black_1"
                     android:textSize="12sp"
                     tools:text="12-48月" />
