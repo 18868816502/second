@@ -44,6 +44,12 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
     private CollectionLoanRVAdapter adapter;
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.pager_item_collection_product;
     }

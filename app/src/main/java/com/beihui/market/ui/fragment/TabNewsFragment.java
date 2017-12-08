@@ -142,8 +142,10 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
         refreshHintView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                refreshHintView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                refreshHintView.setTranslationY(refreshHintView.getMeasuredHeight());
+                if (refreshHintView != null) {
+                    refreshHintView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    refreshHintView.setTranslationY(refreshHintView.getMeasuredHeight());
+                }
             }
         });
     }

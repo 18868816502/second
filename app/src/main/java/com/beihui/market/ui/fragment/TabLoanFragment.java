@@ -63,6 +63,12 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_tab_loan;
     }

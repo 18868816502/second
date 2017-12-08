@@ -45,6 +45,12 @@ public class PagePersonalProductFragment extends BaseComponentFragment implement
     private String groupId;
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.pager_item_personal_product;
     }
