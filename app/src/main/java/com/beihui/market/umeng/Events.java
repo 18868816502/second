@@ -111,6 +111,10 @@ public class Events {
      * 借款攻略-点击
      */
     public static final String CLICK_HOT_NEWS = "click_hot_news";
+    /**
+     * 相关推荐-一键借款进入
+     */
+    public static final String RESUME_RELEVANT_PRODUCT_FROM_ONE_KEY_LOAN = "resume_relevant_prodcut_from_one_key_loan";
 
     /********************************借款*********************************************/
     /**
@@ -173,6 +177,14 @@ public class Events {
      * 产品列表Tab-排序
      */
     public static final String LOAN_CLICK_SORT = "loan_click_sort";
+    /**
+     * 相关推荐-产品详情页进入
+     */
+    public static final String RESUME_RELEVANT_PRODUCT_FROM_DETAIL = "resume_relevant_product_from_detail";
+    /**
+     * 相关推荐-产品点击
+     */
+    public static final String CLICK_RELEVANT_PRODUCT_ITEM = "click_relevant_product_item";
 
     /********************************资讯*********************************************/
     /**

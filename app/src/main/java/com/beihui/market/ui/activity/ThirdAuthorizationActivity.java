@@ -23,6 +23,8 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
@@ -68,6 +70,9 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("relevantRecommendations.html")) {
+                    //umeng统计
+                    Statistic.onEvent(Events.RESUME_RELEVANT_PRODUCT_FROM_ONE_KEY_LOAN);
+
                     String[] str = url.split("borrowingHighText");
                     String lastStr = str[str.length - 1];
 

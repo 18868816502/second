@@ -66,6 +66,9 @@ public class RecommendProductActivity extends BaseComponentActivity implements R
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_RELEVANT_PRODUCT_ITEM);
+
                 Intent intent = new Intent(RecommendProductActivity.this, LoanDetailActivity.class);
                 intent.putExtra("loan", (LoanProduct.Row) adapter.getItem(position));
                 startActivity(intent);

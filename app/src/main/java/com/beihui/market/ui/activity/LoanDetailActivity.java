@@ -327,6 +327,9 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
 
     @Override
     public void navigateRecommendProduct(int amount) {
+        //umeng统计
+        Statistic.onEvent(Events.RESUME_RELEVANT_PRODUCT_FROM_DETAIL);
+
         Intent intent = new Intent(this, RecommendProductActivity.class);
         intent.putExtra("amount", amount);
         startActivity(intent);
