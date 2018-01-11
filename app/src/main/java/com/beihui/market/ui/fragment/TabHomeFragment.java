@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.NoticeAbstract;
@@ -34,17 +35,22 @@ import com.beihui.market.injection.component.DaggerTabHomeComponent;
 import com.beihui.market.injection.module.TabHomeModule;
 import com.beihui.market.ui.activity.ChoiceProductActivity;
 import com.beihui.market.ui.activity.ComWebViewActivity;
+import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.activity.NoticeDetailActivity;
 import com.beihui.market.ui.activity.ThirdAuthorizationActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WorthTestActivity;
+import com.beihui.market.ui.adapter.CreditCardRVAdapter;
 import com.beihui.market.ui.adapter.HotChoiceRVAdapter;
 import com.beihui.market.ui.adapter.HotNewsAdapter;
+import com.beihui.market.ui.busevents.NavigateLoan;
+import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.contract.TabHomeContract;
 import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.presenter.TabHomePresenter;
+import com.beihui.market.ui.rvdecoration.HomeCreditCardItemDeco;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -62,6 +68,8 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,18 +101,40 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     Banner banner;
     @BindView(R.id.marquee_view)
     MarqueeView marqueeView;
+
+    @BindView(R.id.module_personal_loan)
+    View modulePersonalLoan;
+    @BindView(R.id.module_smart_loan)
+    View moduleSmartLoan;
+    @BindView(R.id.module_credit_card)
+    View moduleCreditCard;
+
     @BindView(R.id.refresh_hot)
     View refreshHot;
     @BindView(R.id.refresh_icon)
     ImageView refreshIcon;
     @BindView(R.id.hot_recycler_view)
     RecyclerView hotRecyclerView;
+
+    @BindView(R.id.choice_more)
+    View choiceMore;
     @BindView(R.id.choice_recycler_view)
     RecyclerView choiceRecyclerView;
-    @BindView(R.id.quality_test)
-    View qualityTestView;
+
+    @BindView(R.id.credit_card_head)
+    View creditCardHead;
+    @BindView(R.id.credit_card_more)
+    View creditCardMore;
+    @BindView(R.id.credit_card_recycler_view)
+    RecyclerView creditCardRecyclerView;
+
+    @BindView(R.id.loan_news_more)
+    View loanNewsMore;
     @BindView(R.id.loan_news_recycler_view)
     RecyclerView loanNewsRecyclerView;
+
+    @BindView(R.id.quality_test)
+    View qualityTestView;
 
     @BindView(R.id.notice_container)
     FrameLayout noticeContainer;
@@ -131,17 +161,13 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     private HotChoiceRVAdapter hotAdapter;
     private HotChoiceRVAdapter choiceAdapter;
+    private CreditCardRVAdapter creditCardAdapter;
     private HotNewsAdapter newsAdapter;
 
     //status and tool bar render
     public float toolBarBgAlpha;
 
     private List<AdBanner> bannerAds = new ArrayList<>();
-
-    public static TabHomeFragment newInstance() {
-        return new TabHomeFragment();
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -178,6 +204,11 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         presenter.onDestroy();
         super.onDestroyView();
     }
+
+    public static TabHomeFragment newInstance() {
+        return new TabHomeFragment();
+    }
+
 
     void renderStatusAndToolBar(float alpha) {
         toolBarBgAlpha = alpha;
@@ -248,6 +279,29 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
             }
         });
+
+        /*精选好借，智能推荐，办信用卡*/
+        final View.OnClickListener moduleClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.module_personal_loan:
+                        EventBus.getDefault().post(new NavigateLoan(false));
+                        break;
+                    case R.id.module_smart_loan:
+                        EventBus.getDefault().post(new NavigateLoan(true));
+                        break;
+                    case R.id.module_credit_card:
+                        startActivity(new Intent(getContext(), CreditCardWebActivity.class));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        modulePersonalLoan.setOnClickListener(moduleClickListener);
+        moduleSmartLoan.setOnClickListener(moduleClickListener);
+        moduleCreditCard.setOnClickListener(moduleClickListener);
 
         /*热门产品*/
         hotAdapter = new HotChoiceRVAdapter(R.layout.list_item_hot_product);
@@ -352,6 +406,30 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         }, choiceRecyclerView);
         choiceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         choiceRecyclerView.setAdapter(choiceAdapter);
+        choiceMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new NavigateLoan(false));
+            }
+        });
+
+        /*推荐信用卡*/
+        creditCardAdapter = new CreditCardRVAdapter();
+        creditCardAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+        creditCardRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        creditCardRecyclerView.setAdapter(creditCardAdapter);
+        creditCardRecyclerView.addItemDecoration(new HomeCreditCardItemDeco());
+        creditCardMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), CreditCardWebActivity.class));
+            }
+        });
 
         /*借款攻略*/
         newsAdapter = new HotNewsAdapter();
@@ -372,8 +450,14 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         loanNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         loanNewsRecyclerView.addItemDecoration(new HotNewsItemDeco());
         loanNewsRecyclerView.setAdapter(newsAdapter);
+        loanNewsMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new NavigateNews());
+            }
+        });
 
-
+        /*测试身价*/
         qualityTestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -482,6 +566,18 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
                 }
             }
             choiceAdapter.notifyHotProductChanged(products);
+        }
+    }
+
+    @Override
+    public void showCreditCards(List<CreditCard.Row> creditCards) {
+        if (creditCards.size() == 0) {
+            creditCardHead.setVisibility(View.GONE);
+            creditCardRecyclerView.setVisibility(View.GONE);
+        } else {
+            creditCardHead.setVisibility(View.VISIBLE);
+            creditCardRecyclerView.setVisibility(View.VISIBLE);
+            creditCardAdapter.notifyCreditCardChanged(creditCards);
         }
     }
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/credit_card_image"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/about_us_logo" />
+
+    <TextView
+        android:id="@+id/credit_card_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black_1"
+        android:textSize="13sp"
+        tools:text="招商银行YOUNG卡" />
+
+    <TextView
+        android:id="@+id/credit_card_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/black_2"
+        android:textSize="11sp"
+        tools:text="首笔取现免手续费" />
+</LinearLayout>

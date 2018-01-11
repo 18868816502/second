@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'org.greenrobot.greendao'
 
 def vests = ["loanmarket", "daikuankuai"] as String[]
 def vest2Channel = [
@@ -52,10 +53,10 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "DOMAIN", "\"http://192.168.1.187:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.196:100\"")
+            buildConfigField("String", "DOMAIN", "\"http://192.168.1.178:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.196:100\"")
 //            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
         }
         preview {
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
@@ -240,6 +241,7 @@ dependencies {
     compile project(':socialshare')
     compile project(':xiaonengchat')
     compile project(':banner')
+    compile project(':pickerview')
 
     //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -278,6 +280,8 @@ dependencies {
     compile 'com.getui:sdk:2.10.2.0'
     //umeng统计
     compile 'com.umeng.analytics:analytics:6.1.2'
+    //database-greeodao
+    compile 'org.greenrobot:greendao:3.2.2'
 
     /*View Lib*/
     //MarqueeView
@@ -285,13 +289,15 @@ dependencies {
     //StatusBar
     compile 'com.gyf.barlibrary:barlibrary:2.2.9'
     //RecyclerView Adapter Helper
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //round image view
     compile 'com.makeramen:roundedimageview:2.3.0'
     //shaped image view
     compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.4'
     //swipe menu
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    //hightlight
+    compile 'com.isanwenyu.highlight:highlight:1.8.0'
 
     //Permission
     compile "com.github.hotchemi:permissionsdispatcher:2.4.0"

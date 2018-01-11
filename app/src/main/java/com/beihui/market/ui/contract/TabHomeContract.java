@@ -4,6 +4,7 @@ package com.beihui.market.ui.contract;
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.NoticeAbstract;
@@ -37,6 +38,11 @@ public interface TabHomeContract {
          * 加载更多精选产品
          */
         void loadMoreChoiceProducts();
+
+        /**
+         * 加载全部推荐信用卡
+         */
+        void loadCreditCards();
 
         /**
          * 加载借款攻略
@@ -112,6 +118,13 @@ public interface TabHomeContract {
          * @param canLoadMore 是否还能加载更多
          */
         void showChoiceProducts(List<LoanProduct.Row> products, boolean canLoadMore);
+
+        /**
+         * 推荐信用卡列表加载完成
+         *
+         * @param creditCards 信用卡列表
+         */
+        void showCreditCards(List<CreditCard.Row> creditCards);
 
         /**
          * 借款攻略加载完成

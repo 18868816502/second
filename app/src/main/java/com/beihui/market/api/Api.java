@@ -10,8 +10,14 @@ import com.beihui.market.api.interceptor.AccessHeadInterceptor;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.CreditCard;
+import com.beihui.market.entity.Debt;
+import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
+import com.beihui.market.entity.InDebt;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -22,6 +28,7 @@ import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
+import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.SysMsg;
@@ -38,7 +45,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -387,6 +396,17 @@ public class Api {
         return service.queryChoiceProduct(pageNo, pageSize, sortType, PLATFORM);
     }
 
+    /**
+     * 查询首页全部推荐信用卡
+     *
+     * @param userId 用户id
+     * @param flag   查询分组，normal-一般 hot-热门卡片 selected-精选 index-首页 renqi-人气推荐
+     *               固定查询renqi
+     */
+    public Observable<ResultEntity<CreditCard>> queryCreditCards(String userId, String flag) {
+        return service.queryRecommendedCreditCards(userId, flag);
+    }
+
 
     /**
      * 查询个人推荐产品提示语
@@ -541,6 +561,105 @@ public class Api {
         return service.submitFeedback(userId, content);
     }
 
+    /*****************************************************记账*******************************************************/
+    /**
+     * 查询记账首页宣传图片
+     */
+    public Observable<ResultEntity<String>> queryPropaganda() {
+        return service.queryPropaganda();
+    }
+
+    /**
+     * 查询记账信息摘要
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<DebtAbstract>> queryBaseLoan(String userId) {
+        return service.queryBaseLoan(userId);
+    }
+
+    /**
+     * 查询全部借款
+     *
+     * @param userId 用户id
+     * @param status 借款状态 1-待还 2-已还 3-全部
+     */
+    public Observable<ResultEntity<List<Debt>>> queryAllDebt(String userId, int status) {
+        return service.queryAllDebt(userId, status);
+    }
+
+    /**
+     * 查询记账渠道
+     */
+    public Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel() {
+        return service.queryLoanChannel();
+    }
+
+    /**
+     * 确认记账，返回还款计划
+     */
+    public Observable<ResultEntity<PayPlan>> confirmDebt(Map<String, Object> params) {
+        return service.confirmDebt(params);
+    }
+
+    /**
+     * 保存还款计划
+     */
+    public Observable<ResultEntity> savePayPlan(Map<String, Object> params) {
+        return service.savePayPlan(params);
+    }
+
+    /**
+     * 查询借款详情
+     *
+     * @param userId        用户id
+     * @param liabilitiesId 借款项目id
+     */
+    public Observable<ResultEntity<DebtDetail>> queryDebtDetail(String userId, String liabilitiesId) {
+        return service.queryDebtPlan(userId, liabilitiesId);
+    }
+
+    /**
+     * 删除借款
+     *
+     * @param userId        用户id
+     * @param liabilitiesId 借款项目id
+     */
+    public Observable<ResultEntity> deleteDebt(String userId, String liabilitiesId) {
+        return service.deleteDebt(userId, liabilitiesId);
+    }
+
+    /**
+     * 查询待还项目
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<List<InDebt>>> queryInDebtList(String userId) {
+        return service.queryInDebtList(userId);
+    }
+
+    /**
+     * 查询还款日历
+     *
+     * @param userId   用户id
+     * @param beginDay 查询开始日期
+     * @param endDay   查询结束日期
+     * @param status   还款状态 1-贷款 2-已还
+     */
+    public Observable<ResultEntity<List<Debt>>> queryDebtCalendar(String userId, String beginDay, String endDay, int status) {
+        return service.queryDebtCalendar(userId, beginDay, endDay, status);
+    }
+
+    /**
+     * 更新还款状态
+     *
+     * @param userId              用户id
+     * @param liabilitiesDetailId 还款项目计划id
+     * @param status              1-待还 2-已还
+     */
+    public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, int status) {
+        return service.updateDebtStatus(userId, liabilitiesDetailId, status);
+    }
     /*****+******************************************************数据统计***********************************************+*****+*****/
 
     /**

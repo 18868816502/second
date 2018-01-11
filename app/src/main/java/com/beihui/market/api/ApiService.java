@@ -3,8 +3,14 @@ package com.beihui.market.api;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.CreditCard;
+import com.beihui.market.entity.Debt;
+import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
+import com.beihui.market.entity.InDebt;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -15,6 +21,7 @@ import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
+import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.SysMsg;
@@ -26,10 +33,13 @@ import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -218,6 +228,13 @@ public interface ApiService {
                                                              @Field("platform") String platform);
 
     /**
+     * 查询首页推荐信用卡
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/creditCard/cardGroupList")
+    Observable<ResultEntity<CreditCard>> queryRecommendedCreditCards(@Field("userId") String userId, @Field("flag") String flag);
+
+    /**
      * 查询产品提示语
      */
     @POST(PRODUCT_PATH + "/product/queryBorrowingPrompt")
@@ -325,6 +342,84 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/insertFeedback")
     Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content);
+
+    /*****************************************************记账*******************************************************/
+    /**
+     * 读取记账首页宣传图
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/attach/queryPropagandaMap")
+    Observable<ResultEntity<String>> queryPropaganda();
+
+    /**
+     * 查询记账信息摘要
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/queryBaseLoan")
+    Observable<ResultEntity<DebtAbstract>> queryBaseLoan(@Field("userId") String userId);
+
+    /**
+     * 查询全部记账信息
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/allLoan")
+    Observable<ResultEntity<List<Debt>>> queryAllDebt(@Field("userId") String userId, @Field("status") int status);
+
+    /**
+     * 查询借款记账渠道
+     */
+    @POST(BASE_PATH + "/accounting/loanChannels")
+    Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel();
+
+    /**
+     * 确认记账，并查询还款计划
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/sureRepayPlan")
+    Observable<ResultEntity<PayPlan>> confirmDebt(@FieldMap Map<String, Object> params);
+
+    /**
+     * 保存还款计划
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/saveRepayPlan")
+    Observable<ResultEntity> savePayPlan(@FieldMap Map<String, Object> params);
+
+    /**
+     * 查询借款详情
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/queryloan")
+    Observable<ResultEntity<DebtDetail>> queryDebtPlan(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+
+    /**
+     * 删除借款
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/deleteLoan")
+    Observable<ResultEntity> deleteDebt(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+
+    /**
+     * 待还项目查询
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/stayStillLoan")
+    Observable<ResultEntity<List<InDebt>>> queryInDebtList(@Field("userId") String userId);
+
+    /**
+     * 查询还款日历
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/repayList")
+    Observable<ResultEntity<List<Debt>>> queryDebtCalendar(@Field("userId") String userId, @Field("beginDay") String beginDay, @Field("endDay") String endDay, @Field("status") int status);
+
+    /**
+     * 更新还款状态
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/updateRepayStatus")
+    Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
+
 
     /****************************************************数据统计*****************************************************/
 

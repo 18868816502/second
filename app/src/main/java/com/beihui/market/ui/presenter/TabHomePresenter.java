@@ -8,6 +8,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
@@ -39,10 +40,11 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private boolean hasAdInit = false;
     private NoticeAbstract notice;
     private List<AdBanner> banners = new ArrayList<>();
+    private List<String> headlines = new ArrayList<>();
     private List<LoanProduct.Row> hotProducts = new ArrayList<>();
     private List<LoanProduct.Row> choiceProducts = new ArrayList<>();
+    private List<CreditCard.Row> creditCards = new ArrayList<>();
     private List<HotNews> hotNews = new ArrayList<>();
-    private List<String> headlines = new ArrayList<>();
     /**
      * 一键借款是否显示
      */
@@ -96,19 +98,25 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         if (hotProducts.size() == 0) {
             refreshHotProducts();
         } else {
-            view.showHotProducts(hotProducts);
+            view.showHotProducts(Collections.unmodifiableList(hotProducts));
         }
         //choice products
         if (choiceProducts.size() == 0) {
             loadChoiceProducts(true);
         } else {
-            view.showChoiceProducts(choiceProducts, canChoiceLoadMore);
+            view.showChoiceProducts(Collections.unmodifiableList(choiceProducts), canChoiceLoadMore);
+        }
+        //credit cards
+        if (creditCards.size() == 0) {
+            loadCreditCards();
+        } else {
+            view.showCreditCards(Collections.unmodifiableList(creditCards));
         }
         //news
         if (hotNews.size() == 0) {
             loadHotNews();
         } else {
-            view.showHotNews(hotNews);
+            view.showHotNews(Collections.unmodifiableList(hotNews));
         }
         //headlines
         if (headlines.size() == 0) {
@@ -120,7 +128,9 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
 
     @Override
     public void refresh() {
+        //刷新banner
         loadBanner();
+        //刷新借款头条
         loadHeadline();
         //刷新时，热门产品刷新到第一页
         hotProductPageNo = 1;
@@ -129,6 +139,9 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         choiceProductPageNo = 1;
         canChoiceLoadMore = true;
         loadChoiceProducts(true);
+        //刷新信用卡
+        loadCreditCards();
+        //刷新借款攻略
         loadHotNews();
     }
 
@@ -221,6 +234,41 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     @Override
     public void loadMoreChoiceProducts() {
         loadChoiceProducts(false);
+    }
+
+    @Override
+    public void loadCreditCards() {
+        String userId;
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            userId = UserHelper.getInstance(context).getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(context);
+        }
+        Disposable dis = api.queryCreditCards(userId, "renqi")
+                .compose(RxUtil.<ResultEntity<CreditCard>>io2main())
+                .subscribe(new Consumer<ResultEntity<CreditCard>>() {
+                               @Override
+                               public void accept(ResultEntity<CreditCard> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       creditCards.clear();
+                                       if (result.getData() != null && result.getData().getRows() != null
+                                               && result.getData().getRows().size() > 0) {
+                                           creditCards.addAll(result.getData().getRows());
+                                       }
+                                       view.showCreditCards(Collections.unmodifiableList(creditCards));
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(TabHomePresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override

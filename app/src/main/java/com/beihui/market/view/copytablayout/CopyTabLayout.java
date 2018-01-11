@@ -292,6 +292,16 @@ public class CopyTabLayout extends HorizontalScrollView {
         indicatorLength = (int) (getResources().getDisplayMetrics().density * 35);
     }
 
+    public void setLengthAndMarginBottom(int length, int marginBottom) {
+        if (length > 0) {
+            indicatorLength = length;
+        }
+        if (marginBottom > 0) {
+            indicatorMarginBottom = marginBottom;
+        }
+        requestLayout();
+    }
+
     /**
      * Sets the tab indicator's color for the currently selected tab.
      *

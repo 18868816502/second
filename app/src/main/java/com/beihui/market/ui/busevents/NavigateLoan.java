@@ -6,10 +6,10 @@ package com.beihui.market.ui.busevents;
  */
 public class NavigateLoan {
 
-    public int queryMoney = -1;
+    public boolean needJumpToSmart;
 
-    public NavigateLoan(int queryMoney) {
-        this.queryMoney = queryMoney;
+    public NavigateLoan(boolean needJumpToSmart) {
+        this.needJumpToSmart = needJumpToSmart;
     }
 
 }

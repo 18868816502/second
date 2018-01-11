@@ -137,6 +137,30 @@
             android:name=".ui.activity.ThirdAuthorizationActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.CreditCardWebActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.AllDebtActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.AddDebtActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.DebtChannelActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.ConfirmPayPlanActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.DebtDetailActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <!--file provider, N feature-->

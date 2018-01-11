@@ -47,6 +47,9 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     @Inject
     TabLoanPresenter presenter;
 
+    private boolean needJump;
+    private boolean needJumpToSmartModule;
+
     public static TabLoanFragment newInstance() {
         return new TabLoanFragment();
     }
@@ -77,6 +80,16 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     public void configViews() {
         viewPager.setAdapter(new RecommendPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
+
+        if (needJump) {
+            viewPager.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    viewPager.setCurrentItem(needJumpToSmartModule ? 1 : 0);
+                }
+            }, 100);
+            needJump = false;
+        }
     }
 
     @Override
@@ -117,6 +130,11 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
             noticeContentView.setScrollMode(AutoTextView.SCROLL_STILL);
         }
         noticeContentView.setText(sb);
+    }
+
+    public void needJump(boolean toSmart) {
+        needJump = true;
+        needJumpToSmartModule = toSmart;
     }
 
     class RecommendPagerAdapter extends FragmentPagerAdapter {

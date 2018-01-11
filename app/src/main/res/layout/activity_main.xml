@@ -80,6 +80,34 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/tab_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/tab_account_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:focusable="false"
+                android:src="@drawable/tab_account" />
+
+            <TextView
+                android:id="@+id/tab_account_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tab_account_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:text="@string/tab_account"
+                android:textColor="@color/select_blue_grey"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/tab_news"
             android:layout_width="0dp"
             android:layout_height="match_parent"

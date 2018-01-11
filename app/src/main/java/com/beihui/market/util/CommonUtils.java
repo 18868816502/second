@@ -564,4 +564,8 @@ public class CommonUtils {
         return value;
     }
 
+    public static String keep2digits(double input) {
+        return "" + (((int) (input * 100)) / 100.00);
+    }
+
 }

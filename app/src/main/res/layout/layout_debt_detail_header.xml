@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/debt_detail_card_bg"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.beihui.market.view.CircleImageView
+                    android:id="@+id/logo"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:scaleType="centerCrop"
+                    app:civ_border_color="@color/line"
+                    app:civ_border_width="0.5dp"
+                    tools:src="@drawable/about_us_logo" />
+
+                <TextView
+                    android:id="@+id/channel_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp"
+                    tools:text="广发银行" />
+
+                <LinearLayout
+                    android:id="@+id/project_name_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@color/black_2" />
+
+                    <TextView
+                        android:id="@+id/project_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black_2"
+                        android:textSize="15sp"
+                        tools:text="分期通" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/line" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="本期待还(元)"
+                        android:textColor="@color/black_2"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/debt_term_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/black_1"
+                        android:textSize="25sp"
+                        tools:text="3600.66" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/set_status"
+                    android:layout_width="70dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="bottom|right"
+                    android:background="@drawable/debt_detail_set_status_border"
+                    android:gravity="center"
+                    android:text="设为已还"
+                    android:textColor="#5591ff"
+                    android:textSize="13sp" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="还款日"
+                            android:textColor="@color/black_2"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/debt_pay_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="9dp"
+                            android:textColor="@color/black_1"
+                            android:textSize="15sp"
+                            tools:text="2018.01.01" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已还本息(元)"
+                            android:textColor="@color/black_2"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/debt_paid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="9dp"
+                            android:textColor="@color/black_1"
+                            android:textSize="15sp"
+                            tools:text="5000" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="待还本息(元)"
+                            android:textColor="@color/black_2"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/debt_unpaid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="9dp"
+                            android:textColor="@color/black_1"
+                            android:textSize="15sp"
+                            tools:text="5000" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:padding="25dp">
+
+            <TextView
+                android:id="@+id/debt_amount_total_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="应还总额" />
+
+            <TextView
+                android:id="@+id/debt_amount_total_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/debt_amount_total_text"
+                tools:text="3252元" />
+
+            <TextView
+                android:id="@+id/capital_total_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_text"
+                android:layout_below="@id/debt_amount_total_text"
+                android:layout_marginTop="30dp"
+                android:text="本金总计" />
+
+            <TextView
+                android:id="@+id/capital_total_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_content"
+                android:layout_alignTop="@id/capital_total_text"
+                tools:text="1115元" />
+
+            <TextView
+                android:id="@+id/debt_platform_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_text"
+                android:layout_below="@id/capital_total_text"
+                android:layout_marginTop="30dp"
+                android:text="借款平台" />
+
+
+            <TextView
+                android:id="@+id/debt_platform_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_content"
+                android:layout_alignTop="@id/debt_platform_text"
+                tools:text="建设银行" />
+
+
+            <TextView
+                android:id="@+id/interest_rate_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_text"
+                android:layout_below="@id/debt_platform_text"
+                android:layout_marginTop="30dp"
+                android:text="借款利率" />
+
+
+            <TextView
+                android:id="@+id/interest_rate_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_content"
+                android:layout_alignTop="@id/interest_rate_text"
+                tools:text="4.8%年息" />
+
+            <TextView
+                android:id="@+id/remark_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/debt_amount_total_text"
+                android:layout_below="@id/interest_rate_text"
+                android:layout_marginTop="30dp"
+                android:text="备注" />
+
+
+            <TextView
+                android:id="@+id/remark_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/remark_text"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/remark_text"
+                tools:text="房贷车贷一起带" />
+
+
+            <TextView
+                android:id="@+id/pay_method_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="211dp"
+                android:text="还款方式" />
+
+
+            <TextView
+                android:id="@+id/pay_method_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/pay_method_text"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/pay_method_text"
+                tools:text="等额本金" />
+
+            <TextView
+                android:id="@+id/interest_total_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pay_method_text"
+                android:layout_marginLeft="211dp"
+                android:layout_marginTop="30dp"
+                android:text="利息总计" />
+
+
+            <TextView
+                android:id="@+id/interest_total_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pay_method_content"
+                android:layout_alignTop="@id/interest_total_text"
+                tools:text="1128元" />
+
+            <TextView
+                android:id="@+id/debt_life_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/interest_total_text"
+                android:layout_marginLeft="211dp"
+                android:layout_marginTop="30dp"
+                android:text="借款期限" />
+
+
+            <TextView
+                android:id="@+id/debt_life_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pay_method_content"
+                android:layout_alignTop="@id/debt_life_text"
+                tools:text="36月" />
+
+            <TextView
+                android:id="@+id/debt_start_date_text"
+                style="@style/DebtDetailTextStyle.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/debt_life_text"
+                android:layout_marginLeft="211dp"
+                android:layout_marginTop="30dp"
+                android:text="起息日期" />
+
+
+            <TextView
+                android:id="@+id/debt_start_date_content"
+                style="@style/DebtDetailTextStyle.Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pay_method_content"
+                android:layout_alignTop="@id/debt_start_date_text"
+                tools:text="2018-01-01" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:background="#fafbff"
+            android:drawableLeft="@drawable/home_left_label"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="14dp"
+            android:text="还款计划"
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
+
+        <FrameLayout
+            android:id="@+id/sticky_header_container"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <RelativeLayout
+                android:id="@+id/sticky_header"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:id="@+id/th"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="25dp"
+                    android:text="期数"
+                    android:textColor="@color/black_2"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="52dp"
+                    android:layout_toRightOf="@id/th"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="2dp"
+                    android:text="还款时间"
+                    android:textColor="@color/black_2"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="状态"
+                    android:textColor="@color/black_2"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="47dp"
+                    android:layout_toLeftOf="@id/status"
+                    android:text="应还金额(元)"
+                    android:textColor="@color/black_2"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line" />
+            </RelativeLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</FrameLayout>

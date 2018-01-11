@@ -53,13 +53,122 @@
                 app:mvTextSize="12sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/module_item_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:layout_constraintTop_toBottomOf="@id/headline">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/module_personal_loan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/home_module_personal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="6dp"
+                        android:text="精选好借"
+                        android:textColor="@color/black_2"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/module_smart_loan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/home_module_smart" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="6dp"
+                        android:text="智能推荐"
+                        android:textColor="@color/black_2"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/module_credit_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/home_module_credit_card" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="6dp"
+                        android:text="信用卡"
+                        android:textColor="@color/black_2"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
         <FrameLayout
             android:id="@+id/hot_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/headline">
+            app:layout_constraintTop_toBottomOf="@id/module_item_holder">
 
             <TextView
                 android:layout_width="match_parent"
@@ -135,21 +244,40 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hot_recycler_view" />
 
-        <TextView
+        <FrameLayout
             android:id="@+id/choice_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@android:color/white"
-            android:drawableLeft="@drawable/home_left_label"
-            android:drawablePadding="7dp"
-            android:paddingBottom="13dp"
-            android:paddingLeft="14dp"
-            android:paddingTop="13dp"
-            android:text="精选产品"
-            android:textColor="@color/black_1"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/one_key_loan_holder" />
+            app:layout_constraintTop_toBottomOf="@id/one_key_loan_holder">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/home_left_label"
+                android:drawablePadding="7dp"
+                android:paddingBottom="13dp"
+                android:paddingLeft="14dp"
+                android:paddingTop="13dp"
+                android:text="精选产品"
+                android:textColor="@color/black_1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/choice_more"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/home_forward"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:text="更多"
+                android:textColor="@color/black_2"
+                android:textSize="12sp" />
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/choice_recycler_view"
@@ -160,14 +288,100 @@
             android:paddingLeft="10dp"
             app:layout_constraintTop_toBottomOf="@id/choice_head" />
 
+        <FrameLayout
+            android:id="@+id/credit_card_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/choice_recycler_view">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/home_left_label"
+                android:drawablePadding="7dp"
+                android:paddingBottom="13dp"
+                android:paddingLeft="14dp"
+                android:paddingTop="13dp"
+                android:text="信用卡"
+                android:textColor="@color/black_1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/credit_card_more"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/home_forward"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:text="更多"
+                android:textColor="@color/black_2"
+                android:textSize="12sp" />
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/credit_card_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingBottom="17dp"
+            app:layout_constraintTop_toBottomOf="@id/credit_card_head" />
+
+        <FrameLayout
+            android:id="@+id/loan_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@id/credit_card_recycler_view">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/home_left_label"
+                android:drawablePadding="7dp"
+                android:paddingBottom="13dp"
+                android:paddingLeft="14dp"
+                android:paddingTop="13dp"
+                android:text="借款攻略"
+                android:textColor="@color/black_1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/loan_news_more"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/home_forward"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:text="更多"
+                android:textColor="@color/black_2"
+                android:textSize="12sp" />
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/loan_news_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingBottom="14dp"
+            app:layout_constraintTop_toBottomOf="@id/loan_news" />
 
         <FrameLayout
             android:id="@+id/quality_test"
             android:layout_width="match_parent"
             android:layout_height="78dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/home_test_bg"
-            app:layout_constraintTop_toBottomOf="@id/choice_recycler_view">
+            android:background="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@id/loan_news_recycler_view">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -221,28 +435,6 @@
             </LinearLayout>
 
         </FrameLayout>
-
-        <TextView
-            android:id="@+id/loan_news"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:drawableLeft="@drawable/home_left_label"
-            android:drawablePadding="7dp"
-            android:paddingBottom="13dp"
-            android:paddingLeft="14dp"
-            android:paddingTop="3dp"
-            android:text="借款攻略"
-            android:textColor="@color/black_1"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/quality_test" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/loan_news_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="14dp"
-            app:layout_constraintTop_toBottomOf="@id/loan_news" />
 
         <FrameLayout
             android:id="@+id/one_key_loan_hint_holder"

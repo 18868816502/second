@@ -89,4 +89,28 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         return sp.getString("cacheUserId", null);
     }
+
+    public static boolean getTabAccountGuideShowed(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("tabAccountGuideShowed", false);
+    }
+
+    public static void setTabAccountGuideShowed(Context context, boolean showed) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("tabAccountGuideShowed", showed);
+        editor.apply();
+    }
+
+    public static boolean getConfirmPlanGuideShowed(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("confirmPlanGuideShowed", false);
+    }
+
+    public static void setConfirmPlanGuideShowed(Context context, boolean showed){
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("confirmPlanGuideShowed", showed);
+        editor.apply();
+    }
 }

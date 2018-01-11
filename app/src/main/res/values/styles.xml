@@ -160,4 +160,20 @@
         <item name="android:layout_height">@dimen/tool_bar_icon_size</item>
         <item name="android:scaleType">centerInside</item>
     </style>
+
+    <style name="AllDebtTabTextAppearance">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="DebtDetailTextStyle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="DebtDetailTextStyle.Text">
+        <item name="android:textColor">@color/black_2</item>
+    </style>
+
+    <style name="DebtDetailTextStyle.Content">
+        <item name="android:textColor">@color/black_1</item>
+    </style>
 </resources>
