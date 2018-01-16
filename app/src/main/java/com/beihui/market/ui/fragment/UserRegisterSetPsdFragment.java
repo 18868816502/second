@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -135,9 +134,9 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
     }
 
     @Override
-    public void showRegisterSuccess() {
+    public void showRegisterSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), "注册成功", R.mipmap.white_success);
+        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件，更新UI
         EventBus.getDefault().post(new UserLoginEvent());
         if (getView() != null) {

@@ -63,9 +63,17 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(SysMsgActivity.this, SysMsgDetailActivity.class);
-                intent.putExtra("sysMsg", (SysMsg.Row) adapter.getData().get(position));
-                startActivity(intent);
+                SysMsg.Row row = (SysMsg.Row) adapter.getData().get(position);
+                if (row.getStyle() == 0) {
+                    Intent intent = new Intent(SysMsgActivity.this, SysMsgDetailActivity.class);
+                    intent.putExtra("sysMsg", row);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(SysMsgActivity.this, MainActivity.class);
+                    intent.putExtra("account", true);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

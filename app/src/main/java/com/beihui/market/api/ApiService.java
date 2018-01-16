@@ -6,6 +6,7 @@ import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.Debt;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
@@ -24,15 +25,18 @@ import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
+import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +58,14 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd);
+    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId);
 
     /**
      * 请求验证码
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/sms/sendSms")
-    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type);
+    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type, @Field("packageId") String packageId);
 
     /**
      * 验证验证码
@@ -411,7 +415,11 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/repayList")
-    Observable<ResultEntity<List<Debt>>> queryDebtCalendar(@Field("userId") String userId, @Field("beginDay") String beginDay, @Field("endDay") String endDay, @Field("status") int status);
+    Observable<ResultEntity<DebtCalendar>> queryDebtCalendar(@Field("userId") String userId, @Field("beginDay") String beginDay, @Field("endDay") String endDay, @Field("status") int status, @Field("monthHash") Boolean monthHash);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/mouthList")
+    Observable<ResultEntity<HashMap<String, Float>>> queryMonthDebt(@Field("userId") String userId, @Field("beginMonth") String beginMonth, @Field("endMonth") String endMonth);
 
     /**
      * 更新还款状态
@@ -419,6 +427,27 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/updateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
+
+    /**
+     * 查询底部栏图标
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bottom/list")
+    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform);
+
+    /**
+     * 查询积分任务信息
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/userInteg/taskType")
+    Observable<ResultEntity<List<RewardPoint>>> queryRewardPoint(@Field("userId") String userId, @Field("taskName") String taskName);
+
+    /**
+     * 标记积分任务已读
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/userInteg/isRead")
+    Observable<ResultEntity> sendRewardPointRead(@Field("recordId") String recordId, @Field("isRead") Boolean isRead);
 
 
     /****************************************************数据统计*****************************************************/

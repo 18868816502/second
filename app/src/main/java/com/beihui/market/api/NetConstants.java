@@ -38,7 +38,9 @@ public class NetConstants {
 
     public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";
 
-    public static final String H5_CREDIT_CARD_CENTER = "https://www.baidu.com";
+    public static final String H5_CREDIT_CARD_CENTER = H5_DOMAIN + "/creditIndex.html";
+
+    public static final String H5_TAB_ACCOUNT_HINT = "https://www.baidu.com";
 
     public static String generateNewsUrl(String id, String userId) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;

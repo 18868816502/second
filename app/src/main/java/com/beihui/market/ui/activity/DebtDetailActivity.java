@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtDetailComponent;
@@ -118,6 +120,14 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
 
     private DebtDetailRVAdapter adapter;
     private Header header;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_DEBT_DETAIL);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -287,6 +297,8 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         } else {
             header.logo.setImageResource(R.drawable.image_place_holder);
         }
+
+        header.setStatus.setText(debtDetail.getTermStatus() == 2 ? "设为待还" : "设为已还");
 
         header.channelName.setText(debtDetail.getChannelName());
         if (!TextUtils.isEmpty(debtDetail.getProjectName())) {

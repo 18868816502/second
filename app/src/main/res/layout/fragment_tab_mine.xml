@@ -168,6 +168,30 @@
                     android:background="@color/line" />
 
                 <FrameLayout
+                    android:id="@+id/reward_points"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/mine_list_reward_points"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@mipmap/right_icon"
+                        android:gravity="center_vertical"
+                        android:text="@string/reward_points"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp" />
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/line" />
+
+                <FrameLayout
                     android:id="@+id/invite_friend"
                     android:layout_width="match_parent"
                     android:layout_height="54dp">

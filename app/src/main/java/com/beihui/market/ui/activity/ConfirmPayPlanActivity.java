@@ -18,6 +18,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.PayPlan;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerConfirmPayPlanComponent;
@@ -185,6 +186,9 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
         confirmView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CONFIRM_REPAY_PLAN);
+
                 showProgress(null);
                 presenter.confirmPayPlan();
             }
@@ -252,9 +256,9 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
     }
 
     @Override
-    public void showConfirmSuccess() {
+    public void showConfirmSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, "添加成功", R.mipmap.white_success);
+        ToastUtils.showShort(this, msg, R.drawable.toast_smile);
         header.itemView.postDelayed(new Runnable() {
             @Override
             public void run() {

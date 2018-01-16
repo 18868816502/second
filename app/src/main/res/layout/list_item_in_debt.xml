@@ -40,7 +40,7 @@
                         tools:src="@drawable/tab_account_on" />
 
                     <TextView
-                        android:id="@+id/debt_title"
+                        android:id="@+id/channel_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -49,14 +49,31 @@
                         android:textSize="15sp"
                         tools:text="广发银行" />
 
-                    <TextView
-                        android:id="@+id/debt_subtitle"
+                    <LinearLayout
+                        android:id="@+id/project_name_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black_2"
-                        android:textSize="15sp"
-                        tools:text="-分期通" />
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:background="@color/black_2" />
+
+                        <TextView
+                            android:id="@+id/project_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/black_2"
+                            android:textSize="15sp"
+                            tools:text="分期通" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

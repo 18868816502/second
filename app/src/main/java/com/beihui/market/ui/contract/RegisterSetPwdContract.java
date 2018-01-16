@@ -22,6 +22,6 @@ public interface RegisterSetPwdContract {
         /**
          * 注册成功
          */
-        void showRegisterSuccess();
+        void showRegisterSuccess(String msg);
     }
 }

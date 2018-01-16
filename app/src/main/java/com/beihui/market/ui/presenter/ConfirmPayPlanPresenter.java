@@ -7,8 +7,10 @@ import android.text.TextUtils;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.base.Constant;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.PayPlan;
+import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.ConfirmPayPlanContract;
 import com.beihui.market.util.LogUtils;
@@ -18,12 +20,19 @@ import com.beihui.market.util.SPUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmPayPlanContract.Presenter {
 
@@ -87,7 +96,7 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
     @Override
     public void confirmPayPlan() {
         if (payPlan != null) {
-            HashMap<String, Object> params = new HashMap<>();
+            final HashMap<String, Object> params = new HashMap<>();
             params.put("userId", userHelper.getProfile().getId());
             params.put("channelId", payPlan.getChannelId());
             params.put("channelName", payPlan.getChannelName());
@@ -142,35 +151,70 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
                 }
             }
 
-            //先删除旧账单
-            if (pendingDebt != null) {
-                Disposable dis = api.deleteDebt(userHelper.getProfile().getId(), pendingDebt.getId())
-                        .compose(RxUtil.<ResultEntity>io2main())
-                        .subscribe(new Consumer<ResultEntity>() {
-                                       @Override
-                                       public void accept(ResultEntity resultEntity) throws Exception {
-                                           LogUtils.i(resultEntity);
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        logError(ConfirmPayPlanPresenter.this, throwable);
-                                        view.showErrorMsg(generateErrorMsg(throwable));
-                                    }
-                                });
-                addDisposable(dis);
-            }
-            Disposable dis = api.savePayPlan(params)
-                    .compose(RxUtil.<ResultEntity>io2main())
-                    .subscribe(new Consumer<ResultEntity>() {
+            Disposable dis = Observable.just(pendingDebt != null ? pendingDebt : new DebtDetail())
+                    .observeOn(Schedulers.io())
+                    .flatMap(new Function<DebtDetail, ObservableSource<ResultEntity>>() {
+                        @Override
+                        public ObservableSource<ResultEntity> apply(DebtDetail debtDetail) throws Exception {
+                            //如果处于编辑模式，则先删除原有的debt
+                            if (debtDetail.getId() != null) {
+                                return api.deleteDebt(userHelper.getProfile().getId(), debtDetail.getId());
+                            }
+                            return Observable.just(new ResultEntity());
+                        }
+                    })
+                    .observeOn(Schedulers.io())
+                    .flatMap(new Function<ResultEntity, ObservableSource<ResultEntity>>() {
+                        @Override
+                        public ObservableSource<ResultEntity> apply(ResultEntity resultEntity) throws Exception {
+                            //保存还款计划
+                            return api.savePayPlan(params);
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .filter(new Predicate<ResultEntity>() {
+                        @Override
+                        public boolean test(ResultEntity result) throws Exception {
+                            //如果保存还款计划不成功，则提示错误，结束流程
+                            if (!result.isSuccess()) {
+                                view.showErrorMsg(result.getMsg());
+                            }
+                            return result.isSuccess();
+                        }
+                    })
+                    .observeOn(Schedulers.io())
+                    .flatMap(new Function<ResultEntity, ObservableSource<ResultEntity<List<RewardPoint>>>>() {
+                        @Override
+                        public ObservableSource<ResultEntity<List<RewardPoint>>> apply(ResultEntity result) throws Exception {
+                            //如果保存成功，则查询积分任务状态
+                            return api.queryRewardPoints(userHelper.getProfile().getId(), Constant.REWARD_POINTS_TASK_NAME_ADD_DEBT);
+                        }
+                    })
+                    .compose(RxUtil.<ResultEntity<List<RewardPoint>>>io2main())
+                    .subscribe(new Consumer<ResultEntity<List<RewardPoint>>>() {
                                    @Override
-                                   public void accept(ResultEntity result) throws Exception {
+                                   public void accept(ResultEntity<List<RewardPoint>> result) throws Exception {
+                                       //还款计划保存成功
+                                       String msg = "记账成功";
                                        if (result.isSuccess()) {
-                                           view.showConfirmSuccess();
-                                       } else {
-                                           view.showErrorMsg(result.getMsg());
+                                           //检查积分任务数据
+                                           List<RewardPoint> list = result.getData();
+                                           int points = 0;
+                                           if (list != null && list.size() > 0) {
+                                               for (RewardPoint point : list) {
+                                                   //需要弹框
+                                                   if (point.getFlag() == 1) {
+                                                       points += point.getInteg();
+                                                       //设置已读状态
+                                                       sendPoint(point.getRecordId());
+                                                   }
+                                               }
+                                           }
+                                           if (points > 0) {
+                                               msg += " 积分+" + points;
+                                           }
                                        }
+                                       view.showConfirmSuccess(msg);
                                    }
                                },
                             new Consumer<Throwable>() {
@@ -182,5 +226,24 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
                             });
             addDisposable(dis);
         }
+    }
+
+    private void sendPoint(String id) {
+        Disposable dis = api.sendReadPointRead(id)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity resultEntity) throws Exception {
+
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                LogUtils.e(throwable);
+
+                            }
+                        });
+        addDisposable(dis);
     }
 }

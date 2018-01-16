@@ -4,21 +4,34 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.TabImage;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateLoan;
@@ -30,6 +43,7 @@ import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsFragment;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.gyf.barlibrary.ImmersionBar;
@@ -39,19 +53,53 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class MainActivity extends BaseComponentActivity {
 
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
 
+    @BindView(R.id.tab_home_icon)
+    ImageView tabHomeIcon;
+    @BindView(R.id.tab_home_text)
+    TextView tabHomeText;
+    @BindView(R.id.tab_loan_icon)
+    ImageView tabLoanIcon;
+    @BindView(R.id.tab_loan_text)
+    TextView tabLoanText;
+    @BindView(R.id.tab_account_icon)
+    ImageView tabAccountIcon;
+    @BindView(R.id.tab_account_text)
+    TextView tabAccountText;
+    @BindView(R.id.tab_news_icon)
+    ImageView tabNewsIcon;
+    @BindView(R.id.tab_news_text)
+    TextView tabNewsText;
+    @BindView(R.id.tab_mine_icon)
+    ImageView tabMineIcon;
+    @BindView(R.id.tab_mine_text)
+    TextView tabMineText;
+
     private int selectedFragmentId = -1;
 
     private InputMethodManager inputMethodManager;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
+
+    private ImageView[] iconView;
+    private TextView[] textView;
 
     /**
      * whether need to jump to smart loan module when navigate from tab_home to tab_loan
@@ -68,6 +116,12 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.getBoolean("account")) {
+                navigationBar.select(R.id.tab_account);
+            }
+        }
         if (getIntent().getBooleanExtra("home", false)) {
             navigationBar.select(R.id.tab_home);
         }
@@ -87,6 +141,9 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        iconView = new ImageView[]{tabHomeIcon, tabLoanIcon, tabAccountIcon, tabNewsIcon, tabMineIcon};
+        textView = new TextView[]{tabHomeText, tabLoanText, tabAccountText, tabNewsText, tabMineText};
+
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
@@ -98,6 +155,8 @@ public class MainActivity extends BaseComponentActivity {
             }
         });
         navigationBar.select(R.id.tab_home);
+
+        queryBottomImage();
     }
 
     @Override
@@ -229,6 +288,12 @@ public class MainActivity extends BaseComponentActivity {
         }
     }
 
+    @Override
+    public void finish() {
+        override = false;
+        super.finish();
+    }
+
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!SPUtils.getCheckPermission(this)) {
@@ -250,9 +315,109 @@ public class MainActivity extends BaseComponentActivity {
         }
     }
 
-    @Override
-    public void finish() {
-        override = false;
-        super.finish();
+    private void queryBottomImage() {
+        Api.getInstance().queryBottomImage()
+                .compose(RxUtil.<ResultEntity<List<TabImage>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<TabImage>>>() {
+                               @Override
+                               public void accept(ResultEntity<List<TabImage>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (result.getData() != null && result.getData().size() > 0) {
+                                           updateBottomSelector(result.getData());
+                                       }
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(final Throwable throwable) throws Exception {
+                                Log.e("MainActivity", throwable.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            throw throwable;
+                                        } catch (Throwable throwable1) {
+                                            throwable1.printStackTrace();
+                                        }
+                                    }
+                                });
+                            }
+                        });
     }
+
+    private void updateBottomSelector(List<TabImage> list) {
+        Collections.sort(list, new Comparator<TabImage>() {
+            @Override
+            public int compare(TabImage o1, TabImage o2) {
+                return o1.getPosition() - o2.getPosition();
+            }
+        });
+
+        final OkHttpClient client = new OkHttpClient();
+        for (int i = 0; i < list.size(); ++i) {
+            final int index = i;
+            TabImage tabImage = list.get(i);
+
+            int[] colors = new int[]{
+                    Color.parseColor("#" + tabImage.getSelectedFontColor()),
+                    Color.parseColor("#" + tabImage.getSelectedFontColor()),
+                    Color.parseColor("#" + tabImage.getUnselectedFontColor())
+            };
+            int[][] states = new int[3][];
+            states[0] = new int[]{android.R.attr.state_selected};
+            states[1] = new int[]{android.R.attr.state_pressed};
+            states[2] = new int[]{};
+            ColorStateList colorStateList = new ColorStateList(states, colors);
+            textView[index].setTextColor(colorStateList);
+
+            Observable.just(new String[]{tabImage.getSelectedImage(), tabImage.getUnselectedImage()})
+                    .observeOn(Schedulers.io())
+                    .map(new Function<String[], Bitmap[]>() {
+                        @Override
+                        public Bitmap[] apply(String[] strings) throws Exception {
+                            Bitmap[] images = new Bitmap[2];
+                            byte[] bytes = client.newCall(new Request.Builder().url(strings[0]).build()).execute().body().bytes();
+                            images[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            bytes = client.newCall(new Request.Builder().url(strings[1]).build()).execute().body().bytes();
+                            images[1] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            return images;
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Bitmap[]>() {
+                                   @Override
+                                   public void accept(Bitmap[] bitmaps) throws Exception {
+                                       if (bitmaps[0] != null && bitmaps[1] != null) {
+                                           StateListDrawable stateListDrawable = new StateListDrawable();
+                                           stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
+                                           stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
+                                           stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
+
+                                           iconView[index].setImageDrawable(stateListDrawable);
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(final Throwable throwable) throws Exception {
+                                    Log.e("MainActivity", throwable.toString());
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                throw throwable;
+                                            } catch (Throwable throwable1) {
+                                                throwable1.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+        }
+    }
+
 }

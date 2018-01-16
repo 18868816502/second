@@ -92,4 +92,16 @@
     <string name="my_product">我的借款</string>
     <string name="tab_account">账单</string>
     <string name="debt_name_hint">如 \"房贷\" 等(选填)</string>
+    <string name="reward_points">我的积分</string>
+
+
+    <string-array name="calendar_week">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
 </resources>

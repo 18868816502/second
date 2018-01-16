@@ -60,7 +60,7 @@ public interface ConfirmPayPlanContract {
         /**
          * 确认保存还款计划成功
          */
-        void showConfirmSuccess();
+        void showConfirmSuccess(String msg);
 
         /**
          * 显示引导

@@ -59,6 +59,13 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     }
 
     @Override
+    public void clickRewardPoints() {
+        if (checkValidUser()) {
+            view.navigateRewardPoints();
+        }
+    }
+
+    @Override
     public void clickInvitation() {
         if (checkValidUser()) {
             view.navigateInvitation(userHelper.getProfile().getId());

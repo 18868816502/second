@@ -32,6 +32,7 @@ public class SysMsg {
         private String title;
         private long gmtCreate;
         private int isRead;
+        private int style;
 
         public String getExplain() {
             return explain;
@@ -73,6 +74,16 @@ public class SysMsg {
             this.isRead = isRead;
         }
 
+        public int getStyle() {
+            return style;
+        }
+
+        public void setStyle(int style) {
+            this.style = style;
+        }
+
+        public Row() {
+        }
 
         @Override
         public int describeContents() {
@@ -86,9 +97,7 @@ public class SysMsg {
             dest.writeString(this.title);
             dest.writeLong(this.gmtCreate);
             dest.writeInt(this.isRead);
-        }
-
-        public Row() {
+            dest.writeInt(this.style);
         }
 
         protected Row(Parcel in) {
@@ -97,9 +106,10 @@ public class SysMsg {
             this.title = in.readString();
             this.gmtCreate = in.readLong();
             this.isRead = in.readInt();
+            this.style = in.readInt();
         }
 
-        public static final Parcelable.Creator<Row> CREATOR = new Parcelable.Creator<Row>() {
+        public static final Creator<Row> CREATOR = new Creator<Row>() {
             @Override
             public Row createFromParcel(Parcel source) {
                 return new Row(source);

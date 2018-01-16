@@ -27,7 +27,8 @@ public class DebtDetail implements Parcelable {
     private String startDate;
     private String remark;
     private String logo;
-    int status;
+    private int status;
+    private int termStatus;
     private List<RepayPlanBean> repayPlan;
 
     public String getId() {
@@ -188,6 +189,14 @@ public class DebtDetail implements Parcelable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getTermStatus() {
+        return termStatus;
+    }
+
+    public void setTermStatus(int termStatus) {
+        this.termStatus = termStatus;
     }
 
     public List<RepayPlanBean> getRepayPlan() {

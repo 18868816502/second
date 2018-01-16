@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/banner/banner.iml" filepath="$PROJECT_DIR$/banner/banner.iml" />
       <module fileurl="file://$PROJECT_DIR$/loanMarket.iml" filepath="$PROJECT_DIR$/loanMarket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ncalendar/ncalendar.iml" filepath="$PROJECT_DIR$/ncalendar/ncalendar.iml" />
       <module fileurl="file://$PROJECT_DIR$/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/pickerview/pickerview.iml" />
       <module fileurl="file://$PROJECT_DIR$/socialshare/socialshare.iml" filepath="$PROJECT_DIR$/socialshare/socialshare.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaonengchat/xiaonengchat.iml" filepath="$PROJECT_DIR$/xiaonengchat/xiaonengchat.iml" />

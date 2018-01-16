@@ -35,6 +35,11 @@ public interface TabMineContract {
         void clickCollection();
 
         /**
+         * 点击我的积分
+         */
+        void clickRewardPoints();
+
+        /**
          * 点击邀请朋友
          */
         void clickInvitation();
@@ -91,6 +96,11 @@ public interface TabMineContract {
          * @param userId 用户id
          */
         void navigateCollection(String userId);
+
+        /**
+         * 导航至我的积分
+         */
+        void navigateRewardPoints();
 
         /**
          * 导航至邀请朋友

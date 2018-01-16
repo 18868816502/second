@@ -13,6 +13,7 @@ import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.Debt;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
@@ -31,9 +32,11 @@ import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
+import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UserProfile;
@@ -45,6 +48,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +121,8 @@ public class Api {
      * @param pwd     用户密码
      */
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
-        return service.login(account, generatePwd(pwd, account));
+
+        return service.login(account, generatePwd(pwd, account), getChannelId());
     }
 
     /**
@@ -126,7 +131,7 @@ public class Api {
      * @param phone 请求手机号
      */
     public Observable<ResultEntity<Phone>> requestRegisterSms(String phone) {
-        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_REGISTER);
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_REGISTER, getChannelId());
     }
 
     /**
@@ -135,7 +140,7 @@ public class Api {
      * @param phone 请求手机号
      */
     public Observable<ResultEntity<Phone>> requestRestPwdSms(String phone) {
-        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_RESET_PWD);
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_RESET_PWD, getChannelId());
     }
 
     /**
@@ -166,14 +171,7 @@ public class Api {
      * @param inviteCode 邀请码，可空
      */
     public Observable<ResultEntity> register(String phone, String pwd, String inviteCode) {
-        String channelId = "unknown";
-        try {
-            channelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), inviteCode, channelId);
+        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), inviteCode, getChannelId());
     }
 
     /**
@@ -639,15 +637,26 @@ public class Api {
     }
 
     /**
-     * 查询还款日历
+     * 查询还款日历,  还款状态 1-贷款 2-已还, 默认两者都查询
      *
      * @param userId   用户id
      * @param beginDay 查询开始日期
      * @param endDay   查询结束日期
-     * @param status   还款状态 1-贷款 2-已还
+     * @param status   状态 1-待还 2-已还 3-全部
      */
-    public Observable<ResultEntity<List<Debt>>> queryDebtCalendar(String userId, String beginDay, String endDay, int status) {
-        return service.queryDebtCalendar(userId, beginDay, endDay, status);
+    public Observable<ResultEntity<DebtCalendar>> queryDebtCalendar(String userId, String beginDay, String endDay, int status, boolean monthHash) {
+        return service.queryDebtCalendar(userId, beginDay, endDay, status, monthHash);
+    }
+
+    /**
+     * 查询月里还款金额
+     *
+     * @param userId     用户id
+     * @param beginMonth 查询开始日期
+     * @param endMonth   查询截止日期
+     */
+    public Observable<ResultEntity<HashMap<String, Float>>> queryMonthDebt(String userId, String beginMonth, String endMonth) {
+        return service.queryMonthDebt(userId, beginMonth, endMonth);
     }
 
     /**
@@ -660,6 +669,40 @@ public class Api {
     public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, int status) {
         return service.updateDebtStatus(userId, liabilitiesDetailId, status);
     }
+
+    /**
+     * 查询底部栏图标
+     */
+    public Observable<ResultEntity<List<TabImage>>> queryBottomImage() {
+        String version = "";
+        try {
+            version = App.getInstance().getPackageManager().getPackageInfo(App.getInstance().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return service.queryBottomImage(version, "1");
+    }
+
+    /**
+     * 查询积分任务信息
+     *
+     * @param userId   用户id
+     * @param taskName 任务名称
+     */
+    public Observable<ResultEntity<List<RewardPoint>>> queryRewardPoints(String userId, String taskName) {
+        return service.queryRewardPoint(userId, taskName);
+    }
+
+    /**
+     * 标记积分任务已读
+     *
+     * @param recordId 任务id
+     */
+    public Observable<ResultEntity> sendReadPointRead(String recordId) {
+        return service.sendRewardPointRead(recordId, true);
+    }
+
+
     /*****+******************************************************数据统计***********************************************+*****+*****/
 
     /**
@@ -701,7 +744,19 @@ public class Api {
     public Observable<ResultEntity> onCountUv(String id, String userId) {
         return service.onCountUv(id, userId);
     }
+
     /**************+***************************************************+******************************************************/
+
+    private String getChannelId() {
+        String channelId = "unknown";
+        try {
+            channelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return channelId;
+    }
 
     /*****generate method*****/
     //加密密码

@@ -13,6 +13,6 @@ public interface LoginContract {
     interface View extends BaseView<Presenter> {
         void showLoading();
 
-        void showLoginSuccess();
+        void showLoginSuccess(String msg);
     }
 }

@@ -111,6 +111,60 @@ public class DataStatisticsHelper {
      */
     public static final String ID_CLICK_GO_WECHAT = "去微信";
 
+    /**
+     * 点击Tab栏账单
+     */
+    public static final String ID_CLICK_TAB_ACCOUNT = "BillingBottom";
+
+    /**
+     * 点击添加账单
+     */
+    public static final String ID_CLICK_ADD_DEBT = "AddBillBtn";
+
+    /**
+     * 点击还款日历
+     */
+    public static final String ID_CLICK_DEBT_CALENDAR = "RepayCalendarBtn";
+
+    /**
+     * 点击负债分析
+     */
+    public static final String ID_CLICK_DEBT_ANALYZE = "LiabilitiesBtn";
+
+    /**
+     * 点击全部借款
+     */
+    public static final String ID_CLICK_ALL_DEBT = "AllBillBtn";
+
+    /**
+     * 查看还款详情
+     */
+    public static final String ID_DEBT_DETAIL = "BillDetailBtn";
+
+    /**
+     * 确认还款计划
+     */
+    public static final String ID_CONFIRM_REPAY_PLAN = "RepayPlanBtn";
+
+    /**
+     * 修改分期状态为已还
+     */
+    public static final String ID_SET_STATUS_PAID = "BillPaidOP";
+
+    /**
+     * 修改分期状态为待还
+     */
+    public static final String ID_SET_STATUS_UNPAID = "BillWaitOP";
+
+    /**
+     * 首页点击精选好借
+     */
+    public static final String ID_HOME_MODULE_PERSONAL_PRODUCT = "indexSelectGoodCount";
+
+    /**
+     * 首页点击智能推荐
+     */
+    public static final String ID_HOME_MODULE_SMART = "indexWisdomCount";
 
     @Inject
     Api api;

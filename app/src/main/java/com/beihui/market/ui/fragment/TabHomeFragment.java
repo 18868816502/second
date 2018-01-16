@@ -173,9 +173,6 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ENTER_HOME);
     }
 
     @Nullable
@@ -183,6 +180,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //umeng统计
         Statistic.onEvent(Events.ENTER_HOME_PAGE);
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ENTER_HOME);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -286,9 +286,15 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.module_personal_loan:
+                        //pv，uv统计
+                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_HOME_MODULE_PERSONAL_PRODUCT);
+
                         EventBus.getDefault().post(new NavigateLoan(false));
                         break;
                     case R.id.module_smart_loan:
+                        //pv，uv统计
+                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_HOME_MODULE_SMART);
+
                         EventBus.getDefault().post(new NavigateLoan(true));
                         break;
                     case R.id.module_credit_card:

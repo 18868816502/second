@@ -11,6 +11,10 @@ public class Debt {
     private double rate;
     private String startDate;
     private int status;
+    private int term;
+    private int termNum;
+    private double termPayableAmount;
+    private int returnDay;
 
     public String getLogo() {
         return logo;
@@ -74,6 +78,38 @@ public class Debt {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getTerm() {
+        return term;
+    }
+
+    public void setTerm(int term) {
+        this.term = term;
+    }
+
+    public int getTermNum() {
+        return termNum;
+    }
+
+    public void setTermNum(int termNum) {
+        this.termNum = termNum;
+    }
+
+    public double getTermPayableAmount() {
+        return termPayableAmount;
+    }
+
+    public void setTermPayableAmount(double termPayableAmount) {
+        this.termPayableAmount = termPayableAmount;
+    }
+
+    public int getReturnDay() {
+        return returnDay;
+    }
+
+    public void setReturnDay(int returnDay) {
+        this.returnDay = returnDay;
     }
 
     public boolean isPaid() {

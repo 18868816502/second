@@ -1,6 +1,8 @@
 package com.beihui.market.base;
 
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.CallSuper;
 
 import com.beihui.market.BuildConfig;
@@ -12,6 +14,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseRxPresenter implements BasePresenter {
+
+    private static Handler DEBUG_MAIN_THREAD_HANDLER;
+
     private CompositeDisposable compositeDisposable;
 
     protected void addDisposable(Disposable disposable) {
@@ -34,8 +39,25 @@ public abstract class BaseRxPresenter implements BasePresenter {
         compositeDisposable = null;
     }
 
-    protected void logError(Object tag, Throwable throwable) {
-        LogUtils.e(tag.getClass().getSimpleName(), "throwable " + throwable);
+    protected void logError(Object tag, final Throwable throwable) {
+        final String tagStr = tag.getClass().getSimpleName();
+        LogUtils.e(tagStr, "error " + throwable);
+        if (BuildConfig.DEBUG) {
+            //debug模式下把异常在主线程重新抛出，方便打印
+            if (DEBUG_MAIN_THREAD_HANDLER == null) {
+                DEBUG_MAIN_THREAD_HANDLER = new Handler(Looper.getMainLooper());
+            }
+            DEBUG_MAIN_THREAD_HANDLER.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        throw throwable;
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     protected String generateErrorMsg(Throwable throwable) {

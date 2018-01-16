@@ -2,17 +2,17 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -21,16 +21,22 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.util.LinkedList;
+
 import butterknife.BindView;
 
 public class CreditCardWebActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.title)
+    TextView title;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
     @BindView(R.id.web_view)
     WebView webView;
+
+    private LinkedList<String> titleList = new LinkedList<>();
 
     @Override
     public int getLayoutId() {
@@ -61,14 +67,30 @@ public class CreditCardWebActivity extends BaseComponentActivity {
 
         });
 
-        webView.setDownloadListener(new DownloadListener() {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivityWithoutOverride(intent);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.contains("?title=")) {
+                    int index = url.lastIndexOf("?title=");
+                    String realUrl = url.substring(0, index);
+                    String pageTitle = Uri.decode(url.substring(index + 7, url.length()));
+                    titleList.push(pageTitle);
+                    title.setText(pageTitle);
+                    webView.loadUrl(realUrl);
+                    return true;
+                } else if (url.contains("&title=")) {
+                    int index = url.lastIndexOf("&title=");
+                    String realUrl = url.substring(0, index);
+                    String pageTitle = Uri.decode(url.substring(index + 7, url.length()));
+                    titleList.push(pageTitle);
+                    title.setText(pageTitle);
+                    webView.loadUrl(realUrl);
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(webView, url);
             }
         });
+
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -78,11 +100,16 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         settings.setDisplayZoomControls(false);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+
+        {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
         SlidePanelHelper.attach(this);
+
+        titleList.push("信用卡中心");
+        title.setText("信用卡中心");
     }
 
     @Override
@@ -93,5 +120,18 @@ public class CreditCardWebActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP && webView.canGoBack()) {
+            webView.goBack();
+            titleList.pop();
+            String pageTitle = titleList.peek();
+            title.setText(pageTitle);
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

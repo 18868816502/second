@@ -161,6 +161,17 @@
             android:name=".ui.activity.DebtDetailActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.DebtCalendarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.DebtAnalyzeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.RewardPointActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <!--file provider, N feature-->

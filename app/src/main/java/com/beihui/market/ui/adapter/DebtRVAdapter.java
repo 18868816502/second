@@ -44,12 +44,12 @@ public class DebtRVAdapter extends BaseQuickAdapter<InDebt, BaseViewHolder> {
             helper.<ImageView>getView(R.id.debt_image).setImageResource(R.drawable.image_place_holder);
         }
 
-        helper.setText(R.id.debt_title, item.getChannelName());
+        helper.setText(R.id.channel_name, item.getChannelName());
         if (!TextUtils.isEmpty(item.getProjectName())) {
-            helper.setVisible(R.id.debt_subtitle, true);
-            helper.setText(R.id.debt_subtitle, "-" + item.getProjectName());
+            helper.setVisible(R.id.project_name_container, true);
+            helper.setText(R.id.project_name, item.getProjectName());
         } else {
-            helper.setVisible(R.id.debt_subtitle, false);
+            helper.setVisible(R.id.project_name_container, false);
         }
 
         String lifeStr = item.getTermNum() + "/" + item.getTerm() + "期";

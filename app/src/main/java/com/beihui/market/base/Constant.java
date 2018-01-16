@@ -11,4 +11,25 @@ public class Constant {
     //客服组id
     public static final String XN_CUSTOMER = "kf_10075_1511865195948";
     /***************************************************************************************************/
+
+    /**
+     * 积分任务-注册
+     */
+    public static final String REWARD_POINTS_TASK_NAME_REGISTER = "register";
+    /**
+     * 积分任务-登录
+     */
+    public static final String REWARD_POINTS_TASK_NAME_LOGIN = "登录";
+    /**
+     * 积分任务-应用市场评论
+     */
+    public static final String REWARD_POINTS_TASK_NAME_COMMENT = "comment";
+    /**
+     * 积分任务-首次记账
+     */
+    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT_FIRST = "addDebtFirst";
+    /**
+     * 积分任务-记账
+     */
+    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT = "addDebt";
 }

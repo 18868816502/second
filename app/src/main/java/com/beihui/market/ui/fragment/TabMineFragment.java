@@ -23,6 +23,7 @@ import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.MyProductActivity;
+import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
@@ -165,7 +166,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @OnClick({R.id.contact_kefu, R.id.mine_msg,
             R.id.mine_product,
             R.id.login, R.id.avatar, R.id.user_name,
-            R.id.my_collection, R.id.invite_friend,
+            R.id.my_collection, R.id.reward_points, R.id.invite_friend,
             R.id.helper_feedback, R.id.settings, R.id.wechat_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -225,6 +226,13 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.clickCollection();
                 }
                 break;
+
+            case R.id.reward_points:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickRewardPoints();
+                }
+                break;
+
 
             case R.id.invite_friend:
                 //umeng统计
@@ -325,6 +333,11 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateCollection(String userId) {
         startActivity(new Intent(getActivity(), CollectionActivity.class));
+    }
+
+    @Override
+    public void navigateRewardPoints() {
+        startActivity(new Intent(getActivity(), RewardPointActivity.class));
     }
 
     @Override

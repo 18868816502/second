@@ -568,4 +568,12 @@ public class CommonUtils {
         return "" + (((int) (input * 100)) / 100.00);
     }
 
+    public static String keep2digitsWithoutZero(double input) {
+        String str = "" + (((int) (input * 100)) / 100.00);
+        if (str.contains(".0")) {
+            return str.substring(0, str.indexOf(".0"));
+        }
+        return str;
+    }
+
 }

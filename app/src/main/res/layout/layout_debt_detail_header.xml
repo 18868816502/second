@@ -225,7 +225,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@android:color/white"
-            android:padding="25dp">
+            android:paddingBottom="25dp"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp"
+            android:paddingTop="25dp">
 
             <TextView
                 android:id="@+id/debt_amount_total_text"
@@ -330,7 +333,7 @@
                 style="@style/DebtDetailTextStyle.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="211dp"
+                android:layout_marginLeft="@dimen/debt_detail_text_left_margin"
                 android:text="还款方式" />
 
 
@@ -349,8 +352,8 @@
                 style="@style/DebtDetailTextStyle.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pay_method_text"
                 android:layout_below="@id/pay_method_text"
-                android:layout_marginLeft="211dp"
                 android:layout_marginTop="30dp"
                 android:text="利息总计" />
 
@@ -369,8 +372,8 @@
                 style="@style/DebtDetailTextStyle.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pay_method_text"
                 android:layout_below="@id/interest_total_text"
-                android:layout_marginLeft="211dp"
                 android:layout_marginTop="30dp"
                 android:text="借款期限" />
 
@@ -389,8 +392,8 @@
                 style="@style/DebtDetailTextStyle.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/pay_method_text"
                 android:layout_below="@id/debt_life_text"
-                android:layout_marginLeft="211dp"
                 android:layout_marginTop="30dp"
                 android:text="起息日期" />
 

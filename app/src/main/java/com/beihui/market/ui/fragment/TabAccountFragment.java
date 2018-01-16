@@ -3,6 +3,8 @@ package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,19 +18,24 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.InDebt;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
 import com.beihui.market.ui.activity.AddDebtActivity;
 import com.beihui.market.ui.activity.AllDebtActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
+import com.beihui.market.ui.activity.DebtAnalyzeActivity;
+import com.beihui.market.ui.activity.DebtCalendarActivity;
 import com.beihui.market.ui.activity.DebtDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.DebtRVAdapter;
 import com.beihui.market.ui.contract.DebtContract;
+import com.beihui.market.ui.dialog.TabAccountHintDialog;
 import com.beihui.market.ui.presenter.DebtPresenter;
-import com.beihui.market.ui.rvdecoration.TabAccountDebtItemDeco;
+import com.beihui.market.ui.rvdecoration.DebtItemDeco;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -46,9 +53,6 @@ import zhy.com.highlight.shape.CircleLightShape;
 import static com.beihui.market.util.CommonUtils.keep2digits;
 
 public class TabAccountFragment extends BaseTabFragment implements DebtContract.View {
-
-    @BindView(R.id.root_container)
-    View rootContainer;
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.debt_amount)
@@ -112,6 +116,14 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         return new TabAccountFragment();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_ACCOUNT);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -152,6 +164,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         header.allDebt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ALL_DEBT);
+
                 startActivity(new Intent(getContext(), AllDebtActivity.class));
             }
         });
@@ -170,6 +185,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         header.debtAnalyze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_DEBT_ANALYZE);
+
                 presenter.clickAnalyze();
             }
         });
@@ -196,8 +214,13 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             }
         });
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new TabAccountDebtItemDeco());
+        recyclerView.addItemDecoration(new DebtItemDeco());
 
+
+        if (!SPUtils.getTabAccountDialogShowed(getContext())) {
+            new TabAccountHintDialog().show(getChildFragmentManager(), "TabAccountHint");
+            SPUtils.setTabAccountDialogShowed(getContext(), true);
+        }
     }
 
     @Override
@@ -328,12 +351,12 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void navigateCalendar() {
-
+        startActivity(new Intent(getContext(), DebtCalendarActivity.class));
     }
 
     @Override
     public void navigateAnalyze() {
-
+        startActivity(new Intent(getContext(), DebtAnalyzeActivity.class));
     }
 
     @Override

@@ -64,7 +64,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
     @Override
     public void updateDebtStatus() {
         //设置已还或者未还
-        final int status = debtDetail.getStatus() == 1 ? 2 : 1;
+        final int status = debtDetail.getTermStatus() == 2 ? 1 : 2;
         updateStatus(debtDetail.getTermId(), status);
     }
 
