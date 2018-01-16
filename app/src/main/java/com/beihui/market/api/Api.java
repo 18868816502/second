@@ -699,7 +699,19 @@ public class Api {
      * @param recordId 任务id
      */
     public Observable<ResultEntity> sendReadPointRead(String recordId) {
-        return service.sendRewardPointRead(recordId, true);
+        return service.sendRewardPointRead(recordId, 1);
+    }
+
+    /*****+******************************************************个推绑定***********************************************+*****+*****/
+
+    /**
+     * 绑定个推用户账号
+     *
+     * @param userId   用户id
+     * @param clientId 本机个推id
+     */
+    public Observable<ResultEntity> bindClientId(String userId, String clientId) {
+        return service.bindClientId(userId, clientId);
     }
 
 

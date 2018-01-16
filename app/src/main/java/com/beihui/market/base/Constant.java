@@ -15,7 +15,7 @@ public class Constant {
     /**
      * 积分任务-注册
      */
-    public static final String REWARD_POINTS_TASK_NAME_REGISTER = "register";
+    public static final String REWARD_POINTS_TASK_NAME_REGISTER = "注册";
     /**
      * 积分任务-登录
      */
@@ -23,13 +23,13 @@ public class Constant {
     /**
      * 积分任务-应用市场评论
      */
-    public static final String REWARD_POINTS_TASK_NAME_COMMENT = "comment";
+    public static final String REWARD_POINTS_TASK_NAME_COMMENT = "应用市场评论";
     /**
      * 积分任务-首次记账
      */
-    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT_FIRST = "addDebtFirst";
+    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT_FIRST = "首次记账";
     /**
      * 积分任务-记账
      */
-    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT = "addDebt";
+    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT = "记账";
 }

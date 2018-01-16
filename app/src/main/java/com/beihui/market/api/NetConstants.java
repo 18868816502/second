@@ -40,6 +40,8 @@ public class NetConstants {
 
     public static final String H5_CREDIT_CARD_CENTER = H5_DOMAIN + "/creditIndex.html";
 
+    public static final String H5_REWARD_POINTS = H5_DOMAIN + "/integral.html";
+
     public static final String H5_TAB_ACCOUNT_HINT = "https://www.baidu.com";
 
     public static String generateNewsUrl(String id, String userId) {

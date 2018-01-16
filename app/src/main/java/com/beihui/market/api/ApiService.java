@@ -447,7 +447,19 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/isRead")
-    Observable<ResultEntity> sendRewardPointRead(@Field("recordId") String recordId, @Field("isRead") Boolean isRead);
+    Observable<ResultEntity> sendRewardPointRead(@Field("recordId") String recordId, @Field("isRead") int isRead);
+
+
+    /****************************************************个推账号用户绑定*****************************************************/
+
+    /**
+     * 绑定个推用账号
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUserDetail/userLinkGetui")
+    Observable<ResultEntity> bindClientId(@Field("userId") String userId, @Field("clientId") String clientId);
+
+    /**********************************************************************************************************/
 
 
     /****************************************************数据统计*****************************************************/

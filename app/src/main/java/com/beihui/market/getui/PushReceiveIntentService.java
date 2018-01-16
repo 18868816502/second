@@ -3,20 +3,27 @@ package com.beihui.market.getui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
+import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
+import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
+import com.beihui.market.api.ResultEntity;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
-import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.NotificationUtil;
+import com.beihui.market.util.RxUtil;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 
 import org.json.JSONObject;
+
+import io.reactivex.functions.Consumer;
 
 public class PushReceiveIntentService extends GTIntentService {
     private static final String TAG = PushReceiveIntentService.class.getSimpleName();
@@ -24,21 +31,40 @@ public class PushReceiveIntentService extends GTIntentService {
     @Override
     public void onReceiveServicePid(Context context, int i) {
         if (BuildConfig.DEBUG) {
-            LogUtils.i(TAG, "onReceiveServicePid " + i);
+            Log.i(TAG, "onReceiveServicePid " + i);
         }
     }
 
     @Override
     public void onReceiveClientId(Context context, String s) {
         if (BuildConfig.DEBUG) {
-            LogUtils.i(TAG, "onReceiveClintId " + s);
+            Log.i(TAG, "onReceiveClintId " + s);
+        }
+        if (UserHelper.getInstance(App.getInstance()).getProfile() != null) {
+            String userId = UserHelper.getInstance(App.getInstance()).getProfile().getId();
+            Api.getInstance().bindClientId(userId, s)
+                    .compose(RxUtil.<ResultEntity>io2main())
+                    .subscribe(new Consumer<ResultEntity>() {
+                                   @Override
+                                   public void accept(ResultEntity result) throws Exception {
+                                       if (!result.isSuccess()) {
+                                           Log.e(TAG, result.getMsg());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    Log.e(TAG, "throwable " + throwable);
+                                }
+                            });
         }
     }
 
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
         if (BuildConfig.DEBUG) {
-            LogUtils.i(TAG, "onReceiveMessageData " + gtTransmitMessage);
+            Log.i(TAG, "onReceiveMessageData " + gtTransmitMessage);
         }
         try {
             String json = new String(gtTransmitMessage.getPayload());
@@ -83,14 +109,14 @@ public class PushReceiveIntentService extends GTIntentService {
     @Override
     public void onReceiveOnlineState(Context context, boolean b) {
         if (BuildConfig.DEBUG) {
-            LogUtils.i(TAG, "onReceiveOnlineState " + b);
+            Log.i(TAG, "onReceiveOnlineState " + b);
         }
     }
 
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage gtCmdMessage) {
         if (BuildConfig.DEBUG) {
-            LogUtils.i(TAG, "onReceiveCommandResult " + gtCmdMessage);
+            Log.i(TAG, "onReceiveCommandResult " + gtCmdMessage);
         }
     }
 }

@@ -107,14 +107,13 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         }
 
         SlidePanelHelper.attach(this);
-
-        titleList.push("信用卡中心");
-        title.setText("信用卡中心");
     }
 
     @Override
     public void initDatas() {
         webView.loadUrl(NetConstants.H5_CREDIT_CARD_CENTER);
+        titleList.push("信用卡中心");
+        title.setText("信用卡中心");
     }
 
     @Override
@@ -124,14 +123,14 @@ public class CreditCardWebActivity extends BaseComponentActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP && webView.canGoBack()) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
             webView.goBack();
             titleList.pop();
             String pageTitle = titleList.peek();
             title.setText(pageTitle);
             return true;
         } else {
-            return super.onKeyDown(keyCode, event);
+            return super.onKeyUp(keyCode, event);
         }
     }
 }

@@ -256,7 +256,6 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
         dataSet.setHighLightColor(colorPrimary);
         dataSet.setValueTextColor(colorPrimary);
         dataSet.setDrawHorizontalHighlightIndicator(false);
-        dataSet.setDrawFilled(true);
         LineData data = new LineData(dataSet);
         lineChart.setData(data);
         lineChart.getXAxis().setLabelCount(xys.size(), true);
@@ -278,12 +277,18 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
     public void navigateDebtDetail(String id) {
         Intent intent = new Intent(getContext(), DebtDetailActivity.class);
         intent.putExtra("debt_id", id);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
     public void showCalendarDebtTag(Map<String, Integer> debtHint) {
         //no implements here
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        presenter.refreshCurMonth();
     }
 
     private void showTimerPicker(final boolean start) {

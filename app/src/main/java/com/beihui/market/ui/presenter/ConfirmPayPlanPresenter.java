@@ -205,6 +205,9 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
                                                    //需要弹框
                                                    if (point.getFlag() == 1) {
                                                        points += point.getInteg();
+                                                       if (Constant.REWARD_POINTS_TASK_NAME_ADD_DEBT_FIRST.equals(point.getTaskName())) {
+                                                           msg = "首次记账";
+                                                       }
                                                        //设置已读状态
                                                        sendPoint(point.getRecordId());
                                                    }

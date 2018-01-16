@@ -2,7 +2,9 @@ package com.beihui.market.ui.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -53,8 +57,12 @@ import zhy.com.highlight.shape.CircleLightShape;
 import static com.beihui.market.util.CommonUtils.keep2digits;
 
 public class TabAccountFragment extends BaseTabFragment implements DebtContract.View {
+    @BindView(R.id.bills_bg_image)
+    ImageView billsBgImage;
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.debt_amount_container)
+    View debtAmountContainer;
     @BindView(R.id.debt_amount)
     TextView debtAmount;
     @BindView(R.id.calendar)
@@ -112,6 +120,62 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     private HighLight infoHighLight;
 
+    class TabScrollListener extends RecyclerView.OnScrollListener {
+        int scrollY;
+
+        int firEdge = -1;
+        int secEdge = -1;
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            scrollY += dy;
+            updateContentByScrollY();
+        }
+
+        public void resetScrollY() {
+            scrollY = recyclerView.computeVerticalScrollOffset();
+            updateContentByScrollY();
+        }
+
+        void updateContentByScrollY() {
+            if (firEdge == -1 && secEdge == -1) {
+                int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+                firEdge = header.debtAmount.getBottom() + statusHeight;
+                secEdge = header.itemView.getBottom() + toolbar.getMeasuredHeight();
+            }
+            if (scrollY >= firEdge) {
+                if (debtAmountContainer.getVisibility() == View.GONE) {
+                    debtAmountContainer.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if (debtAmountContainer.getVisibility() == View.VISIBLE) {
+                    debtAmountContainer.setVisibility(View.GONE);
+                }
+            }
+            if (scrollY >= secEdge) {
+                if (analyzeView.getVisibility() == View.GONE) {
+                    analyzeView.setVisibility(View.VISIBLE);
+                }
+                if (calendarView.getVisibility() == View.GONE) {
+                    calendarView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if (analyzeView.getVisibility() == View.VISIBLE) {
+                    analyzeView.setVisibility(View.GONE);
+                }
+                if (calendarView.getVisibility() == View.VISIBLE) {
+                    calendarView.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private TabScrollListener tabScrollListener = new TabScrollListener();
+
     public static TabAccountFragment newInstance() {
         return new TabAccountFragment();
     }
@@ -155,10 +219,22 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                 presenter.clickAdd();
             }
         });
+        calendarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clickCalendar();
+            }
+        });
+        analyzeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clickAnalyze();
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DebtRVAdapter();
-        View headerView = LayoutInflater.from(getContext())
+        final View headerView = LayoutInflater.from(getContext())
                 .inflate(R.layout.layout_tab_account_header, recyclerView, false);
         header = new DebtHeader(headerView);
         header.allDebt.setOnClickListener(new View.OnClickListener() {
@@ -215,12 +291,30 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         });
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DebtItemDeco());
-
+        recyclerView.addOnScrollListener(tabScrollListener);
 
         if (!SPUtils.getTabAccountDialogShowed(getContext())) {
             new TabAccountHintDialog().show(getChildFragmentManager(), "TabAccountHint");
             SPUtils.setTabAccountDialogShowed(getContext(), true);
         }
+
+        billsBgImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                billsBgImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ViewGroup.LayoutParams lp = header.itemView.getLayoutParams();
+                lp.height = billsBgImage.getMeasuredHeight();
+                header.itemView.setLayoutParams(lp);
+
+                billsBgImage.setDrawingCacheEnabled(true);
+                Bitmap drawingCache = billsBgImage.getDrawingCache();
+                if (drawingCache != null) {
+                    Bitmap res = Bitmap.createBitmap(drawingCache, 0, 0, toolbar.getMeasuredWidth(), toolbar.getMeasuredHeight());
+                    toolbar.setBackground(new BitmapDrawable(getResources(), res));
+                    drawingCache.recycle();
+                }
+            }
+        });
     }
 
     @Override
@@ -291,6 +385,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         header.debtAmount.setText(keep2digits(debtAmount));
         header.debtSevenDay.setText(keep2digits(debtSevenDay));
         header.debtMonth.setText(keep2digits(debtMonth));
+
+        this.debtAmount.setText(keep2digits(debtAmount));
     }
 
 
@@ -298,6 +394,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     public void showInDebtList(List<InDebt> list) {
         if (isAdded()) {
             adapter.notifyDebtChanged(list);
+            tabScrollListener.resetScrollY();
         }
     }
 
