@@ -77,6 +77,12 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_debt_cal_calendar;
     }

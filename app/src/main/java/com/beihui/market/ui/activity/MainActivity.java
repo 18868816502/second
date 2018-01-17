@@ -45,6 +45,7 @@ import com.beihui.market.ui.fragment.TabNewsFragment;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
+import com.beihui.market.util.SoundUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -149,6 +150,9 @@ public class MainActivity extends BaseComponentActivity {
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
+                //点击音效
+                SoundUtils.getInstance().playTab();
+
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }

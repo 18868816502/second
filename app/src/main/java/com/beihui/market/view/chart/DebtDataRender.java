@@ -32,6 +32,7 @@ public class DebtDataRender extends LineChartRenderer {
         topPadding = (int) (context.getResources().getDisplayMetrics().density * 6);
         highlightValuePaint.setColor(context.getResources().getColor(R.color.colorPrimary));
         highlightValuePaint.setTextSize((int) (context.getResources().getDisplayMetrics().density * 9));
+        highlightValuePaint.setAntiAlias(true);
         highlightValuePaint.setTextAlign(Paint.Align.CENTER);
         highlightValuePaint.setTypeface(Typeface.DEFAULT);
         highlightValuePaint.setStrokeWidth(context.getResources().getDisplayMetrics().density * 1.5f);
@@ -106,9 +107,9 @@ public class DebtDataRender extends LineChartRenderer {
             }
             if (exceptedTop < mViewPortHandler.contentTop()) {
                 if (x + textSize * debtStr.length() / 2 + 2 < mViewPortHandler.contentRight()) {
-                    c.drawText(debtStr, x + textSize * debtStr.length() / 2 + 2, y, highlightValuePaint);
+                    c.drawText(debtStr, x + textSize * debtStr.length() / 2 + 2, y + textSize / 2, highlightValuePaint);
                 } else {
-                    c.drawText(debtStr, x - textSize * debtStr.length() / 2 - 2, y, highlightValuePaint);
+                    c.drawText(debtStr, x - textSize * debtStr.length() / 2 - 2, y + textSize / 2, highlightValuePaint);
                 }
             } else {
                 c.drawText(debtStr, x, exceptedTop + textSize, highlightValuePaint);

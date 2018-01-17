@@ -273,12 +273,16 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
 
     @Override
     public void selectedAlphabet(int index, String alphabet) {
-        int size = -1;
-        for (int i = 0; i < index; ++i) {
-            size += alphabetCountList[i];
-        }
-        if (size != -1) {
-            view.scrollToPosition(size + 1);
+        if (index == 0) {
+            view.scrollToPosition(0);
+        } else {
+            int size = -1;
+            for (int i = 0; i < index; ++i) {
+                size += alphabetCountList[i];
+            }
+            if (size != -1) {
+                view.scrollToPosition(size + 1);
+            }
         }
     }
 

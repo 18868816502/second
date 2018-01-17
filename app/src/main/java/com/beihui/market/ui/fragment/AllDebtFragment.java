@@ -68,6 +68,7 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
 
     @Override
     public void onDestroyView() {
+        presenter.onDestroy();
         super.onDestroyView();
     }
 

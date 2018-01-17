@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import com.beihui.market.ui.presenter.DebtPresenter;
 import com.beihui.market.ui.rvdecoration.DebtItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.SPUtils;
+import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -119,6 +121,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     private DebtRVAdapter adapter;
 
     private HighLight infoHighLight;
+    private SoundPool soundPool;
 
     class TabScrollListener extends RecyclerView.OnScrollListener {
         int scrollY;
@@ -216,6 +219,11 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         addView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ADD_DEBT);
+                //点击音效
+                SoundUtils.getInstance().playAdd();
+
                 presenter.clickAdd();
             }
         });
@@ -283,6 +291,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.set_status) {
+
                     presenter.updateDebtStatus(position);
                 } else if (view.getId() == R.id.debt_container) {
                     presenter.clickDebt(position);
@@ -315,6 +324,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                 }
             }
         });
+
+        soundPool = new SoundPool.Builder().build();
     }
 
     @Override
@@ -349,6 +360,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             noUserLoginFootView.findViewById(R.id.debt_add).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ADD_DEBT);
+
                     presenter.clickAdd();
                 }
             });

@@ -81,6 +81,12 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_debt_cal_chart;
     }
@@ -256,6 +262,7 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
         dataSet.setHighLightColor(colorPrimary);
         dataSet.setValueTextColor(colorPrimary);
         dataSet.setDrawHorizontalHighlightIndicator(false);
+        dataSet.setValueTextSize(getResources().getDisplayMetrics().density * 9);
         LineData data = new LineData(dataSet);
         lineChart.setData(data);
         lineChart.getXAxis().setLabelCount(xys.size(), true);
