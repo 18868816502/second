@@ -3,12 +3,10 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -19,6 +17,7 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.view.BusinessWebView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.LinkedList;
@@ -34,7 +33,7 @@ public class CreditCardWebActivity extends BaseComponentActivity {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
     @BindView(R.id.web_view)
-    WebView webView;
+    BusinessWebView webView;
 
     private LinkedList<String> titleList = new LinkedList<>();
 
@@ -64,10 +63,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         });
 
         webView.setWebViewClient(new WebViewClient() {
-
-        });
-
-        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("?title=")) {
@@ -90,21 +85,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
                 return super.shouldOverrideUrlLoading(webView, url);
             }
         });
-
-
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-
-        {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
 
         SlidePanelHelper.attach(this);
     }

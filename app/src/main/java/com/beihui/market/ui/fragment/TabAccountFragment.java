@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -121,7 +120,6 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     private DebtRVAdapter adapter;
 
     private HighLight infoHighLight;
-    private SoundPool soundPool;
 
     class TabScrollListener extends RecyclerView.OnScrollListener {
         int scrollY;
@@ -324,8 +322,6 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                 }
             }
         });
-
-        soundPool = new SoundPool.Builder().build();
     }
 
     @Override

@@ -65,6 +65,13 @@ public interface TabMineContract {
         void showProfile(UserHelper.Profile profile);
 
         /**
+         * 显示当前积分总额
+         *
+         * @param points 积分总额
+         */
+        void showRewardPoints(int points);
+
+        /**
          * 导航至登录
          */
         void navigateLogin();

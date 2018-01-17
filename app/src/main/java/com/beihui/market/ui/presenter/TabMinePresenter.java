@@ -3,20 +3,29 @@ package com.beihui.market.ui.presenter;
 
 import android.content.Context;
 
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.TabMineContract;
+import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 public class TabMinePresenter extends BaseRxPresenter implements TabMineContract.Presenter {
 
+    private Api api;
     private TabMineContract.View view;
-
     private UserHelper userHelper;
 
+    private int points = 0;
+
     @Inject
-    TabMinePresenter(TabMineContract.View view, Context context) {
+    TabMinePresenter(Context context, Api api, TabMineContract.View view) {
+        this.api = api;
         this.view = view;
         userHelper = UserHelper.getInstance(context);
     }
@@ -27,6 +36,27 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
         UserHelper.Profile profile = userHelper.getProfile();
         if (profile != null) {
             view.showProfile(profile);
+            view.showRewardPoints(points);
+
+            Disposable dis = api.queryTotalRewardPoints(profile.getId())
+                    .compose(RxUtil.<ResultEntity<Integer>>io2main())
+                    .subscribe(new Consumer<ResultEntity<Integer>>() {
+                                   @Override
+                                   public void accept(ResultEntity<Integer> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           points = result.getData();
+                                           view.showRewardPoints(points);
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(TabMinePresenter.this, throwable);
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(dis);
         }
     }
 

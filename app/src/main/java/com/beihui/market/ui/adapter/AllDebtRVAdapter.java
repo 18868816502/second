@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.Debt;
+import com.beihui.market.entity.AllDebt;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -16,9 +16,9 @@ import java.util.List;
 import static com.beihui.market.util.CommonUtils.keep2digits;
 
 
-public class AllDebtRVAdapter extends BaseQuickAdapter<Debt, BaseViewHolder> {
+public class AllDebtRVAdapter extends BaseQuickAdapter<AllDebt.Row, BaseViewHolder> {
 
-    private List<Debt> dataSet = new ArrayList<>();
+    private List<AllDebt.Row> dataSet = new ArrayList<>();
     private boolean showStatusTag;
 
     public AllDebtRVAdapter(boolean showStatusTag) {
@@ -27,7 +27,7 @@ public class AllDebtRVAdapter extends BaseQuickAdapter<Debt, BaseViewHolder> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Debt debt) {
+    protected void convert(BaseViewHolder helper, AllDebt.Row debt) {
         if (!TextUtils.isEmpty(debt.getLogo())) {
             Glide.with(helper.itemView.getContext())
                     .load(debt.getLogo())
@@ -52,16 +52,21 @@ public class AllDebtRVAdapter extends BaseQuickAdapter<Debt, BaseViewHolder> {
         if (showStatusTag) {
             helper.setVisible(R.id.debt_status, true);
             TextView textView = helper.getView(R.id.debt_status);
-            textView.setSelected(debt.isPaid());
-            textView.setText(debt.isPaid() ? "已还" : "待还");
+            textView.setSelected(debt.getStatus() == 2);
+            textView.setText(debt.getStatus() == 2 ? "已还" : "待还");
         }
     }
 
-    public void notifyDebtChanged(List<Debt> list) {
+    public void notifyDebtChanged(List<AllDebt.Row> list) {
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);
         }
         setNewData(dataSet);
+        disableLoadMoreIfNotFullPage();
+    }
+
+    public int getDataSetCount() {
+        return dataSet.size();
     }
 }

@@ -61,6 +61,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     TextView userNameTv;
     @BindView(R.id.login)
     TextView loginTv;
+    @BindView(R.id.points)
+    TextView points;
     @BindView(R.id.wechat_surprise)
     View wechatSurpriseView;
 
@@ -145,6 +147,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
         loginTv.setVisibility(View.VISIBLE);
         userNameTv.setVisibility(View.GONE);
+        points.setVisibility(View.GONE);
 
         Glide.with(this)
                 .load(R.mipmap.mine_head_icon)
@@ -303,6 +306,12 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 userNameTv.setText(username);
             }
         }
+    }
+
+    @Override
+    public void showRewardPoints(int points) {
+        this.points.setVisibility(View.VISIBLE);
+        this.points.setText(points + "");
     }
 
     @Override

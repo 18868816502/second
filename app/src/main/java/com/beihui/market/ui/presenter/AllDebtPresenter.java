@@ -6,7 +6,7 @@ import android.content.Context;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.entity.Debt;
+import com.beihui.market.entity.AllDebt;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.AllDebtContract;
 import com.beihui.market.util.RxUtil;
@@ -22,6 +22,8 @@ import io.reactivex.functions.Consumer;
 
 public class AllDebtPresenter extends BaseRxPresenter implements AllDebtContract.Presenter {
 
+    private static final int PAGE_SIZE = 10;
+
     private Api api;
     private AllDebtContract.View view;
     private int status;
@@ -31,7 +33,10 @@ public class AllDebtPresenter extends BaseRxPresenter implements AllDebtContract
     private double debtAmount;
     private double capitalAmount;
     private double interestAmount;
-    private List<Debt> debts = new ArrayList<>();
+    private List<AllDebt.Row> debts = new ArrayList<>();
+
+    private int curPageNo = 1;
+    private boolean canLoadMore;
 
     @Inject
     AllDebtPresenter(Context context, Api api, AllDebtContract.View view, int status) {
@@ -45,37 +50,52 @@ public class AllDebtPresenter extends BaseRxPresenter implements AllDebtContract
     public void loadDebts() {
         if (debts.size() > 0) {
             view.showDebtInfo(count, debtAmount, capitalAmount, interestAmount);
-
-            view.showDebts(Collections.unmodifiableList(debts));
+            view.showDebts(Collections.unmodifiableList(debts), canLoadMore);
         } else {
-            Disposable dis = api.queryAllDebt(userHelper.getProfile().getId(), status)
-                    .compose(RxUtil.<ResultEntity<List<Debt>>>io2main())
-                    .subscribe(new Consumer<ResultEntity<List<Debt>>>() {
-                                   @Override
-                                   public void accept(ResultEntity<List<Debt>> result) throws Exception {
-                                       if (result.isSuccess()) {
-                                           debts.clear();
-                                           if (result.getData() != null && result.getData().size() > 0) {
-                                               debts.addAll(result.getData());
-                                           }
-                                           computeDebtInfo();
-                                           view.showDebtInfo(count, debtAmount, capitalAmount, interestAmount);
-
-                                           view.showDebts(Collections.unmodifiableList(debts));
-                                       } else {
-                                           view.showErrorMsg(result.getMsg());
-                                       }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    logError(AllDebtPresenter.this, throwable);
-                                    view.showErrorMsg(generateErrorMsg(throwable));
-                                }
-                            });
-            addDisposable(dis);
+            loadMoreDebts();
         }
+    }
+
+    @Override
+    public void loadMoreDebts() {
+        Disposable dis = api.queryAllDebt(userHelper.getProfile().getId(), status, curPageNo, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<AllDebt>>io2main())
+                .subscribe(new Consumer<ResultEntity<AllDebt>>() {
+                               @Override
+                               public void accept(ResultEntity<AllDebt> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       curPageNo++;
+
+                                       int size = 0;
+                                       if (result.getData() != null) {
+                                           AllDebt allDebt = result.getData();
+                                           count = allDebt.getTotal();
+                                           debtAmount = allDebt.getPayableAmount();
+                                           capitalAmount = allDebt.getCapital();
+                                           interestAmount = allDebt.getInterest();
+
+                                           if (allDebt.getRows() != null && allDebt.getRows().size() > 0) {
+                                               debts.addAll(allDebt.getRows());
+                                               size = allDebt.getRows().size();
+                                           }
+                                       }
+                                       view.showDebtInfo(count, debtAmount, capitalAmount, interestAmount);
+
+                                       canLoadMore = size >= PAGE_SIZE;
+                                       view.showDebts(Collections.unmodifiableList(debts), canLoadMore);
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(AllDebtPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override
@@ -83,16 +103,5 @@ public class AllDebtPresenter extends BaseRxPresenter implements AllDebtContract
         view.navigateDebtDetail(debts.get(index));
     }
 
-    private void computeDebtInfo() {
-        count = debts.size();
-        debtAmount = 0;
-        capitalAmount = 0;
-        interestAmount = 0;
-        for (Debt debt : debts) {
-            capitalAmount += debt.getCapital();
-            interestAmount += debt.getInterest();
-        }
-        debtAmount += capitalAmount + interestAmount;
-    }
 
 }

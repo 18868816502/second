@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.entity.Debt;
+import com.beihui.market.entity.AllDebt;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAllDebtComponent;
 import com.beihui.market.injection.module.AllDebtModule;
@@ -80,6 +80,12 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
     @Override
     public void configViews() {
         adapter = new AllDebtRVAdapter(getArguments().getInt("debt_status") == AllDebtContract.Presenter.STATUS_ALL);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                presenter.loadMoreDebts();
+            }
+        }, recyclerView);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -132,13 +138,29 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
     }
 
     @Override
-    public void showDebts(List<Debt> list) {
+    public void showDebts(List<AllDebt.Row> list, boolean canLoadMore) {
         if (isAdded()) {
+            if (adapter.isLoading()) {
+                adapter.loadMoreComplete();
+            }
+            adapter.setEnableLoadMore(canLoadMore);
+
             adapter.notifyDebtChanged(list);
+
         }
     }
 
     @Override
-    public void navigateDebtDetail(Debt debt) {
+    public void navigateDebtDetail(AllDebt.Row debt) {
+
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        super.showErrorMsg(msg);
+        if (adapter.isLoading()) {
+            adapter.loadMoreComplete();
+        }
+        adapter.setEnableLoadMore(false);
     }
 }

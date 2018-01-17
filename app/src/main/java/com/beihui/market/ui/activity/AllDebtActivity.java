@@ -53,7 +53,6 @@ public class AllDebtActivity extends BaseComponentActivity {
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         viewPager.setAdapter(new DebtAdapter(getSupportFragmentManager()));
-        viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setLengthAndMarginBottom((int) (getResources().getDisplayMetrics().density * 25), (int) (getResources().getDisplayMetrics().density * 6));
         SlidePanelHelper.attach(this);

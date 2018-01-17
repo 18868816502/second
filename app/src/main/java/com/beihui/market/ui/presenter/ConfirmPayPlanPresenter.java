@@ -83,7 +83,17 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
 
     @Override
     public void editPayPlanAmount(int index, String amount) {
-        payPlan.getRepayPlan().get(index).setTermPayableAmount(Double.parseDouble(amount));
+        double newAmount = 0;
+        try {
+            newAmount = Double.parseDouble(amount);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        double oldAmount = payPlan.getRepayPlan().get(index).getTermPayableAmount();
+        payPlan.setPayableAmount(payPlan.getPayableAmount() - oldAmount + newAmount);
+        view.showPayPlanAbstract(payPlan);
+
+        payPlan.getRepayPlan().get(index).setTermPayableAmount(newAmount);
         view.showPayPlanList(payPlan.getRepayPlan());
     }
 
@@ -103,37 +113,22 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
             if (!TextUtils.isEmpty(payPlan.getProjectName())) {
                 params.put("projectName", payPlan.getProjectName());
             }
-            if (!TextUtils.isEmpty(payPlan.getRepayType())) {
-                params.put("repayType", Integer.parseInt(payPlan.getRepayType()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getCapital())) {
-                params.put("capital", Double.parseDouble(payPlan.getCapital()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getInterest())) {
-                params.put("interest", Double.parseDouble(payPlan.getInterest()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getTerm())) {
-                params.put("term", Integer.parseInt(payPlan.getTerm()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getTermType())) {
-                params.put("termType", Integer.parseInt(payPlan.getTermType()));
-            }
+            params.put("repayType", payPlan.getRepayType());
+            params.put("capital", payPlan.getCapital());
+            params.put("interest", payPlan.getInterest());
+            params.put("term", payPlan.getTerm());
+            params.put("termType", payPlan.getTermType());
             params.put("startDate", payPlan.getStartDate());
-            if (!TextUtils.isEmpty(payPlan.getPayableAmount())) {
-                params.put("payableAmount", Double.parseDouble(payPlan.getPayableAmount()));
+
+            params.put("payableAmount", payPlan.getPayableAmount());
+            if (payPlan.getRepayType() == 2) {
+                params.put("everyTermAmount", payPlan.getEveryTermAmount());
+            } else if (payPlan.getRepayType() == 3) {
+                params.put("termAmount", payPlan.getTermAmount());
+                params.put("termNum", payPlan.getTermNum());
             }
-            if (!TextUtils.isEmpty(payPlan.getEveryTermAmount())) {
-                params.put("everyTermAmount", Double.parseDouble(payPlan.getEveryTermAmount()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getTermAmount())) {
-                params.put("termAmount", Double.parseDouble(payPlan.getTermAmount()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getTermNum())) {
-                params.put("termNum", Integer.parseInt(payPlan.getTermNum()));
-            }
-            if (!TextUtils.isEmpty(payPlan.getRate())) {
-                params.put("rate", Double.parseDouble(payPlan.getRate()));
-            }
+
+            params.put("rate", payPlan.getRate());
             if (!TextUtils.isEmpty(payPlan.getRemark())) {
                 params.put("remark", payPlan.getRemark());
             }

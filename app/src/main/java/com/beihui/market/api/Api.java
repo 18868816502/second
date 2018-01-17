@@ -8,10 +8,10 @@ import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.CreditCard;
-import com.beihui.market.entity.Debt;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
@@ -579,11 +579,13 @@ public class Api {
     /**
      * 查询全部借款
      *
-     * @param userId 用户id
-     * @param status 借款状态 1-待还 2-已还 3-全部
+     * @param userId   用户id
+     * @param status   借款状态 1-待还 2-已还 3-全部
+     * @param pageNo   查询开始页数
+     * @param pageSize 查询每页大小
      */
-    public Observable<ResultEntity<List<Debt>>> queryAllDebt(String userId, int status) {
-        return service.queryAllDebt(userId, status);
+    public Observable<ResultEntity<AllDebt>> queryAllDebt(String userId, int status, int pageNo, int pageSize) {
+        return service.queryAllDebt(userId, status, pageNo, pageSize);
     }
 
     /**
@@ -681,6 +683,15 @@ public class Api {
             e.printStackTrace();
         }
         return service.queryBottomImage(version, "1");
+    }
+
+    /**
+     * 查询积分总额
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<Integer>> queryTotalRewardPoints(String userId) {
+        return service.queryTotalRewardPoints(userId);
     }
 
     /**

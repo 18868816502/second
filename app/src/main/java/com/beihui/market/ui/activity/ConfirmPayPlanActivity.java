@@ -49,6 +49,9 @@ import zhy.com.highlight.interfaces.HighLightInterface;
 import zhy.com.highlight.position.OnBaseCallback;
 import zhy.com.highlight.shape.CircleLightShape;
 
+import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
+
 public class ConfirmPayPlanActivity extends BaseComponentActivity implements ConfirmPayPlanContract.View {
 
     @BindView(R.id.tool_bar)
@@ -241,12 +244,9 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
             } else {
                 header.projectNameContainer.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(payPlan.getPayableAmount())) {
-                header.debtAmountView.setText(payPlan.getPayableAmount());
-            }
-            if (!TextUtils.isEmpty(payPlan.getRate())) {
-                header.rateView.setText(payPlan.getRate() + "%");
-            }
+
+            header.debtAmountView.setText(keep2digitsWithoutZero(payPlan.getPayableAmount()));
+            header.rateView.setText(keep2digits(payPlan.getRate()) + "%");
         }
     }
 

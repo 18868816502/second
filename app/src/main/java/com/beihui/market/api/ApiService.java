@@ -1,10 +1,10 @@
 package com.beihui.market.api;
 
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.CreditCard;
-import com.beihui.market.entity.Debt;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
@@ -367,7 +367,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/allLoan")
-    Observable<ResultEntity<List<Debt>>> queryAllDebt(@Field("userId") String userId, @Field("status") int status);
+    Observable<ResultEntity<AllDebt>> queryAllDebt(@Field("userId") String userId, @Field("status") int status, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
      * 查询借款记账渠道
@@ -434,6 +434,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/list")
     Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/userInteg/sum")
+    Observable<ResultEntity<Integer>> queryTotalRewardPoints(@Field("userId") String userId);
 
     /**
      * 查询积分任务信息

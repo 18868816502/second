@@ -2,14 +2,12 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
@@ -59,7 +57,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
     protected void onDestroy() {
         webView.getSettings().setJavaScriptEnabled(false);
         webView.destroy();
-        webView = null;
         super.onDestroy();
     }
 
@@ -73,18 +70,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).init();
-
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override

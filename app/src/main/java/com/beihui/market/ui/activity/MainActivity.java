@@ -363,64 +363,68 @@ public class MainActivity extends BaseComponentActivity {
             final int index = i;
             TabImage tabImage = list.get(i);
 
-            int[] colors = new int[]{
-                    Color.parseColor("#" + tabImage.getSelectedFontColor()),
-                    Color.parseColor("#" + tabImage.getSelectedFontColor()),
-                    Color.parseColor("#" + tabImage.getUnselectedFontColor())
-            };
-            int[][] states = new int[3][];
-            states[0] = new int[]{android.R.attr.state_selected};
-            states[1] = new int[]{android.R.attr.state_pressed};
-            states[2] = new int[]{};
-            ColorStateList colorStateList = new ColorStateList(states, colors);
-            textView[index].setTextColor(colorStateList);
+            if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
+                int[] colors = new int[]{
+                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
+                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
+                        Color.parseColor("#" + tabImage.getUnselectedFontColor())
+                };
+                int[][] states = new int[3][];
+                states[0] = new int[]{android.R.attr.state_selected};
+                states[1] = new int[]{android.R.attr.state_pressed};
+                states[2] = new int[]{};
+                ColorStateList colorStateList = new ColorStateList(states, colors);
+                textView[index].setTextColor(colorStateList);
+            }
 
-            Observable.just(new String[]{tabImage.getSelectedImage(), tabImage.getUnselectedImage()})
-                    .observeOn(Schedulers.io())
-                    .map(new Function<String[], Bitmap[]>() {
-                        @Override
-                        public Bitmap[] apply(String[] strings) throws Exception {
-                            Bitmap[] images = new Bitmap[2];
-                            byte[] bytes = client.newCall(new Request.Builder().url(strings[0]).build()).execute().body().bytes();
-                            images[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            if (!TextUtils.isEmpty(tabImage.getSelectedImage())) {
+                Observable.just(new String[]{tabImage.getSelectedImage(), tabImage.getUnselectedImage()})
+                        .observeOn(Schedulers.io())
+                        .map(new Function<String[], Bitmap[]>() {
+                            @Override
+                            public Bitmap[] apply(String[] strings) throws Exception {
+                                Bitmap[] images = new Bitmap[2];
+                                byte[] bytes = client.newCall(new Request.Builder().url(strings[0]).build()).execute().body().bytes();
+                                images[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                            bytes = client.newCall(new Request.Builder().url(strings[1]).build()).execute().body().bytes();
-                            images[1] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                bytes = client.newCall(new Request.Builder().url(strings[1]).build()).execute().body().bytes();
+                                images[1] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                            return images;
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Bitmap[]>() {
-                                   @Override
-                                   public void accept(Bitmap[] bitmaps) throws Exception {
-                                       if (bitmaps[0] != null && bitmaps[1] != null) {
-                                           StateListDrawable stateListDrawable = new StateListDrawable();
-                                           stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                           stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                           stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
+                                return images;
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<Bitmap[]>() {
+                                       @Override
+                                       public void accept(Bitmap[] bitmaps) throws Exception {
+                                           if (bitmaps[0] != null && bitmaps[1] != null) {
+                                               StateListDrawable stateListDrawable = new StateListDrawable();
+                                               stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
+                                               stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
+                                               stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
 
-                                           iconView[index].setImageDrawable(stateListDrawable);
+                                               iconView[index].setImageDrawable(stateListDrawable);
+                                           }
                                        }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(final Throwable throwable) throws Exception {
-                                    Log.e("MainActivity", throwable.toString());
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
-                                                throw throwable;
-                                            } catch (Throwable throwable1) {
-                                                throwable1.printStackTrace();
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(final Throwable throwable) throws Exception {
+                                        Log.e("MainActivity", throwable.toString());
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    throw throwable;
+                                                } catch (Throwable throwable1) {
+                                                    throwable1.printStackTrace();
+                                                }
                                             }
-                                        }
-                                    });
-                                }
-                            });
+                                        });
+                                    }
+                                });
+            }
         }
     }
 

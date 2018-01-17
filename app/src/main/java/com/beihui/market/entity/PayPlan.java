@@ -11,30 +11,21 @@ public class PayPlan implements Parcelable {
     private String channelId;
     private String channelName;
     private String projectName;
-    private String repayType;
-    private String capital;
-    private String interest;
-    private String term;
-    private String termType;
+    private int repayType;
+    private double capital;
+    private double interest;
+    private int term;
+    private int termType;
     private String startDate;
-    private String payableAmount;
-    private String everyTermAmount;
-    private String termAmount;
-    private String termNum;
-    private String rate;
+    private double payableAmount;
+    private double everyTermAmount;
+    private double termAmount;
+    private int termNum;
+    private double rate;
     private String logo;
     private String remark;
 
     private List<RepayPlanBean> repayPlan;
-
-    public List<RepayPlanBean> getRepayPlan() {
-        return repayPlan;
-    }
-
-    public void setRepayPlan(List<RepayPlanBean> repayPlan) {
-        this.repayPlan = repayPlan;
-    }
-
 
     public String getChannelId() {
         return channelId;
@@ -60,43 +51,43 @@ public class PayPlan implements Parcelable {
         this.projectName = projectName;
     }
 
-    public String getRepayType() {
+    public int getRepayType() {
         return repayType;
     }
 
-    public void setRepayType(String repayType) {
+    public void setRepayType(int repayType) {
         this.repayType = repayType;
     }
 
-    public String getCapital() {
+    public double getCapital() {
         return capital;
     }
 
-    public void setCapital(String capital) {
+    public void setCapital(double capital) {
         this.capital = capital;
     }
 
-    public String getInterest() {
+    public double getInterest() {
         return interest;
     }
 
-    public void setInterest(String interest) {
+    public void setInterest(double interest) {
         this.interest = interest;
     }
 
-    public String getTerm() {
+    public int getTerm() {
         return term;
     }
 
-    public void setTerm(String term) {
+    public void setTerm(int term) {
         this.term = term;
     }
 
-    public String getTermType() {
+    public int getTermType() {
         return termType;
     }
 
-    public void setTermType(String termType) {
+    public void setTermType(int termType) {
         this.termType = termType;
     }
 
@@ -108,43 +99,43 @@ public class PayPlan implements Parcelable {
         this.startDate = startDate;
     }
 
-    public String getPayableAmount() {
+    public double getPayableAmount() {
         return payableAmount;
     }
 
-    public void setPayableAmount(String payableAmount) {
+    public void setPayableAmount(double payableAmount) {
         this.payableAmount = payableAmount;
     }
 
-    public String getEveryTermAmount() {
+    public double getEveryTermAmount() {
         return everyTermAmount;
     }
 
-    public void setEveryTermAmount(String everyTermAmount) {
+    public void setEveryTermAmount(double everyTermAmount) {
         this.everyTermAmount = everyTermAmount;
     }
 
-    public String getTermAmount() {
+    public double getTermAmount() {
         return termAmount;
     }
 
-    public void setTermAmount(String termAmount) {
+    public void setTermAmount(double termAmount) {
         this.termAmount = termAmount;
     }
 
-    public String getTermNum() {
+    public int getTermNum() {
         return termNum;
     }
 
-    public void setTermNum(String termNum) {
+    public void setTermNum(int termNum) {
         this.termNum = termNum;
     }
 
-    public String getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
@@ -162,6 +153,14 @@ public class PayPlan implements Parcelable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<RepayPlanBean> getRepayPlan() {
+        return repayPlan;
+    }
+
+    public void setRepayPlan(List<RepayPlanBean> repayPlan) {
+        this.repayPlan = repayPlan;
     }
 
     public static class RepayPlanBean implements Parcelable {
@@ -287,17 +286,17 @@ public class PayPlan implements Parcelable {
         dest.writeString(this.channelId);
         dest.writeString(this.channelName);
         dest.writeString(this.projectName);
-        dest.writeString(this.repayType);
-        dest.writeString(this.capital);
-        dest.writeString(this.interest);
-        dest.writeString(this.term);
-        dest.writeString(this.termType);
+        dest.writeInt(this.repayType);
+        dest.writeDouble(this.capital);
+        dest.writeDouble(this.interest);
+        dest.writeInt(this.term);
+        dest.writeInt(this.termType);
         dest.writeString(this.startDate);
-        dest.writeString(this.payableAmount);
-        dest.writeString(this.everyTermAmount);
-        dest.writeString(this.termAmount);
-        dest.writeString(this.termNum);
-        dest.writeString(this.rate);
+        dest.writeDouble(this.payableAmount);
+        dest.writeDouble(this.everyTermAmount);
+        dest.writeDouble(this.termAmount);
+        dest.writeInt(this.termNum);
+        dest.writeDouble(this.rate);
         dest.writeString(this.logo);
         dest.writeString(this.remark);
         dest.writeTypedList(this.repayPlan);
@@ -307,17 +306,17 @@ public class PayPlan implements Parcelable {
         this.channelId = in.readString();
         this.channelName = in.readString();
         this.projectName = in.readString();
-        this.repayType = in.readString();
-        this.capital = in.readString();
-        this.interest = in.readString();
-        this.term = in.readString();
-        this.termType = in.readString();
+        this.repayType = in.readInt();
+        this.capital = in.readDouble();
+        this.interest = in.readDouble();
+        this.term = in.readInt();
+        this.termType = in.readInt();
         this.startDate = in.readString();
-        this.payableAmount = in.readString();
-        this.everyTermAmount = in.readString();
-        this.termAmount = in.readString();
-        this.termNum = in.readString();
-        this.rate = in.readString();
+        this.payableAmount = in.readDouble();
+        this.everyTermAmount = in.readDouble();
+        this.termAmount = in.readDouble();
+        this.termNum = in.readInt();
+        this.rate = in.readDouble();
         this.logo = in.readString();
         this.remark = in.readString();
         this.repayPlan = in.createTypedArrayList(RepayPlanBean.CREATOR);

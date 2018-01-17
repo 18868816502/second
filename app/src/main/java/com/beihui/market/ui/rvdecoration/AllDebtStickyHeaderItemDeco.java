@@ -9,6 +9,8 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.beihui.market.ui.adapter.AllDebtRVAdapter;
+
 public abstract class AllDebtStickyHeaderItemDeco extends RecyclerView.ItemDecoration {
 
     private Paint mHeaderTxtPaint;
@@ -43,43 +45,49 @@ public abstract class AllDebtStickyHeaderItemDeco extends RecyclerView.ItemDecor
     @Override
     public void getItemOffsets(Rect outRect, View itemView, RecyclerView parent, RecyclerView.State state) {
         int pos = parent.getChildAdapterPosition(itemView);
-        String curHeaderName = getHeaderName(pos);
 
-        if (curHeaderName == null) {
-            return;
-        }
-        if (pos == 0 || !curHeaderName.equals(getHeaderName(pos - 1))) {
+        AllDebtRVAdapter adapter = (AllDebtRVAdapter) parent.getAdapter();
+        if (pos == 0) {
             outRect.top = headerHeight;
+        } else if (pos < adapter.getDataSetCount()) {
+            String curHeaderName = getHeaderName(pos);
+            if (!curHeaderName.equals(getHeaderName(pos - 1))) {
+                outRect.top = headerHeight;
+            }
         }
+
     }
 
 
     @Override
     public void onDrawOver(Canvas canvas, RecyclerView recyclerView, RecyclerView.State state) {
-
-        int childCount = recyclerView.getChildCount();//获取屏幕上可见的item数量
+        int childCount = recyclerView.getChildCount();
         int left = recyclerView.getLeft() + recyclerView.getPaddingLeft();
         int right = recyclerView.getRight() - recyclerView.getPaddingRight();
+
+        AllDebtRVAdapter adapter = (AllDebtRVAdapter) recyclerView.getAdapter();
 
         String firstHeaderName = null;
         int translateTop = 0;//绘制悬浮头部的偏移量
         /*for循环里面绘制每个分组的头部*/
         for (int i = 0; i < childCount; i++) {
             View childView = recyclerView.getChildAt(i);
-            int pos = recyclerView.getChildAdapterPosition(childView); //获取当前view在Adapter里的pos
-            String curHeaderName = getHeaderName(pos);                 //根据pos获取要悬浮的头部名
-            if (i == 0) {
-                firstHeaderName = curHeaderName;
-            }
-            if (curHeaderName == null)
-                continue;//如果headerName为空，跳过此次循环
+            int pos = recyclerView.getChildAdapterPosition(childView);
+            if (pos < adapter.getDataSetCount()) {
+                String curHeaderName = getHeaderName(pos);
+                if (i == 0) {
+                    firstHeaderName = curHeaderName;
+                }
+                if (curHeaderName == null)
+                    continue;
 
-            int viewTop = childView.getTop() + recyclerView.getPaddingTop();
-            if (pos == 0 || !curHeaderName.equals(getHeaderName(pos - 1))) {//如果当前位置为0，或者与上一个item头部名不同的，都腾出头部空间
-                canvas.drawRect(left, viewTop - headerHeight, right, viewTop, mHeaderContentPaint);
-                canvas.drawText(curHeaderName, left + textPaddingLeft, viewTop - headerHeight / 2 + txtYAxis, mHeaderTxtPaint);
-                if (headerHeight < viewTop && viewTop <= 2 * headerHeight) { //此判断是刚好2个头部碰撞，悬浮头部就要偏移
-                    translateTop = viewTop - 2 * headerHeight;
+                int viewTop = childView.getTop() + recyclerView.getPaddingTop();
+                if (pos == 0 || !curHeaderName.equals(getHeaderName(pos - 1))) {
+                    canvas.drawRect(left, viewTop - headerHeight, right, viewTop, mHeaderContentPaint);
+                    canvas.drawText(curHeaderName, left + textPaddingLeft, viewTop - headerHeight / 2 + txtYAxis, mHeaderTxtPaint);
+                    if (headerHeight < viewTop && viewTop <= 2 * headerHeight) { //此判断是刚好2个头部碰撞，悬浮头部就要偏移
+                        translateTop = viewTop - 2 * headerHeight;
+                    }
                 }
             }
         }

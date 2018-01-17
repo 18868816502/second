@@ -3,7 +3,7 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
-import com.beihui.market.entity.Debt;
+import com.beihui.market.entity.AllDebt;
 
 import java.util.List;
 
@@ -18,6 +18,11 @@ public interface AllDebtContract {
          * 加载账单列表
          */
         void loadDebts();
+
+        /**
+         * 加载更多账单列表
+         */
+        void loadMoreDebts();
 
         /**
          * 点击借款项目
@@ -43,13 +48,13 @@ public interface AllDebtContract {
          *
          * @param list 账单列表
          */
-        void showDebts(List<Debt> list);
+        void showDebts(List<AllDebt.Row> list, boolean canLoadMore);
 
         /**
          * 导航至借款项目详情
          *
          * @param debt 借款项目
          */
-        void navigateDebtDetail(Debt debt);
+        void navigateDebtDetail(AllDebt.Row debt);
     }
 }
