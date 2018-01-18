@@ -713,6 +713,16 @@ public class Api {
         return service.sendRewardPointRead(recordId, 1);
     }
 
+    /**
+     * 添加积分任务
+     *
+     * @param userId 用户id
+     * @param taskId 积分任务id
+     */
+    public Observable<ResultEntity> addRewardPoint(String userId, String taskId) {
+        return service.addRewardPoint(userId, taskId);
+    }
+
     /*****+******************************************************个推绑定***********************************************+*****+*****/
 
     /**

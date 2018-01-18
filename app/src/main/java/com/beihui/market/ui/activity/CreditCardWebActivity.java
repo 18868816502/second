@@ -2,10 +2,13 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,6 +19,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.view.BusinessWebView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -25,6 +29,8 @@ import java.util.LinkedList;
 import butterknife.BindView;
 
 public class CreditCardWebActivity extends BaseComponentActivity {
+
+    private static final int REQUEST_CODE_LOGIN = 2;
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -37,12 +43,14 @@ public class CreditCardWebActivity extends BaseComponentActivity {
 
     private LinkedList<String> titleList = new LinkedList<>();
 
+    private String pendingUrl;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_credit_card;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
@@ -86,14 +94,30 @@ public class CreditCardWebActivity extends BaseComponentActivity {
             }
         });
 
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(this, "android");
+
         SlidePanelHelper.attach(this);
     }
 
     @Override
     public void initDatas() {
-        webView.loadUrl(NetConstants.H5_CREDIT_CARD_CENTER);
-        titleList.push("信用卡中心");
-        title.setText("信用卡中心");
+        String url = getIntent().getStringExtra("url");
+        String title;
+        if (!TextUtils.isEmpty(url)) {
+            title = getIntent().getStringExtra("title");
+        } else {
+            String userId = null;
+            if (UserHelper.getInstance(this).getProfile() != null) {
+                userId = UserHelper.getInstance(this).getProfile().getId();
+            }
+            url = NetConstants.generateCreditCardUrl(userId);
+            title = "信用卡中心";
+        }
+
+        webView.loadUrl(url);
+        this.titleList.push(title);
+        this.title.setText(title);
     }
 
     @Override
@@ -111,6 +135,22 @@ public class CreditCardWebActivity extends BaseComponentActivity {
             return true;
         } else {
             return super.onKeyUp(keyCode, event);
+        }
+    }
+
+    @JavascriptInterface
+    public void authorize(String nextUrl) {
+        pendingUrl = nextUrl;
+        startActivityForResult(new Intent(this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_LOGIN) {
+            if (UserHelper.getInstance(this).getProfile() != null) {
+                webView.loadUrl(pendingUrl + "&isApp=1&userId=" + UserHelper.getInstance(this).getProfile().getId());
+            }
         }
     }
 }

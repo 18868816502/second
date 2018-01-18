@@ -125,4 +125,29 @@ public class SPUtils {
         editor.putBoolean("tabAccountDialogShowed", showed);
         editor.apply();
     }
+
+    public static String getPushBindClientId(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString("pushBindClientId", null);
+    }
+
+    public static void setPushBindClientId(Context context, String id) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("pushBindClientId", id);
+        editor.apply();
+    }
+
+    public static String getPushBindUserId(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString("pushBindUserId", null);
+    }
+
+    public static void setPushBindUserId(Context context, String userId) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("pushBindUserId", userId);
+        editor.apply();
+    }
+
 }

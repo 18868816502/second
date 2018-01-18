@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +75,10 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     View analyzeView;
     @BindView(R.id.add)
     View addView;
+    @BindView(R.id.bill_add)
+    View billAdd;
+    @BindView(R.id.bill_add_no_circle)
+    View billAddNoCircle;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -160,16 +167,16 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             if (scrollY >= secEdge) {
                 if (analyzeView.getVisibility() == View.GONE) {
                     analyzeView.setVisibility(View.VISIBLE);
-                }
-                if (calendarView.getVisibility() == View.GONE) {
                     calendarView.setVisibility(View.VISIBLE);
+                    billAdd.setVisibility(View.GONE);
+                    billAddNoCircle.setVisibility(View.VISIBLE);
                 }
             } else {
                 if (analyzeView.getVisibility() == View.VISIBLE) {
                     analyzeView.setVisibility(View.GONE);
-                }
-                if (calendarView.getVisibility() == View.VISIBLE) {
                     calendarView.setVisibility(View.GONE);
+                    billAdd.setVisibility(View.VISIBLE);
+                    billAddNoCircle.setVisibility(View.GONE);
                 }
             }
         }
@@ -249,7 +256,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ALL_DEBT);
 
-                startActivity(new Intent(getContext(), AllDebtActivity.class));
+                presenter.clickAllDebt();
             }
         });
         header.debtEye.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -289,7 +296,6 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.set_status) {
-
                     presenter.updateDebtStatus(position);
                 } else if (view.getId() == R.id.debt_container) {
                     presenter.clickDebt(position);
@@ -392,11 +398,18 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showDebtInfo(double debtAmount, double debtSevenDay, double debtMonth) {
-        header.debtAmount.setText(keep2digits(debtAmount));
+        String amountStr = keep2digits(debtAmount);
+        if (amountStr.contains(".")) {
+            SpannableString ss = new SpannableString(amountStr);
+            ss.setSpan(new AbsoluteSizeSpan(20, true), amountStr.indexOf("."), amountStr.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            header.debtAmount.setText(ss);
+        } else {
+            header.debtAmount.setText(amountStr);
+        }
         header.debtSevenDay.setText(keep2digits(debtSevenDay));
         header.debtMonth.setText(keep2digits(debtMonth));
 
-        this.debtAmount.setText(keep2digits(debtAmount));
+        this.debtAmount.setText(amountStr);
     }
 
 
@@ -480,6 +493,11 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     }
 
     @Override
+    public void navigateAllDebt() {
+        startActivity(new Intent(getContext(), AllDebtActivity.class));
+    }
+
+    @Override
     public void showDebtInfo() {
         updateContent(true);
         updateNoUserBlock(false);
@@ -494,20 +512,20 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     }
 
     private void updateContent(boolean show) {
-        header.debtAmount.setVisibility(show ? View.VISIBLE : View.GONE);
-        header.debtSevenDay.setVisibility(show ? View.VISIBLE : View.GONE);
-        header.debtMonth.setVisibility(show ? View.VISIBLE : View.GONE);
+        header.debtAmount.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        header.debtSevenDay.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        header.debtMonth.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void updateNoUserBlock(boolean show) {
-        header.debtAmountNoUserLogin.setVisibility(show ? View.VISIBLE : View.GONE);
-        header.debtSevenDayNoUserLogin.setVisibility(show ? View.VISIBLE : View.GONE);
-        header.debtMonthNoUserLogin.setVisibility(show ? View.VISIBLE : View.GONE);
+        header.debtAmountNoUserLogin.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        header.debtSevenDayNoUserLogin.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        header.debtMonthNoUserLogin.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void updateHide(boolean show) {
-        header.debtAmountHide.setVisibility(show ? View.VISIBLE : View.GONE);
-        header.debtSevenHide.setVisibility(show ? View.VISIBLE : View.GONE);
-        header.debtMonthHide.setVisibility(show ? View.VISIBLE : View.GONE);
+        header.debtAmountHide.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        header.debtSevenHide.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        header.debtMonthHide.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 }

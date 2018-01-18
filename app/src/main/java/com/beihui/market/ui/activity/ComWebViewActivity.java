@@ -3,14 +3,14 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -20,6 +20,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
@@ -50,7 +51,15 @@ public class ComWebViewActivity extends BaseComponentActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        String style = getIntent().getStringExtra("style");
+        if (!TextUtils.isEmpty(style) && style.equals("light")) {
+            toolbar.setBackgroundColor(Color.WHITE);
+            titleTv.setTextColor(Color.BLACK);
+            ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
+            setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+        } else {
+            setupToolbar(toolbar);
+        }
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -73,18 +82,6 @@ public class ComWebViewActivity extends BaseComponentActivity {
                 startActivityWithoutOverride(intent);
             }
         });
-
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
 
         SlidePanelHelper.attach(this);
     }

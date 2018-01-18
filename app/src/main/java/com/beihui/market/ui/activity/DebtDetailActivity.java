@@ -121,6 +121,8 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
     private DebtDetailRVAdapter adapter;
     private Header header;
 
+    private String debtId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -270,10 +272,11 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+        debtId = getIntent().getStringExtra("debt_id");
         DaggerDebtDetailComponent.builder()
                 .appComponent(appComponent)
                 .debtDetailModule(new DebtDetailModule(this))
-                .debtId(getIntent().getStringExtra("debt_id"))
+                .debtId(debtId)
                 .build()
                 .inject(this);
     }
@@ -334,6 +337,9 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
 
     @Override
     public void showDeleteDebtSuccess(String msg) {
+        Intent intent = new Intent();
+        intent.putExtra("deleteDebtId", debtId);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -342,13 +348,5 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         Intent intent = new Intent(this, AddDebtActivity.class);
         intent.putExtra("pending_debt", debtDetail);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_EDIT) {
-            finish();
-        }
     }
 }

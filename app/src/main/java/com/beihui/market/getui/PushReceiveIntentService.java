@@ -17,6 +17,7 @@ import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.util.NotificationUtil;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
@@ -41,23 +42,32 @@ public class PushReceiveIntentService extends GTIntentService {
             Log.i(TAG, "onReceiveClintId " + s);
         }
         if (UserHelper.getInstance(App.getInstance()).getProfile() != null) {
+            String bindClientId = SPUtils.getPushBindClientId(context);
+            String bindUserId = SPUtils.getPushBindUserId(context);
             String userId = UserHelper.getInstance(App.getInstance()).getProfile().getId();
-            Api.getInstance().bindClientId(userId, s)
-                    .compose(RxUtil.<ResultEntity>io2main())
-                    .subscribe(new Consumer<ResultEntity>() {
-                                   @Override
-                                   public void accept(ResultEntity result) throws Exception {
-                                       if (!result.isSuccess()) {
-                                           Log.e(TAG, result.getMsg());
+            //如果相同的userId，个推clientId已经绑定过，则不要再发送请求
+            if (!userId.equals(bindUserId) || !s.equals(bindClientId)) {
+                //记录相关id
+                SPUtils.setPushBindClientId(context, s);
+                SPUtils.setPushBindUserId(context, userId);
+
+                Api.getInstance().bindClientId(userId, s)
+                        .compose(RxUtil.<ResultEntity>io2main())
+                        .subscribe(new Consumer<ResultEntity>() {
+                                       @Override
+                                       public void accept(ResultEntity result) throws Exception {
+                                           if (!result.isSuccess()) {
+                                               Log.e(TAG, result.getMsg());
+                                           }
                                        }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    Log.e(TAG, "throwable " + throwable);
-                                }
-                            });
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        Log.e(TAG, "throwable " + throwable);
+                                    }
+                                });
+            }
         }
     }
 

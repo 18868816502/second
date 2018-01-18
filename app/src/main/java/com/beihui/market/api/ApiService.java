@@ -453,6 +453,13 @@ public interface ApiService {
     @POST(BASE_PATH + "/userInteg/isRead")
     Observable<ResultEntity> sendRewardPointRead(@Field("recordId") String recordId, @Field("isRead") int isRead);
 
+    /**
+     * 添加一个积分任务
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/userInteg/add")
+    Observable<ResultEntity> addRewardPoint(@Field("userId") String userId, @Field("taskId") String taskId);
+
 
     /****************************************************个推账号用户绑定*****************************************************/
 

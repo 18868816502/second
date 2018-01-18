@@ -5,14 +5,12 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -36,12 +34,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 public class RewardPointActivity extends BaseComponentActivity {
 
     private static final int REQUEST_CODE_MARKET = 1;
-    private static final int REQUEST_CODE_LOGIN = 2;
+    private static final int REQUEST_CODE_INVITATION = 2;
+    private static final int REQUEST_CODE_ADD_DEBT = 3;
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -55,13 +59,14 @@ public class RewardPointActivity extends BaseComponentActivity {
     private LinkedList<String> titleList = new LinkedList<>();
 
     private long marketStartTime;
+    private String pendingTaskId;
 
     @Override
     public int getLayoutId() {
         return R.layout.activity_reward_points;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     public void configViews() {
         setupToolbar(toolbar);
@@ -77,10 +82,6 @@ public class RewardPointActivity extends BaseComponentActivity {
                     }
                 }
             }
-        });
-
-        webView.setWebViewClient(new WebViewClient() {
-
         });
 
         webView.setWebViewClient(new WebViewClient() {
@@ -107,24 +108,14 @@ public class RewardPointActivity extends BaseComponentActivity {
             }
         });
 
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+        webView.addJavascriptInterface(this, "android");
 
         SlidePanelHelper.attach(this);
     }
 
     @Override
     public void initDatas() {
-        webView.loadUrl(NetConstants.H5_REWARD_POINTS);
+        webView.loadUrl(NetConstants.generateRewardPointsUrl(UserHelper.getInstance(this).getProfile().getId()));
         titleList.push("我的积分");
         title.setText("我的积分");
     }
@@ -148,42 +139,76 @@ public class RewardPointActivity extends BaseComponentActivity {
     }
 
     @JavascriptInterface
-    public void goToAppStore() {
-        marketStartTime = System.currentTimeMillis();
-        try {
-            Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName));
-            startActivityWithoutOverride(toMarket);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void goToAppStore(final String taskId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                marketStartTime = System.currentTimeMillis();
+                pendingTaskId = taskId;
+                try {
+                    startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName)), REQUEST_CODE_MARKET);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @JavascriptInterface
-    public void authorize() {
-        startActivityForResult(new Intent(this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
+    public void inviteFriend() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startActivityForResult(new Intent(RewardPointActivity.this, InvitationActivity.class), REQUEST_CODE_INVITATION);
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void goToAddDebt() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startActivityForResult(new Intent(RewardPointActivity.this, AddDebtActivity.class), REQUEST_CODE_ADD_DEBT);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CODE_MARKET) {
-                //打开应用市场超过10秒钟，就视为评论
-                if (System.currentTimeMillis() - marketStartTime >= 10 * 1000) {
-                    checkMarketCommentReward();
-                }
-            } else if (requestCode == REQUEST_CODE_LOGIN) {
-                if (UserHelper.getInstance(this).getProfile() != null) {
-                    reloadWithUserId();
-                }
+        webView.reload();
+        if (requestCode == REQUEST_CODE_MARKET) {
+            //打开应用市场超过10秒钟，就视为评论
+            if (System.currentTimeMillis() - marketStartTime >= 10 * 1000) {
+                checkMarketCommentReward(pendingTaskId);
             }
         }
+
     }
 
-    private void checkMarketCommentReward() {
-        UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
+    private void checkMarketCommentReward(String taskId) {
+        final UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
         if (profile != null) {
-            Api.getInstance().queryRewardPoints(profile.getId(), Constant.REWARD_POINTS_TASK_NAME_COMMENT)
+            final Api api = Api.getInstance();
+            api.addRewardPoint(profile.getId(), taskId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .filter(new Predicate<ResultEntity>() {
+                        @Override
+                        public boolean test(ResultEntity result) throws Exception {
+                            if (!result.isSuccess()) {
+                                ToastUtils.showShort(RewardPointActivity.this, result.getMsg(), null);
+                            }
+                            return result.isSuccess();
+                        }
+                    })
+                    .observeOn(Schedulers.io())
+                    .flatMap(new Function<ResultEntity, ObservableSource<ResultEntity<List<RewardPoint>>>>() {
+                        @Override
+                        public ObservableSource<ResultEntity<List<RewardPoint>>> apply(ResultEntity resultEntity) throws Exception {
+                            return api.queryRewardPoints(profile.getId(), Constant.REWARD_POINTS_TASK_NAME_COMMENT);
+                        }
+                    })
                     .compose(RxUtil.<ResultEntity<List<RewardPoint>>>io2main())
                     .subscribe(new Consumer<ResultEntity<List<RewardPoint>>>() {
                                    @Override
@@ -234,9 +259,5 @@ public class RewardPointActivity extends BaseComponentActivity {
                                 Log.e(RewardPointActivity.class.getSimpleName(), throwable.toString());
                             }
                         });
-    }
-
-    private void reloadWithUserId() {
-
     }
 }

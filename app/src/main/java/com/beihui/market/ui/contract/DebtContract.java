@@ -61,6 +61,11 @@ public interface DebtContract {
          * @param checked 是否隐藏
          */
         void clickEye(boolean checked);
+
+        /**
+         * 点击全部借款
+         */
+        void clickAllDebt();
     }
 
     interface View extends BaseView<Presenter> {
@@ -138,6 +143,11 @@ public interface DebtContract {
          * 导航至信用卡中心
          */
         void navigateCreditCardCenter();
+
+        /**
+         * 导航至全部借款
+         */
+        void navigateAllDebt();
 
         /**
          * 显示账单信息

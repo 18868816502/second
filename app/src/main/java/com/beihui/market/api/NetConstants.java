@@ -38,11 +38,15 @@ public class NetConstants {
 
     public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";
 
+    public static final String H5_DEBT_ANALYZE = H5_DOMAIN + "/debtAnalysis.html";
+
     public static final String H5_CREDIT_CARD_CENTER = H5_DOMAIN + "/creditIndex.html";
 
     public static final String H5_REWARD_POINTS = H5_DOMAIN + "/integral.html";
 
-    public static final String H5_TAB_ACCOUNT_HINT = "https://www.baidu.com";
+    public static final String H5_TAB_ACCOUNT_HINT = H5_DOMAIN + "/chargeImg.html";
+
+    public static final String H5_ADD_DEBT_EXPLAIN = H5_DOMAIN + "/explain.html";
 
     public static String generateNewsUrl(String id, String userId) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
@@ -63,6 +67,15 @@ public class NetConstants {
     public static String generateTestUrl(String id) {
         return H5_TEST + "?isApp=1&id=" + id;
     }
+
+    public static String generateCreditCardUrl(String id) {
+        return H5_CREDIT_CARD_CENTER + "?isApp=1&userId=" + id;
+    }
+
+    public static String generateRewardPointsUrl(String id) {
+        return H5_REWARD_POINTS + "?isApp=1&userId=" + id;
+    }
+
 
     public static String generateOneKeyLoanUrl(List<String> ids, String userId) {
         StringBuilder sb = new StringBuilder();

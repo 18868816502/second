@@ -30,6 +30,13 @@ public interface AllDebtContract {
          * @param index 点击位置
          */
         void clickDebt(int index);
+
+        /**
+         * 借款项目被删除
+         *
+         * @param debtId 被删除的项目id
+         */
+        void debtDeleted(String debtId);
     }
 
     interface View extends BaseView<Presenter> {

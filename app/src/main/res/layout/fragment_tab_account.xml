@@ -65,13 +65,27 @@
                     tools:text="3658.00" />
             </LinearLayout>
 
-
-            <ImageView
+            <FrameLayout
                 android:id="@+id/add"
-                style="@style/ToolBarIconStyle"
+                android:layout_width="@dimen/tool_bar_height"
+                android:layout_height="@dimen/tool_bar_height"
                 android:layout_gravity="right"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/bill_add" />
+                android:layout_marginRight="12dp">
+
+                <ImageView
+                    android:id="@+id/bill_add"
+                    style="@style/ToolBarIconStyle"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bill_add" />
+
+                <ImageView
+                    android:id="@+id/bill_add_no_circle"
+                    style="@style/ToolBarIconStyle"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bill_add_no_circle"
+                    android:visibility="gone" />
+            </FrameLayout>
+
 
             <ImageView
                 android:id="@+id/analyze"

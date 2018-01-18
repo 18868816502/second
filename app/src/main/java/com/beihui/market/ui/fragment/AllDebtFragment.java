@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAllDebtComponent;
 import com.beihui.market.injection.module.AllDebtModule;
 import com.beihui.market.ui.activity.AllDebtActivity;
+import com.beihui.market.ui.activity.DebtDetailActivity;
 import com.beihui.market.ui.adapter.AllDebtRVAdapter;
 import com.beihui.market.ui.contract.AllDebtContract;
 import com.beihui.market.ui.presenter.AllDebtPresenter;
@@ -26,6 +28,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static android.app.Activity.RESULT_OK;
 import static com.beihui.market.util.CommonUtils.keep2digits;
 
 public class AllDebtFragment extends BaseComponentFragment implements AllDebtContract.View {
@@ -146,13 +149,14 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
             adapter.setEnableLoadMore(canLoadMore);
 
             adapter.notifyDebtChanged(list);
-
         }
     }
 
     @Override
     public void navigateDebtDetail(AllDebt.Row debt) {
-
+        Intent intent = new Intent(getContext(), DebtDetailActivity.class);
+        intent.putExtra("debt_id", debt.getId());
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -162,5 +166,16 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
             adapter.loadMoreComplete();
         }
         adapter.setEnableLoadMore(false);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            String deleteId = data.getStringExtra("deleteDebtId");
+            if (deleteId != null) {
+                presenter.debtDeleted(deleteId);
+            }
+        }
     }
 }

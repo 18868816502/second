@@ -103,5 +103,27 @@ public class AllDebtPresenter extends BaseRxPresenter implements AllDebtContract
         view.navigateDebtDetail(debts.get(index));
     }
 
+    @Override
+    public void debtDeleted(String debtId) {
+        AllDebt.Row deleteDebt = null;
+        for (int i = 0; i < debts.size(); ++i) {
+            AllDebt.Row row = debts.get(i);
+            if (row.getId().equals(debtId)) {
+                deleteDebt = row;
+                debts.remove(row);
+            }
+        }
+        if (deleteDebt != null) {
+            count -= 1;
+            debtAmount -= deleteDebt.getPayableAmount();
+            capitalAmount -= deleteDebt.getCapital();
+            interestAmount -= deleteDebt.getInterest();
+
+            view.showDebtInfo(count, debtAmount, capitalAmount, interestAmount);
+
+            view.showDebts(Collections.unmodifiableList(debts), canLoadMore);
+        }
+    }
+
 
 }

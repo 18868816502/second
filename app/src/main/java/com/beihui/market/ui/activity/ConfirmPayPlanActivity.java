@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.support.v7.widget.LinearLayoutManager;
@@ -262,8 +263,10 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
         header.itemView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                setResult(RESULT_OK);
-                finish();
+                Intent intent = new Intent(ConfirmPayPlanActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("account", true);
+                startActivity(intent);
             }
         }, 200);
     }

@@ -20,6 +20,11 @@
             tools:text="信用卡中心" />
     </android.support.v7.widget.Toolbar>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

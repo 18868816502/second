@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
@@ -227,6 +228,17 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+
+        desView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddDebtActivity.this, ComWebViewActivity.class);
+                intent.putExtra("url", NetConstants.H5_ADD_DEBT_EXPLAIN);
+                intent.putExtra("title", "记账说明");
+                intent.putExtra("style", "light");
+                startActivity(intent);
+            }
+        });
 
         SlidePanelHelper.attach(this);
         AndroidBug5497Fix.assistActivity(this);
