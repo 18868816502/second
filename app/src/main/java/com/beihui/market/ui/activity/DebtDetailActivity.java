@@ -318,7 +318,7 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         header.debtAmount.setText(keep2digits(debtDetail.getPayableAmount()));
         header.capital.setText(keep2digits(debtDetail.getCapital()));
         header.debtPlatform.setText(debtDetail.getChannelName());
-        header.interestRate.setText(keep2digits(debtDetail.getRate()) + "%年息");
+        header.interestRate.setText(keep2digits(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
         if (!TextUtils.isEmpty(debtDetail.getRemark())) {
             header.remark.setText(debtDetail.getRemark());
         }

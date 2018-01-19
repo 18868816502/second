@@ -79,6 +79,8 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
         TextView projectName;
         @BindView(R.id.debt_amount)
         TextView debtAmountView;
+        @BindView(R.id.interest_rate_text)
+        TextView rateTextView;
         @BindView(R.id.interest_rate)
         TextView rateView;
         @BindView(R.id.sticky_header_container)
@@ -247,6 +249,7 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
             }
 
             header.debtAmountView.setText(keep2digitsWithoutZero(payPlan.getPayableAmount()));
+            header.rateTextView.setText(payPlan.getTermType() == 1 ? "日息" : "月息");
             header.rateView.setText(keep2digits(payPlan.getRate()) + "%");
         }
     }

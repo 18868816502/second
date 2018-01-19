@@ -53,10 +53,10 @@ android {
 
     buildTypes {
         debug {
-//            buildConfigField("String", "DOMAIN", "\"http://192.168.1.178:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.196:100\"")
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "DOMAIN", "\"http://192.168.1.178:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.196:100\"")
+//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
         }
         preview {
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")

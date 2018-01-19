@@ -105,12 +105,13 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/interest_rate_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:text="年息"
                     android:textColor="@color/black_2"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="年息" />
 
                 <TextView
                     android:id="@+id/interest_rate"

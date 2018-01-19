@@ -153,7 +153,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             if (firEdge == -1 && secEdge == -1) {
                 int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
                 firEdge = header.debtAmount.getBottom() + statusHeight;
-                secEdge = header.itemView.getBottom() + toolbar.getMeasuredHeight();
+                secEdge = header.itemView.getBottom() + getResources().getDimensionPixelSize(R.dimen.tool_bar_height);
             }
             if (scrollY >= firEdge) {
                 if (debtAmountContainer.getVisibility() == View.GONE) {
@@ -434,14 +434,14 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                                         marginInfo.rightMargin = rectF.width() / 2 + 20;
                                         marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height();
                                     }
-                                }, new CircleLightShape(0, 0, 20))
+                                }, new CircleLightShape())
                                 .addHighLight(guideConfirmAnchor, R.layout.layout_highlight_confirm, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.rightMargin = rightMargin / 2;
                                         marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90;
                                     }
-                                }, new CircleLightShape(0, 0, 0))
+                                }, new CircleLightShape())
                                 .autoRemove(false)
                                 .show();
                         infoHighLight.getHightLightView().findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
