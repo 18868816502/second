@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import com.beihui.market.R;
@@ -205,22 +204,23 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
     @Override
     public void scrollToPosition(int position) {
         //平滑滚动top，简单粗暴处理
-        final int oldTop = recyclerView.computeVerticalScrollOffset();
-        ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(position + 1, 0);
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                final int newTop = recyclerView.computeVerticalScrollOffset();
-                recyclerView.scrollBy(0, oldTop - newTop);
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.smoothScrollBy(0, newTop - oldTop, new DecelerateInterpolator(2));
-                    }
-                }, 10);
-            }
-        }, 10);
+//        final int oldTop = recyclerView.computeVerticalScrollOffset();
+//        ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(position + 1, 0);
+//        recyclerView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                final int newTop = recyclerView.computeVerticalScrollOffset();
+//                recyclerView.scrollBy(0, oldTop - newTop);
+//                recyclerView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        recyclerView.smoothScrollBy(0, newTop - oldTop, new DecelerateInterpolator(2));
+//                    }
+//                }, 10);
+//            }
+//        }, 10);
 
+        ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(position + 1, 0);
     }
 
     public void dismissSearchFragment() {

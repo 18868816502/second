@@ -17,6 +17,7 @@ import android.view.View;
 public class AlphabetIndexBar extends View {
 
     private static final String[] ALPHABET = {
+            "#",
             "A", "B", "C", "D", "E", "F", "G",
             "H", "I", "J", "K", "L", "M", "N",
             "O", "P", "Q", "R", "S", "T",
@@ -82,7 +83,18 @@ public class AlphabetIndexBar extends View {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 selectedIndex = calSelectedIndex(e);
-                if (selectedIndex != -1) {
+                if (listener != null) {
+                    listener.onAlphabetSelected(selectedIndex, ALPHABET[selectedIndex]);
+                }
+                invalidate();
+                return true;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                int selected = calSelectedIndex(e2);
+                if (selected != selectedIndex) {
+                    selectedIndex = selected;
                     if (listener != null) {
                         listener.onAlphabetSelected(selectedIndex, ALPHABET[selectedIndex]);
                     }
@@ -111,7 +123,7 @@ public class AlphabetIndexBar extends View {
         int paddingLeft = getPaddingLeft();
         int paddingRight = getPaddingRight();
         int top = 0;
-        for (int i = 0; i < ALPHABET.length + 1; ++i) {
+        for (int i = 0; i < ALPHABET.length; ++i) {
             int bottom = top + alphabetPadding + alphabetSize;
             areas[i].set(paddingLeft, top, width - paddingRight, bottom);
             top = bottom;
@@ -122,18 +134,15 @@ public class AlphabetIndexBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (int i = 0; i < ALPHABET.length + 1; ++i) {
+        for (int i = 0; i < ALPHABET.length; ++i) {
             final Rect rect = areas[i];
-            if (i == 0) {
-                canvas.drawText("#", rect.centerX(), rect.centerY() + alphabetPaint.getTextSize() / 2.f, alphabetPaint);
+            if (i == selectedIndex) {
+                canvas.drawCircle(rect.centerX(), rect.centerY(), rect.height() / 2.f, selectedBgPaint);
+                canvas.drawText(ALPHABET[i], rect.centerX(), rect.centerY() + selectedTextPaint.getTextSize() / 2.f, selectedTextPaint);
             } else {
-                if (i == selectedIndex + 1) {
-                    canvas.drawCircle(rect.centerX(), rect.centerY(), rect.height() / 2.f, selectedBgPaint);
-                    canvas.drawText(ALPHABET[i - 1], rect.centerX(), rect.centerY() + selectedTextPaint.getTextSize() / 2.f, selectedTextPaint);
-                } else {
-                    canvas.drawText(ALPHABET[i - 1], rect.centerX(), rect.centerY() + alphabetPaint.getTextSize() / 2.f, alphabetPaint);
-                }
+                canvas.drawText(ALPHABET[i], rect.centerX(), rect.centerY() + alphabetPaint.getTextSize() / 2.f, alphabetPaint);
             }
+
         }
     }
 
@@ -148,7 +157,6 @@ public class AlphabetIndexBar extends View {
     }
 
     private int calSelectedIndex(MotionEvent event) {
-        int index = (int) (event.getY() / areas[0].height());
-        return index != 0 ? index - 1 : -1;
+        return (int) (event.getY() / areas[0].height());
     }
 }

@@ -40,7 +40,7 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
 
     private DebtChannel customChannel;
     private LinkedHashMap<String, List<DebtChannel>> debtChannelMap;
-    private int[] alphabetCountList = new int[26];
+    private int[] alphabetCountList = new int[27];
     private List<DebtChannel> debtChannels = new ArrayList<>();
     private List<DebtChannel> debtChannelHistory = new ArrayList<>();
 
@@ -83,9 +83,14 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
                                            resetAlphabetCountList();
                                            //遍历转化channel
                                            for (Map.Entry<String, List<DebtChannel>> entry : debtChannelMap.entrySet()) {
+                                               char ch = entry.getKey().toLowerCase().charAt(0);
                                                //记录每个字母下对用数据的个数
-                                               alphabetCountList[entry.getKey().toLowerCase().charAt(0) - 'a'] = entry.getValue().size();
-
+                                               if (ch >= 'a' && ch <= 'z') {
+                                                   alphabetCountList[ch - 'a' + 1] = entry.getValue().size();
+                                               } else {
+                                                   //非字母统一归为一类
+                                                   alphabetCountList[0] = entry.getValue().size();
+                                               }
                                                for (DebtChannel channel : entry.getValue()) {
                                                    channel.setChannelInitials(entry.getKey());
                                                }
@@ -273,16 +278,13 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
 
     @Override
     public void selectedAlphabet(int index, String alphabet) {
-        if (index == 0) {
-            view.scrollToPosition(0);
-        } else {
-            int size = -1;
+        //如果选中的位置下没有数据，则不响应
+        if (alphabetCountList[index] != 0) {
+            int size = 0;
             for (int i = 0; i < index; ++i) {
                 size += alphabetCountList[i];
             }
-            if (size != -1) {
-                view.scrollToPosition(size + 1);
-            }
+            view.scrollToPosition(size);
         }
     }
 
