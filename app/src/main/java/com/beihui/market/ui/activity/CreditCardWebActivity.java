@@ -11,7 +11,6 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -70,30 +69,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
             }
         });
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.contains("?title=")) {
-                    int index = url.lastIndexOf("?title=");
-                    String realUrl = url.substring(0, index);
-                    String pageTitle = Uri.decode(url.substring(index + 7, url.length()));
-                    titleList.push(pageTitle);
-                    title.setText(pageTitle);
-                    webView.loadUrl(realUrl);
-                    return true;
-                } else if (url.contains("&title=")) {
-                    int index = url.lastIndexOf("&title=");
-                    String realUrl = url.substring(0, index);
-                    String pageTitle = Uri.decode(url.substring(index + 7, url.length()));
-                    titleList.push(pageTitle);
-                    title.setText(pageTitle);
-                    webView.loadUrl(realUrl);
-                    return true;
-                }
-                return super.shouldOverrideUrlLoading(webView, url);
-            }
-        });
-
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(this, "android");
 
@@ -138,12 +113,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         }
     }
 
-    @JavascriptInterface
-    public void authorize(String nextUrl) {
-        pendingUrl = nextUrl;
-        startActivityForResult(new Intent(this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -152,5 +121,28 @@ public class CreditCardWebActivity extends BaseComponentActivity {
                 webView.loadUrl(pendingUrl + "&isApp=1&userId=" + UserHelper.getInstance(this).getProfile().getId());
             }
         }
+    }
+
+    @JavascriptInterface
+    public void authorize(final String nextUrl) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                pendingUrl = nextUrl;
+                startActivityForResult(new Intent(CreditCardWebActivity.this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void onPageChanged(final String titleParam) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String pageTitle = Uri.decode(titleParam);
+                titleList.push(pageTitle);
+                title.setText(pageTitle);
+            }
+        });
     }
 }

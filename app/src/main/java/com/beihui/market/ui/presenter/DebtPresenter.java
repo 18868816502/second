@@ -48,6 +48,11 @@ public class DebtPresenter extends BaseRxPresenter implements DebtContract.Prese
         super.onStart();
         if (userHelper.getProfile() != null) {
             view.showUserLoginBlock();
+
+            if (debts.size() > 0) {
+                view.showDebtInfo(debtAmount, debtSevenDay, debtMonth);
+                view.showInDebtList(Collections.unmodifiableList(debts));
+            }
             loadDebtAbstract();
             loadInDebtList();
         } else {
@@ -136,7 +141,7 @@ public class DebtPresenter extends BaseRxPresenter implements DebtContract.Prese
 
                                        //状态更新成功后，重新拉取数据
                                        loadDebtAbstract();
-                                       loadInDebtList();
+//                                       loadInDebtList();
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

@@ -46,6 +46,8 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
@@ -130,7 +132,6 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     class TabScrollListener extends RecyclerView.OnScrollListener {
         int scrollY;
-
         int firEdge = -1;
         int secEdge = -1;
 
@@ -144,10 +145,18 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             updateContentByScrollY();
         }
 
-        public void resetScrollY() {
-            scrollY = recyclerView.computeVerticalScrollOffset();
+        void resetScrollY() {
+            LinearLayoutManager llm = ((LinearLayoutManager) recyclerView.getLayoutManager());
+            int first = llm.findFirstVisibleItemPosition();
+            View firstVisibleView = llm.findViewByPosition(first);
+            if (first == 0) {
+                scrollY = -firstVisibleView.getTop();
+            } else {
+                scrollY = header.itemView.getMeasuredHeight() + (first - 1) * firstVisibleView.getMeasuredHeight() - firstVisibleView.getTop();
+            }
             updateContentByScrollY();
         }
+
 
         void updateContentByScrollY() {
             if (firEdge == -1 && secEdge == -1) {
@@ -296,6 +305,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.set_status) {
+                    ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
                     presenter.updateDebtStatus(position);
                 } else if (view.getId() == R.id.debt_container) {
                     presenter.clickDebt(position);
@@ -417,7 +427,13 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     public void showInDebtList(List<InDebt> list) {
         if (isAdded()) {
             adapter.notifyDebtChanged(list);
-            tabScrollListener.resetScrollY();
+            //RecyclerView重新layout之后再做调整
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tabScrollListener.resetScrollY();
+                }
+            }, 20);
         }
     }
 
