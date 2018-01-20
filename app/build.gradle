@@ -2,13 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'org.greenrobot.greendao'
 
-def vests = ["loanmarket", "daikuankuai"] as String[]
+def vests = ["loanmarket"] as String[]
 def vest2Channel = [
-        "loanmarket" : ["baidu", "market91", "anzhuomarket", "market360", "yingyongbao", "xiaomi", "huawei", "VIVO", "OPPO", "meizu",
-                        "chuizi", "wandoujia", "samsung", "mumayi", "Nduo", "anzhi", "sougou", "letv", "liqumarket", "youyi", "anfen",
-                        "anzhuoyuan", "anbei", "lvan", "PC6", "H5"],
-
-        "daikuankuai": ["baidu002", "market360_002", "yingyongbao002", "xiaomi002", "huawei002", "VIVO002", "OPPO002", "meizu002", "alibaba002"]
+        "loanmarket": ["baidu", "market91", "anzhuomarket", "market360", "yingyongbao", "xiaomi", "huawei", "VIVO", "OPPO", "meizu",
+                       "chuizi", "wandoujia", "samsung", "mumayi", "Nduo", "anzhi", "sougou", "letv", "liqumarket", "youyi", "anfen",
+                       "anzhuoyuan", "anbei", "lvan", "PC6", "H5"],
 ]
 
 android {
@@ -41,13 +39,6 @@ android {
             keyAlias "loanMarket"
             keyPassword "123456"
         }
-
-        daikuankuai {
-            storeFile file('../app/src/daikuankuai/daikuankuai.jks')
-            storePassword "123456"
-            keyAlias "daikuankuai"
-            keyPassword "123456"
-        }
     }
 
 
@@ -78,10 +69,6 @@ android {
         }
         loanmarket {
             java.srcDir 'src/common/java'
-        }
-        daikuankuai {
-            java.srcDir 'src/commonvest/java'
-            res.srcDirs 'src/commonvest/res'
         }
     }
 
@@ -138,29 +125,6 @@ android {
             signingConfig signingConfigs.loanmarket
         }
 
-        daikuankuai {
-            dimension "id"
-
-            applicationId "com.beiwo.daikuankuai"
-            manifestPlaceholders = [
-                    GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
-                    GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
-                    GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
-
-                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-
-                    TENCENT_DATA    : "tencent1106217443",
-
-                    PACKAGE_NAME    : applicationId
-            ]
-
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/quickloan_registe.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/quickloan_know.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"/quickloan_helpcenter.html\"")
-
-            signingConfig signingConfigs.daikuankuai
-        }
-
         baidu { dimension "channel" }
         market91 { dimension "channel" }
         anzhuomarket { dimension "channel" }
@@ -187,16 +151,6 @@ android {
         lvan { dimension "channel" }
         PC6 { dimension "channel" }
         H5 { dimension "channel" }
-
-        baidu002 { dimension "channel" }
-        market360_002 { dimension "channel" }
-        yingyongbao002 { dimension "channel" }
-        xiaomi002 { dimension "channel" }
-        huawei002 { dimension "channel" }
-        VIVO002 { dimension "channel" }
-        OPPO002 { dimension "channel" }
-        meizu002 { dimension "channel" }
-        alibaba002 { dimension "channel" }
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
@@ -231,6 +185,12 @@ android {
             output.setOutputFile(file)
         }
     }
+
+    lintOptions {
+        disable "MissingTranslation"
+        abortOnError false
+    }
+
 }
 
 dependencies {
