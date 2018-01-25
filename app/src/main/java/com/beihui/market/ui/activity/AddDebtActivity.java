@@ -131,32 +131,33 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     showTimePicker(debtStartDateContent);
                     break;
                 case R.id.debt_th:
+                    InputMethodUtil.closeSoftKeyboard(AddDebtActivity.this);
+                    OptionsPickerView pickerView = new OptionsPickerView.Builder(AddDebtActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
+                        @Override
+                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                            selectTh(options1);
+                        }
+                    }).setCancelText("取消")
+                            .setCancelColor(Color.parseColor("#5591ff"))
+                            .setSubmitText("确认")
+                            .setSubmitColor(Color.parseColor("#5591ff"))
+                            .setTitleText("")
+                            .setTitleColor(getResources().getColor(R.color.black_1))
+                            .build();
+                    List<String> list = new ArrayList<>();
+                    int term = 1;
                     if (debtLifeContent.getText().length() > 0) {
-                        int term = 1;
                         try {
                             term = Integer.parseInt(debtLifeContent.getText().toString());
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
-                        OptionsPickerView pickerView = new OptionsPickerView.Builder(AddDebtActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
-                            @Override
-                            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                                selectTh(options1);
-                            }
-                        }).setCancelText("取消")
-                                .setCancelColor(Color.parseColor("#5591ff"))
-                                .setSubmitText("确认")
-                                .setSubmitColor(Color.parseColor("#5591ff"))
-                                .setTitleText("")
-                                .setTitleColor(getResources().getColor(R.color.black_1))
-                                .build();
-                        List<String> list = new ArrayList<>();
-                        for (int i = 1; i <= term; ++i) {
-                            list.add(i + "");
-                        }
-                        pickerView.setPicker(list);
-                        pickerView.show();
                     }
+                    for (int i = 1; i <= term; ++i) {
+                        list.add(i + "");
+                    }
+                    pickerView.setPicker(list);
+                    pickerView.show();
                     break;
                 case R.id.debt_name_question:
                     showDebtNameQuestion();
@@ -342,6 +343,9 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 if (oneTimeHolder == null) {
                     oneTimeHolder = new OneTimeHolder(LayoutInflater.from(this)
                             .inflate(R.layout.layout_debt_add_method_one_time, methodContainer, false));
+                    Date now = new Date(System.currentTimeMillis());
+                    oneTimeHolder.debtStartDateContent.setTag(now);
+                    oneTimeHolder.debtStartDateContent.setText(dateFormat.format(now));
                 }
                 contentView = oneTimeHolder.itemView;
                 break;
@@ -349,6 +353,9 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 if (evenDebtHolder == null) {
                     evenDebtHolder = new EvenDebtHolder(LayoutInflater.from(this)
                             .inflate(R.layout.layout_debt_add_method_even_debt, methodContainer, false));
+                    Date now = new Date(System.currentTimeMillis());
+                    evenDebtHolder.debtStartDateContent.setTag(now);
+                    evenDebtHolder.debtStartDateContent.setText(dateFormat.format(now));
                 }
                 contentView = evenDebtHolder.itemView;
                 break;
@@ -356,6 +363,9 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 if (evenCapitalHolder == null) {
                     evenCapitalHolder = new EvenCapitalHolder(LayoutInflater.from(this)
                             .inflate(R.layout.layout_debt_add_method_even_capital, methodContainer, false));
+                    Date now = new Date(System.currentTimeMillis());
+                    evenCapitalHolder.debtStartDateContent.setTag(now);
+                    evenCapitalHolder.debtStartDateContent.setText(dateFormat.format(now));
                 }
                 contentView = evenCapitalHolder.itemView;
                 break;

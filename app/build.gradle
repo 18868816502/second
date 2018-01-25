@@ -44,16 +44,22 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "DOMAIN", "\"http://192.168.1.178:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.196:100\"")
-//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            minifyEnabled false
+
+//            buildConfigField("String", "DOMAIN", "\"http://192.168.1.178:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.196:100\"")
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
         }
         preview {
+            minifyEnabled false
+
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
         }
         release {
+            minifyEnabled false
+
             buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
             buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
         }

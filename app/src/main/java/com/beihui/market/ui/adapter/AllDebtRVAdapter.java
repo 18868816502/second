@@ -40,6 +40,7 @@ public class AllDebtRVAdapter extends BaseQuickAdapter<AllDebt.Row, BaseViewHold
         helper.setText(R.id.channel_name, debt.getChannelName())
                 .setText(R.id.capital_amount, keep2digits(debt.getCapital()))
                 .setText(R.id.interest_amount, keep2digits(debt.getInterest()))
+                .setText(R.id.debt_rate_type, debt.getTermType() == 1 ? "日息" : "月息")
                 .setText(R.id.debt_rate, keep2digits(debt.getRate()) + "%");
 
         if (!TextUtils.isEmpty(debt.getProjectName())) {

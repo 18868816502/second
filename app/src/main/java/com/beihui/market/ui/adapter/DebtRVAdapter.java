@@ -51,8 +51,13 @@ public class DebtRVAdapter extends BaseQuickAdapter<InDebt, BaseViewHolder> {
         } else {
             helper.setVisible(R.id.project_name_container, false);
         }
-
-        String lifeStr = item.getTermNum() + "/" + item.getTerm() + "期";
+        String lifeStr;
+        if (item.getRepayType() == 1) {
+            //一次性还本付息只有一期
+            lifeStr = "1/1期";
+        } else {
+            lifeStr = item.getTermNum() + "/" + item.getTerm() + "期";
+        }
         SpannableString ss = new SpannableString(lifeStr);
         ss.setSpan(new AbsoluteSizeSpan(20, true), 0, lifeStr.indexOf("/"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         helper.setText(R.id.debt_life, ss);
@@ -68,7 +73,7 @@ public class DebtRVAdapter extends BaseQuickAdapter<InDebt, BaseViewHolder> {
 
         String dayStr = item.getReturnDay() + "天";
         ss = new SpannableString(dayStr);
-        if (item.getReturnDay() > 0) {
+        if (item.getReturnDay() >= 0) {
             helper.setVisible(R.id.status_badge, false);
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         } else {

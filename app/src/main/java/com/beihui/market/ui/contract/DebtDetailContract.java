@@ -15,6 +15,13 @@ public interface DebtDetailContract {
         void loadDebtDetail();
 
         /**
+         * 点击设置还款状态
+         *
+         * @param index 点击位置，如果index=-1，则当前点击的是当前期
+         */
+        void clickSetStatus(int index);
+
+        /**
          * 当期借款项目设置为已还
          */
         void updateDebtStatus();
@@ -47,6 +54,14 @@ public interface DebtDetailContract {
          * @param debtDetail 借款详情
          */
         void showDebtDetail(DebtDetail debtDetail);
+
+        /**
+         * 显示设置还款状态按钮
+         *
+         * @param index     选中的位置，-1则为当前期
+         * @param newStatus 新的还款状态
+         */
+        void showSetStatus(int index, int newStatus);
 
         /**
          * 更新账单状态成功

@@ -175,40 +175,42 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
 
     @Override
     public void addDebtChannel(String channelName) {
-        final DebtChannel newChannel = new DebtChannel();
-        newChannel.setChannelName(channelName);
-        newChannel.setId(java.util.UUID.randomUUID().toString());
         if (customChannel != null) {
+            final DebtChannel newChannel = new DebtChannel();
+            newChannel.setChannelName(channelName);
+            newChannel.setId(java.util.UUID.randomUUID().toString());
+            newChannel.setType("custom");
             newChannel.setLogo(customChannel.getLogo());
             newChannel.setCustomId(customChannel.getId());
-        }
-        Disposable dis = Observable.just(newChannel)
-                .observeOn(Schedulers.io())
-                .map(new Function<DebtChannel, DebtChannel>() {
-                    @Override
-                    public DebtChannel apply(DebtChannel channel) throws Exception {
-                        dao.insert(channel);
-                        //历史记录达到最大值
-                        if (debtChannelHistory.size() >= HISTORY_MAX_SIZE) {
-                            dao.delete(debtChannelHistory.get(debtChannelHistory.size() - 1));
-                        }
-                        return channel;
-                    }
-                })
-                .compose(RxUtil.<DebtChannel>io2main())
-                .subscribe(new Consumer<DebtChannel>() {
-                               @Override
-                               public void accept(DebtChannel channel) throws Exception {
-                                   view.showSearchChannelSelected(channel);
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(DebtChannelPresenter.this, throwable);
+
+            Disposable dis = Observable.just(newChannel)
+                    .observeOn(Schedulers.io())
+                    .map(new Function<DebtChannel, DebtChannel>() {
+                        @Override
+                        public DebtChannel apply(DebtChannel channel) throws Exception {
+                            dao.insert(channel);
+                            //历史记录达到最大值
+                            if (debtChannelHistory.size() >= HISTORY_MAX_SIZE) {
+                                dao.delete(debtChannelHistory.get(debtChannelHistory.size() - 1));
                             }
-                        });
-        addDisposable(dis);
+                            return channel;
+                        }
+                    })
+                    .compose(RxUtil.<DebtChannel>io2main())
+                    .subscribe(new Consumer<DebtChannel>() {
+                                   @Override
+                                   public void accept(DebtChannel channel) throws Exception {
+                                       view.showSearchChannelSelected(channel);
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(DebtChannelPresenter.this, throwable);
+                                }
+                            });
+            addDisposable(dis);
+        }
     }
 
     @Override

@@ -191,8 +191,12 @@ public class SplashActivity extends BaseComponentActivity {
                             startActivity(intent);
                         } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
                             //跳转网页时，url不为空情况下才跳转
+                            String url = adBanner.getUrl();
+                            if (url.contains("USERID") && UserHelper.getInstance(SplashActivity.this).getProfile() != null) {
+                                url = url.replace("USERID", UserHelper.getInstance(SplashActivity.this).getProfile().getId());
+                            }
                             intent = new Intent(context, ComWebViewActivity.class);
-                            intent.putExtra("url", adBanner.getUrl());
+                            intent.putExtra("url", url);
                             intent.putExtra("title", adBanner.getTitle());
                             startActivity(intent);
                         }

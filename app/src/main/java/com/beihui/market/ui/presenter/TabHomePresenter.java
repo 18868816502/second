@@ -323,7 +323,11 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
             view.navigateProductDetail(null, adBanner.getLocalId());
         } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
             //url地址不为空才跳转
-            view.navigateWeb(adBanner.getTitle(), adBanner.getUrl());
+            String url = adBanner.getUrl();
+            if (url.contains("USERID")) {
+                url = url.replace("USERID", UserHelper.getInstance(context).getProfile().getId());
+            }
+            view.navigateWeb(adBanner.getTitle(), url);
         }
 
     }

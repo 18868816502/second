@@ -62,6 +62,12 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
     }
 
     @Override
+    public void clickSetStatus(int index) {
+        int status = (index == -1 ? debtDetail.getTermStatus() : debtDetail.getRepayPlan().get(index).getStatus());
+        view.showSetStatus(index, status == 2 ? 1 : 2);
+    }
+
+    @Override
     public void updateDebtStatus() {
         //设置已还或者未还
         final int status = debtDetail.getTermStatus() == 2 ? 1 : 2;
@@ -73,10 +79,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
         if (debtDetail.getRepayPlan() != null && debtDetail.getRepayPlan().size() > 0) {
             DebtDetail.RepayPlanBean bean = debtDetail.getRepayPlan().get(index);
             if (bean.getStatus() != status) {
-                //逾期修改成待还，则不做处理
-                if (bean.getStatus() != 3 || status != 2) {
-                    updateStatus(bean.getId(), status);
-                }
+                updateStatus(bean.getId(), status);
             }
         }
     }

@@ -52,12 +52,6 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
     private DebtChannelPresenter presenter;
 
     @Override
-    public void onDestroyView() {
-        presenter.onDestroy();
-        super.onDestroyView();
-    }
-
-    @Override
     public int getLayoutResId() {
         return R.layout.fragment_debt_channel_search;
     }
@@ -78,7 +72,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
                     public void onChannelAdded(String channelName) {
                         presenter.addDebtChannel(channelName);
                     }
-                }).show(getChildFragmentManager(), "NewChannel");
+                }).setSearchString(keyView.getText().toString()).show(getChildFragmentManager(), "NewChannel");
             }
         }));
 

@@ -634,9 +634,13 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
                     intent.putExtra("loanId", ad.getLocalId());
                     startActivity(intent);
                 } else if (!TextUtils.isEmpty(ad.getUrl())) {
+                    String url = ad.getUrl();
+                    if (url.contains("USERID") && UserHelper.getInstance(getContext()).getProfile() != null) {
+                        url = url.replace("USERID", UserHelper.getInstance(getContext()).getProfile().getId());
+                    }
                     Intent intent = new Intent(getContext(), ComWebViewActivity.class);
                     intent.putExtra("title", ad.getTitle());
-                    intent.putExtra("url", ad.getUrl());
+                    intent.putExtra("url", url);
                     startActivity(intent);
                 }
             }

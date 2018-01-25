@@ -15,6 +15,7 @@ public class InDebt {
     private String termId;
     private int returnDay;
     private int status;
+    private int repayType;
 
     public String getId() {
         return id;
@@ -110,5 +111,13 @@ public class InDebt {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getRepayType() {
+        return repayType;
+    }
+
+    public void setRepayType(int repayType) {
+        this.repayType = repayType;
     }
 }

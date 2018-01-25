@@ -129,10 +129,6 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
                 }
                 break;
         }
-        if (selectedMethod != 0 && isDataEmpty(projectName)) {
-            view.showErrorMsg("请输入借款名称");
-            return;
-        }
         //借款期限类型，一次性还本付息1，等额本金，本息2
         int pTermType = selectedMethod == 0 ? 1 : 2;
         double pPayableAmount = debtAmount != null ? Double.parseDouble(debtAmount) : -1.0;

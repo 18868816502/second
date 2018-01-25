@@ -129,19 +129,16 @@ public class DebtPresenter extends BaseRxPresenter implements DebtContract.Prese
     }
 
     @Override
-    public void updateDebtStatus(final int index) {
+    public void updateDebtStatus(int index) {
         Disposable dis = api.updateDebtStatus(userHelper.getProfile().getId(), debts.get(index).getTermId(), 2)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
                                public void accept(ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
-                                       debts.remove(index);
-                                       view.showInDebtList(Collections.unmodifiableList(debts));
-
                                        //状态更新成功后，重新拉取数据
                                        loadDebtAbstract();
-//                                       loadInDebtList();
+                                       loadInDebtList();
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

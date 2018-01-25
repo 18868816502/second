@@ -17,6 +17,10 @@ import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -134,16 +138,26 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
             }
 
             if (payPlan.getRepayPlan() != null) {
+                JSONArray jsonArray = new JSONArray();
                 for (int i = 0; i < payPlan.getRepayPlan().size(); ++i) {
+                    JSONObject jsonObject = new JSONObject();
                     PayPlan.RepayPlanBean bean = payPlan.getRepayPlan().get(i);
-                    if (!TextUtils.isEmpty(bean.getId())) {
-                        params.put("repayPlan[" + i + "].id", bean.getId());
+                    try {
+                        if (!TextUtils.isEmpty(bean.getId())) {
+                            jsonObject.put("id", bean.getId());
+                        }
+                        jsonObject.put("termNo", bean.getTermNo() + "");
+                        jsonObject.put("termRepayDate", bean.getTermRepayDate());
+                        jsonObject.put("termPayableAmount", bean.getTermPayableAmount());
+                        jsonObject.put("status", bean.getStatus());
+
+                        jsonArray.put(jsonObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    params.put("repayPlan[" + i + "].termNo", bean.getTermNo() + "");
-                    params.put("repayPlan[" + i + "].termRepayDate", bean.getTermRepayDate());
-                    params.put("repayPlan[" + i + "].termPayableAmount", bean.getTermPayableAmount());
-                    params.put("repayPlan[" + i + "].status", bean.getStatus());
+
                 }
+                params.put("repayPlans", jsonArray.toString());
             }
 
             Disposable dis = Observable.just(pendingDebt != null ? pendingDebt : new DebtDetail())

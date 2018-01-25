@@ -24,7 +24,6 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
 
     @Override
     protected void convert(BaseViewHolder helper, DebtDetail.RepayPlanBean item) {
-        helper.addOnClickListener(R.id.status);
         helper.setText(R.id.th, item.getTermNo() + "")
                 .setText(R.id.date, item.getTermRepayDate())
                 .setText(R.id.amount, item.getTermPayableAmount() + "")

@@ -78,30 +78,7 @@ public class DebtChannel implements Parcelable {
     }
 
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.id);
-        dest.writeString(this.channelName);
-        dest.writeString(this.channelInitials);
-        dest.writeString(this.logo);
-        dest.writeString(this.type);
-    }
-
-
     public DebtChannel() {
-    }
-
-    protected DebtChannel(Parcel in) {
-        this.id = in.readString();
-        this.channelName = in.readString();
-        this.channelInitials = in.readString();
-        this.logo = in.readString();
-        this.type = in.readString();
     }
 
     @Generated(hash = 1265460127)
@@ -115,7 +92,32 @@ public class DebtChannel implements Parcelable {
         this.customId = customId;
     }
 
-    public static final Parcelable.Creator<DebtChannel> CREATOR = new Parcelable.Creator<DebtChannel>() {
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.channelName);
+        dest.writeString(this.channelInitials);
+        dest.writeString(this.logo);
+        dest.writeString(this.type);
+        dest.writeString(this.customId);
+    }
+
+    protected DebtChannel(Parcel in) {
+        this.id = in.readString();
+        this.channelName = in.readString();
+        this.channelInitials = in.readString();
+        this.logo = in.readString();
+        this.type = in.readString();
+        this.customId = in.readString();
+    }
+
+    public static final Creator<DebtChannel> CREATOR = new Creator<DebtChannel>() {
         @Override
         public DebtChannel createFromParcel(Parcel source) {
             return new DebtChannel(source);

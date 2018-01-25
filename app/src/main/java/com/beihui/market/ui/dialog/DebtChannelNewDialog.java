@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class DebtChannelNewDialog extends DialogFragment {
     private EditText channelName;
 
     private DebtAddChannelListener listener;
+    private String searchStr;
 
     public interface DebtAddChannelListener {
         void onChannelAdded(String channelName);
@@ -42,7 +44,10 @@ public class DebtChannelNewDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_debt_channel_add, container, false);
-        channelName = (EditText) view.findViewById(R.id.channel_name);
+        channelName = view.findViewById(R.id.channel_name);
+        if (!TextUtils.isEmpty(searchStr)) {
+            channelName.setText(searchStr);
+        }
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +133,11 @@ public class DebtChannelNewDialog extends DialogFragment {
 
     public DebtChannelNewDialog setDebtChannelAddListener(DebtAddChannelListener listener) {
         this.listener = listener;
+        return this;
+    }
+
+    public DebtChannelNewDialog setSearchString(String searchStr) {
+        this.searchStr = searchStr;
         return this;
     }
 }

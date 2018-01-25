@@ -29,15 +29,11 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtDetailComponent;
 import com.beihui.market.injection.module.DebtDetailModule;
 import com.beihui.market.ui.adapter.DebtDetailRVAdapter;
-import com.beihui.market.ui.contract.AllDebtContract;
 import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.view.CircleImageView;
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -50,7 +46,6 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
 
     private static final int REQUEST_CODE_EDIT = 1;
 
-    static final String[] STATUS_TAG = {"待还", "已还"};
     static final String[] PAY_METHOD = {"一次性还本付息", "等额本息", "等额本金"};
 
     @BindView(R.id.tool_bar)
@@ -149,7 +144,30 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
                 if (v.getId() == R.id.edit) {
                     presenter.editDebt();
                 } else {
-                    presenter.deleteDebt();
+                    final Dialog dialog = new Dialog(DebtDetailActivity.this, 0);
+                    View dialogView = LayoutInflater.from(DebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
+                    View.OnClickListener clickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            if (v.getId() == R.id.confirm) {
+                                presenter.deleteDebt();
+                            }
+                        }
+                    };
+                    dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
+                    dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
+                    ((TextView) dialogView.findViewById(R.id.title)).setText("确认删除？");
+                    dialog.setContentView(dialogView);
+                    dialog.setCanceledOnTouchOutside(true);
+                    Window window = dialog.getWindow();
+                    if (window != null) {
+                        WindowManager.LayoutParams lp = window.getAttributes();
+                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                        window.setAttributes(lp);
+                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    }
+                    dialog.show();
                 }
             }
         };
@@ -180,58 +198,15 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         header.setStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(DebtDetailActivity.this, 0);
-                View dialogView = LayoutInflater.from(DebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
-                View.OnClickListener clickListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        if (v.getId() == R.id.confirm) {
-                            presenter.updateDebtStatus();
-                        }
-                    }
-                };
-                dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
-                dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-                ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为" + header.setStatus.getText().toString().substring(2, 4));
-                dialog.setContentView(dialogView);
-                dialog.setCanceledOnTouchOutside(true);
-                Window window = dialog.getWindow();
-                if (window != null) {
-                    WindowManager.LayoutParams lp = window.getAttributes();
-                    window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                    window.setAttributes(lp);
-                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                }
-                dialog.show();
+                presenter.clickSetStatus(-1);
             }
         });
         adapter = new DebtDetailRVAdapter();
         adapter.setHeaderView(header.itemView);
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId() == R.id.status) {
-                    final int pos = position;
-                    OptionsPickerView pickerView = new OptionsPickerView.Builder(DebtDetailActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
-                        @Override
-                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                            int status = AllDebtContract.Presenter.STATUS_IN;
-                            if (options1 == 1) {
-                                status = AllDebtContract.Presenter.STATUS_OFF;
-                            }
-                            presenter.updateDebtStatus(pos, status);
-                        }
-                    }).setCancelText("取消")
-                            .setCancelColor(Color.parseColor("#5591ff"))
-                            .setSubmitText("确认")
-                            .setSubmitColor(Color.parseColor("#5591ff"))
-                            .setTitleText("")
-                            .setTitleColor(getResources().getColor(R.color.black_1))
-                            .build();
-                    pickerView.setPicker(Arrays.asList(STATUS_TAG));
-                    pickerView.show();
-                }
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                presenter.clickSetStatus(position);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -301,7 +276,12 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
             header.logo.setImageResource(R.drawable.image_place_holder);
         }
 
-        header.setStatus.setText(debtDetail.getTermStatus() == 2 ? "设为待还" : "设为已还");
+        if (debtDetail.getStatus() != 2) {
+            header.setStatus.setVisibility(View.VISIBLE);
+            header.setStatus.setText(debtDetail.getTermStatus() == 2 ? "设为待还" : "设为已还");
+        } else {
+            header.setStatus.setVisibility(View.GONE);
+        }
 
         header.channelName.setText(debtDetail.getChannelName());
         if (!TextUtils.isEmpty(debtDetail.getProjectName())) {
@@ -328,6 +308,41 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         header.debtStartDate.setText(debtDetail.getStartDate());
 
         adapter.notifyPayPlanChanged(debtDetail.getRepayPlan());
+    }
+
+    @Override
+    public void showSetStatus(int index, int newStatus) {
+        final int pos = index;
+        final int status = newStatus;
+
+        final Dialog dialog = new Dialog(DebtDetailActivity.this, 0);
+        View dialogView = LayoutInflater.from(DebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (v.getId() == R.id.confirm) {
+                    if (pos == -1) {
+                        presenter.updateDebtStatus();
+                    } else {
+                        presenter.updateDebtStatus(pos, status);
+                    }
+                }
+            }
+        };
+        dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
+        dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
+        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为" + (newStatus == 2 ? "已还" : "待还"));
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setAttributes(lp);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        dialog.show();
     }
 
     @Override
