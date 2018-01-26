@@ -61,17 +61,17 @@ public class DebtChannelNewDialog extends DialogFragment {
                         }
                     }, 100);
                 } else {
-                    String name = channelName.getText().toString();
+                    final String name = channelName.getText().toString();
 
                     if (name.length() > 0) {
-                        if (listener != null) {
-                            listener.onChannelAdded(name);
-                        }
                         InputMethodUtil.closeSoftKeyboard(getContext(), channelName);
                         channelName.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 dismiss();
+                                if (listener != null) {
+                                    listener.onChannelAdded(name);
+                                }
                             }
                         }, 100);
                     } else {
