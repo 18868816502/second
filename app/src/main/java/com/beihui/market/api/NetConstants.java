@@ -76,6 +76,10 @@ public class NetConstants {
         return H5_REWARD_POINTS + "?isApp=1&userId=" + id;
     }
 
+    public static String generateDebtAnalyzeUrl(String id) {
+        return H5_DEBT_ANALYZE + "?isApp=1&userId=" + id;
+    }
+
 
     public static String generateOneKeyLoanUrl(List<String> ids, String userId) {
         StringBuilder sb = new StringBuilder();

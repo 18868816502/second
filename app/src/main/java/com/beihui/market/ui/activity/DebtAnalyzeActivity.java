@@ -12,6 +12,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -51,13 +52,12 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
             }
         });
 
-
         SlidePanelHelper.attach(this);
     }
 
     @Override
     public void initDatas() {
-        webView.loadUrl(NetConstants.H5_DEBT_ANALYZE);
+        webView.loadUrl(NetConstants.generateDebtAnalyzeUrl(UserHelper.getInstance(this).getProfile().getId()));
     }
 
     @Override

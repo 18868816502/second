@@ -109,6 +109,9 @@ public class PushReceiveIntentService extends GTIntentService {
             } else if (type == 4) {//跳转到首页
                 intent = new Intent(context, MainActivity.class);
                 intent.putExtra("home", true);
+            } else if (type == 5) {
+                intent = new Intent(context, MainActivity.class);
+                intent.putExtra("account", true);
             }
             NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message");
         } catch (Exception e) {
