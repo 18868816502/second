@@ -244,7 +244,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         } else {
             userId = SPUtils.getCacheUserId(context);
         }
-        Disposable dis = api.queryCreditCards(userId, "renqi")
+        Disposable dis = api.queryCreditCards(userId, "index")
                 .compose(RxUtil.<ResultEntity<CreditCard>>io2main())
                 .subscribe(new Consumer<ResultEntity<CreditCard>>() {
                                @Override
