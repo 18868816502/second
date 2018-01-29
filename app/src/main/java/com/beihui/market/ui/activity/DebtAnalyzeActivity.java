@@ -2,8 +2,10 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -32,7 +34,7 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
         return R.layout.activity_debt_analyze;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface", "AddJavascriptInterface"})
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
@@ -51,6 +53,7 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
                 }
             }
         });
+        webView.addJavascriptInterface(this, "android");
 
         SlidePanelHelper.attach(this);
     }
@@ -63,5 +66,20 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            webView.reload();
+        }
+    }
+
+    @JavascriptInterface
+    public void goToDebtDetail(String id) {
+        Intent intent = new Intent(this, DebtDetailActivity.class);
+        intent.putExtra("debt_id", id);
+        startActivityForResult(intent, 1);
     }
 }

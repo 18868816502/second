@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanProduct;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerRecommendComponent;
 import com.beihui.market.injection.module.RecommendProductModule;
@@ -85,6 +86,8 @@ public class RecommendProductActivity extends BaseComponentActivity implements R
                 titleView.setVisibility(scrollY >= view.getMeasuredHeight() - 10 ? View.VISIBLE : View.GONE);
             }
         });
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

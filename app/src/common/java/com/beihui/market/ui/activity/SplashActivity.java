@@ -81,7 +81,7 @@ public class SplashActivity extends BaseComponentActivity {
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launch(null);
+                launch();
             }
         });
     }
@@ -106,7 +106,7 @@ public class SplashActivity extends BaseComponentActivity {
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            launch(null);
+            launch();
         }
     }
 
@@ -118,13 +118,10 @@ public class SplashActivity extends BaseComponentActivity {
                 .inject(this);
     }
 
-    private void launch(String url) {
+    private void launch() {
         handler.removeMessages(1);
-
         if (!adClicked) {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            intent.putExtra("url", url);
-            startActivity(intent);
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();
         }
     }
@@ -141,23 +138,22 @@ public class SplashActivity extends BaseComponentActivity {
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            startAd(result.getData().get(0));
                                        } else {
-                                           launch(null);
+                                           launch();
                                        }
                                    } else {
-                                       launch(null);
+                                       launch();
                                    }
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                launch(null);
+                                launch();
                             }
                         });
     }
 
     private void startAd(final AdBanner ad) {
-        final AdBanner adBanner = ad;
         ignoreTv.setVisibility(View.VISIBLE);
         adTimer = new AdTimer(3 * 1000, 1000);
         adTimer.start();
@@ -170,7 +166,7 @@ public class SplashActivity extends BaseComponentActivity {
                     adClicked = true;
                     Context context = SplashActivity.this;
                     //统计点击
-                    DataStatisticsHelper.getInstance().onAdClicked(adBanner.getId(), 1);
+                    DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 1);
 
                     //pv，uv统计
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_SPLASH_AD);
@@ -180,24 +176,24 @@ public class SplashActivity extends BaseComponentActivity {
                     startActivity(intent);
 
                     //需要先登录并且用户还没登录
-                    if (adBanner.needLogin() && UserHelper.getInstance(SplashActivity.this).getProfile() == null) {
-                        UserAuthorizationActivity.launchWithPending(SplashActivity.this, adBanner);
+                    if (ad.needLogin() && UserHelper.getInstance(SplashActivity.this).getProfile() == null) {
+                        UserAuthorizationActivity.launchWithPending(SplashActivity.this, ad);
                     } else {
                         //跳Native还是跳Web
-                        if (adBanner.isNative()) {
+                        if (ad.isNative()) {
                             intent = new Intent(context, LoanDetailActivity.class);
-                            intent.putExtra("loanId", adBanner.getLocalId());
-                            intent.putExtra("loanName", adBanner.getTitle());
+                            intent.putExtra("loanId", ad.getLocalId());
+                            intent.putExtra("loanName", ad.getTitle());
                             startActivity(intent);
-                        } else if (!TextUtils.isEmpty(adBanner.getUrl())) {
+                        } else if (!TextUtils.isEmpty(ad.getUrl())) {
                             //跳转网页时，url不为空情况下才跳转
-                            String url = adBanner.getUrl();
+                            String url = ad.getUrl();
                             if (url.contains("USERID") && UserHelper.getInstance(SplashActivity.this).getProfile() != null) {
                                 url = url.replace("USERID", UserHelper.getInstance(SplashActivity.this).getProfile().getId());
                             }
                             intent = new Intent(context, ComWebViewActivity.class);
                             intent.putExtra("url", url);
-                            intent.putExtra("title", adBanner.getTitle());
+                            intent.putExtra("title", ad.getTitle());
                             startActivity(intent);
                         }
                     }
@@ -209,6 +205,7 @@ public class SplashActivity extends BaseComponentActivity {
             Glide.with(this)
                     .load(ad.getImgUrl())
                     .asBitmap()
+                    .centerCrop()
                     .into(adImageView);
         }
     }
@@ -232,7 +229,7 @@ public class SplashActivity extends BaseComponentActivity {
 
         @Override
         public void onFinish() {
-            launch(null);
+            launch();
         }
     }
 
@@ -247,7 +244,7 @@ public class SplashActivity extends BaseComponentActivity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1 && weakReference.get() != null) {
-                weakReference.get().launch(null);
+                weakReference.get().launch();
             }
         }
     }

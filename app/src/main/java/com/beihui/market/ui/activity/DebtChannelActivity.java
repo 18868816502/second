@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtChannelComponent;
 import com.beihui.market.injection.module.DebtChannelModule;
@@ -143,6 +144,8 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
                 }
             }
         });
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override

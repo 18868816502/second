@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -26,6 +25,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import java.util.LinkedList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CreditCardWebActivity extends BaseComponentActivity {
 
@@ -53,7 +53,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -101,15 +100,14 @@ public class CreditCardWebActivity extends BaseComponentActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
             webView.goBack();
             titleList.pop();
             String pageTitle = titleList.peek();
             title.setText(pageTitle);
-            return true;
         } else {
-            return super.onKeyUp(keyCode, event);
+            super.onBackPressed();
         }
     }
 
@@ -121,6 +119,11 @@ public class CreditCardWebActivity extends BaseComponentActivity {
                 webView.loadUrl(pendingUrl + "&isApp=1&userId=" + UserHelper.getInstance(this).getProfile().getId());
             }
         }
+    }
+
+    @OnClick(R.id.close)
+    void onBindViewClicked() {
+        finish();
     }
 
     @JavascriptInterface

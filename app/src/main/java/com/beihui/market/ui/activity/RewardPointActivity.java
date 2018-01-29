@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -34,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -69,7 +69,7 @@ public class RewardPointActivity extends BaseComponentActivity {
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        setupToolbar(toolbar, true);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -126,16 +126,33 @@ public class RewardPointActivity extends BaseComponentActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        webView.reload();
+        if (requestCode == REQUEST_CODE_MARKET) {
+            //打开应用市场超过10秒钟，就视为评论
+            if (System.currentTimeMillis() - marketStartTime >= 10 * 1000) {
+                checkMarketCommentReward(pendingTaskId);
+            }
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
             webView.goBack();
             titleList.pop();
             String pageTitle = titleList.peek();
             title.setText(pageTitle);
-            return true;
         } else {
-            return super.onKeyUp(keyCode, event);
+            super.onBackPressed();
         }
+    }
+
+    @OnClick(R.id.close)
+    void onBindViewClicked() {
+        finish();
     }
 
     @JavascriptInterface
@@ -172,19 +189,6 @@ public class RewardPointActivity extends BaseComponentActivity {
                 startActivityForResult(new Intent(RewardPointActivity.this, AddDebtActivity.class), REQUEST_CODE_ADD_DEBT);
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        webView.reload();
-        if (requestCode == REQUEST_CODE_MARKET) {
-            //打开应用市场超过10秒钟，就视为评论
-            if (System.currentTimeMillis() - marketStartTime >= 10 * 1000) {
-                checkMarketCommentReward(pendingTaskId);
-            }
-        }
-
     }
 
     private void checkMarketCommentReward(String taskId) {

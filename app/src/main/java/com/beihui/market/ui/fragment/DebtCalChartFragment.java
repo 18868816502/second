@@ -299,28 +299,20 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
     }
 
     private void showTimerPicker(final boolean start) {
-        Calendar startDate = Calendar.getInstance(Locale.CHINA);
-        Calendar endDate = Calendar.getInstance(Locale.CHINA);
-        if (start) {
-            Date anchor = (Date) endDay.getTag();
-            endDate.setTime(anchor);
-            startDate.setTime(anchor);
-            startDate.add(Calendar.YEAR, -1);
-            startDate.add(Calendar.MONTH, 1);
-        } else {
-            Date anchor = (Date) startDay.getTag();
-            startDate.setTime(anchor);
-            endDate.setTime(anchor);
-            endDate.add(Calendar.YEAR, 1);
-            endDate.add(Calendar.MONTH, -1);
-        }
         TimePickerView pickerView = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
+                Calendar calendar = Calendar.getInstance(Locale.CHINA);
                 if (start) {
-                    selectedDateRange(date, (Date) endDay.getTag());
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 1);
+                    calendar.add(Calendar.MONTH, -1);
+                    selectedDateRange(date, calendar.getTime());
                 } else {
-                    selectedDateRange((Date) startDay.getTag(), date);
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, -1);
+                    calendar.add(Calendar.MONTH, 1);
+                    selectedDateRange(calendar.getTime(), date);
                 }
             }
         }).setType(new boolean[]{true, true, false, false, false, false})
@@ -334,7 +326,6 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
                 .setBgColor(Color.WHITE)
                 .setLabel("年", "月", null, null, null, null)
                 .isCenterLabel(false)
-                .setRangDate(startDate, endDate)
                 .build();
         pickerView.show();
     }

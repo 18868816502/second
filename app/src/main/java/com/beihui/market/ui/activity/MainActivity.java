@@ -360,8 +360,11 @@ public class MainActivity extends BaseComponentActivity {
 
         final OkHttpClient client = new OkHttpClient();
         for (int i = 0; i < list.size(); ++i) {
-            final int index = i;
             TabImage tabImage = list.get(i);
+            final int index = tabImage.getPosition() - 1;
+            if (index < 0 || index >= textView.length) {
+                continue;
+            }
 
             if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
                 int[] colors = new int[]{

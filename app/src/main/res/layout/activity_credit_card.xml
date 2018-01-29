@@ -11,6 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
+        <ImageView
+            android:id="@+id/navigate"
+            style="@style/ToolBarIconStyle"
+            android:src="@mipmap/left_arrow_black" />
+
+        <ImageView
+            android:id="@+id/close"
+            style="@style/ToolBarIconStyle"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/close_black" />
+
         <TextView
             android:id="@+id/title"
             style="@style/ToolBarTitleTextAppearance.Dark"
