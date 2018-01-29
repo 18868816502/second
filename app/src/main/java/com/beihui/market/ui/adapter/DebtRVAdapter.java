@@ -71,13 +71,12 @@ public class DebtRVAdapter extends BaseQuickAdapter<InDebt, BaseViewHolder> {
         }
         helper.setText(R.id.debt_amount, ss);
 
+        helper.setVisible(R.id.status_badge, item.getReturnDay() < 0);
         String dayStr = item.getReturnDay() + "天";
         ss = new SpannableString(dayStr);
-        if (item.getReturnDay() >= 0) {
-            helper.setVisible(R.id.status_badge, false);
+        if (item.getReturnDay() > 7) {
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         } else {
-            helper.setVisible(R.id.status_badge, true);
             ss.setSpan(new TextAppearanceSpan(null, 0, ((int) (20 * helper.itemView.getResources().getDisplayMetrics().density)), ColorStateList.valueOf(Color.parseColor("#ff395e")), null), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         helper.setText(R.id.debt_deadline, ss);

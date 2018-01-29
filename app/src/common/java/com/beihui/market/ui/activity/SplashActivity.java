@@ -159,7 +159,7 @@ public class SplashActivity extends BaseComponentActivity {
     private void startAd(final AdBanner ad) {
         final AdBanner adBanner = ad;
         ignoreTv.setVisibility(View.VISIBLE);
-        adTimer = new AdTimer(5 * 1000, 1000);
+        adTimer = new AdTimer(3 * 1000, 1000);
         adTimer.start();
 
         if (ad != null && ad.getImgUrl() != null) {
