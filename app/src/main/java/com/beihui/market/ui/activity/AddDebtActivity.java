@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -29,14 +31,17 @@ import com.beihui.market.ui.contract.DebtAddContract;
 import com.beihui.market.ui.presenter.DebtAddPresenter;
 import com.beihui.market.util.AndroidBug5497Fix;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -346,6 +351,9 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     Date now = new Date(System.currentTimeMillis());
                     oneTimeHolder.debtStartDateContent.setTag(now);
                     oneTimeHolder.debtStartDateContent.setText(dateFormat.format(now));
+
+                    oneTimeHolder.debtLifeContent.addTextChangedListener(new DebtLifeTextWatcher(oneTimeHolder.debtLifeContent, 360 * 50));
+                    oneTimeHolder.remark.addTextChangedListener(new DebtNameTextWatcher(oneTimeHolder.remark, 20 * 2));
                 }
                 contentView = oneTimeHolder.itemView;
                 break;
@@ -356,6 +364,10 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     Date now = new Date(System.currentTimeMillis());
                     evenDebtHolder.debtStartDateContent.setTag(now);
                     evenDebtHolder.debtStartDateContent.setText(dateFormat.format(now));
+
+                    evenDebtHolder.debtLifeContent.addTextChangedListener(new DebtLifeTextWatcher(evenDebtHolder.debtLifeContent, 12 * 50));
+                    evenDebtHolder.debtName.addTextChangedListener(new DebtNameTextWatcher(evenDebtHolder.debtName, 5 * 2));
+                    evenDebtHolder.remark.addTextChangedListener(new DebtNameTextWatcher(evenDebtHolder.remark, 20 * 2));
                 }
                 contentView = evenDebtHolder.itemView;
                 break;
@@ -366,6 +378,10 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     Date now = new Date(System.currentTimeMillis());
                     evenCapitalHolder.debtStartDateContent.setTag(now);
                     evenCapitalHolder.debtStartDateContent.setText(dateFormat.format(now));
+
+                    evenCapitalHolder.debtLifeContent.addTextChangedListener(new DebtLifeTextWatcher(evenCapitalHolder.debtLifeContent, 12 * 50));
+                    evenCapitalHolder.debtName.addTextChangedListener(new DebtNameTextWatcher(evenCapitalHolder.debtName, 5 * 2));
+                    evenCapitalHolder.remark.addTextChangedListener(new DebtNameTextWatcher(evenCapitalHolder.remark, 20 * 2));
                 }
                 contentView = evenCapitalHolder.itemView;
                 break;
@@ -474,6 +490,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
 
     private void showTimePicker(final TextView startDateView) {
         InputMethodUtil.closeSoftKeyboard(this);
+        Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        calendar.setTime((Date) startDateView.getTag());
         TimePickerView pickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -491,6 +509,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 .setBgColor(Color.WHITE)
                 .setLabel("年", "月", "日", null, null, null)
                 .isCenterLabel(false)
+                .setDate(calendar)
                 .build();
         pickerView.show();
     }
@@ -514,5 +533,72 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         dialog.show();
+    }
+
+    class DebtLifeTextWatcher implements TextWatcher {
+
+        private EditText editText;
+        private int edge;
+
+        DebtLifeTextWatcher(EditText editText, int edge) {
+            this.editText = editText;
+            this.edge = edge;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (editText.getEditableText().length() > 0) {
+                int num = 0;
+                try {
+                    num = Integer.parseInt(editText.getText().toString());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (num > edge) {
+                    ToastUtils.showShort(AddDebtActivity.this, "借款期限不能超过50年", null);
+                    Editable editable = editText.getEditableText();
+                    editable.replace(0, editable.length(), edge + "");
+                }
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    }
+
+    class DebtNameTextWatcher implements TextWatcher {
+
+        private EditText editText;
+        private int edge;
+
+        DebtNameTextWatcher(EditText editText, int edge) {
+            this.editText = editText;
+            this.edge = edge;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (editText.getEditableText().length() > 0) {
+                byte[] bytes = editText.getText().toString().getBytes(Charset.forName("gb2312"));
+                if (bytes.length > edge) {
+                    editText.getEditableText().delete(editText.length() - 1, editText.length());
+                }
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
     }
 }

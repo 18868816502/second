@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:text="月/期"
+                android:text="月"
                 android:textColor="@color/black_1" />
 
             <EditText
@@ -41,10 +41,10 @@
                 android:layout_gravity="right"
                 android:background="@null"
                 android:gravity="right|center_vertical"
-                android:hint="如:14"
+                android:hint="如:12"
                 android:inputType="number"
                 android:minWidth="140dp"
-                android:paddingRight="40dp"
+                android:paddingRight="20dp"
                 android:textColor="@color/black_1"
                 android:textColorHint="@color/black_2"
                 android:textSize="15sp" />
@@ -242,7 +242,6 @@
             android:layout_height="50dp"
             android:background="@null"
             android:hint="备注(不超过20字)..."
-            android:maxLength="20"
             android:paddingLeft="15dp"
             android:textColor="@color/black_1"
             android:textColorHint="@color/black_2"
