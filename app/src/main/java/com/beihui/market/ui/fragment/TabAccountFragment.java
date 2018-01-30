@@ -131,6 +131,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     private HighLight infoHighLight;
 
     class TabScrollListener extends RecyclerView.OnScrollListener {
+        int topViewHeight;
         int scrollY;
         int firEdge = -1;
         int secEdge = -1;
@@ -146,13 +147,16 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         }
 
         void resetScrollY() {
+            if (topViewHeight == 0) {
+                topViewHeight = header.itemView.getMeasuredHeight();
+            }
             LinearLayoutManager llm = ((LinearLayoutManager) recyclerView.getLayoutManager());
             int first = llm.findFirstVisibleItemPosition();
             View firstVisibleView = llm.findViewByPosition(first);
             if (first == 0) {
                 scrollY = -firstVisibleView.getTop();
             } else {
-                scrollY = header.itemView.getMeasuredHeight() + (first - 1) * firstVisibleView.getMeasuredHeight() - firstVisibleView.getTop();
+                scrollY = topViewHeight + (first - 1) * firstVisibleView.getMeasuredHeight() - firstVisibleView.getTop();
             }
             updateContentByScrollY();
         }
@@ -177,15 +181,23 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                 if (analyzeView.getVisibility() == View.GONE) {
                     analyzeView.setVisibility(View.VISIBLE);
                     calendarView.setVisibility(View.VISIBLE);
+                }
+                if (billAdd.getVisibility() == View.VISIBLE) {
                     billAdd.setVisibility(View.GONE);
+                }
+                if (billAddNoCircle.getVisibility() == View.INVISIBLE) {
                     billAddNoCircle.setVisibility(View.VISIBLE);
                 }
             } else {
                 if (analyzeView.getVisibility() == View.VISIBLE) {
                     analyzeView.setVisibility(View.GONE);
                     calendarView.setVisibility(View.GONE);
+                }
+                if (billAdd.getVisibility() == View.GONE) {
                     billAdd.setVisibility(View.VISIBLE);
-                    billAddNoCircle.setVisibility(View.GONE);
+                }
+                if (billAddNoCircle.getVisibility() == View.VISIBLE) {
+                    billAddNoCircle.setVisibility(View.INVISIBLE);
                 }
             }
         }

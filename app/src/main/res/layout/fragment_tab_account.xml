@@ -83,7 +83,7 @@
                     style="@style/ToolBarIconStyle"
                     android:layout_gravity="center"
                     android:src="@drawable/bill_add_no_circle"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
             </FrameLayout>
 
 
