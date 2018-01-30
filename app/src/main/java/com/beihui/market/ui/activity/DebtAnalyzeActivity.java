@@ -77,9 +77,14 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
     }
 
     @JavascriptInterface
-    public void goToDebtDetail(String id) {
-        Intent intent = new Intent(this, DebtDetailActivity.class);
-        intent.putExtra("debt_id", id);
-        startActivityForResult(intent, 1);
+    public void goToDebtDetail(final String id) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(DebtAnalyzeActivity.this, DebtDetailActivity.class);
+                intent.putExtra("debt_id", id);
+                startActivityForResult(intent, 1);
+            }
+        });
     }
 }
