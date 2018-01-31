@@ -424,11 +424,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         creditCardAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                CreditCard.Row row = creditCardAdapter.getItem(position);
-                Intent intent = new Intent(getContext(), CreditCardWebActivity.class);
-                intent.putExtra("url", row.getUrl());
-                intent.putExtra("title", row.getName());
-                startActivity(intent);
+                presenter.clickCreditCard(position);
             }
         });
         creditCardRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -736,6 +732,14 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         toWeb.putExtra("title", title);
         toWeb.putExtra("url", url);
         startActivity(toWeb);
+    }
+
+    @Override
+    public void navigateCreditCard(String title, String url) {
+        Intent intent = new Intent(getContext(), CreditCardWebActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", title);
+        startActivity(intent);
     }
 
     private void handleShowContent() {

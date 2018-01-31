@@ -34,7 +34,7 @@ public class CreditCardRVAdapter extends BaseQuickAdapter<CreditCard.Row, BaseVi
             helper.<ImageView>getView(R.id.credit_card_image).setImageResource(R.drawable.image_place_holder);
         }
         helper.setText(R.id.credit_card_name, item.getName())
-                .setText(R.id.credit_card_des, item.getRemark());
+                .setText(R.id.credit_card_des, TextUtils.isEmpty(item.getNominate()) ? "" : item.getNominate());
     }
 
     public void notifyCreditCardChanged(List<CreditCard.Row> list) {

@@ -17,7 +17,7 @@ import com.beihui.market.ui.activity.MainActivity;
 import java.util.Random;
 
 public class NotificationUtil {
-    public static void showNotification(Context context, String title, String content, Intent contentIntent, String group) {
+    public static void showNotification(Context context, String title, String content, Intent contentIntent, String group, boolean activity) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
                 //设置群组
@@ -39,7 +39,11 @@ public class NotificationUtil {
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
         //如果有跳转
         if (contentIntent != null) {
-            builder.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+            if (activity) {
+                builder.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+            } else {
+                builder.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+            }
         }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -735,6 +735,16 @@ public class Api {
         return service.bindClientId(userId, clientId);
     }
 
+    /**
+     * 个推消息点击次数统计
+     *
+     * @param userId    用户id
+     * @param messageId 消息id
+     */
+    public Observable<ResultEntity> sendPushClicked(String userId, String messageId) {
+        return service.onPushClicked(userId, messageId);
+    }
+
 
     /*****+******************************************************数据统计***********************************************+*****+*****/
 

@@ -506,5 +506,12 @@ public interface ApiService {
     @POST(BASE_PATH + "/dataDictionary/countUv")
     Observable<ResultEntity> onCountUv(@Field("type") String type, @Field("userId") String userId);
 
+    /**
+     * 个推消息点击次数统计
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/dataDictionary/message")
+    Observable<ResultEntity> onPushClicked(@Field("userId") String userId, @Field("messageId") String message);
+
     /**********************************************************************************************************/
 }

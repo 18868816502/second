@@ -399,6 +399,16 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         }
     }
 
+    @Override
+    public void clickCreditCard(int position) {
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            CreditCard.Row row = creditCards.get(position);
+            view.navigateCreditCard(row.getName(), row.getUrl());
+        } else {
+            view.navigateLogin();
+        }
+    }
+
     /**
      * 加载精选产品
      *

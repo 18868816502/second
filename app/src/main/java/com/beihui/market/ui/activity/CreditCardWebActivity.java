@@ -116,7 +116,11 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_LOGIN) {
             if (UserHelper.getInstance(this).getProfile() != null) {
-                webView.loadUrl(pendingUrl + "&isApp=1&userId=" + UserHelper.getInstance(this).getProfile().getId());
+                String originalUrl = webView.getUrl();
+                if (originalUrl.contains("userId=null")) {
+                    webView.loadUrl(originalUrl.replace("userId=null", "userId=" + UserHelper.getInstance(this).getProfile().getId()));
+                }
+                webView.loadUrl(pendingUrl);
             }
         }
     }
@@ -132,6 +136,7 @@ public class CreditCardWebActivity extends BaseComponentActivity {
             @Override
             public void run() {
                 pendingUrl = nextUrl;
+                override = false;
                 startActivityForResult(new Intent(CreditCardWebActivity.this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
             }
         });

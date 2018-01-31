@@ -80,6 +80,13 @@ public interface TabHomeContract {
          */
         void clickChoiceProduct(int position);
 
+        /**
+         * 点击信用卡
+         *
+         * @param position 点击位置
+         */
+        void clickCreditCard(int position);
+
     }
 
     interface View extends BaseView<Presenter> {
@@ -197,5 +204,12 @@ public interface TabHomeContract {
          */
         void navigateWeb(String title, String url);
 
+        /**
+         * 导航至信用卡Web页面
+         *
+         * @param title 页面标题
+         * @param url   页面url
+         */
+        void navigateCreditCard(String title, String url);
     }
 }
