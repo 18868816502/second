@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +41,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmPayPlanContract.Presenter {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+    private final SimpleDateFormat diDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
 
     private Context context;
     private Api api;
@@ -93,12 +95,60 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        double oldAmount = payPlan.getRepayPlan().get(index).getTermPayableAmount();
-        payPlan.setPayableAmount(payPlan.getPayableAmount() - oldAmount + newAmount);
-        view.showPayPlanAbstract(payPlan);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("userId", userHelper.getProfile().getId());
+        params.put("channelId", payPlan.getChannelId());
+        params.put("channelName", payPlan.getChannelName());
+        if (!TextUtils.isEmpty(payPlan.getProjectName())) {
+            params.put("projectName", payPlan.getProjectName());
+        }
+        params.put("repayType", payPlan.getRepayType());
+        params.put("capital", payPlan.getCapital());
+        params.put("term", payPlan.getTerm());
+        params.put("termType", payPlan.getTermType());
+        try {
+            params.put("startDate", diDateFormat.format(dateFormat.parse(payPlan.getStartDate())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (!TextUtils.isEmpty(payPlan.getRemark())) {
+            params.put("remark", payPlan.getRemark());
+        }
+        switch (payPlan.getRepayType()) {
+            case DebtAddPresenter.METHOD_ONE_TIME:
+                params.put("payableAmount", newAmount);
+                break;
+            case DebtAddPresenter.METHOD_EVEN_DEBT:
+                params.put("everyTermAmount", newAmount);
+                break;
+            case DebtAddPresenter.METHOD_EVEN_CAPITAL:
+                params.put("termAmount", newAmount);
+                params.put("termNum", index + 1);
+                break;
+        }
 
-        payPlan.getRepayPlan().get(index).setTermPayableAmount(newAmount);
-        view.showPayPlanList(payPlan.getRepayPlan());
+        Disposable dis = api.confirmDebt(params)
+                .compose(RxUtil.<ResultEntity<PayPlan>>io2main())
+                .subscribe(new Consumer<ResultEntity<PayPlan>>() {
+                               @Override
+                               public void accept(ResultEntity<PayPlan> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       payPlan = result.getData();
+                                       view.showPayPlanAbstract(payPlan);
+                                       view.showPayPlanList(payPlan.getRepayPlan());
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(ConfirmPayPlanPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override

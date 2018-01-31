@@ -35,11 +35,6 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
     private DebtAddContract.View view;
     private UserHelper userHelper;
 
-    /**
-     * 编辑模式，
-     */
-    private DebtDetail debtDetail;
-
     //当前选中的还款方式
     private int selectedMethod = 0;
 
@@ -60,7 +55,6 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
 
     @Override
     public void attachDebtDetail(DebtDetail debtDetail) {
-        this.debtDetail = debtDetail;
         DebtChannel channel = new DebtChannel();
         channel.setType("whatever");
         channel.setId(debtDetail.getChannelId());
@@ -69,7 +63,9 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
 
         this.clickPayMethod(debtDetail.getRepayType() - 1);
         //填充附属数据
-        view.showAttachData(debtDetail.getRepayType(), debtDetail.getTerm(), debtDetail.getStartDate(), debtDetail.getCapital(), debtDetail.getPayableAmount(), debtDetail.getProjectName(), debtDetail.getRemark());
+        view.showAttachData(debtDetail.getRepayType(), debtDetail.getTerm(), debtDetail.getStartDate(),
+                debtDetail.getCapital(), debtDetail.getPayableAmount(), debtDetail.getRepayPlan().get(0).getTermPayableAmount(),
+                debtDetail.getProjectName(), debtDetail.getRemark());
     }
 
     @Override

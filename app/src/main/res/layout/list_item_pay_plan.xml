@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="50dp"
         android:layout_toLeftOf="@id/status"
         android:padding="6dp"
         android:src="@drawable/debt_confirm_pay_plan_edit" />
@@ -81,7 +81,7 @@
         android:layout_toLeftOf="@id/amount_edit"
         android:textColor="@color/black_1"
         android:textSize="12sp"
-        tools:text="2017-08-08" />
+        tools:text="1100.0" />
 
     <View
         android:layout_width="match_parent"

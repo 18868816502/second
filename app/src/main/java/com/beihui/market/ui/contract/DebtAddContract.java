@@ -67,10 +67,12 @@ public interface DebtAddContract {
          * @param termLife    借款期限
          * @param startDate   起息日期
          * @param capital     借款本金
+         * @param debtAmount  到期应还
+         * @param termAmount  每期应还或者某一期应还金额
          * @param projectName 项目名称
          * @param remark      备注
          */
-        void showAttachData(int payMethod, int termLife, String startDate, double capital, double debtAmount, String projectName, String remark);
+        void showAttachData(int payMethod, int termLife, String startDate, double capital, double debtAmount, double termAmount, String projectName, String remark);
 
         /**
          * 显示还款方式

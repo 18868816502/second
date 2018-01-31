@@ -277,7 +277,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
     }
 
     @Override
-    public void showAttachData(int payMethod, int termLife, String startDate, double capital, double debtAmount, String projectName, String remark) {
+    public void showAttachData(int payMethod, int termLife, String startDate, double capital, double debtAmount, double termAmount, String projectName, String remark) {
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(startDate);
@@ -300,6 +300,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 evenDebtHolder.debtStartDateContent.setText(startDate);
                 evenDebtHolder.debtStartDateContent.setTag(date);
                 evenDebtHolder.debtCapitalAmount.setText(keep2digits(capital));
+                evenDebtHolder.termAmount.setText(keep2digits(termAmount));
                 evenDebtHolder.debtName.setText(projectName);
                 if (!TextUtils.isEmpty(remark)) {
                     evenDebtHolder.remark.setText(remark);
@@ -310,6 +311,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 evenCapitalHolder.debtStartDateContent.setTag(startDate);
                 evenCapitalHolder.debtStartDateContent.setTag(date);
                 evenCapitalHolder.debtCapitalAmount.setText(keep2digits(capital));
+                evenCapitalHolder.debtAmountTh.setText(keep2digits(termAmount));
                 evenCapitalHolder.debtName.setText(projectName);
                 if (!TextUtils.isEmpty(remark)) {
                     evenCapitalHolder.remark.setText(remark);

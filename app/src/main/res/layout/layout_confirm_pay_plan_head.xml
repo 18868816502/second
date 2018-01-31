@@ -146,55 +146,56 @@
         android:layout_width="match_parent"
         android:layout_height="35dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/sticky_header"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="#fafbff"
-            android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/term_no"
+                android:layout_width="55dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="left"
+                android:layout_centerVertical="true"
                 android:text="期数"
                 android:textColor="@color/black_1"
                 android:textSize="11sp" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/term_no"
                 android:gravity="center_horizontal"
                 android:text="还款时间"
                 android:textColor="@color/black_1"
                 android:textSize="11sp" />
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="状态"
+                android:textColor="@color/black_1"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="60dp"
+                android:layout_toLeftOf="@id/status"
                 android:gravity="center_horizontal"
                 android:text="应还金额(元)"
                 android:textColor="@color/black_1"
                 android:textSize="11sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="状态"
-                android:textColor="@color/black_1"
-                android:textSize="11sp" />
-        </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
 
 </LinearLayout>
