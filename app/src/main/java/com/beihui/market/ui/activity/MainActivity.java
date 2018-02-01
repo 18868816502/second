@@ -47,6 +47,7 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.view.BottomNavigationBar;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,6 +70,8 @@ import okhttp3.Request;
 
 public class MainActivity extends BaseComponentActivity {
 
+    @BindView(R.id.navigation_bar_bg)
+    ImageView navigationBarBg;
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
 
@@ -357,6 +360,21 @@ public class MainActivity extends BaseComponentActivity {
                 return o1.getPosition() - o2.getPosition();
             }
         });
+
+        TabImage bgTabImage = null;
+        for (TabImage tabImage : list) {
+            if (tabImage.getPosition() == 6) {
+                bgTabImage = tabImage;
+                break;
+            }
+        }
+        if (bgTabImage != null) {
+            Glide.with(this)
+                    .load(bgTabImage.getUnselectedImage())
+                    .asBitmap()
+                    .centerCrop()
+                    .into(navigationBarBg);
+        }
 
         final OkHttpClient client = new OkHttpClient();
         for (int i = 0; i < list.size(); ++i) {
