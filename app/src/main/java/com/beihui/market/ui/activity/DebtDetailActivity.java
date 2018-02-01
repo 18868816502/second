@@ -322,6 +322,9 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
             public void onClick(View v) {
                 dialog.dismiss();
                 if (v.getId() == R.id.confirm) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(status == 2 ? DataStatisticsHelper.ID_SET_STATUS_PAID : DataStatisticsHelper.ID_SET_STATUS_UNPAID);
+
                     if (pos == -1) {
                         presenter.updateDebtStatus();
                     } else {

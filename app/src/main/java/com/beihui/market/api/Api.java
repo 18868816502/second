@@ -405,6 +405,16 @@ public class Api {
         return service.queryRecommendedCreditCards(userId, flag);
     }
 
+    /**
+     * 查询信用卡详情
+     *
+     * @param userId 用户id
+     * @param cardId 信用卡id
+     */
+    public Observable<ResultEntity<CreditCard.Row>> queryCreditCardDetail(String userId, String cardId) {
+        return service.queryCreditCardDetail(userId, cardId);
+    }
+
 
     /**
      * 查询个人推荐产品提示语

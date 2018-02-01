@@ -7,6 +7,7 @@ import android.content.Context;
 import com.beihui.market.App;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
+import com.beihui.market.entity.CreditCard;
 import com.beihui.market.injection.component.DaggerDataStatisticHelperComponent;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
@@ -253,6 +254,31 @@ public class DataStatisticsHelper {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 LogUtils.e(TAG, "internal message statistic error " + throwable);
+                            }
+                        });
+    }
+
+    public void onCreditCardClicked(String id) {
+        String userId;
+        if (UserHelper.getInstance(context).getProfile() != null) {
+            userId = UserHelper.getInstance(context).getProfile().getId();
+        } else {
+            userId = SPUtils.getCacheUserId(App.getInstance());
+        }
+        api.queryCreditCardDetail(userId, id)
+                .compose(RxUtil.<ResultEntity<CreditCard.Row>>io2main())
+                .subscribe(new Consumer<ResultEntity<CreditCard.Row>>() {
+                               @Override
+                               public void accept(ResultEntity<CreditCard.Row> resultEntity) throws Exception {
+                                   if (!resultEntity.isSuccess()) {
+                                       LogUtils.e(TAG, "credit card statistic error. message " + resultEntity.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                LogUtils.e(TAG, "credit card statistic error " + throwable);
                             }
                         });
     }

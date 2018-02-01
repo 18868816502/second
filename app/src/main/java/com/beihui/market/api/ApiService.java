@@ -239,6 +239,13 @@ public interface ApiService {
     Observable<ResultEntity<CreditCard>> queryRecommendedCreditCards(@Field("userId") String userId, @Field("flag") String flag);
 
     /**
+     * 查询信用卡详情，用作PV，UV
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/creditCard/byId")
+    Observable<ResultEntity<CreditCard.Row>> queryCreditCardDetail(@Field("userId") String userId, @Field("cardId") String cardId);
+
+    /**
      * 查询产品提示语
      */
     @POST(PRODUCT_PATH + "/product/queryBorrowingPrompt")

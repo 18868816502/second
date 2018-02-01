@@ -14,6 +14,7 @@ import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.TabHomeContract;
 import com.beihui.market.util.RxUtil;
@@ -404,6 +405,9 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
         if (UserHelper.getInstance(context).getProfile() != null) {
             CreditCard.Row row = creditCards.get(position);
             view.navigateCreditCard(row.getName(), row.getUrl());
+
+            //PV,UV统计
+            DataStatisticsHelper.getInstance().onCreditCardClicked(row.getId());
         } else {
             view.navigateLogin();
         }

@@ -289,6 +289,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         header.debtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_DEBT_CALENDAR);
+
                 presenter.clickCalendar();
             }
         });
