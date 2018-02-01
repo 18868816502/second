@@ -8,6 +8,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.beihui.market.R;
@@ -34,7 +35,7 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
         return R.layout.activity_debt_analyze;
     }
 
-    @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface", "AddJavascriptInterface"})
+    @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
@@ -53,6 +54,8 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
                 }
             }
         });
+        //avoiding load url in other web app,and 'denied to start' problem
+        webView.setWebViewClient(new WebViewClient());
         webView.addJavascriptInterface(this, "android");
 
         SlidePanelHelper.attach(this);

@@ -12,17 +12,23 @@ public class BusinessWebView extends WebView {
 
 
     public BusinessWebView(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public BusinessWebView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
+    }
+
+
+    public BusinessWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    public BusinessWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-
+    private void init() {
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);

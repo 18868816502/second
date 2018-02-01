@@ -66,7 +66,7 @@ public class RewardPointActivity extends BaseComponentActivity {
         return R.layout.activity_reward_points;
     }
 
-    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
+    @SuppressLint({"AddJavascriptInterface"})
     @Override
     public void configViews() {
         setupToolbar(toolbar, true);

@@ -94,7 +94,7 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
             return;
         }
         if (isDataEmpty(term)) {
-            view.showErrorMsg(selectedMethod == 0 ? "请输入借款期数" : "请输入借款期限");
+            view.showErrorMsg(selectedMethod == 0 ? "请输入借款期限" : "请输入借款期数");
             return;
         }
         if (startDate == null) {

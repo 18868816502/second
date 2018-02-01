@@ -50,7 +50,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="您可以对分期借款，单期借款进行记账"
+                android:text="您可以对分期借款、单期借款进行记账"
                 android:textColor="@color/black_2"
                 android:textSize="12sp" />
 
