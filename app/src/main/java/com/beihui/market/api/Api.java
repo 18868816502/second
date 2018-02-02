@@ -733,6 +733,16 @@ public class Api {
         return service.addRewardPoint(userId, taskId);
     }
 
+    /*****+******************************************************按钮显示***********************************************+*****+*****/
+    /**
+     * 查询菜单，按钮是否显示
+     *
+     * @param flag 需要确定状态的菜单，按钮
+     */
+    public Observable<ResultEntity<Boolean>> queryMenuVisible(String flag) {
+        return service.queryMenuVisible(flag);
+    }
+
     /*****+******************************************************个推绑定***********************************************+*****+*****/
 
     /**

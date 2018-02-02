@@ -61,6 +61,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     TextView userNameTv;
     @BindView(R.id.login)
     TextView loginTv;
+    @BindView(R.id.mine_product_container)
+    View mineProductContainer;
     @BindView(R.id.points)
     TextView points;
     @BindView(R.id.wechat_surprise)
@@ -368,5 +370,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateSetting(String userId) {
         startActivity(new Intent(getActivity(), SettingsActivity.class));
+    }
+
+    @Override
+    public void updateMyLoanVisible(boolean visible) {
+        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

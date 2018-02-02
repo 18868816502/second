@@ -135,5 +135,12 @@ public interface TabMineContract {
          */
         void navigateSetting(String userId);
 
+        /**
+         * 更新我的借款按钮是否显示
+         *
+         * @param visible 是否显示
+         */
+        void updateMyLoanVisible(boolean visible);
+
     }
 }

@@ -467,6 +467,13 @@ public interface ApiService {
     @POST(BASE_PATH + "/userInteg/add")
     Observable<ResultEntity> addRewardPoint(@Field("userId") String userId, @Field("taskId") String taskId);
 
+    /**
+     * 查询菜单，按钮是否显示
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/appconfig/btnmenu/show")
+    Observable<ResultEntity<Boolean>> queryMenuVisible(@Field("flag") String flag);
+
 
     /****************************************************个推账号用户绑定*****************************************************/
 

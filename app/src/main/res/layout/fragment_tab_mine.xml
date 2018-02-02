@@ -101,6 +101,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/mine_product_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"

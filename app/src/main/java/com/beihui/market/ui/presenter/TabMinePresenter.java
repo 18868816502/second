@@ -58,6 +58,24 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
                             });
             addDisposable(dis);
         }
+
+        Disposable dis = api.queryMenuVisible("my_loan_menu")
+                .compose(RxUtil.<ResultEntity<Boolean>>io2main())
+                .subscribe(new Consumer<ResultEntity<Boolean>>() {
+                               @Override
+                               public void accept(ResultEntity<Boolean> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       view.updateMyLoanVisible(result.getData());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(TabMinePresenter.this, throwable);
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override
