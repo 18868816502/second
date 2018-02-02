@@ -43,8 +43,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
 
     private LinkedList<String> titleList = new LinkedList<>();
 
-    private String pendingUrl;
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_credit_card;
@@ -117,11 +115,7 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_LOGIN) {
             if (UserHelper.getInstance(this).getProfile() != null) {
-                String originalUrl = webView.getUrl();
-                if (originalUrl.contains("userId=null")) {
-                    webView.loadUrl(originalUrl.replace("userId=null", "userId=" + UserHelper.getInstance(this).getProfile().getId()));
-                }
-                webView.loadUrl(pendingUrl);
+                webView.loadUrl(NetConstants.generateCreditCardUrl(UserHelper.getInstance(this).getProfile().getId()));
             }
         }
     }
@@ -136,7 +130,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                pendingUrl = nextUrl;
                 override = false;
                 startActivityForResult(new Intent(CreditCardWebActivity.this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
             }

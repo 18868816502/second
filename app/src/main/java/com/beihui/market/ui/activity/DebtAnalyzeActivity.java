@@ -20,6 +20,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class DebtAnalyzeActivity extends BaseComponentActivity {
 
@@ -39,7 +40,6 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -89,5 +89,19 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
                 startActivityForResult(intent, 1);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @OnClick({R.id.close})
+    void onBindViewClicked() {
+        finish();
     }
 }

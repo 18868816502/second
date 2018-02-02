@@ -29,7 +29,9 @@ public class ReboundLayout extends ViewGroup implements NestedScrollingChild, Ne
     private int[] mParentConsumed = new int[2];
 
     private int totalConsumed;
-    private float offsetRate = 0.8f;
+    private float offsetRate = 0.65f;
+
+    private boolean isSetting;
 
     public ReboundLayout(Context context) {
         this(context, null);
@@ -53,7 +55,7 @@ public class ReboundLayout extends ViewGroup implements NestedScrollingChild, Ne
     //region NestedScrollingParent
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        return isEnabled() && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+        return isEnabled() && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0 && !isSetting;
     }
 
     @Override
@@ -225,6 +227,7 @@ public class ReboundLayout extends ViewGroup implements NestedScrollingChild, Ne
             @Override
             public void onAnimationEnd(Animator animation) {
                 scrollTo(0, 0);
+                isSetting = false;
             }
         });
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -236,5 +239,6 @@ public class ReboundLayout extends ViewGroup implements NestedScrollingChild, Ne
         animator.setDuration(400);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
+        isSetting = true;
     }
 }

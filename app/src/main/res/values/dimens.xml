@@ -9,4 +9,6 @@
     <dimen name="home_banner_height">185dp</dimen>
     <dimen name="tool_bar_icon_size">32dp</dimen>
     <dimen name="debt_detail_text_left_margin">210dp</dimen>
+    <dimen name="tool_bar_content_inset_left">6dp</dimen>
+    <dimen name="tool_bar_icon_margin">6dp</dimen>
 </resources>

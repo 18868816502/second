@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,7 +8,7 @@
         android:id="@+id/progress_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:progressDrawable="@drawable/horizontal_progress" />
 
     <com.beihui.market.view.BusinessWebView
@@ -19,7 +20,11 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height">
+        android:layout_height="@dimen/tool_bar_height"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="@dimen/tool_bar_content_inset_left"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="@dimen/tool_bar_content_inset_left">
 
         <ImageView
             android:id="@+id/navigate"
@@ -29,7 +34,7 @@
         <ImageView
             android:id="@+id/close"
             style="@style/ToolBarIconStyle"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/tool_bar_icon_margin"
             android:src="@drawable/close_white" />
 
         <TextView

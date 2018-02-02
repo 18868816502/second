@@ -7,12 +7,12 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,10 +24,15 @@ import com.beihui.market.util.AndroidBug5497Fix;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ComWebViewActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.navigate)
+    ImageView navigateView;
+    @BindView(R.id.close)
+    ImageView closeView;
     @BindView(R.id.title)
     TextView titleTv;
     @BindView(R.id.web_view)
@@ -57,9 +62,12 @@ public class ComWebViewActivity extends BaseComponentActivity {
             toolbar.setBackgroundColor(Color.WHITE);
             titleTv.setTextColor(Color.BLACK);
             ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-            setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+            navigateView.setImageResource(R.mipmap.left_arrow_black);
+            closeView.setImageResource(R.drawable.close_black);
         } else {
-            setupToolbar(toolbar);
+            ImmersionBar.with(this).titleBar(toolbar).init();
+            navigateView.setImageResource(R.mipmap.left_arrow_white);
+            closeView.setImageResource(R.drawable.close_white);
         }
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -104,11 +112,16 @@ public class ComWebViewActivity extends BaseComponentActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
             webView.goBack();
-            return true;
+        } else {
+            super.onBackPressed();
         }
-        return super.onKeyUp(keyCode, event);
+    }
+
+    @OnClick({R.id.close})
+    void onBindViewClicked() {
+        finish();
     }
 }
