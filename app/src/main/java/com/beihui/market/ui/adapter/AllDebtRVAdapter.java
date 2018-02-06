@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 
 public class AllDebtRVAdapter extends BaseQuickAdapter<AllDebt.Row, BaseViewHolder> {
@@ -38,10 +38,10 @@ public class AllDebtRVAdapter extends BaseQuickAdapter<AllDebt.Row, BaseViewHold
             helper.<ImageView>getView(R.id.debt_image).setImageResource(R.drawable.image_place_holder);
         }
         helper.setText(R.id.channel_name, debt.getChannelName())
-                .setText(R.id.capital_amount, keep2digits(debt.getCapital()))
-                .setText(R.id.interest_amount, keep2digits(debt.getInterest()))
+                .setText(R.id.capital_amount, keep2digitsWithoutZero(debt.getCapital()))
+                .setText(R.id.interest_amount, keep2digitsWithoutZero(debt.getInterest()))
                 .setText(R.id.debt_rate_type, debt.getTermType() == 1 ? "日息" : "月息")
-                .setText(R.id.debt_rate, keep2digits(debt.getRate()) + "%");
+                .setText(R.id.debt_rate, keep2digitsWithoutZero(debt.getRate()) + "%");
 
         if (!TextUtils.isEmpty(debt.getProjectName())) {
             helper.setVisible(R.id.project_name_container, true);

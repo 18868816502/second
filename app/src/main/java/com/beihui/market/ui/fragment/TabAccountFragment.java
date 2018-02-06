@@ -59,7 +59,7 @@ import zhy.com.highlight.interfaces.HighLightInterface;
 import zhy.com.highlight.position.OnBaseCallback;
 import zhy.com.highlight.shape.CircleLightShape;
 
-import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class TabAccountFragment extends BaseTabFragment implements DebtContract.View {
     @BindView(R.id.bills_bg_image)
@@ -432,7 +432,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showDebtInfo(double debtAmount, double debtSevenDay, double debtMonth) {
-        String amountStr = keep2digits(debtAmount);
+        String amountStr = keep2digitsWithoutZero(debtAmount);
         if (amountStr.contains(".")) {
             SpannableString ss = new SpannableString(amountStr);
             ss.setSpan(new AbsoluteSizeSpan(20, true), amountStr.indexOf("."), amountStr.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -440,8 +440,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         } else {
             header.debtAmount.setText(amountStr);
         }
-        header.debtSevenDay.setText(keep2digits(debtSevenDay));
-        header.debtMonth.setText(keep2digits(debtMonth));
+        header.debtSevenDay.setText(keep2digitsWithoutZero(debtSevenDay));
+        header.debtMonth.setText(keep2digitsWithoutZero(debtMonth));
 
         this.debtAmount.setText(amountStr);
     }

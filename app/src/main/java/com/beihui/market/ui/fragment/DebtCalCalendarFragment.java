@@ -35,7 +35,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class DebtCalCalendarFragment extends BaseComponentFragment implements DebtCalendarContract.View {
 
@@ -163,9 +163,9 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
 
     @Override
     public void showDebtAbstractInfo(double debtAmount, double paidAmount, double unpaidAmount) {
-        this.debtAmount.setText(keep2digits(debtAmount));
-        this.paidAmount.setText(keep2digits(paidAmount));
-        this.unpaidAmount.setText(keep2digits(unpaidAmount));
+        this.debtAmount.setText(keep2digitsWithoutZero(debtAmount));
+        this.paidAmount.setText(keep2digitsWithoutZero(paidAmount));
+        this.unpaidAmount.setText(keep2digitsWithoutZero(unpaidAmount));
     }
 
     @Override

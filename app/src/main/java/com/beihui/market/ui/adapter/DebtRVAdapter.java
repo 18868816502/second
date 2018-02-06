@@ -62,7 +62,7 @@ public class DebtRVAdapter extends BaseQuickAdapter<InDebt, BaseViewHolder> {
         ss.setSpan(new AbsoluteSizeSpan(20, true), 0, lifeStr.indexOf("/"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         helper.setText(R.id.debt_life, ss);
 
-        String amountStr = CommonUtils.keep2digits(item.getTermPayableAmount()) + "元";
+        String amountStr = CommonUtils.keep2digitsWithoutZero(item.getTermPayableAmount()) + "元";
         ss = new SpannableString(amountStr);
         if (amountStr.contains(".")) {
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, amountStr.indexOf("."), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

@@ -30,6 +30,7 @@ import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class AllDebtFragment extends BaseComponentFragment implements AllDebtContract.View {
 
@@ -135,7 +136,7 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
         this.interestAmount = interestAmount;
         if (getUserVisibleHint()) {
             if (getActivity() != null) {
-                ((AllDebtActivity) getActivity()).updateBottomInfo(count + "", keep2digits(debtAmount), keep2digits(capitalAmount), keep2digits(interestAmount));
+                ((AllDebtActivity) getActivity()).updateBottomInfo(count + "", keep2digitsWithoutZero(debtAmount), keep2digitsWithoutZero(capitalAmount), keep2digitsWithoutZero(interestAmount));
             }
         }
     }

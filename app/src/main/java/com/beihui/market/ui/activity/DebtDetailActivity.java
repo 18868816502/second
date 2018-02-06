@@ -41,7 +41,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class DebtDetailActivity extends BaseComponentActivity implements DebtDetailContract.View {
 
@@ -292,20 +292,20 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         } else {
             header.projectNameContainer.setVisibility(View.GONE);
         }
-        header.debtTermAmount.setText(keep2digits(debtDetail.getTermPayableAmount()));
+        header.debtTermAmount.setText(keep2digitsWithoutZero(debtDetail.getTermPayableAmount()));
         header.debtPayDay.setText(debtDetail.getTermRepayDate());
-        header.debtPaid.setText(keep2digits(debtDetail.getReturnedAmount()));
-        header.debtUnpaid.setText(keep2digits(debtDetail.getStayReturnedAmount()));
+        header.debtPaid.setText(keep2digitsWithoutZero(debtDetail.getReturnedAmount()));
+        header.debtUnpaid.setText(keep2digitsWithoutZero(debtDetail.getStayReturnedAmount()));
 
-        header.debtAmount.setText(keep2digits(debtDetail.getPayableAmount()) + "元");
-        header.capital.setText(keep2digits(debtDetail.getCapital()) + "元");
+        header.debtAmount.setText(keep2digitsWithoutZero(debtDetail.getPayableAmount()) + "元");
+        header.capital.setText(keep2digitsWithoutZero(debtDetail.getCapital()) + "元");
         header.debtPlatform.setText(debtDetail.getChannelName());
-        header.interestRate.setText(keep2digits(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
+        header.interestRate.setText(keep2digitsWithoutZero(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
         if (!TextUtils.isEmpty(debtDetail.getRemark())) {
             header.remark.setText(debtDetail.getRemark());
         }
         header.payMethodContent.setText(PAY_METHOD[debtDetail.getRepayType() - 1]);
-        header.interest.setText(keep2digits(debtDetail.getInterest()) + "元");
+        header.interest.setText(keep2digitsWithoutZero(debtDetail.getInterest()) + "元");
         header.debtLife.setText(debtDetail.getTerm() + (debtDetail.getTermType() == 1 ? "日" : "月"));
         header.debtStartDate.setText(debtDetail.getStartDate());
 

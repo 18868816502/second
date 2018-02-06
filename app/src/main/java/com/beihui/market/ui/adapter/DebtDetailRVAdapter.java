@@ -11,6 +11,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
+
 public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBean, BaseViewHolder> {
 
     private List<DebtDetail.RepayPlanBean> dataSet = new ArrayList<>();
@@ -26,7 +28,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     protected void convert(BaseViewHolder helper, DebtDetail.RepayPlanBean item) {
         helper.setText(R.id.th, item.getTermNo() + "")
                 .setText(R.id.date, item.getTermRepayDate())
-                .setText(R.id.amount, item.getTermPayableAmount() + "")
+                .setText(R.id.amount, keep2digitsWithoutZero(item.getTermPayableAmount()))
                 .setText(R.id.status, status[item.getStatus()])
                 .setTextColor(R.id.status, colors[item.getStatus()]);
 
