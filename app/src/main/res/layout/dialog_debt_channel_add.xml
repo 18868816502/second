@@ -23,6 +23,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/debt_channel_add_edit_bg"
+        android:hint="请输入借款平台名称"
         android:minHeight="30dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp" />

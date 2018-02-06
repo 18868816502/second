@@ -17,8 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +24,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.InDebt;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
@@ -90,7 +89,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     class DebtHeader {
         View itemView;
         @BindView(R.id.debt_eye)
-        CheckBox debtEye;
+        ImageView debtEye;
         @BindView(R.id.all_debt)
         View allDebt;
         @BindView(R.id.debt_amount)
@@ -280,10 +279,13 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
                 presenter.clickAllDebt();
             }
         });
-        header.debtEye.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        header.debtEye.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                presenter.clickEye(isChecked);
+            public void onClick(View v) {
+                if (UserHelper.getInstance(getContext()).getProfile() != null) {
+                    header.debtEye.setSelected(!header.debtEye.isSelected());
+                    presenter.clickEye(header.debtEye.isSelected());
+                }
             }
         });
         header.debtCalendar.setOnClickListener(new View.OnClickListener() {

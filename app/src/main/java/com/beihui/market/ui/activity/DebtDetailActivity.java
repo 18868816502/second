@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -261,6 +262,7 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         //
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showDebtDetail(DebtDetail debtDetail) {
         String titleName = debtDetail.getChannelName() + (TextUtils.isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
@@ -295,15 +297,15 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         header.debtPaid.setText(keep2digits(debtDetail.getReturnedAmount()));
         header.debtUnpaid.setText(keep2digits(debtDetail.getStayReturnedAmount()));
 
-        header.debtAmount.setText(keep2digits(debtDetail.getPayableAmount()));
-        header.capital.setText(keep2digits(debtDetail.getCapital()));
+        header.debtAmount.setText(keep2digits(debtDetail.getPayableAmount()) + "元");
+        header.capital.setText(keep2digits(debtDetail.getCapital()) + "元");
         header.debtPlatform.setText(debtDetail.getChannelName());
         header.interestRate.setText(keep2digits(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
         if (!TextUtils.isEmpty(debtDetail.getRemark())) {
             header.remark.setText(debtDetail.getRemark());
         }
         header.payMethodContent.setText(PAY_METHOD[debtDetail.getRepayType() - 1]);
-        header.interest.setText(keep2digits(debtDetail.getInterest()));
+        header.interest.setText(keep2digits(debtDetail.getInterest()) + "元");
         header.debtLife.setText(debtDetail.getTerm() + (debtDetail.getTermType() == 1 ? "日" : "月"));
         header.debtStartDate.setText(debtDetail.getStartDate());
 

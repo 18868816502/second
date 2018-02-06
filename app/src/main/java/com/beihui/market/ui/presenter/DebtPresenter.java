@@ -188,11 +188,7 @@ public class DebtPresenter extends BaseRxPresenter implements DebtContract.Prese
 
     @Override
     public void clickCreditCard() {
-//        if (userHelper.getProfile() != null) {
         view.navigateCreditCardCenter();
-//        } else {
-//            view.navigateUserLogin();
-//        }
     }
 
     @Override

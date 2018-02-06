@@ -3,6 +3,7 @@ package com.beihui.market.ui.adapter;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.PayPlan;
+import com.beihui.market.util.CommonUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -22,7 +23,7 @@ public class ConfirmPayPlanRVAdapter extends BaseQuickAdapter<PayPlan.RepayPlanB
     protected void convert(BaseViewHolder helper, PayPlan.RepayPlanBean item) {
         helper.setText(R.id.th, item.getTermNo() + "")
                 .setText(R.id.date, item.getTermRepayDate())
-                .setText(R.id.amount, item.getTermPayableAmount() + "")
+                .setText(R.id.amount, CommonUtils.keep2digits(item.getTermPayableAmount()))
                 .addOnClickListener(R.id.amount_edit)
                 .addOnClickListener(R.id.date_edit);
     }

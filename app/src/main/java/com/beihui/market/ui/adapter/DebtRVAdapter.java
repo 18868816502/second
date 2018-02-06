@@ -67,7 +67,7 @@ public class DebtRVAdapter extends BaseQuickAdapter<InDebt, BaseViewHolder> {
         if (amountStr.contains(".")) {
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, amountStr.indexOf("."), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         } else {
-            ss.setSpan(new AbsoluteSizeSpan(20, true), 0, -1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new AbsoluteSizeSpan(20, true), 0, amountStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         helper.setText(R.id.debt_amount, ss);
 

@@ -42,6 +42,13 @@ import java.util.regex.Pattern;
 
 public class CommonUtils {
 
+    private static DecimalFormat decimalFormat = new DecimalFormat();
+
+    static {
+        decimalFormat.setMaximumFractionDigits(2);
+        decimalFormat.setGroupingSize(3);
+    }
+
     /**
      * 将每三个数字加上逗号处理（通常使用金额方面的编辑）
      *
@@ -565,11 +572,11 @@ public class CommonUtils {
     }
 
     public static String keep2digits(double input) {
-        return "" + (((int) (input * 100)) / 100.00);
+        return decimalFormat.format(input);
     }
 
     public static String keep2digitsWithoutZero(double input) {
-        String str = "" + (((int) (input * 100)) / 100.00);
+        String str = decimalFormat.format(input);
         if (str.contains(".0")) {
             return str.substring(0, str.indexOf(".0"));
         }

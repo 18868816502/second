@@ -486,8 +486,13 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 setResult(RESULT_OK);
                 finish();
             }
-
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.onBackPressed();
     }
 
     private void showTimePicker(final TextView startDateView) {

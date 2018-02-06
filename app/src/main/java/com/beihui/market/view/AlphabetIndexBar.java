@@ -157,6 +157,13 @@ public class AlphabetIndexBar extends View {
     }
 
     private int calSelectedIndex(MotionEvent event) {
-        return (int) (event.getY() / areas[0].height());
+        int index = (int) (event.getY() / areas[0].height());
+        if (index < 0) {
+            index = 0;
+        }
+        if (index >= ALPHABET.length) {
+            index = ALPHABET.length - 1;
+        }
+        return index;
     }
 }
