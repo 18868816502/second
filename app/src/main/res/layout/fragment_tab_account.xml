@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.beihui.market.view.pullreboundlayout.ReboundLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.beihui.market.view.refreshlayout.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rebound_layout"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@drawable/tab_account_rebound_bg" />
 
     <com.beihui.market.view.pullreboundlayout.NestScrollFrameLayout
         android:layout_width="match_parent"
@@ -119,4 +113,4 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="200dp" />
     </com.beihui.market.view.pullreboundlayout.NestScrollFrameLayout>
-</com.beihui.market.view.pullreboundlayout.ReboundLayout>
+</com.beihui.market.view.refreshlayout.RefreshLayout>

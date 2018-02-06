@@ -44,6 +44,8 @@ import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.refreshlayout.RefreshLayout;
+import com.beihui.market.view.refreshlayout.manager.ComRefreshManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
@@ -62,6 +64,8 @@ import zhy.com.highlight.shape.CircleLightShape;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class TabAccountFragment extends BaseTabFragment implements DebtContract.View {
+    @BindView(R.id.refresh_layout)
+    RefreshLayout refreshLayout;
     @BindView(R.id.bills_bg_image)
     ImageView billsBgImage;
     @BindView(R.id.tool_bar)
@@ -131,6 +135,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     private HighLight infoHighLight;
     private boolean eyeClosed;
+
+    private ComRefreshManager comRefreshManager;
 
     class TabScrollListener extends RecyclerView.OnScrollListener {
         int topViewHeight;
@@ -243,6 +249,15 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         ViewGroup.LayoutParams lp = toolbar.getLayoutParams();
         lp.height += statusHeight;
         toolbar.setLayoutParams(lp);
+
+        comRefreshManager = new ComRefreshManager();
+        refreshLayout.setRefreshManager(comRefreshManager);
+        refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefreshing() {
+                presenter.refresh();
+            }
+        });
 
         addView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,6 +401,10 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showNoUserLoginBlock() {
+        comRefreshManager.updateRefreshContainer(false);
+
+        completeRefresh();
+
         //如果用户退出，则设置eye open
         eyeClosed = false;
         if (adapter.getFooterLayout().getChildCount() == 1) {
@@ -413,6 +432,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showUserLoginBlock() {
+        comRefreshManager.updateRefreshContainer(true);
+        completeRefresh();
+
         if (adapter.getFooterLayout().getChildCount() > 1) {
             adapter.getFooterLayout().removeViewAt(0);
         }
@@ -432,6 +454,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showDebtInfo(double debtAmount, double debtSevenDay, double debtMonth) {
+        completeRefresh();
+
         String amountStr = keep2digitsWithoutZero(debtAmount);
         if (amountStr.contains(".")) {
             SpannableString ss = new SpannableString(amountStr);
@@ -450,6 +474,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     @Override
     public void showInDebtList(List<InDebt> list) {
         if (isAdded()) {
+            completeRefresh();
+
             adapter.notifyDebtChanged(list);
             //RecyclerView重新layout之后再做调整
             recyclerView.postDelayed(new Runnable() {
@@ -539,6 +565,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showDebtInfo() {
+        completeRefresh();
+
         updateContent(true);
         updateNoUserBlock(false);
         updateHide(false);
@@ -546,9 +574,23 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void hideDebtInfo() {
+        completeRefresh();
+
         updateContent(false);
         updateNoUserBlock(false);
         updateHide(true);
+    }
+
+    @Override
+    public void showErrorMsg(String msg) {
+        super.showErrorMsg(msg);
+        completeRefresh();
+    }
+
+    private void completeRefresh() {
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     private void updateContent(boolean show) {

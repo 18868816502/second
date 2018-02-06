@@ -155,6 +155,14 @@ public class DebtPresenter extends BaseRxPresenter implements DebtContract.Prese
     }
 
     @Override
+    public void refresh() {
+        if (userHelper.getProfile() != null) {
+            loadDebtAbstract();
+            loadInDebtList();
+        }
+    }
+
+    @Override
     public void clickAdd() {
         if (userHelper.getProfile() != null) {
             view.navigateAddDebt();

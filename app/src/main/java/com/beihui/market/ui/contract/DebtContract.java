@@ -29,6 +29,11 @@ public interface DebtContract {
         void updateDebtStatus(int index);
 
         /**
+         * 刷新数据
+         */
+        void refresh();
+
+        /**
          * 点击添加账单
          */
         void clickAdd();
