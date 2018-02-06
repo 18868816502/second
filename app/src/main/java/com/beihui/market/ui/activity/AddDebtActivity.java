@@ -355,6 +355,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     oneTimeHolder.debtStartDateContent.setText(dateFormat.format(now));
 
                     oneTimeHolder.debtLifeContent.addTextChangedListener(new DebtLifeTextWatcher(oneTimeHolder.debtLifeContent, 360 * 50));
+                    oneTimeHolder.debtCapitalAmount.addTextChangedListener(new DebtAmountTextWatcher(oneTimeHolder.debtCapitalAmount));
+                    oneTimeHolder.debtAmount.addTextChangedListener(new DebtAmountTextWatcher(oneTimeHolder.debtAmount));
                     oneTimeHolder.remark.addTextChangedListener(new DebtNameTextWatcher(oneTimeHolder.remark, 20 * 2));
                 }
                 contentView = oneTimeHolder.itemView;
@@ -368,6 +370,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     evenDebtHolder.debtStartDateContent.setText(dateFormat.format(now));
 
                     evenDebtHolder.debtLifeContent.addTextChangedListener(new DebtLifeTextWatcher(evenDebtHolder.debtLifeContent, 12 * 50));
+                    evenDebtHolder.debtCapitalAmount.addTextChangedListener(new DebtAmountTextWatcher(evenDebtHolder.debtCapitalAmount));
+                    evenDebtHolder.termAmount.addTextChangedListener(new DebtAmountTextWatcher(evenDebtHolder.termAmount));
                     evenDebtHolder.debtName.addTextChangedListener(new DebtNameTextWatcher(evenDebtHolder.debtName, 5 * 2));
                     evenDebtHolder.remark.addTextChangedListener(new DebtNameTextWatcher(evenDebtHolder.remark, 20 * 2));
                 }
@@ -382,6 +386,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     evenCapitalHolder.debtStartDateContent.setText(dateFormat.format(now));
 
                     evenCapitalHolder.debtLifeContent.addTextChangedListener(new DebtLifeTextWatcher(evenCapitalHolder.debtLifeContent, 12 * 50));
+                    evenCapitalHolder.debtCapitalAmount.addTextChangedListener(new DebtAmountTextWatcher(evenCapitalHolder.debtCapitalAmount));
+                    evenCapitalHolder.debtAmountTh.addTextChangedListener(new DebtAmountTextWatcher(evenCapitalHolder.debtAmountTh));
                     evenCapitalHolder.debtName.addTextChangedListener(new DebtNameTextWatcher(evenCapitalHolder.debtName, 5 * 2));
                     evenCapitalHolder.remark.addTextChangedListener(new DebtNameTextWatcher(evenCapitalHolder.remark, 20 * 2));
                 }
@@ -540,6 +546,38 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         dialog.show();
+    }
+
+    class DebtAmountTextWatcher implements TextWatcher {
+
+        private EditText editText;
+
+        DebtAmountTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            try {
+                double amount = Double.parseDouble(editText.getText().toString());
+                if (amount >= 10000000) {
+                    ToastUtils.showShort(AddDebtActivity.this, "金额不能超过1000万", null);
+                    editText.getEditableText().delete(editText.length() - 1, editText.length());
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
     }
 
     class DebtLifeTextWatcher implements TextWatcher {

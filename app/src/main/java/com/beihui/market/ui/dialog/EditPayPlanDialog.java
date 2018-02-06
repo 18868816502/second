@@ -42,7 +42,31 @@ public class EditPayPlanDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_pay_plan_edit, container, false);
-        payPlanAmount = (EditText) view.findViewById(R.id.pay_plan_amount);
+        payPlanAmount = view.findViewById(R.id.pay_plan_amount);
+        payPlanAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    double amount = Double.parseDouble(payPlanAmount.getText().toString());
+                    if (amount >= 10000000) {
+                        ToastUtils.showShort(getContext(), "金额不能超过1000万", null);
+                        payPlanAmount.getEditableText().delete(payPlanAmount.length() - 1, payPlanAmount.length());
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         payPlanAmount.setText(originalAmount);
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
