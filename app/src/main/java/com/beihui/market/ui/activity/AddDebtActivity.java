@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -55,7 +56,6 @@ import butterknife.OnClick;
 import static com.beihui.market.ui.contract.DebtAddContract.Presenter.METHOD_EVEN_CAPITAL;
 import static com.beihui.market.ui.contract.DebtAddContract.Presenter.METHOD_EVEN_DEBT;
 import static com.beihui.market.ui.contract.DebtAddContract.Presenter.METHOD_ONE_TIME;
-import static com.beihui.market.util.CommonUtils.keep2digits;
 
 public class AddDebtActivity extends BaseComponentActivity implements DebtAddContract.View {
 
@@ -276,6 +276,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
         //
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showAttachData(int payMethod, int termLife, String startDate, double capital, double debtAmount, double termAmount, String projectName, String remark) {
         Date date = null;
@@ -289,8 +290,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 oneTimeHolder.debtLifeContent.setText(termLife + "");
                 oneTimeHolder.debtStartDateContent.setText(startDate);
                 oneTimeHolder.debtStartDateContent.setTag(date);
-                oneTimeHolder.debtCapitalAmount.setText(keep2digits(capital));
-                oneTimeHolder.debtAmount.setText(keep2digits(debtAmount));
+                oneTimeHolder.debtCapitalAmount.setText(capital + "");
+                oneTimeHolder.debtAmount.setText(debtAmount + "");
                 if (!TextUtils.isEmpty(remark)) {
                     oneTimeHolder.remark.setText(remark);
                 }
@@ -299,8 +300,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 evenDebtHolder.debtLifeContent.setText(termLife + "");
                 evenDebtHolder.debtStartDateContent.setText(startDate);
                 evenDebtHolder.debtStartDateContent.setTag(date);
-                evenDebtHolder.debtCapitalAmount.setText(keep2digits(capital));
-                evenDebtHolder.termAmount.setText(keep2digits(termAmount));
+                evenDebtHolder.debtCapitalAmount.setText(capital + "");
+                evenDebtHolder.termAmount.setText(termAmount + "");
                 evenDebtHolder.debtName.setText(projectName);
                 if (!TextUtils.isEmpty(remark)) {
                     evenDebtHolder.remark.setText(remark);
@@ -310,8 +311,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 evenCapitalHolder.debtLifeContent.setText(termLife + "");
                 evenCapitalHolder.debtStartDateContent.setTag(startDate);
                 evenCapitalHolder.debtStartDateContent.setTag(date);
-                evenCapitalHolder.debtCapitalAmount.setText(keep2digits(capital));
-                evenCapitalHolder.debtAmountTh.setText(keep2digits(termAmount));
+                evenCapitalHolder.debtCapitalAmount.setText(capital + "");
+                evenCapitalHolder.debtAmountTh.setText(termAmount + "");
                 evenCapitalHolder.debtName.setText(projectName);
                 if (!TextUtils.isEmpty(remark)) {
                     evenCapitalHolder.remark.setText(remark);

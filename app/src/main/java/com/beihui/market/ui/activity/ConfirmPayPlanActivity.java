@@ -50,7 +50,7 @@ import zhy.com.highlight.interfaces.HighLightInterface;
 import zhy.com.highlight.position.OnBaseCallback;
 import zhy.com.highlight.shape.CircleLightShape;
 
-import static com.beihui.market.util.CommonUtils.keep2digits;
+import static com.beihui.market.util.CommonUtils.convertInterestRate;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class ConfirmPayPlanActivity extends BaseComponentActivity implements ConfirmPayPlanContract.View {
@@ -250,7 +250,7 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
 
             header.debtAmountView.setText(keep2digitsWithoutZero(payPlan.getPayableAmount()));
             header.rateTextView.setText(payPlan.getTermType() == 1 ? "日息" : "月息");
-            header.rateView.setText(keep2digits(payPlan.getRate()) + "%");
+            header.rateView.setText(convertInterestRate(payPlan.getRate()) + "%");
         }
     }
 

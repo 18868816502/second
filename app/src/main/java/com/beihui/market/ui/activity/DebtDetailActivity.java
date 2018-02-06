@@ -41,6 +41,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.beihui.market.util.CommonUtils.convertInterestRate;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class DebtDetailActivity extends BaseComponentActivity implements DebtDetailContract.View {
@@ -300,7 +301,7 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         header.debtAmount.setText(keep2digitsWithoutZero(debtDetail.getPayableAmount()) + "元");
         header.capital.setText(keep2digitsWithoutZero(debtDetail.getCapital()) + "元");
         header.debtPlatform.setText(debtDetail.getChannelName());
-        header.interestRate.setText(keep2digitsWithoutZero(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
+        header.interestRate.setText(convertInterestRate(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
         if (!TextUtils.isEmpty(debtDetail.getRemark())) {
             header.remark.setText(debtDetail.getRemark());
         }

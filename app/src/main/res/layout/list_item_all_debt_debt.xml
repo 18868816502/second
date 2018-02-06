@@ -102,6 +102,8 @@
                     android:id="@+id/capital_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/black_1"
                     android:textSize="16sp"
                     tools:text="3000.00" />
@@ -133,6 +135,8 @@
                     android:id="@+id/interest_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/black_1"
                     android:textSize="16sp"
                     tools:text="3000.00" />

@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,10 +44,13 @@ import java.util.regex.Pattern;
 public class CommonUtils {
 
     private static DecimalFormat decimalFormat = new DecimalFormat();
+    private static DecimalFormat rateDecimalFormat = new DecimalFormat();
 
     static {
         decimalFormat.setMaximumFractionDigits(2);
         decimalFormat.setGroupingSize(3);
+
+        rateDecimalFormat.setMaximumFractionDigits(3);
     }
 
     /**
@@ -577,10 +581,14 @@ public class CommonUtils {
 
     public static String keep2digitsWithoutZero(double input) {
         String str = decimalFormat.format(input);
-        if (str.contains(".0")) {
-            return str.substring(0, str.indexOf(".0"));
+        if (str.contains(".00")) {
+            return str.substring(0, str.indexOf(".00"));
         }
         return str;
+    }
+
+    public static String convertInterestRate(double rate) {
+        return rateDecimalFormat.format(rate);
     }
 
 }

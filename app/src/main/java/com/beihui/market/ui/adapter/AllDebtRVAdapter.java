@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.beihui.market.util.CommonUtils.convertInterestRate;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 
@@ -41,7 +42,7 @@ public class AllDebtRVAdapter extends BaseQuickAdapter<AllDebt.Row, BaseViewHold
                 .setText(R.id.capital_amount, keep2digitsWithoutZero(debt.getCapital()))
                 .setText(R.id.interest_amount, keep2digitsWithoutZero(debt.getInterest()))
                 .setText(R.id.debt_rate_type, debt.getTermType() == 1 ? "日息" : "月息")
-                .setText(R.id.debt_rate, keep2digitsWithoutZero(debt.getRate()) + "%");
+                .setText(R.id.debt_rate, convertInterestRate(debt.getRate()) + "%");
 
         if (!TextUtils.isEmpty(debt.getProjectName())) {
             helper.setVisible(R.id.project_name_container, true);
