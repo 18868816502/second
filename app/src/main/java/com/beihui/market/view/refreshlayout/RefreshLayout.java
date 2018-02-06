@@ -749,16 +749,21 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
          *                       sometime client trigger refresh event in the middle of scrolling,
          *                       at that case RefreshLayout are supposed to filter any motion event.
          */
-        protected void setRefreshInternal(boolean refresh, boolean isScrolling, boolean abortScrolling) {
+        protected void setRefreshInternal(boolean refresh, final boolean isScrolling, boolean abortScrolling) {
             if (abortScrolling) {
                 mRefreshLayout.abortScrolling();
             }
-            boolean changed = mIsRefreshing ^ refresh;
+            final boolean changed = mIsRefreshing ^ refresh;
             mIsRefreshing = refresh;
             if (mIsRefreshing) {
                 prepare(isScrolling, changed);
             } else {
-                finish(isScrolling, changed);
+                mRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish(isScrolling, changed);
+                    }
+                }, 500);
             }
         }
 

@@ -62,7 +62,7 @@ public class ComRefreshManager extends ComRefreshManagerBase {
     protected void onRefreshing() {
         refreshText.setText("正在刷新");
         valueAnimator = ValueAnimator.ofFloat(0.0f, 360.0f);
-        valueAnimator.setDuration(200);
+        valueAnimator.setDuration(300);
         valueAnimator.setRepeatCount(Integer.MAX_VALUE);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -76,11 +76,12 @@ public class ComRefreshManager extends ComRefreshManagerBase {
     @Override
     protected void onReset() {
         mWaitingRelease = false;
-        refreshText.setText("下拉刷新");
         if (valueAnimator != null && valueAnimator.isRunning()) {
             valueAnimator.cancel();
             valueAnimator = null;
         }
+        refreshText.setText("下拉刷新");
+        refreshImage.setRotation(0);
     }
 
     @Override

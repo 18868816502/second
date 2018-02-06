@@ -43,6 +43,8 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     NCalendar nCalendar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.no_record)
+    View noRecord;
 
     @BindView(R.id.debt_amount)
     TextView debtAmount;
@@ -158,6 +160,14 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     public void showCalendarDebt(List<DebtCalendar.DetailBean> list) {
         if (isAdded()) {
             adapter.notifyDebtChanged(list);
+
+            if (list != null && list.size() > 0) {
+                recyclerView.setVisibility(View.VISIBLE);
+                noRecord.setVisibility(View.INVISIBLE);
+            } else {
+                recyclerView.setVisibility(View.INVISIBLE);
+                noRecord.setVisibility(View.VISIBLE);
+            }
         }
     }
 
