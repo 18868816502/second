@@ -55,14 +55,29 @@
                     android:textColor="#e6ffffff"
                     android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/debt_amount"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp"
-                    tools:text="3658.00" />
+                    android:layout_marginLeft="5dp">
+
+                    <TextView
+                        android:id="@+id/debt_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp"
+                        tools:text="3658.00" />
+
+                    <TextView
+                        android:id="@+id/debt_amount_hide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="****"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+
             </LinearLayout>
 
             <FrameLayout

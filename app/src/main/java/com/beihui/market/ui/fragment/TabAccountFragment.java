@@ -70,6 +70,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     View debtAmountContainer;
     @BindView(R.id.debt_amount)
     TextView debtAmount;
+    @BindView(R.id.debt_amount_hide)
+    View debtAmountHide;
     @BindView(R.id.calendar)
     View calendarView;
     @BindView(R.id.analyze)
@@ -128,6 +130,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     private DebtRVAdapter adapter;
 
     private HighLight infoHighLight;
+    private boolean eyeClosed;
 
     class TabScrollListener extends RecyclerView.OnScrollListener {
         int topViewHeight;
@@ -284,7 +287,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             public void onClick(View v) {
                 if (UserHelper.getInstance(getContext()).getProfile() != null) {
                     header.debtEye.setSelected(!header.debtEye.isSelected());
-                    presenter.clickEye(header.debtEye.isSelected());
+                    eyeClosed = header.debtEye.isSelected();
+                    presenter.clickEye(eyeClosed);
                 }
             }
         });
@@ -382,6 +386,8 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void showNoUserLoginBlock() {
+        //如果用户退出，则设置eye open
+        eyeClosed = false;
         if (adapter.getFooterLayout().getChildCount() == 1) {
             //可能出现重读调用，确保只添加一次
             View noUserLoginFootView = LayoutInflater.from(getContext())
@@ -413,8 +419,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
         addView.setVisibility(View.VISIBLE);
 
-        updateContent(true);
-        updateHide(false);
+        header.debtEye.setSelected(eyeClosed);
+        updateContent(!eyeClosed);
+        updateHide(eyeClosed);
         updateNoUserBlock(false);
     }
 
@@ -548,6 +555,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         header.debtAmount.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         header.debtSevenDay.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         header.debtMonth.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        debtAmount.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void updateNoUserBlock(boolean show) {
@@ -560,5 +568,6 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         header.debtAmountHide.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         header.debtSevenHide.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         header.debtMonthHide.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        debtAmountHide.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
