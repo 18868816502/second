@@ -3,15 +3,12 @@ package com.beihui.market.view.chart;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Typeface;
 
-import com.beihui.market.R;
-import com.beihui.market.util.CommonUtils;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -25,18 +22,15 @@ public class DebtDataRender extends LineChartRenderer {
 
     private Path mHighlightLinePath = new Path();
     private int topPadding;
-    private Paint highlightValuePaint = new Paint();
+
+    private float highlightTextSize;
+
+    private Entry highlightEntry;
 
     public DebtDataRender(Context context, LineDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
         topPadding = (int) (context.getResources().getDisplayMetrics().density * 6);
-        highlightValuePaint.setColor(context.getResources().getColor(R.color.colorPrimary));
-        highlightValuePaint.setTextSize((int) (context.getResources().getDisplayMetrics().density * 9));
-        highlightValuePaint.setAntiAlias(true);
-        highlightValuePaint.setTextAlign(Paint.Align.CENTER);
-        highlightValuePaint.setTypeface(Typeface.DEFAULT);
-        highlightValuePaint.setStrokeWidth(context.getResources().getDisplayMetrics().density * 1.5f);
-
+        highlightTextSize = context.getResources().getDisplayMetrics().density * 9;
     }
 
     @Override
@@ -45,12 +39,16 @@ public class DebtDataRender extends LineChartRenderer {
     }
 
     @Override
-    public void drawData(Canvas c) {
-        super.drawData(c);
+    public void drawValues(Canvas c) {
+        super.drawValues(c);
     }
 
     @Override
-    public void drawValues(Canvas c) {
+    public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
+        if (entry == highlightEntry) {
+            mValuePaint.setTextSize(highlightTextSize);
+            super.drawValue(c, formatter, value, entry, dataSetIndex, x, y, color);
+        }
     }
 
     @Override
@@ -65,6 +63,7 @@ public class DebtDataRender extends LineChartRenderer {
                 continue;
 
             Entry e = set.getEntryForXValue(high.getX(), high.getY());
+            highlightEntry = e;
 
             if (!isInBoundsX(e, set))
                 continue;
@@ -92,32 +91,5 @@ public class DebtDataRender extends LineChartRenderer {
         mHighlightLinePath.moveTo(x, Math.max(y - topPadding, mViewPortHandler.contentTop()));
         mHighlightLinePath.lineTo(x, mViewPortHandler.contentBottom());
         c.drawPath(mHighlightLinePath, mHighlightPaint);
-
-        String debtStr = CommonUtils.keep2digitsWithoutZero(highlight.getY());
-        float textSize = highlightValuePaint.getTextSize();
-        float exceptedTop = y - textSize - topPadding - 5;
-        int entryCount = set.getEntryCount();
-        if (entryCount > 1) {
-            if (Math.abs(highlight.getX() - 0.0) <= 0.000001) {
-                highlightValuePaint.setTextAlign(Paint.Align.LEFT);
-            } else if (Math.abs(highlight.getX() - entryCount + 1) <= 0.000001) {
-                highlightValuePaint.setTextAlign(Paint.Align.RIGHT);
-            } else {
-                highlightValuePaint.setTextAlign(Paint.Align.CENTER);
-            }
-            if (exceptedTop < mViewPortHandler.contentTop()) {
-                if (x + textSize * debtStr.length() / 2 + 2 < mViewPortHandler.contentRight()) {
-                    c.drawText(debtStr, x + textSize * debtStr.length() / 2 + 2, y + textSize / 2, highlightValuePaint);
-                } else {
-                    c.drawText(debtStr, x - textSize * debtStr.length() / 2 - 2, y + textSize / 2, highlightValuePaint);
-                }
-            } else {
-                c.drawText(debtStr, x, exceptedTop + textSize, highlightValuePaint);
-            }
-
-        } else {
-            highlightValuePaint.setTextAlign(Paint.Align.CENTER);
-            c.drawText(debtStr, x, exceptedTop + textSize, highlightValuePaint);
-        }
     }
 }

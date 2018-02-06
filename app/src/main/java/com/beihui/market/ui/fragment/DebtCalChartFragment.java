@@ -31,9 +31,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +55,7 @@ import static com.beihui.market.util.CommonUtils.keep2digits;
 public class DebtCalChartFragment extends BaseComponentFragment implements DebtCalendarContract.View {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
+    private DecimalFormat decimalFormat = new DecimalFormat();
 
     @BindView(R.id.start_day)
     TextView startDay;
@@ -93,11 +97,15 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
 
     @Override
     public void configViews() {
+        decimalFormat.setGroupingSize(3);
+        decimalFormat.setMaximumFractionDigits(2);
+
         lineChart.setNoDataText("");
         lineChart.getDescription().setText("");
         lineChart.getLegend().setEnabled(false);
         lineChart.setHighlightPerDragEnabled(true);
         lineChart.setHighlightPerTapEnabled(true);
+        lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             private Highlight lastH;
 
@@ -264,6 +272,12 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
         dataSet.setDrawHorizontalHighlightIndicator(false);
         dataSet.setValueTextSize(getResources().getDisplayMetrics().density * 9);
         LineData data = new LineData(dataSet);
+        data.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return decimalFormat.format(value);
+            }
+        });
         lineChart.setData(data);
         lineChart.getXAxis().setLabelCount(xys.size(), true);
         //如果当前只有一个数据，则设置横坐标标签居中，否则无法对应纵坐标位置
