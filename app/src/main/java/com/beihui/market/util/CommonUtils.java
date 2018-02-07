@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,12 +44,16 @@ public class CommonUtils {
 
     private static DecimalFormat decimalFormat = new DecimalFormat();
     private static DecimalFormat rateDecimalFormat = new DecimalFormat();
+    private static DecimalFormat amountFormat = new DecimalFormat();
 
     static {
         decimalFormat.setMaximumFractionDigits(2);
         decimalFormat.setGroupingSize(3);
 
         rateDecimalFormat.setMaximumFractionDigits(3);
+
+        amountFormat.setGroupingUsed(false);
+        amountFormat.setMaximumFractionDigits(2);
     }
 
     /**
@@ -589,6 +592,10 @@ public class CommonUtils {
 
     public static String convertInterestRate(double rate) {
         return rateDecimalFormat.format(rate);
+    }
+
+    public static String convertAmount(double amount) {
+        return amountFormat.format(amount);
     }
 
 }

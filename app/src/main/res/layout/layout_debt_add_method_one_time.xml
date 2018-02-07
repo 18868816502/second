@@ -37,12 +37,12 @@
 
             <EditText
                 android:id="@+id/debt_life_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:background="@null"
                 android:gravity="right|center_vertical"
-                android:hint="如:14"
+                android:hint="如:30"
                 android:inputType="number"
                 android:minWidth="120dp"
                 android:paddingRight="20dp"
@@ -116,7 +116,7 @@
 
             <EditText
                 android:id="@+id/debt_capital_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:background="@null"
@@ -173,7 +173,7 @@
 
             <EditText
                 android:id="@+id/debt_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:background="@null"

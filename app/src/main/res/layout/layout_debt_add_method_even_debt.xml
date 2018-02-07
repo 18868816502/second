@@ -36,7 +36,7 @@
 
             <EditText
                 android:id="@+id/debt_life_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:background="@null"
@@ -115,7 +115,7 @@
 
             <EditText
                 android:id="@+id/debt_capital_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:background="@null"
@@ -174,7 +174,7 @@
 
             <EditText
                 android:id="@+id/term_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:background="@null"
@@ -217,9 +217,10 @@
 
             <EditText
                 android:id="@+id/debt_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
+                android:layout_marginLeft="100dp"
                 android:background="@null"
                 android:gravity="right|center_vertical"
                 android:hint="@string/debt_name_hint"

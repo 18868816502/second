@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.beihui.market.R;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 
@@ -25,7 +26,7 @@ public class EditPayPlanDialog extends DialogFragment {
 
     private PayPlanAmountChangedListener listener;
 
-    private String originalAmount;
+    private double originalAmount;
 
     public interface PayPlanAmountChangedListener {
         void onPayPlanAmountChanged(String amount);
@@ -67,7 +68,7 @@ public class EditPayPlanDialog extends DialogFragment {
 
             }
         });
-        payPlanAmount.setText(originalAmount);
+        payPlanAmount.setText(CommonUtils.convertAmount(originalAmount));
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +148,7 @@ public class EditPayPlanDialog extends DialogFragment {
         return this;
     }
 
-    public EditPayPlanDialog setOriginalAmount(String amount) {
+    public EditPayPlanDialog setOriginalAmount(double amount) {
         this.originalAmount = amount;
         return this;
     }

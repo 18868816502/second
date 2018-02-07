@@ -56,6 +56,7 @@ import butterknife.OnClick;
 import static com.beihui.market.ui.contract.DebtAddContract.Presenter.METHOD_EVEN_CAPITAL;
 import static com.beihui.market.ui.contract.DebtAddContract.Presenter.METHOD_EVEN_DEBT;
 import static com.beihui.market.ui.contract.DebtAddContract.Presenter.METHOD_ONE_TIME;
+import static com.beihui.market.util.CommonUtils.convertAmount;
 
 public class AddDebtActivity extends BaseComponentActivity implements DebtAddContract.View {
 
@@ -162,6 +163,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                         list.add(i + "");
                     }
                     pickerView.setPicker(list);
+                    pickerView.setSelectOptions(termNum - 1);
                     pickerView.show();
                     break;
                 case R.id.debt_name_question:
@@ -224,6 +226,11 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
      * 如果是借款详情页面进入编辑页面，则自动填充部分数据，并且在完成编辑后需要删除旧的借款
      */
     private DebtDetail pendingDebt;
+
+    private Date storedStartDate;
+    private String storedCapital;
+    private String storedDebtName;
+    private String storedRemark;
 
     @Override
     public int getLayoutId() {
@@ -291,8 +298,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 oneTimeHolder.debtLifeContent.setText(termLife + "");
                 oneTimeHolder.debtStartDateContent.setText(startDateStr);
                 oneTimeHolder.debtStartDateContent.setTag(date);
-                oneTimeHolder.debtCapitalAmount.setText(capital + "");
-                oneTimeHolder.debtAmount.setText(debtAmount + "");
+                oneTimeHolder.debtCapitalAmount.setText(convertAmount(capital));
+                oneTimeHolder.debtAmount.setText(convertAmount(debtAmount));
                 if (!TextUtils.isEmpty(remark)) {
                     oneTimeHolder.remark.setText(remark);
                 }
@@ -301,8 +308,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 evenDebtHolder.debtLifeContent.setText(termLife + "");
                 evenDebtHolder.debtStartDateContent.setText(startDateStr);
                 evenDebtHolder.debtStartDateContent.setTag(date);
-                evenDebtHolder.debtCapitalAmount.setText(capital + "");
-                evenDebtHolder.termAmount.setText(termAmount + "");
+                evenDebtHolder.debtCapitalAmount.setText(convertAmount(capital));
+                evenDebtHolder.termAmount.setText(convertAmount(termAmount));
                 evenDebtHolder.debtName.setText(projectName);
                 if (!TextUtils.isEmpty(remark)) {
                     evenDebtHolder.remark.setText(remark);
@@ -312,8 +319,8 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 evenCapitalHolder.debtLifeContent.setText(termLife + "");
                 evenCapitalHolder.debtStartDateContent.setText(startDateStr);
                 evenCapitalHolder.debtStartDateContent.setTag(date);
-                evenCapitalHolder.debtCapitalAmount.setText(capital + "");
-                evenCapitalHolder.debtAmountTh.setText(termAmount + "");
+                evenCapitalHolder.debtCapitalAmount.setText(convertAmount(capital));
+                evenCapitalHolder.debtAmountTh.setText(convertAmount(termAmount));
                 evenCapitalHolder.debtName.setText(projectName);
                 if (!TextUtils.isEmpty(remark)) {
                     evenCapitalHolder.remark.setText(remark);
@@ -338,11 +345,15 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 .setTitleColor(getResources().getColor(R.color.black_1))
                 .build();
         pickerView.setPicker(Arrays.asList(methods));
+        pickerView.setSelectOptions(this.method - 1);
         pickerView.show();
     }
 
     @Override
     public void showSelectedMethod(int method, String methodName, String methodDes) {
+        //记录当前输入数据
+        storeDebtInfo(this.method);
+
         this.method = method;
         payMethodContent.setText(methodName);
         payMethodDes.setText(methodDes);
@@ -361,6 +372,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     oneTimeHolder.debtAmount.addTextChangedListener(new DebtAmountTextWatcher(oneTimeHolder.debtAmount));
                     oneTimeHolder.remark.addTextChangedListener(new DebtNameTextWatcher(oneTimeHolder.remark, 20 * 2));
                 }
+                restoreDebtInfo(oneTimeHolder.debtStartDateContent, oneTimeHolder.debtCapitalAmount, null, oneTimeHolder.remark);
                 contentView = oneTimeHolder.itemView;
                 break;
             case METHOD_EVEN_DEBT:
@@ -377,6 +389,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     evenDebtHolder.debtName.addTextChangedListener(new DebtNameTextWatcher(evenDebtHolder.debtName, 5 * 2));
                     evenDebtHolder.remark.addTextChangedListener(new DebtNameTextWatcher(evenDebtHolder.remark, 20 * 2));
                 }
+                restoreDebtInfo(evenDebtHolder.debtStartDateContent, evenDebtHolder.debtCapitalAmount, evenDebtHolder.debtName, evenDebtHolder.remark);
                 contentView = evenDebtHolder.itemView;
                 break;
             case METHOD_EVEN_CAPITAL:
@@ -393,6 +406,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                     evenCapitalHolder.debtName.addTextChangedListener(new DebtNameTextWatcher(evenCapitalHolder.debtName, 5 * 2));
                     evenCapitalHolder.remark.addTextChangedListener(new DebtNameTextWatcher(evenCapitalHolder.remark, 20 * 2));
                 }
+                restoreDebtInfo(evenCapitalHolder.debtStartDateContent, evenCapitalHolder.debtCapitalAmount, evenCapitalHolder.debtName, evenCapitalHolder.remark);
                 contentView = evenCapitalHolder.itemView;
                 break;
             default:
@@ -550,6 +564,53 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
         dialog.show();
     }
 
+    private void storeDebtInfo(int method) {
+        Date startDate = null;
+        String capital = null, debtName = null, remark = null;
+        switch (method) {
+            case METHOD_ONE_TIME: {
+                startDate = (Date) oneTimeHolder.debtStartDateContent.getTag();
+                capital = oneTimeHolder.debtCapitalAmount.getText().toString();
+                remark = oneTimeHolder.remark.getText().toString();
+                break;
+            }
+            case METHOD_EVEN_DEBT: {
+                startDate = (Date) evenDebtHolder.debtStartDateContent.getTag();
+                capital = evenDebtHolder.debtCapitalAmount.getText().toString();
+                debtName = evenDebtHolder.debtName.getText().toString();
+                remark = evenDebtHolder.remark.getText().toString();
+                break;
+            }
+            case METHOD_EVEN_CAPITAL: {
+                startDate = (Date) evenCapitalHolder.debtStartDateContent.getTag();
+                capital = evenCapitalHolder.debtCapitalAmount.getText().toString();
+                debtName = evenCapitalHolder.debtName.getText().toString();
+                remark = evenCapitalHolder.remark.getText().toString();
+                break;
+            }
+        }
+        storedStartDate = startDate;
+        storedCapital = capital;
+        storedDebtName = debtName != null ? debtName : "";
+        storedRemark = remark != null ? remark : "";
+    }
+
+    private void restoreDebtInfo(TextView startDateView, TextView capitalView, TextView debtNameView, TextView remarkView) {
+        if (storedStartDate != null) {
+            startDateView.setText(dateFormat.format(storedStartDate));
+            startDateView.setTag(storedStartDate);
+        }
+        if (storedCapital != null) {
+            capitalView.setText(storedCapital);
+        }
+        if (debtNameView != null && storedDebtName != null) {
+            debtNameView.setText(storedDebtName);
+        }
+        if (storedRemark != null) {
+            remarkView.setText(storedRemark);
+        }
+    }
+
     class DebtAmountTextWatcher implements TextWatcher {
 
         private EditText editText;
@@ -607,8 +668,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 }
                 if (num > edge) {
                     ToastUtils.showShort(AddDebtActivity.this, "借款期限不能超过50年", null);
-                    Editable editable = editText.getEditableText();
-                    editable.replace(0, editable.length(), edge + "");
+                    editText.getEditableText().delete(editText.length() - 1, editText.length());
                 }
             }
         }
