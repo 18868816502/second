@@ -285,10 +285,11 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        String startDateStr = dateFormat.format(date);
         switch (payMethod) {
             case METHOD_ONE_TIME:
                 oneTimeHolder.debtLifeContent.setText(termLife + "");
-                oneTimeHolder.debtStartDateContent.setText(startDate);
+                oneTimeHolder.debtStartDateContent.setText(startDateStr);
                 oneTimeHolder.debtStartDateContent.setTag(date);
                 oneTimeHolder.debtCapitalAmount.setText(capital + "");
                 oneTimeHolder.debtAmount.setText(debtAmount + "");
@@ -298,7 +299,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 break;
             case METHOD_EVEN_DEBT:
                 evenDebtHolder.debtLifeContent.setText(termLife + "");
-                evenDebtHolder.debtStartDateContent.setText(startDate);
+                evenDebtHolder.debtStartDateContent.setText(startDateStr);
                 evenDebtHolder.debtStartDateContent.setTag(date);
                 evenDebtHolder.debtCapitalAmount.setText(capital + "");
                 evenDebtHolder.termAmount.setText(termAmount + "");
@@ -309,7 +310,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 break;
             case METHOD_EVEN_CAPITAL:
                 evenCapitalHolder.debtLifeContent.setText(termLife + "");
-                evenCapitalHolder.debtStartDateContent.setTag(startDate);
+                evenCapitalHolder.debtStartDateContent.setText(startDateStr);
                 evenCapitalHolder.debtStartDateContent.setTag(date);
                 evenCapitalHolder.debtCapitalAmount.setText(capital + "");
                 evenCapitalHolder.debtAmountTh.setText(termAmount + "");
