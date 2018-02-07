@@ -758,12 +758,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
             if (mIsRefreshing) {
                 prepare(isScrolling, changed);
             } else {
-                mRefreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish(isScrolling, changed);
-                    }
-                }, 500);
+                finish(isScrolling, changed);
             }
         }
 

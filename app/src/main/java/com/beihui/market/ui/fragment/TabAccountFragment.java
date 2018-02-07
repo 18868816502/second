@@ -169,6 +169,11 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             updateContentByScrollY();
         }
 
+        void reset() {
+            scrollY = 0;
+            updateContentByScrollY();
+        }
+
 
         void updateContentByScrollY() {
             if (firEdge == -1 && secEdge == -1) {
@@ -424,6 +429,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         }
 
         addView.setVisibility(View.GONE);
+        tabScrollListener.reset();
 
         updateContent(false);
         updateHide(false);

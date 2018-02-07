@@ -532,7 +532,7 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
                 .setCancelColor(Color.parseColor("#5591ff"))
                 .setSubmitText("确认")
                 .setSubmitColor(Color.parseColor("#5591ff"))
-                .setTitleText("还款日期")
+                .setTitleText("起息日期")
                 .setTitleColor(getResources().getColor(R.color.black_1))
                 .setTitleBgColor(Color.WHITE)
                 .setBgColor(Color.WHITE)
