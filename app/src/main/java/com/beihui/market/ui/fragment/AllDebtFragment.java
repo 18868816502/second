@@ -28,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-import static android.app.Activity.RESULT_OK;
 import static com.beihui.market.util.CommonUtils.keep2digits;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
@@ -73,6 +72,12 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.loadDebts();
+    }
+
+    @Override
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
@@ -112,7 +117,6 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
 
     @Override
     public void initDatas() {
-        presenter.loadDebts();
     }
 
     @Override
@@ -173,16 +177,5 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
             adapter.loadMoreComplete();
         }
         adapter.setEnableLoadMore(false);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            String deleteId = data.getStringExtra("deleteDebtId");
-            if (deleteId != null) {
-                presenter.debtDeleted(deleteId);
-            }
-        }
     }
 }

@@ -48,12 +48,46 @@ public class AllDebtPresenter extends BaseRxPresenter implements AllDebtContract
 
     @Override
     public void loadDebts() {
-        if (debts.size() > 0) {
-            view.showDebtInfo(count, debtAmount, capitalAmount, interestAmount);
-            view.showDebts(Collections.unmodifiableList(debts), canLoadMore);
-        } else {
-            loadMoreDebts();
-        }
+        curPageNo = 1;
+        Disposable dis = api.queryAllDebt(userHelper.getProfile().getId(), status, curPageNo, PAGE_SIZE)
+                .compose(RxUtil.<ResultEntity<AllDebt>>io2main())
+                .subscribe(new Consumer<ResultEntity<AllDebt>>() {
+                               @Override
+                               public void accept(ResultEntity<AllDebt> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       curPageNo++;
+
+                                       debts.clear();
+                                       int size = 0;
+                                       if (result.getData() != null) {
+                                           AllDebt allDebt = result.getData();
+                                           count = allDebt.getTotal();
+                                           debtAmount = allDebt.getPayableAmount();
+                                           capitalAmount = allDebt.getCapital();
+                                           interestAmount = allDebt.getInterest();
+
+                                           if (allDebt.getRows() != null && allDebt.getRows().size() > 0) {
+                                               debts.addAll(allDebt.getRows());
+                                               size = allDebt.getRows().size();
+                                           }
+                                       }
+                                       view.showDebtInfo(count, debtAmount, capitalAmount, interestAmount);
+
+                                       canLoadMore = size >= PAGE_SIZE;
+                                       view.showDebts(Collections.unmodifiableList(debts), canLoadMore);
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(AllDebtPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override
