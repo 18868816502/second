@@ -21,15 +21,12 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 public class DebtDataRender extends LineChartRenderer {
 
     private Path mHighlightLinePath = new Path();
-    private int topPadding;
-
     private float highlightTextSize;
 
     private Entry highlightEntry;
 
     public DebtDataRender(Context context, LineDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
-        topPadding = (int) (context.getResources().getDisplayMetrics().density * 6);
         highlightTextSize = context.getResources().getDisplayMetrics().density * 9;
     }
 
@@ -47,7 +44,14 @@ public class DebtDataRender extends LineChartRenderer {
     public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
         if (entry == highlightEntry) {
             mValuePaint.setTextSize(highlightTextSize);
+            float halfStrSize = mValuePaint.measureText(value + "") / 2.0f;
+            if (halfStrSize > x) {
+                x = halfStrSize + 5;
+            } else if (mChart.getWidth() - halfStrSize < x) {
+                x = mChart.getWidth() - halfStrSize - 5;
+            }
             super.drawValue(c, formatter, value, entry, dataSetIndex, x, y, color);
+
         }
     }
 
@@ -88,7 +92,7 @@ public class DebtDataRender extends LineChartRenderer {
 
         // create vertical path
         mHighlightLinePath.reset();
-        mHighlightLinePath.moveTo(x, Math.max(y - topPadding, mViewPortHandler.contentTop()));
+        mHighlightLinePath.moveTo(x, y);
         mHighlightLinePath.lineTo(x, mViewPortHandler.contentBottom());
         c.drawPath(mHighlightLinePath, mHighlightPaint);
     }

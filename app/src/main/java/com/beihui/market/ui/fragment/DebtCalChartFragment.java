@@ -161,9 +161,9 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.start_day) {
-                    showTimerPicker(true);
+                    showTimerPicker(true, (Date) v.getTag());
                 } else {
-                    showTimerPicker(false);
+                    showTimerPicker(false, (Date) v.getTag());
                 }
             }
         };
@@ -322,7 +322,9 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
         presenter.refreshCurMonth();
     }
 
-    private void showTimerPicker(final boolean start) {
+    private void showTimerPicker(final boolean start, Date date) {
+        Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        calendar.setTime(date);
         TimePickerView pickerView = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -350,6 +352,7 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
                 .setBgColor(Color.WHITE)
                 .setLabel("年", "月", null, null, null, null)
                 .isCenterLabel(false)
+                .setDate(calendar)
                 .build();
         pickerView.show();
     }
