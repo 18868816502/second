@@ -123,6 +123,10 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
                     view.showErrorMsg("请输入应还金额");
                     return;
                 }
+                if (Integer.parseInt(termNum) > Integer.parseInt(term)) {
+                    view.showErrorMsg("应还期数超出借款期限，请核实信息！");
+                    return;
+                }
                 break;
         }
         //借款期限类型，一次性还本付息1，等额本金，本息2

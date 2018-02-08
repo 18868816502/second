@@ -41,6 +41,8 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.no_record)
+    View noRecord;
 
     @Inject
     AllDebtPresenter presenter;
@@ -150,6 +152,10 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
             adapter.setEnableLoadMore(canLoadMore);
 
             adapter.notifyDebtChanged(list);
+
+            boolean hasData = list != null && list.size() > 0;
+            recyclerView.setVisibility(hasData ? View.VISIBLE : View.GONE);
+            noRecord.setVisibility(hasData ? View.GONE : View.VISIBLE);
         }
     }
 
