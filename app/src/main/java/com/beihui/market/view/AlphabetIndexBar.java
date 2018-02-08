@@ -52,7 +52,7 @@ public class AlphabetIndexBar extends View {
     public AlphabetIndexBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        alphabetPadding = (int) (getResources().getDisplayMetrics().density * 10);
+        alphabetPadding = (int) (getResources().getDisplayMetrics().density * 5);
 
         alphabetPaint.setColor(Color.parseColor("#5c92ff"));
         alphabetPaint.setTextSize(8 * getResources().getDisplayMetrics().density);
