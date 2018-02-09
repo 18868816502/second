@@ -57,8 +57,12 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     private DecimalFormat decimalFormat = new DecimalFormat();
 
+    @BindView(R.id.start_day_container)
+    View startDayContainer;
     @BindView(R.id.start_day)
     TextView startDay;
+    @BindView(R.id.end_day_container)
+    View endDayContainer;
     @BindView(R.id.end_day)
     TextView endDay;
     @BindView(R.id.line_chart)
@@ -160,15 +164,15 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v.getId() == R.id.start_day) {
-                    showTimerPicker(true, (Date) v.getTag());
+                if (v.getId() == R.id.start_day_container) {
+                    showTimerPicker(true, (Date) startDay.getTag());
                 } else {
-                    showTimerPicker(false, (Date) v.getTag());
+                    showTimerPicker(false, (Date) endDay.getTag());
                 }
             }
         };
-        startDay.setOnClickListener(clickListener);
-        endDay.setOnClickListener(clickListener);
+        startDayContainer.setOnClickListener(clickListener);
+        endDayContainer.setOnClickListener(clickListener);
 
         adapter = new DebtCalendarRVAdapter();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

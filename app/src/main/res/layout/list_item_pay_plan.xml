@@ -21,10 +21,11 @@
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_toRightOf="@id/th"
+        android:gravity="center_vertical"
         android:paddingLeft="2dp"
         android:paddingTop="2dp"
         android:textColor="@color/black_1"
@@ -43,11 +44,11 @@
     <ImageView
         android:id="@+id/date_edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="9dp"
         android:layout_toRightOf="@id/date"
-        android:padding="6dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="6dp"
         android:src="@drawable/debt_confirm_pay_plan_edit" />
 
     <TextView
@@ -63,22 +64,23 @@
     <ImageView
         android:id="@+id/amount_edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginRight="40dp"
         android:layout_toLeftOf="@id/status"
-        android:padding="6dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="6dp"
         android:src="@drawable/debt_confirm_pay_plan_edit" />
 
 
     <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical|right"
-        android:layout_marginRight="9dp"
         android:layout_toLeftOf="@id/amount_edit"
+        android:gravity="center_vertical"
         android:textColor="@color/black_1"
         android:textSize="12sp"
         tools:text="1100.0" />

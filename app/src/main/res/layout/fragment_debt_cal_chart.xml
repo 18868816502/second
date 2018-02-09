@@ -123,20 +123,28 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/start_day"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:id="@+id/start_day_container"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:drawablePadding="8dp"
-                    android:drawableRight="@drawable/debt_calendar_down_arrow"
-                    android:gravity="center_vertical"
-                    tools:text="2017年11月" />
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/start_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:drawableRight="@drawable/debt_calendar_down_arrow"
+                        android:textColor="@color/black_1"
+                        tools:text="2017年11月" />
+                </FrameLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -145,14 +153,23 @@
                     android:layout_marginRight="15dp"
                     android:src="@drawable/debt_calendar_time_dash" />
 
-                <TextView
-                    android:id="@+id/end_day"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:id="@+id/end_day_container"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:drawablePadding="8dp"
-                    android:drawableRight="@drawable/debt_calendar_down_arrow"
-                    android:gravity="center_vertical"
-                    tools:text="2017年12月" />
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/end_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:drawableRight="@drawable/debt_calendar_down_arrow"
+                        android:textColor="@color/black_1"
+                        tools:text="2017年12月" />
+                </FrameLayout>
+
             </LinearLayout>
 
             <View

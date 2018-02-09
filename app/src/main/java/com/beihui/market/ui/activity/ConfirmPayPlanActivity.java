@@ -122,7 +122,7 @@ public class ConfirmPayPlanActivity extends BaseComponentActivity implements Con
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 final int pos = position;
                 PayPlan.RepayPlanBean bean = ((ConfirmPayPlanRVAdapter) adapter).getItem(pos);
-                if (view.getId() == R.id.amount_edit) {
+                if (view.getId() == R.id.amount_edit || view.getId() == R.id.amount) {
                     new EditPayPlanDialog().setOriginalAmount(bean.getTermPayableAmount())
                             .setPayPlanAmountChangedListener(new EditPayPlanDialog.PayPlanAmountChangedListener() {
                                 @Override

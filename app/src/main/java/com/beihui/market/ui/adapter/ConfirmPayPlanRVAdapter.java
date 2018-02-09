@@ -24,8 +24,10 @@ public class ConfirmPayPlanRVAdapter extends BaseQuickAdapter<PayPlan.RepayPlanB
         helper.setText(R.id.th, item.getTermNo() + "")
                 .setText(R.id.date, item.getTermRepayDate())
                 .setText(R.id.amount, CommonUtils.keep2digitsWithoutZero(item.getTermPayableAmount()))
-                .addOnClickListener(R.id.amount_edit)
-                .addOnClickListener(R.id.date_edit);
+                .addOnClickListener(R.id.date)
+                .addOnClickListener(R.id.date_edit)
+                .addOnClickListener(R.id.amount)
+                .addOnClickListener(R.id.amount_edit);
     }
 
     public void notifyPayPlanChanged(List<PayPlan.RepayPlanBean> list) {

@@ -79,7 +79,7 @@
     </style>
 
     <style name="ToolBarTitleTextAppearance.Dark">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/black_1</item>
     </style>
 
     <style name="NewsInfoTextAppearance">

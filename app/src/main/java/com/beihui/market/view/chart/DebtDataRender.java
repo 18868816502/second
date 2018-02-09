@@ -22,12 +22,16 @@ public class DebtDataRender extends LineChartRenderer {
 
     private Path mHighlightLinePath = new Path();
     private float highlightTextSize;
+    private int topPadding;
+    private int offset;
 
     private Entry highlightEntry;
 
     public DebtDataRender(Context context, LineDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
         highlightTextSize = context.getResources().getDisplayMetrics().density * 9;
+        topPadding = (int) (context.getResources().getDisplayMetrics().density * 8);
+        offset = (int) (context.getResources().getDisplayMetrics().density * 6);
     }
 
     @Override
@@ -50,7 +54,7 @@ public class DebtDataRender extends LineChartRenderer {
             } else if (mChart.getWidth() - halfStrSize < x) {
                 x = mChart.getWidth() - halfStrSize - 5;
             }
-            super.drawValue(c, formatter, value, entry, dataSetIndex, x, y, color);
+            super.drawValue(c, formatter, value, entry, dataSetIndex, x, y - offset, color);
 
         }
     }
@@ -92,7 +96,7 @@ public class DebtDataRender extends LineChartRenderer {
 
         // create vertical path
         mHighlightLinePath.reset();
-        mHighlightLinePath.moveTo(x, y);
+        mHighlightLinePath.moveTo(x, Math.max(y - topPadding, mViewPortHandler.contentTop()));
         mHighlightLinePath.lineTo(x, mViewPortHandler.contentBottom());
         c.drawPath(mHighlightLinePath, mHighlightPaint);
     }
