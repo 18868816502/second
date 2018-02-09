@@ -163,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="账单不留白"
+                    android:text="生活有分寸"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:visibility="visible" />
