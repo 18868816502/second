@@ -81,6 +81,9 @@ public class MonthView extends CalendarView {
                         canvas.drawCircle(rect.centerX(), centerY, mSelectCircleRadius, mSolarPaint);
                         mSolarPaint.setColor(Color.WHITE);
                         canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSolarPaint);
+                    } else if (Utils.isToday(dateTime)) {
+                        mSolarPaint.setColor(mSelectCircleColor);
+                        canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSolarPaint);
                     } else {
                         mSolarPaint.setColor(mSolarTextColor);
                         canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSolarPaint);
