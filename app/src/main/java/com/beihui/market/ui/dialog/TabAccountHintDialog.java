@@ -40,9 +40,12 @@ public class TabAccountHintDialog extends DialogFragment {
                 dismiss();
             }
         });
-        WebView webView = (WebView) view.findViewById(R.id.web_view);
+        final WebView webView = view.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient() {
-
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                webView.setBackgroundColor(Color.TRANSPARENT);
+            }
         });
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -56,6 +59,7 @@ public class TabAccountHintDialog extends DialogFragment {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         webView.loadUrl(NetConstants.H5_TAB_ACCOUNT_HINT);
         return view;
     }
