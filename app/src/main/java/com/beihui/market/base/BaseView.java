@@ -7,5 +7,7 @@ public interface BaseView<T extends BasePresenter> {
 
     void showErrorMsg(String msg);
 
-    void showLoading();
+    void showProgress();
+
+    void dismissProgress();
 }

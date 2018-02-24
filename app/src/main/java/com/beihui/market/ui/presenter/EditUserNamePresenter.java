@@ -41,7 +41,7 @@ public class EditUserNamePresenter extends BaseRxPresenter implements EditUserNa
     @Override
     public void updateUserName(String username) {
         final String name = username;
-        mView.showLoading();
+        mView.showProgress();
         Disposable dis = mApi.updateUsername(mUserHelper.getProfile().getId(), username)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {

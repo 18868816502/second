@@ -34,7 +34,7 @@ public class ResetPwdSetPwdPresenter extends BaseRxPresenter implements ResetPwd
 
     @Override
     public void resetPwd(String phone, String pwd) {
-        mView.showLoading();
+        mView.showProgress();
         Disposable dis = mApi.resetPwd(phone, pwd)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {

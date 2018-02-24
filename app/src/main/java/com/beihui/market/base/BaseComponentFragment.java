@@ -88,16 +88,19 @@ public abstract class BaseComponentFragment extends Fragment {
         loading.show();
     }
 
-    protected void dismissProgress() {
+    /**
+     * hook BaseView.dismissProgress().
+     */
+    public void dismissProgress() {
         if (loading != null) {
             loading.dismiss();
         }
     }
 
     /**
-     * hook BaseView.showLoading().
+     * hook BaseView.showProgress().
      */
-    public void showLoading() {
+    public void showProgress() {
         showProgress(null);
     }
 

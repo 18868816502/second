@@ -38,7 +38,7 @@ public class ChangePsdPresenter extends BaseRxPresenter implements ChangePsdCont
                 mView.showErrorMsg("新密码与确认新密码不一致");
                 return;
             }
-            mView.showLoading();
+            mView.showProgress();
             UserHelper.Profile profile = mUserHelper.getProfile();
             Disposable dis = mApi.updatePwd(profile.getId(), profile.getAccount(), newPsd, origin)
                     .compose(RxUtil.<ResultEntity>io2main())

@@ -75,7 +75,7 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
 
     @Override
     public void updateAvatar(final Bitmap avatar) {
-        mView.showLoading();
+        mView.showProgress();
         Disposable dis = Observable.just(avatar)
                 .observeOn(Schedulers.io())
                 .map(new Function<Bitmap, byte[]>() {

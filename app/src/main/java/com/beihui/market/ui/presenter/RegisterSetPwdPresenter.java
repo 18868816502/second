@@ -53,7 +53,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
         if (TextUtils.isEmpty(inviteCode)) {
             inviteCode = null;
         }
-        view.showLoading();
+        view.showProgress();
 
         Disposable dis = api.register(phone, pwd, inviteCode)
                 .observeOn(AndroidSchedulers.mainThread())

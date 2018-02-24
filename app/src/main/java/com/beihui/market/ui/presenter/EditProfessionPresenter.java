@@ -63,7 +63,7 @@ public class EditProfessionPresenter extends BaseRxPresenter implements EditProf
     public void updateProfession(Profession profession) {
         final Profession pr = profession;
         if (profession != null) {
-            mView.showLoading();
+            mView.showProgress();
             Disposable dis = mApi.updateUserProfession(mUserHelper.getProfile().getId(), profession.getValue())
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {

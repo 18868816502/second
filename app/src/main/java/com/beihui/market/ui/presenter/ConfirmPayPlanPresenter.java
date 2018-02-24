@@ -160,6 +160,8 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
     @Override
     public void confirmPayPlan() {
         if (payPlan != null) {
+            view.showProgress();
+
             final HashMap<String, Object> params = new HashMap<>();
             params.put("userId", userHelper.getProfile().getId());
             params.put("channelId", payPlan.getChannelId());
@@ -236,6 +238,8 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
                         public boolean test(ResultEntity result) throws Exception {
                             //如果保存还款计划不成功，则提示错误，结束流程
                             if (!result.isSuccess()) {
+                                view.dismissProgress();
+
                                 view.showErrorMsg(result.getMsg());
                             }
                             return result.isSuccess();
@@ -276,12 +280,16 @@ public class ConfirmPayPlanPresenter extends BaseRxPresenter implements ConfirmP
                                                msg += " 积分+" + points;
                                            }
                                        }
+                                       view.dismissProgress();
+
                                        view.showConfirmSuccess(msg);
                                    }
                                },
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
+                                    view.dismissProgress();
+                                    
                                     logError(ConfirmPayPlanPresenter.this, throwable);
                                     view.showErrorMsg(generateErrorMsg(throwable));
                                 }

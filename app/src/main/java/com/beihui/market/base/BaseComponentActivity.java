@@ -73,19 +73,6 @@ public abstract class BaseComponentActivity extends BaseActivity {
     protected abstract void configureComponent(AppComponent appComponent);
 
 
-    protected void showProgress(String msg) {
-        if (loading == null) {
-            loading = new CommNoneAndroidLoading(this, msg);
-        }
-        loading.show();
-    }
-
-    protected void dismissProgress() {
-        if (loading != null) {
-            loading.dismiss();
-        }
-    }
-
     /**
      * set tool bar render and behavior with default action
      *
@@ -125,11 +112,21 @@ public abstract class BaseComponentActivity extends BaseActivity {
     }
 
     /**
-     * hook BaseView.showLoading
+     * hook BaseView.showProgress
      */
-    public void showLoading() {
+    public void showProgress() {
         showProgress(null);
     }
+
+    /**
+     * hook BaseView.dismissProgress
+     */
+    public void dismissProgress() {
+        if (loading != null) {
+            loading.dismiss();
+        }
+    }
+
 
     /**
      * hook BaseView.showErrorMsg(String).
@@ -139,13 +136,11 @@ public abstract class BaseComponentActivity extends BaseActivity {
         ToastUtils.showShort(this, msg, null);
     }
 
-    //解决崩溃后重新打开程序，fragment 重叠问题
-    //当前APP崩溃再次启动或者从后台再次回到这个app的时候，通过onCreate中的参数savedInstanceState恢复了之前的fragment。
-    // 此时的FragmentTransaction中的相当于又再次add了fragment进去的，之前保存的fragment也还在。hide()和show()方法对
-    // 之前保存的fragment已经失效了。所以出现了重叠的现象
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
+    protected void showProgress(String msg) {
+        if (loading == null) {
+            loading = new CommNoneAndroidLoading(this, msg);
+        }
+        loading.show();
     }
 
     @Override
