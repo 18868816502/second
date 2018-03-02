@@ -298,6 +298,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
                         EventBus.getDefault().post(new NavigateLoan(true));
                         break;
                     case R.id.module_credit_card:
+                        //pv，uv统计
+                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_HOME_MODULE_CREDIT_CARD);
+
                         startActivity(new Intent(getContext(), CreditCardWebActivity.class));
                         break;
                     default:

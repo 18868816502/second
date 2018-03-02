@@ -338,6 +338,9 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         footView.findViewById(R.id.credit_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv uv
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_GO_TO_CREDIT_CARD_CENTER);
+
                 presenter.clickCreditCard();
             }
         });

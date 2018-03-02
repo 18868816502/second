@@ -102,7 +102,10 @@ public class CreditCardWebActivity extends BaseComponentActivity {
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
-            titleList.pop();
+            //第三方Web页面可能出现页面和title不统一的情况
+            if (titleList.size() > 0) {
+                titleList.pop();
+            }
             String pageTitle = titleList.peek();
             title.setText(pageTitle);
         } else {

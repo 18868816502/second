@@ -167,6 +167,22 @@ public class DataStatisticsHelper {
      */
     public static final String ID_HOME_MODULE_SMART = "indexWisdomCount";
 
+    /**
+     * 首页点击信用卡
+     */
+    public static final String ID_HOME_MODULE_CREDIT_CARD = "indexCreditCardLogo";
+
+    /**
+     * 首页点击推荐信用卡
+     */
+    public static final String ID_CLICK_CREDIT_CARD_RECOMMEND = "indexCreditCardRecommend";
+
+    /**
+     * 账单首页进入信用卡中心
+     */
+    public static final String ID_ACCOUNT_GO_TO_CREDIT_CARD_CENTER = "indexCreditCard";
+
+
     @Inject
     Api api;
     @Inject
@@ -265,6 +281,7 @@ public class DataStatisticsHelper {
         } else {
             userId = SPUtils.getCacheUserId(App.getInstance());
         }
+        //信用卡详情
         api.queryCreditCardDetail(userId, id)
                 .compose(RxUtil.<ResultEntity<CreditCard.Row>>io2main())
                 .subscribe(new Consumer<ResultEntity<CreditCard.Row>>() {
@@ -281,6 +298,9 @@ public class DataStatisticsHelper {
                                 LogUtils.e(TAG, "credit card statistic error " + throwable);
                             }
                         });
+        //推荐信用卡点击
+        onCountUv(ID_CLICK_CREDIT_CARD_RECOMMEND);
+
     }
 
     /**
