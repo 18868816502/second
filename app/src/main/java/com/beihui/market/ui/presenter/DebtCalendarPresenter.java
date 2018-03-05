@@ -49,6 +49,8 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
     //0未还，1已还
     private Map<String, Integer> calendarDebtTag = new HashMap<>();
 
+    private Disposable calendarLastRequest;
+
 
     @Inject
     DebtCalendarPresenter(Context context, Api api, DebtCalendarContract.View view) {
@@ -58,10 +60,25 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
     }
 
     @Override
-    public void loadCalendarDebt(Date date) {
+    public void loadCalendarDebt(Date date, boolean isMonthUnit) {
+        if (calendarLastRequest != null) {
+            calendarLastRequest.dispose();
+        }
         curDate = dateFormat.format(date);
+        String beginDay, endDay;
+        if (isMonthUnit) {
+            Calendar calendar = Calendar.getInstance(Locale.CHINA);
+            calendar.setTime(date);
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            beginDay = dateFormat.format(calendar.getTime());
+            calendar.add(Calendar.MONTH, 1);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            endDay = dateFormat.format(calendar.getTime());
+        } else {
+            beginDay = endDay = curDate;
+        }
 
-        Disposable dis = api.queryDebtCalendar(userHelper.getProfile().getId(), curDate, curDate, 3, true)
+        Disposable dis = api.queryDebtCalendar(userHelper.getProfile().getId(), beginDay, endDay, 3, true)
                 .compose(RxUtil.<ResultEntity<DebtCalendar>>io2main())
                 .subscribe(new Consumer<ResultEntity<DebtCalendar>>() {
                                @Override
@@ -100,6 +117,7 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
                             }
                         });
         addDisposable(dis);
+        calendarLastRequest = dis;
     }
 
     @Override
@@ -144,7 +162,7 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
     public void refreshCurDate() {
         if (curDate != null) {
             try {
-                loadCalendarDebt(dateFormat.parse(curDate));
+                loadCalendarDebt(dateFormat.parse(curDate), false);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

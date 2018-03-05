@@ -19,16 +19,13 @@ import com.beihui.market.ui.contract.DebtCalendarContract;
 import com.beihui.market.ui.presenter.DebtCalendarPresenter;
 import com.beihui.market.ui.rvdecoration.CalendarDebtItemDeco;
 import com.beihui.market.ui.rvdecoration.CalendarDebtStickyHeaderItemDeco;
+import com.beihui.market.view.calendar.CalendarView;
+import com.beihui.market.view.calendar.dateview.DateView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.necer.ncalendar.calendar.NCalendar;
-import com.necer.ncalendar.listener.OnCalendarChangedListener;
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -40,7 +37,7 @@ import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 public class DebtCalCalendarFragment extends BaseComponentFragment implements DebtCalendarContract.View {
 
     @BindView(R.id.calendar)
-    NCalendar nCalendar;
+    CalendarView calendarView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.no_record)
@@ -56,20 +53,21 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     @Inject
     DebtCalendarPresenter presenter;
 
-    public interface DateSelectedListener {
-        void onDateSelected(int year, int month, int day);
+    public interface OnCalendarChangedListener {
+        void onMonthChanged(Date date);
+
+        void onDateSelected(Date date);
     }
 
-    private DateSelectedListener listener;
+    private OnCalendarChangedListener listener;
     private DebtCalendarRVAdapter adapter;
 
-    private String selectedDate;
+    private Date selectedDate;
 
-
-    public static DebtCalCalendarFragment newInstance(DateSelectedListener listener, String selectedDate) {
+    public static DebtCalCalendarFragment newInstance(OnCalendarChangedListener listener, Date lastSelectedDate) {
         DebtCalCalendarFragment fragment = new DebtCalCalendarFragment();
         fragment.listener = listener;
-        fragment.selectedDate = selectedDate;
+        fragment.selectedDate = lastSelectedDate;
         return fragment;
     }
 
@@ -91,18 +89,21 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
 
     @Override
     public void configViews() {
-        nCalendar.setOnCalendarChangedListener(new OnCalendarChangedListener() {
+        calendarView.setOnCalendarChangedListener(new CalendarView.OnCalendarChangedListener() {
             @Override
-            public void onCalendarChanged(DateTime dateTime) {
-                int year = dateTime.year().get();
-                int month = dateTime.monthOfYear().get() - 1;
-                int day = dateTime.dayOfMonth().get();
+            public void onDateSelected(Date date) {
                 if (listener != null) {
-                    listener.onDateSelected(year, month, day);
+                    listener.onDateSelected(date);
                 }
-                Calendar calendar = Calendar.getInstance(Locale.CHINA);
-                calendar.set(year, month, day);
-                presenter.loadCalendarDebt(calendar.getTime());
+                presenter.loadCalendarDebt(date, false);
+            }
+
+            @Override
+            public void onMonthChange(Date date) {
+                if (listener != null) {
+                    listener.onMonthChanged(date);
+                }
+                presenter.loadCalendarDebt(date, true);
             }
         });
 
@@ -132,11 +133,10 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     @Override
     public void initDatas() {
         if (selectedDate != null) {
-            nCalendar.postDelayed(new Runnable() {
+            calendarView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    nCalendar.setDate(selectedDate);
-                    nCalendar.invalidate();
+                    calendarView.attachSelectedDate(selectedDate);
                 }
             }, 50);
         }
@@ -192,13 +192,11 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
 
     @Override
     public void showCalendarDebtTag(Map<String, Integer> debtHint) {
-        List<String> dates = new ArrayList<>();
-        List<Integer> tags = new ArrayList<>();
+        List<DateView.Tag> tags = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : debtHint.entrySet()) {
-            dates.add(entry.getKey());
-            tags.add(entry.getValue());
+            tags.add(new DateView.Tag(entry.getKey(), entry.getValue()));
         }
-        nCalendar.setPoint(dates, tags);
+        calendarView.setTags(tags);
     }
 
 

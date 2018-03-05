@@ -118,16 +118,17 @@
             android:background="@android:color/white"
             app:week_text_color="@color/black_1" />
 
-        <com.necer.ncalendar.calendar.NCalendar
+        <com.beihui.market.view.calendar.CalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:calendarHeight="250dp"
-            app:firstDayOfWeek="Sunday"
-            app:pointSize="2dp"
-            app:selectCircleColor="@color/colorPrimary"
-            app:solarTextColor="@color/black_1"
-            app:solarTextSize="13sp">
+            app:currentDateTextColor="@color/colorPrimary"
+            app:dateLineHeight="42dp"
+            app:dateTextColor="@color/black_1"
+            app:dateTextSize="13sp"
+            app:selectedDateCircleColor="@color/colorPrimary"
+            app:tagNegativeColor="#FC3D61"
+            app:tagPositiveColor="@color/colorPrimary">
 
             <com.beihui.market.view.pullreboundlayout.NestScrollFrameLayout
                 android:layout_width="match_parent"
@@ -164,7 +165,7 @@
             </com.beihui.market.view.pullreboundlayout.NestScrollFrameLayout>
 
 
-        </com.necer.ncalendar.calendar.NCalendar>
+        </com.beihui.market.view.calendar.CalendarView>
 
     </LinearLayout>
 </RelativeLayout>

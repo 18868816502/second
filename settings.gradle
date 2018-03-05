@@ -1,1 +1,1 @@
-include ':app', ':socialshare', ':xiaonengchat', ':banner', ':pickerview', ':ncalendar'
+include ':app', ':socialshare', ':xiaonengchat', ':banner', ':pickerview'

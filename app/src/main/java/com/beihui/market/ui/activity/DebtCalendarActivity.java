@@ -15,33 +15,35 @@ import com.beihui.market.ui.fragment.DebtCalChartFragment;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
 
 public class DebtCalendarActivity extends BaseComponentActivity {
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-    private final Calendar calendar = Calendar.getInstance(Locale.CHINA);
+    private final SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.date)
-    TextView date;
+    TextView dateStrView;
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.show_switch)
     ImageView showSwitch;
 
-    private String selectedDate;
+    private Date selectedDate;
 
-    private DebtCalCalendarFragment.DateSelectedListener dateSelectedListener = new DebtCalCalendarFragment.DateSelectedListener() {
+    private DebtCalCalendarFragment.OnCalendarChangedListener dateSelectedListener = new DebtCalCalendarFragment.OnCalendarChangedListener() {
         @Override
-        public void onDateSelected(int year, int month, int day) {
-            calendar.set(year, month, day);
-            selectedDate = dateFormat.format(calendar.getTime());
-            date.setText(year + "年" + (month + 1) + "月");
+        public void onMonthChanged(Date date) {
+            dateStrView.setText(titleFormat.format(date));
+        }
+
+        @Override
+        public void onDateSelected(Date date) {
+            selectedDate = date;
         }
     };
 
@@ -78,38 +80,8 @@ public class DebtCalendarActivity extends BaseComponentActivity {
     }
 
     private void switchContent(boolean isCalendar) {
-        date.setVisibility(isCalendar ? View.VISIBLE : View.GONE);
+        dateStrView.setVisibility(isCalendar ? View.VISIBLE : View.GONE);
         title.setVisibility(isCalendar ? View.GONE : View.VISIBLE);
-
-//        String calendarTag = DebtCalCalendarFragment.class.getSimpleName();
-//        String chartTag = DebtCalChartFragment.class.getSimpleName();
-//        Fragment calendar = getSupportFragmentManager().findFragmentByTag(calendarTag);
-//        Fragment chart = getSupportFragmentManager().findFragmentByTag(chartTag);
-
-//        FragmentTransaction transaction = getSupportFragmentManager()
-//                .beginTransaction();
-//        if (isCalendar) {
-//            if (chart != null) {
-//                transaction.detach(chart);
-//            }
-//            if (calendar == null) {
-//                calendar = DebtCalCalendarFragment.newInstance(dateSelectedListener, selectedDate);
-//                transaction.add(R.id.content_container, calendar, calendarTag);
-//            } else {
-//                transaction.attach(calendar);
-//            }
-//        } else {
-//            if (calendar != null) {
-//                transaction.detach(calendar);
-//            }
-//            if (chart == null) {
-//                chart = DebtCalChartFragment.newInstance();
-//                transaction.add(R.id.content_container, chart, chartTag);
-//            } else {
-//                transaction.attach(chart);
-//            }
-//        }
-//        transaction.commit();
 
         if (isCalendar) {
             getSupportFragmentManager().beginTransaction()

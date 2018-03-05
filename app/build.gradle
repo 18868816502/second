@@ -205,7 +205,6 @@ dependencies {
     compile project(':xiaonengchat')
     compile project(':banner')
     compile project(':pickerview')
-    compile project(':ncalendar')
 
     //noinspection GradleCompatible
     compile "com.android.support:appcompat-v7:$support_library_version"

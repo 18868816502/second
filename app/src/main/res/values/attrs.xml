@@ -23,4 +23,16 @@
         <attr name="week_text_color" format="color" />
         <attr name="week_text_size" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="CalendarView">
+        <attr name="dateLineHeight" format="dimension" />
+        <attr name="dateTextSize" format="dimension" />
+        <attr name="dateTextColor" format="color" />
+        <attr name="selectedDateCircleColor" format="color" />
+        <attr name="selectedDateTextColor" format="color" />
+        <attr name="currentDateTextColor" format="color" />
+        <attr name="otherDateTextColor" format="color" />
+        <attr name="tagPositiveColor" format="color" />
+        <attr name="tagNegativeColor" format="color" />
+    </declare-styleable>
 </resources>

@@ -17,7 +17,7 @@ public interface DebtCalendarContract {
          *
          * @param date 日期
          */
-        void loadCalendarDebt(Date date);
+        void loadCalendarDebt(Date date, boolean isMonthUnit);
 
         /**
          * 加载还款日历
