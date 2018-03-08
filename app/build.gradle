@@ -250,7 +250,8 @@ dependencies {
     compile 'com.getui:sdk:2.10.2.0'
 
     //umeng统计
-    compile 'com.umeng.analytics:analytics:6.1.2'
+    compile 'com.umeng.sdk:common:latest.integration'
+    compile 'com.umeng.sdk:analytics:latest.integration'
 
     //database-greeodao
     compile 'org.greenrobot:greendao:3.2.2'
