@@ -203,8 +203,6 @@ dependencies {
 
     compile project(':socialshare')
     compile project(':xiaonengchat')
-    compile project(':banner')
-    compile project(':pickerview')
 
     //noinspection GradleCompatible
     compile "com.android.support:appcompat-v7:$support_library_version"

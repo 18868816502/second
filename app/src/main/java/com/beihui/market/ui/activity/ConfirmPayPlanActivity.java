@@ -29,7 +29,7 @@ import com.beihui.market.ui.contract.ConfirmPayPlanContract;
 import com.beihui.market.ui.dialog.EditPayPlanDialog;
 import com.beihui.market.ui.presenter.ConfirmPayPlanPresenter;
 import com.beihui.market.util.viewutils.ToastUtils;
-import com.bigkoo.pickerview.TimePickerView;
+import com.beihui.market.view.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;

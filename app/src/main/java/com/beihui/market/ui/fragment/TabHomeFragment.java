@@ -59,15 +59,15 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.WatchableScrollView;
+import com.beihui.market.view.banner.Banner;
+import com.beihui.market.view.banner.BannerConfig;
+import com.beihui.market.view.banner.listener.OnBannerListener;
+import com.beihui.market.view.banner.loader.ImageLoader;
 import com.beihui.market.view.stateprovider.HomeStateViewProvider;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.sunfusheng.marqueeview.MarqueeView;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
-import com.youth.banner.loader.ImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
