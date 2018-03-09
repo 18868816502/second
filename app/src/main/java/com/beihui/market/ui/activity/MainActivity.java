@@ -34,12 +34,10 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabHomeFragment;
-import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsFragment;
 import com.beihui.market.util.FastClickUtils;
@@ -79,10 +77,6 @@ public class MainActivity extends BaseComponentActivity {
     ImageView tabHomeIcon;
     @BindView(R.id.tab_home_text)
     TextView tabHomeText;
-    @BindView(R.id.tab_loan_icon)
-    ImageView tabLoanIcon;
-    @BindView(R.id.tab_loan_text)
-    TextView tabLoanText;
     @BindView(R.id.tab_account_icon)
     ImageView tabAccountIcon;
     @BindView(R.id.tab_account_text)
@@ -104,12 +98,6 @@ public class MainActivity extends BaseComponentActivity {
 
     private ImageView[] iconView;
     private TextView[] textView;
-
-    /**
-     * whether need to jump to smart loan module when navigate from tab_home to tab_loan
-     */
-    private boolean needJump;
-    private boolean needJumpToSmartModule;
 
     @SuppressLint("InlinedApi")
     private String[] needPermission = {
@@ -145,8 +133,8 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabHomeIcon, tabLoanIcon, tabAccountIcon, tabNewsIcon, tabMineIcon};
-        textView = new TextView[]{tabHomeText, tabLoanText, tabAccountText, tabNewsText, tabMineText};
+        iconView = new ImageView[]{tabHomeIcon, tabAccountIcon, tabNewsIcon, tabMineIcon};
+        textView = new TextView[]{tabHomeText, tabAccountText, tabNewsText, tabMineText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
@@ -161,7 +149,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-        navigationBar.select(R.id.tab_home);
+        navigationBar.select(R.id.tab_account);
 
         queryBottomImage();
     }
@@ -175,20 +163,6 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
-    }
-
-    /**
-     * 点击给我推荐，把条件带过去在第二个页面筛选
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void navigateLoan(NavigateLoan event) {
-        needJump = true;
-        needJumpToSmartModule = event.needJumpToSmart;
-        navigationBar.select(R.id.tab_loan);
-        //重置状态
-        needJump = false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -237,14 +211,11 @@ public class MainActivity extends BaseComponentActivity {
         Fragment newSelected = fm.findFragmentByTag(newTag);
         if (newSelected == null) {
             switch (id) {
-                case R.id.tab_home:
-                    newSelected = TabHomeFragment.newInstance();
-                    break;
-                case R.id.tab_loan:
-                    newSelected = TabLoanFragment.newInstance();
-                    break;
                 case R.id.tab_account:
                     newSelected = TabAccountFragment.newInstance();
+                    break;
+                case R.id.tab_home:
+                    newSelected = TabHomeFragment.newInstance();
                     break;
                 case R.id.tab_news:
                     newSelected = TabNewsFragment.newInstance();
@@ -256,10 +227,6 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, newSelected, newTag);
         } else {
             ft.attach(newSelected);
-        }
-        //如果需要跳转至智能推荐，则当前选中的是借款tab
-        if (needJump) {
-            ((TabLoanFragment) newSelected).needJump(needJumpToSmartModule);
         }
         ft.commit();
     }

@@ -172,6 +172,10 @@
             android:name=".ui.activity.RewardPointActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.LoanProductActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <receiver

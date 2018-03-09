@@ -1,27 +1,30 @@
-package com.beihui.market.ui.fragment;
+package com.beihui.market.ui.activity;
+
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.injection.component.DaggerTabLoanComponent;
-import com.beihui.market.injection.module.TabLoanModule;
-import com.beihui.market.ui.contract.TabLoanContract;
-import com.beihui.market.ui.presenter.TabLoanPresenter;
+import com.beihui.market.injection.component.DaggerLoanProductComponent;
+import com.beihui.market.injection.module.LoanProductModule;
+import com.beihui.market.ui.contract.LoanProductContract;
+import com.beihui.market.ui.fragment.PagePersonalFragment;
+import com.beihui.market.ui.fragment.PageSmartFragment;
+import com.beihui.market.ui.presenter.LoanProductPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 
@@ -29,9 +32,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+public class LoanProductActivity extends BaseComponentActivity implements LoanProductContract.View {
 
-public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.View {
-
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
     @BindView(R.id.tab_layout)
     CopyTabLayout tabLayout;
     @BindView(R.id.view_pager)
@@ -45,51 +49,33 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     View noticeCloseView;
 
     @Inject
-    TabLoanPresenter presenter;
+    LoanProductPresenter presenter;
 
-    private boolean needJump;
-    private boolean needJumpToSmartModule;
-
-    public static TabLoanFragment newInstance() {
-        return new TabLoanFragment();
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_LOAN);
 
         //umeng统计
         Statistic.onEvent(Events.CLICK_TAB_LOAN);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void onDestroyView() {
-        presenter.onDestroy();
-        super.onDestroyView();
+    public int getLayoutId() {
+        return R.layout.activity_loan_product;
     }
 
-    @Override
-    public int getLayoutResId() {
-        return R.layout.fragment_tab_loan;
-    }
 
     @Override
     public void configViews() {
-        viewPager.setAdapter(new RecommendPagerAdapter(getChildFragmentManager()));
+        ImmersionBar.with(this).titleBar(appBarLayout).init();
+        viewPager.setAdapter(new RecommendPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
-        if (needJump) {
-            viewPager.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    viewPager.setCurrentItem(needJumpToSmartModule ? 1 : 0);
-                }
-            }, 100);
-            needJump = false;
-        }
+        viewPager.setCurrentItem(getIntent().getIntExtra("module_index", 0));
+
+        SlidePanelHelper.attach(this);
     }
 
     @Override
@@ -99,15 +85,15 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-        DaggerTabLoanComponent.builder()
+        DaggerLoanProductComponent.builder()
                 .appComponent(appComponent)
-                .tabLoanModule(new TabLoanModule(this))
+                .loanProductModule(new LoanProductModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
-    public void setPresenter(TabLoanContract.Presenter presenter) {
+    public void setPresenter(LoanProductContract.Presenter presenter) {
         //
     }
 
@@ -130,11 +116,6 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
             noticeContentView.setScrollMode(AutoTextView.SCROLL_STILL);
         }
         noticeContentView.setText(sb);
-    }
-
-    public void needJump(boolean toSmart) {
-        needJump = true;
-        needJumpToSmartModule = toSmart;
     }
 
     class RecommendPagerAdapter extends FragmentPagerAdapter {

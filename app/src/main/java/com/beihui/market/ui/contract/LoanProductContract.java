@@ -6,7 +6,7 @@ import com.beihui.market.base.BaseView;
 
 import java.util.List;
 
-public interface TabLoanContract {
+public interface LoanProductContract {
 
     interface Presenter extends BasePresenter {
         /**

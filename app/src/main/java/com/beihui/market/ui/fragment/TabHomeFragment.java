@@ -37,6 +37,7 @@ import com.beihui.market.ui.activity.ChoiceProductActivity;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.LoanProductActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.ui.activity.NoticeDetailActivity;
 import com.beihui.market.ui.activity.ThirdAuthorizationActivity;
@@ -45,7 +46,6 @@ import com.beihui.market.ui.activity.WorthTestActivity;
 import com.beihui.market.ui.adapter.CreditCardRVAdapter;
 import com.beihui.market.ui.adapter.HotChoiceRVAdapter;
 import com.beihui.market.ui.adapter.HotNewsAdapter;
-import com.beihui.market.ui.busevents.NavigateLoan;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.contract.TabHomeContract;
 import com.beihui.market.ui.dialog.AdDialog;
@@ -289,13 +289,17 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
                         //pv，uv统计
                         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_HOME_MODULE_PERSONAL_PRODUCT);
 
-                        EventBus.getDefault().post(new NavigateLoan(false));
+                        Intent toPersonalLoan = new Intent(getContext(), LoanProductActivity.class);
+                        toPersonalLoan.putExtra("module_index", 0);
+                        startActivity(toPersonalLoan);
                         break;
                     case R.id.module_smart_loan:
                         //pv，uv统计
                         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_HOME_MODULE_SMART);
 
-                        EventBus.getDefault().post(new NavigateLoan(true));
+                        Intent toSmartLoan = new Intent(getContext(), LoanProductActivity.class);
+                        toSmartLoan.putExtra("module_index", 1);
+                        startActivity(toSmartLoan);
                         break;
                     case R.id.module_credit_card:
                         //pv，uv统计
@@ -418,7 +422,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         choiceMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new NavigateLoan(false));
+                startActivity(new Intent(getContext(), LoanProductActivity.class));
             }
         });
 
