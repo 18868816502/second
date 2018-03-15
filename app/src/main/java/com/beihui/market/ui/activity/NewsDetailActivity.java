@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.beihui.market.R;
@@ -81,6 +82,8 @@ public class NewsDetailActivity extends BaseComponentActivity {
             }
         });
         SlidePanelHelper.attach(this);
+
+        webView.setWebViewClient(new WebViewClient());
     }
 
     @Override
@@ -88,7 +91,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
         news = getIntent().getParcelableExtra("news");
         hotNews = getIntent().getParcelableExtra("hotNews");
         String newsId = getIntent().getStringExtra("newsId");
-        String newsTitle = getIntent().getStringExtra("newsTitle");
         if (newsId == null && news != null) {
             newsId = news.getId();
         }
