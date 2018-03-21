@@ -12,6 +12,7 @@ import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.CreditCard;
+import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
@@ -606,17 +607,38 @@ public class Api {
     }
 
     /**
-     * 确认记账，返回还款计划
+     * 查询网贷平台渠道
      */
-    public Observable<ResultEntity<PayPlan>> confirmDebt(Map<String, Object> params) {
-        return service.confirmDebt(params);
+    public Observable<ResultEntity<List<DebtChannel>>> fetchDebtSourceChannel() {
+        return service.fetchDebtSourceChannel(1);
     }
 
     /**
-     * 保存还款计划
+     * 确认记账，保存账单
      */
-    public Observable<ResultEntity> savePayPlan(Map<String, Object> params) {
-        return service.savePayPlan(params);
+    public Observable<ResultEntity<PayPlan>> saveDebt(Map<String, Object> params) {
+        return service.saveDebt(params);
+    }
+
+    /**
+     * 确认记账，不返回还款计划，直接插入数据
+     */
+    public Observable<ResultEntity> saveDebtImmediately(Map<String, Object> params) {
+        return service.saveDebtImmediately(params);
+    }
+
+    /**
+     * 获取银行列表
+     */
+    public Observable<ResultEntity<List<CreditCardBank>>> fetchCreditCardBankList() {
+        return service.fetchCreditCardBankList();
+    }
+
+    /**
+     * 手动添加信用卡账单
+     */
+    public Observable<ResultEntity> saveCreditCardDebt(String userId, String cardNums, long bankId, String realName, int billDay, int dueDay, double amount) {
+        return service.saveCreditCardDebt(userId, cardNums, bankId, realName, billDay, dueDay, amount);
     }
 
     /**

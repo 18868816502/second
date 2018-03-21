@@ -30,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannelContract.Presenter {
 
-    private static final int HISTORY_MAX_SIZE = 9;
+    private static final int HISTORY_MAX_SIZE = 6;
 
     private Api api;
     private DebtChannelContract.View view;

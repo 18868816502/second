@@ -5,6 +5,7 @@ import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.CreditCard;
+import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
@@ -383,18 +384,39 @@ public interface ApiService {
     Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel();
 
     /**
-     * 确认记账，并查询还款计划
+     * 查询网贷平台渠道
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/channels/show")
+    Observable<ResultEntity<List<DebtChannel>>> fetchDebtSourceChannel(@Field("appShow") int appShow);
+
+    /**
+     * 确认记账，保存账单
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/sureRepayPlan")
-    Observable<ResultEntity<PayPlan>> confirmDebt(@FieldMap Map<String, Object> params);
+    Observable<ResultEntity<PayPlan>> saveDebt(@FieldMap Map<String, Object> params);
 
     /**
-     * 保存还款计划
+     * 确认记账，不返回还款计划，直接插入数据
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/saveRepayPlan")
-    Observable<ResultEntity> savePayPlan(@FieldMap Map<String, Object> params);
+    @POST(BASE_PATH + "/accounting/netLoadBill")
+    Observable<ResultEntity> saveDebtImmediately(@FieldMap Map<String, Object> params);
+
+    /**
+     * 获取银行列表
+     */
+    @GET(BASE_PATH + "/accounting/bankList")
+    Observable<ResultEntity<List<CreditCardBank>>> fetchCreditCardBankList();
+
+    /**
+     * 手动添加信用卡账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/collection/create/task/aisinButlerMeansCollection")
+    Observable<ResultEntity> saveCreditCardDebt(@Field("userId") String userId, @Field("cardNums") String cardNums, @Field("bankId") long bankId,
+                                                @Field("realName") String realName, @Field("billDay") int billDay, @Field("dueDay") int dueDay, @Field("amount") double amount);
 
     /**
      * 查询借款详情

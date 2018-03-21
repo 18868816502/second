@@ -426,12 +426,12 @@ public class AddDebtActivity extends BaseComponentActivity implements DebtAddCon
 
     @Override
     public void navigatePayPlan(PayPlan payPlan) {
-        Intent intent = new Intent(this, ConfirmPayPlanActivity.class);
-        intent.putExtra("pay_plan", payPlan);
-        if (pendingDebt != null) {
-            intent.putExtra("pending_debt", pendingDebt);
-        }
-        startActivityForResult(intent, REQUEST_CODE_DEBT_CONFIRM);
+//        Intent intent = new Intent(this, ConfirmPayPlanActivity.class);
+//        intent.putExtra("pay_plan", payPlan);
+//        if (pendingDebt != null) {
+//            intent.putExtra("pending_debt", pendingDebt);
+//        }
+//        startActivityForResult(intent, REQUEST_CODE_DEBT_CONFIRM);
     }
 
     @OnClick({R.id.debt_channel, R.id.pay_method, R.id.pay_method_question, R.id.confirm})

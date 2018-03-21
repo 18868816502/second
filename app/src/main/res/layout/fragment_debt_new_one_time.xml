@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/common_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/debt_pay_day_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginTop="18dp"
+                    android:drawableRight="@drawable/home_forward"
+                    android:text="到期还款日"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/debt_pay_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp"
+                    tools:text="2018-03-05" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/line" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginTop="18dp"
+                    android:text="到期还款金额"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:text="元"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/debt_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入"
+                    android:inputType="numberDecimal"
+                    android:minWidth="120dp"
+                    android:textColor="@color/black_1"
+                    android:textColorHint="@color/black_2"
+                    android:textSize="15sp" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/debt_extra_info_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="17dp"
+                android:text="补充以下信息，轻松获取你的负载分析（选填）"
+                android:textColorHint="@color/black_2"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="37dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:layout_marginTop="18dp"
+                        android:drawableRight="@drawable/home_forward"
+                        android:text="借款本金"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:text="元"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/debt_capital_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:hint="请输入"
+                        android:inputType="numberDecimal"
+                        android:minWidth="120dp"
+                        android:textColor="@color/black_1"
+                        android:textColorHint="@color/black_2"
+                        android:textSize="15sp" />
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/line" />
+
+                <FrameLayout
+                    android:id="@+id/debt_time_limit_block"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:layout_marginTop="18dp"
+                        android:drawableRight="@drawable/home_forward"
+                        android:text="借款期限"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/debt_time_limit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp"
+                        tools:text="30天" />
+
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/remark"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:hint="备注(不超过20字)"
+            android:paddingLeft="15dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/debt_info_expand_or_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:drawableLeft="@drawable/debt_info_expand_or_collapse"
+            android:drawablePadding="6dp"
+            android:padding="15dp"
+            android:text="添加更多信息"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/confirm"
+            style="@style/TextButtonStyle"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/round_alpha_primary_btn"
+            android:text="确认"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

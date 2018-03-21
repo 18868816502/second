@@ -107,7 +107,7 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
                 presenter.selectDebtChannel(position, true);
             }
         });
-        header.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        header.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         header.recyclerView.setAdapter(historyAdapter);
         header.debtChannelNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,10 +198,15 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
 
     @Override
     public void showSearchChannelSelected(DebtChannel channel) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, DebtNewActivity.class);
         intent.putExtra("debt_channel", channel);
-        setResult(RESULT_OK, intent);
-        finish();
+        startActivity(intent);
+        toolbar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 100);
     }
 
     @Override

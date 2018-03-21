@@ -154,10 +154,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.ConfirmPayPlanActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".ui.activity.DebtDetailActivity"
             android:screenOrientation="portrait" />
 
@@ -174,6 +170,22 @@
 
         <activity
             android:name=".ui.activity.LoanProductActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.DebtSourceActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.DebtNewActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.CreditCardDebtNewActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.CreditCardBankActivity"
             android:screenOrientation="portrait" />
 
         <service android:name=".helper.updatehelper.DownloadService" />

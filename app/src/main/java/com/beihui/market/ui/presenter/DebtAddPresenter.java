@@ -26,7 +26,7 @@ import io.reactivex.functions.Consumer;
 
 public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract.Presenter {
 
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
     private final static String[] METHOD_NAME = {"一次性还本付息", "等额本息", "等额本金"};
     private final static String[] METHOD_DES = {"到期一次性还本付息", "每月还相同的钱", "第一月还款最多，每月本金一样多"};
@@ -163,7 +163,7 @@ public class DebtAddPresenter extends BaseRxPresenter implements DebtAddContract
             params.put("remark", remark);
         }
 
-        Disposable dis = api.confirmDebt(params)
+        Disposable dis = api.saveDebt(params)
                 .compose(RxUtil.<ResultEntity<PayPlan>>io2main())
                 .subscribe(new Consumer<ResultEntity<PayPlan>>() {
                                @Override

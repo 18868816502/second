@@ -28,12 +28,12 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
-import com.beihui.market.ui.activity.AddDebtActivity;
 import com.beihui.market.ui.activity.AllDebtActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.DebtCalendarActivity;
 import com.beihui.market.ui.activity.DebtDetailActivity;
+import com.beihui.market.ui.activity.DebtSourceActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.DebtRVAdapter;
 import com.beihui.market.ui.contract.DebtContract;
@@ -541,7 +541,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
     @Override
     public void navigateAddDebt() {
-        startActivity(new Intent(getContext(), AddDebtActivity.class));
+        startActivity(new Intent(getContext(), DebtSourceActivity.class));
     }
 
     @Override
