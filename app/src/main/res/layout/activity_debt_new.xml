@@ -20,6 +20,7 @@
             android:layout_gravity="center" />
 
         <TextView
+            android:id="@+id/help_feedback"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/tool_bar_height"
             android:layout_gravity="right"

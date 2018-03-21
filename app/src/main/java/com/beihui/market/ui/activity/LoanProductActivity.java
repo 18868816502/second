@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.beihui.market.R;
@@ -24,7 +25,6 @@ import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
-import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 
@@ -36,6 +36,8 @@ public class LoanProductActivity extends BaseComponentActivity implements LoanPr
 
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
     @BindView(R.id.tab_layout)
     CopyTabLayout tabLayout;
     @BindView(R.id.view_pager)
@@ -69,7 +71,8 @@ public class LoanProductActivity extends BaseComponentActivity implements LoanPr
 
     @Override
     public void configViews() {
-        ImmersionBar.with(this).titleBar(appBarLayout).init();
+//        ImmersionBar.with(this).titleBar(toolbar).init();
+        setupToolbar(toolbar);
         viewPager.setAdapter(new RecommendPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 

@@ -114,7 +114,7 @@ public class HelperAndFeedbackActivity extends BaseComponentActivity implements 
             @Override
             public void onClick(View v) {
                 disposable = api.submitFeedback(UserHelper.getInstance(getApplicationContext()).getProfile().getId(),
-                        contentEt.getText().toString())
+                        contentEt.getText().toString(), null, null)
                         .compose(RxUtil.<ResultEntity>io2main())
                         .subscribe(new Consumer<ResultEntity>() {
                                        @Override

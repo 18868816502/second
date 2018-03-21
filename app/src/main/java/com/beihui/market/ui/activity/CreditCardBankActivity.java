@@ -16,6 +16,7 @@ import com.beihui.market.injection.module.CreditCardBankListModule;
 import com.beihui.market.ui.adapter.CreditCardBankAdapter;
 import com.beihui.market.ui.contract.CreditCardBankContract;
 import com.beihui.market.ui.presenter.CreditCardBankListPresenter;
+import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -56,6 +57,8 @@ public class CreditCardBankActivity extends BaseComponentActivity implements Cre
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        float density = getResources().getDisplayMetrics().density;
+        recyclerView.addItemDecoration(new CommVerItemDeco((int) (density * 0.5), (int) (density * 15), (int) (density * 15)));
     }
 
     @Override

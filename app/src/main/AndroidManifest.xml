@@ -188,6 +188,10 @@
             android:name=".ui.activity.CreditCardBankActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.DebtHelpAndFeedActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <receiver

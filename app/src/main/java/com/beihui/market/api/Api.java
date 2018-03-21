@@ -566,8 +566,12 @@ public class Api {
      * @param userId  用户id
      * @param content 反馈内容
      */
-    public Observable<ResultEntity> submitFeedback(String userId, String content) {
-        return service.submitFeedback(userId, content);
+    public Observable<ResultEntity> submitFeedback(String userId, String content, byte[] image, String imageName) {
+        String imageBase64 = null;
+        if (image != null && image.length > 0) {
+            imageBase64 = Base64.encodeToString(image, Base64.DEFAULT);
+        }
+        return service.submitFeedback(userId, content, imageBase64, imageName);
     }
 
     /*****************************************************记账*******************************************************/

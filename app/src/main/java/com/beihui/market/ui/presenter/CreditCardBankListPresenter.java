@@ -60,8 +60,6 @@ public class CreditCardBankListPresenter extends BaseRxPresenter implements Cred
 
     @Override
     public void clickBank(int index) {
-        if (index > 0 && index < creditCardBankList.size()) {
-            view.navigateCreditCardDebtNew(creditCardBankList.get(index));
-        }
+        view.navigateCreditCardDebtNew(creditCardBankList.get(index));
     }
 }

@@ -353,7 +353,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/insertFeedback")
-    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content);
+    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content, @Field("image") String image, @Field("imageName") String imageName);
 
     /*****************************************************记账*******************************************************/
     /**

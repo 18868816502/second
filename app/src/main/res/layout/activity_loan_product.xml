@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             app:elevation="0dp">
 
-            <FrameLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
                 style="@style/ToolBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tool_bar_height"
@@ -31,7 +32,7 @@
                     app:tabIndicatorHeight="2dp"
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextColor="@android:color/white" />
-            </FrameLayout>
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 

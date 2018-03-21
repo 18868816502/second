@@ -1,16 +1,13 @@
 package com.beihui.market.ui.activity;
 
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -21,11 +18,11 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.fragment.DebtNewEvenFragment;
 import com.beihui.market.ui.fragment.DebtNewOneTimeFragment;
 import com.beihui.market.util.AndroidBug5497Fix;
-import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class DebtNewActivity extends BaseComponentActivity {
 
@@ -73,6 +70,11 @@ public class DebtNewActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+    }
+
+    @OnClick(R.id.help_feedback)
+    void onItemClicked() {
+        startActivity(new Intent(this, DebtHelpAndFeedActivity.class));
     }
 
     class DebtNewPagerAdapter extends FragmentPagerAdapter {

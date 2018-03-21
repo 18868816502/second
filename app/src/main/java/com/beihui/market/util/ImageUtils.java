@@ -1,10 +1,15 @@
 package com.beihui.market.util;
 
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 
 import java.io.IOException;
 
@@ -81,6 +86,28 @@ public class ImageUtils {
             avatar = BitmapFactory.decodeFile(path, options);
         }
         return avatar;
+    }
+
+    public static String getRealPathFromURI(Context context, Uri uri) {
+        if (uri != null) {
+            //小米手机
+            if (uri.getScheme().equals("file")) {
+                return uri.getEncodedPath();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    String path = cursor.getString(idx);
+                    cursor.close();
+                    return path;
+                }
+            } else {
+                return uri.getPath();
+            }
+        }
+        return null;
     }
 
 }

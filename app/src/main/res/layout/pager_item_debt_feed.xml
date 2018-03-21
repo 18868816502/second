@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    tools:background="@color/common_bg">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/debt_feed_background">
+
+        <EditText
+            android:id="@+id/feed_content"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginBottom="20dp"
+            android:background="@null"
+            android:gravity="left|top"
+            android:hint="请输入您的意见，我们将不断改进..."
+            android:padding="15dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/content_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="15dp"
+            android:text="300"
+            android:textColor="@color/black_2"
+            android:textSize="12sp" />
+    </FrameLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="请提供相关问题的截图和照片"
+        android:textColor="@color/black_2"
+        android:textSize="12sp" />
+
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/debt_feed_background">
+
+        <ImageView
+            android:id="@+id/feed_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/debt_feed_add_image_icon" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/submit"
+        style="@style/TextButtonStyle"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/round_alpha_primary_btn"
+        android:text="提交"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

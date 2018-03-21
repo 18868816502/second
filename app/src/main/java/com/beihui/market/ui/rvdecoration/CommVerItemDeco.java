@@ -7,10 +7,6 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-/**
- * Created by laxus on 2017/7/27.
- */
-
 public class CommVerItemDeco extends RecyclerView.ItemDecoration {
 
     private int mDividerHeight;

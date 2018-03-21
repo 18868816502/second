@@ -75,9 +75,7 @@ public class DebtSourcePresenter extends BaseRxPresenter implements DebtSourceCo
 
     @Override
     public void clickSourceChannel(int index) {
-        if (index > 0 && index < debtChannelList.size()) {
-            view.navigateDebtNew(debtChannelList.get(index));
-        }
+        view.navigateDebtNew(debtChannelList.get(index));
     }
 
     @Override
