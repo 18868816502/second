@@ -7,6 +7,7 @@ import android.util.Base64;
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
+import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
@@ -19,7 +20,6 @@ import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
-import com.beihui.market.entity.InDebt;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -583,12 +583,12 @@ public class Api {
     }
 
     /**
-     * 查询记账信息摘要
+     * 获取账单信息摘要
      *
      * @param userId 用户id
      */
-    public Observable<ResultEntity<DebtAbstract>> queryBaseLoan(String userId) {
-        return service.queryBaseLoan(userId);
+    public Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(String userId, int billType) {
+        return service.fetchDebtAbstractInfo(userId, billType);
     }
 
     /**
@@ -666,12 +666,24 @@ public class Api {
     }
 
     /**
-     * 查询待还项目
+     * 获取首页账单信息
      *
      * @param userId 用户id
      */
-    public Observable<ResultEntity<List<InDebt>>> queryInDebtList(String userId) {
-        return service.queryInDebtList(userId);
+    public Observable<ResultEntity<List<AccountBill>>> fetchAccountBills(String userId) {
+        return service.fetchAccountBills(userId);
+    }
+
+    /**
+     * 更新账单是否在首页显示
+     *
+     * @param userId   用户id
+     * @param recordId 账单记录id
+     * @param type     账单类型
+     * @param hide     是否隐藏 0-隐藏，1-不隐藏
+     */
+    public Observable<ResultEntity> updateDebtVisibility(String userId, String recordId, int type, int hide) {
+        return service.updateDebtVisibility(userId, recordId, type, hide);
     }
 
     /**

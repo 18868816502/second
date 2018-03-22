@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -30,6 +31,8 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.loan_debt_block)
+    LinearLayout llLoanDebtBlock;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -37,6 +40,9 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
 
     @Inject
     DebtSourcePresenter presenter;
+
+
+    private boolean onlyCreditCard;
 
     @Override
     public int getLayoutId() {
@@ -59,11 +65,18 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
                 presenter.clickSourceChannel(position);
             }
         });
+
+        onlyCreditCard = getIntent().getBooleanExtra("only_credit_card", false);
+        if (onlyCreditCard) {
+            llLoanDebtBlock.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void initDatas() {
-        presenter.fetchSourceChannel();
+        if (!onlyCreditCard) {
+            presenter.fetchSourceChannel();
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAllDebtComponent;
 import com.beihui.market.injection.module.AllDebtModule;
 import com.beihui.market.ui.activity.AllDebtActivity;
-import com.beihui.market.ui.activity.DebtDetailActivity;
+import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.AllDebtRVAdapter;
 import com.beihui.market.ui.contract.AllDebtContract;
 import com.beihui.market.ui.presenter.AllDebtPresenter;
@@ -165,7 +165,7 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
 
     @Override
     public void navigateDebtDetail(AllDebt.Row debt) {
-        Intent intent = new Intent(getContext(), DebtDetailActivity.class);
+        Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", debt.getId());
         startActivityForResult(intent, 1);
     }

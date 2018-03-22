@@ -3,11 +3,11 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
-import com.beihui.market.entity.InDebt;
+import com.beihui.market.entity.AccountBill;
 
 import java.util.List;
 
-public interface DebtContract {
+public interface TabAccountContract {
 
     interface Presenter extends BasePresenter {
 
@@ -22,11 +22,25 @@ public interface DebtContract {
         void loadInDebtList();
 
         /**
-         * 账单状态更新为已还
+         * 点击设为已还
          *
-         * @param index 更新状态的账单位置
+         * @param index 点击位置
          */
-        void updateDebtStatus(int index);
+        void clickDebtSetStatus(int index);
+
+        /**
+         * 点击隐藏
+         *
+         * @param index 点击位置
+         */
+        void clickDebtHide(int index);
+
+        /**
+         * 点击同步
+         *
+         * @param index 点击位置
+         */
+        void clickDebtSync(int index);
 
         /**
          * 刷新数据
@@ -37,6 +51,16 @@ public interface DebtContract {
          * 点击添加账单
          */
         void clickAdd();
+
+        /**
+         * 点击添加信用卡账单
+         */
+        void clickAddCreditCardDebt();
+
+        /**
+         * 点击添加网贷账单
+         */
+        void clickAddLoanDebt();
 
         /**
          * 点击还款日历
@@ -66,11 +90,6 @@ public interface DebtContract {
          * @param checked 是否隐藏
          */
         void clickEye(boolean checked);
-
-        /**
-         * 点击全部借款
-         */
-        void clickAllDebt();
     }
 
     interface View extends BaseView<Presenter> {
@@ -103,7 +122,7 @@ public interface DebtContract {
          *
          * @param list 账单列表
          */
-        void showInDebtList(List<InDebt> list);
+        void showInDebtList(List<AccountBill> list);
 
         /**
          * 显示引导层
@@ -111,21 +130,24 @@ public interface DebtContract {
         void showGuide();
 
         /**
-         * 账单更新状态成功
-         *
-         * @param msg msg
-         */
-        void showUpdateStatusSuccess(String msg);
-
-        /**
          * 导航至用户登录界面
          */
         void navigateUserLogin();
 
         /**
-         * 导航至账单添加页面
+         * 唤起账单添加界面
          */
-        void navigateAddDebt();
+        void navigateAdd();
+
+        /**
+         * 唤起信用卡账单添加界面
+         */
+        void navigateAddCreditCardDebt();
+
+        /**
+         * 唤起网贷账单添加界面
+         */
+        void navigateAddLoanDebt();
 
         /**
          * 导航至还款日历页面
@@ -138,21 +160,23 @@ public interface DebtContract {
         void navigateAnalyze();
 
         /**
-         * 导航至账单详情
+         * 唤起网贷账单详情界面
          *
-         * @param inDebt 账单
+         * @param accountBill 账单信息
          */
-        void navigateDebtDetail(InDebt inDebt);
+        void navigateLoanDebtDetail(AccountBill accountBill);
+
+        /**
+         * 唤起信用卡账单详情界面
+         *
+         * @param accountBill 账单信息
+         */
+        void navigateCreditCardDebtDetail(AccountBill accountBill);
 
         /**
          * 导航至信用卡中心
          */
         void navigateCreditCardCenter();
-
-        /**
-         * 导航至全部借款
-         */
-        void navigateAllDebt();
 
         /**
          * 显示账单信息

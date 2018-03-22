@@ -22,12 +22,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="15dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <com.beihui.market.view.CircleImageView
@@ -40,7 +40,7 @@
                         tools:src="@drawable/tab_account_on" />
 
                     <TextView
-                        android:id="@+id/channel_name"
+                        android:id="@+id/debt_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -49,154 +49,233 @@
                         android:textSize="15sp"
                         tools:text="广发银行" />
 
-                    <LinearLayout
-                        android:id="@+id/project_name_container"
+
+                    <TextView
+                        android:id="@+id/credit_card_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="1dp"
+                        android:textColor="@color/black_2"
+                        android:textSize="14sp"
+                        tools:text="8876" />
 
-                        <View
-                            android:layout_width="10dp"
-                            android:layout_height="1dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginRight="1dp"
-                            android:background="@color/black_2" />
-
-                        <TextView
-                            android:id="@+id/project_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:textColor="@color/black_2"
-                            android:textSize="15sp"
-                            tools:text="分期通" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/account_debt_new_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/account_debt_new_badge" />
 
 
                 </LinearLayout>
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:orientation="horizontal">
+                    android:paddingLeft="36dp"
+                    android:paddingRight="50dp">
 
-                    <FrameLayout
-                        android:layout_width="0dp"
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/debt_term_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
+                            android:text="----"
+                            android:textColor="@color/black_1"
+                            android:textSize="17sp"
+                            tools:text="￥ 2212.15" />
 
-                            <TextView
-                                android:id="@+id/debt_life"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black_1"
-                                android:textSize="12sp"
-                                tools:text="3/6期" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="借款期限"
-                                android:textColor="@color/black_2"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
+                            android:layout_marginTop="6dp"
+                            android:text="当期应还"
+                            android:textColor="@color/black_2"
+                            android:textSize="11sp" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/debt_amount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black_1"
-                                android:textSize="12sp"
-                                tools:text="1523.15元" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="当期应还"
-                                android:textColor="@color/black_2"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_gravity="right"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/debt_due_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
+                            android:text="----"
+                            android:textColor="@color/black_1"
+                            android:textSize="13sp"
+                            tools:text="7天" />
 
-                            <TextView
-                                android:id="@+id/debt_deadline"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black_1"
-                                android:textSize="12sp"
-                                tools:text="-2天" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="距还款日"
+                            android:textColor="@color/black_2"
+                            android:textSize="11sp" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="距还款日"
-                                android:textColor="@color/black_2"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </FrameLayout>
-
-                </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
 
 
-            <ImageView
-                android:id="@+id/status_badge"
+            <TextView
+                android:id="@+id/status_badge_overdue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="0.5dp"
-                android:src="@drawable/bill_overdue" />
+                android:background="#ff395e"
+                android:gravity="center"
+                android:minHeight="20dp"
+                android:minWidth="32dp"
+                android:text="逾期"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/status_badge_paid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="0.5dp"
+                android:background="#4c8bff"
+                android:gravity="center"
+                android:minHeight="20dp"
+                android:minWidth="32dp"
+                android:text="已还"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
+
+            <FrameLayout
+                android:id="@+id/push_debt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/push_debt_bg"
+                android:minHeight="26dp"
+                android:minWidth="68dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/account_push_debt_icon"
+                    android:drawablePadding="2dp"
+                    android:text="导入账单"
+                    android:textColor="@color/black_2"
+                    android:textSize="11sp" />
+            </FrameLayout>
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/set_status"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#ff395e"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="设为已还"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/hide"
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:background="#808080">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/account_conceal_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="隐藏"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/sync"
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:background="#48c763">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/account_update_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="同步"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/set_status"
+                android:layout_width="89dp"
+                android:layout_height="match_parent"
+                android:background="#4c8bff">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/account_refund_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="设为已还"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
 
     </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 

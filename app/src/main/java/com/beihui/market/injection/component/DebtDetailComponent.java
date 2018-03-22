@@ -2,7 +2,7 @@ package com.beihui.market.injection.component;
 
 
 import com.beihui.market.injection.module.DebtDetailModule;
-import com.beihui.market.ui.activity.DebtDetailActivity;
+import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -22,5 +22,5 @@ public interface DebtDetailComponent {
         DebtDetailComponent build();
     }
 
-    void inject(DebtDetailActivity activity);
+    void inject(LoanDebtDetailActivity activity);
 }

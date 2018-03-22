@@ -1,7 +1,7 @@
 package com.beihui.market.injection.module;
 
 
-import com.beihui.market.ui.contract.DebtContract;
+import com.beihui.market.ui.contract.TabAccountContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -9,14 +9,14 @@ import dagger.Provides;
 @Module
 public class DebtModule {
 
-    private DebtContract.View view;
+    private TabAccountContract.View view;
 
-    public DebtModule(DebtContract.View view) {
+    public DebtModule(TabAccountContract.View view) {
         this.view = view;
     }
 
     @Provides
-    public DebtContract.View providesDebtContractView() {
+    public TabAccountContract.View providesDebtContractView() {
         return view;
     }
 }

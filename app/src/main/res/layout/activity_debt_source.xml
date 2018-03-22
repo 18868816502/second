@@ -203,47 +203,55 @@
 
             </FrameLayout>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/loan_debt_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="9dp"
-                android:paddingLeft="15dp"
-                android:paddingTop="9dp"
-                android:text="网贷账单"
-                android:textColor="@color/black_2"
-                android:textSize="12sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/line" />
-
-            <FrameLayout
-                android:id="@+id/more_debt_source_channel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="17dp"
-                    android:layout_marginTop="17dp"
-                    android:drawablePadding="12dp"
-                    android:drawableRight="@drawable/bill_morecome_icon"
-                    android:text="更多网贷平台"
-                    android:textColor="@color/black_1"
-                    android:textSize="14sp" />
-            </FrameLayout>
+                    android:paddingBottom="9dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="9dp"
+                    android:text="网贷账单"
+                    android:textColor="@color/black_2"
+                    android:textSize="12sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/line" />
+
+                <FrameLayout
+                    android:id="@+id/more_debt_source_channel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="17dp"
+                        android:layout_marginTop="17dp"
+                        android:drawablePadding="12dp"
+                        android:drawableRight="@drawable/bill_morecome_icon"
+                        android:text="更多网贷平台"
+                        android:textColor="@color/black_1"
+                        android:textSize="14sp" />
+                </FrameLayout>
+            </LinearLayout>
+
 
         </LinearLayout>
 

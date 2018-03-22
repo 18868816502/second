@@ -14,7 +14,7 @@ import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtCalendarComponent;
 import com.beihui.market.injection.module.DebtCalendarModule;
-import com.beihui.market.ui.activity.DebtDetailActivity;
+import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.DebtCalendarRVAdapter;
 import com.beihui.market.ui.contract.DebtCalendarContract;
 import com.beihui.market.ui.presenter.DebtCalendarPresenter;
@@ -310,7 +310,7 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
 
     @Override
     public void navigateDebtDetail(String id) {
-        Intent intent = new Intent(getContext(), DebtDetailActivity.class);
+        Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
         startActivityForResult(intent, 1);
     }

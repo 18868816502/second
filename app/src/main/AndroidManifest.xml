@@ -154,7 +154,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.DebtDetailActivity"
+            android:name=".ui.activity.LoanDebtDetailActivity"
             android:screenOrientation="portrait" />
 
         <activity

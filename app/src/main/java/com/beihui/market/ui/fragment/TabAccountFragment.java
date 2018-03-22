@@ -22,23 +22,23 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.entity.InDebt;
+import com.beihui.market.entity.AccountBill;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
-import com.beihui.market.ui.activity.AllDebtActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.DebtCalendarActivity;
-import com.beihui.market.ui.activity.DebtDetailActivity;
+import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.DebtSourceActivity;
+import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.DebtRVAdapter;
-import com.beihui.market.ui.contract.DebtContract;
+import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.ui.dialog.TabAccountHintDialog;
-import com.beihui.market.ui.presenter.DebtPresenter;
+import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.ui.rvdecoration.DebtItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.SPUtils;
@@ -63,7 +63,7 @@ import zhy.com.highlight.shape.CircleLightShape;
 
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
-public class TabAccountFragment extends BaseTabFragment implements DebtContract.View {
+public class TabAccountFragment extends BaseTabFragment implements TabAccountContract.View {
     @BindView(R.id.refresh_layout)
     RefreshLayout refreshLayout;
     @BindView(R.id.bills_bg_image)
@@ -128,7 +128,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     }
 
     @Inject
-    DebtPresenter presenter;
+    TabAccountPresenter presenter;
 
     private DebtHeader header;
     private DebtRVAdapter adapter;
@@ -293,15 +293,6 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         final View headerView = LayoutInflater.from(getContext())
                 .inflate(R.layout.layout_tab_account_header, recyclerView, false);
         header = new DebtHeader(headerView);
-        header.allDebt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ALL_DEBT);
-
-                presenter.clickAllDebt();
-            }
-        });
         header.debtEye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -348,11 +339,22 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId() == R.id.set_status) {
-                    ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
-                    presenter.updateDebtStatus(position);
-                } else if (view.getId() == R.id.debt_container) {
-                    presenter.clickDebt(position);
+                switch (view.getId()) {
+                    case R.id.debt_container:
+                        presenter.clickDebt(position);
+                        break;
+                    case R.id.hide:
+                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
+                        presenter.clickDebtHide(position);
+                        break;
+                    case R.id.sync:
+                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
+                        presenter.clickDebtSync(position);
+                        break;
+                    case R.id.set_status:
+                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
+                        presenter.clickDebtSetStatus(position);
+                        break;
                 }
             }
         });
@@ -403,7 +405,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     }
 
     @Override
-    public void setPresenter(DebtContract.Presenter presenter) {
+    public void setPresenter(TabAccountContract.Presenter presenter) {
         //
     }
 
@@ -419,13 +421,19 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
             //可能出现重读调用，确保只添加一次
             View noUserLoginFootView = LayoutInflater.from(getContext())
                     .inflate(R.layout.layout_tab_account_no_user_foot, recyclerView, false);
-            noUserLoginFootView.findViewById(R.id.debt_add).setOnClickListener(new View.OnClickListener() {
+            noUserLoginFootView.findViewById(R.id.add_loan_debt).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //pv，uv统计
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ADD_DEBT);
 
-                    presenter.clickAdd();
+                    presenter.clickAddLoanDebt();
+                }
+            });
+            noUserLoginFootView.findViewById(R.id.add_credit_card_debt).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.clickAddCreditCardDebt();
                 }
             });
             adapter.addFooterView(noUserLoginFootView, 0);
@@ -481,7 +489,7 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
 
 
     @Override
-    public void showInDebtList(List<InDebt> list) {
+    public void showInDebtList(List<AccountBill> list) {
         if (isAdded()) {
             completeRefresh();
 
@@ -530,18 +538,25 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     }
 
     @Override
-    public void showUpdateStatusSuccess(String msg) {
-        ToastUtils.showShort(getContext(), msg, null);
-    }
-
-    @Override
     public void navigateUserLogin() {
         UserAuthorizationActivity.launch(getActivity(), null);
     }
 
     @Override
-    public void navigateAddDebt() {
+    public void navigateAdd() {
         startActivity(new Intent(getContext(), DebtSourceActivity.class));
+    }
+
+    @Override
+    public void navigateAddCreditCardDebt() {
+        Intent intent = new Intent(getContext(), DebtSourceActivity.class);
+        intent.putExtra("only_credit_card", true);
+        startActivity(intent);
+    }
+
+    @Override
+    public void navigateAddLoanDebt() {
+        startActivity(new Intent(getContext(), DebtChannelActivity.class));
     }
 
     @Override
@@ -555,21 +570,21 @@ public class TabAccountFragment extends BaseTabFragment implements DebtContract.
     }
 
     @Override
-    public void navigateDebtDetail(InDebt inDebt) {
-        Intent intent = new Intent(getContext(), DebtDetailActivity.class);
-        intent.putExtra("debt_id", inDebt.getId());
+    public void navigateLoanDebtDetail(AccountBill accountBill) {
+        Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
+        intent.putExtra("debt_id", accountBill.getBillId());
         startActivity(intent);
-
     }
+
+    @Override
+    public void navigateCreditCardDebtDetail(AccountBill accountBill) {
+        ToastUtils.showShort(getContext(), "not yet", null);
+    }
+
 
     @Override
     public void navigateCreditCardCenter() {
         startActivity(new Intent(getContext(), CreditCardWebActivity.class));
-    }
-
-    @Override
-    public void navigateAllDebt() {
-        startActivity(new Intent(getContext(), AllDebtActivity.class));
     }
 
     @Override

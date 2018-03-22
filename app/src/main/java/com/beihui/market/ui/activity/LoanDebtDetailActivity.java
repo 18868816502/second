@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 import static com.beihui.market.util.CommonUtils.convertInterestRate;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
-public class DebtDetailActivity extends BaseComponentActivity implements DebtDetailContract.View {
+public class LoanDebtDetailActivity extends BaseComponentActivity implements DebtDetailContract.View {
 
     private static final int REQUEST_CODE_EDIT = 1;
 
@@ -146,8 +146,8 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
                 if (v.getId() == R.id.edit) {
                     presenter.editDebt();
                 } else {
-                    final Dialog dialog = new Dialog(DebtDetailActivity.this, 0);
-                    View dialogView = LayoutInflater.from(DebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
+                    final Dialog dialog = new Dialog(LoanDebtDetailActivity.this, 0);
+                    View dialogView = LayoutInflater.from(LoanDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
                     View.OnClickListener clickListener = new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -318,8 +318,8 @@ public class DebtDetailActivity extends BaseComponentActivity implements DebtDet
         final int pos = index;
         final int status = newStatus;
 
-        final Dialog dialog = new Dialog(DebtDetailActivity.this, 0);
-        View dialogView = LayoutInflater.from(DebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
+        final Dialog dialog = new Dialog(LoanDebtDetailActivity.this, 0);
+        View dialogView = LayoutInflater.from(LoanDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

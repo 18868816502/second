@@ -1,5 +1,6 @@
 package com.beihui.market.api;
 
+import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
@@ -12,7 +13,6 @@ import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
-import com.beihui.market.entity.InDebt;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -364,11 +364,11 @@ public interface ApiService {
     Observable<ResultEntity<String>> queryPropaganda();
 
     /**
-     * 查询记账信息摘要
+     * 获取账单信息摘要
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/queryBaseLoan")
-    Observable<ResultEntity<DebtAbstract>> queryBaseLoan(@Field("userId") String userId);
+    Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(@Field("userId") String userId, @Field("billType") int billType);
 
     /**
      * 查询全部记账信息
@@ -433,11 +433,18 @@ public interface ApiService {
     Observable<ResultEntity> deleteDebt(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
 
     /**
-     * 待还项目查询
+     * 获取首页账单信息
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/stayStillLoan")
-    Observable<ResultEntity<List<InDebt>>> queryInDebtList(@Field("userId") String userId);
+    @POST(BASE_PATH + "/accounting/indexBillList")
+    Observable<ResultEntity<List<AccountBill>>> fetchAccountBills(@Field("userId") String userId);
+
+    /**
+     * 更新账单是否在首页显示
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/hide")
+    Observable<ResultEntity> updateDebtVisibility(@Field("userId") String userId, @Field("recordId") String recordId, @Field("type") int type, @Field("hide") int hide);
 
     /**
      * 查询还款日历

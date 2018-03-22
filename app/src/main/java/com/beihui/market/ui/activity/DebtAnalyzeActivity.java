@@ -84,7 +84,7 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(DebtAnalyzeActivity.this, DebtDetailActivity.class);
+                Intent intent = new Intent(DebtAnalyzeActivity.this, LoanDebtDetailActivity.class);
                 intent.putExtra("debt_id", id);
                 startActivityForResult(intent, 1);
             }
