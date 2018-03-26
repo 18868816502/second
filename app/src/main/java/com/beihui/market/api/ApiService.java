@@ -5,8 +5,11 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
+import com.beihui.market.entity.CreditCardDebtBill;
+import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
@@ -419,11 +422,60 @@ public interface ApiService {
                                                 @Field("realName") String realName, @Field("billDay") int billDay, @Field("dueDay") int dueDay, @Field("amount") double amount);
 
     /**
-     * 查询借款详情
+     * 获取网贷账单详情
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/queryloan")
-    Observable<ResultEntity<DebtDetail>> queryDebtPlan(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+
+    /**
+     * 获取信用卡账单详情
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/bill")
+    Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /**
+     * 获取信用卡月份账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/billList")
+    Observable<ResultEntity<List<CreditCardDebtBill>>> fetchCreditCardDebtBill(@Field("userId") String userId, @Field("recordId") String recordId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * 获取信用卡月份账单详情
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/bill/detailList")
+    Observable<ResultEntity<List<BillDetail>>> fetchCreditCardBillDetail(@Field("userId") String userId, @Field("billId") String billId);
+
+    /**
+     * 更新月份账单金额
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/updateBill")
+    Observable<ResultEntity> updateMonthBillAmount(@Field("userId") String userId, @Field("billId") String billId, @Field("amount") double amount);
+
+    /**
+     * 更新信用卡账单还款状态
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/updateBill")
+    Observable<ResultEntity> updateCreditCardDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("status") int status);
+
+    /**
+     * 删除信用卡账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/update")
+    Observable<ResultEntity> deleteCreditCardDebt(@Field("userId") String userId, @Field("recordId") String recordId, @Field("status") int status);
+
+    /**
+     * 账单还款提醒设置
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/redmine")
+    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("channelId") String channelId, @Field("cardId") String cardId, @Field("day") int day);
 
     /**
      * 删除借款

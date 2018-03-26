@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:background="#fafafa">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_vertical">
+
+        <View
+            android:layout_width="18dp"
+            android:layout_height="1dp"
+            android:background="#b0b0b0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:text="暂无账单明细"
+            android:textColor="#b0b0b0"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="18dp"
+            android:layout_height="1dp"
+            android:background="#b0b0b0" />
+    </LinearLayout>
+
+</FrameLayout>

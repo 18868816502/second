@@ -28,6 +28,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
+import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.DebtCalendarActivity;
@@ -43,7 +44,6 @@ import com.beihui.market.ui.rvdecoration.DebtItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.refreshlayout.RefreshLayout;
 import com.beihui.market.view.refreshlayout.manager.ComRefreshManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -218,10 +218,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     private TabScrollListener tabScrollListener = new TabScrollListener();
 
-    public static TabAccountFragment newInstance() {
-        return new TabAccountFragment();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -240,6 +236,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
+    }
+
+    public static TabAccountFragment newInstance() {
+        return new TabAccountFragment();
     }
 
     @Override
@@ -572,13 +572,19 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void navigateLoanDebtDetail(AccountBill accountBill) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
-        intent.putExtra("debt_id", accountBill.getBillId());
+        intent.putExtra("debt_id", accountBill.getRecordId());
         startActivity(intent);
     }
 
     @Override
     public void navigateCreditCardDebtDetail(AccountBill accountBill) {
-        ToastUtils.showShort(getContext(), "not yet", null);
+        Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
+        intent.putExtra("debt_id", accountBill.getRecordId());
+        intent.putExtra("logo", accountBill.getLogo());
+        intent.putExtra("bank_name", accountBill.getBankName());
+        intent.putExtra("card_num", accountBill.getCardNums());
+        intent.putExtra("by_hand", accountBill.getCardSource() == 3);//是否是手动记账
+        startActivity(intent);
     }
 
 

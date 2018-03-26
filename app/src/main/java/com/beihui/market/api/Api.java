@@ -12,8 +12,11 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
+import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
+import com.beihui.market.entity.CreditCardDebtBill;
+import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
@@ -646,13 +649,89 @@ public class Api {
     }
 
     /**
-     * 查询借款详情
+     * 获取网贷账单详情
      *
      * @param userId        用户id
-     * @param liabilitiesId 借款项目id
+     * @param liabilitiesId 网贷账单id
      */
-    public Observable<ResultEntity<DebtDetail>> queryDebtDetail(String userId, String liabilitiesId) {
-        return service.queryDebtPlan(userId, liabilitiesId);
+    public Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(String userId, String liabilitiesId) {
+        return service.fetchLoanDebtDetail(userId, liabilitiesId);
+    }
+
+    /**
+     * 获取信用卡账单详情
+     *
+     * @param userId   用户id
+     * @param recordId 信用卡账单id
+     */
+    public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId) {
+        return service.fetchCreditCardDebtDetail(userId, recordId);
+    }
+
+    /**
+     * 获取信用卡详情月份账单
+     *
+     * @param userId   用户id
+     * @param recordId 信用卡账单id
+     * @param pageNo   当前查询页
+     * @param pageSize 当前页大小
+     */
+    public Observable<ResultEntity<List<CreditCardDebtBill>>> fetchCreditCardDebtBill(String userId, String recordId, int pageNo, int pageSize) {
+        return service.fetchCreditCardDebtBill(userId, recordId, pageNo, pageSize);
+    }
+
+    /**
+     * 获取信用卡月份账单详情
+     *
+     * @param userId 用户id
+     * @param billId 月份账单id
+     */
+    public Observable<ResultEntity<List<BillDetail>>> fetchCreditCardBillDetail(String userId, String billId) {
+        return service.fetchCreditCardBillDetail(userId, billId);
+    }
+
+    /**
+     * 更新月份账单金额
+     *
+     * @param userId 用户id
+     * @param billId 账单id
+     * @param amount 账单金额
+     */
+    public Observable<ResultEntity> updateMonthBillAmount(String userId, String billId, double amount) {
+        return service.updateMonthBillAmount(userId, billId, amount);
+    }
+
+    /**
+     * 更新信用卡账单还款状态
+     *
+     * @param userId 用户id
+     * @param billId 账单id
+     * @param status 还款状态，1-待还，2-已还
+     */
+    public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String billId, int status) {
+        return service.updateCreditCardDebtBillStatus(userId, billId, status);
+    }
+
+    /**
+     * 更新账单提醒状态
+     *
+     * @param userId    用户id
+     * @param channelId 渠道id，网贷账单需要
+     * @param cardId    信用卡id，信用卡账单需要
+     * @param day       -1-不提醒，1-提前1天，2-提前2天
+     */
+    public Observable<ResultEntity> updateRemindStatus(String userId, String channelId, String cardId, int day) {
+        return service.updateDebtRemindStatus(userId, channelId, cardId, day);
+    }
+
+    /**
+     * 删除信用卡账单
+     *
+     * @param userId   用户id
+     * @param recordId 账单id
+     */
+    public Observable<ResultEntity> deleteCreditCardDebt(String userId, String recordId) {
+        return service.deleteCreditCardDebt(userId, recordId, 0);
     }
 
     /**

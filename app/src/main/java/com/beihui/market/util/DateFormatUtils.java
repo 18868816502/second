@@ -39,6 +39,21 @@ public class DateFormatUtils {
         return getCN_MDFormat().format(date);
     }
 
+    public static String generateCreditCardDebtUpdateTime(long gmt) {
+        long now = System.currentTimeMillis();
+        if (gmt >= now - 1000 * 60) {
+            //1分钟之内
+            return "刚刚";
+        } else if (gmt >= now - 60 * 1000 * 60) {
+            //一个小时之内
+            return ((now - gmt) / (1000 * 60)) + "分钟前更新";
+        } else if (gmt >= now - 60 * 1000 * 60 * 24) {
+            return ((now - gmt) / (1000 * 60 * 60)) + "小时前更新";
+        } else {
+            return ((now - gmt) / (1000 * 60 * 60 * 24)) + "天前更新";
+        }
+    }
+
     private static void checkNewsField() {
         if (date == null) {
             date = new Date();

@@ -36,7 +36,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
 
     @Override
     public void loadDebtDetail() {
-        Disposable dis = api.queryDebtDetail(userHelper.getProfile().getId(), debtId)
+        Disposable dis = api.fetchLoanDebtDetail(userHelper.getProfile().getId(), debtId)
                 .compose(RxUtil.<ResultEntity<DebtDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<DebtDetail>>() {
                                @Override

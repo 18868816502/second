@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.CreditCardBank;
+import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerCreditCardDebtNewComponent;
@@ -60,6 +61,10 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
     CreditCardDebtNewPresenter presenter;
 
     private CreditCardBank creditCardBank;
+    /**
+     * 如果是编辑模式，则该字段不为空
+     */
+    private CreditCardDebtDetail debtDetail;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
