@@ -24,6 +24,7 @@ import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.entity.LoanBill;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -541,6 +542,18 @@ public class Api {
     }
 
     /**
+     * 获取我的账单
+     *
+     * @param userId   用户id
+     * @param billType 账单类型，1-网贷账单，2-信用卡
+     * @param pageNo   查询页数
+     * @param pageSize 查询每页大小
+     */
+    public Observable<ResultEntity<LoanBill>> fetchMyLoanBill(String userId, int billType, int pageNo, int pageSize) {
+        return service.fetchLoanBill(userId, billType, pageNo, pageSize);
+    }
+
+    /**
      * 查询邀请详细
      *
      * @param userId 用户id
@@ -758,7 +771,7 @@ public class Api {
      *
      * @param userId   用户id
      * @param recordId 账单记录id
-     * @param type     账单类型
+     * @param type     账单类型 1-网贷，2-信用卡
      * @param hide     是否隐藏 0-隐藏，1-不隐藏
      */
     public Observable<ResultEntity> updateDebtVisibility(String userId, String recordId, int type, int hide) {

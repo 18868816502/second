@@ -1,10 +1,14 @@
 package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +26,7 @@ import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
-import com.beihui.market.ui.activity.MyProductActivity;
+import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -169,7 +173,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     }
 
     @OnClick({R.id.contact_kefu, R.id.mine_msg,
-            R.id.mine_product,
+            R.id.mine_bill,
             R.id.login, R.id.avatar, R.id.user_name,
             R.id.my_collection, R.id.reward_points, R.id.invite_friend,
             R.id.helper_feedback, R.id.settings, R.id.wechat_public})
@@ -211,15 +215,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
 
-            case R.id.mine_product:
+            case R.id.mine_bill:
                 if (!FastClickUtils.isFastClick()) {
-                    //umeng统计
-                    Statistic.onEvent(Events.CLICK_MY_PRODUCT);
-
-                    //pv，uv统计
-                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_MY_LOAN);
-
-                    presenter.clickMyProduct();
+                    presenter.clickMineBill();
                 }
                 break;
 
@@ -313,7 +311,11 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void showRewardPoints(int points) {
         this.points.setVisibility(View.VISIBLE);
-        this.points.setText(points + "");
+        String str = points + "  积分";
+        ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#ff395e"));
+        SpannableString ss = new SpannableString(str);
+        ss.setSpan(span, 0, str.length() - 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        this.points.setText(ss);
     }
 
     @Override
@@ -337,8 +339,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     }
 
     @Override
-    public void navigateMyThirdProduct(String userId) {
-        startActivity(new Intent(getActivity(), MyProductActivity.class));
+    public void navigateMineBill(String userId) {
+        startActivity(new Intent(getActivity(), MyDebtActivity.class));
     }
 
     @Override
@@ -374,6 +376,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void updateMyLoanVisible(boolean visible) {
-        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+//        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mineProductContainer.setVisibility(View.VISIBLE);
     }
 }

@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -112,6 +113,16 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 
     private CreditCardDebtDetailDialog dialog;
 
+    public static void launchActivity(Context context, String debtId, boolean byHand, String banKName, String cardNum, String logo) {
+        Intent intent = new Intent(context, CreditCardDebtDetailActivity.class);
+        intent.putExtra("debt_id", debtId);
+        intent.putExtra("by_hand", byHand);
+        intent.putExtra("bank_name", banKName);
+        intent.putExtra("card_num", cardNum);
+        intent.putExtra("logo", logo);
+        context.startActivity(intent);
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_credit_card_debt_detail;
@@ -121,6 +132,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     @Override
     public void configViews() {
         byHand = getIntent().getBooleanExtra("by_hand", false);
+        String backName = getIntent().getStringExtra("bank_name");
+        String cardNum = getIntent().getStringExtra("card_num");
+        String logoUrl = getIntent().getStringExtra("logo");
 
         setupToolbar(toolbar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -212,12 +226,10 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             }
         });
 
-        String backName = getIntent().getStringExtra("bank_name");
-        String cardNum = getIntent().getStringExtra("card_num");
+
         tvBankNameNum.setText(backName + " " + cardNum);
         header.tvBankName.setText(backName);
         header.tvCreditCardNumber.setText(cardNum);
-        String logoUrl = getIntent().getStringExtra("logo");
         if (!isEmpty(logoUrl)) {
             Glide.with(this)
                     .load(logoUrl)

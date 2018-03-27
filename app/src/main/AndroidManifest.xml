@@ -196,6 +196,10 @@
             android:name=".ui.activity.CreditCardDebtDetailActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.MyDebtActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <receiver

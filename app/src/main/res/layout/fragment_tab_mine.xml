@@ -113,7 +113,7 @@
                 android:paddingRight="9dp">
 
                 <FrameLayout
-                    android:id="@+id/mine_product"
+                    android:id="@+id/mine_bill"
                     android:layout_width="match_parent"
                     android:layout_height="54dp">
 
@@ -125,7 +125,7 @@
                         android:drawablePadding="10dp"
                         android:drawableRight="@mipmap/right_icon"
                         android:gravity="center_vertical"
-                        android:text="@string/my_product"
+                        android:text="我的账单"
                         android:textColor="@color/black_1"
                         android:textSize="15sp" />
 

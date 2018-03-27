@@ -17,6 +17,7 @@ import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.entity.LoanBill;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
 import com.beihui.market.entity.LoanProductDetail;
@@ -336,6 +337,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/queryUserLoan")
     Observable<ResultEntity<MyProduct>> queryMyProduct(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * 获取我的账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/myBillList")
+    Observable<ResultEntity<LoanBill>> fetchLoanBill(@Field("userId") String userId, @Field("billType") int billType, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
      * 查询邀请详细

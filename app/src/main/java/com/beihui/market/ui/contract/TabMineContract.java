@@ -25,9 +25,9 @@ public interface TabMineContract {
         void clickUserProfile();
 
         /**
-         * 点击我的借款
+         * 点击我的账单
          */
-        void clickMyProduct();
+        void clickMineBill();
 
         /**
          * 点击我的收藏
@@ -91,11 +91,11 @@ public interface TabMineContract {
         void navigateMessage(String userId);
 
         /**
-         * 导航至我的借款
+         * 导航至我的账单
          *
          * @param userId 用户id
          */
-        void navigateMyThirdProduct(String userId);
+        void navigateMineBill(String userId);
 
         /**
          * 导航至我的收藏
