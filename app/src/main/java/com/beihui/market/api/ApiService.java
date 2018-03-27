@@ -66,6 +66,13 @@ public interface ApiService {
     Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId);
 
     /**
+     * 微信登录
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/wx/login")
+    Observable<ResultEntity<UserProfileAbstract>> loginWithWechat(@Field("openId") String openId);
+
+    /**
      * 请求验证码
      */
     @FormUrlEncoded
@@ -81,12 +88,21 @@ public interface ApiService {
                                         @Field("verificationCodeType") String verificationCodeType);
 
     /**
+     * 校验微信绑定验证码
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/wx/authVerify")
+    Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
+                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId);
+
+    /**
      * 注册
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/register")
-    Observable<ResultEntity> register(@Field("platform") int platform, @Field("account") String account,
-                                      @Field("pwd") String pwd, @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
+    Observable<ResultEntity<UserProfileAbstract>> register(@Field("platform") int platform, @Field("account") String account, @Field("pwd") String pwd,
+                                                           @Field("wxOpenId") String exOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
+                                                           @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
 
     /**
      * 更新密码，重置或者修改

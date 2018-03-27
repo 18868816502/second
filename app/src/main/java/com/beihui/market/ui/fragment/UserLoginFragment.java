@@ -1,5 +1,6 @@
 package com.beihui.market.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoginComponent;
 import com.beihui.market.injection.module.LoginModule;
 import com.beihui.market.ui.activity.ResetPsdActivity;
+import com.beihui.market.ui.activity.WeChatBindPhoneActivity;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
@@ -29,8 +31,13 @@ import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -39,6 +46,9 @@ import butterknife.OnClick;
 
 
 public class UserLoginFragment extends BaseComponentFragment implements LoginContract.View {
+
+    private final int REQUEST_CODE_BIND_PHONE = 1;
+
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;
     @BindView(R.id.password)
@@ -50,6 +60,8 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Inject
     LoginPresenter presenter;
+
+    private Map<String, String> wechatInfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +75,23 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
         InputMethodUtil.closeSoftKeyboard(getActivity());
         presenter.onDestroy();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_BIND_PHONE) {
+            //登录后发送全局事件，更新UI
+            EventBus.getDefault().post(new UserLoginEvent());
+            if (getView() != null) {
+                getView().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getActivity().finish();
+                    }
+                }, 200);
+            }
+        }
     }
 
     @Override
@@ -135,7 +164,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     }
 
 
-    @OnClick({R.id.register, R.id.forget_psd, R.id.login})
+    @OnClick({R.id.register, R.id.forget_psd, R.id.login, R.id.login_with_wechat})
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.register:
@@ -154,6 +183,34 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
                 presenter.login(phoneNumberEt.getText().toString(), passwordEt.getText().toString());
                 break;
+            case R.id.login_with_wechat:
+                UMAuthListener listener = new UMAuthListener() {
+
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+                        showProgress();
+                    }
+
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        wechatInfo = map;
+                        presenter.loginWithWeChat(wechatInfo.get("openid"));
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        dismissProgress();
+                        ToastUtils.showShort(getContext(), "授权失败", null);
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        dismissProgress();
+                        ToastUtils.showShort(getContext(), "授权取消", null);
+                    }
+                };
+                UMShareAPI.get(getContext()).getPlatformInfo((Activity) getContext(), SHARE_MEDIA.WEIXIN, listener);
+                break;
         }
     }
 
@@ -161,11 +218,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
         //injected, do nothing.
-    }
-
-    @Override
-    public void showLoading() {
-        showProgress("登录中");
     }
 
     @Override
@@ -185,8 +237,12 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     }
 
     @Override
-    public void showErrorMsg(String msg) {
+    public void navigateWechatBindAccount() {
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, null);
+        Intent intent = new Intent(getContext(), WeChatBindPhoneActivity.class);
+        intent.putExtra("openId", wechatInfo.get("openid"));
+        intent.putExtra("name", wechatInfo.get("name"));
+        intent.putExtra("profile_image_url", wechatInfo.get("profile_image_url"));
+        startActivityForResult(intent, REQUEST_CODE_BIND_PHONE);
     }
 }

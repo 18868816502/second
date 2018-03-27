@@ -193,6 +193,14 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.activity.WeChatBindPhoneActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.WeChatSetPwdActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.activity.CreditCardDebtDetailActivity"
             android:screenOrientation="portrait" />
 

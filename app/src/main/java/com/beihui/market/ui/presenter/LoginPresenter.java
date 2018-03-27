@@ -47,7 +47,7 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
     @Override
     public void login(String account, String pwd) {
         final String phone = account;
-        view.showLoading();
+        view.showProgress();
 
         Disposable dis = api.login(account, pwd)
                 .compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
@@ -124,6 +124,47 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
+                                logError(LoginPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void loginWithWeChat(String openId) {
+        Disposable dis = api.loginWithWechat(openId)
+                .compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
+                .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
+                               @Override
+                               public void accept(ResultEntity<UserProfileAbstract> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.LOGIN_SUCCESS);
+                                       Statistic.login(result.getData().getId());
+
+                                       //登录之后，将用户信息注册到本地
+                                       userHelper.update(result.getData(), result.getData().getAccount(), context);
+                                       //保存用户id,缓存
+                                       SPUtils.setCacheUserId(context, result.getData().getId());
+
+                                   } else {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.LOGIN_FAILED);
+                                       if (result.getCode() == 100008) {
+                                           //未绑定手机号
+                                           view.navigateWechatBindAccount();
+                                       } else {
+                                           //未知错误
+                                           view.showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                view.dismissProgress();
                                 logError(LoginPresenter.this, throwable);
                                 view.showErrorMsg(generateErrorMsg(throwable));
                             }

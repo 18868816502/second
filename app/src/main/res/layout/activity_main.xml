@@ -83,7 +83,7 @@
                     android:layout_below="@+id/tab_home_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
-                    android:text="@string/tab_home"
+                    android:text="发现"
                     android:textColor="@color/select_blue_grey"
                     android:textSize="12sp" />
 

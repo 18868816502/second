@@ -126,8 +126,16 @@ public class Api {
      * @param pwd     用户密码
      */
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
-
         return service.login(account, generatePwd(pwd, account), getChannelId());
+    }
+
+    /**
+     * 微信登录
+     *
+     * @param openId 微信openId
+     */
+    public Observable<ResultEntity<UserProfileAbstract>> loginWithWechat(String openId) {
+        return service.loginWithWechat(openId);
     }
 
     /**
@@ -146,6 +154,15 @@ public class Api {
      */
     public Observable<ResultEntity<Phone>> requestRestPwdSms(String phone) {
         return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_RESET_PWD, getChannelId());
+    }
+
+    /**
+     * 请求微信绑定验证码
+     *
+     * @param phone 请求手机号
+     */
+    public Observable<ResultEntity<Phone>> requestWeChatBindPwdSms(String phone) {
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, getChannelId());
     }
 
     /**
@@ -169,14 +186,28 @@ public class Api {
     }
 
     /**
+     * 验证微信绑定验证码
+     *
+     * @param account  请求的手机号
+     * @param wxOpenId 微信openId
+     * @param code     请求的验证码
+     */
+    public Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(String account, String wxOpenId, String wxName, String wxImage, String code) {
+        return service.verifyWeChatBindCode(account, wxOpenId, wxName, wxImage, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, code, getChannelId());
+    }
+
+    /**
      * 注册
      *
      * @param phone      注册手机号
      * @param pwd        用户密码
+     * @param wxOpenId   微信openId
+     * @param wxName     微信用户名
+     * @param wxImage    微信头像
      * @param inviteCode 邀请码，可空
      */
-    public Observable<ResultEntity> register(String phone, String pwd, String inviteCode) {
-        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), inviteCode, getChannelId());
+    public Observable<ResultEntity<UserProfileAbstract>> register(String phone, String pwd, String wxOpenId, String wxName, String wxImage, String inviteCode) {
+        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), wxOpenId, wxName, wxImage, inviteCode, getChannelId());
     }
 
     /**

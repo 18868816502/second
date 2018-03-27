@@ -6,6 +6,8 @@ public class UserProfileAbstract {
     private String userName;
     private String msgIsRead;
     private String headPortrait;
+    private String account = "11111111111";
+    private boolean isNewUser;
 
     public String getId() {
         return id;
@@ -37,5 +39,21 @@ public class UserProfileAbstract {
 
     public void setHeadPortrait(String headPortrait) {
         this.headPortrait = headPortrait;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
     }
 }

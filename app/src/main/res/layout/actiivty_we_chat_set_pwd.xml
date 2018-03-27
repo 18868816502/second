@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@android:color/white">
+
+        <TextView
+            style="@style/ToolBarTitleTextAppearance.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="设置密码" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="密码"
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/pwd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:background="@null"
+            android:hint="设置密码"
+            android:inputType="textPassword"
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/pwd_visibility"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:button="@drawable/eyes_check"
+            android:gravity="center" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/confirm"
+        style="@style/TextButtonStyle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/round_alpha_primary_btn"
+        android:text="确认"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

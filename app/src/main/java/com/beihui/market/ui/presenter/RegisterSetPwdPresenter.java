@@ -55,7 +55,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
         }
         view.showProgress();
 
-        Disposable dis = api.register(phone, pwd, inviteCode)
+        Disposable dis = api.register(phone, pwd, null, null, null, inviteCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Function<ResultEntity, ObservableSource<ResultEntity>>() {
                     @Override
