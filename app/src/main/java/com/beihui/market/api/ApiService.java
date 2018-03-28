@@ -14,6 +14,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -27,6 +28,7 @@ import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
+import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
@@ -37,6 +39,7 @@ import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
+import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
@@ -478,7 +481,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/creditcard/updateBill")
-    Observable<ResultEntity> updateMonthBillAmount(@Field("userId") String userId, @Field("billId") String billId, @Field("amount") double amount);
+    Observable<ResultEntity> updateMonthBillAmount(@Field("userId") String userId, @Field("billId") String billId, @Field("cardId") String cardId, @Field("amount") double amount);
 
     /**
      * 更新信用卡账单还款状态
@@ -578,6 +581,26 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/appconfig/btnmenu/show")
     Observable<ResultEntity<Boolean>> queryMenuVisible(@Field("flag") String flag);
+
+    /**
+     * 获取网银导入地址
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/collection/create/task/nutH5BankCollection")
+    Observable<ResultEntity<EBank>> fetchEBankUrl(@Field("userId") String userId);
+
+    /**
+     * 获取用户的邮箱列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/emailList")
+    Observable<ResultEntity<List<UsedEmail>>> fetchUsedEmail(@Field("userId") String userId);
+
+    /**
+     * 获取坚果爬虫的银行列表
+     */
+    @POST(BASE_PATH + "/dataDictionary/emailConfig")
+    Observable<ResultEntity<List<NutEmail>>> fetchNutEmail();
 
 
     /****************************************************个推账号用户绑定*****************************************************/

@@ -3,10 +3,18 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
+import com.beihui.market.entity.CreditCardDebtDetail;
 
 public interface CreditCardDebtNewContract {
 
     interface Presenter extends BasePresenter {
+        /**
+         * 设置旧版本信用卡账单
+         *
+         * @param debtDetail 旧版本信用卡账单
+         */
+        void attachCreditCardDebt(CreditCardDebtDetail debtDetail);
+
         /**
          * 手动添加账单
          *
@@ -21,6 +29,16 @@ public interface CreditCardDebtNewContract {
     }
 
     interface View extends BaseView<Presenter> {
+        /**
+         * 新账单添加成功
+         */
         void showSaveCreditCardDebtSuccess();
+
+        /**
+         * 填充旧版本账单信息
+         *
+         * @param debtDetail 旧版本账单
+         */
+        void bindOldCreditCardDebt(CreditCardDebtDetail debtDetail);
     }
 }

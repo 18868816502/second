@@ -150,6 +150,11 @@ public interface TabAccountContract {
         void navigateAddLoanDebt();
 
         /**
+         * 唤起网银导入账单界面
+         */
+        void navigateVisaLeadingIn();
+
+        /**
          * 导航至还款日历页面
          */
         void navigateCalendar();

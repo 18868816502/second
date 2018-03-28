@@ -208,6 +208,26 @@
             android:name=".ui.activity.MyDebtActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.EBankActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.UsedEmailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.NutEmailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.EmailLoginActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.EmailLeadingInProgressActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <receiver

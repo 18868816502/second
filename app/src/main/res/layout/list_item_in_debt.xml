@@ -163,7 +163,7 @@
                 android:textSize="11sp" />
 
             <FrameLayout
-                android:id="@+id/push_debt"
+                android:id="@+id/sync"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -214,34 +214,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"
                         android:text="隐藏"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/sync"
-                android:layout_width="61dp"
-                android:layout_height="match_parent"
-                android:background="#48c763">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/account_update_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:text="同步"
                         android:textColor="@android:color/white"
                         android:textSize="12sp" />
                 </LinearLayout>

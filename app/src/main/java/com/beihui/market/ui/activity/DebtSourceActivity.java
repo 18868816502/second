@@ -118,12 +118,12 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
 
     @Override
     public void navigateDebtMail() {
-
+        startActivity(new Intent(this, UsedEmailActivity.class));
     }
 
     @Override
     public void navigateDebtVisa() {
-
+        startActivity(new Intent(this, EBankActivity.class));
     }
 
     @Override

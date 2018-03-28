@@ -183,7 +183,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
 
     @Override
     public void clickDebtSync(int index) {
-
+        view.navigateVisaLeadingIn();
     }
 
     @Override

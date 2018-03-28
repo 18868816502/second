@@ -49,30 +49,46 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
     public CreditCardDebtDetailAdapter(boolean hand) {
         super(null);
         this.hand = hand;
-        addItemType(ITEM_TYPE_MONTH_ABSTRACT, R.layout.rv_item_credit_card_detail_month_abstract);
-        addItemType(ITEM_TYPE_DETAIL, R.layout.rv_item_credit_card_detail_detail);
+        //手动账单，导入账单都可能出现暂无账单明细
         addItemType(ITEM_TYPE_HINT, R.layout.rv_item_credit_card_detail_hint);
+        //手动和导入的列表使用不同样式item,手动账单没有详细
+        if (hand) {
+            addItemType(ITEM_TYPE_MONTH_ABSTRACT, R.layout.rv_item_bill_month_hand);
+        } else {
+            addItemType(ITEM_TYPE_MONTH_ABSTRACT, R.layout.rv_item_bill_month_leading_in);
+            //导入账单才有详细信息
+            addItemType(ITEM_TYPE_DETAIL, R.layout.rv_item_bill_detail);
+        }
     }
 
     @Override
     protected void convert(BaseViewHolder helper, CreditCardDebtDetailMultiEntity item) {
         switch (item.getItemType()) {
             case ITEM_TYPE_MONTH_ABSTRACT:
-                bindMonthBill(helper, item.getMonthBill(), item.isHeadExpanded());
+                //手动账单，导入账单都可以选中详情
+                helper.addOnClickListener(R.id.month_bill_container);
+
+                //手动账单包含导入账单的所有样式
+                bindMonthBillLeadingIn(helper, item.getMonthBill(), item.isHeadExpanded());
+                if (hand) {
+                    //只有手动账单能够修改，添加金额
+                    bindMonthBillHand(helper, item.getMonthBill(), item.isHeadExpanded());
+                    //只有手动账单能够添加，修改金额
+                    helper.addOnClickListener(R.id.edit_amount);
+                    helper.addOnClickListener(R.id.add_amount);
+                }
                 break;
             case ITEM_TYPE_DETAIL:
                 bindBillDetail(helper, item.getBillDetail());
                 break;
-            case ITEM_TYPE_HINT:
-                break;
         }
     }
 
-    private void bindMonthBill(BaseViewHolder holder, CreditCardDebtBill bill, boolean expanded) {
-        holder.addOnClickListener(R.id.month_bill_container);
-        holder.addOnClickListener(R.id.edit_amount);
-        holder.addOnClickListener(R.id.add_amount);
-
+    /**
+     * 绑定导入账单信息
+     */
+    private void bindMonthBillLeadingIn(BaseViewHolder holder, CreditCardDebtBill bill, boolean expanded) {
+        //账单日期
         if (!isEmpty(bill.getBillDate())) {
             try {
                 calendar.setTime(dateFormat.parse(bill.getBillDate()));
@@ -82,31 +98,9 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 e.printStackTrace();
             }
         }
-
+        //账单金额
         holder.setText(R.id.debt_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(bill.getNewBalance()));
-        if (hand) {
-            //手动记账的账单
-            holder.setVisible(R.id.amount_block, true);
-            if (bill.getStatus() == 5) {
-                //已出账
-                if (bill.getNewBalance() >= 0) {
-                    //已出账，有数据，显示修改
-                    holder.setVisible(R.id.add_amount, false);
-                    holder.setVisible(R.id.edit_amount, true);
-                } else {
-                    //已出账，没数据，显示添加
-                    holder.setVisible(R.id.amount_block, false);
-                    holder.setVisible(R.id.add_amount, true);
-                }
-            }
-
-        } else {
-            //导入的账单，没有更新操作
-            holder.setVisible(R.id.amount_block, true);
-            holder.setVisible(R.id.add_amount, false);
-            holder.setVisible(R.id.edit_amount, false);
-        }
-
+        //账单状态
         switch (bill.getStatus()) {
             case 1://待还
                 holder.setText(R.id.debt_status, String.format(Locale.CHINA, "距离还款日%d天", bill.getReturnDay()));
@@ -119,17 +113,20 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 2, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 holder.setText(R.id.debt_status, ss);
                 break;
-            case 4://未出账
-                holder.setText(R.id.debt_status, bill.getOutBillDay() == 0 ? "今天出账" : String.format(Locale.CHINA, "%d天后出账", bill.getOutBillDay()));
-                break;
-            case 5://已出账
+            case 4://已出账
                 holder.setText(R.id.debt_status, String.format(Locale.CHINA, "已出账%d天", bill.getOutBillDay()));
+                break;
+            case 5://未出账
+                //未出账，且未返回金额,则设置0
+                if (bill.getNewBalance() == -1) {
+                    holder.setText(R.id.debt_amount, String.valueOf((char) 165) + "0");
+                }
+                holder.setText(R.id.debt_status, bill.getOutBillDay() == 0 ? "今天出账" : String.format(Locale.CHINA, "%d天后出账", bill.getOutBillDay()));
                 break;
             case 6://无账单
                 holder.setText(R.id.debt_status, "无账单");
                 break;
         }
-
         //账单周期
         if (!isEmpty(bill.getStartTime()) && !isEmpty(bill.getEndTime())) {
             try {
@@ -142,7 +139,48 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         }
         //是否已经展开
         holder.setGone(R.id.bill_range_block, expanded);
+        //展开的三角
+        holder.getView(R.id.expand_collapse_hint).setRotation(expanded ? 90 : 0);
+    }
 
+    /**
+     * 绑定手动账单信息
+     */
+    private void bindMonthBillHand(BaseViewHolder holder, CreditCardDebtBill bill, boolean expanded) {
+        //手动账单可以添加，修改金额
+        holder.setVisible(R.id.amount_block, false);
+        holder.setVisible(R.id.edit_amount, false);
+        holder.setVisible(R.id.add_amount, false);
+        holder.setGone(R.id.edit_amount_block, true);
+        switch (bill.getStatus()) {
+            case 1://待还
+                //待还的账单可以修改金额
+                holder.setVisible(R.id.amount_block, true);
+                holder.setVisible(R.id.edit_amount, true);
+                break;
+            case 2://已还
+                //已还清的账单无法修改金额
+                holder.setVisible(R.id.amount_block, true);
+                break;
+            case 3://逾期
+                //逾期账单==待还账单
+                holder.setVisible(R.id.amount_block, true);
+                holder.setVisible(R.id.edit_amount, true);
+                break;
+            case 4://已出账
+                if (bill.getNewBalance() == -1) {//没有金额的已出账账单，显示添加
+                    holder.setVisible(R.id.add_amount, true);
+                }
+                break;
+            case 5://未出账
+                //未出账账单不能添加，修改,显示距出账时间
+                holder.setVisible(R.id.amount_block, true);
+                holder.setVisible(R.id.edit_amount, false);
+                holder.setGone(R.id.edit_amount_block, false);
+                break;
+            case 6://无账单
+                break;
+        }
     }
 
     private void bindBillDetail(BaseViewHolder holder, BillDetail detail) {
@@ -185,6 +223,11 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
 
     public void notifyDebtListChanged(List<CreditCardDebtBill> list) {
         if (list != null && list.size() > 0) {
+            //更新月份账单数据源，现在更新金额后需要重新拉取列表
+            for (int i = 0; i < lastPageSize; ++i) {
+                dataSet.get(i).updateMonthBill(list.get(i));
+            }
+            //添加新的月份账单数据，MultiEntity状态初始
             for (int i = lastPageSize; i < list.size(); ++i) {
                 dataSet.add(new CreditCardDebtDetailMultiEntity(list.get(i), null));
             }

@@ -62,6 +62,10 @@ public class CreditCardDebtDetailMultiEntity extends AbstractExpandableItem<Cred
         return bill;
     }
 
+    public void updateMonthBill(CreditCardDebtBill bill) {
+        this.bill = bill;
+    }
+
     public BillDetail getBillDetail() {
         return billDetail;
     }

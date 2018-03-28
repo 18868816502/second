@@ -197,7 +197,12 @@ android {
         disable "MissingTranslation"
         abortOnError false
     }
+}
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -205,6 +210,9 @@ dependencies {
 
     compile project(':socialshare')
     compile project(':xiaonengchat')
+
+    //坚果信用
+    compile(name: 'nutsdk', ext: 'aar')
 
     //noinspection GradleCompatible
     compile "com.android.support:appcompat-v7:$support_library_version"

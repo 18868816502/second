@@ -28,6 +28,7 @@ import com.beihui.market.ui.contract.CreditCardDebtDetailContract;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
+import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
 import com.beihui.market.util.DateFormatUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -142,6 +143,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         detailAdapter = new CreditCardDebtDetailAdapter(byHand);
         detailAdapter.setHeaderView(header.itemView);
         recyclerView.setAdapter(detailAdapter);
+        recyclerView.addItemDecoration(new CommVerItemDeco((int) (getResources().getDisplayMetrics().density * 0.5), 0, 0, 1));
 
         detailAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -177,12 +179,16 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                     }
                                 }
                                 if (entity.isInit()) {
+                                    //展开头部
+                                    detailAdapter.expandMonthBill(viewIndex);
                                     //如果已经获取过数据，则直接展开
                                     adapter.expand(viewIndex + 1);
                                 } else {
                                     CreditCardDebtBill bill = entity.getMonthBill();
                                     if (bill.getBillSource() == 3) {
                                         //手动记账的账单没有详细
+                                        //展开头部
+                                        detailAdapter.expandMonthBill(viewIndex);
                                         detailAdapter.notifyBillDetailChanged(Collections.<BillDetail>emptyList(), viewIndex);
                                     } else {
                                         //获取数据后再展开全部
@@ -254,6 +260,13 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 presenter.clickSetStatus();
             }
         });
+
+        flDebtStatusOperationBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CreditCardDebtDetailActivity.this, EBankActivity.class));
+            }
+        });
     }
 
     @Override
@@ -312,9 +325,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     }
                 }
                 //账单金额
-                char symbol = 165;
-                header.tvDebtAmount.setText(String.valueOf(symbol) + keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance()));
+                header.tvDebtAmount.setText(String.valueOf((char) 165) + keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance()));
                 //账单状态
+                header.tvSetStatus.setVisibility(View.VISIBLE);
                 switch (showBill.getStatus()) {
                     case 1://待还
                         header.tvSetStatus.setText("设为已还");
@@ -331,10 +344,11 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                         break;
                 }
                 //最低应还
-                if (showBill.getMinPayment() > 0) {
-                    header.tvMinPayment.setText(keep2digitsWithoutZero(showBill.getMinPayment()) + "元");
-                } else {
+                if (byHand) {
+                    //手动账单没有最低应还
                     header.tvMinPayment.setText("----");
+                } else {
+                    header.tvMinPayment.setText(keep2digitsWithoutZero(showBill.getMinPayment()) + "元");
                 }
                 //出账日
                 if (!isEmpty(showBill.getBillDate())) {
@@ -348,7 +362,12 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             //最长免息期
             header.tvMaxInterestFreeTime.setText(debtDetail.getMaxFreeInterestDay() + "天");
             //信用额度
-            header.tvCreditAmount.setText(debtDetail.getCreditLimit() + "元");
+            if (byHand) {
+                //手动账单没有信用额度
+                header.tvCreditAmount.setText("----");
+            } else {
+                header.tvCreditAmount.setText(debtDetail.getCreditLimit() + "元");
+            }
             //卡主姓名
             header.tvCardOwner.setText(debtDetail.getCardUserName());
         }

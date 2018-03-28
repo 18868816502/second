@@ -139,7 +139,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     @Override
     public void updateBillAmount(int index, double amount) {
         final CreditCardDebtBill bill = billList.get(index);
-        Disposable dis = api.updateMonthBillAmount(userHelper.getProfile().getId(), bill.getId(), amount)
+        Disposable dis = api.updateMonthBillAmount(userHelper.getProfile().getId(), bill.getId(), debtDetail.getId(), amount)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

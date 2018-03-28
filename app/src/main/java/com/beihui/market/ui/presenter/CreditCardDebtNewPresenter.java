@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.CreditCardDebtNewContract;
 import com.beihui.market.util.RxUtil;
@@ -22,11 +23,21 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
     private CreditCardDebtNewContract.View view;
     private UserHelper userHelper;
 
+    private CreditCardDebtDetail debtDetail;
+
     @Inject
     CreditCardDebtNewPresenter(Context context, Api api, CreditCardDebtNewContract.View view) {
         this.api = api;
         this.view = view;
         userHelper = UserHelper.getInstance(context);
+    }
+
+    @Override
+    public void attachCreditCardDebt(CreditCardDebtDetail debtDetail) {
+        this.debtDetail = debtDetail;
+        if (this.debtDetail != null) {
+            view.bindOldCreditCardDebt(this.debtDetail);
+        }
     }
 
     @Override

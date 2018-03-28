@@ -1,0 +1,137 @@
+package com.beihui.market.ui.activity;
+
+
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+
+import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
+import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.NutEmail;
+import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
+import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.adapter.NutEmailAdapter;
+import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
+
+import java.lang.reflect.Field;
+import java.util.List;
+
+import app.u51.com.newnutsdk.NutSDK;
+import app.u51.com.newnutsdk.model.MailSupportConfig;
+import app.u51.com.newnutsdk.net.TenantProvider;
+import butterknife.BindView;
+import io.reactivex.functions.Consumer;
+
+public class NutEmailActivity extends BaseComponentActivity {
+
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    private NutEmailAdapter adapter;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && data == null) {
+            //开启进度界面
+            startActivity(new Intent(NutEmailActivity.this, EmailLeadingInProgressActivity.class));
+        }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_nut_email;
+    }
+
+    @Override
+    public void configViews() {
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
+        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new NutEmailAdapter();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                NutEmail nutEmail = (NutEmail) adapter.getItem(position);
+                try {
+                    Field field = NutSDK.getDefault().getClass().getDeclaredField("mailSupportConfig");
+                    field.setAccessible(true);
+                    MailSupportConfig config = (MailSupportConfig) field.get(NutSDK.getDefault());
+                    Intent intent = new Intent(NutEmailActivity.this, EmailLoginActivity.class);
+                    intent.putExtra("extra_mail_config", config.getMailItemConfig(nutEmail.getSymbol()));
+                    startActivityForResult(intent, 1);
+
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        recyclerView.setAdapter(adapter);
+        float density = getResources().getDisplayMetrics().density;
+        recyclerView.addItemDecoration(new CommVerItemDeco((int) (density * 0.5), (int) (15 * density), (int) (15 * density)));
+
+        SlidePanelHelper.attach(this);
+    }
+
+    @Override
+    public void initDatas() {
+        //获取坚果配置
+        NutSDK.getDefault().setTenantProvider(getApplicationContext(), new TenantProvider() {
+            @Override
+            public String getTenantId() {
+                return "AXGJ";
+            }
+
+            @Override
+            public String getSdkToken() {
+                return "b88b738cdad9d4a94790409f12697f06";
+            }
+
+            @Override
+            public String getUserId() {
+                return UserHelper.getInstance(NutEmailActivity.this).getProfile().getId();
+            }
+        });
+        NutSDK.getDefault().getConfig();
+
+        Api.getInstance().fetchNutEmail()
+                .compose(RxUtil.<ResultEntity<List<NutEmail>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<NutEmail>>>() {
+                               @Override
+                               public void accept(ResultEntity<List<NutEmail>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       adapter.notifyNutEmailChanged(result.getData());
+                                   } else {
+                                       ToastUtils.showShort(NutEmailActivity.this, result.getMsg(), null);
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("NutEmailActivity", throwable.toString());
+                                ToastUtils.showShort(NutEmailActivity.this, "请求出错", null);
+                            }
+                        });
+    }
+
+    @Override
+    protected void configureComponent(AppComponent appComponent) {
+
+    }
+}

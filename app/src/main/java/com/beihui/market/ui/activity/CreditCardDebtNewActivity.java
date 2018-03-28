@@ -22,6 +22,7 @@ import com.beihui.market.ui.contract.CreditCardDebtNewContract;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.CreditCardDebtNewPresenter;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
@@ -62,7 +63,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     private CreditCardBank creditCardBank;
     /**
-     * 如果是编辑模式，则该字段不为空
+     * 如果该字段不为空，则处于编辑模式,添加新信用卡时，需删除旧版本
      */
     private CreditCardDebtDetail debtDetail;
 
@@ -99,7 +100,10 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void initDatas() {
-
+        debtDetail = getIntent().getParcelableExtra("credit_card_debt_detail");
+        if (debtDetail != null) {
+            presenter.attachCreditCardDebt(debtDetail);
+        }
     }
 
     @Override
@@ -151,6 +155,34 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
                 finish();
             }
         }, 200);
+    }
+
+    @Override
+    public void bindOldCreditCardDebt(CreditCardDebtDetail debtDetail) {
+        //卡号
+        etCreditCardNumber.setText(debtDetail.getCardNums());
+        //姓名
+        etCardOwner.setText(debtDetail.getCardUserName());
+        //银行
+        creditCardBank = new CreditCardBank();
+        creditCardBank.setId(debtDetail.getBankId());
+        creditCardBank.setBankName(debtDetail.getBankName());
+        tvBank.setText(debtDetail.getBankName());
+        //账单日
+        tvDebtDay.setTextColor(getResources().getColor(R.color.black_1));
+        tvDebtDay.setText(debtDetail.getBillDay() + "");
+        tvDebtDay.setTag(debtDetail.getBillDay());
+        //还款日
+        tvDebtPayDay.setTextColor(getResources().getColor(R.color.black_1));
+        tvDebtPayDay.setText(debtDetail.getDueDay() + "");
+        tvDebtPayDay.setTag(debtDetail.getDueDay());
+        //金额
+        String amount = CommonUtils.keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance());
+        if (amount.contains(",")) {
+            amount = amount.replace(",", "");
+        }
+        etDebtAmount.setText(amount);
+
     }
 
     private void showDatePicker(TextView textView) {

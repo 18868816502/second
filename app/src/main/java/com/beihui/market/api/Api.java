@@ -21,6 +21,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -34,6 +35,7 @@ import com.beihui.market.entity.News;
 import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
+import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
@@ -44,6 +46,7 @@ import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
+import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
@@ -738,11 +741,12 @@ public class Api {
      * 更新月份账单金额
      *
      * @param userId 用户id
-     * @param billId 账单id
+     * @param billId 月份账单id
+     * @param cardId 信用卡账单id
      * @param amount 账单金额
      */
-    public Observable<ResultEntity> updateMonthBillAmount(String userId, String billId, double amount) {
-        return service.updateMonthBillAmount(userId, billId, amount);
+    public Observable<ResultEntity> updateMonthBillAmount(String userId, String billId, String cardId, double amount) {
+        return service.updateMonthBillAmount(userId, billId, cardId, amount);
     }
 
     /**
@@ -892,6 +896,31 @@ public class Api {
      */
     public Observable<ResultEntity> addRewardPoint(String userId, String taskId) {
         return service.addRewardPoint(userId, taskId);
+    }
+
+    /**
+     * 获取网银导入地址
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<EBank>> fetchEBankUrl(String userId) {
+        return service.fetchEBankUrl(userId);
+    }
+
+    /**
+     * 获取用户的邮箱列表
+     *
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<List<UsedEmail>>> fetchUsedEmail(String userId) {
+        return service.fetchUsedEmail(userId);
+    }
+
+    /**
+     * 获取坚果邮箱列表
+     */
+    public Observable<ResultEntity<List<NutEmail>>> fetchNutEmail() {
+        return service.fetchNutEmail();
     }
 
     /*****+******************************************************按钮显示***********************************************+*****+*****/

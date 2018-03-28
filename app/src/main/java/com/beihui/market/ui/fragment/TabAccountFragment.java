@@ -34,6 +34,7 @@ import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.DebtCalendarActivity;
 import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.DebtSourceActivity;
+import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.DebtRVAdapter;
@@ -557,6 +558,11 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void navigateAddLoanDebt() {
         startActivity(new Intent(getContext(), DebtChannelActivity.class));
+    }
+
+    @Override
+    public void navigateVisaLeadingIn() {
+        startActivity(new Intent(getContext(), EBankActivity.class));
     }
 
     @Override

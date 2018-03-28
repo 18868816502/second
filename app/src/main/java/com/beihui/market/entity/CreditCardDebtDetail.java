@@ -9,6 +9,7 @@ public class CreditCardDebtDetail implements Parcelable {
     private String id;
     private String userId;
     private int bankId;
+    private String bankName;
     private String cardNums;
     private String cardUserName;
     private int gender;
@@ -48,6 +49,14 @@ public class CreditCardDebtDetail implements Parcelable {
 
     public void setBankId(int bankId) {
         this.bankId = bankId;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
     public String getCardNums() {
@@ -177,7 +186,6 @@ public class CreditCardDebtDetail implements Parcelable {
     public void setMaxFreeInterestDay(int maxFreeInterestDay) {
         this.maxFreeInterestDay = maxFreeInterestDay;
     }
-
 
     public static class ShowBillBean implements Parcelable {
 
@@ -400,6 +408,7 @@ public class CreditCardDebtDetail implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.userId);
         dest.writeInt(this.bankId);
+        dest.writeString(this.bankName);
         dest.writeString(this.cardNums);
         dest.writeString(this.cardUserName);
         dest.writeInt(this.gender);
@@ -422,6 +431,7 @@ public class CreditCardDebtDetail implements Parcelable {
         this.id = in.readString();
         this.userId = in.readString();
         this.bankId = in.readInt();
+        this.bankName = in.readString();
         this.cardNums = in.readString();
         this.cardUserName = in.readString();
         this.gender = in.readInt();

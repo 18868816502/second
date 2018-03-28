@@ -75,7 +75,7 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
         //是否已还
         helper.setVisible(R.id.status_badge_paid, item.getStatus() == 2);
         //是否未出账或者无账单
-        helper.setVisible(R.id.push_debt, item.getStatus() == 5 || item.getStatus() == 6);
+        helper.setVisible(R.id.sync, item.getStatus() == 5 || item.getStatus() == 6);
         String dayStr = item.getReturnDay() + "天";
         SpannableString ss = new SpannableString(dayStr);
         if (item.getReturnDay() > 7) {
