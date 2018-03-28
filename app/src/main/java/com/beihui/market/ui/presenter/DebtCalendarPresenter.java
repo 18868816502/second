@@ -6,7 +6,8 @@ import android.content.Context;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.entity.DebtCalendar;
+import com.beihui.market.entity.CalendarAbstract;
+import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.DebtCalendarContract;
 import com.beihui.market.util.RxUtil;
@@ -36,21 +37,14 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
     private DebtCalendarContract.View view;
     private UserHelper userHelper;
 
-    private List<DebtCalendar.DetailBean> debts = new ArrayList<>();
-    private Map<String, Float> monthDebts;
-    private List<String> dates = new ArrayList<>();
-
-    private String curMonth;
-    private String curDate;
-
-
-    private Map<String, List<DebtCalendar.DetailBean>> calendarDebts = new HashMap<>();
-    private Map<String, Double[]> calendarDebtAbstract = new HashMap<>();
+    //账单摘要
     //0未还，1已还
-    private Map<String, Integer> calendarDebtTag = new HashMap<>();
-
-    private Disposable calendarLastRequest;
-
+    private Map<String, Integer> calendarAbstract = new HashMap<>();
+    //账单趋势
+    private List<String> trendDateList = new ArrayList<>();
+    private Map<String, Float> calendarTrend = new HashMap<>();
+    //账单列表
+    private List<CalendarDebt.DetailBean> calendarDebtList = new ArrayList<>();
 
     @Inject
     DebtCalendarPresenter(Context context, Api api, DebtCalendarContract.View view) {
@@ -60,50 +54,27 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
     }
 
     @Override
-    public void loadCalendarDebt(Date date, boolean isMonthUnit) {
-        if (calendarLastRequest != null) {
-            calendarLastRequest.dispose();
-        }
-        curDate = dateFormat.format(date);
-        String beginDay, endDay;
-        if (isMonthUnit) {
-            Calendar calendar = Calendar.getInstance(Locale.CHINA);
-            calendar.setTime(date);
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-            beginDay = dateFormat.format(calendar.getTime());
-            calendar.add(Calendar.MONTH, 1);
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-            endDay = dateFormat.format(calendar.getTime());
-        } else {
-            beginDay = endDay = curDate;
-        }
+    public void fetchCalendarAbstract(Date date) {
+        Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        String beginDate = dateFormat.format(calendar.getTime());
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        String endDate = dateFormat.format(calendar.getTime());
 
-        Disposable dis = api.queryDebtCalendar(userHelper.getProfile().getId(), beginDay, endDay, 3, true)
-                .compose(RxUtil.<ResultEntity<DebtCalendar>>io2main())
-                .subscribe(new Consumer<ResultEntity<DebtCalendar>>() {
+        Disposable dis = api.fetchCalendarAbstract(userHelper.getProfile().getId(), beginDate, endDate)
+                .compose(RxUtil.<ResultEntity<CalendarAbstract>>io2main())
+                .subscribe(new Consumer<ResultEntity<CalendarAbstract>>() {
                                @Override
-                               public void accept(ResultEntity<DebtCalendar> result) throws Exception {
+                               public void accept(ResultEntity<CalendarAbstract> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       debts.clear();
-                                       calendarDebtTag.clear();
-
-                                       DebtCalendar debtCalendar = result.getData();
-                                       if (debtCalendar != null) {
-                                           view.showDebtAbstractInfo(debtCalendar.getPayableAmount(), debtCalendar.getReturnedAmount(), debtCalendar.getStayReturnedAmount());
-
-                                           if (debtCalendar.getDetail() != null && debtCalendar.getDetail().size() > 0) {
-                                               debts.addAll(result.getData().getDetail());
-                                           }
-                                           Map<String, Integer> unpaid = result.getData().getUnReturnHash();
-                                           if (unpaid != null) {
-                                               for (Map.Entry<String, Integer> entry : unpaid.entrySet()) {
-                                                   calendarDebtTag.put(entry.getKey(), entry.getValue() > 0 ? 0 : 1);
-                                               }
+                                       Map<String, Integer> unpaid = result.getData().getUnReturnHash();
+                                       if (unpaid != null && unpaid.size() > 0) {
+                                           for (Map.Entry<String, Integer> entry : unpaid.entrySet()) {
+                                               calendarAbstract.put(entry.getKey(), entry.getValue() > 0 ? 0 : 1);
                                            }
                                        }
-                                       view.showCalendarDebtTag(Collections.unmodifiableMap(calendarDebtTag));
-
-                                       view.showCalendarDebt(Collections.unmodifiableList(debts));
+                                       view.showCalendarAbstract(Collections.unmodifiableMap(calendarAbstract));
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -117,29 +88,34 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
                             }
                         });
         addDisposable(dis);
-        calendarLastRequest = dis;
     }
 
-    @Override
-    public void loadMonthDebt(final Date startDate, final Date endDate) {
-        Disposable dis = api.queryMonthDebt(userHelper.getProfile().getId(), rangeDateFormat.format(startDate), rangeDateFormat.format(endDate))
-                .compose(RxUtil.<ResultEntity<HashMap<String, Float>>>io2main())
-                .subscribe(new Consumer<ResultEntity<HashMap<String, Float>>>() {
-                               @Override
-                               public void accept(ResultEntity<HashMap<String, Float>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       dates.clear();
-                                       Calendar calendar = Calendar.getInstance(Locale.CHINA);
-                                       calendar.setTime(startDate);
-                                       while (calendar.getTime().compareTo(endDate) <= 0) {
-                                           dates.add(rangeDateFormat.format(calendar.getTime()));
-                                           calendar.add(Calendar.MONTH, 1);
-                                       }
-                                       monthDebts = result.getData();
-                                       view.showMonthsDebtAmount(dates, monthDebts);
 
-                                       if (dates.size() > 0) {
-                                           //月份还款数据刷新后，默认选中第一个
+    @Override
+    public void fetchCalendarTrend(Date startDate, Date endDate) {
+        final Date start = startDate;
+        final Date end = endDate;
+        Disposable dis = api.fetchCalendarTrend(userHelper.getProfile().getId(), dateFormat.format(startDate), dateFormat.format(endDate))
+                .compose(RxUtil.<ResultEntity<Map<String, Float>>>io2main())
+                .subscribe(new Consumer<ResultEntity<Map<String, Float>>>() {
+                               @Override
+                               public void accept(ResultEntity<Map<String, Float>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       trendDateList.clear();
+                                       if (result.getData() != null && result.getData().size() > 0) {
+                                           //添加月份显示列表
+                                           Calendar calendar = Calendar.getInstance(Locale.CHINA);
+                                           calendar.setTime(start);
+                                           while (calendar.getTime().compareTo(end) < 0) {
+                                               trendDateList.add(rangeDateFormat.format(calendar.getTime()));
+                                               calendar.add(Calendar.MONTH, 1);
+                                           }
+
+                                           calendarTrend.putAll(result.getData());
+                                       }
+                                       view.showCalendarTrend(Collections.unmodifiableList(trendDateList), Collections.unmodifiableMap(calendarTrend));
+                                       //如果有数据则默认选中第一个
+                                       if (calendarTrend.size() > 0) {
                                            clickMonth(0);
                                        }
                                    } else {
@@ -152,79 +128,50 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
                             public void accept(Throwable throwable) throws Exception {
                                 logError(DebtCalendarPresenter.this, throwable);
                                 view.showErrorMsg(generateErrorMsg(throwable));
-
                             }
                         });
         addDisposable(dis);
     }
 
     @Override
-    public void refreshCurDate() {
-        if (curDate != null) {
-            try {
-                loadCalendarDebt(dateFormat.parse(curDate), false);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+    public void fetchDebtList(Date date, boolean queryMonth) {
+        String beginDate, endDate;
+        if (queryMonth) {
+            Calendar calendar = Calendar.getInstance(Locale.CHINA);
+            calendar.setTime(date);
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            beginDate = dateFormat.format(calendar.getTime());
+            calendar.set(Calendar.DAY_OF_MONTH, 31);
+            endDate = dateFormat.format(calendar.getTime());
+        } else {
+            beginDate = endDate = dateFormat.format(date);
         }
-    }
 
-    @Override
-    public void refreshCurMonth() {
-        if (curMonth != null) {
-            try {
-                loadMonthlyDebt(rangeDateFormat.parse(curMonth));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void clickMonth(int index) {
-        try {
-            curMonth = dates.get(index);
-            loadMonthlyDebt(rangeDateFormat.parse(curMonth));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void clickDebt(int index) {
-        view.navigateDebtDetail(debts.get(index).getRecordId());
-    }
-
-    private void loadMonthlyDebt(Date month) {
-        Calendar calendar = Calendar.getInstance(Locale.CHINA);
-        calendar.setTime(month);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        Date startDate = calendar.getTime();
-        calendar.add(Calendar.MONTH, 1);
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        Date endDate = calendar.getTime();
-
-        Disposable dis = api.queryDebtCalendar(userHelper.getProfile().getId(), dateFormat.format(startDate), dateFormat.format(endDate), 3, false)
-                .compose(RxUtil.<ResultEntity<DebtCalendar>>io2main())
-                .subscribe(new Consumer<ResultEntity<DebtCalendar>>() {
+        Disposable dis = api.fetchCalendarDebt(userHelper.getProfile().getId(), beginDate, endDate)
+                .compose(RxUtil.<ResultEntity<CalendarDebt>>io2main())
+                .subscribe(new Consumer<ResultEntity<CalendarDebt>>() {
                                @Override
-                               public void accept(ResultEntity<DebtCalendar> result) throws Exception {
+                               public void accept(ResultEntity<CalendarDebt> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       debts.clear();
-                                       DebtCalendar debtCalendar = result.getData();
+                                       calendarDebtList.clear();
                                        double debtAmount = 0;
                                        double paidAmount = 0;
                                        double unpaidAmount = 0;
-                                       if (debtCalendar != null && debtCalendar.getDetail() != null &&
-                                               debtCalendar.getDetail().size() > 0) {
-                                           debts.addAll(debtCalendar.getDetail());
+                                       CalendarDebt calendarDebt = result.getData();
+                                       if (calendarDebt != null) {
+                                           //账单统计信息
+                                           debtAmount = calendarDebt.getPayableAmount();
+                                           paidAmount = calendarDebt.getReturnedAmount();
+                                           unpaidAmount = calendarDebt.getStayReturnedAmount();
 
-                                           debtAmount = debtCalendar.getPayableAmount();
-                                           paidAmount = debtCalendar.getReturnedAmount();
-                                           unpaidAmount = debtCalendar.getStayReturnedAmount();
+                                           if (calendarDebt.getDetail() != null && calendarDebt.getDetail().size() > 0) {
+                                               calendarDebtList.addAll(calendarDebt.getDetail());
+                                           }
                                        }
-                                       view.showDebtAbstractInfo(debtAmount, paidAmount, unpaidAmount);
-                                       view.showCalendarDebt(Collections.unmodifiableList(debts));
+                                       //显示账单统计信息
+                                       view.showCalendarDebtSumInfo(debtAmount, paidAmount, unpaidAmount);
+                                       //显示账单记录列表
+                                       view.showCalendarDebtList(Collections.unmodifiableList(calendarDebtList));
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -240,116 +187,18 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
         addDisposable(dis);
     }
 
-    /**
-     * api changed
-     */
-    @Deprecated
-    private void loadDebts(Date date) {
-        String newMonth = rangeDateFormat.format(date);
-        final String newDate = dateFormat.format(date);
-        if (newMonth.equals(curMonth)) {
-            if (calendarDebtAbstract.containsKey(newDate)) {
-                Double[] debtAds = calendarDebtAbstract.get(newDate);
-                view.showDebtAbstractInfo(debtAds[0], debtAds[1], debtAds[2]);
-            } else {
-                view.showDebtAbstractInfo(0, 0, 0);
-            }
-
-            debts.clear();
-            if (calendarDebts.containsKey(newDate)) {
-                debts.addAll(calendarDebts.get(newDate));
-            }
-            view.showCalendarDebt(Collections.unmodifiableList(debts));
-        } else {
-            final Calendar calendar = Calendar.getInstance(Locale.CHINA);
-            calendar.setTime(date);
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-            Date startDate = calendar.getTime();
-            calendar.add(Calendar.MONTH, 1);
-            calendar.add(Calendar.DAY_OF_MONTH, -1);
-            Date endDate = calendar.getTime();
-
-            Disposable dis = api.queryDebtCalendar(userHelper.getProfile().getId(), dateFormat.format(startDate), dateFormat.format(endDate), 3, false)
-                    .compose(RxUtil.<ResultEntity<DebtCalendar>>io2main())
-                    .subscribe(new Consumer<ResultEntity<DebtCalendar>>() {
-                                   @Override
-                                   public void accept(ResultEntity<DebtCalendar> result) throws Exception {
-                                       if (result.isSuccess()) {
-                                           calendarDebtTag.clear();
-                                           calendarDebtAbstract.clear();
-                                           calendarDebts.clear();
-
-                                           DebtCalendar debtCalendar = result.getData();
-                                           if (debtCalendar != null && debtCalendar.getDetail() != null &&
-                                                   debtCalendar.getDetail().size() > 0) {
-
-                                               List<DebtCalendar.DetailBean> list = debtCalendar.getDetail();
-                                               for (DebtCalendar.DetailBean bean : list) {
-                                                   String dateStr = bean.getTermRepayDate();
-                                                   if (calendarDebts.containsKey(dateStr)) {
-                                                       //如果有待还的则优先显示待还
-                                                       calendarDebtTag.put(dateStr, calendarDebtTag.get(dateStr) & (bean.getStatus() - 1));
-
-                                                       Double[] debtAds = calendarDebtAbstract.get(dateStr);
-                                                       debtAds[0] += bean.getTermPayableAmount();
-                                                       if (bean.getStatus() == 2) {
-                                                           debtAds[1] += bean.getTermPayableAmount();
-                                                       } else {
-                                                           debtAds[2] += bean.getTermPayableAmount();
-                                                       }
-
-                                                       List<DebtCalendar.DetailBean> debtList = calendarDebts.get(dateStr);
-                                                       debtList.add(bean);
-                                                   } else {
-                                                       calendarDebtTag.put(dateStr, bean.getStatus() - 1);
-
-                                                       Double[] debtAbs = new Double[3];
-                                                       debtAbs[0] = bean.getTermPayableAmount();
-                                                       if (bean.getStatus() == 2) {
-                                                           debtAbs[1] = bean.getTermPayableAmount();
-                                                           debtAbs[2] = 0.0;
-                                                       } else {
-                                                           debtAbs[1] = 0.0;
-                                                           debtAbs[2] = bean.getTermPayableAmount();
-                                                       }
-                                                       calendarDebtAbstract.put(dateStr, debtAbs);
-
-                                                       List<DebtCalendar.DetailBean> debtList = new ArrayList<>();
-                                                       debtList.add(bean);
-                                                       calendarDebts.put(dateStr, debtList);
-                                                   }
-                                               }
-                                           }
-
-                                           view.showCalendarDebtTag(Collections.unmodifiableMap(calendarDebtTag));
-
-                                           if (calendarDebtAbstract.containsKey(newDate)) {
-                                               Double[] debtAds = calendarDebtAbstract.get(newDate);
-                                               view.showDebtAbstractInfo(debtAds[0], debtAds[1], debtAds[2]);
-                                           } else {
-                                               view.showDebtAbstractInfo(0, 0, 0);
-                                           }
-
-                                           debts.clear();
-                                           if (calendarDebts.containsKey(newDate)) {
-                                               debts.addAll(calendarDebts.get(newDate));
-                                           }
-                                           view.showCalendarDebt(Collections.unmodifiableList(debts));
-                                       } else {
-                                           view.showErrorMsg(result.getMsg());
-                                       }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    logError(DebtCalendarPresenter.this, throwable);
-                                    view.showErrorMsg(generateErrorMsg(throwable));
-                                }
-                            });
-            addDisposable(dis);
+    @Override
+    public void clickMonth(int index) {
+        try {
+            fetchDebtList(rangeDateFormat.parse(trendDateList.get(index)), true);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        curMonth = newMonth;
-        curDate = newDate;
     }
+
+    @Override
+    public void clickDebt(int index) {
+        view.navigateDebtDetail(calendarDebtList.get(index).getRecordId());
+    }
+
 }

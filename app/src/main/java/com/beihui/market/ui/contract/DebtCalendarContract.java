@@ -3,7 +3,7 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
-import com.beihui.market.entity.DebtCalendar;
+import com.beihui.market.entity.CalendarDebt;
 
 import java.util.Date;
 import java.util.List;
@@ -12,30 +12,29 @@ import java.util.Map;
 public interface DebtCalendarContract {
 
     interface Presenter extends BasePresenter {
+
         /**
-         * 加载还款日历
+         * 获取账单记录当月摘要，即那些天有账单
          *
-         * @param date 日期
+         * @param date 查询时间，以月为单位
          */
-        void loadCalendarDebt(Date date, boolean isMonthUnit);
+        void fetchCalendarAbstract(Date date);
 
         /**
-         * 加载还款日历
+         * 获取账单趋势
          *
-         * @param startDate 起始日期
-         * @param endDate   截止日期
+         * @param startDate 查询开始日期
+         * @param endDate   查询结束日期
          */
-        void loadMonthDebt(Date startDate, Date endDate);
+        void fetchCalendarTrend(Date startDate, Date endDate);
 
         /**
-         * 刷新当前选中日期数据
+         * 获取账单列表
+         *
+         * @param date       查询时间
+         * @param queryMonth 是否是以月为单位
          */
-        void refreshCurDate();
-
-        /**
-         * 刷新当前选中月份数据
-         */
-        void refreshCurMonth();
+        void fetchDebtList(Date date, boolean queryMonth);
 
         /**
          * 点击选中月份
@@ -55,28 +54,35 @@ public interface DebtCalendarContract {
     interface View extends BaseView<Presenter> {
 
         /**
-         * 还款日历加载完成
+         * 显示日历模式账单记录月份摘要
          *
-         * @param list 账单列表
+         * @param calendarAbstract 月份摘要
          */
-        void showCalendarDebt(List<DebtCalendar.DetailBean> list);
+        void showCalendarAbstract(Map<String, Integer> calendarAbstract);
 
         /**
-         * 更新摘要信息
+         * 显示日历模式账单记录月份趋势
          *
-         * @param debtAmount   应还总额
+         * @param dateList      月份列表
+         * @param calendarTrend 月份趋势金额列表
+         */
+        void showCalendarTrend(List<String> dateList, Map<String, Float> calendarTrend);
+
+        /**
+         * 显示账单列表统计信息
+         *
+         * @param debtAmount   账单金额
          * @param paidAmount   已还金额
          * @param unpaidAmount 待还金额
          */
-        void showDebtAbstractInfo(double debtAmount, double paidAmount, double unpaidAmount);
+        void showCalendarDebtSumInfo(double debtAmount, double paidAmount, double unpaidAmount);
 
         /**
-         * 更新月份借款数据
+         * 显示账单列表
          *
-         * @param date  查询日期列表
-         * @param debts 借款总额map
+         * @param list 账单列表
          */
-        void showMonthsDebtAmount(List<String> date, Map<String, Float> debts);
+        void showCalendarDebtList(List<CalendarDebt.DetailBean> list);
 
         /**
          * 导航至借款详情
@@ -85,11 +91,5 @@ public interface DebtCalendarContract {
          */
         void navigateDebtDetail(String id);
 
-        /**
-         * 显示每月借款记录，对应UI上小圆点
-         *
-         * @param debtHint 借款记录
-         */
-        void showCalendarDebtTag(Map<String, Integer> debtHint);
     }
 }

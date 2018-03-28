@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.entity.DebtCalendar;
+import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtCalendarComponent;
 import com.beihui.market.injection.module.DebtCalendarModule;
@@ -23,9 +23,12 @@ import com.beihui.market.view.calendar.CalendarView;
 import com.beihui.market.view.calendar.dateview.DateView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -35,6 +38,9 @@ import butterknife.BindView;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class DebtCalCalendarFragment extends BaseComponentFragment implements DebtCalendarContract.View {
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+    private final SimpleDateFormat fDateFormat = new SimpleDateFormat("MM月dd日", Locale.CHINA);
 
     @BindView(R.id.calendar)
     CalendarView calendarView;
@@ -62,24 +68,32 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     private OnCalendarChangedListener listener;
     private DebtCalendarRVAdapter adapter;
 
-    private Date selectedDate;
+    //是否已经选中一个日期
+    private boolean hasDateBeenSelected;
+    //当前数据来源的日期，如果hasDateBeenSelected==true,则对应日，否则对应月
+    private Date calendarDate;
+
 
     public static DebtCalCalendarFragment newInstance(OnCalendarChangedListener listener, Date lastSelectedDate) {
         DebtCalCalendarFragment fragment = new DebtCalCalendarFragment();
         fragment.listener = listener;
-        fragment.selectedDate = lastSelectedDate;
+        fragment.calendarDate = lastSelectedDate;
         return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //刷新账单月份摘要
+        presenter.fetchCalendarAbstract(calendarDate);
+        //刷新列表
+        presenter.fetchDebtList(calendarDate, !hasDateBeenSelected);
     }
 
     @Override
@@ -95,7 +109,9 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
                 if (listener != null) {
                     listener.onDateSelected(date);
                 }
-                presenter.loadCalendarDebt(date, false);
+                hasDateBeenSelected = true;
+                calendarDate = date;
+                presenter.fetchDebtList(date, false);
             }
 
             @Override
@@ -103,7 +119,12 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
                 if (listener != null) {
                     listener.onMonthChanged(date);
                 }
-                presenter.loadCalendarDebt(date, true);
+                //月份变化，加载月份摘要
+                presenter.fetchCalendarAbstract(date);
+                if (!hasDateBeenSelected) {
+                    //如果已经选中过日期，则不在加载整月数据
+                    presenter.fetchDebtList(date, true);
+                }
             }
         });
 
@@ -119,24 +140,24 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
         recyclerView.addItemDecoration(new CalendarDebtItemDeco() {
             @Override
             public String getHeader(int position) {
-                return adapter.getItem(position).getTermRepayDate();
+                return generateDateString(adapter.getItem(position).getRepayDate());
             }
         });
         recyclerView.addItemDecoration(new CalendarDebtStickyHeaderItemDeco(getContext()) {
             @Override
             public String getHeaderName(int pos) {
-                return adapter.getItem(pos).getTermRepayDate();
+                return generateDateString(adapter.getItem(pos).getRepayDate());
             }
         });
     }
 
     @Override
     public void initDatas() {
-        if (selectedDate != null) {
+        if (calendarDate != null) {
             calendarView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    calendarView.attachSelectedDate(selectedDate);
+                    calendarView.attachSelectedDate(calendarDate);
                 }
             }, 50);
         }
@@ -157,7 +178,28 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     }
 
     @Override
-    public void showCalendarDebt(List<DebtCalendar.DetailBean> list) {
+    public void showCalendarAbstract(Map<String, Integer> calendarAbstract) {
+        List<DateView.Tag> tags = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : calendarAbstract.entrySet()) {
+            tags.add(new DateView.Tag(entry.getKey(), entry.getValue()));
+        }
+        calendarView.setTags(tags);
+    }
+
+    @Override
+    public void showCalendarTrend(List<String> dateList, Map<String, Float> calendarTrend) {
+
+    }
+
+    @Override
+    public void showCalendarDebtSumInfo(double debtAmount, double paidAmount, double unpaidAmount) {
+        this.debtAmount.setText(keep2digitsWithoutZero(debtAmount));
+        this.paidAmount.setText(keep2digitsWithoutZero(paidAmount));
+        this.unpaidAmount.setText(keep2digitsWithoutZero(unpaidAmount));
+    }
+
+    @Override
+    public void showCalendarDebtList(List<CalendarDebt.DetailBean> list) {
         if (isAdded()) {
             adapter.notifyDebtChanged(list);
 
@@ -172,37 +214,19 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     }
 
     @Override
-    public void showDebtAbstractInfo(double debtAmount, double paidAmount, double unpaidAmount) {
-        this.debtAmount.setText(keep2digitsWithoutZero(debtAmount));
-        this.paidAmount.setText(keep2digitsWithoutZero(paidAmount));
-        this.unpaidAmount.setText(keep2digitsWithoutZero(unpaidAmount));
-    }
-
-    @Override
-    public void showMonthsDebtAmount(List<String> date, Map<String, Float> debts) {
-        //no implements here
-    }
-
-    @Override
     public void navigateDebtDetail(String id) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
         startActivityForResult(intent, 1);
     }
 
-    @Override
-    public void showCalendarDebtTag(Map<String, Integer> debtHint) {
-        List<DateView.Tag> tags = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : debtHint.entrySet()) {
-            tags.add(new DateView.Tag(entry.getKey(), entry.getValue()));
+
+    private String generateDateString(String date) {
+        try {
+            return fDateFormat.format(dateFormat.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        calendarView.setTags(tags);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        presenter.refreshCurDate();
+        return date;
     }
 }

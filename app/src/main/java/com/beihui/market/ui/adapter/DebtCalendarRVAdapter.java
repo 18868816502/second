@@ -5,14 +5,12 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.TextAppearanceSpan;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.DebtCalendar;
-import com.beihui.market.util.CommonUtils;
+import com.beihui.market.entity.CalendarDebt;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -20,18 +18,21 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebtCalendarRVAdapter extends BaseQuickAdapter<DebtCalendar.DetailBean, BaseViewHolder> {
+import static android.text.TextUtils.isEmpty;
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
-    private List<DebtCalendar.DetailBean> dataSet = new ArrayList<>();
+public class DebtCalendarRVAdapter extends BaseQuickAdapter<CalendarDebt.DetailBean, BaseViewHolder> {
+
+    private List<CalendarDebt.DetailBean> dataSet = new ArrayList<>();
 
     public DebtCalendarRVAdapter() {
-        super(R.layout.list_item_debt_calendar);
+        super(R.layout.rv_item_calendar_debt);
     }
 
 
     @Override
-    protected void convert(BaseViewHolder helper, DebtCalendar.DetailBean item) {
-        if (!TextUtils.isEmpty(item.getLogo())) {
+    protected void convert(BaseViewHolder helper, CalendarDebt.DetailBean item) {
+        if (!isEmpty(item.getLogo())) {
             Glide.with(helper.itemView.getContext())
                     .load(item.getLogo())
                     .asBitmap()
@@ -40,44 +41,27 @@ public class DebtCalendarRVAdapter extends BaseQuickAdapter<DebtCalendar.DetailB
         } else {
             helper.<ImageView>getView(R.id.debt_image).setImageResource(R.drawable.image_place_holder);
         }
+        //账单名称
+        helper.setText(R.id.debt_name, isEmpty(item.getTopic()) ? "" : item.getTopic());
+        //信用卡卡号，网贷账单没有该字段
+        helper.setText(R.id.card_num, isEmpty(item.getBillName()) ? "" : item.getBillName());
 
-        helper.setText(R.id.channel_name, item.getChannelName());
-        if (!TextUtils.isEmpty(item.getProjectName())) {
-            helper.setVisible(R.id.project_name_container, true);
-            helper.setText(R.id.project_name, item.getProjectName());
-        } else {
-            helper.setVisible(R.id.project_name_container, false);
-        }
-        String lifeStr;
-        if (item.getRepayType() == 1) {
-            //一次性还本付息只有一期
-            lifeStr = "1/1期";
-        } else {
-            lifeStr = item.getTermNo() + "/" + item.getTerm() + "期";
-        }
-        SpannableString ss = new SpannableString(lifeStr);
-        ss.setSpan(new AbsoluteSizeSpan(20, true), 0, lifeStr.indexOf("/"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        helper.setText(R.id.debt_life, ss);
-
-        String amountStr = CommonUtils.keep2digitsWithoutZero(item.getTermPayableAmount()) + "元";
-        ss = new SpannableString(amountStr);
+        //当期应还金额
+        String amountStr = keep2digitsWithoutZero(item.getAmount()) + "元";
+        SpannableString ss = new SpannableString(amountStr);
         if (amountStr.contains(".")) {
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, amountStr.indexOf("."), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         } else {
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, amountStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         helper.setText(R.id.debt_amount, ss);
-
-        if (item.getStatus() == 2) {
-            //已还
-            helper.setVisible(R.id.debt_deadline_container, false);
+        //还款状态
+        helper.setVisible(R.id.debt_deadline_container, false);
+        helper.setVisible(R.id.paid, false);
+        if (item.getStatus() == 2) {//已还清
             helper.setVisible(R.id.paid, true);
-            helper.setVisible(R.id.status_badge, false);
-        } else {
-            //待还
+        } else { //待还或者逾期
             helper.setVisible(R.id.debt_deadline_container, true);
-            helper.setVisible(R.id.paid, false);
-
             helper.setVisible(R.id.status_badge, item.getReturnDay() < 0);
             String dayStr = item.getReturnDay() + "天";
             ss = new SpannableString(dayStr);
@@ -88,9 +72,11 @@ public class DebtCalendarRVAdapter extends BaseQuickAdapter<DebtCalendar.DetailB
             }
             helper.setText(R.id.debt_deadline, ss);
         }
+        //已逾期
+        helper.setVisible(R.id.status_badge, item.getStatus() == 3);
     }
 
-    public void notifyDebtChanged(List<DebtCalendar.DetailBean> list) {
+    public void notifyDebtChanged(List<CalendarDebt.DetailBean> list) {
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);

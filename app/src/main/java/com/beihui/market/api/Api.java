@@ -13,12 +13,13 @@ import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
+import com.beihui.market.entity.CalendarAbstract;
+import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.entity.DebtAbstract;
-import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
@@ -56,7 +57,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -814,26 +814,36 @@ public class Api {
     }
 
     /**
-     * 查询还款日历,  还款状态 1-贷款 2-已还, 默认两者都查询
+     * 查询日历模式账单记录月份摘要
      *
-     * @param userId   用户id
-     * @param beginDay 查询开始日期
-     * @param endDay   查询结束日期
-     * @param status   状态 1-待还 2-已还 3-全部
+     * @param userId    用户id
+     * @param beginDate 查询开始日期
+     * @param endDate   查询结束日期
      */
-    public Observable<ResultEntity<DebtCalendar>> queryDebtCalendar(String userId, String beginDay, String endDay, int status, boolean monthHash) {
-        return service.queryDebtCalendar(userId, beginDay, endDay, status, monthHash);
+    public Observable<ResultEntity<CalendarAbstract>> fetchCalendarAbstract(String userId, String beginDate, String endDate) {
+        return service.fetchCalendarAbstract(userId, beginDate, endDate);
     }
 
     /**
-     * 查询月里还款金额
+     * 查询日历模式账单记录月份趋势
      *
-     * @param userId     用户id
-     * @param beginMonth 查询开始日期
-     * @param endMonth   查询截止日期
+     * @param userId    用户id
+     * @param beginDate 查询开始日期
+     * @param endDate   查询结束日期
      */
-    public Observable<ResultEntity<HashMap<String, Float>>> queryMonthDebt(String userId, String beginMonth, String endMonth) {
-        return service.queryMonthDebt(userId, beginMonth, endMonth);
+    public Observable<ResultEntity<Map<String, Float>>> fetchCalendarTrend(String userId, String beginDate, String endDate) {
+        return service.fetchCalendarTrend(userId, beginDate, endDate);
+    }
+
+    /**
+     * 查询日历模式账单记录
+     *
+     * @param userId    用户id
+     * @param beginDate 查询开始日期
+     * @param endDate   查询结束日期
+     */
+    public Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(String userId, String beginDate, String endDate) {
+        return service.fetchCalendarDebt(userId, beginDate, endDate);
     }
 
     /**

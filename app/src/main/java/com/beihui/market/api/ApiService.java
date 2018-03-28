@@ -6,12 +6,13 @@ import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
+import com.beihui.market.entity.CalendarAbstract;
+import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.entity.DebtAbstract;
-import com.beihui.market.entity.DebtCalendar;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
@@ -44,7 +45,6 @@ import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -526,15 +526,25 @@ public interface ApiService {
     Observable<ResultEntity> updateDebtVisibility(@Field("userId") String userId, @Field("recordId") String recordId, @Field("type") int type, @Field("hide") int hide);
 
     /**
-     * 查询还款日历
+     * 查询日历模式账单记录月份摘要
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/repayList")
-    Observable<ResultEntity<DebtCalendar>> queryDebtCalendar(@Field("userId") String userId, @Field("beginDay") String beginDay, @Field("endDay") String endDay, @Field("status") int status, @Field("monthHash") Boolean monthHash);
+    @POST(BASE_PATH + "/accounting/calendar/tagging")
+    Observable<ResultEntity<CalendarAbstract>> fetchCalendarAbstract(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
+    /**
+     * 查询日历模式账单记录月份趋势
+     */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/mouthList")
-    Observable<ResultEntity<HashMap<String, Float>>> queryMonthDebt(@Field("userId") String userId, @Field("beginMonth") String beginMonth, @Field("endMonth") String endMonth);
+    @POST(BASE_PATH + "/accounting/calendar/trend")
+    Observable<ResultEntity<Map<String, Float>>> fetchCalendarTrend(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
+
+    /**
+     * 查询日历模式账单记录
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/repayment/billList")
+    Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
     /**
      * 更新还款状态
