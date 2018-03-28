@@ -143,8 +143,8 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
     }
 
     @Override
-    public void showSaveCreditCardDebtSuccess() {
-        ToastUtils.showShort(this, "提交成功", null);
+    public void showSaveCreditCardDebtSuccess(String msg) {
+        ToastUtils.showShort(this, msg, R.mipmap.white_success);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -167,14 +167,15 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
         creditCardBank = new CreditCardBank();
         creditCardBank.setId(debtDetail.getBankId());
         creditCardBank.setBankName(debtDetail.getBankName());
+        tvBank.setTextColor(getResources().getColor(R.color.black_1));
         tvBank.setText(debtDetail.getBankName());
         //账单日
         tvDebtDay.setTextColor(getResources().getColor(R.color.black_1));
-        tvDebtDay.setText(debtDetail.getBillDay() + "");
+        tvDebtDay.setText(debtDetail.getBillDay() + "日");
         tvDebtDay.setTag(debtDetail.getBillDay());
         //还款日
         tvDebtPayDay.setTextColor(getResources().getColor(R.color.black_1));
-        tvDebtPayDay.setText(debtDetail.getDueDay() + "");
+        tvDebtPayDay.setText(debtDetail.getDueDay() + "日");
         tvDebtPayDay.setTag(debtDetail.getDueDay());
         //金额
         String amount = CommonUtils.keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance());

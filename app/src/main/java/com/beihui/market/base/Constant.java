@@ -31,5 +31,5 @@ public class Constant {
     /**
      * 积分任务-记账
      */
-    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT = "记账";
+    public static final String REWARD_POINTS_TASK_NAME_ADD_DEBT = "账单导入";
 }

@@ -31,8 +31,10 @@ public interface CreditCardDebtNewContract {
     interface View extends BaseView<Presenter> {
         /**
          * 新账单添加成功
+         *
+         * @param msg 提示信息
          */
-        void showSaveCreditCardDebtSuccess();
+        void showSaveCreditCardDebtSuccess(String msg);
 
         /**
          * 填充旧版本账单信息

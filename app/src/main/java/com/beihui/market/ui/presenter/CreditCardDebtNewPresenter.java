@@ -7,23 +7,41 @@ import android.text.TextUtils;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.base.Constant;
 import com.beihui.market.entity.CreditCardDebtDetail;
+import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.CreditCardDebtNewContract;
+import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 public class CreditCardDebtNewPresenter extends BaseRxPresenter implements CreditCardDebtNewContract.Presenter {
 
     private Api api;
     private CreditCardDebtNewContract.View view;
     private UserHelper userHelper;
-
+    /**
+     * 如果该字段不为空，则当前处于编辑模式
+     */
     private CreditCardDebtDetail debtDetail;
+
+    /**
+     * 添加账单的流程是否已经成功
+     */
+    private boolean hasDebtBeenAdded;
 
     @Inject
     CreditCardDebtNewPresenter(Context context, Api api, CreditCardDebtNewContract.View view) {
@@ -41,7 +59,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
     }
 
     @Override
-    public void saveCreditCardDebt(String cardNums, String bankId, final String realName, int billDay, int dueDay, String amount) {
+    public void saveCreditCardDebt(final String cardNums, String bankId, final String realName, final int billDay, final int dueDay, String amount) {
         if (TextUtils.isEmpty(cardNums)) {
             view.showErrorMsg("请输入信用卡后4位");
             return;
@@ -66,6 +84,8 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
             view.showErrorMsg("请输入账单金额");
             return;
         }
+
+
         double debtAmount = 0;
         long creditCardBankId = 0;
         try {
@@ -74,23 +94,141 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Disposable dis = api.saveCreditCardDebt(userHelper.getProfile().getId(), cardNums, creditCardBankId, realName, billDay, dueDay, debtAmount)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
+
+        final double paramAmount = debtAmount;
+        final long paramBankId = creditCardBankId;
+
+        Disposable dis = Observable.just(debtDetail != null ? debtDetail : new CreditCardDebtDetail())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<CreditCardDebtDetail, ObservableSource<ResultEntity>>() {
+                    @Override
+                    public ObservableSource<ResultEntity> apply(CreditCardDebtDetail debtDetail) throws Exception {
+                        //如果处于编辑模式，则先删除原有账单
+                        if (debtDetail.getId() != null) {
+                            return api.deleteCreditCardDebt(userHelper.getProfile().getId(), debtDetail.getId());
+                        }
+                        //如果不需要删除原有账单，则发送一个成功的假请求
+                        ResultEntity result = new ResultEntity();
+                        result.setCode(1000000);
+                        return Observable.just(result);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<ResultEntity, ObservableSource<Boolean>>() {
+                    @Override
+                    public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
+                        //如果处于编辑模式，且删除原有账单不成功，则结束流程
+                        if (!result.isSuccess()) {
+                            view.showErrorMsg(result.getMsg());
+                        }
+                        return Observable.just(result.isSuccess());
+                    }
+                })
+                .filter(new Predicate<Boolean>() {
+                    @Override
+                    public boolean test(Boolean aBoolean) throws Exception {
+                        //不处于编辑模式或者删除成功则开始添加账单,否者流程结束
+                        return aBoolean;
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<Boolean, ObservableSource<ResultEntity>>() {
+                    @Override
+                    public ObservableSource<ResultEntity> apply(Boolean aBoolean) throws Exception {
+                        //删除成功，或者无需删除原有账单
+                        return api.saveCreditCardDebt(userHelper.getProfile().getId(), cardNums, paramBankId, realName, billDay, dueDay, paramAmount);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<ResultEntity, ObservableSource<Boolean>>() {
+                    @Override
+                    public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
+                        //保存账单不成功
+                        if (!result.isSuccess()) {
+                            view.showErrorMsg(result.getMsg());
+                        }
+                        //添加账单流程是否已成功走完
+                        hasDebtBeenAdded = result.isSuccess();
+                        return Observable.just(result.isSuccess());
+                    }
+                })
+                .filter(new Predicate<Boolean>() {
+                    @Override
+                    public boolean test(Boolean aBoolean) throws Exception {
+                        //如果保存账单成功，则查询积分任务，否者结束流程
+                        return aBoolean;
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<Boolean, ObservableSource<ResultEntity<List<RewardPoint>>>>() {
+                    @Override
+                    public ObservableSource<ResultEntity<List<RewardPoint>>> apply(Boolean aBoolean) throws Exception {
+                        //如果保存成功，则查询积分任务状态
+                        return api.queryRewardPoints(userHelper.getProfile().getId(), Constant.REWARD_POINTS_TASK_NAME_ADD_DEBT);
+                    }
+                })
+                .compose(RxUtil.<ResultEntity<List<RewardPoint>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<RewardPoint>>>() {
                                @Override
-                               public void accept(ResultEntity result) throws Exception {
+                               public void accept(ResultEntity<List<RewardPoint>> result) throws Exception {
+                                   //还款计划保存成功
+                                   String msg = "记账成功";
                                    if (result.isSuccess()) {
-                                       view.showSaveCreditCardDebtSuccess();
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
+                                       //检查积分任务数据
+                                       List<RewardPoint> list = result.getData();
+                                       int points = 0;
+                                       if (list != null && list.size() > 0) {
+                                           for (RewardPoint point : list) {
+                                               //需要弹框
+                                               if (point.getFlag() == 1) {
+                                                   points += point.getInteg();
+                                                   if (Constant.REWARD_POINTS_TASK_NAME_ADD_DEBT_FIRST.equals(point.getTaskName())) {
+                                                       msg = "首次记账";
+                                                   }
+                                                   //设置已读状态
+                                                   sendPoint(point.getRecordId());
+                                               }
+                                           }
+                                       }
+                                       if (points > 0) {
+                                           msg += " 积分+" + points;
+                                       }
                                    }
+                                   view.dismissProgress();
+
+                                   view.showSaveCreditCardDebtSuccess(msg);
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
+                                view.dismissProgress();
                                 logError(CreditCardDebtNewPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
+                                //如果添加账单的流程已经走完，则表示账单已添加，做成功提示
+                                if (hasDebtBeenAdded) {
+                                    view.showSaveCreditCardDebtSuccess("记账成功");
+                                } else {
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    private void sendPoint(String id) {
+        Disposable dis = api.sendReadPointRead(id)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity resultEntity) throws Exception {
+
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                LogUtils.e(throwable);
+
                             }
                         });
         addDisposable(dis);
