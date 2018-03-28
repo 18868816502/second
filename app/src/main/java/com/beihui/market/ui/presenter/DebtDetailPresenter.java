@@ -9,6 +9,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.DebtDetailContract;
+import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.util.RxUtil;
 
 import javax.inject.Inject;
@@ -82,6 +83,38 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
                 updateStatus(bean.getId(), status);
             }
         }
+    }
+
+    @Override
+    public void clickMenu() {
+        boolean editable = debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_ONE_TIME || debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_EVEN_DEBT;
+        view.showMenu(editable, debtDetail.getRedmineDay() != -1);
+    }
+
+    @Override
+    public void clickUpdateRemind() {
+        final int remind = debtDetail.getRedmineDay() == -1 ? 1 : -1;
+        Disposable dis = api.updateRemindStatus(userHelper.getProfile().getId(), debtDetail.getId(), null, remind)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       debtDetail.setRedmineDay(remind);
+                                       view.showUpdateRemind(debtDetail.getRedmineDay() != -1);
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(DebtDetailPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override

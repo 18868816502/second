@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.fragment.DebtNewEvenFragment;
 import com.beihui.market.ui.fragment.DebtNewOneTimeFragment;
 import com.beihui.market.util.AndroidBug5497Fix;
@@ -38,6 +40,10 @@ public class DebtNewActivity extends BaseComponentActivity {
     ViewPager viewPager;
 
     private DebtChannel debtChannel;
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    private DebtDetail debtDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +60,19 @@ public class DebtNewActivity extends BaseComponentActivity {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
-        debtChannel = getIntent().getParcelableExtra("debt_channel");
-
         viewPager.setAdapter(new DebtNewPagerAdapter(getSupportFragmentManager()));
         copyTabLayout.setupWithViewPager(viewPager);
-        channelName.setText(debtChannel.getChannelName());
+        debtChannel = getIntent().getParcelableExtra("debt_channel");
+        if (debtChannel != null) {
+            channelName.setText(debtChannel.getChannelName());
+        } else {
+            debtDetail = getIntent().getParcelableExtra("debt_detail");
+            channelName.setText(debtDetail.getChannelName());
+
+            debtChannel = new DebtChannel();
+            debtChannel.setChannelName(debtDetail.getChannelName());
+            debtChannel.setId(debtDetail.getChannelId());
+        }
 
         SlidePanelHelper.attach(this);
         AndroidBug5497Fix.assistActivity(this);
@@ -87,9 +101,17 @@ public class DebtNewActivity extends BaseComponentActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return DebtNewOneTimeFragment.newInstance(debtChannel);
+                DebtDetail pending = null;
+                if (debtDetail != null && debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_ONE_TIME) {
+                    pending = debtDetail;
+                }
+                return DebtNewOneTimeFragment.newInstance(debtChannel, pending);
             } else {
-                return DebtNewEvenFragment.newInstance(debtChannel);
+                DebtDetail pending = null;
+                if (debtDetail != null && debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_EVEN_DEBT) {
+                    pending = debtDetail;
+                }
+                return DebtNewEvenFragment.newInstance(debtChannel, pending);
             }
         }
 

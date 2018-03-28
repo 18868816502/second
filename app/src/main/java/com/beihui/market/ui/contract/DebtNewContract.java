@@ -3,6 +3,7 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
+import com.beihui.market.entity.DebtDetail;
 
 import java.util.Date;
 
@@ -17,6 +18,13 @@ public interface DebtNewContract {
          * 分期还款，等额本息
          */
         int METHOD_EVEN_DEBT = 2;
+
+        /**
+         * 编辑模式，设置原有账单信息
+         *
+         * @param debtDetail 原有账单信息
+         */
+        void attachDebtDetail(DebtDetail debtDetail);
 
         /**
          * 保存一次性还款账单
@@ -42,6 +50,17 @@ public interface DebtNewContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void saveDebtSuccess();
+        /**
+         * 绑定原有账单信息
+         *
+         * @param debtDetail 原有账单信息
+         */
+        void bindDebtDetail(DebtDetail debtDetail);
+
+        /**
+         * 添加账单成功
+         */
+        void saveDebtSuccess(String msg);
+
     }
 }

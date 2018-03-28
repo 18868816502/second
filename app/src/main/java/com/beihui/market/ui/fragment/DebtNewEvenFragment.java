@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtNewComponent;
 import com.beihui.market.injection.module.DebtNewModule;
@@ -26,6 +27,7 @@ import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +39,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNewContract.View {
 
@@ -61,10 +65,15 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
     DebtNewPresenter presenter;
 
     private DebtChannel debtChannel;
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    private DebtDetail debtDetail;
 
-    public static DebtNewEvenFragment newInstance(DebtChannel debtChannel) {
+    public static DebtNewEvenFragment newInstance(DebtChannel debtChannel, DebtDetail debtDetail) {
         DebtNewEvenFragment fragment = new DebtNewEvenFragment();
         fragment.debtChannel = debtChannel;
+        fragment.debtDetail = debtDetail;
         return fragment;
     }
 
@@ -98,7 +107,9 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
 
     @Override
     public void initDatas() {
-
+        if (debtDetail != null) {
+            presenter.attachDebtDetail(debtDetail);
+        }
     }
 
     @Override
@@ -181,8 +192,44 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
     }
 
     @Override
-    public void saveDebtSuccess() {
-        ToastUtils.showShort(getContext(), "提交成功", null);
+    public void bindDebtDetail(DebtDetail debtDetail) {
+        //首次还款日
+        try {
+            tvDebtPayDay.setTag(dateFormat.parse(debtDetail.getFirstRepayDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        tvDebtPayDay.setText(debtDetail.getFirstRepayDate());
+        //借款期限
+        int monthLimit = debtDetail.getTerm();
+        tvDebtTimeLimit.setText(monthLimit + "个月");
+        tvDebtTimeLimit.setTag(monthLimit);
+        //借款金额
+        String amount = keep2digitsWithoutZero(debtDetail.getPayableAmount());
+        if (amount.contains(",")) {
+            amount = amount.replace(",", "");
+        }
+        etDebtTermAmount.setText(amount);
+        //备注
+        etRemark.setText(TextUtils.isEmpty(debtDetail.getRemark()) ? "" : debtDetail.getRemark());
+        //高级模板
+        if (debtDetail.getCapital() > 0) {
+            //展开高级模板
+            tvDebtInfoExpandCollapse.setSelected(true);
+            tvDebtInfoExpandCollapse.setText(tvDebtInfoExpandCollapse.isSelected() ? "隐藏更多信息" : "添加更多信息");
+            flDebtExtraInfoBlock.setVisibility(tvDebtInfoExpandCollapse.isSelected() ? View.VISIBLE : View.GONE);
+            //借款本金
+            String capital = keep2digitsWithoutZero(debtDetail.getCapital());
+            if (capital.contains(",")) {
+                capital = capital.replace(",", "");
+            }
+            etDebtCapitalAmount.setText(capital);
+        }
+    }
+
+    @Override
+    public void saveDebtSuccess(String msg) {
+        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         tvDebtInfoExpandCollapse.postDelayed(new Runnable() {
             @Override
             public void run() {

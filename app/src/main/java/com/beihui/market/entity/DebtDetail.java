@@ -29,6 +29,9 @@ public class DebtDetail implements Parcelable {
     private String logo;
     private int status;
     private int termStatus;
+    private int redmineDay;
+    private String firstRepayDate;
+
     private List<RepayPlanBean> repayPlan;
 
     public String getId() {
@@ -199,6 +202,22 @@ public class DebtDetail implements Parcelable {
         this.termStatus = termStatus;
     }
 
+    public int getRedmineDay() {
+        return redmineDay;
+    }
+
+    public void setRedmineDay(int redmineDay) {
+        this.redmineDay = redmineDay;
+    }
+
+    public String getFirstRepayDate() {
+        return firstRepayDate;
+    }
+
+    public void setFirstRepayDate(String firstRepayDate) {
+        this.firstRepayDate = firstRepayDate;
+    }
+
     public List<RepayPlanBean> getRepayPlan() {
         return repayPlan;
     }
@@ -206,7 +225,6 @@ public class DebtDetail implements Parcelable {
     public void setRepayPlan(List<RepayPlanBean> repayPlan) {
         this.repayPlan = repayPlan;
     }
-
 
     public static class RepayPlanBean implements Parcelable {
         private String id;
@@ -324,6 +342,9 @@ public class DebtDetail implements Parcelable {
         dest.writeString(this.remark);
         dest.writeString(this.logo);
         dest.writeInt(this.status);
+        dest.writeInt(this.termStatus);
+        dest.writeInt(this.redmineDay);
+        dest.writeString(this.firstRepayDate);
         dest.writeTypedList(this.repayPlan);
     }
 
@@ -348,6 +369,9 @@ public class DebtDetail implements Parcelable {
         this.remark = in.readString();
         this.logo = in.readString();
         this.status = in.readInt();
+        this.termStatus = in.readInt();
+        this.redmineDay = in.readInt();
+        this.firstRepayDate = in.readString();
         this.repayPlan = in.createTypedArrayList(RepayPlanBean.CREATOR);
     }
 

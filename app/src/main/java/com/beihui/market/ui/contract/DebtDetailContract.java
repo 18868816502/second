@@ -35,6 +35,16 @@ public interface DebtDetailContract {
         void updateDebtStatus(int index, int status);
 
         /**
+         * 点击菜单
+         */
+        void clickMenu();
+
+        /**
+         * 点击还款提醒
+         */
+        void clickUpdateRemind();
+
+        /**
          * 删除借款信息
          */
         void deleteDebt();
@@ -69,6 +79,21 @@ public interface DebtDetailContract {
          * @param msg 相关消息
          */
         void showUpdateStatusSuccess(String msg);
+
+        /**
+         * 显示菜单
+         *
+         * @param editable 是否可编辑
+         * @param remind   是否是提醒状态
+         */
+        void showMenu(boolean editable, boolean remind);
+
+        /**
+         * 显示更新还款提醒
+         *
+         * @param remind 是否提醒
+         */
+        void showUpdateRemind(boolean remind);
 
         /**
          * 删除账单信息成功

@@ -17,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -31,6 +31,7 @@ import com.beihui.market.injection.component.DaggerDebtDetailComponent;
 import com.beihui.market.injection.module.DebtDetailModule;
 import com.beihui.market.ui.adapter.DebtDetailRVAdapter;
 import com.beihui.market.ui.contract.DebtDetailContract;
+import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -120,6 +121,8 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     private String debtId;
 
+    private CreditCardDebtDetailDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,52 +139,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final PopupWindow popupWindow = new PopupWindow();
-
-        View view = LayoutInflater.from(this).inflate(R.layout.popup_window_debt_detail, null);
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                if (v.getId() == R.id.edit) {
-                    presenter.editDebt();
-                } else {
-                    final Dialog dialog = new Dialog(LoanDebtDetailActivity.this, 0);
-                    View dialogView = LayoutInflater.from(LoanDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
-                    View.OnClickListener clickListener = new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                            if (v.getId() == R.id.confirm) {
-                                presenter.deleteDebt();
-                            }
-                        }
-                    };
-                    dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
-                    dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-                    ((TextView) dialogView.findViewById(R.id.title)).setText("确认删除？");
-                    dialog.setContentView(dialogView);
-                    dialog.setCanceledOnTouchOutside(true);
-                    Window window = dialog.getWindow();
-                    if (window != null) {
-                        WindowManager.LayoutParams lp = window.getAttributes();
-                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                        window.setAttributes(lp);
-                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    }
-                    dialog.show();
-                }
-            }
-        };
-        view.findViewById(R.id.edit).setOnClickListener(clickListener);
-        view.findViewById(R.id.delete).setOnClickListener(clickListener);
-
-        popupWindow.setContentView(view);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(true);
-
-        popupWindow.showAsDropDown(fun, -90, 10);
-        popupWindow.update((int) (getResources().getDisplayMetrics().density * 125), (int) (getResources().getDisplayMetrics().density * 80.5));
+        presenter.clickMenu();
         return true;
     }
 
@@ -357,6 +315,39 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     }
 
     @Override
+    public void showMenu(boolean editable, boolean remind) {
+        dialog = new CreditCardDebtDetailDialog();
+        dialog.attachEditable(editable)
+                .attachListeners(new View.OnClickListener() {
+                                     @Override
+                                     public void onClick(View v) {
+                                         dialog.dismiss();
+                                         if (v.getId() == R.id.edit) {
+                                             presenter.editDebt();
+                                         } else if (v.getId() == R.id.delete) {
+                                             presenter.deleteDebt();
+                                         }
+                                     }
+                                 },
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                //更新还款提醒
+                                presenter.clickUpdateRemind();
+                            }
+                        })
+                .attachInitStatus(remind).show(getSupportFragmentManager(), "Operation");
+
+    }
+
+    @Override
+    public void showUpdateRemind(boolean remind) {
+        if (dialog != null) {
+            dialog.updateRemind(remind);
+        }
+    }
+
+    @Override
     public void showDeleteDebtSuccess(String msg) {
         Intent intent = new Intent();
         intent.putExtra("deleteDebtId", debtId);
@@ -366,8 +357,9 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     @Override
     public void navigateAddDebt(DebtDetail debtDetail) {
-        Intent intent = new Intent(this, AddDebtActivity.class);
-        intent.putExtra("pending_debt", debtDetail);
+        //一次性还款付息，等额本息跳转到新版本界面
+        Intent intent = new Intent(this, DebtNewActivity.class);
+        intent.putExtra("debt_detail", debtDetail);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 }

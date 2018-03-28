@@ -100,7 +100,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="18dp"
                     android:layout_marginTop="18dp"
-                    android:drawableRight="@drawable/home_forward"
                     android:text="每月还款金额"
                     android:textColor="@color/black_1"
                     android:textSize="15sp" />
@@ -164,7 +163,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="18dp"
                         android:layout_marginTop="18dp"
-                        android:drawableRight="@drawable/home_forward"
                         android:text="借款本金"
                         android:textColor="@color/black_1"
                         android:textSize="15sp" />
