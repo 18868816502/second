@@ -74,6 +74,20 @@ public class DebtNewActivity extends BaseComponentActivity {
             debtChannel.setId(debtDetail.getChannelId());
         }
 
+        if (debtDetail != null) {
+            viewPager.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_EVEN_DEBT) {
+                        viewPager.setCurrentItem(1);
+                    } else {
+                        viewPager.setCurrentItem(0);
+                    }
+                }
+            }, 100);
+
+        }
+
         SlidePanelHelper.attach(this);
         AndroidBug5497Fix.assistActivity(this);
     }
