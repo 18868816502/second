@@ -10,6 +10,7 @@ import com.beihui.market.util.CommonUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,11 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         //是否已隐藏
         boolean isHidden = item.getHide() == 0;//隐藏
         helper.setVisible(R.id.is_hidden, isHidden);
-        helper.setText(R.id.debt_visibility, isHidden ? "首页隐藏" : "首页显示");
-        helper.getView(R.id.debt_eye).setSelected(isHidden);
+        helper.setText(R.id.debt_visibility, !isHidden ? "首页隐藏" : "首页显示");
+        helper.getView(R.id.debt_eye).setSelected(!isHidden);
+
+        //已还清的账单不能滑动操作
+        ((SwipeMenuLayout) helper.getView(R.id.swipe_menu_layout)).setSwipeEnable(item.getStatus() != 2);
     }
 
     private void bindLoanDebt(BaseViewHolder helper, LoanBill.Row item) {
@@ -70,11 +74,14 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         //借款金额
         helper.setText(R.id.debt_amount, "待还金额" + CommonUtils.keep2digitsWithoutZero(item.getAmount()) + "元");
         switch (item.getStatus()) {
-            case 1://已还
+            case 1://待还
+                helper.setTextColor(R.id.status, colorUnpaid);
+                helper.setText(R.id.status, "待还款");
+                break;
+            case 2://已还
                 helper.setTextColor(R.id.status, colorPaid);
                 helper.setText(R.id.status, "已还清");
                 break;
-            case 2://待还
             case 3://逾期
                 helper.setTextColor(R.id.status, colorUnpaid);
                 helper.setText(R.id.status, "待还款");

@@ -100,7 +100,8 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
             helper.setText(R.id.debt_term_amount, "----");
             helper.setText(R.id.debt_due_time, "----");
         }
-
+        //只有待还和逾期的账单可以设置已还
+        helper.setGone(R.id.set_status, item.getStatus() == 1 || item.getStatus() == 3);
     }
 
     public void notifyDebtChanged(List<AccountBill> list) {

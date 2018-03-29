@@ -18,6 +18,7 @@ import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 import java.util.Locale;
@@ -58,6 +59,7 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                ((SwipeMenuLayout) adapter.getViewByPosition(position, R.id.swipe_menu_layout)).quickClose();
                 if (view.getId() == R.id.content_container) {
                     presenter.clickLoanBill(position);
                 } else if (view.getId() == R.id.hide_show) {
