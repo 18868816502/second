@@ -35,6 +35,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             tools:text="信用卡中心" />
+
+        <TextView
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="办卡进度"
+            android:textColor="@color/black_1" />
     </android.support.v7.widget.Toolbar>
 
     <View

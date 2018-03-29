@@ -3,7 +3,6 @@ package com.beihui.market.ui.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -74,7 +73,13 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity {
     public void onLeadingInEvent(CrawlerStatusMessage msg) {
         roundProgressBar.setProgress(msg.progress);
         if (msg.progress == 100) {
-            loadingText.setVisibility(View.GONE);
+            Intent intent = new Intent(this, EmailLeadingInResultActivity.class);
+            intent.putExtra("success", msg.msgType.equals("success"));
+            intent.putExtra("email_symbol", getIntent().getStringExtra("email_symbol"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+            finish();
         }
     }
 }

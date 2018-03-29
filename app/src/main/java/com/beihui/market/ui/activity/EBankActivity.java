@@ -1,7 +1,12 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -29,9 +34,29 @@ public class EBankActivity extends BaseComponentActivity {
         return R.layout.activity_ebank;
     }
 
+    private String eBankUrl;
+
+    @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})
     @Override
     public void configViews() {
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (url.contains("status=back")) {
+                    onBackPressed();
+                } else {
+                    super.onPageStarted(view, url, favicon);
+                }
+            }
+        });
+        webView.addJavascriptInterface(this, "android");
+
+
         SlidePanelHelper.attach(this);
     }
 
@@ -43,7 +68,8 @@ public class EBankActivity extends BaseComponentActivity {
                                @Override
                                public void accept(ResultEntity<EBank> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       webView.loadUrl(result.getData().getUrl());
+                                       eBankUrl = result.getData().getUrl();
+                                       webView.loadUrl(eBankUrl);
                                    } else {
                                        ToastUtils.showShort(EBankActivity.this, result.getMsg(), null);
                                    }
@@ -61,5 +87,31 @@ public class EBankActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
+    }
+
+    @JavascriptInterface
+    public void navigateTabAccount() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(EBankActivity.this, MainActivity.class);
+                intent.putExtra("account", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+                finish();
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void reLeadingIn() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webView.clearHistory();
+                webView.loadUrl(eBankUrl);
+            }
+        });
     }
 }

@@ -205,7 +205,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
         tvDebtTimeLimit.setText(monthLimit + "个月");
         tvDebtTimeLimit.setTag(monthLimit);
         //借款金额
-        String amount = keep2digitsWithoutZero(debtDetail.getPayableAmount());
+        String amount = keep2digitsWithoutZero(debtDetail.getTermPayableAmount());
         if (amount.contains(",")) {
             amount = amount.replace(",", "");
         }

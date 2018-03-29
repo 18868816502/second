@@ -70,6 +70,7 @@ public class DebtNewActivity extends BaseComponentActivity {
             channelName.setText(debtDetail.getChannelName());
 
             debtChannel = new DebtChannel();
+            debtChannel.setType("whatever");
             debtChannel.setChannelName(debtDetail.getChannelName());
             debtChannel.setId(debtDetail.getChannelId());
         }

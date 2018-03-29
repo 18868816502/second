@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +41,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.text.TextUtils.isEmpty;
 import static com.beihui.market.util.CommonUtils.convertInterestRate;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
@@ -49,7 +49,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     private static final int REQUEST_CODE_EDIT = 1;
 
-    static final String[] PAY_METHOD = {"一次性还本付息", "等额本息", "等额本金"};
+    static final String[] PAY_METHOD = {"到期一次性还款", "每月等额还款", "等额本金"};
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -224,9 +224,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @SuppressLint("SetTextI18n")
     @Override
     public void showDebtDetail(DebtDetail debtDetail) {
-        String titleName = debtDetail.getChannelName() + (TextUtils.isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
+        //渠道名
+        String titleName = debtDetail.getChannelName() + (isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
         title.setText(titleName);
-        if (!TextUtils.isEmpty(debtDetail.getLogo())) {
+        //渠道logo
+        if (!isEmpty(debtDetail.getLogo())) {
             Glide.with(this)
                     .load(debtDetail.getLogo())
                     .asBitmap()
@@ -236,37 +238,73 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         } else {
             header.logo.setImageResource(R.drawable.image_place_holder);
         }
-
+        //账单状态
         if (debtDetail.getStatus() != 2) {
             header.setStatus.setVisibility(View.VISIBLE);
             header.setStatus.setText(debtDetail.getTermStatus() == 2 ? "设为待还" : "设为已还");
         } else {
             header.setStatus.setVisibility(View.GONE);
         }
-
+        //渠道名
         header.channelName.setText(debtDetail.getChannelName());
-        if (!TextUtils.isEmpty(debtDetail.getProjectName())) {
+        if (!isEmpty(debtDetail.getProjectName())) {
             header.projectNameContainer.setVisibility(View.VISIBLE);
             header.projectName.setText(debtDetail.getProjectName());
         } else {
             header.projectNameContainer.setVisibility(View.GONE);
         }
+        //当期应还金额
         header.debtTermAmount.setText(keep2digitsWithoutZero(debtDetail.getTermPayableAmount()));
+        //还款时间
         header.debtPayDay.setText(debtDetail.getTermRepayDate());
+        //已还金额
         header.debtPaid.setText(keep2digitsWithoutZero(debtDetail.getReturnedAmount()));
+        //未还金额
         header.debtUnpaid.setText(keep2digitsWithoutZero(debtDetail.getStayReturnedAmount()));
-
+        //还款总额
         header.debtAmount.setText(keep2digitsWithoutZero(debtDetail.getPayableAmount()) + "元");
-        header.capital.setText(keep2digitsWithoutZero(debtDetail.getCapital()) + "元");
+        //借款本金
+        //本金不大于0则认为本金没有设置
+        if (debtDetail.getCapital() > 0) {
+            header.capital.setText(keep2digitsWithoutZero(debtDetail.getCapital()) + "元");
+        } else {
+            header.capital.setText("--");
+        }
+        //网贷平台
         header.debtPlatform.setText(debtDetail.getChannelName());
-        header.interestRate.setText(convertInterestRate(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
-        if (!TextUtils.isEmpty(debtDetail.getRemark())) {
+        //借款利率
+        //利率不大于0则认为利率没有设置
+        if (debtDetail.getRate() > 0) {
+            header.interestRate.setText(convertInterestRate(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
+        } else {
+            header.interestRate.setText("--");
+        }
+        //备注
+        if (!isEmpty(debtDetail.getRemark())) {
             header.remark.setText(debtDetail.getRemark());
         }
+        //还款方式
         header.payMethodContent.setText(PAY_METHOD[debtDetail.getRepayType() - 1]);
-        header.interest.setText(keep2digitsWithoutZero(debtDetail.getInterest()) + "元");
-        header.debtLife.setText(debtDetail.getTerm() + (debtDetail.getTermType() == 1 ? "日" : "月"));
-        header.debtStartDate.setText(debtDetail.getStartDate());
+        //借款利息
+        //利息不大于0则认为利息没有设置
+        if (debtDetail.getInterest() > 0) {
+            header.interest.setText(keep2digitsWithoutZero(debtDetail.getInterest()) + "元");
+        } else {
+            header.interest.setText("--");
+        }
+        //借款期限
+        //期限不大于0则认为期限没有设置
+        if (debtDetail.getTerm() > 0) {
+            header.debtLife.setText(debtDetail.getTerm() + (debtDetail.getTermType() == 1 ? "日" : "月"));
+        } else {
+            header.debtLife.setText("--");
+        }
+        //起息日期
+        if (!isEmpty(debtDetail.getStartDate())) {
+            header.debtStartDate.setText(debtDetail.getStartDate());
+        } else {
+            header.debtStartDate.setText("--");
+        }
 
         adapter.notifyPayPlanChanged(debtDetail.getRepayPlan());
     }

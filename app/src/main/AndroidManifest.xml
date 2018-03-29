@@ -228,6 +228,10 @@
             android:name=".ui.activity.EmailLeadingInProgressActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.EmailLeadingInResultActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".helper.updatehelper.DownloadService" />
 
         <receiver

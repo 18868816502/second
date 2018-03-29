@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.NutEmail;
@@ -30,6 +31,7 @@ import app.u51.com.newnutsdk.NutSDK;
 import app.u51.com.newnutsdk.model.MailSupportConfig;
 import app.u51.com.newnutsdk.net.TenantProvider;
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 public class NutEmailActivity extends BaseComponentActivity {
@@ -41,12 +43,16 @@ public class NutEmailActivity extends BaseComponentActivity {
 
     private NutEmailAdapter adapter;
 
+    private String emailSymbol;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //邮箱登录页面授权完成，开启进度页面
         if (requestCode == 1 && data == null) {
-            //开启进度界面
-            startActivity(new Intent(NutEmailActivity.this, EmailLeadingInProgressActivity.class));
+            Intent intent = new Intent(NutEmailActivity.this, EmailLeadingInProgressActivity.class);
+            intent.putExtra("email_symbol", emailSymbol);
+            startActivity(intent);
         }
     }
 
@@ -65,14 +71,18 @@ public class NutEmailActivity extends BaseComponentActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                NutEmail nutEmail = (NutEmail) adapter.getItem(position);
+                emailSymbol = ((NutEmail) adapter.getItem(position)).getSymbol();
                 try {
                     Field field = NutSDK.getDefault().getClass().getDeclaredField("mailSupportConfig");
                     field.setAccessible(true);
                     MailSupportConfig config = (MailSupportConfig) field.get(NutSDK.getDefault());
-                    Intent intent = new Intent(NutEmailActivity.this, EmailLoginActivity.class);
-                    intent.putExtra("extra_mail_config", config.getMailItemConfig(nutEmail.getSymbol()));
-                    startActivityForResult(intent, 1);
+                    if (config != null) {
+                        Intent intent = new Intent(NutEmailActivity.this, EmailLoginActivity.class);
+                        intent.putExtra("extra_mail_config", config.getMailItemConfig(emailSymbol));
+                        startActivityForResult(intent, 1);
+                    }else {
+                        ToastUtils.showShort(NutEmailActivity.this, "正在获取配置", null);
+                    }
 
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
@@ -133,5 +143,14 @@ public class NutEmailActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
+    }
+
+    @OnClick(R.id.question)
+    void onItemClicked() {
+        Intent intent = new Intent(this, ComWebViewActivity.class);
+        intent.putExtra("title", "帮助");
+        intent.putExtra("url", NetConstants.H5_LEADING_IN_HELP);
+        intent.putExtra("style", "light");
+        startActivity(intent);
     }
 }

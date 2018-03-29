@@ -123,9 +123,17 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         }
     }
 
-    @OnClick(R.id.close)
-    void onBindViewClicked() {
-        finish();
+    @OnClick({R.id.close, R.id.progress})
+    void onBindViewClicked(View view) {
+        if (view.getId() == R.id.close) {
+            finish();
+        } else if (view.getId() == R.id.progress) {
+            Intent intent = new Intent(this, ComWebViewActivity.class);
+            intent.putExtra("style", "light");
+            intent.putExtra("url", NetConstants.H5_CREDIT_CARD_PROGRESS);
+            intent.putExtra("title", "办卡进度");
+            startActivity(intent);
+        }
     }
 
     @JavascriptInterface

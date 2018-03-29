@@ -273,7 +273,7 @@
                 android:layout_alignLeft="@id/debt_amount_total_text"
                 android:layout_below="@id/capital_total_text"
                 android:layout_marginTop="30dp"
-                android:text="借款平台" />
+                android:text="网贷平台" />
 
 
             <TextView

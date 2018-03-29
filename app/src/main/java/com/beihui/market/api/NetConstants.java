@@ -47,6 +47,22 @@ public class NetConstants {
     public static final String H5_TAB_ACCOUNT_HINT = H5_DOMAIN + "/chargeImg.html";
 
     public static final String H5_ADD_DEBT_EXPLAIN = H5_DOMAIN + "/explain.html";
+    /**
+     * 账单导入成功
+     */
+    public static final String H5_LEADING_IN_RESULT_SUCCESS = H5_DOMAIN + "/export/success.html";
+    /**
+     * 账单导入失败
+     */
+    public static final String H5_LEADING_IN_RESULT_FAILED = H5_DOMAIN + "/export/fail.html";
+    /**
+     * 账单导入帮助页面
+     */
+    public static final String H5_LEADING_IN_HELP = H5_DOMAIN + "/export/help.html";
+    /**
+     * 办卡进度查询
+     */
+    public static final String H5_CREDIT_CARD_PROGRESS = "http://www.huishuaka.com/5/coop/jinduchaxun.html";
 
     public static String generateNewsUrl(String id, String userId) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
