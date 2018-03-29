@@ -74,7 +74,7 @@
                     android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:focusable="false"
-                    android:src="@drawable/tab_home" />
+                    android:src="@drawable/tab_loan" />
 
                 <TextView
                     android:id="@+id/tab_home_text"
@@ -83,7 +83,7 @@
                     android:layout_below="@+id/tab_home_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
-                    android:text="发现"
+                    android:text="借款"
                     android:textColor="@color/select_blue_grey"
                     android:textSize="12sp" />
 
