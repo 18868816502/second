@@ -150,9 +150,13 @@ public class RewardPointActivity extends BaseComponentActivity {
         }
     }
 
-    @OnClick(R.id.close)
-    void onBindViewClicked() {
-        finish();
+    @OnClick({R.id.close, R.id.explain})
+    void onBindViewClicked(View view) {
+        if (view.getId() == R.id.close) {
+            finish();
+        } else if (view.getId() == R.id.explain) {
+            webView.loadUrl("javascript:explain()");
+        }
     }
 
     @JavascriptInterface
@@ -186,7 +190,7 @@ public class RewardPointActivity extends BaseComponentActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                startActivityForResult(new Intent(RewardPointActivity.this, AddDebtActivity.class), REQUEST_CODE_ADD_DEBT);
+                startActivityForResult(new Intent(RewardPointActivity.this, DebtSourceActivity.class), REQUEST_CODE_ADD_DEBT);
             }
         });
     }
