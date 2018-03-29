@@ -13,7 +13,7 @@ import com.beihui.market.entity.LoanBill;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMyLoanBillComponent;
 import com.beihui.market.injection.module.MyLoanBillModule;
-import com.beihui.market.ui.activity.LoanDetailActivity;
+import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
@@ -107,7 +107,7 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void navigateLoanDebtDetail(LoanBill.Row bill) {
-        Intent intent = new Intent(getContext(), LoanDetailActivity.class);
+        Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", bill.getRecordId());
         startActivity(intent);
     }

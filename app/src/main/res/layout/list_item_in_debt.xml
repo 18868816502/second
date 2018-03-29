@@ -122,6 +122,7 @@
                             tools:text="7天" />
 
                         <TextView
+                            android:id="@+id/debt_due_time_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
@@ -179,7 +180,7 @@
                     android:layout_gravity="center"
                     android:drawableLeft="@drawable/account_push_debt_icon"
                     android:drawablePadding="2dp"
-                    android:text="导入账单"
+                    android:text="更新账单"
                     android:textColor="@color/black_2"
                     android:textSize="11sp" />
             </FrameLayout>

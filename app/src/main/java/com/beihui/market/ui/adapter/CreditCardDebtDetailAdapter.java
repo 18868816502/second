@@ -106,7 +106,12 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 holder.setText(R.id.debt_status, String.format(Locale.CHINA, "距离还款日%d天", bill.getReturnDay()));
                 break;
             case 2://已还
-                holder.setText(R.id.debt_status, "已还清");
+                if (bill.getNewBalance() > 0) {
+                    holder.setText(R.id.debt_status, "已还清");
+                } else {
+                    //已还清的无金额账单显示无账单
+                    holder.setText(R.id.debt_status, "无账单");
+                }
                 break;
             case 3://逾期
                 SpannableString ss = new SpannableString("逾期" + Math.abs(bill.getReturnDay()) + "天");

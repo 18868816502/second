@@ -37,6 +37,7 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
         helper.addOnClickListener(R.id.sync);
         helper.addOnClickListener(R.id.set_status);
 
+        //渠道logo或银行logo
         if (!isEmpty(item.getLogo())) {
             Glide.with(helper.itemView.getContext())
                     .load(item.getLogo())
@@ -46,7 +47,7 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
         } else {
             helper.<ImageView>getView(R.id.debt_image).setImageResource(R.drawable.image_place_holder);
         }
-
+        //账单名称
         if (item.getBillType() == 1) {
             //网贷账单
             helper.setVisible(R.id.credit_card_number, false);
@@ -65,25 +66,41 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
         }
         //是否是新账单
         helper.setVisible(R.id.account_debt_new_badge, item.getBillFlag() == 1);
-        //有金额时才显示
-        if (item.getAmount() > 0) {
-            char symbol = 165;
-            helper.setText(R.id.debt_term_amount, String.valueOf(symbol) + CommonUtils.keep2digitsWithoutZero(item.getAmount()));
+        //当期应还
+        helper.setText(R.id.debt_term_amount, String.valueOf((char) 165) + CommonUtils.keep2digitsWithoutZero(item.getAmount()));
+        //距出账日，距还款日
+        if (item.getStatus() == 5) {
+            //未出账账单显示"距出账日"
+            helper.setText(R.id.debt_due_time_text, "距出账日");
+            String dayStr = item.getOutBillDay() + "天";
+            SpannableString ss = new SpannableString(dayStr);
+            ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            helper.setText(R.id.debt_due_time, ss);
+        } else {
+            //非未出账账单都显示距还款日
+            helper.setText(R.id.debt_due_time_text, "距还款日");
+            String dayStr = item.getReturnDay() + "天";
+            SpannableString ss = new SpannableString(dayStr);
+            if (item.getReturnDay() > 7) {
+                ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            } else {
+                ss.setSpan(new TextAppearanceSpan(null, 0, ((int) (20 * helper.itemView.getResources().getDisplayMetrics().density)), ColorStateList.valueOf(Color.parseColor("#ff395e")), null), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
+            helper.setText(R.id.debt_due_time, ss);
         }
         //是否逾期
-        helper.setVisible(R.id.status_badge_overdue, item.getReturnDay() < 0);
+        helper.setVisible(R.id.status_badge_overdue, item.getStatus() == 3);
         //是否已还
         helper.setVisible(R.id.status_badge_paid, item.getStatus() == 2);
-        //是否未出账或者无账单
-        helper.setVisible(R.id.sync, item.getStatus() == 5 || item.getStatus() == 6);
-        String dayStr = item.getReturnDay() + "天";
-        SpannableString ss = new SpannableString(dayStr);
-        if (item.getReturnDay() > 7) {
-            ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        } else {
-            ss.setSpan(new TextAppearanceSpan(null, 0, ((int) (20 * helper.itemView.getResources().getDisplayMetrics().density)), ColorStateList.valueOf(Color.parseColor("#ff395e")), null), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        //是否已出账或者未出账
+        helper.setVisible(R.id.sync, item.getStatus() == 4 || item.getStatus() == 5);
+        //如果是无账单，则不显示任何信息
+        if (item.getStatus() == 6) {
+            helper.setText(R.id.debt_term_amount, "----");
+            helper.setText(R.id.debt_due_time, "----");
         }
-        helper.setText(R.id.debt_due_time, ss);
+
     }
 
     public void notifyDebtChanged(List<AccountBill> list) {
