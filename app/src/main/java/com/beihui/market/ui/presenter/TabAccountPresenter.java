@@ -130,28 +130,56 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
 
     @Override
     public void clickDebtSetStatus(int index) {
-        Disposable dis = api.updateDebtStatus(userHelper.getProfile().getId(), debts.get(index).getBillId(), 2)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       //状态更新成功后，重新拉取数据
-                                       loadDebtAbstract();
-                                       loadInDebtList();
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
+        AccountBill bill = debts.get(index);
+        if (bill.getBillType() == 1) {
+            //网贷账单
+            Disposable dis = api.updateDebtStatus(userHelper.getProfile().getId(), bill.getBillId(), 2)
+                    .compose(RxUtil.<ResultEntity>io2main())
+                    .subscribe(new Consumer<ResultEntity>() {
+                                   @Override
+                                   public void accept(ResultEntity result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           //状态更新成功后，重新拉取数据
+                                           loadDebtAbstract();
+                                           loadInDebtList();
+                                       } else {
+                                           view.showErrorMsg(result.getMsg());
+                                       }
                                    }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(TabAccountPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(TabAccountPresenter.this, throwable);
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(dis);
+        } else {
+            //信用卡账单
+            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), bill.getBillId(), 2)
+                    .compose(RxUtil.<ResultEntity>io2main())
+                    .subscribe(new Consumer<ResultEntity>() {
+                                   @Override
+                                   public void accept(ResultEntity result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           //状态更新成功后，重新拉取数据
+                                           loadDebtAbstract();
+                                           loadInDebtList();
+                                       } else {
+                                           view.showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(TabAccountPresenter.this, throwable);
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(dis);
+        }
     }
 
     @Override

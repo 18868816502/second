@@ -27,7 +27,7 @@ public interface WeChatBindPhoneContract {
         /**
          * 验证码发送成功
          */
-        void showVerifyCodeSend();
+        void showVerifyCodeSend(String msg);
 
         /**
          * 验证码验证成功,新用户，去设置密码

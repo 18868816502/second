@@ -30,7 +30,7 @@ import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<CreditCardDebtDetailMultiEntity, BaseViewHolder> {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
     private final SimpleDateFormat shortDateFormat = new SimpleDateFormat("MM月dd日", Locale.CHINA);
-    private final SimpleDateFormat shortDateFormat1 = new SimpleDateFormat("dd/MM", Locale.CHINA);
+    private final SimpleDateFormat shortDateFormat1 = new SimpleDateFormat("MM/dd", Locale.CHINA);
     private final Calendar calendar = Calendar.getInstance(Locale.CHINA);
 
     private List<CreditCardDebtDetailMultiEntity> dataSet = new ArrayList<>();

@@ -122,8 +122,8 @@ public class WeChatBindPhoneActivity extends BaseComponentActivity implements We
     }
 
     @Override
-    public void showVerifyCodeSend() {
-        ToastUtils.showShort(this, "短信已发送", null);
+    public void showVerifyCodeSend(String msg) {
+        ToastUtils.showShort(this, msg, null);
         countDown = new CountDown();
         countDown.start();
     }

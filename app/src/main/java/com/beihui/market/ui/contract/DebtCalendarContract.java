@@ -85,11 +85,22 @@ public interface DebtCalendarContract {
         void showCalendarDebtList(List<CalendarDebt.DetailBean> list);
 
         /**
-         * 导航至借款详情
+         * 唤起网贷账单详情界面
          *
-         * @param id 借款项目id
+         * @param id 账单
          */
-        void navigateDebtDetail(String id);
+        void navigateLoanDebtDetail(String id);
+
+        /**
+         * 唤起信用卡账单详情界面
+         *
+         * @param id       账单id
+         * @param logo     银行icon
+         * @param bankName 银行名称
+         * @param cardNum  卡号
+         * @param byHand   是否手动账单
+         */
+        void navigateCreditCardDebtDetail(String id, String logo, String bankName, String cardNum, boolean byHand);
 
     }
 }

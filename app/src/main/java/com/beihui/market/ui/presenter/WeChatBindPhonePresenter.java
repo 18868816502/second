@@ -46,7 +46,7 @@ public class WeChatBindPhonePresenter extends BaseRxPresenter implements WeChatB
                                @Override
                                public void accept(ResultEntity<Phone> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       view.showVerifyCodeSend();
+                                       view.showVerifyCodeSend(result.getMsg());
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

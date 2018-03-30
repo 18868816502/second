@@ -14,6 +14,7 @@ import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtCalendarComponent;
 import com.beihui.market.injection.module.DebtCalendarModule;
+import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.DebtCalendarRVAdapter;
 import com.beihui.market.ui.contract.DebtCalendarContract;
@@ -329,9 +330,20 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
     }
 
     @Override
-    public void navigateDebtDetail(String id) {
+    public void navigateLoanDebtDetail(String id) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void navigateCreditCardDebtDetail(String id, String logo, String bankName, String cardNum, boolean byHand) {
+        Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
+        intent.putExtra("debt_id", id);
+        intent.putExtra("logo", logo);
+        intent.putExtra("bank_name", bankName);
+        intent.putExtra("card_num", cardNum);
+        intent.putExtra("by_hand", byHand);//是否是手动记账
         startActivityForResult(intent, 1);
     }
 

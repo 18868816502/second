@@ -198,7 +198,14 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
 
     @Override
     public void clickDebt(int index) {
-        view.navigateDebtDetail(calendarDebtList.get(index).getRecordId());
+        CalendarDebt.DetailBean bill = calendarDebtList.get(index);
+        if (bill.getBillType() == 1) {
+            //网贷账单
+            view.navigateLoanDebtDetail(bill.getRecordId());
+        } else {
+            //信用卡账单
+            view.navigateCreditCardDebtDetail(bill.getRecordId(), bill.getLogo(), bill.getTopic(), bill.getBillName(), bill.getBillSource() == 3);
+        }
     }
 
 }
