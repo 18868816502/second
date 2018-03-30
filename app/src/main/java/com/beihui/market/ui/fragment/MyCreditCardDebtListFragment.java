@@ -17,6 +17,8 @@ import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.view.StateLayout;
+import com.beihui.market.view.stateprovider.DebtStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
@@ -31,6 +33,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     private final int billType = 2;
 
+    @BindView(R.id.state_layout)
+    StateLayout stateLayout;
     @BindView(R.id.debt_num)
     TextView tvDebtNum;
     @BindView(R.id.recycler_view)
@@ -48,6 +52,7 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void configViews() {
+        stateLayout.setStateViewProvider(new DebtStateProvider());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new MyLoanBillDebtAdapter(R.layout.rv_item_my_credit_card_debt, billType);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -104,6 +109,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
         }
         adapter.setEnableLoadMore(canLoadMore);
         adapter.notifyLoanBillChanged(list);
+
+        stateLayout.switchState(list.size() > 0 ? StateLayout.STATE_CONTENT : StateLayout.STATE_EMPTY);
     }
 
     @Override

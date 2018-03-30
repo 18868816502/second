@@ -12,7 +12,7 @@ public class CreditCardDebtBill {
     private double lastBalance;
     private double lastPayment;
     private double interest;
-    private double newBalance = -1;//默认-1
+    private double newBalance;
     private double minPayment;
     private int billSource;
     private int status;
