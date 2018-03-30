@@ -103,9 +103,6 @@
             android:name=".ui.activity.InvitationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.HelperAndFeedbackActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
 
@@ -189,7 +186,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.DebtHelpAndFeedActivity"
+            android:name=".ui.activity.HelpAndFeedActivity"
             android:screenOrientation="portrait" />
 
         <activity

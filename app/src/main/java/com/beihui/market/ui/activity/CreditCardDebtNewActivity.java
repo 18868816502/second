@@ -128,10 +128,13 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
                 .inject(this);
     }
 
-    @OnClick({R.id.card_bank_block, R.id.debt_day_block, R.id.debt_pay_day_block, R.id.confirm})
+    @OnClick({R.id.help_feedback, R.id.card_bank_block, R.id.debt_day_block, R.id.debt_pay_day_block, R.id.confirm})
     void onItemClicked(View view) {
         InputMethodUtil.closeSoftKeyboard(this);
         switch (view.getId()) {
+            case R.id.help_feedback:
+                startActivity(new Intent(this, HelpAndFeedActivity.class));
+                break;
             case R.id.card_bank_block:
                 startActivityForResult(new Intent(this, CreditCardBankActivity.class), REQUEST_CODE_BANK_LIST);
                 break;

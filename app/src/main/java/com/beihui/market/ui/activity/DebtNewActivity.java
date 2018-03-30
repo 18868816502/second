@@ -103,7 +103,7 @@ public class DebtNewActivity extends BaseComponentActivity {
 
     @OnClick(R.id.help_feedback)
     void onItemClicked() {
-        startActivity(new Intent(this, DebtHelpAndFeedActivity.class));
+        startActivity(new Intent(this, HelpAndFeedActivity.class));
     }
 
     class DebtNewPagerAdapter extends FragmentPagerAdapter {

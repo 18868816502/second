@@ -23,7 +23,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
 import com.beihui.market.ui.activity.CollectionActivity;
-import com.beihui.market.ui.activity.HelperAndFeedbackActivity;
+import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.MyDebtActivity;
@@ -366,7 +366,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void navigateHelpAndFeedback(String userId) {
-        startActivity(new Intent(getActivity(), HelperAndFeedbackActivity.class));
+        startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
     }
 
     @Override

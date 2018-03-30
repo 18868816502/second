@@ -141,16 +141,12 @@ public class UsedEmailActivity extends BaseComponentActivity {
 
     }
 
-    @OnClick({R.id.add_email, R.id.question})
+    @OnClick({R.id.add_email, R.id.help_feedback})
     void onItemClicked(View view) {
         if (view.getId() == R.id.add_email) {
             startActivity(new Intent(this, NutEmailActivity.class));
-        } else if (view.getId() == R.id.question) {
-            Intent intent = new Intent(this, ComWebViewActivity.class);
-            intent.putExtra("title", "帮助");
-            intent.putExtra("url", NetConstants.H5_LEADING_IN_HELP);
-            intent.putExtra("style", "light");
-            startActivity(intent);
+        } else if (view.getId() == R.id.help_feedback) {
+            startActivity(new Intent(this, HelpAndFeedActivity.class));
         }
     }
 }

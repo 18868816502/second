@@ -10,7 +10,6 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.NutEmail;
@@ -145,12 +144,8 @@ public class NutEmailActivity extends BaseComponentActivity {
 
     }
 
-    @OnClick(R.id.question)
+    @OnClick(R.id.help_feedback)
     void onItemClicked() {
-        Intent intent = new Intent(this, ComWebViewActivity.class);
-        intent.putExtra("title", "帮助");
-        intent.putExtra("url", NetConstants.H5_LEADING_IN_HELP);
-        intent.putExtra("style", "light");
-        startActivity(intent);
+        startActivity(new Intent(this, HelpAndFeedActivity.class));
     }
 }

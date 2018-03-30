@@ -22,6 +22,18 @@
                 android:layout_gravity="center"
                 android:text="手动记账" />
 
+            <TextView
+                android:id="@+id/help_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/tool_bar_height"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:minWidth="@dimen/tool_bar_height"
+                android:paddingRight="15dp"
+                android:text="帮助反馈"
+                android:textColor="@color/black_2"
+                android:textSize="14sp" />
+
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout

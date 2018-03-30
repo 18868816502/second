@@ -46,8 +46,6 @@ import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
-import com.beihui.market.view.copytablayout.CopyTabLayout;
-import com.gyf.barlibrary.ImmersionBar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,15 +62,17 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class DebtHelpAndFeedActivity extends BaseComponentActivity {
+public class HelpAndFeedActivity extends BaseComponentActivity {
 
     private final int REQUEST_CODE_CAMERA = 1;
     private final int REQUEST_CODE_ALBUM = 2;
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.copy_tab_layout)
-    CopyTabLayout copyTabLayout;
+    @BindView(R.id.help)
+    TextView helpTv;
+    @BindView(R.id.feedback)
+    TextView feedbackTv;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
@@ -85,6 +85,11 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
 
     private String imageFilePath;
     private Bitmap image;
+
+    /**
+     * 当前选中的tab
+     */
+    private View selected;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,7 +120,7 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        DebtHelpAndFeedActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        HelpAndFeedActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @Override
@@ -125,11 +130,21 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+        setupToolbar(toolbar);
         viewPager.setAdapter(new HelpFeedAdapter());
-        copyTabLayout.setupWithViewPager(viewPager);
 
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v != selected) {
+                    select(v);
+                }
+            }
+        };
+        helpTv.setOnClickListener(clickListener);
+        feedbackTv.setOnClickListener(clickListener);
+
+        this.select(helpTv);
         SlidePanelHelper.attach(this);
     }
 
@@ -205,10 +220,10 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
                 dialog.dismiss();
                 switch (v.getId()) {
                     case R.id.from_camera:
-                        DebtHelpAndFeedActivityPermissionsDispatcher.openCameraWithCheck(DebtHelpAndFeedActivity.this);
+                        HelpAndFeedActivityPermissionsDispatcher.openCameraWithCheck(HelpAndFeedActivity.this);
                         break;
                     case R.id.from_album:
-                        DebtHelpAndFeedActivityPermissionsDispatcher.openAlbumWithCheck(DebtHelpAndFeedActivity.this);
+                        HelpAndFeedActivityPermissionsDispatcher.openAlbumWithCheck(HelpAndFeedActivity.this);
                         break;
                 }
             }
@@ -228,8 +243,25 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
         dialog.show();
     }
 
+    /**
+     * 选中tab
+     *
+     * @param view tab view
+     */
+    private void select(View view) {
+        if (selected != null) {
+            selected.setSelected(false);
+        }
+        selected = view;
+        if (selected != null) {
+            selected.setSelected(true);
+        }
+
+        viewPager.setCurrentItem(selected == helpTv ? 0 : 1);
+    }
+
     private View generateHelpView(ViewGroup container) {
-        View helpView = LayoutInflater.from(DebtHelpAndFeedActivity.this)
+        View helpView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_help, container, false);
         progressBar = helpView.findViewById(R.id.progress_bar);
         webView = helpView.findViewById(R.id.web_view);
@@ -248,7 +280,7 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
     }
 
     private View generateFeedView(ViewGroup container) {
-        View feedView = LayoutInflater.from(DebtHelpAndFeedActivity.this)
+        View feedView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_feed, container, false);
         etFeedContent = feedView.findViewById(R.id.feed_content);
         tvContentNum = feedView.findViewById(R.id.content_num);
@@ -292,7 +324,7 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
         feedView.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Context context = DebtHelpAndFeedActivity.this;
+                final Context context = HelpAndFeedActivity.this;
                 if (etFeedContent.getText().length() > 0) {
                     Observable.just(image)
                             .observeOn(Schedulers.io())
@@ -331,7 +363,7 @@ public class DebtHelpAndFeedActivity extends BaseComponentActivity {
                                     new Consumer<Throwable>() {
                                         @Override
                                         public void accept(Throwable throwable) throws Exception {
-                                            Log.e("DebtHelpAndFeedActivity", throwable.toString());
+                                            Log.e("HelpAndFeedActivity", throwable.toString());
                                         }
                                     });
                 } else {

@@ -38,79 +38,8 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/helper_container"
+    <com.beihui.market.view.StillViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <WebView
-            android:id="@+id/web_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:progressDrawable="@drawable/horizontal_progress" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/feedback_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingBottom="15dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="15dp">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/round_gray_border">
-
-                <EditText
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:gravity="left"
-                    android:hint="请输入您的建议，我们将不断改进"
-                    android:maxLength="300"
-                    android:padding="10dp"
-                    android:textColor="@color/black_1"
-                    android:textColorHighlight="#b2b2b2"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/length"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:layout_margin="6dp"
-                    android:textColor="@color/c_999999" />
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/submit"
-            style="@style/TextButtonStyle"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/round_alpha_primary_btn"
-            android:enabled="false"
-            android:text="@string/submit"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>
