@@ -106,6 +106,13 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
                 flDebtExtraInfoBlock.setVisibility(v.isSelected() ? View.VISIBLE : View.GONE);
             }
         });
+
+        etDebtAmount.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                etDebtAmount.requestFocus();
+            }
+        }, 100);
     }
 
     @Override

@@ -28,6 +28,13 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity {
     @BindView(R.id.loading_text)
     TextView loadingText;
 
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);

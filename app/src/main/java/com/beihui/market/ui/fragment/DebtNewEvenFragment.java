@@ -103,6 +103,13 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
                 flDebtExtraInfoBlock.setVisibility(v.isSelected() ? View.VISIBLE : View.GONE);
             }
         });
+
+        etDebtTermAmount.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                etDebtTermAmount.requestFocus();
+            }
+        }, 100);
     }
 
     @Override

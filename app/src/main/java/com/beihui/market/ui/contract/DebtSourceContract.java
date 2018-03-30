@@ -53,9 +53,14 @@ public interface DebtSourceContract {
         void showSourceChannel(List<DebtChannel> list);
 
         /**
-         * 唤起邮箱导入界面
+         * 唤起用户邮箱界面
          */
-        void navigateDebtMail();
+        void navigateUsedMail();
+
+        /**
+         * 唤起坚果邮箱界面
+         */
+        void navigateNutMail();
 
         /**
          * 唤起网银导入界面

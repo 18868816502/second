@@ -151,6 +151,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
     }
 
     private void saveDebt(final Map<String, Object> params) {
+        view.showProgress();
 
         Observable.just(debtDetail != null ? debtDetail : new DebtDetail())
                 .observeOn(Schedulers.io())
@@ -173,6 +174,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
                     public ObservableSource<Boolean> apply(ResultEntity resultEntity) throws Exception {
                         //如果处于编辑模式，且删除原有账单不成功，则结束流程
                         if (!resultEntity.isSuccess()) {
+                            view.dismissProgress();
                             view.showErrorMsg(resultEntity.getMsg());
                         }
                         return Observable.just(resultEntity.isSuccess());
@@ -199,6 +201,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
                     public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
                         //保存账单不成功
                         if (!result.isSuccess()) {
+                            view.dismissProgress();
                             view.showErrorMsg(result.getMsg());
                         }
                         //添加账单流程是否已成功走完

@@ -98,6 +98,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
         final double paramAmount = debtAmount;
         final long paramBankId = creditCardBankId;
 
+        view.showProgress();
         Disposable dis = Observable.just(debtDetail != null ? debtDetail : new CreditCardDebtDetail())
                 .observeOn(Schedulers.io())
                 .flatMap(new Function<CreditCardDebtDetail, ObservableSource<ResultEntity>>() {
@@ -119,6 +120,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
                     public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
                         //如果处于编辑模式，且删除原有账单不成功，则结束流程
                         if (!result.isSuccess()) {
+                            view.dismissProgress();
                             view.showErrorMsg(result.getMsg());
                         }
                         return Observable.just(result.isSuccess());
@@ -145,6 +147,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
                     public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
                         //保存账单不成功
                         if (!result.isSuccess()) {
+                            view.dismissProgress();
                             view.showErrorMsg(result.getMsg());
                         }
                         //添加账单流程是否已成功走完

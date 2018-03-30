@@ -80,7 +80,7 @@ public class NutEmailActivity extends BaseComponentActivity {
                         Intent intent = new Intent(NutEmailActivity.this, EmailLoginActivity.class);
                         intent.putExtra("extra_mail_config", config.getMailItemConfig(emailSymbol));
                         startActivityForResult(intent, 1);
-                    }else {
+                    } else {
                         ToastUtils.showShort(NutEmailActivity.this, "正在获取配置", null);
                     }
 

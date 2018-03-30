@@ -95,7 +95,7 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
     public void fetchCalendarTrend(Date startDate, Date endDate) {
         final Date start = startDate;
         final Date end = endDate;
-        Disposable dis = api.fetchCalendarTrend(userHelper.getProfile().getId(), dateFormat.format(startDate), dateFormat.format(endDate))
+        Disposable dis = api.fetchCalendarTrend(userHelper.getProfile().getId(), rangeDateFormat.format(startDate), rangeDateFormat.format(endDate))
                 .compose(RxUtil.<ResultEntity<Map<String, Float>>>io2main())
                 .subscribe(new Consumer<ResultEntity<Map<String, Float>>>() {
                                @Override
