@@ -181,7 +181,7 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
 
                 List<String> list = new ArrayList<>();
                 for (int i = 1; i <= 360; ++i) {
-                    list.add(i + "");
+                    list.add(i + "天");
                 }
                 pickerView.setPicker(list);
                 pickerView.setSelectOptions((Integer) tvDebtTimeLimit.getTag() - 1);

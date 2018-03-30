@@ -88,7 +88,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
         tvDebtPayDay.setText(dateFormat.format(date));
         tvDebtPayDay.setTag(date);
 
-        tvDebtTimeLimit.setText("6月");
+        tvDebtTimeLimit.setText("6个月");
         tvDebtTimeLimit.setTag(6);
 
         etRemark.addTextChangedListener(new EtTextLengthWatcher(etRemark, 20 * 2));
@@ -178,7 +178,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
 
                 List<String> list = new ArrayList<>();
                 for (int i = 1; i <= 360; ++i) {
-                    list.add(i + "");
+                    list.add(i + "个月");
                 }
                 pickerView.setPicker(list);
                 pickerView.setSelectOptions((Integer) tvDebtTimeLimit.getTag() - 1);
