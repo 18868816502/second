@@ -193,6 +193,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
                     @Override
                     public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        dismissProgress();
                         wechatInfo = map;
                         presenter.loginWithWeChat(wechatInfo.get("openid"));
                     }

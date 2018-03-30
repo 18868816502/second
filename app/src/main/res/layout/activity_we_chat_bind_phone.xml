@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="您的账户尚未与本品台账户关联，请先绑定手机号"
+            android:text="您的账户尚未与本平台账户关联，请先绑定手机号"
             android:textColor="#ca6832"
             android:textSize="11sp" />
 
@@ -73,6 +73,7 @@
                 android:background="@null"
                 android:hint="请输入手机号"
                 android:inputType="phone"
+                android:maxLength="11"
                 android:paddingLeft="5dp"
                 android:textColor="@color/black_1"
                 android:textSize="15sp" />
@@ -118,6 +119,7 @@
                 android:background="@null"
                 android:hint="请输入短信验证码"
                 android:inputType="number"
+                android:maxLength="4"
                 android:paddingLeft="5dp"
                 android:textColor="@color/black_1"
                 android:textSize="15sp" />

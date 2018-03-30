@@ -62,7 +62,7 @@ public class NetConstants {
     /**
      * 办卡进度查询
      */
-    public static final String H5_CREDIT_CARD_PROGRESS = "http://www.huishuaka.com/5/coop/jinduchaxun.html";
+    public static final String H5_CREDIT_CARD_PROGRESS = "http://www.huishuaka.com/5/coop/jinduchaxun.html?ichannelid=";
 
     public static String generateNewsUrl(String id, String userId) {
         return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;

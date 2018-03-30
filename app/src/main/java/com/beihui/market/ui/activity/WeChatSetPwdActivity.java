@@ -2,11 +2,14 @@ package com.beihui.market.ui.activity;
 
 
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -16,6 +19,7 @@ import com.beihui.market.injection.module.WeChatSetPwdModule;
 import com.beihui.market.ui.contract.WeChatSetPwdContract;
 import com.beihui.market.ui.presenter.WeChatSetPwdPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -32,6 +36,8 @@ public class WeChatSetPwdActivity extends BaseComponentActivity implements WeCha
     EditText etPwd;
     @BindView(R.id.pwd_visibility)
     CheckBox cbPwdVisibility;
+    @BindView(R.id.confirm)
+    TextView tvConfirmBtn;
 
     @Inject
     WeChatSetPwdPresenter presenter;
@@ -60,6 +66,23 @@ public class WeChatSetPwdActivity extends BaseComponentActivity implements WeCha
                     etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 CommonUtils.setEditTextCursorLocation(etPwd);
+            }
+        });
+
+        etPwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvConfirmBtn.setEnabled(LegalInputUtils.validatePassword(etPwd.getText().toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

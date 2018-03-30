@@ -63,6 +63,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/round_alpha_primary_btn"
+        android:enabled="false"
         android:text="确认"
         android:textColor="@android:color/white" />
 

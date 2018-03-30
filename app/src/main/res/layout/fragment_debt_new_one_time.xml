@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="17dp"
-                android:text="补充以下信息，轻松获取你的负载分析（选填）"
+                android:text="补充以下信息，轻松获取你的负债分析（选填）"
                 android:textColorHint="@color/black_2"
                 android:textSize="12sp" />
 
