@@ -449,6 +449,14 @@ public interface ApiService {
                                                 @Field("realName") String realName, @Field("billDay") int billDay, @Field("dueDay") int dueDay, @Field("amount") double amount);
 
     /**
+     * 更新信用卡账单信息
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/updateCard")
+    Observable<ResultEntity> updateCreditCardDebt(@Field("userId") String userId, @Field("cardId") String cardId,
+                                                  @Field("billDay") int billDay, @Field("dueDay") int dueDay, @Field("amount") double amount);
+
+    /**
      * 获取网贷账单详情
      */
     @FormUrlEncoded

@@ -26,6 +26,15 @@ public interface CreditCardDebtNewContract {
          * @param amount   账单金额
          */
         void saveCreditCardDebt(String cardNums, String bankId, String realName, int billDay, int dueDay, String amount);
+
+        /**
+         * 更新信用卡账单信息
+         *
+         * @param billDay 账单日
+         * @param dueDay  还款日
+         * @param amount  账单金额
+         */
+        void updateCreditCardDebt(int billDay, int dueDay, String amount);
     }
 
     interface View extends BaseView<Presenter> {
@@ -35,6 +44,13 @@ public interface CreditCardDebtNewContract {
          * @param msg 提示信息
          */
         void showSaveCreditCardDebtSuccess(String msg);
+
+        /**
+         * 更新信用卡账单成功
+         *
+         * @param msg 提示信息
+         */
+        void showUpdateCreditCardDebtSuccess(String msg);
 
         /**
          * 填充旧版本账单信息

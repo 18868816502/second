@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -47,6 +48,10 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
     Toolbar toolbar;
     @BindView(R.id.credit_card_number)
     EditText etCreditCardNumber;
+    @BindView(R.id.card_bank_block)
+    FrameLayout flCardBankBlock;
+    @BindView(R.id.bank_text)
+    TextView tvBankText;
     @BindView(R.id.bank)
     TextView tvBank;
     @BindView(R.id.card_owner)
@@ -63,9 +68,9 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     private CreditCardBank creditCardBank;
     /**
-     * 如果该字段不为空，则处于编辑模式,添加新信用卡时，需删除旧版本
+     * 是否处于编辑模式
      */
-    private CreditCardDebtDetail debtDetail;
+    private boolean editMode;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -100,8 +105,9 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void initDatas() {
-        debtDetail = getIntent().getParcelableExtra("credit_card_debt_detail");
+        CreditCardDebtDetail debtDetail = getIntent().getParcelableExtra("credit_card_debt_detail");
         if (debtDetail != null) {
+            editMode = true;
             presenter.attachCreditCardDebt(debtDetail);
         }
     }
@@ -131,8 +137,14 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
             case R.id.confirm:
                 int billDay = tvDebtDay.getTag() != null ? (int) tvDebtDay.getTag() : 0;
                 int dueDay = tvDebtPayDay.getTag() != null ? (int) tvDebtPayDay.getTag() : 0;
-                presenter.saveCreditCardDebt(etCreditCardNumber.getText().toString(), creditCardBank != null ? creditCardBank.getId() + "" : "",
-                        etCardOwner.getText().toString(), billDay, dueDay, etDebtAmount.getText().toString());
+                if (editMode) {
+                    //编辑模式
+                    presenter.updateCreditCardDebt(billDay, dueDay, etDebtAmount.getText().toString());
+                } else {
+                    //新增模式
+                    presenter.saveCreditCardDebt(etCreditCardNumber.getText().toString(), creditCardBank != null ? creditCardBank.getId() + "" : "",
+                            etCardOwner.getText().toString(), billDay, dueDay, etDebtAmount.getText().toString());
+                }
                 break;
         }
     }
@@ -144,6 +156,21 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void showSaveCreditCardDebtSuccess(String msg) {
+        ToastUtils.showShort(this, msg, R.mipmap.white_success);
+        toolbar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(CreditCardDebtNewActivity.this, MainActivity.class);
+                intent.putExtra("account", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        }, 200);
+    }
+
+    @Override
+    public void showUpdateCreditCardDebtSuccess(String msg) {
         ToastUtils.showShort(this, msg, R.mipmap.white_success);
         toolbar.postDelayed(new Runnable() {
             @Override
@@ -183,6 +210,18 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
             amount = amount.replace(",", "");
         }
         etDebtAmount.setText(amount);
+        //编辑模式下卡号，银行，姓名都不可编辑
+        etCreditCardNumber.setFocusable(false);
+        etCreditCardNumber.setTextColor(getResources().getColor(R.color.black_2));
+
+        etCardOwner.setFocusable(false);
+        etCardOwner.setTextColor(getResources().getColor(R.color.black_2));
+
+        flCardBankBlock.setEnabled(false);
+        tvBankText.setCompoundDrawables(null, null, null, null);
+
+        tvBank.setTextColor(getResources().getColor(R.color.black_2));
+        tvBank.setPadding(0, 0, 0, 0);
 
     }
 

@@ -122,10 +122,6 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 holder.setText(R.id.debt_status, String.format(Locale.CHINA, "已出账%d天", bill.getOutBillDay()));
                 break;
             case 5://未出账
-                //未出账，且未返回金额,则设置0
-                if (bill.getNewBalance() == -1) {
-                    holder.setText(R.id.debt_amount, String.valueOf((char) 165) + "0");
-                }
                 holder.setText(R.id.debt_status, bill.getOutBillDay() == 0 ? "今天出账" : String.format(Locale.CHINA, "%d天后出账", bill.getOutBillDay()));
                 break;
             case 6://无账单
@@ -146,6 +142,11 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         holder.setGone(R.id.bill_range_block, expanded);
         //展开的三角
         holder.getView(R.id.expand_collapse_hint).setRotation(expanded ? 90 : 0);
+
+        //已出账或者未出账的金额为0的账单，不显示金额
+        if (bill.getStatus() == 4 || bill.getStatus() == 5) {
+            holder.setGone(R.id.debt_amount, bill.getNewBalance() > 0);
+        }
     }
 
     /**

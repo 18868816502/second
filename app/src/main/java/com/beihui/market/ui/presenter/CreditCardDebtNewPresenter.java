@@ -21,7 +21,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -104,49 +103,8 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
         final long paramBankId = creditCardBankId;
 
         view.showProgress();
-        Disposable dis = Observable.just(debtDetail != null ? debtDetail : new CreditCardDebtDetail())
+        Disposable dis = api.saveCreditCardDebt(userHelper.getProfile().getId(), cardNums, paramBankId, realName, billDay, dueDay, paramAmount)
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<CreditCardDebtDetail, ObservableSource<ResultEntity>>() {
-                    @Override
-                    public ObservableSource<ResultEntity> apply(CreditCardDebtDetail debtDetail) throws Exception {
-                        //如果处于编辑模式，则先删除原有账单
-                        if (debtDetail.getId() != null) {
-                            return api.deleteCreditCardDebt(userHelper.getProfile().getId(), debtDetail.getId());
-                        }
-                        //如果不需要删除原有账单，则发送一个成功的假请求
-                        ResultEntity result = new ResultEntity();
-                        result.setCode(1000000);
-                        return Observable.just(result);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Function<ResultEntity, ObservableSource<Boolean>>() {
-                    @Override
-                    public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
-                        //如果处于编辑模式，且删除原有账单不成功，则结束流程
-                        if (!result.isSuccess()) {
-                            view.dismissProgress();
-                            view.showErrorMsg(result.getMsg());
-                        }
-                        return Observable.just(result.isSuccess());
-                    }
-                })
-                .filter(new Predicate<Boolean>() {
-                    @Override
-                    public boolean test(Boolean aBoolean) throws Exception {
-                        //不处于编辑模式或者删除成功则开始添加账单,否者流程结束
-                        return aBoolean;
-                    }
-                })
-                .observeOn(Schedulers.io())
-                .flatMap(new Function<Boolean, ObservableSource<ResultEntity>>() {
-                    @Override
-                    public ObservableSource<ResultEntity> apply(Boolean aBoolean) throws Exception {
-                        //删除成功，或者无需删除原有账单
-                        return api.saveCreditCardDebt(userHelper.getProfile().getId(), cardNums, paramBankId, realName, billDay, dueDay, paramAmount);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Function<ResultEntity, ObservableSource<Boolean>>() {
                     @Override
                     public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
@@ -218,6 +176,39 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
                                 } else {
                                     view.showErrorMsg(generateErrorMsg(throwable));
                                 }
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void updateCreditCardDebt(int billDay, int dueDay, String amount) {
+        if (TextUtils.isEmpty(amount)) {
+            view.showErrorMsg("请输入账单金额");
+            return;
+        } else {
+            if (Double.parseDouble(amount) <= 0) {
+                view.showErrorMsg("账单金额必须大于0");
+                return;
+            }
+        }
+        Disposable dis = api.updateCreditCardDebt(userHelper.getProfile().getId(), debtDetail.getShowBill().getCardId(), billDay, dueDay, Double.parseDouble(amount))
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity resultEntity) throws Exception {
+                                   if (resultEntity.isSuccess()) {
+                                       view.showUpdateCreditCardDebtSuccess("");
+                                   } else {
+                                       view.showErrorMsg(resultEntity.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(CreditCardDebtNewPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
         addDisposable(dis);

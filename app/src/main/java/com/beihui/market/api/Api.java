@@ -696,6 +696,19 @@ public class Api {
     }
 
     /**
+     * 更新信用卡账单信息
+     *
+     * @param userId  用户id
+     * @param cardId  信用卡id
+     * @param billDay 账单日
+     * @param dueDay  还款日
+     * @param amount  账单金额
+     */
+    public Observable<ResultEntity> updateCreditCardDebt(String userId, String cardId, int billDay, int dueDay, double amount) {
+        return service.updateCreditCardDebt(userId, cardId, billDay, dueDay, amount);
+    }
+
+    /**
      * 获取网贷账单详情
      *
      * @param userId        用户id
