@@ -30,6 +30,7 @@ import com.beihui.market.injection.component.DaggerDebtDetailComponent;
 import com.beihui.market.injection.module.DebtDetailModule;
 import com.beihui.market.ui.adapter.DebtDetailRVAdapter;
 import com.beihui.market.ui.contract.DebtDetailContract;
+import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.view.CircleImageView;
@@ -363,7 +364,15 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                          if (v.getId() == R.id.edit) {
                                              presenter.editDebt();
                                          } else if (v.getId() == R.id.delete) {
-                                             presenter.deleteDebt();
+                                             new CommNoneAndroidDialog().withMessage("确认删除该账单？")
+                                                     .withNegativeBtn("取消", null)
+                                                     .withPositiveBtn("确认", new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+                                                             presenter.deleteDebt();
+                                                         }
+                                                     })
+                                                     .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                                          }
                                      }
                                  },

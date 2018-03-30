@@ -26,6 +26,7 @@ import com.beihui.market.ui.adapter.CreditCardDebtDetailAdapter;
 import com.beihui.market.ui.adapter.multipleentity.CreditCardDebtDetailMultiEntity;
 import com.beihui.market.ui.contract.CreditCardDebtDetailContract;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
+import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
@@ -257,7 +258,16 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         header.tvSetStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.clickSetStatus();
+                new CommNoneAndroidDialog()
+                        .withMessage("确认设为已还？")
+                        .withNegativeBtn("取消", null)
+                        .withPositiveBtn("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                presenter.clickSetStatus();
+                            }
+                        })
+                        .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
             }
         });
 
@@ -411,7 +421,16 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                                  startActivity(intent);
                                              }
                                          } else if (v.getId() == R.id.delete) {
-                                             presenter.clickDelete();
+                                             new CommNoneAndroidDialog().withMessage("确认删除该账单？")
+                                                     .withNegativeBtn("取消", null)
+                                                     .withPositiveBtn("确认", new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+                                                             presenter.clickDelete();
+                                                         }
+                                                     })
+                                                     .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+
                                          }
                                      }
                                  },

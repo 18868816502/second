@@ -39,6 +39,7 @@ import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.DebtRVAdapter;
 import com.beihui.market.ui.contract.TabAccountContract;
+import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.TabAccountHintDialog;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.ui.rvdecoration.DebtItemDeco;
@@ -340,21 +341,38 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                final int index = position;
                 switch (view.getId()) {
                     case R.id.debt_container:
                         presenter.clickDebt(position);
                         break;
                     case R.id.hide:
-                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
-                        presenter.clickDebtHide(position);
+                        new CommNoneAndroidDialog()
+                                .withMessage("确认隐藏该项吗？")
+                                .withNegativeBtn("取消", null)
+                                .withPositiveBtn("确认", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(index + 1)).getView(R.id.swipe_menu_layout)).quickClose();
+                                        presenter.clickDebtHide(index);
+                                    }
+                                }).show(getChildFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                         break;
                     case R.id.sync:
                         ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
                         presenter.clickDebtSync(position);
                         break;
                     case R.id.set_status:
-                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(position + 1)).getView(R.id.swipe_menu_layout)).quickClose();
-                        presenter.clickDebtSetStatus(position);
+                        new CommNoneAndroidDialog()
+                                .withMessage("确认设为已还？")
+                                .withNegativeBtn("取消", null)
+                                .withPositiveBtn("确认", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ((SwipeMenuLayout) ((BaseViewHolder) recyclerView.findViewHolderForAdapterPosition(index + 1)).getView(R.id.swipe_menu_layout)).quickClose();
+                                        presenter.clickDebtSetStatus(index);
+                                    }
+                                }).show(getChildFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                         break;
                 }
             }
