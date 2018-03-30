@@ -83,6 +83,11 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
         if (TextUtils.isEmpty(amount)) {
             view.showErrorMsg("请输入账单金额");
             return;
+        } else {
+            if (Double.parseDouble(amount) <= 0) {
+                view.showErrorMsg("账单金额必须大于0");
+                return;
+            }
         }
 
 

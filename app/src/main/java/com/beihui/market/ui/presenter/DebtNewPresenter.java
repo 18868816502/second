@@ -75,6 +75,11 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         if (TextUtils.isEmpty(debtAmount)) {
             view.showErrorMsg("请输入到期还款金额");
             return;
+        } else {
+            if (Double.parseDouble(debtAmount) <= 0) {
+                view.showErrorMsg("账单金额必须大于0");
+                return;
+            }
         }
 
         String channelId = (TextUtils.isEmpty(debtChannel.getType()) || debtChannel.isCustom()) ? debtChannel.getCustomId() : debtChannel.getId();
@@ -115,6 +120,11 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         if (TextUtils.isEmpty(termAmount)) {
             view.showErrorMsg("请输入每月还款金额");
             return;
+        } else {
+            if (Double.parseDouble(termAmount) <= 0) {
+                view.showErrorMsg("账单金额必须大于0");
+                return;
+            }
         }
 
         String channelId = (TextUtils.isEmpty(debtChannel.getType()) || debtChannel.isCustom()) ? debtChannel.getCustomId() : debtChannel.getId();
