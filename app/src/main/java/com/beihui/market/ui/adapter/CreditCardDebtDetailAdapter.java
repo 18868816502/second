@@ -103,7 +103,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         //账单状态
         switch (bill.getStatus()) {
             case 1://待还
-                holder.setText(R.id.debt_status, String.format(Locale.CHINA, "距离还款日%d天", bill.getReturnDay()));
+                holder.setText(R.id.debt_status, bill.getReturnDay() == 0 ? "今天还款" : String.format(Locale.CHINA, "距离还款日%d天", bill.getReturnDay()));
                 break;
             case 2://已还
                 if (bill.getNewBalance() > 0) {

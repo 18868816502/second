@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="请输入短信验证码"
+                android:hint="请输入验证码"
                 android:inputType="number"
                 android:maxLength="4"
                 android:paddingLeft="5dp"

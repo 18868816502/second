@@ -40,11 +40,9 @@ import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.DebtRVAdapter;
 import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
-import com.beihui.market.ui.dialog.TabAccountHintDialog;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.ui.rvdecoration.DebtItemDeco;
 import com.beihui.market.util.CommonUtils;
-import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.view.refreshlayout.RefreshLayout;
 import com.beihui.market.view.refreshlayout.manager.ComRefreshManager;
@@ -380,11 +378,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DebtItemDeco());
         recyclerView.addOnScrollListener(tabScrollListener);
-
-        if (!SPUtils.getTabAccountDialogShowed(getContext())) {
-            new TabAccountHintDialog().show(getChildFragmentManager(), "TabAccountHint");
-            SPUtils.setTabAccountDialogShowed(getContext(), true);
-        }
 
         billsBgImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

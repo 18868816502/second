@@ -100,6 +100,13 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
         etCardOwner.addTextChangedListener(new EtTextLengthWatcher(etCardOwner, 10 * 2));
         etDebtAmount.addTextChangedListener(new EtAmountWatcher(etDebtAmount));
 
+        etCreditCardNumber.post(new Runnable() {
+            @Override
+            public void run() {
+                etCreditCardNumber.requestFocus();
+            }
+        });
+
         SlidePanelHelper.attach(this);
     }
 

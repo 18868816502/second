@@ -63,7 +63,7 @@ public class DebtCalendarRVAdapter extends BaseQuickAdapter<CalendarDebt.DetailB
         } else { //待还或者逾期
             helper.setVisible(R.id.debt_deadline_container, true);
             helper.setVisible(R.id.status_badge, item.getReturnDay() < 0);
-            String dayStr = item.getReturnDay() + "天";
+            String dayStr = item.getReturnDay() == 0 ? "今天" : item.getReturnDay() + "天";
             ss = new SpannableString(dayStr);
             if (item.getReturnDay() > 7) {
                 ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

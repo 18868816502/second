@@ -11,7 +11,7 @@ public class AccountBill {
     private String billName;
     private String cardNums;
     private int returnDay;
-    private String outBillDay;
+    private int outBillDay;
     private String billId;
     private String recordId;
     private int status;
@@ -86,11 +86,11 @@ public class AccountBill {
         this.returnDay = returnDay;
     }
 
-    public String getOutBillDay() {
+    public int getOutBillDay() {
         return outBillDay;
     }
 
-    public void setOutBillDay(String outBillDay) {
+    public void setOutBillDay(int outBillDay) {
         this.outBillDay = outBillDay;
     }
 

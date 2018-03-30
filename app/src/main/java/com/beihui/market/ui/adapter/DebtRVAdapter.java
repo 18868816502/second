@@ -72,14 +72,14 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
         if (item.getStatus() == 5) {
             //未出账账单显示"距出账日"
             helper.setText(R.id.debt_due_time_text, "距出账日");
-            String dayStr = item.getOutBillDay() + "天";
+            String dayStr = item.getOutBillDay() == 0 ? "今天" : item.getOutBillDay() + "天";
             SpannableString ss = new SpannableString(dayStr);
             ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             helper.setText(R.id.debt_due_time, ss);
         } else {
             //非未出账账单都显示距还款日
             helper.setText(R.id.debt_due_time_text, "距还款日");
-            String dayStr = item.getReturnDay() + "天";
+            String dayStr = item.getReturnDay() == 0 ? "今天" : item.getReturnDay() + "天";
             SpannableString ss = new SpannableString(dayStr);
             if (item.getReturnDay() > 7) {
                 ss.setSpan(new AbsoluteSizeSpan(20, true), 0, dayStr.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

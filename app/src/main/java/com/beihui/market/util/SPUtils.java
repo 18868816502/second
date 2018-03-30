@@ -102,30 +102,6 @@ public class SPUtils {
         editor.apply();
     }
 
-    public static boolean getConfirmPlanGuideShowed(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        return sp.getBoolean("confirmPlanGuideShowed", false);
-    }
-
-    public static void setConfirmPlanGuideShowed(Context context, boolean showed) {
-        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("confirmPlanGuideShowed", showed);
-        editor.apply();
-    }
-
-    public static boolean getTabAccountDialogShowed(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        return sp.getBoolean("tabAccountDialogShowed", false);
-    }
-
-    public static void setTabAccountDialogShowed(Context context, boolean showed) {
-        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("tabAccountDialogShowed", showed);
-        editor.apply();
-    }
-
     public static String getPushBindClientId(Context context) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         return sp.getString("pushBindClientId", null);
