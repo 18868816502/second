@@ -2,7 +2,6 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,6 +19,7 @@ import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.fragment.DebtNewEvenFragment;
 import com.beihui.market.ui.fragment.DebtNewOneTimeFragment;
 import com.beihui.market.util.AndroidBug5497Fix;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -46,8 +46,9 @@ public class DebtNewActivity extends BaseComponentActivity {
     private DebtDetail debtDetail;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onPause() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.onPause();
     }
 
     @Override

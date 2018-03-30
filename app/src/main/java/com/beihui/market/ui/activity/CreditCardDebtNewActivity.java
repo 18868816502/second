@@ -72,6 +72,13 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
      */
     private boolean editMode;
 
+
+    @Override
+    protected void onPause() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.onPause();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -208,11 +215,11 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
         tvBank.setText(debtDetail.getBankName());
         //账单日
         tvDebtDay.setTextColor(getResources().getColor(R.color.black_1));
-        tvDebtDay.setText(debtDetail.getBillDay() + "日");
+        tvDebtDay.setText(String.format(Locale.CHINA, "每月%d日", debtDetail.getBillDay()));
         tvDebtDay.setTag(debtDetail.getBillDay());
         //还款日
         tvDebtPayDay.setTextColor(getResources().getColor(R.color.black_1));
-        tvDebtPayDay.setText(debtDetail.getDueDay() + "日");
+        tvDebtPayDay.setText(String.format(Locale.CHINA, "每月%d日", debtDetail.getDueDay()));
         tvDebtPayDay.setTag(debtDetail.getDueDay());
         //金额
         String amount = CommonUtils.keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance());
@@ -243,7 +250,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 target.setTextColor(getResources().getColor(R.color.black_1));
                 int day = options1 + 1;
-                target.setText(day + "日");
+                target.setText(String.format(Locale.CHINA, "每月%d日", day));
                 target.setTag(day);
             }
         }).setCancelText("取消")
@@ -256,7 +263,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
         List<String> list = new ArrayList<>();
         for (int i = 1; i <= 31; ++i) {
-            list.add(i + "");
+            list.add(String.format(Locale.CHINA, "每月%d日", i));
         }
         pickerView.setPicker(list);
         if (target.getTag() != null) {
