@@ -198,7 +198,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
                                @Override
                                public void accept(ResultEntity resultEntity) throws Exception {
                                    if (resultEntity.isSuccess()) {
-                                       view.showUpdateCreditCardDebtSuccess("");
+                                       view.showUpdateCreditCardDebtSuccess("更新成功");
                                    } else {
                                        view.showErrorMsg(resultEntity.getMsg());
                                    }
