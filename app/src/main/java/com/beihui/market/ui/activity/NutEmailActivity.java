@@ -1,12 +1,14 @@
 package com.beihui.market.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -39,6 +41,8 @@ public class NutEmailActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.zs_container)
+    FrameLayout flZsContainer;
 
     private NutEmailAdapter adapter;
 
@@ -97,6 +101,7 @@ public class NutEmailActivity extends BaseComponentActivity {
         SlidePanelHelper.attach(this);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void initDatas() {
         //获取坚果配置
@@ -144,8 +149,18 @@ public class NutEmailActivity extends BaseComponentActivity {
 
     }
 
-    @OnClick(R.id.help_feedback)
-    void onItemClicked() {
-        startActivity(new Intent(this, HelpAndFeedActivity.class));
+    @OnClick({R.id.help_feedback, R.id.zs_close, R.id.zs_now})
+    void onItemClicked(View view) {
+        switch (view.getId()) {
+            case R.id.help_feedback:
+                startActivity(new Intent(this, HelpAndFeedActivity.class));
+                break;
+            case R.id.zs_close:
+                flZsContainer.setVisibility(View.GONE);
+                break;
+            case R.id.zs_now:
+                startActivity(new Intent(this, EBankActivity.class));
+                break;
+        }
     }
 }

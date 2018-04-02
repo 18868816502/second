@@ -26,6 +26,7 @@ public class NutEmailAdapter extends BaseQuickAdapter<NutEmail, BaseViewHolder> 
         type2Logo.put("MAIL126", R.drawable.mail126_logo);
         type2Logo.put("HOTMAIL", R.drawable.hotmail_logo);
         type2Logo.put("SINA", R.drawable.sinamail_logo);
+        type2Logo.put("ALIYUN", R.drawable.aliyunmail_logo);
     }
 
     @Override
