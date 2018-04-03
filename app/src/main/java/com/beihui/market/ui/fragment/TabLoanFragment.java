@@ -31,8 +31,8 @@ import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.injection.component.DaggerTabHomeComponent;
-import com.beihui.market.injection.module.TabHomeModule;
+import com.beihui.market.injection.component.DaggerTabLoanComponent;
+import com.beihui.market.injection.module.TabLoanModule;
 import com.beihui.market.ui.activity.ChoiceProductActivity;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
@@ -47,9 +47,9 @@ import com.beihui.market.ui.adapter.CreditCardRVAdapter;
 import com.beihui.market.ui.adapter.HotChoiceRVAdapter;
 import com.beihui.market.ui.adapter.HotNewsAdapter;
 import com.beihui.market.ui.busevents.NavigateNews;
-import com.beihui.market.ui.contract.TabHomeContract;
+import com.beihui.market.ui.contract.TabLoanContract;
 import com.beihui.market.ui.dialog.AdDialog;
-import com.beihui.market.ui.presenter.TabHomePresenter;
+import com.beihui.market.ui.presenter.TabLoanPresenter;
 import com.beihui.market.ui.rvdecoration.HomeCreditCardItemDeco;
 import com.beihui.market.ui.rvdecoration.HotNewsItemDeco;
 import com.beihui.market.umeng.Events;
@@ -79,7 +79,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 
-public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.View {
+public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.View {
     @BindView(R.id.root_container)
     FrameLayout rootContainer;
     @BindView(R.id.faked_bar)
@@ -153,7 +153,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     View oneKeyLoanHintClose;
 
     @Inject
-    TabHomePresenter presenter;
+    TabLoanPresenter presenter;
 
     private boolean oneKeyLoanHintClosed;
 
@@ -205,8 +205,8 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         super.onDestroyView();
     }
 
-    public static TabHomeFragment newInstance() {
-        return new TabHomeFragment();
+    public static TabLoanFragment newInstance() {
+        return new TabLoanFragment();
     }
 
 
@@ -338,7 +338,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
         });
         hotRecyclerView.setAdapter(hotAdapter);
 
-         /*热门产品刷新*/
+        /*热门产品刷新*/
         refreshHot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -502,9 +502,9 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-        DaggerTabHomeComponent.builder()
+        DaggerTabLoanComponent.builder()
                 .appComponent(appComponent)
-                .tabHomeModule(new TabHomeModule(this))
+                .tabLoanModule(new TabLoanModule(this))
                 .build()
                 .inject(this);
     }
@@ -516,7 +516,7 @@ public class TabHomeFragment extends BaseTabFragment implements TabHomeContract.
     }
 
     @Override
-    public void setPresenter(TabHomeContract.Presenter presenter) {
+    public void setPresenter(TabLoanContract.Presenter presenter) {
         //injected.nothing to do.
     }
 

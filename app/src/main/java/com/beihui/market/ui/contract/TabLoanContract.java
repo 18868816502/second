@@ -11,7 +11,7 @@ import com.beihui.market.entity.NoticeAbstract;
 
 import java.util.List;
 
-public interface TabHomeContract {
+public interface TabLoanContract {
 
     interface Presenter extends BasePresenter {
         /**

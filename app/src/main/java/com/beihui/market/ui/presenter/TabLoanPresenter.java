@@ -16,7 +16,7 @@ import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
-import com.beihui.market.ui.contract.TabHomeContract;
+import com.beihui.market.ui.contract.TabLoanContract;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 
@@ -30,12 +30,12 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract.Presenter {
+public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract.Presenter {
 
     private static final int PAGE_SIZE = 10;
 
     private Api api;
-    private TabHomeContract.View view;
+    private TabLoanContract.View view;
     private Context context;
 
     private boolean hasAdInit = false;
@@ -66,7 +66,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     private int choiceProductPageNo = 1;
 
     @Inject
-    TabHomePresenter(Api api, TabHomeContract.View view, Context context) {
+    TabLoanPresenter(Api api, TabLoanContract.View view, Context context) {
         this.api = api;
         this.view = view;
         this.context = context;
@@ -265,7 +265,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
+                                logError(TabLoanPresenter.this, throwable);
                                 view.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
@@ -376,7 +376,7 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                                     new Consumer<Throwable>() {
                                         @Override
                                         public void accept(Throwable throwable) throws Exception {
-                                            logError(TabHomePresenter.this, throwable);
+                                            logError(TabLoanPresenter.this, throwable);
                                             view.showErrorMsg(generateErrorMsg(throwable));
                                         }
                                     });
@@ -452,38 +452,43 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
     }
 
     private void queryAd() {
-        //用户登录的情况下才弹出广告窗
-        if (UserHelper.getInstance(context).getProfile() != null) {
-            Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
-                    .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
-                    .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
-                                   @Override
-                                   public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
-                                       if (result.isSuccess()) {
-                                           hasAdInit = true;
+        Disposable dis = api.querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
+                .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       hasAdInit = true;
+                                       if (UserHelper.getInstance(context).getProfile() != null) {
+                                           //用户已登录
                                            if (result.getData() != null && result.getData().size() > 0) {
                                                AdBanner adBanner = result.getData().get(0);
                                                //距离上次展示时间超过设定的间隔才显示广告
                                                if (System.currentTimeMillis() - SPUtils.getLastAdShowTime(context)
                                                        > (adBanner.getEndTime() - adBanner.getBeginTime()) / adBanner.getShowTimes()) {
-                                                   view.showAdDialog(result.getData().get(0));
+                                                   view.showAdDialog(adBanner);
                                                }
                                                //更新广告展示时间
                                                SPUtils.setLastAdShowTime(context, System.currentTimeMillis());
                                            }
                                        } else {
-                                           view.showErrorMsg(result.getMsg());
+                                           //用户未登录，则无视时间限制，每次都弹出广告
+                                           if (result.getData() != null && result.getData().size() > 0) {
+                                               view.showAdDialog(result.getData().get(0));
+                                           }
                                        }
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
                                    }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                    handleThrowable(throwable);
-                                }
-                            });
-            addDisposable(dis);
-        }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                handleThrowable(throwable);
+                            }
+                        });
+        addDisposable(dis);
     }
 
     private void queryNotice() {
@@ -509,14 +514,14 @@ public class TabHomePresenter extends BaseRxPresenter implements TabHomeContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(TabHomePresenter.this, throwable);
+                                logError(TabLoanPresenter.this, throwable);
                             }
                         });
         addDisposable(dis);
     }
 
     private void handleThrowable(Throwable throwable) {
-        logError(TabHomePresenter.this, throwable);
+        logError(TabLoanPresenter.this, throwable);
         view.showErrorMsg(generateErrorMsg(throwable));
 
         if (isAllDataEmpty()) {

@@ -37,7 +37,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.fragment.TabHomeFragment;
+import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsFragment;
 import com.beihui.market.util.FastClickUtils;
@@ -215,7 +215,7 @@ public class MainActivity extends BaseComponentActivity {
                     newSelected = TabAccountFragment.newInstance();
                     break;
                 case R.id.tab_home:
-                    newSelected = TabHomeFragment.newInstance();
+                    newSelected = TabLoanFragment.newInstance();
                     break;
                 case R.id.tab_news:
                     newSelected = TabNewsFragment.newInstance();
