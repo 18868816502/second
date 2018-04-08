@@ -268,7 +268,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             @Override
             public void onClick(View v) {
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ADD_DEBT);
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_NEW_BILL);
                 //点击音效
                 SoundUtils.getInstance().playAdd();
 
@@ -437,7 +437,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 @Override
                 public void onClick(View v) {
                     //pv，uv统计
-                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_ADD_DEBT);
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_CLICK_NEW_LOAN_BILL);
 
                     presenter.clickAddLoanDebt();
                 }
@@ -445,6 +445,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             noUserLoginFootView.findViewById(R.id.add_credit_card_debt).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_CLICK_NEW_CREDIT_CARD_BILL);
+
                     presenter.clickAddCreditCardDebt();
                 }
             });

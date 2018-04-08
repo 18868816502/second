@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtChannelComponent;
@@ -198,6 +199,9 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
 
     @Override
     public void showSearchChannelSelected(DebtChannel channel) {
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_LOAN_CHANNEL);
+
         Intent intent = new Intent(this, DebtNewActivity.class);
         intent.putExtra("debt_channel", channel);
         startActivity(intent);

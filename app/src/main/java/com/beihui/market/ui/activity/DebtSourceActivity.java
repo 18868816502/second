@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtSourceComponent;
 import com.beihui.market.injection.module.DebtSourceModule;
@@ -62,6 +63,9 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_LOAN_CHANNEL);
+
                 presenter.clickSourceChannel(position);
             }
         });
@@ -92,12 +96,18 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
     void onItemClicked(View view) {
         switch (view.getId()) {
             case R.id.fetch_debt_with_mail:
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_EMAIL_LEAD_IN);
+
                 presenter.clickFetchDebtWithMail();
                 break;
             case R.id.fetch_debt_with_visa:
                 presenter.clickFetchDebtWithVisa();
                 break;
             case R.id.add_debt_by_hand:
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_NEW_BY_HAND);
+
                 presenter.clickAddDebtByHand();
                 break;
             case R.id.more_debt_source_channel:

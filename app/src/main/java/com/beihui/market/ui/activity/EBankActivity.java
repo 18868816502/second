@@ -15,6 +15,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.EBank;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -82,6 +83,9 @@ public class EBankActivity extends BaseComponentActivity {
                                 ToastUtils.showShort(EBankActivity.this, "请求出错", null);
                             }
                         });
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_ENTER_EBANK_LEAD_IN);
     }
 
     @Override

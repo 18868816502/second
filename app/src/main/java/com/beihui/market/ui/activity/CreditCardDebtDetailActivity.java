@@ -19,6 +19,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerCreditCardDebtDetailComponent;
 import com.beihui.market.injection.module.CreditCardDebtDetailModule;
@@ -283,6 +284,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     public void initDatas() {
         presenter.fetchDebtDetail();
         presenter.fetchDebtMonthBill();
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_ENTER_CREDIT_CARD_BILL_DETAIL);
     }
 
     @Override

@@ -64,10 +64,6 @@ public class DataStatisticsHelper {
      */
     public static final String ID_CLICK_LOAN_REQUESTED = "我要借款";
     /**
-     * 点击我的借款
-     */
-    public static final String ID_CLICK_MY_LOAN = "我的借款";
-    /**
      * 点击启动页广告
      */
     public static final String ID_CLICK_SPLASH_AD = "启动页";
@@ -118,11 +114,6 @@ public class DataStatisticsHelper {
     public static final String ID_CLICK_TAB_ACCOUNT = "BillingBottom";
 
     /**
-     * 点击添加账单
-     */
-    public static final String ID_CLICK_ADD_DEBT = "AddBillBtn";
-
-    /**
      * 点击还款日历
      */
     public static final String ID_CLICK_DEBT_CALENDAR = "RepayCalendarBtn";
@@ -133,19 +124,9 @@ public class DataStatisticsHelper {
     public static final String ID_CLICK_DEBT_ANALYZE = "LiabilitiesBtn";
 
     /**
-     * 点击全部借款
-     */
-    public static final String ID_CLICK_ALL_DEBT = "AllBillBtn";
-
-    /**
      * 查看还款详情
      */
     public static final String ID_DEBT_DETAIL = "BillDetailBtn";
-
-    /**
-     * 确认还款计划
-     */
-    public static final String ID_CONFIRM_REPAY_PLAN = "RepayPlanBtn";
 
     /**
      * 修改分期状态为已还
@@ -181,6 +162,39 @@ public class DataStatisticsHelper {
      * 账单首页进入信用卡中心
      */
     public static final String ID_ACCOUNT_GO_TO_CREDIT_CARD_CENTER = "indexCreditCard";
+
+    /**
+     * 账单首页-新增信用卡账单
+     */
+    public static final String ID_ACCOUNT_HOME_CLICK_NEW_CREDIT_CARD_BILL = "CCB0001";
+    /**
+     * 账单首页-新增网贷账单
+     */
+    public static final String ID_ACCOUNT_HOME_CLICK_NEW_LOAN_BILL = "CCB0002";
+    /**
+     * 账单首页-新增账单（点击"+"）
+     */
+    public static final String ID_ACCOUNT_HOME_NEW_BILL = "CCB0003";
+    /**
+     * 新增账单-网银导入
+     */
+    public static final String ID_BILL_ENTER_EBANK_LEAD_IN = "CCB0004";
+    /**
+     * 新增账单-点击邮箱导入
+     */
+    public static final String ID_BILL_CLICK_EMAIL_LEAD_IN = "CCB0006";
+    /**
+     * 新增账单-点击手动记账
+     */
+    public static final String ID_BILL_CLICK_NEW_BY_HAND = "CCB0008";
+    /**
+     * 新增账单-点击网贷渠道
+     */
+    public static final String ID_BILL_CLICK_LOAN_CHANNEL = "CCB0009";
+    /**
+     * 信用卡账单详情
+     */
+    public static final String ID_BILL_ENTER_CREDIT_CARD_BILL_DETAIL = "CCB0010";
 
 
     @Inject
