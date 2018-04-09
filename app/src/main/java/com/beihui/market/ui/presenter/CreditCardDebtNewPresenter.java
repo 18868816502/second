@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -104,7 +105,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
 
         view.showProgress();
         Disposable dis = api.saveCreditCardDebt(userHelper.getProfile().getId(), cardNums, paramBankId, realName, billDay, dueDay, paramAmount)
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Function<ResultEntity, ObservableSource<Boolean>>() {
                     @Override
                     public ObservableSource<Boolean> apply(ResultEntity result) throws Exception {
