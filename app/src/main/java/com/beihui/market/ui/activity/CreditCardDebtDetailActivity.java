@@ -425,7 +425,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                                  startActivity(intent);
                                              }
                                          } else if (v.getId() == R.id.delete) {
-                                             new CommNoneAndroidDialog().withMessage("确认删除该账单？")
+                                             new CommNoneAndroidDialog().withMessage("确认删除该卡吗？")
                                                      .withNegativeBtn("取消", null)
                                                      .withPositiveBtn("确认", new View.OnClickListener() {
                                                          @Override

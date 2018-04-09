@@ -364,7 +364,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                          if (v.getId() == R.id.edit) {
                                              presenter.editDebt();
                                          } else if (v.getId() == R.id.delete) {
-                                             new CommNoneAndroidDialog().withMessage("确认删除该账单？")
+                                             new CommNoneAndroidDialog().withMessage("确认删除该提醒吗？")
                                                      .withNegativeBtn("取消", null)
                                                      .withPositiveBtn("确认", new View.OnClickListener() {
                                                          @Override
