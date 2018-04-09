@@ -163,7 +163,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
     private void saveDebt(final Map<String, Object> params) {
         view.showProgress();
 
-        Observable.just(debtDetail != null ? debtDetail : new DebtDetail())
+        Disposable dis = Observable.just(debtDetail != null ? debtDetail : new DebtDetail())
                 .observeOn(Schedulers.io())
                 .flatMap(new Function<DebtDetail, ObservableSource<ResultEntity>>() {
                     @Override
@@ -279,6 +279,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
                                 }
                             }
                         });
+        addDisposable(dis);
     }
 
     private void sendPoint(String id) {
