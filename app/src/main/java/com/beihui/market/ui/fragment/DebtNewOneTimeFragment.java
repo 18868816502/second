@@ -24,6 +24,7 @@ import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.DebtNewPresenter;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 
@@ -113,6 +114,10 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
                 etDebtAmount.requestFocus();
             }
         }, 100);
+
+        //限制小数位
+        EditTextUtils.addDecimalDigitsInputFilter(etDebtAmount);
+        EditTextUtils.addDecimalDigitsInputFilter(etDebtCapitalAmount);
     }
 
     @Override

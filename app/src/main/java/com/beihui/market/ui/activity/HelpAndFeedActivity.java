@@ -46,6 +46,7 @@ import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.EditTextUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -143,8 +144,8 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         };
         helpTv.setOnClickListener(clickListener);
         feedbackTv.setOnClickListener(clickListener);
-
         this.select(helpTv);
+
         SlidePanelHelper.attach(this);
     }
 
@@ -285,6 +286,8 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         etFeedContent = feedView.findViewById(R.id.feed_content);
         tvContentNum = feedView.findViewById(R.id.content_num);
         ivFeedImage = feedView.findViewById(R.id.feed_image);
+
+        EditTextUtils.addDisableEmojiInputFilter(etFeedContent);
 
         etFeedContent.addTextChangedListener(new TextWatcher() {
 

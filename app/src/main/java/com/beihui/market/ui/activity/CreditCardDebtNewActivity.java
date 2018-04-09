@@ -23,9 +23,11 @@ import com.beihui.market.ui.contract.CreditCardDebtNewContract;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.CreditCardDebtNewPresenter;
+import com.beihui.market.util.AndroidBug5497Fix;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -113,7 +115,10 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
                 etCreditCardNumber.requestFocus();
             }
         });
+        //限制两位小数
+        EditTextUtils.addDecimalDigitsInputFilter(etDebtAmount);
 
+        AndroidBug5497Fix.assistActivity(this);
         SlidePanelHelper.attach(this);
     }
 
