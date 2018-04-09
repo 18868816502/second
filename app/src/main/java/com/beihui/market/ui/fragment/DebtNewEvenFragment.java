@@ -115,6 +115,8 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
         //限制小数位
         EditTextUtils.addDecimalDigitsInputFilter(etDebtTermAmount);
         EditTextUtils.addDecimalDigitsInputFilter(etDebtCapitalAmount);
+        //限制emoji输入
+        EditTextUtils.addDisableEmojiInputFilter(etRemark);
     }
 
     @Override

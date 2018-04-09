@@ -118,6 +118,8 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
         //限制小数位
         EditTextUtils.addDecimalDigitsInputFilter(etDebtAmount);
         EditTextUtils.addDecimalDigitsInputFilter(etDebtCapitalAmount);
+        //限制emoji输入
+        EditTextUtils.addDisableEmojiInputFilter(etRemark);
     }
 
     @Override
