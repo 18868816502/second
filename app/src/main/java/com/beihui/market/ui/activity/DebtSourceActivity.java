@@ -12,6 +12,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtSourceComponent;
 import com.beihui.market.injection.module.DebtSourceModule;
@@ -96,10 +97,17 @@ public class DebtSourceActivity extends BaseComponentActivity implements DebtSou
     void onItemClicked(View view) {
         switch (view.getId()) {
             case R.id.fetch_debt_with_mail:
-                //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_EMAIL_LEAD_IN);
+                if (NutEmailLeadInListener.getInstance().hasUnFinishedTask()) {
+                    //如果当前已有进行中的任务，则直接进入到进度页
+                    Intent intent = new Intent(this, EmailLeadingInProgressActivity.class);
+                    intent.putExtra("email_symbol", NutEmailLeadInListener.getInstance().getCurTaskEmailSymbol());
+                    startActivity(intent);
+                } else {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_EMAIL_LEAD_IN);
 
-                presenter.clickFetchDebtWithMail();
+                    presenter.clickFetchDebtWithMail();
+                }
                 break;
             case R.id.fetch_debt_with_visa:
                 presenter.clickFetchDebtWithVisa();

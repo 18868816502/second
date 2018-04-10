@@ -7,19 +7,16 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.view.RoundProgressBar;
 import com.gyf.barlibrary.ImmersionBar;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import app.u51.com.newnutsdk.net.msg.CrawlerStatusMessage;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class EmailLeadingInProgressActivity extends BaseComponentActivity {
+public class EmailLeadingInProgressActivity extends BaseComponentActivity implements NutEmailLeadInListener.OnLeadInProgressListener {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -31,7 +28,7 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity {
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        NutEmailLeadInListener.getInstance().removeInLeadInProgressListener(this);
         super.onDestroy();
     }
 
@@ -57,7 +54,7 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity {
 
         SlidePanelHelper.attach(this);
 
-        EventBus.getDefault().register(this);
+        NutEmailLeadInListener.getInstance().addOnLeadInProgressListener(this);
     }
 
     @Override
@@ -76,17 +73,19 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity {
     }
 
 
-    @Subscribe
-    public void onLeadingInEvent(CrawlerStatusMessage msg) {
-        roundProgressBar.setProgress(msg.progress);
-        if (msg.progress == 100) {
-            Intent intent = new Intent(this, EmailLeadingInResultActivity.class);
-            intent.putExtra("success", msg.msgType.equals("success"));
-            intent.putExtra("email_symbol", getIntent().getStringExtra("email_symbol"));
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+    @Override
+    public void onProgressChanged(int progress) {
+        roundProgressBar.setProgress(progress);
+    }
 
-            finish();
-        }
+    @Override
+    public void onLeadInFinished(boolean success) {
+        Intent intent = new Intent(this, EmailLeadingInResultActivity.class);
+        intent.putExtra("success", success);
+        intent.putExtra("email_symbol", getIntent().getStringExtra("email_symbol"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        finish();
     }
 }
