@@ -946,6 +946,16 @@ public class Api {
         return service.fetchNutEmail();
     }
 
+    /**
+     * 查询信用卡账单采集结果
+     *
+     * @param userId 用户id
+     * @param email  采集邮箱
+     */
+    public Observable<ResultEntity<Boolean>> pollLeadInResult(String userId, String email) {
+        return service.pollLeadInResult(userId, email);
+    }
+
     /*****+******************************************************按钮显示***********************************************+*****+*****/
     /**
      * 查询菜单，按钮是否显示

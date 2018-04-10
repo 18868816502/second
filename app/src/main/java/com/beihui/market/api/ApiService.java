@@ -620,6 +620,13 @@ public interface ApiService {
     @POST(BASE_PATH + "/dataDictionary/emailConfig")
     Observable<ResultEntity<List<NutEmail>>> fetchNutEmail();
 
+    /**
+     * 查询信用卡账单采集结果
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/collection/task/status/nutSdkEmailCollection")
+    Observable<ResultEntity<Boolean>> pollLeadInResult(@Field("userId") String userId, @Field("email") String email);
+
 
     /****************************************************个推账号用户绑定*****************************************************/
 
