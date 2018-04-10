@@ -99,6 +99,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
             }
         }
         //账单金额
+        holder.setGone(R.id.debt_amount, true);
         holder.setText(R.id.debt_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(bill.getNewBalance()));
         //账单状态
         switch (bill.getStatus()) {
@@ -126,6 +127,9 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 break;
             case 6://无账单
                 holder.setText(R.id.debt_status, "无账单");
+                break;
+            default:
+                holder.setText(R.id.debt_status, "");
                 break;
         }
         //账单周期
