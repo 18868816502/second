@@ -47,6 +47,12 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     private MyLoanBillDebtAdapter adapter;
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_my_loan_debt_list;
     }

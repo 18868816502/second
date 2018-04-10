@@ -23,6 +23,7 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 
 import butterknife.BindView;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class EBankActivity extends BaseComponentActivity {
@@ -63,7 +64,7 @@ public class EBankActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        Api.getInstance().fetchEBankUrl(UserHelper.getInstance(this).getProfile().getId())
+        Disposable dis = Api.getInstance().fetchEBankUrl(UserHelper.getInstance(this).getProfile().getId())
                 .compose(RxUtil.<ResultEntity<EBank>>io2main())
                 .subscribe(new Consumer<ResultEntity<EBank>>() {
                                @Override

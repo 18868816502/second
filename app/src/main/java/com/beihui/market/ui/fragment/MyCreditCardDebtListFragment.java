@@ -46,6 +46,12 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
     private MyLoanBillDebtAdapter adapter;
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_my_credit_card_list;
     }

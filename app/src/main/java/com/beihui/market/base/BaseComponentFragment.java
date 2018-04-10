@@ -13,6 +13,7 @@ import com.beihui.market.App;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 
 import butterknife.ButterKnife;
@@ -53,6 +54,7 @@ public abstract class BaseComponentFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Statistic.onPageEnd(getClass().getSimpleName());
+        InputMethodUtil.closeSoftKeyboard(getActivity());
     }
 
     @Override

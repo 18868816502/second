@@ -31,6 +31,7 @@ import app.u51.com.newnutsdk.model.MailSupportConfig;
 import app.u51.com.newnutsdk.net.TenantProvider;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class UsedEmailActivity extends BaseComponentActivity {
@@ -115,7 +116,7 @@ public class UsedEmailActivity extends BaseComponentActivity {
         });
         NutSDK.getDefault().getConfig();
 
-        Api.getInstance().fetchUsedEmail(UserHelper.getInstance(this).getProfile().getId())
+        Disposable dis = Api.getInstance().fetchUsedEmail(UserHelper.getInstance(this).getProfile().getId())
                 .compose(RxUtil.<ResultEntity<List<UsedEmail>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<UsedEmail>>>() {
                                @Override

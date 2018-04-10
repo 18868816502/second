@@ -82,6 +82,12 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_debt_new_one_time;
     }

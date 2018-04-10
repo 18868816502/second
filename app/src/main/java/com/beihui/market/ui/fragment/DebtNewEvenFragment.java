@@ -79,6 +79,12 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.fragment_debt_new_even_debt;
     }

@@ -31,7 +31,6 @@ import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +42,6 @@ import butterknife.OnClick;
 
 public class CreditCardDebtNewActivity extends BaseComponentActivity implements CreditCardDebtNewContract.View {
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
     private final int REQUEST_CODE_BANK_LIST = 1;
 
     @BindView(R.id.tool_bar)
@@ -73,13 +71,6 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
      * 是否处于编辑模式
      */
     private boolean editMode;
-
-
-    @Override
-    protected void onPause() {
-        InputMethodUtil.closeSoftKeyboard(this);
-        super.onPause();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

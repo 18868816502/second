@@ -12,6 +12,7 @@ import com.beihui.market.getui.GeTuiClient;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -58,6 +59,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         Statistic.onPause(this);
+        InputMethodUtil.closeSoftKeyboard(this);
     }
 
     public abstract int getLayoutId();
