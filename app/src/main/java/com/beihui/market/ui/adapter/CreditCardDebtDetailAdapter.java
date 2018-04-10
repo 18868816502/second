@@ -39,8 +39,6 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
     private int colorIn = Color.parseColor("#5591FF");
     private int colorOut = Color.parseColor("#424251");
 
-    private int lastPageSize;
-
     /**
      * 是否是手动记账的账单
      */
@@ -234,19 +232,26 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
     public void notifyDebtListChanged(List<CreditCardDebtBill> list) {
         if (list != null && list.size() > 0) {
             //更新月份账单数据源，现在更新金额后需要重新拉取列表
-            for (int i = 0; i < lastPageSize; ++i) {
-                dataSet.get(i).updateMonthBill(list.get(i));
+            int billIndex = 0;
+            for (int i = 0; i < dataSet.size(); ++i) {
+                if (dataSet.get(i).getMonthBill() != null) {
+                    dataSet.get(i).updateMonthBill(list.get(billIndex++));
+                }
             }
             //添加新的月份账单数据，MultiEntity状态初始
-            for (int i = lastPageSize; i < list.size(); ++i) {
+            for (int i = billIndex; i < list.size(); ++i) {
                 dataSet.add(new CreditCardDebtDetailMultiEntity(list.get(i), null));
             }
-            lastPageSize = list.size();
         } else {
             dataSet.clear();
         }
+        //剔除详情，只保留账单列表
         pureDataSet.clear();
-        pureDataSet.addAll(dataSet);
+        for (int i = 0; i < dataSet.size(); ++i) {
+            if (dataSet.get(i).getMonthBill() != null) {
+                pureDataSet.add(dataSet.get(i));
+            }
+        }
         setNewData(dataSet);
         disableLoadMoreIfNotFullPage();
     }
