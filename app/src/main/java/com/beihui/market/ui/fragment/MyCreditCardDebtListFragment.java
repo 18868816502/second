@@ -1,6 +1,8 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -49,6 +51,14 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
+            presenter.debtDeleted(data.getStringExtra("deleted_id"));
+        }
     }
 
     @Override
@@ -126,6 +136,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void navigateBillDebtDetail(LoanBill.Row bill) {
-        CreditCardDebtDetailActivity.launchActivity(getContext(), bill.getRecordId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
+        Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
+        CreditCardDebtDetailActivity.putExtra(intent, bill.getRecordId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
+        startActivityForResult(intent, 1);
     }
 }

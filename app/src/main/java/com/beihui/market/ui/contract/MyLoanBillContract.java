@@ -30,6 +30,13 @@ public interface MyLoanBillContract {
          * @param index 点击的位置
          */
         void clickShowHideDebt(int index);
+
+        /**
+         * 账单被删除
+         *
+         * @param debtId 账单
+         */
+        void debtDeleted(String debtId);
     }
 
     interface View extends BaseView<Presenter> {

@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +51,14 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
+            presenter.debtDeleted(data.getStringExtra("deleteDebtId"));
+        }
     }
 
     @Override
@@ -124,7 +133,7 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     public void navigateLoanDebtDetail(LoanBill.Row bill) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", bill.getRecordId());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override

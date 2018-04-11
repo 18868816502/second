@@ -33,6 +33,7 @@ import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -396,10 +397,16 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     @Override
     public void showDeleteDebtSuccess(String msg) {
-        Intent intent = new Intent();
-        intent.putExtra("deleteDebtId", debtId);
-        setResult(RESULT_OK, intent);
-        finish();
+        ToastUtils.showShort(this, "删除成功", null);
+        toolbar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent();
+                intent.putExtra("deleteDebtId", debtId);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }, 100);
     }
 
     @Override

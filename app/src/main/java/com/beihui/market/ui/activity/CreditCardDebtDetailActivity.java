@@ -126,6 +126,14 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         context.startActivity(intent);
     }
 
+    public static void putExtra(Intent intent, String debtId, boolean byHand, String banKName, String cardNum, String logo) {
+        intent.putExtra("debt_id", debtId);
+        intent.putExtra("by_hand", byHand);
+        intent.putExtra("bank_name", banKName);
+        intent.putExtra("card_num", cardNum);
+        intent.putExtra("logo", logo);
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_credit_card_debt_detail;
@@ -454,6 +462,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Intent intent = new Intent();
+                intent.putExtra("deleted_id", debtDetail.getId());
+                setResult(RESULT_OK, intent);
                 finish();
             }
         }, 100);

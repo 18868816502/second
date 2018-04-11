@@ -28,6 +28,7 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
     private MyLoanBillContract.View view;
     private UserHelper userHelper;
 
+    private int loanBillCount;
     private List<LoanBill.Row> loanBillList = new ArrayList<>();
 
     private boolean canLoadMore;
@@ -51,6 +52,7 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
                                        curPage++;
                                        int size = 0;
                                        if (result.getData() != null) {
+                                           loanBillCount = result.getData().getTotal();
                                            view.showLoanBillCount(result.getData().getTotal());
                                            if (result.getData().getRows() != null && result.getData().getRows().size() > 0) {
                                                loanBillList.addAll(result.getData().getRows());
@@ -109,5 +111,25 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
                             }
                         });
         addDisposable(dis);
+    }
+
+    @Override
+    public void debtDeleted(String debtId) {
+        if (loanBillList.size() > 0) {
+            LoanBill.Row deletedBill = null;
+            for (LoanBill.Row bill : loanBillList) {
+                if (bill.getRecordId().equals(debtId)) {
+                    deletedBill = bill;
+                    break;
+                }
+            }
+            if (deletedBill != null) {
+                loanBillList.remove(deletedBill);
+                view.showLoanBill(Collections.unmodifiableList(loanBillList), canLoadMore);
+
+                loanBillCount--;
+                view.showLoanBillCount(loanBillCount);
+            }
+        }
     }
 }
