@@ -56,6 +56,7 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity implem
         SlidePanelHelper.attach(this);
 
         NutEmailLeadInListener.getInstance().addOnLeadInProgressListener(this);
+        NutEmailLeadInListener.getInstance().syncCurrentTask();
     }
 
     @Override
