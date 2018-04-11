@@ -138,33 +138,35 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
 
     @Override
     public void updateBillAmount(int index, double amount) {
-        final CreditCardDebtBill bill = billList.get(index);
-        Disposable dis = api.updateMonthBillAmount(userHelper.getProfile().getId(), bill.getId(), debtDetail.getId(), amount)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       view.showUpdateBillAmountSuccess();
-                                       //更新成功后重新拉去数据
-                                       billList.clear();
-                                       bill2Detail.clear();
-                                       curPageNo = 1;
-                                       fetchDebtDetail();
-                                       fetchDebtMonthBill();
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
+        if (debtDetail != null) {
+            final CreditCardDebtBill bill = billList.get(index);
+            Disposable dis = api.updateMonthBillAmount(userHelper.getProfile().getId(), bill.getId(), debtDetail.getId(), amount)
+                    .compose(RxUtil.<ResultEntity>io2main())
+                    .subscribe(new Consumer<ResultEntity>() {
+                                   @Override
+                                   public void accept(ResultEntity result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           view.showUpdateBillAmountSuccess();
+                                           //更新成功后重新拉去数据
+                                           billList.clear();
+                                           bill2Detail.clear();
+                                           curPageNo = 1;
+                                           fetchDebtDetail();
+                                           fetchDebtMonthBill();
+                                       } else {
+                                           view.showErrorMsg(result.getMsg());
+                                       }
                                    }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(CreditCardDebtDetailPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(CreditCardDebtDetailPresenter.this, throwable);
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(dis);
+        }
     }
 
     @Override
@@ -202,7 +204,9 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
 
     @Override
     public void clickMenu() {
-        view.showMenu(debtDetail.getRemind() != -1);
+        if (debtDetail != null) {
+            view.showMenu(debtDetail.getRemind() != -1);
+        }
     }
 
     @Override
