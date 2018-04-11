@@ -95,11 +95,6 @@ public class DebtRVAdapter extends BaseQuickAdapter<AccountBill, BaseViewHolder>
 
         //是否已出账或者未出账
         helper.setVisible(R.id.sync, item.getStatus() == 4 || item.getStatus() == 5);
-        //如果是无账单，则不显示任何信息
-        if (item.getStatus() == 6) {
-            helper.setText(R.id.debt_term_amount, "----");
-            helper.setText(R.id.debt_due_time, "----");
-        }
         //只有待还和逾期的账单可以设置已还
         helper.setGone(R.id.set_status, item.getStatus() == 1 || item.getStatus() == 3);
     }
