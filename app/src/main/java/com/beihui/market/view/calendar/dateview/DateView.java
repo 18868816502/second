@@ -181,6 +181,7 @@ public abstract class DateView extends View {
 
     public void setTags(List<Tag> tags) {
         this.tags.clear();
+        this.tagDateList.clear();
         if (tags != null && tags.size() > 0) {
             for (int i = 0; i < tags.size(); ++i) {
                 Tag tag = tags.get(i);

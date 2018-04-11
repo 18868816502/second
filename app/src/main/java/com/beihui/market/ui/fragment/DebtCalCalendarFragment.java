@@ -91,10 +91,13 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //刷新账单月份摘要
-        presenter.fetchCalendarAbstract(calendarDate);
-        //刷新列表
-        presenter.fetchDebtList(calendarDate, !hasDateBeenSelected);
+        //如果当前已经选中过一个日期，则唤起刷新
+        if (calendarDate != null) {
+            //刷新账单月份摘要
+            presenter.fetchCalendarAbstract(calendarDate);
+            //刷新列表
+            presenter.fetchDebtList(calendarDate, !hasDateBeenSelected);
+        }
     }
 
     @Override
@@ -162,6 +165,8 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
                 }
             }, 50);
         }
+
+
     }
 
     @Override
