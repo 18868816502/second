@@ -56,6 +56,7 @@ import java.nio.charset.Charset;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -276,7 +277,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                 }
             }
         });
-        webView.loadUrl(NetConstants.H5_ADD_DEBT_EXPLAIN);
+        webView.loadUrl(NetConstants.H5_HELP);
         return helpView;
     }
 
@@ -329,7 +330,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
             public void onClick(View v) {
                 final Context context = HelpAndFeedActivity.this;
                 if (etFeedContent.getText().length() > 0) {
-                    Observable.just(image)
+                    Disposable dis = Observable.just(image)
                             .observeOn(Schedulers.io())
                             .flatMap(new Function<Bitmap, ObservableSource<ResultEntity>>() {
                                 @Override

@@ -44,9 +44,6 @@ public class NetConstants {
 
     public static final String H5_REWARD_POINTS = H5_DOMAIN + "/integral.html";
 
-    public static final String H5_TAB_ACCOUNT_HINT = H5_DOMAIN + "/chargeImg.html";
-
-    public static final String H5_ADD_DEBT_EXPLAIN = H5_DOMAIN + "/explain.html";
     /**
      * 账单导入成功
      */
@@ -58,7 +55,7 @@ public class NetConstants {
     /**
      * 账单导入帮助页面
      */
-    public static final String H5_LEADING_IN_HELP = H5_DOMAIN + "/export/help.html";
+    public static final String H5_HELP = H5_DOMAIN + "/export/help.html";
     /**
      * 办卡进度查询
      */
