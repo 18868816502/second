@@ -513,7 +513,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    tabScrollListener.resetScrollY();
+                    if (isAdded() && recyclerView != null) {
+                        tabScrollListener.resetScrollY();
+                    }
                 }
             }, 20);
         }
