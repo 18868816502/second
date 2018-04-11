@@ -17,14 +17,17 @@
             android:layout_gravity="center"
             android:text="自动获取账单" />
 
-        <ImageView
-            android:id="@+id/question"
-            android:layout_width="@dimen/tool_bar_height"
+        <TextView
+            android:id="@+id/help_feedback"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/tool_bar_height"
             android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/email_leading_in_question" />
+            android:gravity="center"
+            android:minWidth="@dimen/tool_bar_height"
+            android:paddingRight="15dp"
+            android:text="帮助反馈"
+            android:textColor="@color/black_2"
+            android:textSize="14sp" />
     </android.support.v7.widget.Toolbar>
 
     <com.beihui.market.view.RoundProgressBar

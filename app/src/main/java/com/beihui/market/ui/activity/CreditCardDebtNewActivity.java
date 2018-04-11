@@ -108,6 +108,8 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
         });
         //限制两位小数
         EditTextUtils.addDecimalDigitsInputFilter(etDebtAmount);
+        //禁止输入emoji
+        EditTextUtils.addDisableEmojiInputFilter(etCardOwner);
 
         AndroidBug5497Fix.assistActivity(this);
         SlidePanelHelper.attach(this);

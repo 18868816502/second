@@ -3,6 +3,7 @@ package com.beihui.market.ui.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -67,9 +68,16 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity implem
 
     }
 
-    @OnClick(R.id.leave)
-    void onItemClicked() {
-        onBackPressed();
+    @OnClick({R.id.leave, R.id.help_feedback})
+    void onItemClicked(View view) {
+        switch (view.getId()) {
+            case R.id.leave:
+                onBackPressed();
+                break;
+            case R.id.help_feedback:
+                startActivity(new Intent(this, HelpAndFeedActivity.class));
+                break;
+        }
     }
 
 
