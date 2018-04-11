@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/loanMarket.iml" filepath="$PROJECT_DIR$/loanMarket.iml" />
-      <module fileurl="file://$PROJECT_DIR$/socialshare/socialshare.iml" filepath="$PROJECT_DIR$/socialshare/socialshare.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaonengchat/xiaonengchat.iml" filepath="$PROJECT_DIR$/xiaonengchat/xiaonengchat.iml" />
     </modules>
   </component>

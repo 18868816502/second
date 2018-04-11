@@ -44,6 +44,7 @@ import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -125,6 +126,12 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         presenter.onDestroy();
         presenter = null;
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

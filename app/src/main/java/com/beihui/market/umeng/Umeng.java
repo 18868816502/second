@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.beihui.market.BuildConfig;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
@@ -23,12 +24,15 @@ public class Umeng {
         config.setSinaAuthType(UMShareConfig.AUTH_TYPE_SSO);
         UMShareAPI.get(context).setShareConfig(config);
 
+        UMConfigure.init(context, "596c4b3dbbea83542c001b01", "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+
         //统计使用
         MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         //统计错误
         MobclickAgent.setCatchUncaughtExceptions(true);
         //统计自定义事件
         Statistic.registerContext(context);
+
 
         MobclickAgent.setDebugMode(BuildConfig.DEBUG);
 

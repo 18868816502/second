@@ -98,7 +98,7 @@ android {
 
                     UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
 
-                    TENCENT_DATA    : "tencent1106217443",
+                    qqappid         : "1106280475",
 
                     PACKAGE_NAME    : applicationId
             ]
@@ -121,7 +121,7 @@ android {
 
                     UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
 
-                    TENCENT_DATA    : "tencent1106217443",
+                    qqappid         : "1106280475",
 
                     PACKAGE_NAME    : applicationId
             ]
@@ -208,7 +208,6 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile project(':socialshare')
     compile project(':xiaonengchat')
 
     //坚果信用
@@ -258,8 +257,13 @@ dependencies {
     compile 'com.getui:sdk:2.10.2.0'
 
     //umeng统计
-    compile 'com.umeng.sdk:common:latest.integration'
-    compile 'com.umeng.sdk:analytics:latest.integration'
+    compile 'com.umeng.sdk:common:1.5.0'
+    compile 'com.umeng.sdk:analytics:7.5.0'
+    //umeng分享，微信，QQ，微博
+    compile 'com.umeng.sdk:share-core:6.9.0'
+    compile 'com.umeng.sdk:share-qq:6.9.0'
+    compile 'com.umeng.sdk:share-wechat:6.9.0'
+    compile 'com.umeng.sdk:share-sina:6.9.0'
 
     //database-greeodao
     compile 'org.greenrobot:greendao:3.2.2'

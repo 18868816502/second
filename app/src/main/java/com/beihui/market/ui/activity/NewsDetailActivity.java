@@ -62,6 +62,12 @@ public class NewsDetailActivity extends BaseComponentActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_news_detail;
     }
@@ -150,11 +156,5 @@ public class NewsDetailActivity extends BaseComponentActivity {
                 .setUmWeb(web)
                 .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }
