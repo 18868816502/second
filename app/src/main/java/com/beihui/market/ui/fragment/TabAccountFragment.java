@@ -382,17 +382,18 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         billsBgImage.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                billsBgImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                ViewGroup.LayoutParams lp = header.itemView.getLayoutParams();
-                lp.height = billsBgImage.getMeasuredHeight();
-                header.itemView.setLayoutParams(lp);
+                if (billsBgImage != null) {
+                    billsBgImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    ViewGroup.LayoutParams lp = header.itemView.getLayoutParams();
+                    lp.height = billsBgImage.getMeasuredHeight();
+                    header.itemView.setLayoutParams(lp);
 
-                billsBgImage.setDrawingCacheEnabled(true);
-                Bitmap drawingCache = billsBgImage.getDrawingCache();
-                if (drawingCache != null) {
-                    Bitmap res = Bitmap.createBitmap(drawingCache, 0, 0, toolbar.getMeasuredWidth(), toolbar.getMeasuredHeight());
-                    toolbar.setBackground(new BitmapDrawable(getResources(), res));
-                    drawingCache.recycle();
+                    billsBgImage.setDrawingCacheEnabled(true);
+                    Bitmap drawingCache = billsBgImage.getDrawingCache();
+                    if (drawingCache != null) {
+                        Bitmap res = Bitmap.createBitmap(drawingCache, 0, 0, toolbar.getMeasuredWidth(), toolbar.getMeasuredHeight());
+                        toolbar.setBackground(new BitmapDrawable(getResources(), res));
+                    }
                 }
             }
         });

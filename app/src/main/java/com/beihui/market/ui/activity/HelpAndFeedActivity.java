@@ -330,26 +330,30 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
             public void onClick(View v) {
                 final Context context = HelpAndFeedActivity.this;
                 if (etFeedContent.getText().length() > 0) {
-                    Disposable dis = Observable.just(image)
+                    Disposable dis = Observable.just(1)
                             .observeOn(Schedulers.io())
-                            .flatMap(new Function<Bitmap, ObservableSource<ResultEntity>>() {
+                            .flatMap(new Function<Integer, ObservableSource<ResultEntity>>() {
                                 @Override
-                                public ObservableSource<ResultEntity> apply(Bitmap source) throws Exception {
-                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                    int quality = 100;
-                                    source.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-                                    while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
-                                        quality -= 5;
-                                        if (quality <= 0) {
-                                            quality = 0;
-                                        }
-                                        baos.reset();
-                                        source.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-                                        if (quality == 0) {
-                                            break;
+                                public ObservableSource<ResultEntity> apply(Integer source) throws Exception {
+                                    ByteArrayOutputStream baos = null;
+                                    if (image != null) {
+                                        baos = new ByteArrayOutputStream();
+                                        int quality = 100;
+                                        image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                                        while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
+                                            quality -= 5;
+                                            if (quality <= 0) {
+                                                quality = 0;
+                                            }
+                                            baos.reset();
+                                            image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                                            if (quality == 0) {
+                                                break;
+                                            }
                                         }
                                     }
-                                    return Api.getInstance().submitFeedback(UserHelper.getInstance(context).getProfile().getId(), etFeedContent.getText().toString(), baos.toByteArray(), System.currentTimeMillis() + ".jpg");
+                                    return Api.getInstance().submitFeedback(UserHelper.getInstance(context).getProfile().getId(), etFeedContent.getText().toString(),
+                                            baos != null ? baos.toByteArray() : null, baos != null ? System.currentTimeMillis() + ".jpg" : null);
                                 }
                             })
                             .compose(RxUtil.<ResultEntity>io2main())
