@@ -5,11 +5,26 @@
     android:background="@color/common_bg"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <FrameLayout
         android:id="@+id/tool_bar"
         style="@style/ToolBarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
+
+        <ImageView
+            android:id="@+id/navigate"
+            android:layout_width="@dimen/tool_bar_height"
+            android:layout_height="@dimen/tool_bar_height"
+            android:scaleType="centerInside"
+            android:src="@drawable/left_arrow_white" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/tool_bar_height"
+            android:layout_height="@dimen/tool_bar_height"
+            android:layout_marginLeft="50dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/close_white" />
 
         <TextView
             android:id="@+id/title"
@@ -20,7 +35,16 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/tab_news" />
-    </android.support.v7.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="@dimen/tool_bar_height"
+            android:layout_height="@dimen/tool_bar_height"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/share_white" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

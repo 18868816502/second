@@ -50,7 +50,6 @@ public class NewsRVAdapter extends BaseMultiItemQuickAdapter<MultipleNewsItem, B
                             Glide.with(helper.itemView.getContext())
                                     .load(item.getImageList().get(i))
                                     .asBitmap()
-                                    .centerCrop()
                                     .placeholder(R.drawable.image_place_holder)
                                     .into((ImageView) helper.getView(image_ids[i]));
                         } else {
@@ -67,7 +66,6 @@ public class NewsRVAdapter extends BaseMultiItemQuickAdapter<MultipleNewsItem, B
                     Glide.with(context)
                             .load(item.getImageList().get(0))
                             .asBitmap()
-                            .centerCrop()
                             .placeholder(R.drawable.image_place_holder)
                             .into((ImageView) helper.getView(R.id.news_image));
                 } else {

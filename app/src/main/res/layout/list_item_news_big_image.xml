@@ -22,9 +22,10 @@
     <ImageView
         android:id="@+id/news_image"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         tools:src="@drawable/image_place_holder" />
 
     <LinearLayout

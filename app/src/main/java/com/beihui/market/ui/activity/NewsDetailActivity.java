@@ -2,14 +2,14 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.beihui.market.R;
@@ -31,12 +31,13 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class NewsDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
-    Toolbar toolbar;
+    FrameLayout toolbar;
     @BindView(R.id.web_view)
     WebView webView;
     @BindView(R.id.progress_bar)
@@ -68,6 +69,15 @@ public class NewsDetailActivity extends BaseComponentActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_news_detail;
     }
@@ -75,9 +85,9 @@ public class NewsDetailActivity extends BaseComponentActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).init();
 
+        webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -87,9 +97,16 @@ public class NewsDetailActivity extends BaseComponentActivity {
                 }
             }
         });
+        webView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivityWithoutOverride(intent);
+            }
+        });
         SlidePanelHelper.attach(this);
 
-        webView.setWebViewClient(new WebViewClient());
     }
 
     @Override
@@ -118,43 +135,43 @@ public class NewsDetailActivity extends BaseComponentActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    @OnClick({R.id.close, R.id.share})
+    void onItemClicked(View view) {
+        switch (view.getId()) {
+            case R.id.close:
+                finish();
+                break;
+            case R.id.share:
+                //umeng统计
+                Statistic.onEvent(Events.NEWS_DETAIL_SHARE);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //umeng统计
-        Statistic.onEvent(Events.NEWS_DETAIL_SHARE);
-
-        UMWeb web = new UMWeb(newsUrl.replace("&isApp=1", ""));
-        String imageUrl = null;
-        String title = null;
-        String description = null;
-        if (hotNews != null) {
-            imageUrl = hotNews.getFilePath();
-            title = hotNews.getTitle();
-            description = hotNews.getExplain();
-        } else if (news != null) {
-            imageUrl = news.getImage();
-            title = news.getTitle();
-            description = news.getExplain();
+                UMWeb web = new UMWeb(newsUrl.replace("&isApp=1", ""));
+                String imageUrl = null;
+                String title = null;
+                String description = null;
+                if (hotNews != null) {
+                    imageUrl = hotNews.getFilePath();
+                    title = hotNews.getTitle();
+                    description = hotNews.getExplain();
+                } else if (news != null) {
+                    imageUrl = news.getImage();
+                    title = news.getTitle();
+                    description = news.getExplain();
+                }
+                if (imageUrl != null) {
+                    UMImage thumb = new UMImage(this, imageUrl);
+                    web.setThumb(thumb);
+                }
+                if (title != null) {
+                    web.setTitle(title);
+                }
+                if (description != null) {
+                    web.setDescription(description);
+                }
+                new ShareDialog()
+                        .setUmWeb(web)
+                        .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
+                break;
         }
-        if (imageUrl != null) {
-            UMImage thumb = new UMImage(this, imageUrl);
-            web.setThumb(thumb);
-        }
-        if (title != null) {
-            web.setTitle(title);
-        }
-        if (description != null) {
-            web.setDescription(description);
-        }
-        new ShareDialog()
-                .setUmWeb(web)
-                .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
-        return super.onOptionsItemSelected(item);
     }
 }
