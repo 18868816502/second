@@ -17,8 +17,8 @@ public class DateFormatUtils {
     public static String generateNewsDate(long gmt) {
         checkNewsField();
         long now = System.currentTimeMillis();
-        if (gmt >= now - 5 * 1000 * 60) {
-            //5分钟之内
+        if (gmt >= now - 1000 * 60) {
+            //1分钟之内
             return "刚刚";
         } else if (gmt >= now - 60 * 1000 * 60) {
             //一个小时之内

@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/invitation_title" />
+                android:src="@drawable/invitation_title" />
 
             <ImageView
                 android:layout_width="wrap_content"
