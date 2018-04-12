@@ -157,7 +157,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             addDisposable(dis);
         } else {
             //信用卡账单
-            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), bill.getBillId(), 2)
+            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), bill.getRecordId(), bill.getBillId(), 2)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {
                                    @Override

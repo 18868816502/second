@@ -489,14 +489,14 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/creditcard/updateBill")
-    Observable<ResultEntity> updateMonthBillAmount(@Field("userId") String userId, @Field("billId") String billId, @Field("cardId") String cardId, @Field("amount") double amount);
+    Observable<ResultEntity> updateMonthBillAmount(@Field("userId") String userId, @Field("cardId") String cardId, @Field("billId") String billId, @Field("amount") double amount);
 
     /**
      * 更新信用卡账单还款状态
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/creditcard/updateBill")
-    Observable<ResultEntity> updateCreditCardDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("status") int status);
+    Observable<ResultEntity> updateCreditCardDebtBillStatus(@Field("userId") String userId, @Field("cardId") String cardId, @Field("billId") String billId, @Field("status") int status);
 
     /**
      * 删除信用卡账单

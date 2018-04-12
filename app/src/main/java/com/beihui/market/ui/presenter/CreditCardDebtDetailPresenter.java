@@ -173,7 +173,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     public void clickSetStatus() {
         if (debtDetail != null) {
             //设为已还
-            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getShowBill().getId(), 2)
+            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getId(), debtDetail.getShowBill().getId(), 2)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {
                                    @Override

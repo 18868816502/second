@@ -176,7 +176,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 holder.setVisible(R.id.edit_amount, true);
                 break;
             case 4://已出账
-                if (bill.getNewBalance() == -1) {//没有金额的已出账账单，显示添加
+                if (bill.getNewBalance() == 0) {//没有金额的已出账账单，显示添加
                     holder.setVisible(R.id.add_amount, true);
                 }
                 break;

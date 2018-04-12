@@ -759,18 +759,19 @@ public class Api {
      * @param amount 账单金额
      */
     public Observable<ResultEntity> updateMonthBillAmount(String userId, String billId, String cardId, double amount) {
-        return service.updateMonthBillAmount(userId, billId, cardId, amount);
+        return service.updateMonthBillAmount(userId, cardId, billId, amount);
     }
 
     /**
      * 更新信用卡账单还款状态
      *
      * @param userId 用户id
+     * @param cardId 信用卡id
      * @param billId 账单id
      * @param status 还款状态，1-待还，2-已还
      */
-    public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String billId, int status) {
-        return service.updateCreditCardDebtBillStatus(userId, billId, status);
+    public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String cardId, String billId, int status) {
+        return service.updateCreditCardDebtBillStatus(userId, cardId, billId, status);
     }
 
     /**
