@@ -25,7 +25,7 @@ public class EtAmountWatcher implements TextWatcher {
         if (editText.getText().length() > 0) {
             try {
                 double amount = Double.parseDouble(editText.getText().toString());
-                if (amount >= 10000000) {
+                if (amount > 10000000) {
                     ToastUtils.showShort(editText.getContext(), "金额不能超过1000万", null);
                     editText.getEditableText().delete(editText.length() - 1, editText.length());
                 }

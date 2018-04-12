@@ -134,30 +134,30 @@ android {
         }
 
         anbei { dimension "channel" }
-//        baidu { dimension "channel" }
-//        market91 { dimension "channel" }
-//        anzhuomarket { dimension "channel" }
-//        market360 { dimension "channel" }
-//        yingyongbao { dimension "channel" }
-//        xiaomi { dimension "channel" }
-//        huawei { dimension "channel" }
-//        VIVO { dimension "channel" }
-//        OPPO { dimension "channel" }
-//        meizu { dimension "channel" }
-//        chuizi { dimension "channel" }
-//        wandoujia { dimension "channel" }
-//        samsung { dimension "channel" }
-//        mumayi { dimension "channel" }
-//        Nduo { dimension "channel" }
-//        anzhi { dimension "channel" }
-//        sougou { dimension "channel" }
-//        liqumarket { dimension "channel" }
-//        youyi { dimension "channel" }
-//        anfen { dimension "channel" }
-//        anzhuoyuan { dimension "channel" }
-//        lvan { dimension "channel" }
-//        PC6 { dimension "channel" }
-//        H5 { dimension "channel" }
+        baidu { dimension "channel" }
+        market91 { dimension "channel" }
+        anzhuomarket { dimension "channel" }
+        market360 { dimension "channel" }
+        yingyongbao { dimension "channel" }
+        xiaomi { dimension "channel" }
+        huawei { dimension "channel" }
+        VIVO { dimension "channel" }
+        OPPO { dimension "channel" }
+        meizu { dimension "channel" }
+        chuizi { dimension "channel" }
+        wandoujia { dimension "channel" }
+        samsung { dimension "channel" }
+        mumayi { dimension "channel" }
+        Nduo { dimension "channel" }
+        anzhi { dimension "channel" }
+        sougou { dimension "channel" }
+        liqumarket { dimension "channel" }
+        youyi { dimension "channel" }
+        anfen { dimension "channel" }
+        anzhuoyuan { dimension "channel" }
+        lvan { dimension "channel" }
+        PC6 { dimension "channel" }
+        H5 { dimension "channel" }
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
@@ -172,9 +172,9 @@ android {
         def vest = variant.flavors[0].name
         def channel = variant.flavors[1].name
         //不打包非release包
-//        if (variant.buildType.name != "release") {
-//            variant.setIgnore(true)
-//        }
+        if (variant.buildType.name != "release") {
+            variant.setIgnore(true)
+        }
         //过滤渠道
         if (vests.contains(vest)) {
             def channels = vest2Channel.get(vest)
