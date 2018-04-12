@@ -211,7 +211,7 @@ dependencies {
     compile project(':xiaonengchat')
 
     //坚果信用
-    compile(name: 'nutsdk', ext: 'aar')
+    compile(name: 'newnutsdk', ext: 'aar')
 
     //noinspection GradleCompatible
     compile "com.android.support:appcompat-v7:$support_library_version"

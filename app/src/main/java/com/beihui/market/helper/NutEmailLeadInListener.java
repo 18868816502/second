@@ -51,7 +51,6 @@ public class NutEmailLeadInListener {
     @Subscribe
     public void onLeadingInEvent(CrawlerStatusMessage msg) {
         curMsg = msg;
-
         dispatchProgressEvent(curMsg.progress);
         if (curMsg.progress == 100) {
             dispatchFinishedEvent(msg.msgType.equals("success"));
