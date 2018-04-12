@@ -55,7 +55,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="17dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/authorization_logo" />
+            android:src="@drawable/authorization_logo" />
     </FrameLayout>
 
 </FrameLayout>

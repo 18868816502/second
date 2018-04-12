@@ -43,7 +43,7 @@ public class WeChatPublicDialog extends DialogFragment {
         ButterKnife.bind(this, view);
         ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         if (cm != null) {
-            cm.setPrimaryClip(ClipData.newPlainText("loan_market", "爱信管家"));
+            cm.setPrimaryClip(ClipData.newPlainText("loan_market", "考拉记账"));
             ToastUtils.showShort(getContext(), "公众号复制成功", null);
         }
         return view;
