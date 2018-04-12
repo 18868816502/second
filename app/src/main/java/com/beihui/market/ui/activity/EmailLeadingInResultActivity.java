@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
@@ -80,6 +81,8 @@ public class EmailLeadingInResultActivity extends BaseComponentActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                NutEmailLeadInListener.getInstance().hasEnterResult();
+
                 Intent intent = new Intent(EmailLeadingInResultActivity.this, MainActivity.class);
                 intent.putExtra("account", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

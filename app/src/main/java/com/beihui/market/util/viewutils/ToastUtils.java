@@ -18,6 +18,7 @@ import java.lang.ref.WeakReference;
 public class ToastUtils {
 
     private static WeakReference<Toast> toast;
+    private static WeakReference<Toast> leadToast;
 
     public static void showShort(Context context, String msg, @DrawableRes int drawableRes) {
         Drawable drawable = context.getResources().getDrawable(drawableRes);
@@ -59,5 +60,20 @@ public class ToastUtils {
         }
 
         return toast;
+    }
+
+    public static void showLeadInResultToast(Context context) {
+        if (context == null)
+            return;
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.BOTTOM, 0, (int) (context.getResources().getDisplayMetrics().density * 60));
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_toast_lead_in_result, null);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+
+        leadToast = new WeakReference<>(toast);
+        if (leadToast.get() != null) {
+            leadToast.get().show();
+        }
     }
 }

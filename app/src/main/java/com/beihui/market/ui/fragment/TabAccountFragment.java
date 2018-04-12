@@ -24,6 +24,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
@@ -44,6 +45,7 @@ import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.ui.rvdecoration.DebtItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.SoundUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.refreshlayout.RefreshLayout;
 import com.beihui.market.view.refreshlayout.manager.ComRefreshManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -230,6 +232,15 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void onResume() {
         super.onResume();
         presenter.onStart();
+
+        NutEmailLeadInListener.getInstance().checkLeadInResult(new NutEmailLeadInListener.OnCheckLeadInResultListener() {
+            @Override
+            public void onCheckLeadInResult(boolean success) {
+                if (success) {
+                    ToastUtils.showLeadInResultToast(getContext());
+                }
+            }
+        });
     }
 
     @Override

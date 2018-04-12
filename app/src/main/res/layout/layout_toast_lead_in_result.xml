@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:alpha="0.9"
+    android:background="@drawable/lead_in_result_toast_bg">
+
+    <FrameLayout
+        android:layout_width="306dp"
+        android:layout_height="38dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/home_time_icon"
+            android:drawablePadding="5dp"
+            android:text="账单可能有延迟，请稍等..."
+            android:textColor="@android:color/white"
+            android:textSize="13dp" />
+    </FrameLayout>
+
+
+</FrameLayout>
