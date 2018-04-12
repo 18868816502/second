@@ -518,6 +518,13 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void showInDebtList(List<AccountBill> list) {
         if (isAdded()) {
+            if (list.size() > 0) {
+                //如果有账单列表，则移除底部添加操作栏
+                while (adapter.getFooterLayout().getChildCount() > 1) {
+                    adapter.getFooterLayout().removeViewAt(0);
+                }
+            }
+
             completeRefresh();
 
             adapter.notifyDebtChanged(list);
