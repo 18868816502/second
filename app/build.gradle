@@ -156,8 +156,6 @@ android {
         anfen { dimension "channel" }
         anzhuoyuan { dimension "channel" }
         lvan { dimension "channel" }
-        PC6 { dimension "channel" }
-        H5 { dimension "channel" }
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
