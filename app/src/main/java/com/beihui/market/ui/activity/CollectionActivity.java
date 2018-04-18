@@ -12,6 +12,9 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
+/**
+ * 我的收藏
+ */
 public class CollectionActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)

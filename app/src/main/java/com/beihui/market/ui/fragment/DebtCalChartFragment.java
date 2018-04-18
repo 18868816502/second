@@ -53,6 +53,9 @@ import butterknife.BindView;
 
 import static com.beihui.market.util.CommonUtils.keep2digits;
 
+/**
+ * 账单模块 还款日历 图形化Fragment
+ */
 public class DebtCalChartFragment extends BaseComponentFragment implements DebtCalendarContract.View {
 
     private final SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);

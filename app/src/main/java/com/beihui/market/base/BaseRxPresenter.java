@@ -17,6 +17,10 @@ public abstract class BaseRxPresenter implements BasePresenter {
 
     private static Handler DEBUG_MAIN_THREAD_HANDLER;
 
+    /**
+     * 用CompositeDisposable来管理订阅事件disposable，
+     * 然后在acivity销毁的时候，调用compositeDisposable.dispose()就可以切断所有订阅事件，防止内存泄漏。
+     */
     private CompositeDisposable compositeDisposable;
 
     protected void addDisposable(Disposable disposable) {

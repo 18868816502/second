@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 
+/**
+ * 旋转圆圈 进度条
+ */
 public class CommNoneAndroidLoading extends Dialog {
 
     private String message;

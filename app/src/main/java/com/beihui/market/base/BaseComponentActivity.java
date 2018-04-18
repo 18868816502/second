@@ -23,13 +23,16 @@ import butterknife.Optional;
 
 public abstract class BaseComponentActivity extends BaseActivity {
 
-
+    //进度条
     protected CommNoneAndroidLoading loading;
 
 
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+         * 注入App
+         */
         configureComponent(App.getInstance().getAppComponent());
 
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
         GeTuiClient.install(this);
 
         setContentView(getLayoutId());
-
+        //初始化沉浸式
         ImmersionBar.with(this).init();
         if (savedInstanceState != null) {
             FragmentManager manager = getSupportFragmentManager();

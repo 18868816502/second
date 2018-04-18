@@ -44,7 +44,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
+/**
+ * 用户登录的Fragment 片段
+ */
 public class UserLoginFragment extends BaseComponentFragment implements LoginContract.View {
 
     private final int REQUEST_CODE_BIND_PHONE = 1;
@@ -167,6 +169,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @OnClick({R.id.register, R.id.forget_psd, R.id.login, R.id.login_with_wechat})
     void onViewClicked(View view) {
         switch (view.getId()) {
+            //注册
             case R.id.register:
                 //umeng统计
                 Statistic.onEvent(Events.LOGIN_REGISTER);

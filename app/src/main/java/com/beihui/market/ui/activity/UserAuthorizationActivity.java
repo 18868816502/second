@@ -40,6 +40,9 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 用户登录页面 Activity
+ */
 public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @BindView(R.id.root_container)
@@ -175,6 +178,9 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         onBackPressed();
     }
 
+    /**
+     *
+     */
     @Subscribe
     public void onAuthorizationNavigation(AuthNavigationEvent event) {
         if (event.navigationTag == AuthNavigationEvent.TAG_REGISTER) {

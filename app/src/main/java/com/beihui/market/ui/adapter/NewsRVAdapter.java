@@ -16,6 +16,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 资讯 模块 TabNewsFragment 的适配器
+ */
 public class NewsRVAdapter extends BaseMultiItemQuickAdapter<MultipleNewsItem, BaseViewHolder> {
 
     private static final int[] image_ids = {R.id.news_image_1, R.id.news_image_2, R.id.news_image_3};

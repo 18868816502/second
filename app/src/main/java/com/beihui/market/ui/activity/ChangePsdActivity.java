@@ -30,15 +30,22 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 修改登录密码
+ */
 public class ChangePsdActivity extends BaseComponentActivity implements ChangePsdContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    //原密码
     @BindView(R.id.origin_psd)
     EditText originPsdEt;
+    //新密码
     @BindView(R.id.new_psd)
     EditText newPsdEt;
+    //新密码 确认
     @BindView(R.id.new_psd_confirm)
     EditText newPsdConfirmEt;
+    //确认修改按钮
     @BindView(R.id.confirm)
     TextView confirmBtn;
 
@@ -93,6 +100,9 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
 
     }
 
+    /**
+     * Dagger2 api
+     */
     @Override
     protected void configureComponent(AppComponent appComponent) {
         DaggerChangePsdComponent.builder()

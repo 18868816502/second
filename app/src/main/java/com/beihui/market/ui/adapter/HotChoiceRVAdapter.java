@@ -17,6 +17,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 借款模块 热门产品适配器
+ */
 public class HotChoiceRVAdapter extends BaseQuickAdapter<LoanProduct.Row, BaseViewHolder> {
 
     private List<LoanProduct.Row> dataSet = new ArrayList<>();

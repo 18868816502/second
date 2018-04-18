@@ -18,9 +18,13 @@ import com.beihui.market.injection.component.AppComponent;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 关于我们 页面
+ */
 public class AboutUsActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    //版本名称
     @BindView(R.id.version_name)
     TextView versionNameTv;
 

@@ -33,10 +33,12 @@ import butterknife.OnClick;
 
 public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implements RegisterVerifyContract.View {
 
+    //手机号
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;
     @BindView(R.id.verify_code)
     EditText verifyCodeEt;
+    //获取验证码
     @BindView(R.id.fetch_text)
     TextView fetchText;
     @BindView(R.id.next_step)
@@ -122,6 +124,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
             case R.id.head_to_login:
                 EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_HEAD_TO_LOGIN));
                 break;
+            //获取验证码
             case R.id.fetch_text:
                 //umeng统计
                 Statistic.onEvent(Events.REGISTER_GET_VERIFY);

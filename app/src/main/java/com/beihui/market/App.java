@@ -22,6 +22,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        /**
+         * 调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
+         * Application通过此接口提供了一套回调方法，用于让开发者对Activity的生命周期事件进行集中处理
+         */
         registerActivityLifecycleCallbacks(ActivityTracker.getInstance());
         initComponent();
 
@@ -41,6 +45,9 @@ public class App extends Application {
         return sInstance;
     }
 
+    /**
+     * 两个module
+     */
     private void initComponent() {
         appComponent = DaggerAppComponent.builder()
                 .apiModule(new ApiModule())

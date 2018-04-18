@@ -39,6 +39,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * 资讯 模块 Fragment
+ */
 public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.View {
 
     @BindView(R.id.state_layout)
@@ -104,6 +107,9 @@ public class TabNewsFragment extends BaseTabFragment implements TabNewsContract.
                 }));
 
         adapter = new NewsRVAdapter();
+        /**
+         * 单个条目的跳转事件
+         */
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

@@ -54,7 +54,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.xiaoneng.uiapi.Ntalker;
 
-
+/**
+ * 我的 模块 Fragment
+ */
 public class TabMineFragment extends BaseTabFragment implements TabMineContract.View {
 
     @BindView(R.id.tool_bar)
@@ -196,7 +198,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.clickMessage();
                 }
                 break;
-
+            //登录
             case R.id.login:
                 if (!FastClickUtils.isFastClick()) {
                     navigateLogin();
@@ -318,6 +320,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         this.points.setText(ss);
     }
 
+    /**
+     * 登录事件
+     */
     @Override
     public void navigateLogin() {
         if (pendingPhone != null) {

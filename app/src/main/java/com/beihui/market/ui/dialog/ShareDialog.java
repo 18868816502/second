@@ -30,6 +30,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * 分享对话框 微信 朋友圈 QQ 微博
+ */
 public class ShareDialog extends DialogFragment {
 
     private static final String TAG = ShareDialog.class.getSimpleName();
@@ -76,12 +79,15 @@ public class ShareDialog extends DialogFragment {
     @OnClick({R.id.share_wechat, R.id.share_wechat_moment, R.id.share_qq, R.id.share_weibo, R.id.cancel})
     void OnViewClicked(View view) {
         switch (view.getId()) {
+            //微信
             case R.id.share_wechat:
                 shareWeb(SHARE_MEDIA.WEIXIN);
                 break;
+            //朋友圈
             case R.id.share_wechat_moment:
                 shareWeb(SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
+            //QQ
             case R.id.share_qq:
                 //qq分享需要存储权限
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
@@ -92,6 +98,7 @@ public class ShareDialog extends DialogFragment {
                     shareWeb(SHARE_MEDIA.QQ);
                 }
                 break;
+            //微博
             case R.id.share_weibo:
                 shareWeb(SHARE_MEDIA.SINA);
                 break;

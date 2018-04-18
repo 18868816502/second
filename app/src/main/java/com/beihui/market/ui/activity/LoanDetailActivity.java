@@ -55,7 +55,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
+/**
+ * 产品详情 (如热门产品单个item点击事件跳转)
+ */
 public class LoanDetailActivity extends BaseComponentActivity implements LoanProductDetailContract.View {
 
     @BindView(R.id.navigate)
@@ -71,6 +73,8 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     Toolbar toolbar;
     @BindView(R.id.scroll_view)
     WatchableScrollView scrollView;
+
+    //我要借款
     @BindView(R.id.apply)
     TextView applyBtn;
 

@@ -65,6 +65,9 @@ import zhy.com.highlight.shape.CircleLightShape;
 
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
+/**
+ * 账单 模块 Fragment
+ */
 public class TabAccountFragment extends BaseTabFragment implements TabAccountContract.View {
     @BindView(R.id.refresh_layout)
     RefreshLayout refreshLayout;
@@ -118,8 +121,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         View debtMonthHide;
         @BindView(R.id.debt_month_no_user_login)
         View debtMonthNoUserLogin;
+        //还款日历
         @BindView(R.id.debt_calendar)
         View debtCalendar;
+        //负债分析
         @BindView(R.id.debt_analyze)
         View debtAnalyze;
 
@@ -314,6 +319,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
             }
         });
+        /**
+         * 还款日历点击事件
+         */
         header.debtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -323,6 +331,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 presenter.clickCalendar();
             }
         });
+        /**
+         * 负债分析点击事件
+         */
         header.debtAnalyze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -600,6 +611,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         startActivity(new Intent(getContext(), EBankActivity.class));
     }
 
+    /**
+     * 登录成功 点击还款日历 进入日历
+     */
     @Override
     public void navigateCalendar() {
         startActivity(new Intent(getContext(), DebtCalendarActivity.class));

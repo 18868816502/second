@@ -25,7 +25,9 @@ import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
 
-
+/**
+ * 测试升价的页面
+ */
 public class WorthTestActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)

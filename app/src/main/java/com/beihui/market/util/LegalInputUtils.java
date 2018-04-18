@@ -25,6 +25,9 @@ public class LegalInputUtils {
     }
 
 
+    /**
+     * 验证手机号
+     */
     public static boolean validatePhone(String phone) {
         if (TextUtils.isEmpty(phone) || phone.length() != 11) {
             return false;

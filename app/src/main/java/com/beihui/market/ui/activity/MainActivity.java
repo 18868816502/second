@@ -68,8 +68,10 @@ import okhttp3.Request;
 
 public class MainActivity extends BaseComponentActivity {
 
+    //导航栏背景
     @BindView(R.id.navigation_bar_bg)
     ImageView navigationBarBg;
+    //导航栏跟布局
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
 
@@ -77,8 +79,10 @@ public class MainActivity extends BaseComponentActivity {
     ImageView tabHomeIcon;
     @BindView(R.id.tab_home_text)
     TextView tabHomeText;
+    //账单图标
     @BindView(R.id.tab_account_icon)
     ImageView tabAccountIcon;
+    //账单
     @BindView(R.id.tab_account_text)
     TextView tabAccountText;
     @BindView(R.id.tab_news_icon)
@@ -133,8 +137,8 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabHomeIcon, tabAccountIcon, tabNewsIcon, tabMineIcon};
-        textView = new TextView[]{tabHomeText, tabAccountText, tabNewsText, tabMineText};
+        iconView = new ImageView[]{tabAccountIcon, tabHomeIcon, tabNewsIcon, tabMineIcon};
+        textView = new TextView[]{ tabAccountText, tabHomeText, tabNewsText, tabMineText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
@@ -211,15 +215,19 @@ public class MainActivity extends BaseComponentActivity {
         Fragment newSelected = fm.findFragmentByTag(newTag);
         if (newSelected == null) {
             switch (id) {
+                //账单
                 case R.id.tab_account:
                     newSelected = TabAccountFragment.newInstance();
                     break;
+                //借款
                 case R.id.tab_home:
                     newSelected = TabLoanFragment.newInstance();
                     break;
+                //资讯
                 case R.id.tab_news:
                     newSelected = TabNewsFragment.newInstance();
                     break;
+                //我的
                 case R.id.tab_mine:
                     newSelected = TabMineFragment.newInstance();
                     break;

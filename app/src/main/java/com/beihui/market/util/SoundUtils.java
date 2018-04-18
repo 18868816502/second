@@ -8,6 +8,9 @@ import android.media.SoundPool;
 import com.beihui.market.App;
 import com.beihui.market.R;
 
+/**
+ * 音效工具类
+ */
 public class SoundUtils {
 
     private static SoundUtils sInstance;
@@ -35,10 +38,16 @@ public class SoundUtils {
         return sInstance;
     }
 
+    /**
+     * 添加音效
+     */
     public void playAdd() {
         soundPool.play(addSoundId, 0.5f, 0.5f, 0, 0, 1);
     }
 
+    /**
+     * 点击音效
+     */
     public void playTab() {
         soundPool.play(tabSoundId, 0.5f, 0.5f, 0, 0, 1);
     }

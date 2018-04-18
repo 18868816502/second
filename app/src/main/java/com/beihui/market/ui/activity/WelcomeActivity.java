@@ -18,6 +18,9 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.LinkedList;
 
+/**
+ * 欢迎页面 在关于我们里面 Splash也会调用
+ */
 public class WelcomeActivity extends BaseActivity {
 
     private boolean fromAboutUs;

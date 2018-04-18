@@ -20,16 +20,21 @@ import java.util.Locale;
 
 import butterknife.BindView;
 
+/**
+ * 还款日历 页面
+ */
 public class DebtCalendarActivity extends BaseComponentActivity {
 
     private final SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    //日期 年 月 (标题栏)
     @BindView(R.id.date)
     TextView dateStrView;
     @BindView(R.id.title)
     TextView title;
+    //标题栏 折线图标
     @BindView(R.id.show_switch)
     ImageView showSwitch;
 
@@ -79,6 +84,9 @@ public class DebtCalendarActivity extends BaseComponentActivity {
 
     }
 
+    /**
+     * 切换折线图或者日历图的方法
+     */
     private void switchContent(boolean isCalendar) {
         dateStrView.setVisibility(isCalendar ? View.VISIBLE : View.GONE);
         title.setVisibility(isCalendar ? View.GONE : View.VISIBLE);

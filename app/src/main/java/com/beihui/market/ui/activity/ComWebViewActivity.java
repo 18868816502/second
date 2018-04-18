@@ -26,6 +26,9 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 合作的产品 (如; 我要借款点击按钮跳转)
+ */
 public class ComWebViewActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;

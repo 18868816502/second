@@ -78,7 +78,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-
+/**
+ * 借款模块
+ */
 public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.View {
     @BindView(R.id.root_container)
     FrameLayout rootContainer;
@@ -113,6 +115,9 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     View refreshHot;
     @BindView(R.id.refresh_icon)
     ImageView refreshIcon;
+    /**
+     * 热门产品列表
+     */
     @BindView(R.id.hot_recycler_view)
     RecyclerView hotRecyclerView;
 
@@ -158,7 +163,7 @@ public class TabLoanFragment extends BaseTabFragment implements TabLoanContract.
     private boolean oneKeyLoanHintClosed;
 
     private Animation animation;
-
+    //热门产品适配器
     private HotChoiceRVAdapter hotAdapter;
     private HotChoiceRVAdapter choiceAdapter;
     private CreditCardRVAdapter creditCardAdapter;

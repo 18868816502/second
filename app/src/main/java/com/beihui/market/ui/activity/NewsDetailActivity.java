@@ -33,7 +33,9 @@ import com.umeng.socialize.media.UMWeb;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
+/**
+ * 资讯模块 资讯详情页面 WebView
+ */
 public class NewsDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
@@ -141,6 +143,9 @@ public class NewsDetailActivity extends BaseComponentActivity {
             case R.id.close:
                 finish();
                 break;
+            /**
+             * 分享 分享微信 朋友圈 QQ 微博
+             */
             case R.id.share:
                 //umeng统计
                 Statistic.onEvent(Events.NEWS_DETAIL_SHARE);
