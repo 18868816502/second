@@ -280,7 +280,6 @@ public class CopyTabLayout extends HorizontalScrollView {
         mTabGravity = a.getInt(android.support.design.R.styleable.TabLayout_tabGravity, GRAVITY_FILL);
         a.recycle();
 
-        // TODO add attr for these
         final Resources res = getResources();
         mTabTextMultiLineSize = res.getDimensionPixelSize(android.support.design.R.dimen.design_tab_text_size_2line);
         mScrollableTabMinWidth = res.getDimensionPixelSize(android.support.design.R.dimen.design_tab_scrollable_min_width);

@@ -24,7 +24,15 @@ public class NetConstants {
 
     public static final String H5_TEST = H5_DOMAIN + "/test.html?isApp=1";
 
-    public static final String H5_NEWS_DETAIL = H5_DOMAIN + "/newsDetail.html";
+
+     public static final String H5_NEWS_DETAIL = H5_DOMAIN + "/newsDetail.html";
+
+
+    /**
+     * TODO 修改H5_DOMAIN 以及webView链接
+     */
+    //public static final String H5_NEWS_DETAIL = H5_DOMAIN + "/iosNews.html";
+    public static final String H5_NEWS_WEVVIEW_DETAIL = H5_DOMAIN + "/information.html";
 
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 
@@ -61,8 +69,26 @@ public class NetConstants {
      */
     public static final String H5_CREDIT_CARD_PROGRESS = "http://www.huishuaka.com/5/coop/jinduchaxun.html?ichannelid=";
 
+
+    /**
+     * @author xhb
+     * @date 20180420
+     * @param userId 用户ID isAppId 区分web前端还是app (区分平台)
+     * @desc 资讯模块 详情页面
+     */
     public static String generateNewsUrl(String id, String userId) {
-        return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
+        // return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
+        return H5_NEWS_WEVVIEW_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
+    }
+
+    /**
+     * @author xhb
+     * @date 20180420
+     * @param userId 用户ID isAppId 区分web前端还是app (区分平台)
+     * @desc 资讯模块
+     */
+    public static String generateNewsWebViewUrl(String userId) {
+        return H5_NEWS_WEVVIEW_DETAIL + "&isApp=1&userId=" + userId;
     }
 
     public static String generateProductUrl(String id) {

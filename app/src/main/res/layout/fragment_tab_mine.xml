@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded">
 
+    <!--xhb  隐藏了-->
     <ImageView
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
@@ -254,14 +256,12 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/line"
-                    android:visibility="gone" />
+                    android:background="@color/line"/>
 
                 <FrameLayout
                     android:id="@+id/wechat_public"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:visibility="gone">
+                    android:layout_height="54dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -284,6 +284,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="这里能借好多好多钱"

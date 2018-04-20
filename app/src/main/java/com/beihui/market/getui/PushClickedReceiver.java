@@ -79,8 +79,8 @@ public class PushClickedReceiver extends BroadcastReceiver {
                 intent.putExtra("url", NetConstants.generateInternalMessageUrl(obj.getString("localId")));
                 intent.putExtra("title", title);
             } else if (type == 4) {//跳转到首页
-                intent = new Intent(context, MainActivity.class);
-                intent.putExtra("home", true);
+//                intent = new Intent(context, MainActivity.class);
+//                intent.putExtra("home", true);
             } else if (type == 5) {//跳转到账单首页
                 intent = new Intent(context, MainActivity.class);
                 intent.putExtra("account", true);

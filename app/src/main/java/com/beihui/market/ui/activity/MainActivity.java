@@ -40,6 +40,7 @@ import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsFragment;
+import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
@@ -75,24 +76,27 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
 
-    @BindView(R.id.tab_home_icon)
-    ImageView tabHomeIcon;
-    @BindView(R.id.tab_home_text)
-    TextView tabHomeText;
     //账单图标
     @BindView(R.id.tab_account_icon)
     ImageView tabAccountIcon;
     //账单
     @BindView(R.id.tab_account_text)
     TextView tabAccountText;
+
     @BindView(R.id.tab_news_icon)
     ImageView tabNewsIcon;
     @BindView(R.id.tab_news_text)
     TextView tabNewsText;
+
     @BindView(R.id.tab_mine_icon)
     ImageView tabMineIcon;
     @BindView(R.id.tab_mine_text)
     TextView tabMineText;
+
+//    @BindView(R.id.tab_home_icon)
+//    ImageView tabHomeIcon;
+//    @BindView(R.id.tab_home_text)
+//    TextView tabHomeText;
 
     private int selectedFragmentId = -1;
 
@@ -118,9 +122,9 @@ public class MainActivity extends BaseComponentActivity {
                 navigationBar.select(R.id.tab_account);
             }
         }
-        if (getIntent().getBooleanExtra("home", false)) {
-            navigationBar.select(R.id.tab_home);
-        }
+//        if (getIntent().getBooleanExtra("home", false)) {
+//            navigationBar.select(R.id.tab_home);
+//        }
     }
 
     @Override
@@ -137,8 +141,8 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabAccountIcon, tabHomeIcon, tabNewsIcon, tabMineIcon};
-        textView = new TextView[]{ tabAccountText, tabHomeText, tabNewsText, tabMineText};
+        iconView = new ImageView[]{tabAccountIcon, tabNewsIcon, tabMineIcon};
+        textView = new TextView[]{ tabAccountText, tabNewsText, tabMineText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
@@ -220,12 +224,12 @@ public class MainActivity extends BaseComponentActivity {
                     newSelected = TabAccountFragment.newInstance();
                     break;
                 //借款
-                case R.id.tab_home:
-                    newSelected = TabLoanFragment.newInstance();
-                    break;
+//                case R.id.tab_home:
+//                    newSelected = TabLoanFragment.newInstance();
+//                    break;
                 //资讯
                 case R.id.tab_news:
-                    newSelected = TabNewsFragment.newInstance();
+                    newSelected = TabNewsWebViewFragment.newInstance();
                     break;
                 //我的
                 case R.id.tab_mine:
@@ -243,23 +247,23 @@ public class MainActivity extends BaseComponentActivity {
         return "TabFragmentId=" + id;
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (selectedFragmentId == R.id.tab_home) {
-            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                if (inputMethodManager == null) {
-                    inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                }
-                if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
-                    if (getCurrentFocus() instanceof EditText) {
-                        getCurrentFocus().clearFocus();
-                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
-                }
-            }
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        if (selectedFragmentId == R.id.tab_home) {
+//            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+//                if (inputMethodManager == null) {
+//                    inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                }
+//                if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
+//                    if (getCurrentFocus() instanceof EditText) {
+//                        getCurrentFocus().clearFocus();
+//                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                    }
+//                }
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -371,6 +375,7 @@ public class MainActivity extends BaseComponentActivity {
                 states[2] = new int[]{};
                 ColorStateList colorStateList = new ColorStateList(states, colors);
                 textView[index].setTextColor(colorStateList);
+                textView[index].setText(tabImage.getName());
             }
 
             if (!TextUtils.isEmpty(tabImage.getSelectedImage())) {

@@ -45,7 +45,7 @@ android {
 
             minifyEnabled false
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52/majiabao\"")
 
             signingConfig signingConfigs.debug
 
@@ -69,7 +69,7 @@ android {
         release {
             minifyEnabled false
             buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
-            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com/majiabao\"")
 
             signingConfig signingConfigs.release
 
@@ -196,6 +196,8 @@ dependencies {
 
     //OkHttp
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    //添加拦截日志
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
     //RxJava

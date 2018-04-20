@@ -61,33 +61,33 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/tab_home"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="3dp">
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/tab_home"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:padding="3dp">-->
 
-                <ImageView
-                    android:id="@+id/tab_home_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:focusable="false"
-                    android:src="@drawable/tab_loan" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/tab_home_icon"-->
+                    <!--android:layout_width="20dp"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:focusable="false"-->
+                    <!--android:src="@drawable/tab_loan" />-->
 
-                <TextView
-                    android:id="@+id/tab_home_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tab_home_icon"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="3dp"
-                    android:text="借款"
-                    android:textColor="@color/select_blue_grey"
-                    android:textSize="12sp" />
+                <!--<TextView-->
+                    <!--android:id="@+id/tab_home_text"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/tab_home_icon"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_marginTop="3dp"-->
+                    <!--android:text="借款"-->
+                    <!--android:textColor="@color/select_blue_grey"-->
+                    <!--android:textSize="12sp" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
             <RelativeLayout
                 android:id="@+id/tab_news"

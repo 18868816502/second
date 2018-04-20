@@ -28,6 +28,10 @@ import java.util.LinkedList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+
+/**
+ * 办信用卡的webView页面
+ */
 public class CreditCardWebActivity extends BaseComponentActivity {
 
     private static final int REQUEST_CODE_LOGIN = 2;

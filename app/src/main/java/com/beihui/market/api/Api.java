@@ -3,6 +3,7 @@ package com.beihui.market.api;
 
 import android.content.pm.PackageManager;
 import android.util.Base64;
+import android.util.Log;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
@@ -51,6 +52,7 @@ import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.util.LogUtils;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -89,11 +91,24 @@ public class Api {
         return sInstance;
     }
 
+    /**
+     * 自定义拦截器 通过拦截器获取日志
+     */
+    private static HttpLoggingInterceptor  interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+        @Override
+        public void log(String message) {
+            //打印日志
+            Log.e("OkHttp--->message: ", message);
+        }
+    });
+
     private static OkHttpClient createHttpClient() {
         File cacheFile = new File(App.getInstance().getCacheDir().getAbsolutePath(), "MarketCache");
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                //设置拦截日志
+                .addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY))
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
@@ -876,11 +891,15 @@ public class Api {
      */
     public Observable<ResultEntity<List<TabImage>>> queryBottomImage() {
         String version = "";
+        String packageId = "";
         try {
             version = App.getInstance().getPackageManager().getPackageInfo(App.getInstance().getPackageName(), 0).versionName;
+            packageId =  App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+//        return service.queryBottomImage(version, "1", packageId);
         return service.queryBottomImage(version, "1");
     }
 

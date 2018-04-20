@@ -348,6 +348,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
         View footView = LayoutInflater.from(getContext())
                 .inflate(R.layout.layout_tab_account_foot, recyclerView, false);
+
+        /**
+         * 办理信用卡点击事件 进入webView页面
+         */
         footView.findViewById(R.id.credit_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
