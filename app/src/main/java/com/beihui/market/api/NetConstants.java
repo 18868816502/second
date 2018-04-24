@@ -32,7 +32,7 @@ public class NetConstants {
      * TODO 修改H5_DOMAIN 以及webView链接
      */
     //public static final String H5_NEWS_DETAIL = H5_DOMAIN + "/iosNews.html";
-    public static final String H5_NEWS_WEVVIEW_DETAIL = H5_DOMAIN + "/information.html";
+    public static final String H5_NEWS_WEVVIEW_DETAIL = H5_DOMAIN + "/majiabao/information.html";
 
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 

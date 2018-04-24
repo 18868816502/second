@@ -70,7 +70,7 @@ android {
             applicationId "com.beihui.market"
 
             buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
-            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com/majiabao\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
 
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
@@ -97,7 +97,7 @@ android {
             applicationId "com.beihui.market.test"
 
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52/majiabao\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
             manifestPlaceholders = [
                     GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
