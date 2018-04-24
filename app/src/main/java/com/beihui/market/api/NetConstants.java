@@ -88,7 +88,7 @@ public class NetConstants {
      * @desc 资讯模块
      */
     public static String generateNewsWebViewUrl(String userId) {
-        return H5_NEWS_WEVVIEW_DETAIL + "&isApp=1&userId=" + userId;
+        return H5_NEWS_WEVVIEW_DETAIL + "?&isApp=1&userId=" + userId;
     }
 
     public static String generateProductUrl(String id) {
