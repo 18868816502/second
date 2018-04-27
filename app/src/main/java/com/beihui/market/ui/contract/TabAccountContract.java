@@ -7,19 +7,31 @@ import com.beihui.market.entity.AccountBill;
 
 import java.util.List;
 
+/**
+ * @author xhb
+ * 账单模块 首页
+ */
 public interface TabAccountContract {
 
     interface Presenter extends BasePresenter {
 
         /**
+         * @author xhb
+         * 加载待还账单
+         */
+        void loadInDebtList();
+
+
+        /**
+         * @author xhb 头信息
          * 加载账单信息摘要
          */
         void loadDebtAbstract();
 
-        /**
-         * 加载待还账单
-         */
-        void loadInDebtList();
+
+
+
+
 
         /**
          * 点击设为已还

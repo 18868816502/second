@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--@author xhb 手动导入信用卡账单-->
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/tool_bar"
+            android:id="@+id/tb_credit_card_add_title_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tool_bar_height"
             android:background="@android:color/white">
@@ -20,220 +21,185 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="手动记账" />
+                android:text="添加信用卡" />
 
             <TextView
-                android:id="@+id/help_feedback"
+                android:id="@+id/cet_credit_card_hand_save"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/tool_bar_height"
                 android:layout_gravity="right"
                 android:gravity="center"
                 android:minWidth="@dimen/tool_bar_height"
                 android:paddingRight="15dp"
-                android:text="帮助反馈"
-                android:textColor="@color/black_2"
+                android:text="保存"
+                android:textColor="@color/c_ff5240"
                 android:textSize="14sp" />
 
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="信用卡后4位"
-                    android:textColor="@color/black_1"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/credit_card_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:background="@null"
-                    android:gravity="right|center_vertical"
-                    android:hint="如：8888"
-                    android:inputType="number"
-                    android:maxLength="4" />
-            </FrameLayout>
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="1dp"
                 android:background="@color/line" />
-
-            <FrameLayout
-                android:id="@+id/card_bank_block"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:id="@+id/bank_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawableRight="@drawable/home_forward"
-                    android:gravity="center_vertical"
-                    android:text="所属银行"
-                    android:textColor="@color/black_1"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/bank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right"
-                    android:paddingRight="20dp"
-                    android:text="请选择"
-                    android:textColor="@color/black_2"
-                    android:textSize="15sp" />
-            </FrameLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/line" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="姓名"
-                    android:textColor="@color/black_1"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/card_owner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:background="@null"
-                    android:gravity="right|center_vertical"
-                    android:hint="如：张三"
-                    android:textSize="15sp" />
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-
-            <FrameLayout
-                android:id="@+id/debt_day_block"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawableRight="@drawable/home_forward"
-                    android:gravity="center_vertical"
-                    android:text="账单日"
-                    android:textColor="@color/black_1"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/debt_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="20dp"
-                    android:text="请选择"
-                    android:textColor="@color/black_2"
-                    android:textSize="15sp" />
-            </FrameLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/line" />
-
-            <FrameLayout
-                android:id="@+id/debt_pay_day_block"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawableRight="@drawable/home_forward"
-                    android:gravity="center_vertical"
-                    android:text="还款日"
-                    android:textColor="@color/black_1"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/debt_pay_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="20dp"
-                    android:text="请选择"
-                    android:textColor="@color/black_2"
-                    android:textSize="15sp" />
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/white"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="36dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="信用卡后4位"
+                android:textColor="@color/black_1"
+                android:textSize="12sp" />
+
+            <com.beihui.market.view.ClearEditText
+                android:id="@+id/cet_credit_card_hand_last_four"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:hint="如：8888"
+                android:inputType="number"
+                android:maxLength="4"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/c_222222"
+                android:textColorHint="#B2B2B2"
+                android:textSize="19sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="账单金额"
                 android:textColor="@color/black_1"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/debt_amount"
+            <com.beihui.market.view.ClearEditText
+                android:id="@+id/cet_credit_card_hand_account_money"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
+                android:layout_height="40dp"
                 android:background="@null"
-                android:gravity="right|center_vertical"
-                android:hint="如：3000"
-                android:inputType="numberDecimal" />
-        </FrameLayout>
+                android:hint="请输入待还金额"
+                android:inputType="numberDecimal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/c_222222"
+                android:textColorHint="#B2B2B2"
+                android:textSize="19sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
 
-        <TextView
-            android:id="@+id/confirm"
-            style="@style/TextButtonStyle"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/round_alpha_primary_btn"
-            android:text="确认"
-            android:textColor="@android:color/white" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="所属银行"
+                android:textColor="@color/black_1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/cet_credit_card_hand_for_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/home_forward"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="22dp"
+                android:text="请选择"
+                android:textColor="@color/black_1"
+                android:textSize="19sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="账单日"
+                android:textColor="@color/black_1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_credit_card_hand_account_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/home_forward"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="22dp"
+                android:text="每月10日"
+                android:textColor="@color/black_1"
+                android:textSize="19sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="还款日"
+                android:textColor="@color/black_1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_credit_card_hand_pay_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/home_forward"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="22dp"
+                android:text="每月27日"
+                android:textColor="@color/black_1"
+                android:textSize="19sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

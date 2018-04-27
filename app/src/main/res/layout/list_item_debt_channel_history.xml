@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:paddingLeft="25dp"
+    android:paddingLeft="15dp"
     tools:background="@android:color/white">
 
     <com.beihui.market.view.CircleImageView

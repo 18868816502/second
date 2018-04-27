@@ -22,6 +22,10 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+/**
+ * @author xhb
+ * 账单模块 首页
+ */
 public class TabAccountPresenter extends BaseRxPresenter implements TabAccountContract.Presenter {
 
     private Context context;
@@ -53,14 +57,23 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
                 view.showDebtInfo(debtAmount, debtSevenDay, debtMonth);
                 view.showInDebtList(Collections.unmodifiableList(debts));
             }
+            //获取头信息
             loadDebtAbstract();
+            //获取列表信息
             loadInDebtList();
         } else {
             view.showNoUserLoginBlock();
         }
+        //获取头信息
+        loadDebtAbstract();
+        //获取列表信息
+        loadInDebtList();
     }
 
 
+    /**
+     * 获取头信息
+     */
     @Override
     public void loadDebtAbstract() {
         Disposable dis = api.fetchDebtAbstractInfo(userHelper.getProfile().getId(), 3)//获取网贷+信用卡负债摘要
@@ -90,6 +103,9 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
         addDisposable(dis);
     }
 
+    /**
+     * 获取列表信息
+     */
     @Override
     public void loadInDebtList() {
         Disposable dis = api.fetchAccountBills(userHelper.getProfile().getId())
@@ -127,6 +143,9 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
                         });
         addDisposable(dis);
     }
+
+
+
 
     @Override
     public void clickDebtSetStatus(int index) {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--头部布局-->
+    <include layout="@layout/xlayout_fg_tab_account_head"/>
+
+    <!--列表-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_marginLeft="80.5dp"
+            android:background="@color/line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+
+        <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout
+            android:id="@+id/prl_fg_tab_account_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/x_pull_to_refresh_head"/>
+
+            <com.beihui.market.view.pulltoswipe.PulledRecyclerView
+                android:id="@+id/rv_fg_tab_account_list"
+                android:background="@color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <include layout="@layout/x_pull_to_refresh_load_more"/>
+
+        </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

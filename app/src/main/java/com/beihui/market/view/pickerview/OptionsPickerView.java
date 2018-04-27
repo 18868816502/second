@@ -211,6 +211,9 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
             return this;
         }
 
+        /**
+         * 设置标题
+         */
         public Builder setTitleText(String Str_Title) {
             this.Str_Title = Str_Title;
             return this;
@@ -408,7 +411,6 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
             return new OptionsPickerView(this);
         }
     }
-
 
     private void initView(Context context) {
         setDialogOutSideCancelable(cancelable);

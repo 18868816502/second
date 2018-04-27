@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--自定义控件布局 PullToRefreshLayout包里面<xhb>-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pull_up_to_head_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp" >
+
+        <RelativeLayout
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp">
+
+            <ImageView
+                android:id="@+id/iv_dynamic_unit_refresh_water"
+                android:padding="5dp"
+                android:src="@drawable/x_pull_to_refresh_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <ImageView
+                android:id="@+id/pull_icon_head_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp"
+                android:background="@drawable/x_pull_to_refresh_icon_big" />
+
+            <ImageView
+                android:id="@+id/refreshing_icon_head_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp"
+                android:background="@drawable/x_pull_to_refresh_refreshing"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/state_tv_head_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="下拉刷新"
+                android:textColor="@color/c_666666"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/state_iv_head_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@id/state_tv_head_view"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

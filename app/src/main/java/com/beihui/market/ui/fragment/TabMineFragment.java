@@ -55,6 +55,7 @@ import butterknife.OnClick;
 import cn.xiaoneng.uiapi.Ntalker;
 
 /**
+ * @author xhb
  * 我的 模块 Fragment
  */
 public class TabMineFragment extends BaseTabFragment implements TabMineContract.View {

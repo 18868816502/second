@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,22 +21,29 @@ import com.beihui.market.ui.fragment.DebtNewEvenFragment;
 import com.beihui.market.ui.fragment.DebtNewOneTimeFragment;
 import com.beihui.market.util.AndroidBug5497Fix;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.view.PagerSlidingTab;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * @author xhb
+ * 网贷账单 详情编辑页面
+ * 一次性还款
+ * 分期还款
+ */
 public class DebtNewActivity extends BaseComponentActivity {
 
-    private final String[] pageTitles = {"一次性还款", "分期还款"};
+
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.channel_name)
     TextView channelName;
     @BindView(R.id.copy_tab_layout)
-    CopyTabLayout copyTabLayout;
+    PagerSlidingTab copyTabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
@@ -45,16 +53,113 @@ public class DebtNewActivity extends BaseComponentActivity {
      */
     private DebtDetail debtDetail;
 
+
+
+
+
+
+    //Fragment的标题
+    private final String[] pageTitles = {"一次性还款", "分期还款"};
+
+    /**
+     * @return 返回布局
+     */
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_debt_new;
+    }
+
+    /**
+     * 失去焦点 关闭软键盘
+     */
     @Override
     protected void onPause() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.onPause();
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_debt_new;
+    /**
+     * 接口回调
+     */
+    public interface OnSaveAccountListener {
+        void save();
     }
+
+    public OnSaveAccountListener onSaveAccountListener;
+
+    public void setOnSaveAccountListener(OnSaveAccountListener onSaveAccountListener) {
+        this.onSaveAccountListener = onSaveAccountListener;
+    }
+
+    /**
+     * 保存一次性账单或者分期还款
+     * 点击事件 需要回调函数
+     */
+    @OnClick(R.id.tv_one_time_account_stage_save)
+    public void onClick() {
+        if (this.onSaveAccountListener != null) {
+            onSaveAccountListener.save();
+        }
+    }
+
+    /**
+     * ViewPager的适配器
+     */
+    class DebtNewPagerAdapter extends FragmentPagerAdapter {
+
+        DebtNewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        /**
+         * 切换Fragment类型
+         */
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                DebtDetail pending = null;
+                if (debtDetail != null && debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_ONE_TIME) {
+                    pending = debtDetail;
+                }
+                return DebtNewOneTimeFragment.newInstance(debtChannel, pending);
+            } else {
+                DebtDetail pending = null;
+                if (debtDetail != null && debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_EVEN_DEBT) {
+                    pending = debtDetail;
+                }
+                return DebtNewEvenFragment.newInstance(debtChannel, pending);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return pageTitles[position];
+        }
+    }
+
+    /**
+     * 空事件
+     */
+    @Override
+    public void initDatas() {}
+
+    /**
+     * 空事件
+     */
+    @Override
+    protected void configureComponent(AppComponent appComponent) {}
+
+
+
+
+
+
+
 
     @Override
     public void configViews() {
@@ -62,7 +167,8 @@ public class DebtNewActivity extends BaseComponentActivity {
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         viewPager.setAdapter(new DebtNewPagerAdapter(getSupportFragmentManager()));
-        copyTabLayout.setupWithViewPager(viewPager);
+//        copyTabLayout.setupWithViewPager(viewPager);
+        copyTabLayout.setViewPager(viewPager);
         debtChannel = getIntent().getParcelableExtra("debt_channel");
         if (debtChannel != null) {
             channelName.setText(debtChannel.getChannelName());
@@ -94,51 +200,8 @@ public class DebtNewActivity extends BaseComponentActivity {
         AndroidBug5497Fix.assistActivity(this);
     }
 
-    @Override
-    public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
-    @OnClick(R.id.help_feedback)
-    void onItemClicked() {
-        startActivity(new Intent(this, HelpAndFeedActivity.class));
-    }
-
-    class DebtNewPagerAdapter extends FragmentPagerAdapter {
 
 
-        DebtNewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
 
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 0) {
-                DebtDetail pending = null;
-                if (debtDetail != null && debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_ONE_TIME) {
-                    pending = debtDetail;
-                }
-                return DebtNewOneTimeFragment.newInstance(debtChannel, pending);
-            } else {
-                DebtDetail pending = null;
-                if (debtDetail != null && debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_EVEN_DEBT) {
-                    pending = debtDetail;
-                }
-                return DebtNewEvenFragment.newInstance(debtChannel, pending);
-            }
-        }
 
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return pageTitles[position];
-        }
-    }
 }

@@ -33,7 +33,11 @@ public abstract class DebtChannelStickyHeaderItemDeco extends RecyclerView.ItemD
         textPaddingLeft = (int) (density * 15);
         textSize = (int) (density * 14);
         textColor = Color.parseColor("#909298");
-        headerContentColor = Color.parseColor("#fafbff");
+        /**
+         * xhb 修改索引的背景为白色
+         */
+        //headerContentColor = Color.parseColor("#fafbff");
+        headerContentColor = Color.parseColor("#ffffff");
 
 
         mHeaderTxtPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

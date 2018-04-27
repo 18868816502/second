@@ -1,7 +1,11 @@
 package com.beihui.market.entity;
 
+import java.io.Serializable;
 
-public class AccountBill {
+/**
+ * 账单详情
+ */
+public class AccountBill implements Serializable{
 
     private int billType;
     private String channelName;
@@ -21,6 +25,13 @@ public class AccountBill {
     private String createDate;
     private String updateDate;
     private int cardSource;
+
+    /**
+     * @author xhb
+     * 展开与隐藏的状态
+     */
+    public boolean isShow = false;
+
 
     public int getBillType() {
         return billType;

@@ -26,6 +26,10 @@ import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+/**
+ * @author xhb
+ * 网银导入页面 webView页面
+ */
 public class EBankActivity extends BaseComponentActivity {
 
     @BindView(R.id.web_view)

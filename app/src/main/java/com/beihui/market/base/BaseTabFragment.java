@@ -14,7 +14,6 @@ public abstract class BaseTabFragment extends BaseComponentFragment {
 
     private View fakedStatusBar;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

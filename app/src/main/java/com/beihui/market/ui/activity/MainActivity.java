@@ -119,7 +119,8 @@ public class MainActivity extends BaseComponentActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.getBoolean("account")) {
-                navigationBar.select(R.id.tab_account);
+//                navigationBar.select(R.id.tab_account);
+                navigationBar.select(R.id.tab_mine);
             }
         }
 //        if (getIntent().getBooleanExtra("home", false)) {
@@ -157,7 +158,8 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-        navigationBar.select(R.id.tab_account);
+//        navigationBar.select(R.id.tab_account);
+        navigationBar.select(R.id.tab_mine);
 
         queryBottomImage();
     }

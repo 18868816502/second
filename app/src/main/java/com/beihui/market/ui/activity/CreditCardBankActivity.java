@@ -26,6 +26,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * @author xhb
+ * 选择银行的页面 银行列表
+ */
 public class CreditCardBankActivity extends BaseComponentActivity implements CreditCardBankContract.View {
 
     @BindView(R.id.tool_bar)

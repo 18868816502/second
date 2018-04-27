@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--@author xhb 账单模块头布局-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_tab_account_header_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"/>
+
+    <!--添加按钮-->
+    <ImageView
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/iv_tab_account_header_add"
+        android:layout_gravity="right"
+        android:src="@drawable/xbill_add_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
+    <!--近30天未还-->
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginRight="5dp"
+            android:text="近30天待还"
+            android:textSize="12sp"
+            android:textColor="@color/black_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="共2笔"
+            android:textSize="12sp"
+            android:textColor="@color/black_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_last_one_month_wait_pay"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="25dp"
+        android:textColor="@color/black_1"
+        android:textSize="30sp"
+        android:text="赶紧先记上一笔"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

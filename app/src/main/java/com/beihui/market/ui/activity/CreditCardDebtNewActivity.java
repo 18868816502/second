@@ -40,28 +40,39 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * @author xhb
+ * 手动记账 编辑详情页面
+ */
 public class CreditCardDebtNewActivity extends BaseComponentActivity implements CreditCardDebtNewContract.View {
 
     private final int REQUEST_CODE_BANK_LIST = 1;
 
-    @BindView(R.id.tool_bar)
+    @BindView(R.id.tb_credit_card_add_title_bar)
     Toolbar toolbar;
-    @BindView(R.id.credit_card_number)
-    EditText etCreditCardNumber;
-    @BindView(R.id.card_bank_block)
-    FrameLayout flCardBankBlock;
-    @BindView(R.id.bank_text)
-    TextView tvBankText;
-    @BindView(R.id.bank)
-    TextView tvBank;
-    @BindView(R.id.card_owner)
-    EditText etCardOwner;
-    @BindView(R.id.debt_day)
-    TextView tvDebtDay;
-    @BindView(R.id.debt_pay_day)
-    TextView tvDebtPayDay;
-    @BindView(R.id.debt_amount)
-    EditText etDebtAmount;
+    //账单日
+    @BindView(R.id.tv_credit_card_hand_account_date)
+    TextView mAccountDate;
+   //还款日
+    @BindView(R.id.tv_credit_card_hand_pay_date)
+    TextView mPayDate;
+
+//    @BindView(R.id.credit_card_number)
+//    EditText etCreditCardNumber;
+//    @BindView(R.id.card_bank_block)
+//    FrameLayout flCardBankBlock;
+//    @BindView(R.id.bank_text)
+//    TextView tvBankText;
+//    @BindView(R.id.bank)
+//    TextView tvBank;
+//    @BindView(R.id.card_owner)
+//    EditText etCardOwner;
+//    @BindView(R.id.debt_day)
+//    TextView tvDebtDay;
+//    @BindView(R.id.debt_pay_day)
+//    TextView tvDebtPayDay;
+//    @BindView(R.id.debt_amount)
+//    EditText etDebtAmount;
 
     @Inject
     CreditCardDebtNewPresenter presenter;
@@ -79,10 +90,10 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
             if (data != null && data.getParcelableExtra("bank") != null) {
                 creditCardBank = data.getParcelableExtra("bank");
 
-                if (!TextUtils.isEmpty(creditCardBank.getBankName())) {
-                    tvBank.setText(creditCardBank.getBankName());
-                    tvBank.setTextColor(getResources().getColor(R.color.black_1));
-                }
+//                if (!TextUtils.isEmpty(creditCardBank.getBankName())) {
+//                    tvBank.setText(creditCardBank.getBankName());
+//                    tvBank.setTextColor(getResources().getColor(R.color.black_1));
+//                }
             }
         }
     }
@@ -97,19 +108,19 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
-        etCardOwner.addTextChangedListener(new EtTextLengthWatcher(etCardOwner, 10 * 2));
-        etDebtAmount.addTextChangedListener(new EtAmountWatcher(etDebtAmount));
-
-        etCreditCardNumber.post(new Runnable() {
-            @Override
-            public void run() {
-                etCreditCardNumber.requestFocus();
-            }
-        });
-        //限制两位小数
-        EditTextUtils.addDecimalDigitsInputFilter(etDebtAmount);
-        //禁止输入emoji
-        EditTextUtils.addDisableEmojiInputFilter(etCardOwner);
+//        etCardOwner.addTextChangedListener(new EtTextLengthWatcher(etCardOwner, 10 * 2));
+//        etDebtAmount.addTextChangedListener(new EtAmountWatcher(etDebtAmount));
+//
+//        etCreditCardNumber.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                etCreditCardNumber.requestFocus();
+//            }
+//        });
+//        //限制两位小数
+//        EditTextUtils.addDecimalDigitsInputFilter(etDebtAmount);
+//        //禁止输入emoji
+//        EditTextUtils.addDisableEmojiInputFilter(etCardOwner);
 
         AndroidBug5497Fix.assistActivity(this);
         SlidePanelHelper.attach(this);
@@ -133,36 +144,58 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
                 .inject(this);
     }
 
-    @OnClick({R.id.help_feedback, R.id.card_bank_block, R.id.debt_day_block, R.id.debt_pay_day_block, R.id.confirm})
-    void onItemClicked(View view) {
-        InputMethodUtil.closeSoftKeyboard(this);
-        switch (view.getId()) {
-            case R.id.help_feedback:
-                startActivity(new Intent(this, HelpAndFeedActivity.class));
-                break;
-            case R.id.card_bank_block:
-                startActivityForResult(new Intent(this, CreditCardBankActivity.class), REQUEST_CODE_BANK_LIST);
-                break;
-            case R.id.debt_day_block:
-                showDatePicker(tvDebtDay);
-                break;
-            case R.id.debt_pay_day_block:
-                showDatePicker(tvDebtPayDay);
-                break;
-            case R.id.confirm:
-                int billDay = tvDebtDay.getTag() != null ? (int) tvDebtDay.getTag() : 0;
-                int dueDay = tvDebtPayDay.getTag() != null ? (int) tvDebtPayDay.getTag() : 0;
-                if (editMode) {
-                    //编辑模式
-                    presenter.updateCreditCardDebt(billDay, dueDay, etDebtAmount.getText().toString());
-                } else {
-                    //新增模式
-                    presenter.saveCreditCardDebt(etCreditCardNumber.getText().toString(), creditCardBank != null ? creditCardBank.getId() + "" : "",
-                            etCardOwner.getText().toString(), billDay, dueDay, etDebtAmount.getText().toString());
-                }
-                break;
-        }
+
+    /**
+     * 点击事件
+     */
+    @OnClick({R.id.tv_credit_card_hand_account_date, R.id.tv_credit_card_hand_pay_date, R.id.cet_credit_card_hand_for_bank})
+    public void onClick(View view) {
+       switch (view.getId()) {
+           //所属银行
+           case R.id.cet_credit_card_hand_for_bank:
+               startActivityForResult(new Intent(this, CreditCardBankActivity.class), REQUEST_CODE_BANK_LIST);
+               break;
+           //账单日
+           case R.id.tv_credit_card_hand_account_date:
+               showDatePicker(mAccountDate, "账单日");
+               break;
+           //还款日
+           case R.id.tv_credit_card_hand_pay_date:
+               showDatePicker(mPayDate, "还款日");
+               break;
+       }
     }
+
+//    @OnClick({R.id.help_feedback, R.id.card_bank_block, R.id.debt_day_block, R.id.debt_pay_day_block, R.id.confirm})
+//    void onItemClicked(View view) {
+//        InputMethodUtil.closeSoftKeyboard(this);
+//        switch (view.getId()) {
+//            case R.id.help_feedback:
+//                startActivity(new Intent(this, HelpAndFeedActivity.class));
+//                break;
+//            case R.id.card_bank_block:
+//                startActivityForResult(new Intent(this, CreditCardBankActivity.class), REQUEST_CODE_BANK_LIST);
+//                break;
+//            case R.id.debt_day_block:
+//                showDatePicker(tvDebtDay);
+//                break;
+//            case R.id.debt_pay_day_block:
+//                showDatePicker(tvDebtPayDay);
+//                break;
+//            case R.id.confirm:
+//                int billDay = tvDebtDay.getTag() != null ? (int) tvDebtDay.getTag() : 0;
+//                int dueDay = tvDebtPayDay.getTag() != null ? (int) tvDebtPayDay.getTag() : 0;
+//                if (editMode) {
+//                    //编辑模式
+//                    presenter.updateCreditCardDebt(billDay, dueDay, etDebtAmount.getText().toString());
+//                } else {
+//                    //新增模式
+//                    presenter.saveCreditCardDebt(etCreditCardNumber.getText().toString(), creditCardBank != null ? creditCardBank.getId() + "" : "",
+//                            etCardOwner.getText().toString(), billDay, dueDay, etDebtAmount.getText().toString());
+//                }
+//                break;
+//        }
+//    }
 
     @Override
     public void setPresenter(CreditCardDebtNewContract.Presenter presenter) {
@@ -201,46 +234,50 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void bindOldCreditCardDebt(CreditCardDebtDetail debtDetail) {
-        //卡号
-        etCreditCardNumber.setText(debtDetail.getCardNums());
-        //姓名
-        etCardOwner.setText(debtDetail.getCardUserName());
-        //银行
-        creditCardBank = new CreditCardBank();
-        creditCardBank.setId(debtDetail.getBankId());
-        creditCardBank.setBankName(debtDetail.getBankName());
-        tvBank.setTextColor(getResources().getColor(R.color.black_1));
-        tvBank.setText(debtDetail.getBankName());
-        //账单日
-        tvDebtDay.setTextColor(getResources().getColor(R.color.black_1));
-        tvDebtDay.setText(String.format(Locale.CHINA, "每月%d日", debtDetail.getBillDay()));
-        tvDebtDay.setTag(debtDetail.getBillDay());
-        //还款日
-        tvDebtPayDay.setTextColor(getResources().getColor(R.color.black_1));
-        tvDebtPayDay.setText(String.format(Locale.CHINA, "每月%d日", debtDetail.getDueDay()));
-        tvDebtPayDay.setTag(debtDetail.getDueDay());
-        //金额
-        String amount = CommonUtils.keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance());
-        if (amount.contains(",")) {
-            amount = amount.replace(",", "");
-        }
-        etDebtAmount.setText(amount);
-        //编辑模式下卡号，银行，姓名都不可编辑
-        etCreditCardNumber.setFocusable(false);
-        etCreditCardNumber.setTextColor(getResources().getColor(R.color.black_2));
-
-        etCardOwner.setFocusable(false);
-        etCardOwner.setTextColor(getResources().getColor(R.color.black_2));
-
-        flCardBankBlock.setEnabled(false);
-        tvBankText.setCompoundDrawables(null, null, null, null);
-
-        tvBank.setTextColor(getResources().getColor(R.color.black_2));
-        tvBank.setPadding(0, 0, 0, 0);
+//        //卡号
+//        etCreditCardNumber.setText(debtDetail.getCardNums());
+//        //姓名
+//        etCardOwner.setText(debtDetail.getCardUserName());
+//        //银行
+//        creditCardBank = new CreditCardBank();
+//        creditCardBank.setId(debtDetail.getBankId());
+//        creditCardBank.setBankName(debtDetail.getBankName());
+//        tvBank.setTextColor(getResources().getColor(R.color.black_1));
+//        tvBank.setText(debtDetail.getBankName());
+//        //账单日
+//        tvDebtDay.setTextColor(getResources().getColor(R.color.black_1));
+//        tvDebtDay.setText(String.format(Locale.CHINA, "每月%d日", debtDetail.getBillDay()));
+//        tvDebtDay.setTag(debtDetail.getBillDay());
+//        //还款日
+//        tvDebtPayDay.setTextColor(getResources().getColor(R.color.black_1));
+//        tvDebtPayDay.setText(String.format(Locale.CHINA, "每月%d日", debtDetail.getDueDay()));
+//        tvDebtPayDay.setTag(debtDetail.getDueDay());
+//        //金额
+//        String amount = CommonUtils.keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance());
+//        if (amount.contains(",")) {
+//            amount = amount.replace(",", "");
+//        }
+//        etDebtAmount.setText(amount);
+//        //编辑模式下卡号，银行，姓名都不可编辑
+//        etCreditCardNumber.setFocusable(false);
+//        etCreditCardNumber.setTextColor(getResources().getColor(R.color.black_2));
+//
+//        etCardOwner.setFocusable(false);
+//        etCardOwner.setTextColor(getResources().getColor(R.color.black_2));
+//
+//        flCardBankBlock.setEnabled(false);
+//        tvBankText.setCompoundDrawables(null, null, null, null);
+//
+//        tvBank.setTextColor(getResources().getColor(R.color.black_2));
+//        tvBank.setPadding(0, 0, 0, 0);
 
     }
 
-    private void showDatePicker(TextView textView) {
+    /**
+     * 账单日 还款日 选择时间的wheelView
+     * @param textView
+     */
+    private void showDatePicker(TextView textView, String titleName) {
         final TextView target = textView;
         OptionsPickerView pickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @SuppressLint("SetTextI18n")
@@ -251,11 +288,12 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
                 target.setText(String.format(Locale.CHINA, "每月%d日", day));
                 target.setTag(day);
             }
-        }).setCancelText("取消")
-                .setCancelColor(Color.parseColor("#5591ff"))
+        }).setTitleBgColor(Color.parseColor("#ffffff"))
+                .setCancelText("取消")
+                .setCancelColor(Color.parseColor("#ff5240"))
                 .setSubmitText("确认")
-                .setSubmitColor(Color.parseColor("#5591ff"))
-                .setTitleText("")
+                .setSubmitColor(Color.parseColor("#ff5240"))
+                .setTitleText(titleName)
                 .setTitleColor(getResources().getColor(R.color.black_1))
                 .build();
 

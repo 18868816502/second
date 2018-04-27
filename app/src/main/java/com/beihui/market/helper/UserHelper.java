@@ -8,6 +8,10 @@ import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.google.gson.Gson;
 
+/**
+ * @author xhb
+ * 存储用户信息
+ */
 public class UserHelper {
 
     private static UserHelper sInstance;

@@ -14,10 +14,10 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.activity.DebtChannelActivity;
+import com.beihui.market.ui.activity.XNetLoanAccountInputActivity;
 import com.beihui.market.ui.adapter.DebtChannelRVAdapter;
 import com.beihui.market.ui.dialog.DebtChannelNewDialog;
-import com.beihui.market.ui.presenter.DebtChannelPresenter;
+import com.beihui.market.ui.presenter.XNetLoanAccountInputPresenter;
 import com.beihui.market.ui.rvdecoration.DebtChannelSearchItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
@@ -29,6 +29,10 @@ import java.util.List;
 
 import butterknife.BindView;
 
+/**
+ * @author xhb
+ * 网贷账单 搜索页面
+ */
 public class DebtChannelSearchFragment extends BaseComponentFragment {
 
     @BindView(R.id.tool_bar)
@@ -49,7 +53,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
 
     private DebtChannelRVAdapter adapter;
 
-    private DebtChannelPresenter presenter;
+    private XNetLoanAccountInputPresenter presenter;
 
     @Override
     public int getLayoutResId() {
@@ -137,7 +141,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
 
     }
 
-    public void setPresenter(DebtChannelPresenter presenter) {
+    public void setPresenter(XNetLoanAccountInputPresenter presenter) {
         this.presenter = presenter;
     }
 
@@ -157,7 +161,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
         if (keyView != null) {
             InputMethodUtil.closeSoftKeyboard(getContext(), keyView);
             keyView.setText("");
-            ((DebtChannelActivity) getActivity()).dismissSearchFragment();
+            ((XNetLoanAccountInputActivity) getActivity()).dismissSearchFragment();
         }
     }
 }

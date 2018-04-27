@@ -18,6 +18,10 @@ import javax.inject.Inject;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
+/**
+ * @author xhb
+ * 友盟统计事件
+ */
 public class DataStatisticsHelper {
     @SuppressLint("StaticFieldLeak")
     private static DataStatisticsHelper sInstance;
@@ -176,11 +180,11 @@ public class DataStatisticsHelper {
      */
     public static final String ID_ACCOUNT_HOME_NEW_BILL = "CCB0003";
     /**
-     * 新增账单-网银导入
+     * 新增账单-网银导入 xhb
      */
     public static final String ID_BILL_ENTER_EBANK_LEAD_IN = "CCB0004";
     /**
-     * 新增账单-点击邮箱导入
+     * 新增账单-点击邮箱导入 xhb
      */
     public static final String ID_BILL_CLICK_EMAIL_LEAD_IN = "CCB0006";
     /**
