@@ -2,110 +2,138 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-        style="@style/ToolBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <TextView
-            style="@style/ToolBarTitleTextAppearance.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            android:textColor="@color/black_1"
+            android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
 
-    <TextView
-        android:id="@+id/change_psd"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white"
-        android:drawableRight="@mipmap/right_icon"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/change_psd"
-        android:textColor="@color/black_1" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/version_container"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/version_name"
-                android:textColor="@color/black_1" />
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="48dp"
+                android:text="通用"
+                android:textColor="@color/black_1"
+                android:textSize="22sp" />
 
             <TextView
-                android:id="@+id/version_name"
+                android:id="@+id/change_psd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:drawableRight="@mipmap/right_icon"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/change_psd"
+                android:textColor="@color/black_1" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:text="其他"
+                android:textColor="@color/black_1"
+                android:textSize="22sp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:drawableRight="@mipmap/right_icon"
-                android:gravity="right" />
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/version_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/version_name"
+                        android:textColor="@color/black_1" />
+
+                    <TextView
+                        android:id="@+id/version_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="8dp"
+                        android:drawableRight="@mipmap/right_icon"
+                        android:gravity="right" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/star_me"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:drawableRight="@mipmap/right_icon"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/star_me"
+                    android:textColor="@color/black_1" />
+
+
+                <TextView
+                    android:id="@+id/about_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:drawableRight="@mipmap/right_icon"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/about_us"
+                    android:textColor="@color/black_1" />
+
+                <TextView
+                    android:id="@+id/exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:drawableRight="@mipmap/right_icon"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/exit_safely"
+                    android:textColor="@color/black_1" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/common_bg"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
 
-        <TextView
-            android:id="@+id/star_me"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:drawableRight="@mipmap/right_icon"
-            android:gravity="center_vertical"
-            android:text="@string/star_me"
-            android:textColor="@color/black_1" />
+    </ScrollView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/common_bg"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
-
-        <TextView
-            android:id="@+id/about_us"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:drawableRight="@mipmap/right_icon"
-            android:gravity="center_vertical"
-            android:text="@string/about_us"
-            android:textColor="@color/black_1" />
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/exit"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:text="@string/exit_safely"
-        android:textColor="#FC1313" />
 </LinearLayout>

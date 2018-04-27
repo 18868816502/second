@@ -14,6 +14,7 @@ import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 import com.beihui.market.ui.fragment.RequireVerifyCodeFragment;
 import com.beihui.market.ui.fragment.SetPsdFragment;
 import com.beihui.market.util.InputMethodUtil;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +40,11 @@ public class ResetPsdActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         EventBus.getDefault().register(this);
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .keyboardEnable(true)
+                .init();
+
         setupToolbar(toolbar);
         getSupportFragmentManager()
                 .beginTransaction()

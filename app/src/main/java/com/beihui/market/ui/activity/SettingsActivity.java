@@ -13,7 +13,6 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
-import com.beihui.market.helper.updatehelper.DownloadService;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSettingComponent;
 import com.beihui.market.injection.module.SettingModule;
@@ -24,6 +23,7 @@ import com.beihui.market.ui.presenter.SettingPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,6 +59,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void configViews() {
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
 
         SlidePanelHelper.attach(this);

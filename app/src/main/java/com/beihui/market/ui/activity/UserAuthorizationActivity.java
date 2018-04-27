@@ -13,7 +13,6 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Interpolator;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -24,10 +23,8 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
-import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
+import com.beihui.market.ui.fragment.LoginMainFragment;
 import com.beihui.market.ui.fragment.UserLoginFragment;
-import com.beihui.market.ui.fragment.UserRegisterSetPsdFragment;
-import com.beihui.market.ui.fragment.UserRegisterVerifyCodeFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.InputMethodUtil;
@@ -50,10 +47,10 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     @BindView(R.id.deco_container)
     View decoContainer;
 
-    @BindView(R.id.cancel)
-    TextView cancelTv;
-    @BindView(R.id.navigation)
-    ImageView navigationIv;
+
+    @BindView(R.id.tv_change)
+    TextView tvChange;
+
 
     private BlurringDrawable blurringDrawable;
 
@@ -104,19 +101,23 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        ImmersionBar.with(this).fitsSystemWindows(true).init();
+        ImmersionBar.with(this)
+                .statusBarView(R.id.top_view)
+                .statusBarDarkFont(true)
+                .keyboardEnable(true)
+                .init();
 
         Bundle bundle = null;
         if (getIntent() != null && getIntent().getStringExtra("phone") != null) {
             bundle = new Bundle();
             bundle.putString("phone", getIntent().getStringExtra("phone"));
         }
-        UserLoginFragment fragment = new UserLoginFragment();
+        LoginMainFragment fragment = new LoginMainFragment();
         if (bundle != null) {
             fragment.setArguments(bundle);
         }
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.content_container, fragment, UserLoginFragment.class.getSimpleName())
+                .add(R.id.content_container, fragment, LoginMainFragment.class.getSimpleName())
                 .commit();
         decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -169,49 +170,56 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     }
 
 
-    @OnClick({R.id.cancel, R.id.navigation})
+    @OnClick({R.id.cancel, R.id.tv_change})
     void OnViewClicked(View view) {
-        if (view.getId() == R.id.cancel) {
-            //umeng统计
-            Statistic.onEvent(Events.LOGIN_CANCEL);
+        switch (view.getId()) {
+            case R.id.cancel:
+                Statistic.onEvent(Events.LOGIN_CANCEL);
+                finish();
+                break;
+            case R.id.tv_change:
+                String changeText = tvChange.getText().toString();
+                if ("密码登陆".equals(changeText)) {
+                    tvChange.setText("免密码登陆");
+                    EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_LOGIN_PSD));
+                } else {
+                    tvChange.setText("密码登陆");
+                    EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_LOGIN_FAST));
+                }
+                break;
         }
-        onBackPressed();
     }
 
-    /**
-     *
-     */
+
     @Subscribe
     public void onAuthorizationNavigation(AuthNavigationEvent event) {
-        if (event.navigationTag == AuthNavigationEvent.TAG_REGISTER) {
+        if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_PSD) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
 
-            Fragment login = fm.findFragmentByTag(UserLoginFragment.class.getSimpleName());
-            ft.detach(login);
+            Fragment mainLoginTag = fm.findFragmentByTag(LoginMainFragment.class.getSimpleName());
+            ft.detach(mainLoginTag);
 
-            String registerTag = UserRegisterVerifyCodeFragment.class.getSimpleName();
-            Fragment verifyCode = new UserRegisterVerifyCodeFragment();
-            ft.add(R.id.content_container, verifyCode, registerTag);
-            ft.attach(verifyCode);
-            ft.addToBackStack(registerTag);
+            String loginPsdTag = UserLoginFragment.class.getSimpleName();
+            Fragment loginPsd = new UserLoginFragment();
+            ft.add(R.id.content_container, loginPsd, loginPsdTag);
+            ft.attach(loginPsd);
+            ft.addToBackStack(loginPsdTag);
             ft.commit();
 
-            cancelTv.setVisibility(View.GONE);
-            navigationIv.setVisibility(View.VISIBLE);
-        } else if (event.navigationTag == AuthNavigationEvent.TAG_SET_PSD) {
+        } else if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_FAST) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
 
-            Fragment verifyCode = fm.findFragmentByTag(UserRegisterVerifyCodeFragment.class.getSimpleName());
-            ft.detach(verifyCode);
+            Fragment loginPsdTag = fm.findFragmentByTag(UserLoginFragment.class.getSimpleName());
+            ft.detach(loginPsdTag);
 
-            String setPsdTag = UserRegisterSetPsdFragment.class.getSimpleName();
+            String setPsdTag = LoginMainFragment.class.getSimpleName();
             Fragment setPsd = fm.findFragmentByTag(setPsdTag);
             if (setPsd == null) {
-                setPsd = new UserRegisterSetPsdFragment();
+                setPsd = new LoginMainFragment();
                 ft.add(R.id.content_container, setPsd, setPsdTag);
             } else {
                 ft.attach(setPsd);
@@ -222,13 +230,8 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             ft.addToBackStack(setPsdTag);
             ft.commit();
 
-            cancelTv.setVisibility(View.GONE);
-            navigationIv.setVisibility(View.VISIBLE);
         } else if (event.navigationTag == AuthNavigationEvent.TAG_HEAD_TO_LOGIN) {
             getSupportFragmentManager().popBackStack();
-
-            cancelTv.setVisibility(View.VISIBLE);
-            navigationIv.setVisibility(View.GONE);
         }
     }
 
@@ -240,24 +243,24 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            new CommNoneAndroidDialog()
-                    .withMessage("是否放弃注册？")
-                    .withNegativeBtn("放弃", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onAuthorizationNavigation(new AuthNavigationEvent(AuthNavigationEvent.TAG_HEAD_TO_LOGIN));
-                        }
-                    })
-                    .withPositiveBtn("继续注册", null)
-                    .dimBackground(true)
-                    .show(getSupportFragmentManager(), "CancelRegister");
-            return;
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+//            new CommNoneAndroidDialog()
+//                    .withMessage("是否放弃注册？")
+//                    .withNegativeBtn("放弃", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            onAuthorizationNavigation(new AuthNavigationEvent(AuthNavigationEvent.TAG_HEAD_TO_LOGIN));
+//                        }
+//                    })
+//                    .withPositiveBtn("继续注册", null)
+//                    .dimBackground(true)
+//                    .show(getSupportFragmentManager(), "CancelRegister");
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 
     @Override
     public void finish() {

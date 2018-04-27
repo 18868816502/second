@@ -29,12 +29,14 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerUserProfileComponent;
 import com.beihui.market.injection.module.UserProfileModule;
 import com.beihui.market.ui.contract.UserProfileContract;
+import com.beihui.market.ui.dialog.NicknameDialog;
 import com.beihui.market.ui.presenter.UserProfilePresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,6 +89,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     @Override
     public void configViews() {
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
 
         SlidePanelHelper.attach(this);
@@ -136,15 +139,25 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         UserProfileActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @OnClick({R.id.avatar_item, R.id.nick_name_item, R.id.profession_item})
+    @OnClick({R.id.avatar,R.id.avatar_item, R.id.nick_name_item, R.id.profession_item})
     void OnItemsClicked(View view) {
         switch (view.getId()) {
+            case R.id.avatar:
             case R.id.avatar_item:
                 showAvatarSelector();
                 break;
             case R.id.nick_name_item:
-                Intent toEditName = new Intent(this, EditNickNameActivity.class);
-                startActivity(toEditName);
+//                Intent toEditName = new Intent(this, EditNickNameActivity.class);
+//                startActivity(toEditName);
+
+                new NicknameDialog().setNickNameChangedListener(new NicknameDialog.NickNameChangedListener() {
+                    @Override
+                    public void onNickNameChanged(String nickName) {
+                        nickNameTv.setText(nickName);
+                        presenter.updateUserName(nickName);
+                    }
+                }).setNickName(nickNameTv.getText().toString()).show(getSupportFragmentManager(), "nickName");
+
                 break;
             case R.id.profession_item:
                 Intent toEditJob = new Intent(this, EditJobGroupActivity.class);
@@ -293,5 +306,17 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                     .asBitmap()
                     .into(avatarIv);
         }
+    }
+
+
+    @Override
+    public void showUserName(String name) {
+
+    }
+
+    @Override
+    public void showUpdateNameSuccess(String msg) {
+        dismissProgress();
+        ToastUtils.showShort(this, msg, null);
     }
 }

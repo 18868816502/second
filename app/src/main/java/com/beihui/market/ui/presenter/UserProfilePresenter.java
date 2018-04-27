@@ -44,9 +44,13 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
     @Override
     public void onStart() {
         super.onStart();
+
+
         UserHelper.Profile profile = mUserHelper.getProfile();
         if (profile != null) {
             mView.showProfile(profile);
+
+            mView.showUserName(profile.getUserName());
 
             Disposable dis = mApi.queryUserProfile(profile.getId())
                     .compose(RxUtil.<ResultEntity<UserProfile>>io2main())
@@ -113,6 +117,33 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
                                    if (result.isSuccess()) {
                                        mView.showAvatarUpdateSuccess(result.getData().getFilePath());
                                        mUserHelper.updateAvatar(result.getData().getFilePath(), mContext);
+                                   } else {
+                                       mView.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(UserProfilePresenter.this, throwable);
+                                mView.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void updateUserName(String username) {
+        final String name = username;
+        mView.showProgress();
+        Disposable dis = mApi.updateUsername(mUserHelper.getProfile().getId(), username)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       mUserHelper.updateUsername(name, mContext);
+                                       mView.showUpdateNameSuccess(result.getMsg());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

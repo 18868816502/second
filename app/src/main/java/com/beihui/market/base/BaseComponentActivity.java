@@ -85,7 +85,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
      */
     protected void setupToolbar(Toolbar toolbar) {
         setupToolbar(toolbar, true);
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_white);
+        setupToolbarBackNavigation(toolbar, R.mipmap.btn_back_normal_black);
     }
 
     /**

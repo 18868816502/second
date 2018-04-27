@@ -7,12 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -20,17 +16,17 @@ import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoginComponent;
 import com.beihui.market.injection.module.LoginModule;
-import com.beihui.market.ui.activity.ResetPsdActivity;
+import com.beihui.market.ui.activity.UserCertificationCodeActivity;
 import com.beihui.market.ui.activity.WeChatBindPhoneActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
 import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.ClearEditText;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -47,21 +43,23 @@ import butterknife.OnClick;
 /**
  * 用户登录的Fragment 片段
  */
-public class UserLoginFragment extends BaseComponentFragment implements LoginContract.View {
+public class LoginMainFragment extends BaseComponentFragment implements LoginContract.View {
 
     private final int REQUEST_CODE_BIND_PHONE = 1;
 
-    @BindView(R.id.phone_number)
-    EditText phoneNumberEt;
-    @BindView(R.id.password)
-    EditText passwordEt;
-    @BindView(R.id.login)
-    TextView loginBtn;
-    @BindView(R.id.psd_visibility)
-    CheckBox psdVisibilityCb;
 
     @Inject
     LoginPresenter presenter;
+    @BindView(R.id.phone_number)
+    ClearEditText phoneNumber;
+    @BindView(R.id.tv_login)
+    TextView tvLogin;
+    @BindView(R.id.iv_contract)
+    ImageView ivContract;
+    /**
+     * 合同是否选中
+     */
+    private boolean isCheckContract = true;
 
     private Map<String, String> wechatInfo;
 
@@ -98,23 +96,11 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_user_login;
+        return R.layout.fragment_login_main;
     }
 
     @Override
     public void configViews() {
-
-        psdVisibilityCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    passwordEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                } else {
-                    passwordEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }
-                CommonUtils.setEditTextCursorLocation(passwordEt);
-            }
-        });
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -123,31 +109,21 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String phone = phoneNumberEt.getText().toString();
-                String pwd = passwordEt.getText().toString();
-                if (LegalInputUtils.isPhoneAndPwdLegal(phone, pwd)) {
-                    loginBtn.setClickable(true);
-                    loginBtn.setTextColor(Color.WHITE);
-                } else {
-                    loginBtn.setClickable(false);
-                    loginBtn.setTextColor(Color.parseColor("#50ffffff"));
-                }
+                validation();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         };
-        phoneNumberEt.addTextChangedListener(textWatcher);
-        passwordEt.addTextChangedListener(textWatcher);
-
+        phoneNumber.addTextChangedListener(textWatcher);
 
         String phone = null;
         if (getArguments() != null) {
             phone = getArguments().getString("phone");
         }
         if (phone != null) {
-            phoneNumberEt.setText(phone);
+            phoneNumber.setText(phone);
         }
     }
 
@@ -164,21 +140,47 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
                 .inject(this);
     }
 
+    /**
+     * 验证按钮是否可以点击
+     */
+    private void validation(){
+        String phone = phoneNumber.getText().toString();
+        if (LegalInputUtils.validatePhone(phone) && isCheckContract) {
+            tvLogin.setClickable(true);
+            tvLogin.setTextColor(Color.WHITE);
+        } else {
+            tvLogin.setClickable(false);
+            tvLogin.setTextColor(Color.parseColor("#50ffffff"));
+        }
+    }
 
-    @OnClick({R.id.forget_psd, R.id.login, R.id.login_with_wechat})
-    void onViewClicked(View view) {
+
+    @OnClick({R.id.tv_login, R.id.iv_contract, R.id.tv_contract, R.id.iv_login_wechat})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.forget_psd:
-                Intent toResetPsd = new Intent(getActivity(), ResetPsdActivity.class);
-                startActivity(toResetPsd);
+           case R.id.tv_login:
+                UserCertificationCodeActivity.launch(getActivity(),phoneNumber.getText().toString());
                 break;
-            case R.id.login:
-                //umeng统计
-                Statistic.onEvent(Events.LOGIN_LOGIN);
+            case R.id.iv_contract:
+                if (isCheckContract){
+                    isCheckContract = false;
+                }else{
+                    isCheckContract = true;
+                }
 
-                presenter.login(phoneNumberEt.getText().toString(), passwordEt.getText().toString());
+                if (isCheckContract){
+                    ivContract.setImageResource(R.drawable.btn_open_rb);
+                }else{
+                    ivContract.setImageResource(R.drawable.btn_close_rb);
+                }
+
+                validation();
+
                 break;
-            case R.id.login_with_wechat:
+            case R.id.tv_contract:
+
+                break;
+            case R.id.iv_login_wechat:
                 UMAuthListener listener = new UMAuthListener() {
 
                     @Override
@@ -211,6 +213,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     }
 
 
+
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
         //injected, do nothing.
@@ -241,4 +244,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
         intent.putExtra("profile_image_url", wechatInfo.get("profile_image_url"));
         startActivityForResult(intent, REQUEST_CODE_BIND_PHONE);
     }
+
+
+
 }

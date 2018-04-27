@@ -12,11 +12,17 @@ public interface UserProfileContract {
     interface Presenter extends BasePresenter {
 
         void updateAvatar(Bitmap bitmap);
+
+        void updateUserName(String username);
     }
 
     interface View extends BaseView<Presenter> {
         void showProfile(UserHelper.Profile profile);
 
         void showAvatarUpdateSuccess(String avatar);
+
+        void showUserName(String name);
+
+        void showUpdateNameSuccess(String msg);
     }
 }

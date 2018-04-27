@@ -160,7 +160,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
 
     @Override
     public void moveToNextStep(String requestPhone) {
-        AuthNavigationEvent event = new AuthNavigationEvent(AuthNavigationEvent.TAG_SET_PSD);
+        AuthNavigationEvent event = new AuthNavigationEvent(AuthNavigationEvent.TAG_LOGIN_FAST);
         event.requestPhone = requestPhone;
         EventBus.getDefault().post(event);
     }
