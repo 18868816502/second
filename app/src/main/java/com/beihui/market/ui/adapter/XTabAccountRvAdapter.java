@@ -54,8 +54,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         //闹钟的显示
         if (position == 0) {
             holder.mClock.setVisibility(View.VISIBLE);
+            holder.mOverdueTotal.setVisibility(View.VISIBLE);
         } else {
-            holder.mClock.setVisibility(View.INVISIBLE);
+            holder.mClock.setVisibility(View.GONE);
+            holder.mOverdueTotal.setVisibility(View.GONE);
         }
 
         //账单名称
@@ -90,7 +92,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
     @Override
     public int getItemCount() {
-        return 20;
+        return dataSet.size();
     }
 
     public void notifyDebtChanged(List<AccountBill> list) {
@@ -112,10 +114,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         public TextView mAccountTypeMoney;
         public TextView mSetAllPay;
         public TextView mSetPartPay;
+        //逾期总数
+        public TextView mOverdueTotal;
 
 
-        public RelativeLayout mSetBg;
         public LinearLayout mCardBg;
+        public LinearLayout mSetBg;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -128,9 +132,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             mAccountTypeMoney = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_money);
             mSetAllPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_all_pay);
             mSetPartPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_part_pay);
+            mOverdueTotal = (TextView) itemView.findViewById(R.id.iv_item_tab_account_overdue_total);
 
-            mCardBg = (LinearLayout) itemView.findViewById(R.id.ll_item_tab_acount_set_pay_bg);
-            mSetBg = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_acount_set_pay_bg);
+            mCardBg = (LinearLayout) itemView.findViewById(R.id.ll_item_tab_account_card);
+            mSetBg= (LinearLayout) itemView.findViewById(R.id.ll_item_tab_acount_set_pay_bg);
         }
     }
 

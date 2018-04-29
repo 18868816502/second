@@ -27,6 +27,7 @@
             android:padding="5dp"
             android:layout_marginRight="10dp"
             android:textSize="14sp" />
+
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
@@ -105,8 +106,6 @@
                 android:background="@drawable/round_login_btn"
                 android:text="确认"
                 android:textColor="#50ffffff" />
-
-
 
 
         </LinearLayout>

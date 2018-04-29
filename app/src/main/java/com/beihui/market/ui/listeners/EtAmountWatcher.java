@@ -7,6 +7,10 @@ import android.widget.EditText;
 
 import com.beihui.market.util.viewutils.ToastUtils;
 
+/**
+ * @author xhb
+ * 应还金额监听器
+ */
 public class EtAmountWatcher implements TextWatcher {
 
     private EditText editText;

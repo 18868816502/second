@@ -124,8 +124,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_gravity="right"
                 android:gravity="right"
                 android:text="忘记密码"
@@ -136,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="37dp"
+                android:layout_marginTop="27dp"
                 android:orientation="horizontal">
 
 
@@ -148,19 +149,20 @@
                     android:text="一键登录"
                     android:textColor="#66686c"
                     android:textSize="12sp" />
+
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/login_with_wechat"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
                 android:src="@drawable/login_wechat_icon" />
-
 
         </LinearLayout>
 
-
     </ScrollView>
+
 </LinearLayout>

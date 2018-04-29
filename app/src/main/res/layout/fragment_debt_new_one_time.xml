@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--@author xhb 一次性还款 网贷账单-->
+<?xml version="1.0" encoding="utf-8"?><!--@author xhb 一次性还款 网贷账单-->
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,22 +11,24 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+
         <!--只有在自定义账单的时候 才会有账单名称编辑布局-->
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/ll_one_time_account_name_root"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="25dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="账单名称"
@@ -37,28 +38,31 @@
             <com.beihui.market.view.ClearEditText
                 android:id="@+id/cet_one_time_account_name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="38dp"
                 android:background="@null"
                 android:hint="请输入"
-                android:inputType="numberDecimal"
+                android:inputType="text"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:textColor="@color/c_222222"
                 android:textColorHint="#B2B2B2"
                 android:textSize="19sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/line" />
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="18dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="到期应还"
@@ -68,7 +72,7 @@
         <com.beihui.market.view.ClearEditText
             android:id="@+id/cet_one_time_money"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="38dp"
             android:background="@null"
             android:hint="请输入金额"
             android:inputType="numberDecimal"
@@ -81,14 +85,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:background="@color/line" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="18dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="到期还款日"
@@ -111,15 +115,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" />
+            android:layout_marginRight="15dp"
+            android:background="@color/line" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="18dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="备注"
@@ -129,7 +133,7 @@
         <com.beihui.market.view.ClearEditText
             android:id="@+id/cet_one_time_mark_content"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="38dp"
             android:background="@null"
             android:hint="请填写备注（选填）"
             android:inputType="text"
@@ -143,10 +147,23 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:background="@color/line" />
+
+
+        <TextView
+            android:id="@+id/tv_one_time_confirm_button"
+            style="@style/TextButtonStyle"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/round_login_btn"
+            android:text="保存"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
+
 
 </android.support.v4.widget.NestedScrollView>

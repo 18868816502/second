@@ -4,6 +4,7 @@ package com.beihui.market.ui.contract;
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.AccountBill;
+import com.beihui.market.entity.DebtAbstract;
 
 import java.util.List;
 
@@ -121,13 +122,9 @@ public interface TabAccountContract {
         void showNoDebtListBlock();
 
         /**
-         * 显示用户账单摘要信息
-         *
-         * @param debtAmount   当前负债
-         * @param debtSevenDay 近7天待还
-         * @param debtMonth    近30天待还
+         * 显示用户账单 头信息
          */
-        void showDebtInfo(double debtAmount, double debtSevenDay, double debtMonth);
+        void showDebtInfo(DebtAbstract debtAbstract);
 
         /**
          * 显示用户账单列表

@@ -138,13 +138,32 @@ public class Api {
     }
 
     /**
-     * 登录
+     * 密码登录
      *
      * @param account 用户账号
      * @param pwd     用户密码
      */
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
         return service.login(account, generatePwd(pwd, account), getChannelId());
+    }
+
+    /**
+     * 验证码登录
+     *
+     * @param account 用户账号
+     *                2 代表的是验证码登录
+     */
+    public Observable<ResultEntity<UserProfileAbstract>> loginByCode(String account, String verifyCode) {
+        return service.loginByCode(account, "2", verifyCode, getChannelId());
+    }
+
+    /**
+     * 登录
+     *
+     * @param account 用户账号
+     */
+    public Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(String account) {
+        return service.loginNoPwd(account, getChannelId());
     }
 
     /**
@@ -181,6 +200,15 @@ public class Api {
      */
     public Observable<ResultEntity<Phone>> requestWeChatBindPwdSms(String phone) {
         return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, getChannelId());
+    }
+
+    /**
+     * 请求验证码 用于登录
+     *
+     * @param phone 请求手机号
+     */
+    public Observable<ResultEntity<Phone>> requestPhoneLogin(String phone) {
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_LOGIN, getChannelId());
     }
 
     /**
@@ -655,6 +683,16 @@ public class Api {
     public Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(String userId, int billType) {
         return service.fetchDebtAbstractInfo(userId, billType);
     }
+
+    /**
+     * 获取账单信息摘要
+     * @version 3.0.0
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(String userId, int billType) {
+        return service.queryTabAccountHeaderInfo(userId, billType);
+    }
+
 
     /**
      * 查询全部借款

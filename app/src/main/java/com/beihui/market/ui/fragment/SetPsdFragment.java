@@ -24,20 +24,24 @@ import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.ClearEditText;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 忘记密码设置密码的 片段
+ */
 public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSetPwdContract.View {
     @BindView(R.id.password)
-    EditText passwordEt;
+    ClearEditText passwordEt;
     @BindView(R.id.confirm)
     TextView confirmBtn;
 
     @BindView(R.id.verify_code)
-    EditText verifyCodeEt;
+    ClearEditText verifyCodeEt;
     @BindView(R.id.fetch_text)
     TextView fetchText;
     @BindView(R.id.psd_visibility)
@@ -69,8 +73,6 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     @Override
     public void configViews() {
-
-
         psdVisibilityCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -129,9 +131,11 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     @OnClick({R.id.confirm,R.id.fetch_text})
     void onViewClicked(View view) {
+        //获取验证码
         if (view.getId() == R.id.fetch_text) {
             presenter.requestVerification(requestPhone);
         } else {
+            //设置密码 确认按钮
             presenter.nextMove(requestPhone, verifyCodeEt.getText().toString());
         }
     }
@@ -147,6 +151,9 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
         ToastUtils.showShort(getContext(), msg, null);
     }
 
+    /**
+     * 设置密码成功
+     */
     @Override
     public void showRestPwdSuccess(String msg) {
         dismissProgress();

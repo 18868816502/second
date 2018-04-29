@@ -26,6 +26,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 忘记密码输入手机号验证
+ */
 public class RequireVerifyCodeFragment extends BaseComponentFragment implements ResetPwdVerifyContract.View {
     @BindView(R.id.phone_number)
     EditText phoneNumberEt;

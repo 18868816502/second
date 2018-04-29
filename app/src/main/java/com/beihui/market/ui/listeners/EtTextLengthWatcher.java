@@ -5,16 +5,25 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.beihui.market.entity.DebtChannel;
+
 import java.nio.charset.Charset;
 
 public class EtTextLengthWatcher implements TextWatcher {
 
     private EditText editText;
     private int edge;
+    private DebtChannel debtChannel;
 
     public EtTextLengthWatcher(EditText editText, int edge) {
         this.editText = editText;
         this.edge = edge;
+    }
+
+    public EtTextLengthWatcher(DebtChannel debtChannel, EditText editText, int edge) {
+        this.editText = editText;
+        this.edge = edge;
+        this.debtChannel = debtChannel;
     }
 
     @Override
@@ -29,6 +38,9 @@ public class EtTextLengthWatcher implements TextWatcher {
             if (bytes.length > edge) {
                 editText.getEditableText().delete(editText.length() - 1, editText.length());
             }
+        }
+        if (debtChannel != null) {
+            debtChannel.setChannelName(s.toString());
         }
     }
 

@@ -190,7 +190,7 @@ public class RewardPointActivity extends BaseComponentActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                startActivityForResult(new Intent(RewardPointActivity.this, XCreditCardAccountInputActivity.class), REQUEST_CODE_ADD_DEBT);
+                startActivityForResult(new Intent(RewardPointActivity.this, DebtSourceActivity.class), REQUEST_CODE_ADD_DEBT);
             }
         });
     }

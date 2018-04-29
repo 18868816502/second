@@ -6,6 +6,10 @@ import com.beihui.market.ui.activity.DebtChannelActivity;
 
 import dagger.Component;
 
+/**
+ * @author xhb
+ * 网贷记账
+ */
 @Component(dependencies = AppComponent.class, modules = DebtChannelModule.class)
 public interface DebtChannelComponent {
 

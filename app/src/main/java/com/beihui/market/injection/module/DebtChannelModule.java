@@ -6,6 +6,10 @@ import com.beihui.market.ui.contract.DebtChannelContract;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * @author xhb
+ * 网贷记账
+ */
 @Module
 public class DebtChannelModule {
 
@@ -16,7 +20,7 @@ public class DebtChannelModule {
     }
 
     @Provides
-    public DebtChannelContract.View providesDebtChannelContractView() {
+    public DebtChannelContract.View provideView() {
         return view;
     }
 }

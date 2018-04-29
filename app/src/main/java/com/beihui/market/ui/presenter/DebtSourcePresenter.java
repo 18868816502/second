@@ -13,7 +13,6 @@ import com.beihui.market.ui.contract.DebtSourceContract;
 import com.beihui.market.util.RxUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +20,10 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+/**
+ * @author xhb
+ * 添加信用卡账单
+ */
 public class DebtSourcePresenter extends BaseRxPresenter implements DebtSourceContract.Presenter {
 
     private Api api;
@@ -39,33 +42,7 @@ public class DebtSourcePresenter extends BaseRxPresenter implements DebtSourceCo
         this.userHelper = UserHelper.getInstance(context);
     }
 
-    @Override
-    public void fetchSourceChannel() {
-        Disposable dis = api.fetchDebtSourceChannel()
-                .compose(RxUtil.<ResultEntity<List<DebtChannel>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<DebtChannel>>>() {
-                               @Override
-                               public void accept(ResultEntity<List<DebtChannel>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       debtChannelList.clear();
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           debtChannelList.addAll(result.getData());
-                                       }
-                                       view.showSourceChannel(Collections.unmodifiableList(debtChannelList));
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(DebtSourcePresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
-    }
+
 
     @Override
     public void clickFetchDebtWithMail() {
@@ -115,13 +92,5 @@ public class DebtSourcePresenter extends BaseRxPresenter implements DebtSourceCo
         view.navigateDebtHand();
     }
 
-    @Override
-    public void clickSourceChannel(int index) {
-        view.navigateDebtNew(debtChannelList.get(index));
-    }
 
-    @Override
-    public void clickMoreSourceChannel() {
-        view.navigateMoreSourceChannel();
-    }
 }

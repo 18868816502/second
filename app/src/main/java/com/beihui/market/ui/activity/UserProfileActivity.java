@@ -48,6 +48,9 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+/**
+ * 个人中心页面
+ */
 @RuntimePermissions
 public class UserProfileActivity extends BaseComponentActivity implements UserProfileContract.View, View.OnClickListener {
 

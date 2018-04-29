@@ -91,10 +91,11 @@ public class TabNewsWebViewFragment extends BaseTabFragment {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                progressBar.setProgress(newProgress);
-                if (newProgress == 100) {
-                    progressBar.setVisibility(View.GONE);
-                }
+                //TODO 空指针
+//                progressBar.setProgress(newProgress);
+//                if (newProgress == 100) {
+//                    progressBar.setVisibility(View.GONE);
+//                }
             }
         });
         webView.setDownloadListener(new DownloadListener() {

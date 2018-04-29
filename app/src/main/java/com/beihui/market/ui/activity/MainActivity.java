@@ -122,6 +122,11 @@ public class MainActivity extends BaseComponentActivity {
 //                navigationBar.select(R.id.tab_account);
                 navigationBar.select(R.id.tab_mine);
             }
+
+            if (extras.getBoolean("mine")) {
+//                navigationBar.select(R.id.tab_account);
+                navigationBar.select(R.id.tab_mine);
+            }
         }
 //        if (getIntent().getBooleanExtra("home", false)) {
 //            navigationBar.select(R.id.tab_home);

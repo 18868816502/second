@@ -3,26 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:paddingBottom="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--闹钟-->
+
     <!--以此布局为基准-->
-    <ImageView
-        android:id="@+id/iv_item_tab_account_clock"
-        android:layout_marginLeft="63dp"
+    <View
+        android:id="@+id/iv_item_tab_account_base_line"
+        android:layout_marginLeft="70dp"
         android:src="@drawable/xbill_time_icon"
-        android:background="@color/white"
-        android:layout_width="16dp"
-        android:layout_height="16dp" />
+        android:background="@color/transparent"
+        android:layout_width="1dp"
+        android:layout_height="1dp" />
+
 
     <!--卡信息-->
     <LinearLayout
         android:id="@+id/ll_item_tab_account_card"
         android:orientation="vertical"
-        android:layout_toRightOf="@id/iv_item_tab_account_clock"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="23dp"
+        android:layout_toRightOf="@id/iv_item_tab_account_base_line"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="3dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/xshape_tab_account_card_bg"
         android:layout_width="match_parent"
@@ -71,6 +73,7 @@
                 android:id="@+id/iv_item_tab_acount_arrow"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:padding="10dp"
                 android:src="@drawable/xbill_down_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -110,13 +113,36 @@
 
     </LinearLayout>
 
+    <!--闹钟-->
+    <ImageView
+        android:id="@+id/iv_item_tab_account_clock"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="63.5dp"
+        android:layout_below="@id/ll_item_tab_account_card"
+        android:src="@drawable/xbill_time_icon"
+        android:background="@color/white"
+        android:layout_width="16dp"
+        android:layout_height="16dp" />
+
+    <!--逾期总数量-->
+    <TextView
+        android:id="@+id/iv_item_tab_account_overdue_total"
+        android:text="逾期总数为10笔"
+        android:textSize="12sp"
+        android:layout_marginTop="11dp"
+        android:layout_marginLeft="90dp"
+        android:layout_below="@id/ll_item_tab_account_card"
+        android:background="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <!--还款日期-->
     <TextView
         android:id="@+id/tv_item_tab_account_date_name"
         android:layout_toLeftOf="@id/ll_item_tab_account_card"
-        android:layout_below="@id/iv_item_tab_account_clock"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/iv_item_tab_account_base_line"
+        android:layout_marginTop="11dp"
         android:layout_marginRight="30dp"
         android:textSize="15sp"
         android:textColor="@color/black_1"
@@ -127,9 +153,9 @@
     <!--小红点-->
     <ImageView
         android:id="@+id/iv_item_tab_account_dot"
-        android:layout_below="@id/iv_item_tab_account_clock"
+        android:layout_below="@id/iv_item_tab_account_base_line"
         android:layout_marginLeft="67dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="14dp"
         android:src="@drawable/xshape_tab_account_red_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

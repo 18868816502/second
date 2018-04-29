@@ -11,15 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"/>
 
-    <!--添加按钮-->
-    <ImageView
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/iv_tab_account_header_add"
-        android:layout_gravity="right"
-        android:src="@drawable/xbill_add_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+
+    <LinearLayout
+        android:paddingTop="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--切换到今天-->
+        <ImageView
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:src="@drawable/xbill_today_btn"
+            android:layout_width="51dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <!--添加按钮-->
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/iv_tab_account_header_add"
+            android:layout_gravity="right"
+            android:src="@drawable/xbill_add_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
 
     <!--近30天未还-->
     <LinearLayout
@@ -38,7 +62,8 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:text="共2笔"
+            android:id="@+id/tv_last_one_month_wait_pay_num"
+            android:text=""
             android:textSize="12sp"
             android:textColor="@color/black_2"
             android:layout_width="wrap_content"

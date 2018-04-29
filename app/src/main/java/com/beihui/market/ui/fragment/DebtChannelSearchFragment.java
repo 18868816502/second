@@ -14,10 +14,10 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.activity.XNetLoanAccountInputActivity;
+import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.adapter.DebtChannelRVAdapter;
 import com.beihui.market.ui.dialog.DebtChannelNewDialog;
-import com.beihui.market.ui.presenter.XNetLoanAccountInputPresenter;
+import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.DebtChannelSearchItemDeco;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
@@ -53,7 +53,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
 
     private DebtChannelRVAdapter adapter;
 
-    private XNetLoanAccountInputPresenter presenter;
+    private DebtChannelPresenter presenter;
 
     @Override
     public int getLayoutResId() {
@@ -71,12 +71,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
         stateLayout.setStateViewProvider(new DebtChannelSearchStateViewProvider(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DebtChannelNewDialog().setDebtChannelAddListener(new DebtChannelNewDialog.DebtAddChannelListener() {
-                    @Override
-                    public void onChannelAdded(String channelName) {
-                        presenter.addDebtChannel(channelName);
-                    }
-                }).setSearchString(keyView.getText().toString()).show(getChildFragmentManager(), "NewChannel");
+                presenter.addDebtChannel();
             }
         }));
 
@@ -141,7 +136,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
 
     }
 
-    public void setPresenter(XNetLoanAccountInputPresenter presenter) {
+    public void setPresenter(DebtChannelPresenter presenter) {
         this.presenter = presenter;
     }
 
@@ -161,7 +156,7 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
         if (keyView != null) {
             InputMethodUtil.closeSoftKeyboard(getContext(), keyView);
             keyView.setText("");
-            ((XNetLoanAccountInputActivity) getActivity()).dismissSearchFragment();
+            ((DebtChannelActivity) getActivity()).dismissSearchFragment();
         }
     }
 }

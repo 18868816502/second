@@ -44,6 +44,7 @@ import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -121,6 +122,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void configViews() {
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.white).statusBarDarkFont(true).init();;
         activity.setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -176,12 +178,17 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     }
 
     @OnClick({R.id.contact_kefu, R.id.mine_msg,
-            R.id.mine_bill,
-            R.id.login, R.id.avatar, R.id.user_name,
+            R.id.mine_bill, R.id.login, R.id.avatar, R.id.user_name,
             R.id.my_collection, R.id.reward_points, R.id.invite_friend,
             R.id.helper_feedback, R.id.settings, R.id.wechat_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //我的账单
+            case R.id.mine_bill:
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickMineBill();
+                }
+                break;
             case R.id.contact_kefu:
                 if (!FastClickUtils.isFastClick()) {
                     //umeng统计
@@ -205,7 +212,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     navigateLogin();
                 }
                 break;
-
+            //点击头像 如果未登陆 会跳转到登陆页面
             case R.id.avatar:
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickUserProfile();
@@ -217,13 +224,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     presenter.clickUserProfile();
                 }
                 break;
-
-            case R.id.mine_bill:
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickMineBill();
-                }
-                break;
-
+            //我的收藏 被gone
             case R.id.my_collection:
                 if (!FastClickUtils.isFastClick()) {
                     //umeng统计
@@ -272,6 +273,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
 
+            /**
+             * 进入设置页面
+             */
             case R.id.settings:
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
@@ -344,6 +348,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         startActivity(new Intent(getActivity(), MessageCenterActivity.class));
     }
 
+    /**
+     * 跳转到我的账单
+     * @param userId 用户id
+     */
     @Override
     public void navigateMineBill(String userId) {
         startActivity(new Intent(getActivity(), MyDebtActivity.class));
@@ -375,13 +383,21 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
     }
 
+    /**
+     * 进入设置页面
+     * @param userId 用户id
+     */
     @Override
     public void navigateSetting(String userId) {
         startActivity(new Intent(getActivity(), SettingsActivity.class));
     }
 
+    /**
+     * 是否显示我的账单按钮
+     * @param visible 是否显示
+     */
     @Override
     public void updateMyLoanVisible(boolean visible) {
-        mineProductContainer.setVisibility(View.GONE);
+        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

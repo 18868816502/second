@@ -7,13 +7,13 @@ import com.beihui.market.entity.DebtChannel;
 
 import java.util.List;
 
+/**
+ * @author xhb
+ * 添加信用卡账单
+ */
 public interface DebtSourceContract {
 
     interface Presenter extends BasePresenter {
-        /**
-         * 加载网贷账单渠道
-         */
-        void fetchSourceChannel();
 
         /**
          * 点击邮箱导入
@@ -30,17 +30,6 @@ public interface DebtSourceContract {
          */
         void clickAddDebtByHand();
 
-        /**
-         * 点击网贷渠道
-         *
-         * @param index 点击位置
-         */
-        void clickSourceChannel(int index);
-
-        /**
-         * 点击更多网贷平台
-         */
-        void clickMoreSourceChannel();
     }
 
     interface View extends BaseView<Presenter> {

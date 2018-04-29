@@ -6,6 +6,10 @@ import com.beihui.market.ui.contract.DebtSourceContract;
 import dagger.Module;
 import dagger.Provides;
 
+/**
+ * @author xhb
+ * 添加信用卡账单
+ */
 @Module
 public class DebtSourceModule {
 

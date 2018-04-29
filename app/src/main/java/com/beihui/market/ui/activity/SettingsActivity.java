@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.helper.DataCleanManager;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -22,6 +23,7 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.SettingPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -32,15 +34,23 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 设置页面
+ */
 public class SettingsActivity extends BaseComponentActivity implements SettingContract.View {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.version_name)
     TextView versionNameTv;
+    @BindView(R.id.clear_cache_size)
+    TextView cacheSize;
 
     @Inject
     SettingPresenter presenter;
+
+    //清楚缓存的大小
+    private String mCacheSize;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
 
@@ -68,6 +78,16 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Override
     public void initDatas() {
         presenter.onStart();
+        //计算清除缓存大小
+        try {
+            mCacheSize = DataCleanManager.getFormatSize(DataCleanManager.getInternalCacheSize()
+                    + DataCleanManager.getExternalCacheSize());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (mCacheSize != null) {
+            cacheSize.setText(mCacheSize);
+        }
     }
 
     @Override
@@ -79,9 +99,20 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 .inject(this);
     }
 
-    @OnClick({R.id.change_psd, R.id.star_me, R.id.about_us, R.id.exit, R.id.version_container})
+    @OnClick({R.id.clear_cache,R.id.change_psd, R.id.star_me, R.id.about_us, R.id.exit, R.id.version_container})
     void onViewClicked(View view) {
         switch (view.getId()) {
+            //清除缓存
+            case R.id.clear_cache:
+                boolean a = DataCleanManager.cleanInternalCache();
+                boolean b = DataCleanManager.cleanExternalCache();
+                if (a && b) {
+                    cacheSize.setText("0M");
+                } else {
+                    cacheSize.setText("清除失败");
+                }
+                break;
+            //修改登录密码
             case R.id.change_psd:
                 //umeng统计
                 Statistic.onEvent(Events.SETTING_CHANGE_PASSWORD);

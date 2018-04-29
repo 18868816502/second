@@ -17,8 +17,7 @@ import android.view.WindowManager;
 
 import com.beihui.market.R;
 import com.beihui.market.ui.activity.EBankActivity;
-import com.beihui.market.ui.activity.XNetLoanAccountInputActivity;
-import com.beihui.market.ui.activity.XCreditCardAccountInputActivity;
+import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.ButterKnife;
@@ -78,7 +77,7 @@ public class XTabAccountDialog extends DialogFragment {
         switch (view.getId()) {
             //网贷记账
             case R.id.ll_dialog_tab_account_net_loan:
-                startActivity(new Intent(getContext(), XNetLoanAccountInputActivity.class));
+                startActivity(new Intent(getContext(), DebtChannelActivity.class));
                 dismiss();
                 break;
             //信用卡账单 目前只需要网银导入 进入H5页面

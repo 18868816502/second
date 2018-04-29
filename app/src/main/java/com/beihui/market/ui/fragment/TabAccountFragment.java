@@ -6,11 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +15,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.AccountBill;
+import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.injection.component.AppComponent;
@@ -28,8 +25,8 @@ import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.DebtCalendarActivity;
-import com.beihui.market.ui.activity.XNetLoanAccountInputActivity;
-import com.beihui.market.ui.activity.XCreditCardAccountInputActivity;
+import com.beihui.market.ui.activity.DebtChannelActivity;
+import com.beihui.market.ui.activity.DebtSourceActivity;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -62,8 +59,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @BindView(R.id.tb_tab_account_header_tool_bar)
     Toolbar mToolBar;
+    //30天待还
     @BindView(R.id.tv_last_one_month_wait_pay)
     TextView mLastThirtyDayWaitPay;
+    //30天待还 总笔数
+    @BindView(R.id.tv_last_one_month_wait_pay_num)
+    TextView mLastThirtyDayWaitPayNum;
 
     @BindView(R.id.prl_fg_tab_account_list)
     PullToRefreshScrollLayout mPullContainer;
@@ -132,7 +133,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     }
 
     /**
-     * 查询信用卡账单采集结果 TODO
+     * 查询信用卡账单采集结果
      * presenter.onStart 调用头布局数据 与 列表数据 接口
      */
     @Override
@@ -208,14 +209,13 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     /**
      * 显示头信息数据
-     * @param debtAmount   当前负债
-     * @param debtSevenDay 近7天待还
-     * @param debtMonth    近30天待还
      */
     @Override
-    public void showDebtInfo(double debtAmount, double debtSevenDay, double debtMonth) {
+    public void showDebtInfo(DebtAbstract debtAbstract) {
         //近30天待还金额
-        mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtMonth));
+        mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));
+        //近30天待还总笔数
+        mLastThirtyDayWaitPayNum.setText("共"+CommonUtils.keep2digitsWithoutZero(debtAbstract.last30DayStayStillCount)+"笔");
     }
 
 
@@ -517,19 +517,19 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @Override
     public void navigateAdd() {
-        startActivity(new Intent(getContext(), XCreditCardAccountInputActivity.class));
+        startActivity(new Intent(getContext(), DebtSourceActivity.class));
     }
 
     @Override
     public void navigateAddCreditCardDebt() {
-        Intent intent = new Intent(getContext(), XCreditCardAccountInputActivity.class);
+        Intent intent = new Intent(getContext(), DebtSourceActivity.class);
         intent.putExtra("only_credit_card", true);
         startActivity(intent);
     }
 
     @Override
     public void navigateAddLoanDebt() {
-        startActivity(new Intent(getContext(), XNetLoanAccountInputActivity.class));
+        startActivity(new Intent(getContext(), DebtChannelActivity.class));
     }
 
     @Override

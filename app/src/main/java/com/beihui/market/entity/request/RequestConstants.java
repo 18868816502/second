@@ -30,6 +30,11 @@ public class RequestConstants {
      */
     public static final String VERIFICATION_TYPE_WE_CHAT_BIND = "5";
 
+    /**
+     * 验证码-登录
+     */
+    public static final String VERIFICATION_TYPE_LOGIN = "6";
+
     public static final int SUP_TYPE_AD = 1;
     public static final int SUP_TYPE_BANNER = 2;
     public static final int SUP_TYPE_DIALOG = 3;

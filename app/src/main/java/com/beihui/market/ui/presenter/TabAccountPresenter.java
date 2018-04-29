@@ -35,9 +35,9 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
 
     private List<AccountBill> debts = new ArrayList<>();
 
-    private double debtAmount;
-    private double debtSevenDay;
-    private double debtMonth;
+    //账单 头信息
+    private DebtAbstract anAbstract;
+
 
     @Inject
     TabAccountPresenter(Context context, Api api, TabAccountContract.View view) {
@@ -54,7 +54,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             view.showUserLoginBlock();
 
             if (debts.size() > 0) {
-                view.showDebtInfo(debtAmount, debtSevenDay, debtMonth);
+                view.showDebtInfo(anAbstract);
                 view.showInDebtList(Collections.unmodifiableList(debts));
             }
             //获取头信息
@@ -76,18 +76,16 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
      */
     @Override
     public void loadDebtAbstract() {
-        Disposable dis = api.fetchDebtAbstractInfo(userHelper.getProfile().getId(), 3)//获取网贷+信用卡负债摘要
+        Disposable dis = api.queryTabAccountHeaderInfo(userHelper.getProfile().getId(), 3)//获取网贷+信用卡负债摘要
                 .compose(RxUtil.<ResultEntity<DebtAbstract>>io2main())
                 .subscribe(new Consumer<ResultEntity<DebtAbstract>>() {
                                @Override
                                public void accept(ResultEntity<DebtAbstract> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (result.getData() != null) {
-                                           debtAmount = result.getData().getCurrentDebt();
-                                           debtSevenDay = result.getData().getLast7DayStayStill();
-                                           debtMonth = result.getData().getLast30DayStayStill();
+                                           anAbstract = result.getData();
                                        }
-                                       view.showDebtInfo(debtAmount, debtSevenDay, debtMonth);
+                                       view.showDebtInfo(result.getData());
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

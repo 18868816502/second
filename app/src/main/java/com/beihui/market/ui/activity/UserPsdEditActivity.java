@@ -14,18 +14,30 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.presenter.ResetPwdSetPwdPresenter;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * 快速登陆设置密码
@@ -47,6 +59,9 @@ public class UserPsdEditActivity extends BaseComponentActivity {
     private CountDownTimerUtils countDownTimer;
 
     private int returnType = 1;
+
+    //手机号
+    private String pendingPhone;
 
     @Override
     protected void onDestroy() {
@@ -74,6 +89,7 @@ public class UserPsdEditActivity extends BaseComponentActivity {
         SlidePanelHelper.attach(this);
         tvLogin.setClickable(false);
         returnType = getIntent().getIntExtra("returnType",1);
+        pendingPhone = getIntent().getStringExtra("pendingPhone");
         if (returnType == 2){
             tvTitle.setText("设置新密码");
         }else{
@@ -141,12 +157,50 @@ public class UserPsdEditActivity extends BaseComponentActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_skip:
-                finish();
+                login();
                 break;
+            //修改密码
             case R.id.tv_login:
-                finish();
+                Api.getInstance().resetPwd(pendingPhone, passwordEt.getText().toString())
+                        .compose(RxUtil.<ResultEntity>io2main())
+                        .subscribe(new Consumer<ResultEntity>() {
+                                       @Override
+                                       public void accept(@NonNull ResultEntity result) throws Exception {
+                                           if (result.isSuccess()) {
+                                               //umeng统计
+                                               Statistic.onEvent(Events.CHANGE_PASSWORD_SUCCESS);
+
+                                               login();
+                                           } else {
+                                               //umeng统计
+                                               Statistic.onEvent(Events.CHANGE_PASSWORD_FAILED);
+
+                                               showErrorMsg(result.getMsg());
+                                           }
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(@NonNull Throwable throwable) throws Exception {
+                                        showErrorMsg("网络错误");
+                                    }
+                                });
                 break;
         }
+    }
+
+    /**
+     * 上一页就登录成功
+     */
+    private void login() {
+        /**
+         * 进入我的模块首页
+         */
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("mine", true);
+        startActivity(intent);
+        finish();
+
     }
 
     /**
@@ -160,5 +214,20 @@ public class UserPsdEditActivity extends BaseComponentActivity {
         i.putExtra("returnType",returnType);
         context.startActivity(i);
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
+    }
+
+    /**
+     * 跳转设置密码界面
+     * @param context
+     * @param returnType  1.正常跳转，输入验证码页面跳转 标题“设置密码”
+     *                    2.微信快速登陆跳转，标题“设置新密码”
+     */
+    public static void launch(Activity context, int returnType, String pendingPhone){
+        Intent i = new Intent(context,UserPsdEditActivity.class);
+        i.putExtra("returnType",returnType);
+        i.putExtra("pendingPhone",pendingPhone);
+        context.startActivity(i);
+        context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
+        context.finish();
     }
 }

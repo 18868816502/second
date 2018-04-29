@@ -20,19 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <!--保存一次性账单或者分期还款-->
-        <TextView
-            android:id="@+id/tv_one_time_account_stage_save"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/tool_bar_height"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:minWidth="@dimen/tool_bar_height"
-            android:paddingRight="15dp"
-            android:text="保存"
-            android:textColor="@color/c_ff5240"
-            android:textSize="14sp" />
-
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout

@@ -142,7 +142,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.XNetLoanAccountInputActivity"
+            android:name=".ui.activity.DebtChannelActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -165,7 +165,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.XCreditCardAccountInputActivity"
+            android:name=".ui.activity.DebtSourceActivity"
             android:screenOrientation="portrait" />
 
         <activity

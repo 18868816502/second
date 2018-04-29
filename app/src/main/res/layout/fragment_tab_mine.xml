@@ -113,18 +113,24 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/line" />
+
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/mine_product_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:layout_marginTop="-10dp"
-                android:background="@drawable/round_white_shadow"
-                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
                 android:paddingLeft="12dp"
-                android:paddingRight="9dp"
-                android:visibility="gone">
+                android:paddingRight="9dp">
+
 
                 <FrameLayout
                     android:id="@+id/mine_bill"
@@ -145,14 +151,15 @@
 
                 </FrameLayout>
 
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/line" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,6 +168,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
+                <!--我的收藏隐藏-->
                 <FrameLayout
                     android:id="@+id/my_collection"
                     android:layout_width="match_parent"
@@ -180,6 +188,7 @@
                         android:textSize="15sp" />
 
                 </FrameLayout>
+
 
                 <FrameLayout
                     android:id="@+id/invite_friend"
@@ -333,9 +342,7 @@ ss
                         android:textSize="15sp" />
 
 
-
                 </FrameLayout>
-
 
 
             </LinearLayout>
@@ -343,6 +350,6 @@ ss
 
         </LinearLayout>
 
-
     </ScrollView>
+
 </FrameLayout>

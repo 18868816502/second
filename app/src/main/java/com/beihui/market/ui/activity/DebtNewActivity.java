@@ -36,8 +36,6 @@ import butterknife.OnClick;
  */
 public class DebtNewActivity extends BaseComponentActivity {
 
-
-
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.channel_name)
@@ -47,16 +45,14 @@ public class DebtNewActivity extends BaseComponentActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
+    /**
+     * 该字段不为空，则为新增账单模式
+     */
     private DebtChannel debtChannel;
     /**
      * 该字段不为空，则为编辑账单模式
      */
     private DebtDetail debtDetail;
-
-
-
-
-
 
     //Fragment的标题
     private final String[] pageTitles = {"一次性还款", "分期还款"};
@@ -78,29 +74,6 @@ public class DebtNewActivity extends BaseComponentActivity {
         super.onPause();
     }
 
-    /**
-     * 接口回调
-     */
-    public interface OnSaveAccountListener {
-        void save();
-    }
-
-    public OnSaveAccountListener onSaveAccountListener;
-
-    public void setOnSaveAccountListener(OnSaveAccountListener onSaveAccountListener) {
-        this.onSaveAccountListener = onSaveAccountListener;
-    }
-
-    /**
-     * 保存一次性账单或者分期还款
-     * 点击事件 需要回调函数
-     */
-    @OnClick(R.id.tv_one_time_account_stage_save)
-    public void onClick() {
-        if (this.onSaveAccountListener != null) {
-            onSaveAccountListener.save();
-        }
-    }
 
     /**
      * ViewPager的适配器
@@ -156,18 +129,12 @@ public class DebtNewActivity extends BaseComponentActivity {
 
 
 
-
-
-
-
-
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         viewPager.setAdapter(new DebtNewPagerAdapter(getSupportFragmentManager()));
-//        copyTabLayout.setupWithViewPager(viewPager);
         copyTabLayout.setViewPager(viewPager);
         debtChannel = getIntent().getParcelableExtra("debt_channel");
         if (debtChannel != null) {

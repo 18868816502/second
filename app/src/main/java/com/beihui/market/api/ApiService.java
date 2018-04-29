@@ -62,11 +62,25 @@ import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 public interface ApiService {
 
     /**
-     * 登录
+     * 密码登录
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
     Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId);
+
+    /**
+     * 密码登录
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/login")
+    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("packageId") String packageId);
+
+    /**
+     * 免密码登录
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/login")
+    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("packageId") String packageId);
 
     /**
      * 微信登录
@@ -399,6 +413,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/queryBaseLoan")
     Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(@Field("userId") String userId, @Field("billType") int billType);
+
+    /**
+     * 获取账单信息摘要
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/unRepayBill")
+    Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(@Field("userId") String userId, @Field("billType") int billType);
 
     /**
      * 查询全部记账信息

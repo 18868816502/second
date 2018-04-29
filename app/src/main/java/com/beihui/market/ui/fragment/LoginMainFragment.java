@@ -41,7 +41,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 用户登录的Fragment 片段
+ * 用户免密码登录的Fragment 片段
  */
 public class LoginMainFragment extends BaseComponentFragment implements LoginContract.View {
 
@@ -158,6 +158,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     @OnClick({R.id.tv_login, R.id.iv_contract, R.id.tv_contract, R.id.iv_login_wechat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //下一步
            case R.id.tv_login:
                 UserCertificationCodeActivity.launch(getActivity(),phoneNumber.getText().toString());
                 break;

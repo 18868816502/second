@@ -108,7 +108,7 @@ public abstract class DebtChannelStickyHeaderItemDeco extends RecyclerView.ItemD
         canvas.save();
         canvas.translate(0, translateTop);
 
-            /*绘制悬浮的头部*/
+        /*绘制悬浮的头部*/
         canvas.drawRect(left, 0, right, headerHeight, mHeaderContentPaint);
         canvas.drawText(firstHeaderName, left + textPaddingLeft, headerHeight / 2 + txtYAxis, mHeaderTxtPaint);
         canvas.restore();

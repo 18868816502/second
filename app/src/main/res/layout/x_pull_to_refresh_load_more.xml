@@ -18,13 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" >
 
-            <include
-                android:id="@+id/include_tab_account_foot_view"
-                layout="@layout/xlayout_tab_account_foot_view"/>
 
             <ImageView
                 android:id="@+id/x_pull_up_icon_more_view"
-                android:layout_below="@id/include_tab_account_foot_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -33,7 +29,6 @@
 
             <ImageView
                 android:id="@+id/loading_icon_more_view"
-                android:layout_below="@id/include_tab_account_foot_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -42,7 +37,6 @@
 
             <TextView
                 android:id="@+id/x_load_state_tv_more_view"
-                android:layout_below="@id/include_tab_account_foot_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -52,12 +46,18 @@
 
             <ImageView
                 android:id="@+id/x_load_state_iv_more_view"
-                android:layout_below="@id/include_tab_account_foot_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/x_load_state_tv_more_view" />
+
+            <!--账单未还总额  账单已还总额-->
+            <include
+                android:visibility="gone"
+                android:id="@+id/include_tab_account_foot_view"
+                layout="@layout/xlayout_tab_account_foot_view"/>
+
         </RelativeLayout>
 
     </RelativeLayout>

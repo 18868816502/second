@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 用户登录的Fragment 片段
+ * 用户密码登录的Fragment 片段
  */
 public class UserLoginFragment extends BaseComponentFragment implements LoginContract.View {
 
@@ -168,6 +168,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @OnClick({R.id.forget_psd, R.id.login, R.id.login_with_wechat})
     void onViewClicked(View view) {
         switch (view.getId()) {
+            //忘记密码
             case R.id.forget_psd:
                 Intent toResetPsd = new Intent(getActivity(), ResetPsdActivity.class);
                 startActivity(toResetPsd);
@@ -178,6 +179,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
                 presenter.login(phoneNumberEt.getText().toString(), passwordEt.getText().toString());
                 break;
+            //微信一键登录
             case R.id.login_with_wechat:
                 UMAuthListener listener = new UMAuthListener() {
 

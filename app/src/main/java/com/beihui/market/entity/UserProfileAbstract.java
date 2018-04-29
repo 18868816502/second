@@ -7,7 +7,7 @@ public class UserProfileAbstract {
     private String msgIsRead;
     private String headPortrait;
     private String account = "11111111111";
-    private boolean isNewUser;
+    private boolean newUser;
 
     public String getId() {
         return id;
@@ -50,10 +50,10 @@ public class UserProfileAbstract {
     }
 
     public boolean isNewUser() {
-        return isNewUser;
+        return newUser;
     }
 
     public void setNewUser(boolean newUser) {
-        isNewUser = newUser;
+        newUser = newUser;
     }
 }

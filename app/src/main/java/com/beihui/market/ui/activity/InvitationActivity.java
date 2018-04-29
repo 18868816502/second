@@ -33,6 +33,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * @author xhb
+ * 邀请好友
+ */
 public class InvitationActivity extends BaseComponentActivity implements InvitationContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;

@@ -35,6 +35,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author xhb
+ * 网贷记账
+ */
 public class DebtChannelActivity extends BaseComponentActivity implements DebtChannelContract.View {
 
     @BindView(R.id.tool_bar)
@@ -85,6 +89,10 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
         header = new Header(view);
 
         adapter = new DebtChannelRVAdapter(R.layout.list_item_debt_channel);
+
+        /**
+         * 点击显示的列表平台
+         */
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -102,6 +110,9 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
         recyclerView.setAdapter(adapter);
 
         historyAdapter = new DebtChannelRVAdapter(R.layout.list_item_debt_channel_history);
+        /**
+         * 点击历史Item
+         */
         historyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -110,15 +121,13 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
         });
         header.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         header.recyclerView.setAdapter(historyAdapter);
+        /**
+         * 点击添加新的借款平台
+         */
         header.debtChannelNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DebtChannelNewDialog().setDebtChannelAddListener(new DebtChannelNewDialog.DebtAddChannelListener() {
-                    @Override
-                    public void onChannelAdded(String channelName) {
-                        presenter.addDebtChannel(channelName);
-                    }
-                }).show(getSupportFragmentManager(), "NewChannel");
+                presenter.addDebtChannel();
             }
         });
 
@@ -129,6 +138,9 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
             }
         });
 
+        /**
+         * 搜索页面
+         */
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +209,9 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
         }
     }
 
+    /**
+     * 网贷账单编辑详情 进入此页面
+     */
     @Override
     public void showSearchChannelSelected(DebtChannel channel) {
         //pv，uv统计
@@ -205,12 +220,6 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
         Intent intent = new Intent(this, DebtNewActivity.class);
         intent.putExtra("debt_channel", channel);
         startActivity(intent);
-        toolbar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, 100);
     }
 
     @Override

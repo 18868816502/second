@@ -68,6 +68,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         context.overridePendingTransition(0, 0);
     }
 
+
     public static void launchWithPending(Activity context, AdBanner adBanner) {
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
         if (adBanner != null) {
@@ -191,6 +192,10 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     }
 
 
+    /**
+     * EventBus事件
+     * @param event
+     */
     @Subscribe
     public void onAuthorizationNavigation(AuthNavigationEvent event) {
         if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_PSD) {
@@ -243,6 +248,9 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
+    /**
+     * 返回键是否放弃注册
+     */
 //    @Override
 //    public void onBackPressed() {
 //        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {

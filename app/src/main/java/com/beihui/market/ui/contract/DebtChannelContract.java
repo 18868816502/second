@@ -7,6 +7,10 @@ import com.beihui.market.entity.DebtChannel;
 
 import java.util.List;
 
+/**
+ * @author xhb
+ * 网贷记账
+ */
 public interface DebtChannelContract {
 
     interface Presenter extends BasePresenter {
@@ -31,9 +35,8 @@ public interface DebtChannelContract {
         /**
          * 添加借款渠道
          *
-         * @param channel 渠道名称
          */
-        void addDebtChannel(String channel);
+        void addDebtChannel();
 
         /**
          * 选中渠道

@@ -21,7 +21,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 
-
+/**
+ * 忘记密码的页面
+ */
 public class ResetPsdActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -63,6 +65,10 @@ public class ResetPsdActivity extends BaseComponentActivity {
 
     }
 
+    /**
+     * EventBus 事件 计入忘记密码填写密码页面
+     * @param event
+     */
     @Subscribe
     public void navigation(ResetPsdNavigationEvent event) {
         FragmentManager fm = getSupportFragmentManager();

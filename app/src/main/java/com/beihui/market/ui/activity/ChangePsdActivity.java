@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,9 +23,12 @@ import com.beihui.market.ui.contract.ChangePsdContract;
 import com.beihui.market.ui.presenter.ChangePsdPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.ClearEditText;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,16 +45,23 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     Toolbar toolbar;
     //原密码
     @BindView(R.id.origin_psd)
-    EditText originPsdEt;
+    ClearEditText originPsdEt;
     //新密码
     @BindView(R.id.new_psd)
-    EditText newPsdEt;
+    ClearEditText newPsdEt;
     //新密码 确认
     @BindView(R.id.new_psd_confirm)
-    EditText newPsdConfirmEt;
+    ClearEditText newPsdConfirmEt;
     //确认修改按钮
     @BindView(R.id.confirm)
     TextView confirmBtn;
+
+    @BindView(R.id.origin_psd_visibility)
+    CheckBox originPsdVisibility;
+    @BindView(R.id.new_psd_visibility)
+    CheckBox newPsdVisibility;
+    @BindView(R.id.new_psd_confirm_visibility)
+    CheckBox newPsdConfirmVisibility;
 
     @Inject
     ChangePsdPresenter presenter;
@@ -66,7 +80,9 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
 
     @Override
     public void configViews() {
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -97,7 +113,7 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
 
     @Override
     public void initDatas() {
-
+        showOrHideEditContent();
     }
 
     /**
@@ -146,5 +162,50 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.finish();
+    }
+
+
+    /**
+     * 显示或者隐藏输入框的密码
+     * 原密码
+     * 新密码
+     * 确认新密码
+     */
+    private void showOrHideEditContent() {
+        originPsdVisibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    originPsdEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    originPsdEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                CommonUtils.setEditTextCursorLocation(originPsdEt);
+            }
+        });
+
+        newPsdVisibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    newPsdEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    newPsdEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                CommonUtils.setEditTextCursorLocation(newPsdEt);
+            }
+        });
+
+        newPsdConfirmVisibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    newPsdConfirmEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    newPsdConfirmEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                CommonUtils.setEditTextCursorLocation(newPsdConfirmEt);
+            }
+        });
     }
 }

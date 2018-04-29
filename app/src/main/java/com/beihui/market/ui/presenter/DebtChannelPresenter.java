@@ -28,6 +28,10 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * @author xhb
+ * 网贷记账
+ */
 public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannelContract.Presenter {
 
     private static final int HISTORY_MAX_SIZE = 6;
@@ -173,11 +177,15 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
         }
     }
 
+    /**
+     * 新增网贷渠道
+     * 搜索页面
+     * 列表页面
+     */
     @Override
-    public void addDebtChannel(String channelName) {
+    public void addDebtChannel() {
         if (customChannel != null) {
             final DebtChannel newChannel = new DebtChannel();
-            newChannel.setChannelName(channelName);
             newChannel.setId(java.util.UUID.randomUUID().toString());
             newChannel.setType("custom");
             newChannel.setLogo(customChannel.getLogo());
@@ -185,17 +193,6 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
 
             Disposable dis = Observable.just(newChannel)
                     .observeOn(Schedulers.io())
-                    .map(new Function<DebtChannel, DebtChannel>() {
-                        @Override
-                        public DebtChannel apply(DebtChannel channel) throws Exception {
-                            dao.insert(channel);
-                            //历史记录达到最大值
-                            if (debtChannelHistory.size() >= HISTORY_MAX_SIZE) {
-                                dao.delete(debtChannelHistory.get(debtChannelHistory.size() - 1));
-                            }
-                            return channel;
-                        }
-                    })
                     .compose(RxUtil.<DebtChannel>io2main())
                     .subscribe(new Consumer<DebtChannel>() {
                                    @Override
