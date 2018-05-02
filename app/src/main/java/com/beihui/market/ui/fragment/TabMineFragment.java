@@ -399,5 +399,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void updateMyLoanVisible(boolean visible) {
         mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.VISIBLE);
     }
 }

@@ -8,13 +8,14 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-        style="@style/ToolBarStyle"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
         <TextView
             android:id="@+id/title"
-            style="@style/ToolBarTitleTextAppearance.Light"
+            android:textColor="@color/black_1"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -22,7 +23,7 @@
 
 
         <ImageView
-            android:id="@+id/fun"
+            android:id="@+id/iv_debt_info_edit_right_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -34,7 +35,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -46,5 +48,53 @@
             android:layout_width="match_parent"
             android:layout_height="40dp" />
     </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rv_debt_info_foot_set_pay"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white"
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
+
+
+        <View
+            android:id="@+id/tv_debt_info_foot_middle_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/line" />
+
+
+        <TextView
+            android:id="@+id/rv_debt_info_foot_pay_part"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white"
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

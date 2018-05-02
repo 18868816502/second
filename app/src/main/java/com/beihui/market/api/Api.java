@@ -52,6 +52,7 @@ import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.util.LogUtils;
 
 import org.apache.commons.codec.binary.Hex;
@@ -136,6 +137,42 @@ public class Api {
                 .build();
         service = retrofit.create(ApiService.class);
     }
+
+    /**
+     * 获取账单信息摘要
+     * @version 3.0.0
+     * @param userId 用户id
+     */
+    public Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(String userId, int billType) {
+        return service.queryTabAccountHeaderInfo(userId, billType);
+    }
+
+    /**
+     * 获取账单信息列表
+     * @version 3.0.0
+     * @param userId 用户Id
+     * @param billStatus 账单状态 1-待还 2-已还 3-逾期
+     * @param firstScreen 是不是首屏 true:是 false：不是
+     * @param pageSize 一页记录数
+     * @param pageNo 页码
+     */
+    public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, int billStatus, boolean firstScreen, int pageNo, int pageSize) {
+        return service.queryTabAccountListInfo(userId, billStatus, firstScreen, pageNo, pageSize);
+    }
+    /**
+     * 获取账单信息列表
+     * @version 3.0.0
+     */
+    public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, boolean firstScreen) {
+        return service.queryTabAccountListInfo(userId, firstScreen);
+    }
+
+
+    /****************************************************************************** 分割线 **************************************************************************************/
+
+
+
+
 
     /**
      * 密码登录
@@ -682,15 +719,6 @@ public class Api {
      */
     public Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(String userId, int billType) {
         return service.fetchDebtAbstractInfo(userId, billType);
-    }
-
-    /**
-     * 获取账单信息摘要
-     * @version 3.0.0
-     * @param userId 用户id
-     */
-    public Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(String userId, int billType) {
-        return service.queryTabAccountHeaderInfo(userId, billType);
     }
 
 

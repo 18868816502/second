@@ -5,23 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@color/colorPrimary" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_credit_card_info_header_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/debt_detail_card_bg"
             android:orientation="vertical"
             android:paddingBottom="15dp"
             android:paddingLeft="15dp"
@@ -29,6 +25,7 @@
             android:paddingTop="10dp">
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -66,6 +63,7 @@
             </LinearLayout>
 
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
@@ -76,6 +74,8 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="----"
-                        android:textColor="@color/black_2"
+                        android:textColor="@color/black_1"
                         android:textSize="12sp"
                         tools:text="3月账单" />
 
@@ -96,12 +96,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="----"
-                        android:textColor="@color/black_1"
-                        android:textSize="25sp"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
                         tools:text="3,600.66" />
+
+                    <!--未出账 已出账 状态 xhb-->
+                    <TextView
+                        android:id="@+id/tv_credit_card_info_header_status"
+                        android:text=""
+                        android:textSize="11sp"
+                        android:textColor="#424251"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:background="@color/line"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/set_status"
                     android:layout_width="70dp"
                     android:layout_height="28dp"
@@ -122,6 +137,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -147,6 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -171,6 +188,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -195,6 +213,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -271,8 +290,40 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:background="@color/line" />
+
         </RelativeLayout>
 
+
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:id="@+id/tv_credit_card_remark"
+                android:gravity="center_vertical"
+                android:text="备注"
+                android:textColor="@color/black_2"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:src="@drawable/xicon_accont_info_edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 
 </FrameLayout>

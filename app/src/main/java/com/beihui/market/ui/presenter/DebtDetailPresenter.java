@@ -25,6 +25,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
 
     private String debtId;
 
+    //在查询单个借款项目查看 就保存了该bean
     private DebtDetail debtDetail;
 
     @Inject
@@ -35,6 +36,9 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
         userHelper = UserHelper.getInstance(context);
     }
 
+    /**
+     * 单个借款项目查看
+     */
     @Override
     public void loadDebtDetail() {
         Disposable dis = api.fetchLoanDebtDetail(userHelper.getProfile().getId(), debtId)
@@ -65,7 +69,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
     @Override
     public void clickSetStatus(int index) {
         int status = (index == -1 ? debtDetail.getTermStatus() : debtDetail.getRepayPlan().get(index).getStatus());
-        view.showSetStatus(index, status == 2 ? 1 : 2);
+        view.showSetStatus(index, status);
     }
 
     @Override
@@ -85,6 +89,9 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
         }
     }
 
+    /**
+     * 通过 getRepayType 判断展示菜单是否 需要编辑栏
+     */
     @Override
     public void clickMenu() {
         boolean editable = debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_ONE_TIME || debtDetail.getRepayType() == DebtNewContract.Presenter.METHOD_EVEN_DEBT;

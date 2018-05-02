@@ -43,6 +43,7 @@ import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
+import com.beihui.market.entity.request.XAccountInfo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -59,7 +60,42 @@ import retrofit2.http.POST;
 import static com.beihui.market.api.NetConstants.BASE_PATH;
 import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 
+/**
+ * @author xhb
+ * 请求接口
+ */
 public interface ApiService {
+
+    /**
+     * @author xhb
+     * 获取头信息 以及未还总额 已还总额
+     * 获取账单信息摘要
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/unRepayBill")
+    Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(@Field("userId") String userId, @Field("billType") int billType);
+
+    /**
+     * @author xhb
+     * 获取头信息 以及未还总额 已还总额
+     * 获取账单信息摘要
+     * @param userId 用户Id
+     * @param billStatus 账单状态 1-待还 2-已还 3-逾期
+     * @param firstScreen 是不是首屏 true:是 false：不是
+     * @param pageSize 一页记录数
+     * @param pageNo 页码
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/bill/index")
+    Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("billStatus") int billStatus, @Field("firstScreen") boolean firstScreen, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/bill/index")
+    Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("firstScreen") boolean firstScreen);
+
+
+    /****************************************************************************** 分割线 **************************************************************************************/
+
 
     /**
      * 密码登录
@@ -414,12 +450,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/accounting/queryBaseLoan")
     Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(@Field("userId") String userId, @Field("billType") int billType);
 
-    /**
-     * 获取账单信息摘要
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/unRepayBill")
-    Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(@Field("userId") String userId, @Field("billType") int billType);
 
     /**
      * 查询全部记账信息

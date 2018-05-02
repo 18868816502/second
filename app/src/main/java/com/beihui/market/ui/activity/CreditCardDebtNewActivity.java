@@ -42,7 +42,9 @@ import butterknife.OnClick;
 
 /**
  * @author xhb
- * 手动记账 编辑详情页面
+ * 手动记账 编辑详情页面 信用卡
+ *
+ * TODO
  */
 public class CreditCardDebtNewActivity extends BaseComponentActivity implements CreditCardDebtNewContract.View {
 

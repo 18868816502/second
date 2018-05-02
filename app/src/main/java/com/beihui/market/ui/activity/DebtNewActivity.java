@@ -167,8 +167,4 @@ public class DebtNewActivity extends BaseComponentActivity {
         AndroidBug5497Fix.assistActivity(this);
     }
 
-
-
-
-
 }

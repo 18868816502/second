@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +33,10 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.SPUtils;
+import com.beihui.market.view.BusinessWebView;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
@@ -38,19 +44,20 @@ import butterknife.BindView;
  * @date 20180419
  * @version 2.1.1
  * @author xhb
- * 资讯 模块 使用WebView页面 (非资讯详情页)
+ * 发现 模块 使用WebView页面 (非资讯详情页)
  */
 public class TabNewsWebViewFragment extends BaseTabFragment {
 
-    @BindView(R.id.tool_bar)
-    FrameLayout toolbar;
-    @BindView(R.id.web_view)
-    WebView webView;
+    @BindView(R.id.tl_news_header_tool_bar)
+    Toolbar toolbar;
+    @BindView(R.id.bwv_news_web_view)
+    BusinessWebView webView;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
     //依赖的activity
     public Activity mActivity;
+
 
     public static TabNewsWebViewFragment newInstance() {
         return new TabNewsWebViewFragment();
@@ -87,15 +94,11 @@ public class TabNewsWebViewFragment extends BaseTabFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
+
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                //TODO 空指针
-//                progressBar.setProgress(newProgress);
-//                if (newProgress == 100) {
-//                    progressBar.setVisibility(View.GONE);
-//                }
             }
         });
         webView.setDownloadListener(new DownloadListener() {
@@ -130,7 +133,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment {
 
         newsUrl = NetConstants.generateNewsWebViewUrl(userId);
 
-        Log.e("xhb", newsUrl);
         webView.loadUrl(newsUrl);
 
 

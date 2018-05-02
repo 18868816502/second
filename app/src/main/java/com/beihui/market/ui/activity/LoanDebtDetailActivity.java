@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -37,6 +38,7 @@ import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 
 import javax.inject.Inject;
 
@@ -47,6 +49,10 @@ import static android.text.TextUtils.isEmpty;
 import static com.beihui.market.util.CommonUtils.convertInterestRate;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
+/**
+ * @author xhb
+ * 借贷详情
+ */
 public class LoanDebtDetailActivity extends BaseComponentActivity implements DebtDetailContract.View {
 
     private static final int REQUEST_CODE_EDIT = 1;
@@ -57,27 +63,37 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     Toolbar toolbar;
     @BindView(R.id.title)
     TextView title;
-    @BindView(R.id.fun)
-    View fun;
+    @BindView(R.id.iv_debt_info_edit_right_button)
+    View ivTitleBarRightButton;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.sticky_header_container)
     FrameLayout stickyHeaderContainer;
 
+    //全部还
+    @BindView(R.id.rv_debt_info_foot_set_pay)
+    TextView footSetAllPay;
+    //分割线
+    @BindView(R.id.tv_debt_info_foot_middle_line)
+    View footSetMiddleLine;
+    //还部分
+    @BindView(R.id.rv_debt_info_foot_pay_part)
+    TextView footSetPartPay;
+
     class Header {
         View itemView;
-        @BindView(R.id.logo)
-        CircleImageView logo;
-        @BindView(R.id.channel_name)
-        TextView channelName;
-        @BindView(R.id.project_name_container)
-        View projectNameContainer;
-        @BindView(R.id.project_name)
-        TextView projectName;
+//        @BindView(R.id.logo)
+//        CircleImageView logo;
+//        @BindView(R.id.channel_name)
+//        TextView channelName;
+//        @BindView(R.id.project_name_container)
+//        View projectNameContainer;
+//        @BindView(R.id.project_name)
+//        TextView projectName;
         @BindView(R.id.debt_term_amount)
         TextView debtTermAmount;
-        @BindView(R.id.set_status)
-        TextView setStatus;
+//        @BindView(R.id.set_status)
+//        TextView setStatus;
         @BindView(R.id.debt_pay_day)
         TextView debtPayDay;
         @BindView(R.id.debt_paid)
@@ -85,29 +101,33 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         @BindView(R.id.debt_unpaid)
         TextView debtUnpaid;
 
-        @BindView(R.id.debt_amount_total_content)
-        TextView debtAmount;
-        @BindView(R.id.capital_total_content)
-        TextView capital;
-        @BindView(R.id.debt_platform_content)
-        TextView debtPlatform;
-        @BindView(R.id.interest_rate_content)
-        TextView interestRate;
-        @BindView(R.id.remark_content)
-        TextView remark;
-        @BindView(R.id.pay_method_content)
-        TextView payMethodContent;
-        @BindView(R.id.interest_total_content)
-        TextView interest;
-        @BindView(R.id.debt_life_content)
-        TextView debtLife;
-        @BindView(R.id.debt_start_date_content)
-        TextView debtStartDate;
+        //卡片背景
+        @BindView(R.id.ll_debt_info_header_card_bg)
+        LinearLayout mHeaderCardBg;
 
-        @BindView(R.id.sticky_header)
-        View stickyHeader;
-        @BindView(R.id.sticky_header_container)
-        FrameLayout stickyHeaderContainer;
+//        @BindView(R.id.debt_amount_total_content)
+//        TextView debtAmount;
+//        @BindView(R.id.capital_total_content)
+//        TextView capital;
+//        @BindView(R.id.debt_platform_content)
+//        TextView debtPlatform;
+//        @BindView(R.id.interest_rate_content)
+//        TextView interestRate;
+//        @BindView(R.id.remark_content)
+//        TextView remark;
+//        @BindView(R.id.pay_method_content)
+//        TextView payMethodContent;
+//        @BindView(R.id.interest_total_content)
+//        TextView interest;
+//        @BindView(R.id.debt_life_content)
+//        TextView debtLife;
+//        @BindView(R.id.debt_start_date_content)
+//        TextView debtStartDate;
+
+//        @BindView(R.id.sticky_header)
+//        View stickyHeader;
+//        @BindView(R.id.sticky_header_container)
+//        FrameLayout stickyHeaderContainer;
 
         Header(View itemView) {
             this.itemView = itemView;
@@ -115,16 +135,22 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         }
     }
 
+
     @Inject
     DebtDetailPresenter presenter;
 
+    //期数列表适配器
     private DebtDetailRVAdapter adapter;
+    //头布局
     private Header header;
 
     private String debtId;
 
     private CreditCardDebtDetailDialog dialog;
 
+    /**
+     * 初始化 埋点
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,17 +159,6 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_DEBT_DETAIL);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_debt_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        presenter.clickMenu();
-        return true;
-    }
 
     @Override
     public int getLayoutId() {
@@ -153,59 +168,33 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        //设置状态栏文字为黑色字体
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        //头布局 加载
         header = new Header(LayoutInflater.from(this)
                 .inflate(R.layout.layout_debt_detail_header, recyclerView, false));
-        header.setStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.clickSetStatus(-1);
-            }
-        });
+
         adapter = new DebtDetailRVAdapter();
         adapter.setHeaderView(header.itemView);
+        /**
+         * Item的点击事件
+         */
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                ((TextView)view.findViewById(R.id.th)).setTextColor(Color.RED);
+                LoanDebtDetailActivity.this.adapter.setThTextColor(position);
                 presenter.clickSetStatus(position);
             }
         });
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int scrollY;
-            int edge = -1;
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (edge == -1) {
-                    edge = header.itemView.getMeasuredHeight() - header.stickyHeaderContainer.getMeasuredHeight();
-                }
-                scrollY += dy;
-                if (scrollY >= edge) {
-                    //尚未添加进fake容器
-                    if (stickyHeaderContainer.getChildCount() == 0) {
-                        header.stickyHeaderContainer.removeView(header.stickyHeader);
-                        stickyHeaderContainer.addView(header.stickyHeader);
-                    }
-                } else {
-                    //已经添加进fake容器
-                    if (stickyHeaderContainer.getChildCount() == 1) {
-                        stickyHeaderContainer.removeView(header.stickyHeader);
-                        header.stickyHeaderContainer.addView(header.stickyHeader);
-                    }
-                }
-            }
-        });
-
         SlidePanelHelper.attach(this);
     }
 
-    @Override
-    public void initDatas() {
-        presenter.loadDebtDetail();
-    }
+
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
@@ -223,38 +212,81 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         //
     }
 
+    /**
+     * 网络请求 单个账单的请求
+     */
+    @Override
+    public void initDatas() {
+        presenter.loadDebtDetail();
+    }
+
+    /**
+     * 回调 显示单个账单数据
+     * @param debtDetail 借款详情
+     */
     @SuppressLint("SetTextI18n")
     @Override
     public void showDebtDetail(DebtDetail debtDetail) {
-        //渠道名
+        /**
+         * 卡片背景
+         */
+        /**
+         * 头卡片 背景颜色
+         */
+        if (debtDetail.returnDay <= 3) {
+            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
+        } else {
+            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
+        }
+
+        /**
+         * 标题栏 右上角菜单栏 点击事件
+         */
+        ivTitleBarRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clickMenu();
+            }
+        });
+
+        /**
+         * 设置当前期号 index
+         */
+        showSetStatus(debtDetail.termNum - 1, debtDetail.getRepayPlan().get(debtDetail.termNum - 1).getStatus());
+
+        /**
+         * 设置标题
+         */
         String titleName = debtDetail.getChannelName() + (isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
         title.setText(titleName);
+
+
         //渠道logo
-        if (!isEmpty(debtDetail.getLogo())) {
-            Glide.with(this)
-                    .load(debtDetail.getLogo())
-                    .asBitmap()
-                    .centerCrop()
-                    .placeholder(R.drawable.image_place_holder)
-                    .into(header.logo);
-        } else {
-            header.logo.setImageResource(R.drawable.image_place_holder);
-        }
-        //账单状态
-        if (debtDetail.getStatus() != 2) {
-            header.setStatus.setVisibility(View.VISIBLE);
-            header.setStatus.setText(debtDetail.getTermStatus() == 2 ? "设为待还" : "设为已还");
-        } else {
-            header.setStatus.setVisibility(View.GONE);
-        }
-        //渠道名
-        header.channelName.setText(debtDetail.getChannelName());
-        if (!isEmpty(debtDetail.getProjectName())) {
-            header.projectNameContainer.setVisibility(View.VISIBLE);
-            header.projectName.setText(debtDetail.getProjectName());
-        } else {
-            header.projectNameContainer.setVisibility(View.GONE);
-        }
+//        if (!isEmpty(debtDetail.getLogo())) {
+//            Glide.with(this)
+//                    .load(debtDetail.getLogo())
+//                    .asBitmap()
+//                    .centerCrop()
+//                    .placeholder(R.drawable.image_place_holder)
+//                    .into(header.logo);
+//        } else {
+//            header.logo.setImageResource(R.drawable.image_place_holder);
+//        }
+//        //账单状态
+//        if (debtDetail.getStatus() != 2) {
+//            header.setStatus.setVisibility(View.VISIBLE);
+//            header.setStatus.setText(debtDetail.getTermStatus() == 2 ? "设为待还" : "设为已还");
+//        } else {
+//            header.setStatus.setVisibility(View.GONE);
+//        }
+//        //渠道名
+//        header.channelName.setText(debtDetail.getChannelName());
+//        if (!isEmpty(debtDetail.getProjectName())) {
+//            header.projectNameContainer.setVisibility(View.VISIBLE);
+//            header.projectName.setText(debtDetail.getProjectName());
+//        } else {
+//            header.projectNameContainer.setVisibility(View.GONE);
+//        }
         //当期应还金额
         header.debtTermAmount.setText(keep2digitsWithoutZero(debtDetail.getTermPayableAmount()));
         //还款时间
@@ -264,58 +296,90 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         //未还金额
         header.debtUnpaid.setText(keep2digitsWithoutZero(debtDetail.getStayReturnedAmount()));
         //还款总额
-        header.debtAmount.setText(keep2digitsWithoutZero(debtDetail.getPayableAmount()) + "元");
+//        header.debtAmount.setText(keep2digitsWithoutZero(debtDetail.getPayableAmount()) + "元");
         //借款本金
         //本金不大于0则认为本金没有设置
-        if (debtDetail.getCapital() > 0) {
-            header.capital.setText(keep2digitsWithoutZero(debtDetail.getCapital()) + "元");
-        } else {
-            header.capital.setText("--");
-        }
-        //网贷平台
-        header.debtPlatform.setText(debtDetail.getChannelName());
-        //借款利率
-        //利率不大于0则认为利率没有设置
-        if (debtDetail.getRate() > 0) {
-            header.interestRate.setText(convertInterestRate(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
-        } else {
-            header.interestRate.setText("--");
-        }
-        //备注
-        if (!isEmpty(debtDetail.getRemark())) {
-            header.remark.setText(debtDetail.getRemark());
-        }
-        //还款方式
-        header.payMethodContent.setText(PAY_METHOD[debtDetail.getRepayType() - 1]);
-        //借款利息
-        //利息不大于0则认为利息没有设置
-        if (debtDetail.getInterest() > 0) {
-            header.interest.setText(keep2digitsWithoutZero(debtDetail.getInterest()) + "元");
-        } else {
-            header.interest.setText("--");
-        }
-        //借款期限
-        //期限不大于0则认为期限没有设置
-        if (debtDetail.getTerm() > 0) {
-            header.debtLife.setText(debtDetail.getTerm() + (debtDetail.getTermType() == 1 ? "日" : "月"));
-        } else {
-            header.debtLife.setText("--");
-        }
-        //起息日期
-        if (!isEmpty(debtDetail.getStartDate())) {
-            header.debtStartDate.setText(debtDetail.getStartDate());
-        } else {
-            header.debtStartDate.setText("--");
-        }
+//        if (debtDetail.getCapital() > 0) {
+//            header.capital.setText(keep2digitsWithoutZero(debtDetail.getCapital()) + "元");
+//        } else {
+//            header.capital.setText("--");
+//        }
+//        //网贷平台
+//        header.debtPlatform.setText(debtDetail.getChannelName());
+//        //借款利率
+//        //利率不大于0则认为利率没有设置
+//        if (debtDetail.getRate() > 0) {
+//            header.interestRate.setText(convertInterestRate(debtDetail.getRate()) + "%" + (debtDetail.getTermType() == 1 ? "日息" : "月息"));
+//        } else {
+//            header.interestRate.setText("--");
+//        }
+//        //备注
+//        if (!isEmpty(debtDetail.getRemark())) {
+//            header.remark.setText(debtDetail.getRemark());
+//        }
+//        //还款方式
+//        header.payMethodContent.setText(PAY_METHOD[debtDetail.getRepayType() - 1]);
+//        //借款利息
+//        //利息不大于0则认为利息没有设置
+//        if (debtDetail.getInterest() > 0) {
+//            header.interest.setText(keep2digitsWithoutZero(debtDetail.getInterest()) + "元");
+//        } else {
+//            header.interest.setText("--");
+//        }
+//        //借款期限
+//        //期限不大于0则认为期限没有设置
+//        if (debtDetail.getTerm() > 0) {
+//            header.debtLife.setText(debtDetail.getTerm() + (debtDetail.getTermType() == 1 ? "日" : "月"));
+//        } else {
+//            header.debtLife.setText("--");
+//        }
+//        //起息日期
+//        if (!isEmpty(debtDetail.getStartDate())) {
+//            header.debtStartDate.setText(debtDetail.getStartDate());
+//        } else {
+//            header.debtStartDate.setText("--");
+//        }
 
-        adapter.notifyPayPlanChanged(debtDetail.getRepayPlan());
+        footSetAllPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSetAllPayDialog(index);
+            }
+        });
+
+        adapter.notifyPayPlanChanged(debtDetail.getRepayPlan(), debtDetail.termNum);
     }
 
-    @Override
-    public void showSetStatus(int index, int newStatus) {
-        final int pos = index;
-        final int status = newStatus;
+    public int index;
 
+    /**
+     * 设置已还的对话框
+     * @param index     选中的位置，-1则为当前期
+     * @param newStatus 新的还款状态
+     */
+    @Override
+    public void showSetStatus(final int index, int newStatus) {
+        this.index = index;
+
+        //先设置底部状态 1 "待还", 2 "已还",
+        if (newStatus == 1) {
+            footSetMiddleLine.setVisibility(View.VISIBLE);
+            footSetPartPay.setVisibility(View.VISIBLE);
+            footSetAllPay.setText("设为已还");
+            footSetPartPay.setText("还部分");
+            footSetAllPay.setEnabled(true);
+        }
+        if (newStatus == 2) {
+            footSetMiddleLine.setVisibility(View.GONE);
+            footSetPartPay.setVisibility(View.GONE);
+            footSetAllPay.setText("已还");
+            footSetAllPay.setEnabled(false);
+        }
+    }
+
+
+
+    private void showSetAllPayDialog(final int pos) {
         final Dialog dialog = new Dialog(LoanDebtDetailActivity.this, 0);
         View dialogView = LayoutInflater.from(LoanDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -324,19 +388,15 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                 dialog.dismiss();
                 if (v.getId() == R.id.confirm) {
                     //pv，uv统计
-                    DataStatisticsHelper.getInstance().onCountUv(status == 2 ? DataStatisticsHelper.ID_SET_STATUS_PAID : DataStatisticsHelper.ID_SET_STATUS_UNPAID);
-
-                    if (pos == -1) {
-                        presenter.updateDebtStatus();
-                    } else {
-                        presenter.updateDebtStatus(pos, status);
-                    }
+                    //DataStatisticsHelper.getInstance().onCountUv(status == 2 ? DataStatisticsHelper.ID_SET_STATUS_PAID : DataStatisticsHelper.ID_SET_STATUS_UNPAID);
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
+                    presenter.updateDebtStatus(pos, 2);
                 }
             }
         };
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
         dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为" + (newStatus == 2 ? "已还" : "待还"));
+        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
@@ -349,11 +409,21 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         dialog.show();
     }
 
+    /**
+     * 设置已还回调
+     * @param msg 相关消息
+     */
     @Override
     public void showUpdateStatusSuccess(String msg) {
-
+        //粗鲁的刷新账单
+        presenter.loadDebtDetail();
     }
 
+    /**
+     * 标题栏 右上角事件 点击弹窗
+     * @param editable 是否可编辑
+     * @param remind   是否是提醒状态
+     */
     @Override
     public void showMenu(boolean editable, boolean remind) {
         dialog = new CreditCardDebtDetailDialog();
@@ -395,6 +465,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         }
     }
 
+    /**
+     * 删除该账单
+     * @param msg 相关消息
+     */
     @Override
     public void showDeleteDebtSuccess(String msg) {
         ToastUtils.showShort(this, "删除成功", null);
@@ -409,6 +483,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         }, 100);
     }
 
+    /**
+     * 跳转到编辑 详情页面
+     * @param debtDetail 借款详情
+     */
     @Override
     public void navigateAddDebt(DebtDetail debtDetail) {
         //一次性还款付息，等额本息跳转到新版本界面

@@ -120,7 +120,6 @@
                 android:background="@color/line" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/mine_product_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

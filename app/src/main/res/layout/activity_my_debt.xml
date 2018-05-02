@@ -12,19 +12,37 @@
         android:layout_height="@dimen/tool_bar_height"
         android:background="@android:color/white">
 
-        <com.beihui.market.view.copytablayout.CopyTabLayout
-            android:id="@+id/copy_tab_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
             android:layout_gravity="center"
-            android:background="@android:color/white"
-            app:tabGravity="center"
-            app:tabIndicatorColor="@color/colorPrimary"
-            app:tabIndicatorHeight="2dp"
-            app:tabSelectedTextColor="@color/black_1"
-            app:tabTextColor="@color/black_2" />
+            android:text="我的账单"
+            android:textSize="16sp"
+            android:textColor="@color/black_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height">
+
+
+        <com.beihui.market.view.PagerSlidingTab
+            android:id="@+id/copy_tab_layout"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="50dp"
+            android:background="@color/white" />
+
+        <TextView
+            android:background="@color/white"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
 
     <com.beihui.market.view.StillViewPager
         android:id="@+id/view_pager"

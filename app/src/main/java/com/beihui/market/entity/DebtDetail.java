@@ -32,6 +32,15 @@ public class DebtDetail implements Parcelable {
     private int redmineDay;
     private String firstRepayDate;
 
+    /**
+     * 距离还款日
+     */
+    public int returnDay;
+    /**
+     * 期号
+     */
+    public int termNum;
+
     private List<RepayPlanBean> repayPlan;
 
     public String getId() {

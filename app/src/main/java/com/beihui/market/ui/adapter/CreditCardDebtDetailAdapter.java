@@ -192,15 +192,15 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
     }
 
     private void bindBillDetail(BaseViewHolder holder, BillDetail detail) {
-        //图标
-        if (detail.getType() == 1) {
-            //还款
-            holder.setImageResource(R.id.detail_image, R.drawable.bill_detail_in);
-            holder.setTextColor(R.id.detail_amount, colorIn);
-        } else {
-            holder.setImageResource(R.id.detail_image, R.drawable.bill_detail_out);
-            holder.setTextColor(R.id.detail_amount, colorOut);
-        }
+        //图标 xhb 隐藏
+//        if (detail.getType() == 1) {
+//            //还款
+//            holder.setImageResource(R.id.detail_image, R.drawable.bill_detail_in);
+//            holder.setTextColor(R.id.detail_amount, colorIn);
+//        } else {
+//            holder.setImageResource(R.id.detail_image, R.drawable.bill_detail_out);
+//            holder.setTextColor(R.id.detail_amount, colorOut);
+//        }
         //标题
         if (!isEmpty(detail.getDiscription())) {
             holder.setText(R.id.detail_desc, detail.getDiscription());

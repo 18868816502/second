@@ -124,7 +124,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
         times.setTag(6);
 
         //账单名称
-        accountName.addTextChangedListener(new EtTextLengthWatcher(debtChannel, accountName, 20 * 2));
+        accountName.addTextChangedListener(new EtTextLengthWatcher(debtChannel, accountName, 16 * 2));
 
         remark.addTextChangedListener(new EtTextLengthWatcher(remark, 20 * 2));
         payMoney.addTextChangedListener(new EtAmountWatcher(payMoney));

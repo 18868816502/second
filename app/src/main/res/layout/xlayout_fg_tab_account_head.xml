@@ -20,6 +20,7 @@
 
         <!--切换到今天-->
         <ImageView
+            android:id="@+id/iv_tab_account_header_today_button"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"

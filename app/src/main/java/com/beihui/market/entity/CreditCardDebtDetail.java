@@ -27,6 +27,11 @@ public class CreditCardDebtDetail implements Parcelable {
     private ShowBillBean showBill;
     private int maxFreeInterestDay;
 
+    //距离还款日
+    public int returnDay;
+    //备注
+    public String remark;
+
     public String getId() {
         return id;
     }

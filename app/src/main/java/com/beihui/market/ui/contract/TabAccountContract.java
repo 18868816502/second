@@ -5,6 +5,7 @@ import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.request.XAccountInfo;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface TabAccountContract {
          * @author xhb
          * 加载待还账单
          */
-        void loadInDebtList();
+        void loadInDebtList(int billStatus, boolean firstScreen, int pageNo, int pageSize);
 
 
         /**
@@ -131,7 +132,7 @@ public interface TabAccountContract {
          *
          * @param list 账单列表
          */
-        void showInDebtList(List<AccountBill> list);
+        void showInDebtList(List<XAccountInfo> list, int type);
 
         /**
          * 显示引导层

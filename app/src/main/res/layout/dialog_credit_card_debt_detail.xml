@@ -2,20 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_small_round"
         android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="65dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
@@ -56,7 +53,7 @@
         <TextView
             android:id="@+id/edit"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="65dp"
             android:drawableRight="@drawable/home_forward"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
@@ -73,7 +70,7 @@
         <TextView
             android:id="@+id/delete"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="65dp"
             android:drawableRight="@drawable/home_forward"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
@@ -83,14 +80,17 @@
             android:textSize="17sp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line" />
+
     <TextView
         android:id="@+id/cancel"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/white_small_round"
+        android:layout_height="65dp"
         android:gravity="center"
         android:text="取消"
-        android:textColor="#ff395e"
+        android:textColor="@color/black_2"
         android:textSize="17sp" />
 </LinearLayout>

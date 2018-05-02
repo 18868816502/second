@@ -13,17 +13,22 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.fragment.MyCreditCardDebtListFragment;
 import com.beihui.market.ui.fragment.MyLoanDebtListFragment;
+import com.beihui.market.view.PagerSlidingTab;
 import com.beihui.market.view.copytablayout.CopyTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 
+/**
+ * @author xhb
+ * 我的账单页面
+ */
 public class MyDebtActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.copy_tab_layout)
-    CopyTabLayout copyTabLayout;
+    PagerSlidingTab copyTabLayout;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
@@ -39,7 +44,7 @@ public class MyDebtActivity extends BaseComponentActivity {
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         viewPager.setAdapter(new MyDebtPager(getSupportFragmentManager()));
-        copyTabLayout.setupWithViewPager(viewPager);
+        copyTabLayout.setViewPager(viewPager);
 
         SlidePanelHelper.attach(this);
     }

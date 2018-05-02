@@ -20,6 +20,7 @@
 
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/x_pull_up_icon_more_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
                 android:background="@drawable/x_pull_up_icon_big" />
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/loading_icon_more_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,6 +47,7 @@
                 android:textSize="16sp" />
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/x_load_state_iv_more_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

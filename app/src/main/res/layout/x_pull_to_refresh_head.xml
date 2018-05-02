@@ -21,6 +21,7 @@
             android:layout_height="40dp">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/iv_dynamic_unit_refresh_water"
                 android:padding="5dp"
                 android:src="@drawable/x_pull_to_refresh_loading"
@@ -36,6 +37,7 @@
 
             <ImageView
                 android:id="@+id/pull_icon_head_view"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

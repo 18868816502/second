@@ -117,8 +117,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	private View loadStateImageView;
 	// 加载结果：成功或失败
 	private TextView loadStateTextView;
-	//喜报 水滴的动画
-	private ImageView waterAnimView;
 
 	// 实现了Pulled接口的View
 	private View pulledView;
@@ -229,7 +227,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		refreshingAnimation.setInterpolator(lir);
 	}
 
-	private void hide() {
+	public  void hide() {
 		timer.schedule(5);
 	}
 
@@ -243,7 +241,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		switch (refreshResult) {
 			case SUCCEED:
 				// 刷新成功
-				refreshStateImageView.setVisibility(View.VISIBLE);
+				refreshStateImageView.setVisibility(View.INVISIBLE);
 				refreshStateTextView.setText("刷新成功");
 				refreshStateImageView
 						.setBackgroundResource(R.drawable.x_pull_to_refresh_succeed);
@@ -251,7 +249,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			case FAIL:
 			default:
 				// 刷新失败
-				refreshStateImageView.setVisibility(View.VISIBLE);
+				refreshStateImageView.setVisibility(View.INVISIBLE);
 				refreshStateTextView.setText("刷新失败");
 				refreshStateImageView
 						.setBackgroundResource(R.drawable.x_pull_to_refresh_failed);
@@ -280,27 +278,22 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	public void loadMoreFinish(int refreshResult) {
 		loadingView.clearAnimation();
 		loadingView.setVisibility(View.GONE);
-		/**
-		 * 喜报水滴动画效果 关闭
-		 */
-		((AnimationDrawable)waterAnimView.getDrawable()).stop();
-
 		switch (refreshResult) {
 			case SUCCEED:
 				// 加载成功
-				loadStateImageView.setVisibility(View.VISIBLE);
+				loadStateImageView.setVisibility(View.INVISIBLE);
 				loadStateTextView.setText("加载成功");
 				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
 				break;
 			case LOAD_ALL:
-				loadStateImageView.setVisibility(View.VISIBLE);
+				loadStateImageView.setVisibility(View.INVISIBLE);
 				loadStateTextView.setText("已加载全部");
 				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
 				break;
 			case FAIL:
 			default:
 				// 加载失败
-				loadStateImageView.setVisibility(View.VISIBLE);
+				loadStateImageView.setVisibility(View.INVISIBLE);
 				loadStateTextView.setText("加载失败");
 				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_failed);
 				break;
@@ -322,7 +315,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		}
 	}
 
-	private void changeState(int to) {
+	public  void changeState(int to) {
 		state = to;
 		switch (state) {
 		case INIT:
@@ -330,12 +323,12 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			refreshStateImageView.setVisibility(View.GONE);
 			refreshStateTextView.setText("下拉刷新");
 			pullView.clearAnimation();
-			pullView.setVisibility(View.VISIBLE);
+			pullView.setVisibility(View.INVISIBLE);
 			// 上拉布局初始状态
 			loadStateImageView.setVisibility(View.GONE);
 			loadStateTextView.setText("上拉加载更多");
 			pullUpView.clearAnimation();
-			pullUpView.setVisibility(View.VISIBLE);
+			pullUpView.setVisibility(View.INVISIBLE);
 			break;
 		case RELEASE_TO_REFRESH:
 			// 释放刷新状态
@@ -345,7 +338,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		case REFRESHING:
 			// 正在刷新状态
 			pullView.clearAnimation();
-			refreshingView.setVisibility(View.VISIBLE);
+			refreshingView.setVisibility(View.INVISIBLE);
 			pullView.setVisibility(View.INVISIBLE);
 			refreshingView.startAnimation(refreshingAnimation);
 			refreshStateTextView.setText("正在刷新...");
@@ -358,7 +351,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		case LOADING:
 			// 正在加载状态
 			pullUpView.clearAnimation();
-			loadingView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.INVISIBLE);
 			pullUpView.setVisibility(View.INVISIBLE);
 			loadingView.startAnimation(refreshingAnimation);
 			loadStateTextView.setText("正在加载...");
@@ -480,10 +473,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 				changeState(REFRESHING);
 				// 刷新操作
 				if (mListener != null) {
-					/**
-					 * 喜报水滴动画效果 开启
-					 */
-					((AnimationDrawable)waterAnimView.getDrawable()).start();
 					mListener.onRefresh(this);
 				}
 			} else if (state == RELEASE_TO_LOAD) {
@@ -568,7 +557,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 				.findViewById(R.id.state_tv_head_view);
 		refreshingView = refreshView.findViewById(R.id.refreshing_icon_head_view);
 		refreshStateImageView = refreshView.findViewById(R.id.state_iv_head_view);
-		waterAnimView = (ImageView)refreshView.findViewById(R.id.iv_dynamic_unit_refresh_water);
 		// 初始化上拉布局
 		pullUpView = loadMoreView.findViewById(R.id.x_pull_up_icon_more_view);
 		loadStateTextView = (TextView) loadMoreView

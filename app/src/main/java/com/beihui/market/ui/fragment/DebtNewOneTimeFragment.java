@@ -138,7 +138,7 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
         tvDebtPayDay.setTag(date);
 
         //账单名称
-        etAccountName.addTextChangedListener(new EtTextLengthWatcher(debtChannel, etAccountName, 20 * 2));
+        etAccountName.addTextChangedListener(new EtTextLengthWatcher(debtChannel, etAccountName, 16 * 2));
         //备注监听器
         etRemark.addTextChangedListener(new EtTextLengthWatcher(etRemark, 20 * 2));
         //应还金额监听器

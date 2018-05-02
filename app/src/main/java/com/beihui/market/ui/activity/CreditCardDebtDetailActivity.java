@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -33,8 +36,10 @@ import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
 import com.beihui.market.util.DateFormatUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.EditTextUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +58,12 @@ import butterknife.OnClick;
 import static android.text.TextUtils.isEmpty;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
+/**
+ * @author xhb
+ * 信用卡详情
+ *
+ * @3.0.0 信用卡暂无手动添加 则无编辑情况
+ */
 public class CreditCardDebtDetailActivity extends BaseComponentActivity implements CreditCardDebtDetailContract.View {
 
     @BindView(R.id.tool_bar)
@@ -70,34 +81,47 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     @BindView(R.id.debt_status_time)
     TextView tvDebtStatusTime;
 
+    @BindView(R.id.tv_credit_card_footer_set_status)
+    TextView tvFootSetStatus;
+    @BindView(R.id.tv_credit_card_footer_middle_line)
+    View tvFootMiddleLine;
+
 
     class Header {
         View itemView;
 
-        @BindView(R.id.bank_logo)
-        ImageView ivBankLogo;
-        @BindView(R.id.bank_name)
-        TextView tvBankName;
-        @BindView(R.id.credit_card_number)
-        TextView tvCreditCardNumber;
+        @BindView(R.id.ll_credit_card_info_header_bg)
+        LinearLayout mHeaderCardBg;
+
+//        @BindView(R.id.bank_logo)
+//        ImageView ivBankLogo;
+//        @BindView(R.id.bank_name)
+//        TextView tvBankName;
+//        @BindView(R.id.credit_card_number)
+//        TextView tvCreditCardNumber;
         @BindView(R.id.debt_date)
         TextView tvDebtDate;
         @BindView(R.id.debt_amount)
         TextView tvDebtAmount;
-        @BindView(R.id.set_status)
-        TextView tvSetStatus;
+        @BindView(R.id.tv_credit_card_info_header_status)
+        TextView tvStatus;
+//        @BindView(R.id.set_status)
+//        TextView tvSetStatus;
         @BindView(R.id.min_payment)
         TextView tvMinPayment;
         @BindView(R.id.debt_bill_day)
         TextView tvDebtBillDay;
         @BindView(R.id.debt_due_day)
         TextView tvDebtDueDay;
-        @BindView(R.id.max_interest_free_time)
-        TextView tvMaxInterestFreeTime;
-        @BindView(R.id.card_owner)
-        TextView tvCardOwner;
-        @BindView(R.id.credit_amount)
-        TextView tvCreditAmount;
+//        @BindView(R.id.max_interest_free_time)
+//        TextView tvMaxInterestFreeTime;
+//        @BindView(R.id.card_owner)
+//        TextView tvCardOwner;
+//        @BindView(R.id.credit_amount)
+//        TextView tvCreditAmount;
+
+        @BindView(R.id.tv_credit_card_remark)
+        TextView tvRemark;
 
         Header(View itemView) {
             this.itemView = itemView;
@@ -108,14 +132,27 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     @Inject
     CreditCardDebtDetailPresenter presenter;
 
+    //头布局
     private Header header;
+    //列表适配器
     private CreditCardDebtDetailAdapter detailAdapter;
+    //详情bean 除去列表数据
     private CreditCardDebtDetail debtDetail;
 
+    //是否手写账单
     private boolean byHand;
 
+    //弹框
     private CreditCardDebtDetailDialog dialog;
 
+    /**
+     * 开启信用卡页面
+     * @param debtId 账单ID
+     * @param byHand 是否是手写账单
+     * @param banKName 银行名字
+     * @param cardNum 银行卡号
+     * @param logo 图标
+     */
     public static void launchActivity(Context context, String debtId, boolean byHand, String banKName, String cardNum, String logo) {
         Intent intent = new Intent(context, CreditCardDebtDetailActivity.class);
         intent.putExtra("debt_id", debtId);
@@ -147,7 +184,10 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         String cardNum = getIntent().getStringExtra("card_num");
         String logoUrl = getIntent().getStringExtra("logo");
 
+        //沉浸式
         setupToolbar(toolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         header = new Header(LayoutInflater.from(this).inflate(R.layout.rv_item_credit_card_debt_header, recyclerView, false));
         detailAdapter = new CreditCardDebtDetailAdapter(byHand);
@@ -242,20 +282,19 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             }
         });
 
-
         tvBankNameNum.setText(backName + " " + cardNum);
-        header.tvBankName.setText(backName);
-        header.tvCreditCardNumber.setText(cardNum);
-        if (!isEmpty(logoUrl)) {
-            Glide.with(this)
-                    .load(logoUrl)
-                    .asBitmap()
-                    .centerCrop()
-                    .placeholder(R.drawable.image_place_holder)
-                    .into(header.ivBankLogo);
-        } else {
-            header.ivBankLogo.setImageResource(R.drawable.image_place_holder);
-        }
+//        header.tvBankName.setText(backName);
+//        header.tvCreditCardNumber.setText(cardNum);
+//        if (!isEmpty(logoUrl)) {
+//            Glide.with(this)
+//                    .load(logoUrl)
+//                    .asBitmap()
+//                    .centerCrop()
+//                    .placeholder(R.drawable.image_place_holder)
+//                    .into(header.ivBankLogo);
+//        } else {
+//            header.ivBankLogo.setImageResource(R.drawable.image_place_holder);
+//        }
 
         if (byHand) {
             tvDebtStatusOperation.setText("开始同步");
@@ -264,21 +303,24 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             tvDebtStatusTime.setVisibility(View.VISIBLE);
         }
 
-        header.tvSetStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new CommNoneAndroidDialog()
-                        .withMessage("确认设为已还？")
-                        .withNegativeBtn("取消", null)
-                        .withPositiveBtn("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                presenter.clickSetStatus();
-                            }
-                        })
-                        .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
-            }
-        });
+        /**
+         * TODO 设置已还
+         */
+//        header.tvSetStatus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new CommNoneAndroidDialog()
+//                        .withMessage("确认设为已还？")
+//                        .withNegativeBtn("取消", null)
+//                        .withPositiveBtn("确认", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                presenter.clickSetStatus();
+//                            }
+//                        })
+//                        .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+//            }
+//        });
 
         flDebtStatusOperationBlock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -335,6 +377,23 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     e.printStackTrace();
                 }
             }
+
+            /**
+             * 头卡片 背景颜色
+             */
+            if (debtDetail.returnDay <= 3) {
+                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
+            } else {
+                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
+            }
+
+            /**
+             * 备注内容
+             */
+            if (!TextUtils.isEmpty(debtDetail.remark)) {
+                header.tvRemark.setText(debtDetail.remark);
+            }
+
             if (showBill != null) {
                 //账单月份
                 if (!isEmpty(showBill.getBillDate())) {
@@ -348,21 +407,43 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 }
                 //账单金额
                 header.tvDebtAmount.setText(String.valueOf((char) 165) + keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance()));
-                //账单状态
-                header.tvSetStatus.setVisibility(View.VISIBLE);
+                /**
+                 * 账单状态
+                 */
+                tvFootSetStatus.setVisibility(View.VISIBLE);
                 switch (showBill.getStatus()) {
                     case 1://待还
-                        header.tvSetStatus.setText("设为已还");
+                        tvFootMiddleLine.setVisibility(View.VISIBLE);
+                        tvFootSetStatus.setEnabled(true);
+                        tvFootSetStatus.setText("设为已还");
+                        header.tvStatus.setText("待还款");
                         break;
                     case 2://已还
-                        header.tvSetStatus.setText("已还清");
-                        header.tvSetStatus.setEnabled(false);
+                        tvFootSetStatus.setText("已还清");
+                        tvFootSetStatus.setEnabled(false);
+                        tvFootMiddleLine.setVisibility(View.VISIBLE);
+                        header.tvStatus.setText("已还款");
                         break;
-                    case 3:
-                        header.tvSetStatus.setText("设为已还");
+                    case 3://逾期
+                        tvFootSetStatus.setText("设为已还");
+                        tvFootSetStatus.setEnabled(true);
+                        tvFootMiddleLine.setVisibility(View.VISIBLE);
+                        header.tvStatus.setText("逾期");
+                        break;
+                    case 4://已出账
+                        tvFootSetStatus.setVisibility(View.GONE);
+                        tvFootMiddleLine.setVisibility(View.GONE);
+                        header.tvStatus.setText("已出账");
+                        break;
+                    case 5://未出账
+                        tvFootSetStatus.setVisibility(View.GONE);
+                        tvFootMiddleLine.setVisibility(View.GONE);
+                        header.tvStatus.setText("未出账");
                         break;
                     default:
-                        header.tvSetStatus.setVisibility(View.GONE);
+                        tvFootSetStatus.setVisibility(View.GONE);
+                        tvFootMiddleLine.setVisibility(View.GONE);
+                        header.tvStatus.setVisibility(View.GONE);
                         break;
                 }
                 //最低应还
@@ -381,17 +462,17 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     header.tvDebtDueDay.setText(showBill.getPaymentDueDate().substring(0, 10));
                 }
             }
-            //最长免息期
-            header.tvMaxInterestFreeTime.setText(debtDetail.getMaxFreeInterestDay() + "天");
-            //信用额度
-            if (byHand) {
-                //手动账单没有信用额度
-                header.tvCreditAmount.setText("----");
-            } else {
-                header.tvCreditAmount.setText(debtDetail.getCreditLimit() + "元");
-            }
-            //卡主姓名
-            header.tvCardOwner.setText(debtDetail.getCardUserName());
+//            //最长免息期
+//            header.tvMaxInterestFreeTime.setText(debtDetail.getMaxFreeInterestDay() + "天");
+//            //信用额度
+//            if (byHand) {
+//                //手动账单没有信用额度
+//                header.tvCreditAmount.setText("----");
+//            } else {
+//                header.tvCreditAmount.setText(debtDetail.getCreditLimit() + "元");
+//            }
+//            //卡主姓名
+//            header.tvCardOwner.setText(debtDetail.getCardUserName());
         }
     }
 

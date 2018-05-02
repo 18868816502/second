@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--TODO 去掉数据-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingBottom="20dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -26,14 +28,14 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="3dp"
         android:layout_alignParentRight="true"
-        android:background="@drawable/xshape_tab_account_card_bg"
+        android:background="@drawable/xshape_tab_account_card_gray_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/rl_item_tab_acount_set_pay_bg"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="17dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:layout_width="match_parent"
@@ -83,6 +85,7 @@
        <LinearLayout
            android:visibility="gone"
            android:id="@+id/ll_item_tab_acount_set_pay_bg"
+           android:layout_marginTop="-10dp"
            android:gravity="center"
            android:background="@drawable/xshape_tab_account_card_pink_bg"
            android:layout_width="match_parent"
@@ -109,7 +112,6 @@
                android:layout_height="wrap_content" />
 
        </LinearLayout>
-
 
     </LinearLayout>
 
@@ -143,7 +145,7 @@
         android:layout_toLeftOf="@id/ll_item_tab_account_card"
         android:layout_below="@id/iv_item_tab_account_base_line"
         android:layout_marginTop="11dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="10dp"
         android:textSize="15sp"
         android:textColor="@color/black_1"
         android:text="今天"

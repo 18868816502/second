@@ -86,7 +86,11 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         HashMap<String, Object> params = new HashMap<>();
         params.put("userId", userHelper.getProfile().getId());
         params.put("channelId", channelId);
-        params.put("channelName", debtChannel.getChannelName());
+        if (debtChannel.isCustom()) {
+            params.put("projectName", debtChannel.getChannelName());
+        } else {
+            params.put("channelName", debtChannel.getChannelName());
+        }
         params.put("repayType", DebtNewPresenter.METHOD_ONE_TIME);
         params.put("termType", 1);
 
@@ -131,7 +135,11 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         HashMap<String, Object> params = new HashMap<>();
         params.put("userId", userHelper.getProfile().getId());
         params.put("channelId", channelId);
-        params.put("channelName", debtChannel.getChannelName());
+        if (debtChannel.isCustom()) {
+            params.put("projectName", debtChannel.getChannelName());
+        } else {
+            params.put("channelName", debtChannel.getChannelName());
+        }
         params.put("repayType", DebtNewPresenter.METHOD_EVEN_DEBT);
         params.put("termType", 2);
 

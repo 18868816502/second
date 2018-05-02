@@ -93,14 +93,9 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_mine_text)
     TextView tabMineText;
 
-//    @BindView(R.id.tab_home_icon)
-//    ImageView tabHomeIcon;
-//    @BindView(R.id.tab_home_text)
-//    TextView tabHomeText;
-
+    //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
 
-    private InputMethodManager inputMethodManager;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
 
@@ -113,6 +108,9 @@ public class MainActivity extends BaseComponentActivity {
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    /**
+     * 重新进入MainActivity切换的对应的Fragment
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -163,9 +161,14 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-//        navigationBar.select(R.id.tab_account);
-        navigationBar.select(R.id.tab_mine);
 
+        //TODO 需要换回首页
+//        navigationBar.select(R.id.tab_account);
+        selectTab(R.id.tab_mine);
+
+        /**
+         * 请求底部导航栏图标 文字 字体颜色
+         */
         queryBottomImage();
     }
 
@@ -175,6 +178,7 @@ public class MainActivity extends BaseComponentActivity {
         updateHelper.checkUpdate(this);
     }
 
+    //空事件
     @Override
     protected void configureComponent(AppComponent appComponent) {
 
@@ -212,65 +216,60 @@ public class MainActivity extends BaseComponentActivity {
         }, 400);
     }
 
+    /**
+     * 三大模块
+     */
+    public Fragment tabHome;
+    public Fragment tabFind;
+    public Fragment tabMine;
+
     private void selectTab(int id) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-
-        String oldTag = makeTag(selectedFragmentId);
-        selectedFragmentId = id;
-        String newTag = makeTag(selectedFragmentId);
-        Fragment lastSelected = fm.findFragmentByTag(oldTag);
-        if (lastSelected != null) {
-            ft.detach(lastSelected);
+        if (tabHome == null) {
+            tabHome = TabAccountFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabHome);
         }
-        Fragment newSelected = fm.findFragmentByTag(newTag);
-        if (newSelected == null) {
-            switch (id) {
-                //账单
-                case R.id.tab_account:
-                    newSelected = TabAccountFragment.newInstance();
-                    break;
-                //借款
-//                case R.id.tab_home:
-//                    newSelected = TabLoanFragment.newInstance();
-//                    break;
-                //资讯
-                case R.id.tab_news:
-                    newSelected = TabNewsWebViewFragment.newInstance();
-                    break;
-                //我的
-                case R.id.tab_mine:
-                    newSelected = TabMineFragment.newInstance();
-                    break;
-            }
-            ft.add(R.id.tab_fragment, newSelected, newTag);
-        } else {
-            ft.attach(newSelected);
+        ft.hide(tabHome);
+        if (tabFind == null) {
+            tabFind = TabNewsWebViewFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabFind);
+        }
+        ft.hide(tabFind);
+        if (tabMine == null) {
+            tabMine = TabMineFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabMine);
+        }
+        ft.hide(tabMine);
+        switch (id) {
+            //账单
+            case R.id.tab_account:
+                if (tabHome == null) {
+                    tabHome = TabAccountFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabHome);
+                }
+                ft.show(tabHome);
+                break;
+            //发现
+            case R.id.tab_news:
+                if (tabFind == null) {
+                    tabFind = TabNewsWebViewFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabFind);
+                }
+                ft.show(tabFind);
+                break;
+            //我的
+            case R.id.tab_mine:
+                if (tabMine == null) {
+                    tabMine = TabMineFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabMine);
+                }
+                ft.show(tabMine);
+                break;
         }
         ft.commit();
     }
 
-    private String makeTag(int id) {
-        return "TabFragmentId=" + id;
-    }
-
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        if (selectedFragmentId == R.id.tab_home) {
-//            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-//                if (inputMethodManager == null) {
-//                    inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                }
-//                if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
-//                    if (getCurrentFocus() instanceof EditText) {
-//                        getCurrentFocus().clearFocus();
-//                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//                    }
-//                }
-//            }
-//        }
-//        return super.dispatchTouchEvent(ev);
-//    }
 
     @Override
     public void onBackPressed() {
