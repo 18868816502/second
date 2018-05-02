@@ -116,6 +116,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             holder.mDot.setImageDrawable(mGrayDot);
             holder.mCardBg.setBackground(mCardBlackBg);
             holder.mSetBg.setBackground(mCardGraygBg);
+
+
         }
 
         /**
