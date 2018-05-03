@@ -222,6 +222,10 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
         }
     }
 
+    /**
+     * TODO  页面没有分期账单ID
+     * @param id
+     */
     @Override
     public void navigateLoanDebtDetail(String id) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
@@ -230,9 +234,10 @@ public class DebtCalCalendarFragment extends BaseComponentFragment implements De
     }
 
     @Override
-    public void navigateCreditCardDebtDetail(String id, String logo, String bankName, String cardNum, boolean byHand) {
+    public void navigateCreditCardDebtDetail(String id, String billId, String logo, String bankName, String cardNum, boolean byHand) {
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
+        intent.putExtra("bill_id", billId);
         intent.putExtra("logo", logo);
         intent.putExtra("bank_name", bankName);
         intent.putExtra("card_num", cardNum);

@@ -22,6 +22,7 @@ import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.MessageStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * 系统消息
+ */
 public class SysMsgActivity extends BaseComponentActivity implements SysMsgContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -59,6 +63,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        //设置状态栏文字为黑色字体
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         adapter = new SysMsgAdapter();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

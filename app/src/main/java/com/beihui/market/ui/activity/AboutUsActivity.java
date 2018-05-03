@@ -14,6 +14,7 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,6 +39,7 @@ public class AboutUsActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
             versionNameTv.setText("v" + info.versionName);

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -68,7 +69,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         context.overridePendingTransition(0, 0);
     }
 
-
     public static void launchWithPending(Activity context, AdBanner adBanner) {
         Intent intent = new Intent(context, UserAuthorizationActivity.class);
         if (adBanner != null) {
@@ -81,6 +81,9 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //umeng统计
+        Statistic.onEvent(Events.ENTER_LOGIN);
+
         EventBus.getDefault().register(this);
 
         pendingAd = getIntent().getParcelableExtra("pendingAd");

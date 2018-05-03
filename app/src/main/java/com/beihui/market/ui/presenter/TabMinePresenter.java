@@ -57,6 +57,28 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
                                 }
                             });
             addDisposable(dis);
+
+            /**
+             * 请求消息数量
+             */
+            Disposable disMessage = api.queryMessage(profile.getId())
+                    .compose(RxUtil.<ResultEntity<String>>io2main())
+                    .subscribe(new Consumer<ResultEntity<String>>() {
+                                   @Override
+                                   public void accept(ResultEntity<String> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           view.updateMessageNum(result.getData());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(TabMinePresenter.this, throwable);
+                                }
+                            });
+
+            addDisposable(disMessage);
         }
 
         Disposable dis = api.queryMenuVisible("my_loan_menu")
@@ -75,6 +97,7 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
                                 logError(TabMinePresenter.this, throwable);
                             }
                         });
+
         addDisposable(dis);
     }
 

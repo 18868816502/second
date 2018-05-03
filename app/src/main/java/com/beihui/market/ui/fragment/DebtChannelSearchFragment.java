@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.adapter.DebtChannelRVAdapter;
@@ -71,6 +72,12 @@ public class DebtChannelSearchFragment extends BaseComponentFragment {
         stateLayout.setStateViewProvider(new DebtChannelSearchStateViewProvider(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * 埋点 	网贷记账自定义
+                 */
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_LOAN_CUSTOM_ACCOUNT);
+
                 presenter.addDebtChannel();
             }
         }));

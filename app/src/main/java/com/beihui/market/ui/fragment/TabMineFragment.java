@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     View mineProductContainer;
     @BindView(R.id.points)
     TextView points;
+    @BindView(R.id.tv_message_num)
+    TextView tvMessageNum;
     @BindView(R.id.wechat_surprise)
     View wechatSurpriseView;
 
@@ -400,5 +403,22 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     public void updateMyLoanVisible(boolean visible) {
         mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
         mineProductContainer.setVisibility(visible ? View.VISIBLE : View.VISIBLE);
+    }
+
+    /**
+     * 消息数量
+     * @param data
+     */
+    @Override
+    public void updateMessageNum(String data) {
+        if (TextUtils.isEmpty(data)) {
+            tvMessageNum.setVisibility(View.GONE);
+        } else if (Integer.parseInt(data) > 9) {
+            tvMessageNum.setVisibility(View.VISIBLE);
+            tvMessageNum.setText("9+");
+        } else {
+            tvMessageNum.setVisibility(View.VISIBLE);
+            tvMessageNum.setText(data);
+        }
     }
 }

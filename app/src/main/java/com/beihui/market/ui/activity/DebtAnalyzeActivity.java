@@ -79,6 +79,10 @@ public class DebtAnalyzeActivity extends BaseComponentActivity {
         }
     }
 
+    /**
+     * TODO h5 页面没有分期账单ID
+     * @param id
+     */
     @JavascriptInterface
     public void goToDebtDetail(final String id) {
         runOnUiThread(new Runnable() {

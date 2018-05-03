@@ -32,7 +32,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     @Override
     protected void convert(final BaseViewHolder helper, DebtDetail.RepayPlanBean item) {
         helper.setText(R.id.th, item.getTermNo() + "期")      //设置期数
-                .setText(R.id.date, item.getTermRepayDate())    //设置日期
+                .setText(R.id.date, item.getTermRepayDate().replace("-", "."))    //设置日期
                 .setText(R.id.amount, "￥" + keep2digitsWithoutZero(item.getTermPayableAmount()))  //设置金额
                 .setText(R.id.status, status[item.getStatus()])
                 .setTextColor(R.id.status, colors[item.getStatus()])

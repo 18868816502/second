@@ -167,6 +167,53 @@ public class Api {
         return service.queryTabAccountListInfo(userId, firstScreen);
     }
 
+    /**
+     * 更新还款状态
+     *
+     * @param userId              用户id
+     * @param liabilitiesDetailId 还款项目计划id
+     * @param repayAmount         还款金额 默认全额
+     * @param status              1-待还 2-已还
+     */
+    public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, double repayAmount, int status) {
+        return service.updateDebtStatus(userId, liabilitiesDetailId, repayAmount, status);
+    }
+
+    public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, int status) {
+        return service.updateDebtStatus(userId, liabilitiesDetailId, status);
+    }
+
+    /**
+     * 获取信用卡账单详情
+     *
+     * @param userId   用户id
+     * @param recordId 信用卡账单id
+     */
+    public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId, String billId) {
+        return service.fetchCreditCardDebtDetail(userId, recordId, billId);
+    }
+    public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId) {
+        return service.fetchCreditCardDebtDetail(userId, recordId);
+    }
+
+
+    /**
+     * 网贷账单/信用卡备注更新
+     * @param userId 用户id
+     * @param remark 备注
+     * @param recordId 网贷账单Id/信用卡Id
+     * @param type 	类型 1-网贷 2-信用卡
+     */
+    public Observable<ResultEntity> updateLoanOrCreditCardRemark(String userId, String remark, String recordId, int type) {
+        return service.updateLoanOrCreditCardRemark(userId, remark, recordId, type+"");
+    }
+
+    /**
+     * 查询消息数
+     */
+    public Observable<ResultEntity<String>> queryMessage(String userId) {
+        return service.queryMessage(userId);
+    }
 
     /****************************************************************************** 分割线 **************************************************************************************/
 
@@ -799,15 +846,15 @@ public class Api {
         return service.fetchLoanDebtDetail(userId, liabilitiesId);
     }
 
-    /**
-     * 获取信用卡账单详情
-     *
-     * @param userId   用户id
-     * @param recordId 信用卡账单id
-     */
-    public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId) {
-        return service.fetchCreditCardDebtDetail(userId, recordId);
+    public Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(String userId, String liabilitiesId, String billId) {
+        if (billId == null) {
+            return service.fetchLoanDebtDetail(userId, liabilitiesId);
+        } else {
+            return service.fetchLoanDebtDetail(userId, liabilitiesId, billId);
+        }
     }
+
+
 
     /**
      * 获取信用卡详情月份账单
@@ -941,16 +988,9 @@ public class Api {
         return service.fetchCalendarDebt(userId, beginDate, endDate);
     }
 
-    /**
-     * 更新还款状态
-     *
-     * @param userId              用户id
-     * @param liabilitiesDetailId 还款项目计划id
-     * @param status              1-待还 2-已还
-     */
-    public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, int status) {
-        return service.updateDebtStatus(userId, liabilitiesDetailId, status);
-    }
+
+
+
 
     /**
      * 查询底部栏图标

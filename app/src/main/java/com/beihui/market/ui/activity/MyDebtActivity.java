@@ -40,8 +40,8 @@ public class MyDebtActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
 
         viewPager.setAdapter(new MyDebtPager(getSupportFragmentManager()));
         copyTabLayout.setViewPager(viewPager);

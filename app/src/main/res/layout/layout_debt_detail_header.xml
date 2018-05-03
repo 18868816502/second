@@ -94,15 +94,16 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/debt_detail_term_amount_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="本期待还(元)"
+                        android:text="全部待还(元)"
                         android:textColor="@color/black_2"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/debt_term_amount"
+                        android:id="@+id/debt_detail_term_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -136,29 +137,32 @@
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/debt_detail_pay_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="还款日"
-                            android:textColor="@color/black_2"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/debt_pay_day"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="9dp"
                             android:textColor="@color/black_1"
                             android:textSize="15sp"
                             tools:text="2018.01.01" />
+
+                        <TextView
+                            android:id="@+id/debt_detail_pay_day_text"
+                            android:layout_marginTop="9dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="还款期数"
+                            android:textColor="@color/black_2"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                 </FrameLayout>
+
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -173,50 +177,21 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/debt_detail_pay_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="已还本息(元)"
-                            android:textColor="@color/black_2"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/debt_paid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="9dp"
                             android:textColor="@color/black_1"
                             android:textSize="15sp"
                             tools:text="5000" />
-                    </LinearLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/debt_detail_pay_date_text"
+                            android:layout_marginTop="9dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="待还本息(元)"
+                            android:text="还款日"
                             android:textColor="@color/black_2"
                             android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/debt_unpaid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="9dp"
-                            android:textColor="@color/black_1"
-                            android:textSize="15sp"
-                            tools:text="5000" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>
@@ -224,8 +199,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:paddingLeft="10dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
@@ -246,6 +222,11 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
+                android:id="@+id/iv_debt_info_header_edit_remark"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:src="@drawable/xicon_accont_info_edit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

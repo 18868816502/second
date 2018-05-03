@@ -68,7 +68,7 @@ public class MessageCenterPresenter extends BaseRxPresenter implements MessageCe
                 });
         addDisposable(dis);
 
-        refreshMessage();
+//        refreshMessage();
     }
 
     @Override

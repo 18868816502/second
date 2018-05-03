@@ -24,13 +24,19 @@ public class CreditCardDebtDetail implements Parcelable {
     private int remind;
     private String lastCollectionDate;
     private int status;
+
+
     private ShowBillBean showBill;
+
     private int maxFreeInterestDay;
 
     //距离还款日
     public int returnDay;
     //备注
     public String remark;
+
+
+
 
     public String getId() {
         return id;

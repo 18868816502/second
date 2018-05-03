@@ -333,7 +333,8 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		case RELEASE_TO_REFRESH:
 			// 释放刷新状态
 			refreshStateTextView.setText("释放立即刷新");
-			pullView.startAnimation(rotateAnimation);
+			//TODO xhb
+//			pullView.startAnimation(rotateAnimation);
 			break;
 		case REFRESHING:
 			// 正在刷新状态

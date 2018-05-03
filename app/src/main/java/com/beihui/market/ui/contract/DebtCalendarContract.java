@@ -100,7 +100,7 @@ public interface DebtCalendarContract {
          * @param cardNum  卡号
          * @param byHand   是否手动账单
          */
-        void navigateCreditCardDebtDetail(String id, String logo, String bankName, String cardNum, boolean byHand);
+        void navigateCreditCardDebtDetail(String id, String billId, String logo, String bankName, String cardNum, boolean byHand);
 
     }
 }

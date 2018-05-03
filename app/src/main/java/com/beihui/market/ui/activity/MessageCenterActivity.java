@@ -28,6 +28,7 @@ import com.beihui.market.ui.presenter.MessageCenterPresenter;
 import com.beihui.market.ui.rvdecoration.MessageCenterItemDeco;
 import com.beihui.market.util.DateFormatUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author xhb
+ * 消息中心
+ */
 public class MessageCenterActivity extends BaseComponentActivity implements View.OnClickListener, MessageCenterContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -53,9 +58,9 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     protected void onDestroy() {
         presenter.onDestroy();
         presenter = null;
-        if (headerViewHolder.animatable.isRunning()) {
-            headerViewHolder.animatable.stop();
-        }
+//        if (headerViewHolder.animatable.isRunning()) {
+//            headerViewHolder.animatable.stop();
+//        }
         super.onDestroy();
     }
 
@@ -67,6 +72,8 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        //设置状态栏文字为黑色字体
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         adapter = new MessageCenterAdapter();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -93,7 +100,7 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         headerViewHolder = new HeaderViewHolder(view);
         headerViewHolder.annItemView.setOnClickListener(this);
         headerViewHolder.msgItemView.setOnClickListener(this);
-        headerViewHolder.refreshNewsTv.setOnClickListener(this);
+//        headerViewHolder.refreshNewsTv.setOnClickListener(this);
         adapter.setHeaderView(view);
 
         SlidePanelHelper.attach(this);
@@ -121,10 +128,11 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         } else if (v.getId() == R.id.msg_item) {
             Intent intent = new Intent(this, SysMsgActivity.class);
             startActivity(intent);
-        } else if (v.getId() == R.id.refresh_news) {
-            presenter.refreshMessage();
-            headerViewHolder.animatable.start();
         }
+//        else if (v.getId() == R.id.refresh_news) {
+//            presenter.refreshMessage();
+//            headerViewHolder.animatable.start();
+//        }
     }
 
     @Override
@@ -150,21 +158,21 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
 
     @Override
     public void showMessages(List<Message> messages) {
-        if (headerViewHolder.reNewsHeader.getVisibility() == View.GONE) {
-            headerViewHolder.reNewsHeader.setVisibility(View.VISIBLE);
-        }
-        if (headerViewHolder.animatable.isRunning()) {
-            headerViewHolder.animatable.stop();
-        }
-        adapter.notifyMessageChanged(messages);
+//        if (headerViewHolder.reNewsHeader.getVisibility() == View.GONE) {
+//            headerViewHolder.reNewsHeader.setVisibility(View.VISIBLE);
+//        }
+//        if (headerViewHolder.animatable.isRunning()) {
+//            headerViewHolder.animatable.stop();
+//        }
+//        adapter.notifyMessageChanged(messages);
     }
 
     @Override
     public void showNoMessage() {
-        headerViewHolder.reNewsHeader.setVisibility(View.GONE);
-        adapter.notifyMessageChanged(null);
-        View footer = LayoutInflater.from(this).inflate(R.layout.layout_message_center_no_message, null);
-        adapter.setFooterView(footer);
+//        headerViewHolder.reNewsHeader.setVisibility(View.GONE);
+//        adapter.notifyMessageChanged(null);
+//        View footer = LayoutInflater.from(this).inflate(R.layout.layout_message_center_no_message, null);
+//        adapter.setFooterView(footer);
     }
 
     class HeaderViewHolder {
@@ -180,17 +188,17 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         TextView msgContentTv;
         @BindView(R.id.msg_date)
         TextView msgDateTv;
-        @BindView(R.id.re_news_header)
-        FrameLayout reNewsHeader;
-        @BindView(R.id.refresh_news)
-        TextView refreshNewsTv;
+//        @BindView(R.id.re_news_header)
+//        FrameLayout reNewsHeader;
+//        @BindView(R.id.refresh_news)
+//        TextView refreshNewsTv;
 
-        Animatable animatable;
+//        Animatable animatable;
 
 
         HeaderViewHolder(View view) {
             ButterKnife.bind(this, view);
-            animatable = (Animatable) refreshNewsTv.getCompoundDrawables()[0];
+//            animatable = (Animatable) refreshNewsTv.getCompoundDrawables()[0];
         }
     }
 }

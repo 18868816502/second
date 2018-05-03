@@ -45,7 +45,7 @@
                             android:layout_alignRight="@+id/mine_msg"
                             android:background="@drawable/round_red"
                             android:gravity="center"
-                            android:text="9"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="9sp" />
 
@@ -140,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:drawableLeft="@drawable/mine_list_bankcard"
+                        android:drawableLeft="@drawable/mine_bill_icon"
                         android:drawablePadding="10dp"
                         android:drawableRight="@mipmap/right_icon"
                         android:gravity="center_vertical"
@@ -151,7 +151,7 @@
                 </FrameLayout>
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/line" />
@@ -192,7 +192,7 @@
                 <FrameLayout
                     android:id="@+id/invite_friend"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_height="54dp">
 
                     <TextView

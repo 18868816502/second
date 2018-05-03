@@ -47,6 +47,7 @@ import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.EditTextUtils;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -63,6 +64,9 @@ import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+/**
+ * 帮助与反馈
+ */
 @RuntimePermissions
 public class HelpAndFeedActivity extends BaseComponentActivity {
 
@@ -133,6 +137,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         viewPager.setAdapter(new HelpFeedAdapter());
 
         View.OnClickListener clickListener = new View.OnClickListener() {

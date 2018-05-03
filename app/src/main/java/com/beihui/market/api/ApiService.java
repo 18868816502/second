@@ -94,6 +94,48 @@ public interface ApiService {
     Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("firstScreen") boolean firstScreen);
 
 
+    /**
+     * 更新还款状态
+     * @param userId 用户ID
+     * @param liabilitiesDetailId 	网贷分期账单Id 每一期的ID
+     * @param repayAmount 还款金额 默认全额
+     * @param status 	状态 1-待还 2-已还
+     */
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/updateRepayStatus")
+    Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("repayAmount") double repayAmount, @Field("status") int status);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/updateRepayStatus")
+    Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
+
+    /**
+     * 获取网贷账单详情
+     * @param userId 用户ID
+     * @param liabilitiesId 	账单Id
+     * @param billId 网贷分期账单Id 每一期的ID
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/queryloan")
+    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId, @Field("billId") String billId);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/queryloan")
+    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+
+    /**
+     * 获取信用卡账单详情
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/bill")
+    Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(@Field("userId") String userId, @Field("recordId") String recordId, @Field("billId") String billId);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/creditcard/bill")
+    Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(@Field("userId") String userId, @Field("recordId") String recordId);
+
+
     /****************************************************************************** 分割线 **************************************************************************************/
 
 
@@ -507,19 +549,9 @@ public interface ApiService {
     Observable<ResultEntity> updateCreditCardDebt(@Field("userId") String userId, @Field("cardId") String cardId,
                                                   @Field("billDay") int billDay, @Field("dueDay") int dueDay, @Field("amount") double amount);
 
-    /**
-     * 获取网贷账单详情
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/queryloan")
-    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
 
-    /**
-     * 获取信用卡账单详情
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/creditcard/bill")
-    Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(@Field("userId") String userId, @Field("recordId") String recordId);
+
+
 
     /**
      * 获取信用卡月份账单
@@ -605,12 +637,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/accounting/repayment/billList")
     Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
-    /**
-     * 更新还款状态
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/updateRepayStatus")
-    Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
 
     /**
      * 查询底部栏图标
@@ -730,6 +756,22 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/dataDictionary/message")
     Observable<ResultEntity> onPushClicked(@Field("userId") String userId, @Field("messageId") String message);
+
+
+    /**
+     * 网贷账单/信用卡备注更新
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/message/count")
+    Observable<ResultEntity<String>> queryMessage(@Field("userId") String userId);
+
+    /**
+     * 查询消息数
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/accounting/updateRemark")
+    Observable<ResultEntity> updateLoanOrCreditCardRemark(@Field("userId") String userId, @Field("remark") String remark, @Field("recordId") String recordId, @Field("type") String type);
+
 
     /**********************************************************************************************************/
 }

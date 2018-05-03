@@ -64,13 +64,6 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     private Map<String, String> wechatInfo;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //umeng统计
-        Statistic.onEvent(Events.ENTER_LOGIN);
-    }
-
-    @Override
     public void onDestroyView() {
         InputMethodUtil.closeSoftKeyboard(getActivity());
         presenter.onDestroy();

@@ -31,6 +31,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     private Api api;
     private CreditCardDebtDetailContract.View view;
     private String debtId;
+    private String billId;
     private UserHelper userHelper;
 
     private CreditCardDebtDetail debtDetail;
@@ -47,9 +48,13 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     }
 
 
+    /**
+     * 获取信用卡账单详情
+     */
     @Override
-    public void fetchDebtDetail() {
-        Disposable dis = api.fetchCreditCardDebtDetail(userHelper.getProfile().getId(), debtId)
+    public void fetchDebtDetail(String billId) {
+        this.billId = billId;
+        Disposable dis = api.fetchCreditCardDebtDetail(userHelper.getProfile().getId(), debtId, billId)
                 .compose(RxUtil.<ResultEntity<CreditCardDebtDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<CreditCardDebtDetail>>() {
                                @Override
@@ -72,6 +77,9 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
         addDisposable(dis);
     }
 
+    /**
+     * 获取信用卡详情月份账单 列表数据
+     */
     @Override
     public void fetchDebtMonthBill() {
         Disposable dis = api.fetchCreditCardDebtBill(userHelper.getProfile().getId(), debtId, curPageNo, PAGE_SIZE)
@@ -151,7 +159,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                            billList.clear();
                                            bill2Detail.clear();
                                            curPageNo = 1;
-                                           fetchDebtDetail();
+                                           fetchDebtDetail(billId);
                                            fetchDebtMonthBill();
                                        } else {
                                            view.showErrorMsg(result.getMsg());
@@ -184,7 +192,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                            billList.clear();
                                            bill2Detail.clear();
                                            curPageNo = 1;
-                                           fetchDebtDetail();
+                                           fetchDebtDetail(billId);
                                            fetchDebtMonthBill();
                                        } else {
                                            view.showErrorMsg(result.getMsg());

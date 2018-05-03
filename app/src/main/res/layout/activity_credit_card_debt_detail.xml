@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="15sp"
+            android:textSize="17sp"
             tools:text="广发银行 8888" />
 
         <ImageView
@@ -25,7 +25,7 @@
             style="@style/ToolBarIconStyle"
             android:layout_gravity="right"
             android:layout_marginRight="12dp"
-            android:src="@drawable/debt_detail_menu_fun" />
+            android:src="@drawable/bill_more_icon" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
@@ -67,8 +67,8 @@
             android:id="@+id/debt_status_operation_block"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:layout_weight="1"
-            android:background="#fafafa"
             android:minHeight="50dp">
 
             <LinearLayout

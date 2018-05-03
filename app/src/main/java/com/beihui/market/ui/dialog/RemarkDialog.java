@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +15,23 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.beihui.market.R;
-import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.EditTextUtils;
 
-public class BillEditAmountDialog extends DialogFragment {
-    private EditText billAmount;
-    private double pendingAmount;
+/**
+ * 修改备注的对话框
+ */
+public class RemarkDialog extends DialogFragment {
 
-    private EditAmountConfirmListener confirmListener;
+    private EditText etNickName;
 
-    public interface EditAmountConfirmListener {
-        void onEditAmountConfirm(double amount);
+    private NickNameChangedListener listener;
+
+    private String nickName;
+
+    public interface NickNameChangedListener {
+        void onNickNameChanged(String amount);
     }
 
     @Override
@@ -37,42 +43,45 @@ public class BillEditAmountDialog extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_bill_edit_amount, container, false);
-        billAmount = view.findViewById(R.id.bill_amount);
-        if (pendingAmount > 0) {
-            billAmount.setText(pendingAmount + "");
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_remark_edit, container, false);
+        etNickName = view.findViewById(R.id.et_nickname);
+
+        //限制emoji输入
+        EditTextUtils.addDisableEmojiInputFilter(etNickName);
+
+        if (!TextUtils.isEmpty(nickName)){
+            etNickName.setText(nickName);
         }
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(View v) {
                 if (v.getId() == R.id.cancel) {
-                    InputMethodUtil.closeSoftKeyboard(getContext(), billAmount);
+                    InputMethodUtil.closeSoftKeyboard(getContext(), etNickName);
 
-                    billAmount.postDelayed(new Runnable() {
+                    etNickName.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             dismiss();
                         }
                     }, 100);
                 } else {
-                    final String amount = billAmount.getText().toString();
+                    String nickname = etNickName.getText().toString();
 
-                    if (amount.length() > 0) {
-                        InputMethodUtil.closeSoftKeyboard(getContext(), billAmount);
-                        billAmount.postDelayed(new Runnable() {
+                    if (nickname.length() > 0) {
+                        if (listener != null) {
+                            listener.onNickNameChanged(nickname);
+                        }
+
+                        InputMethodUtil.closeSoftKeyboard(getContext(), etNickName);
+                        etNickName.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 dismiss();
-                                if (confirmListener != null) {
-                                    confirmListener.onEditAmountConfirm(Double.parseDouble(amount));
-                                }
                             }
                         }, 100);
-                    } else if (Double.parseDouble(amount) <= 0) {
-                        ToastUtils.showShort(getContext(), "金额必须大于零", null);
                     } else {
-                        ToastUtils.showShort(getContext(), "请输入金额", null);
+                        ToastUtils.showShort(getContext(), "请输入昵称", null);
                     }
                 }
             }
@@ -83,11 +92,10 @@ public class BillEditAmountDialog extends DialogFragment {
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                InputMethodUtil.openSoftKeyboard(getContext(), billAmount);
+                InputMethodUtil.openSoftKeyboard(getContext(), etNickName);
             }
         }, 100);
 
-        billAmount.addTextChangedListener(new EtAmountWatcher(billAmount));
         return view;
     }
 
@@ -104,13 +112,13 @@ public class BillEditAmountDialog extends DialogFragment {
         }
     }
 
-    public BillEditAmountDialog attachConfirmListener(EditAmountConfirmListener listener) {
-        confirmListener = listener;
+    public RemarkDialog setNickNameChangedListener(NickNameChangedListener listener) {
+        this.listener = listener;
         return this;
     }
 
-    public BillEditAmountDialog attachPendingAmount(double amount) {
-        this.pendingAmount = amount;
+    public RemarkDialog setNickName(String nickName) {
+        this.nickName = nickName;
         return this;
     }
 }

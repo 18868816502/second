@@ -63,8 +63,8 @@
         android:id="@+id/submit"
         style="@style/TextButtonStyle"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_alpha_primary_btn"
+        android:background="@drawable/xshape_tab_feed_back_black_bg"
         android:text="提交"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/black_1" />
 
 </LinearLayout>

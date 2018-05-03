@@ -119,11 +119,13 @@ public class DataStatisticsHelper {
 
     /**
      * 点击还款日历
+     * 注释了点击事件
      */
     public static final String ID_CLICK_DEBT_CALENDAR = "RepayCalendarBtn";
 
     /**
      * 点击负债分析
+     * 注释了点击事件
      */
     public static final String ID_CLICK_DEBT_ANALYZE = "LiabilitiesBtn";
 
@@ -139,6 +141,7 @@ public class DataStatisticsHelper {
 
     /**
      * 修改分期状态为待还
+     * 注释了点击事件 暂时没有这个功能
      */
     public static final String ID_SET_STATUS_UNPAID = "BillWaitOP";
 
@@ -164,6 +167,7 @@ public class DataStatisticsHelper {
 
     /**
      * 账单首页进入信用卡中心
+     * 注释了点击事件
      */
     public static final String ID_ACCOUNT_GO_TO_CREDIT_CARD_CENTER = "indexCreditCard";
 
@@ -173,6 +177,7 @@ public class DataStatisticsHelper {
     public static final String ID_ACCOUNT_HOME_CLICK_NEW_CREDIT_CARD_BILL = "CCB0001";
     /**
      * 账单首页-新增网贷账单
+     * 注释了点击事件
      */
     public static final String ID_ACCOUNT_HOME_CLICK_NEW_LOAN_BILL = "CCB0002";
     /**
@@ -189,6 +194,7 @@ public class DataStatisticsHelper {
     public static final String ID_BILL_CLICK_EMAIL_LEAD_IN = "CCB0006";
     /**
      * 新增账单-点击手动记账
+     * 注释了点击事件
      */
     public static final String ID_BILL_CLICK_NEW_BY_HAND = "CCB0008";
     /**
@@ -200,6 +206,34 @@ public class DataStatisticsHelper {
      */
     public static final String ID_BILL_ENTER_CREDIT_CARD_BILL_DETAIL = "CCB0010";
 
+
+
+
+    /**
+     * 卡片下拉按钮点击数据
+     */
+    public static final String ID_BILL_TAB_ACCOUNT_CARD_ARROW = "IndexBtn0001";
+
+
+    /**
+     * 卡片还部分点击
+     */
+    public static final String ID_BILL_TAB_ACCOUNT_CARD_PART_PAY = "IndexBtn0002";
+
+    /**
+     * 详情页还部分点击
+     */
+    public static final String ID_BILL_DETAIL_PART_PAY = "DetailBtn0001";
+
+    /**
+     * 	网贷记账自定义
+     */
+    public static final String ID_BILL_NET_LOAN_CUSTOM_ACCOUNT= "NetLoadBtn0001";
+
+    /**
+     * 	网贷记账tab栏分期还款点击
+     */
+    public static final String ID_BILL_NET_LOAN_TAB_BY_STAGES = "NetLoadBtn0002";
 
     @Inject
     Api api;

@@ -21,6 +21,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.NutEmailLeadInListener;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
@@ -145,7 +146,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void initDatas() {
         mActivity = getActivity();
-        mAdapter = new XTabAccountRvAdapter(mActivity);
+        mAdapter = new XTabAccountRvAdapter(mActivity, this);
         LinearLayoutManager manager = new LinearLayoutManager(mActivity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
@@ -162,23 +163,35 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
             @Override
             public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                if (!isNoRefreshData) {
-                    //请求的是逾期的
-                    presenter.loadInDebtList(3, false, overduePageNo, 10);
-                } else {
+                if (UserHelper.getInstance(mActivity).getProfile() == null) {
+                    showNoUserLoginBlock();
                     mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
                     mPullToRefreshListener.onRefresh(mPullContainer);
+                } else {
+                    if (!isNoRefreshData) {
+                        //请求的是逾期的
+                        presenter.loadInDebtList(3, false, overduePageNo, 10);
+                    } else {
+                        mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
+                        mPullToRefreshListener.onRefresh(mPullContainer);
+                    }
                 }
             }
 
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
             @Override
             public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                if (!isNoMoreData) {
-                    presenter.loadInDebtList(1, false, noOverduePageNo, 10);
-                } else {
+                if (UserHelper.getInstance(mActivity).getProfile() == null) {
+                    showNoUserLoginBlock();
                     mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
                     mPullContainer.hide();
+                } else {
+                    if (!isNoMoreData) {
+                        presenter.loadInDebtList(1, false, noOverduePageNo, 10);
+                    } else {
+                        mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
+                        mPullContainer.hide();
+                    }
                 }
             }
         });
@@ -224,19 +237,34 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         switch (view.getId()) {
             //添加账单
             case R.id.iv_tab_account_header_add:
-                //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_NEW_BILL);
-                //点击音效
-                SoundUtils.getInstance().playAdd();
+                if (UserHelper.getInstance(mActivity).getProfile() != null) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_NEW_BILL);
+                    //点击音效
+                    SoundUtils.getInstance().playAdd();
 
-                XTabAccountDialog dialog = new XTabAccountDialog();
-                dialog.show(getChildFragmentManager(), ShareDialog.class.getSimpleName());
+                    XTabAccountDialog dialog = new XTabAccountDialog();
+                    dialog.show(getChildFragmentManager(), ShareDialog.class.getSimpleName());
+                } else {
+                    showNoUserLoginBlock();
+                }
                 break;
             case R.id.iv_tab_account_header_today_button:
-                presenter.loadInDebtList(0, true, 1, 10);
-                mRecyclerView.scrollToPosition(0);
+                if (UserHelper.getInstance(mActivity).getProfile() != null) {
+                    initStatus();
+                } else {
+                    showNoUserLoginBlock();
+                }
                 break;
         }
+    }
+
+    /**
+     * 回调首屏
+     */
+    public void initStatus() {
+        presenter.loadInDebtList(0, true, 1, 10);
+        mRecyclerView.scrollToPosition(0);
     }
 
 
@@ -266,9 +294,21 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             isNoRefreshData = false;
             if (list.size() == 0) {
                 //TODO 没有数据 使用模拟数据 用户没有登录也是使用模拟数据
+                XAccountInfo analogLoan = new XAccountInfo();
+                analogLoan.isAnalog = true;
+                analogLoan.setTitle("51闪电购");
+                analogLoan.setAmount(1000.00);
+                analogLoan.setLastOverdue(true);
+                analogLoan.setOverdueTotal(-1);
 
-
-
+                XAccountInfo analogCard = new XAccountInfo();
+                analogCard.isAnalog = true;
+                analogCard.setTitle("农业银行（4512）");
+                analogCard.setAmount(1000.00);
+                analogCard.setLastOverdue(false);
+                analogCard.setOverdueTotal(0);
+                list.add(analogLoan);
+                list.add(analogCard);
 
             }else if (list.size() < pageSize) {
                 mFootViewMoney.setVisibility(View.VISIBLE);
@@ -682,6 +722,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void navigateLoanDebtDetail(AccountBill accountBill) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", accountBill.getRecordId());
+        intent.putExtra("bill_id", accountBill.getBillId());
         startActivity(intent);
     }
 
@@ -689,6 +730,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void navigateCreditCardDebtDetail(AccountBill accountBill) {
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         intent.putExtra("debt_id", accountBill.getRecordId());
+        intent.putExtra("bill_id", accountBill.getBillId());
         intent.putExtra("logo", accountBill.getLogo());
         intent.putExtra("bank_name", accountBill.getBankName());
         intent.putExtra("card_num", accountBill.getCardNums());

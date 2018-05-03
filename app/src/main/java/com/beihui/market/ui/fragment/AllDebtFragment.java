@@ -163,6 +163,9 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
         }
     }
 
+    /**
+     * TODO  页面没有分期账单ID
+     */
     @Override
     public void navigateDebtDetail(AllDebt.Row debt) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);

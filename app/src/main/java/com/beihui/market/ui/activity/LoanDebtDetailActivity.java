@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,22 +20,32 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtDetailComponent;
 import com.beihui.market.injection.module.DebtDetailModule;
 import com.beihui.market.ui.adapter.DebtDetailRVAdapter;
 import com.beihui.market.ui.contract.DebtDetailContract;
+import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
+import com.beihui.market.ui.dialog.EditPayPlanDialog;
+import com.beihui.market.ui.dialog.NicknameDialog;
+import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -44,6 +56,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 import static android.text.TextUtils.isEmpty;
 import static com.beihui.market.util.CommonUtils.convertInterestRate;
@@ -70,6 +83,9 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @BindView(R.id.sticky_header_container)
     FrameLayout stickyHeaderContainer;
 
+    //底部根布局  全部还  还部分
+    @BindView(R.id.ll_debt_info_foot_root)
+    LinearLayout mFootRoot;
     //全部还
     @BindView(R.id.rv_debt_info_foot_set_pay)
     TextView footSetAllPay;
@@ -90,17 +106,35 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 //        View projectNameContainer;
 //        @BindView(R.id.project_name)
 //        TextView projectName;
-        @BindView(R.id.debt_term_amount)
+        /**
+         * 备注内容 或者 备注按钮
+         */
+        @BindView(R.id.iv_debt_info_header_edit_remark)
+        ImageView remarkButton;
+        @BindView(R.id.tv_credit_card_remark)
+        TextView remarkContent;
+        /**
+         * 全部待还金额
+         */
+        @BindView(R.id.debt_detail_term_amount)
         TextView debtTermAmount;
-//        @BindView(R.id.set_status)
-//        TextView setStatus;
-        @BindView(R.id.debt_pay_day)
+        @BindView(R.id.debt_detail_term_amount_text)
+        TextView debtTermAmountText;
+        /**
+         * 还款期数 当前期/总期数
+         */
+        @BindView(R.id.debt_detail_pay_day)
         TextView debtPayDay;
-        @BindView(R.id.debt_paid)
-        TextView debtPaid;
-        @BindView(R.id.debt_unpaid)
-        TextView debtUnpaid;
+        @BindView(R.id.debt_detail_pay_day_text)
+        TextView debtPayDayUpText;
 
+        /**
+         * 当前还款日
+         */
+        @BindView(R.id.debt_detail_pay_date)
+        TextView debtUnpaid;
+        @BindView(R.id.debt_detail_pay_date_text)
+        TextView debtUnpaidText;
         //卡片背景
         @BindView(R.id.ll_debt_info_header_card_bg)
         LinearLayout mHeaderCardBg;
@@ -145,6 +179,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     private Header header;
 
     private String debtId;
+    private String billId;
 
     private CreditCardDebtDetailDialog dialog;
 
@@ -175,6 +210,42 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         header = new Header(LayoutInflater.from(this)
                 .inflate(R.layout.layout_debt_detail_header, recyclerView, false));
 
+        /**
+         * 修改备注
+         */
+        header.remarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
+                    @Override
+                    public void onNickNameChanged(final String remark) {
+                        if (TextUtils.isEmpty(remark) || remark.length() > 50) {
+                            Toast.makeText(LoanDebtDetailActivity.this, "备注不能为空或者字数过多", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Api.getInstance().updateLoanOrCreditCardRemark(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), remark, debtId, 1)
+                                    .compose(RxUtil.<ResultEntity>io2main())
+                                    .subscribe(new Consumer<ResultEntity>() {
+                                                   @Override
+                                                   public void accept(ResultEntity result) throws Exception {
+                                                       if (result.isSuccess()) {
+                                                           header.remarkContent.setText(remark);
+                                                       } else {
+                                                           Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                       }
+                                                   }
+                                               },
+                                            new Consumer<Throwable>() {
+                                                @Override
+                                                public void accept(Throwable throwable) throws Exception {
+                                                    Log.e("exception_custom", throwable.getMessage());
+                                                }
+                                            });;
+                        }
+                    }
+                }).show(getSupportFragmentManager(), "remark");
+            }
+        });
+
         adapter = new DebtDetailRVAdapter();
         adapter.setHeaderView(header.itemView);
         /**
@@ -199,6 +270,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @Override
     protected void configureComponent(AppComponent appComponent) {
         debtId = getIntent().getStringExtra("debt_id");
+        billId = getIntent().getStringExtra("bill_id");
         DaggerDebtDetailComponent.builder()
                 .appComponent(appComponent)
                 .debtDetailModule(new DebtDetailModule(this))
@@ -217,7 +289,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
      */
     @Override
     public void initDatas() {
-        presenter.loadDebtDetail();
+        presenter.loadDebtDetail(billId);
     }
 
     /**
@@ -226,13 +298,18 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
      */
     @SuppressLint("SetTextI18n")
     @Override
-    public void showDebtDetail(DebtDetail debtDetail) {
-        /**
-         * 卡片背景
-         */
+    public void showDebtDetail(final DebtDetail debtDetail) {
         /**
          * 头卡片 背景颜色
          */
+        //字体颜色
+        header.debtTermAmount.setTextColor(Color.parseColor("#ffffff"));
+        header.debtPayDay.setTextColor(Color.parseColor("#aaffffff"));
+        header.debtUnpaid.setTextColor(Color.parseColor("#aaffffff"));
+        header.debtTermAmountText.setTextColor(Color.parseColor("#88ffffff"));
+        header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
+        header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
+
         if (debtDetail.returnDay <= 3) {
             header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
         } else {
@@ -248,6 +325,22 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                 presenter.clickMenu();
             }
         });
+        //全部待还金额
+        header.debtTermAmount.setText(keep2digitsWithoutZero(debtDetail.getStayReturnedAmount()));
+        /**
+         * 判断是一次性还款还是分期还款
+         * termType 1 为一次性还款 2 分期还款
+         */
+        if (debtDetail.getRepayType()== 1) {
+            //还款期数 当前期/总期数
+            header.debtPayDay.setText("一次性还款");
+        } else {
+            //还款期数 当前期/总期数
+            header.debtPayDay.setText(debtDetail.showBill.termNo + "/" + debtDetail.getTerm());
+        }
+
+        //当期还款日
+        header.debtUnpaid.setText(debtDetail.showBill.termRepayDate.replace("-","."));
 
         /**
          * 设置当前期号 index
@@ -255,10 +348,50 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         showSetStatus(debtDetail.termNum - 1, debtDetail.getRepayPlan().get(debtDetail.termNum - 1).getStatus());
 
         /**
+         * 设置备注
+         */
+        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : debtDetail.getRemark());
+
+        /**
          * 设置标题
          */
         String titleName = debtDetail.getChannelName() + (isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
         title.setText(titleName);
+
+        /**
+         * 当前期是否已还状态
+         *  0-无效, 1-待还 2-已还
+         */
+        //先设置底部状态 1 "待还", 2 "已还", 3，"逾期"
+        if (debtDetail.showBill.status == 1 || debtDetail.showBill.status == 3) {
+            footSetMiddleLine.setVisibility(View.VISIBLE);
+            footSetPartPay.setVisibility(View.VISIBLE);
+            footSetAllPay.setText("设为已还");
+            footSetPartPay.setText("还部分");
+            footSetAllPay.setEnabled(true);
+        } else if (debtDetail.showBill.status == 2) {
+            footSetMiddleLine.setVisibility(View.GONE);
+            footSetPartPay.setVisibility(View.GONE);
+            footSetAllPay.setText("已还");
+            footSetAllPay.setEnabled(false);
+        } else {
+            mFootRoot.setVisibility(View.GONE);
+        }
+        footSetAllPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSetAllPayDialog(index);
+            }
+        });
+
+        footSetPartPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSetPartPayDialog(debtDetail, index);
+            }
+        });
+
+        adapter.notifyPayPlanChanged(debtDetail.getRepayPlan(), debtDetail.termNum);
 
 
         //渠道logo
@@ -287,14 +420,12 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 //        } else {
 //            header.projectNameContainer.setVisibility(View.GONE);
 //        }
-        //当期应还金额
-        header.debtTermAmount.setText(keep2digitsWithoutZero(debtDetail.getTermPayableAmount()));
-        //还款时间
-        header.debtPayDay.setText(debtDetail.getTermRepayDate());
-        //已还金额
-        header.debtPaid.setText(keep2digitsWithoutZero(debtDetail.getReturnedAmount()));
-        //未还金额
-        header.debtUnpaid.setText(keep2digitsWithoutZero(debtDetail.getStayReturnedAmount()));
+//        //当期应还金额
+//        header.debtTermAmount.setText(keep2digitsWithoutZero(debtDetail.getTermPayableAmount()));
+//        //还款时间
+//        header.debtPayDay.setText(debtDetail.getTermRepayDate());
+//        //未还金额
+//        header.debtUnpaid.setText(keep2digitsWithoutZero(debtDetail.getStayReturnedAmount()));
         //还款总额
 //        header.debtAmount.setText(keep2digitsWithoutZero(debtDetail.getPayableAmount()) + "元");
         //借款本金
@@ -340,15 +471,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 //            header.debtStartDate.setText("--");
 //        }
 
-        footSetAllPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSetAllPayDialog(index);
-            }
-        });
 
-        adapter.notifyPayPlanChanged(debtDetail.getRepayPlan(), debtDetail.termNum);
     }
+
+
 
     public int index;
 
@@ -377,8 +503,53 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         }
     }
 
+    /**
+     * 还部分
+     * @param index
+     */
+    private void showSetPartPayDialog(final DebtDetail debtDetail, final int index) {
+        /**
+         * 埋点 	详情页还部分点击
+         */
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_DETAIL_PART_PAY);
 
 
+        BillEditAmountDialog dialog = new BillEditAmountDialog()
+                .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
+                    @Override
+                    public void onEditAmountConfirm(double amount) {
+                        if (amount > debtDetail.showBill.termPayableAmount) {
+                            ToastUtils.showShort(LoanDebtDetailActivity.this, "只能还部分", null);
+                        } else {
+                            Api.getInstance().updateDebtStatus(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), Double.parseDouble(keep2digitsWithoutZero(amount)), 2)
+                                    .compose(RxUtil.<ResultEntity>io2main())
+                                    .subscribe(new Consumer<ResultEntity>() {
+                                                   @Override
+                                                   public void accept(ResultEntity result) throws Exception {
+                                                       if (result.isSuccess()) {
+                                                           Toast.makeText(LoanDebtDetailActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+                                                       } else {
+                                                           Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                       }
+                                                   }
+                                               },
+                                            new Consumer<Throwable>() {
+                                                @Override
+                                                public void accept(Throwable throwable) throws Exception {
+                                                    Log.e("exception_custom", throwable.getMessage());
+                                                }
+                                            });
+                        }
+                    }
+                });
+        dialog.show(LoanDebtDetailActivity.this.getSupportFragmentManager(), "paypart");
+    }
+
+    /**
+     * 设为已还
+     * @param pos
+     */
     private void showSetAllPayDialog(final int pos) {
         final Dialog dialog = new Dialog(LoanDebtDetailActivity.this, 0);
         View dialogView = LayoutInflater.from(LoanDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
@@ -416,7 +587,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @Override
     public void showUpdateStatusSuccess(String msg) {
         //粗鲁的刷新账单
-        presenter.loadDebtDetail();
+        presenter.loadDebtDetail(billId);
     }
 
     /**

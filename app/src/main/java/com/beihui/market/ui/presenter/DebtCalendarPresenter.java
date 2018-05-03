@@ -204,7 +204,7 @@ public class DebtCalendarPresenter extends BaseRxPresenter implements DebtCalend
             view.navigateLoanDebtDetail(bill.getRecordId());
         } else {
             //信用卡账单
-            view.navigateCreditCardDebtDetail(bill.getRecordId(), bill.getLogo(), bill.getTopic(), bill.getBillName(), bill.getBillSource() == 3);
+            view.navigateCreditCardDebtDetail(bill.getRecordId(), bill.getBillId(), bill.getLogo(), bill.getTopic(), bill.getBillName(), bill.getBillSource() == 3);
         }
     }
 

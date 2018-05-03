@@ -14,6 +14,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.contract.DebtNewContract;
@@ -75,6 +76,7 @@ public class DebtNewActivity extends BaseComponentActivity {
     }
 
 
+
     /**
      * ViewPager的适配器
      */
@@ -119,7 +121,31 @@ public class DebtNewActivity extends BaseComponentActivity {
      * 空事件
      */
     @Override
-    public void initDatas() {}
+    public void initDatas() {
+        copyTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    /**
+                     * 埋点 	网贷记账自定义
+                     */
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_LOAN_TAB_BY_STAGES);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
 
     /**
      * 空事件

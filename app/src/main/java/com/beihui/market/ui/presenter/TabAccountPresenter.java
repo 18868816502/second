@@ -10,6 +10,7 @@ import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
@@ -64,7 +65,11 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             //获取列表信息
             loadInDebtList(0, true, 1, 10);
         } else {
-            view.showNoUserLoginBlock();
+            //获取列表信息
+            List<XAccountInfo> list = new ArrayList<>();
+            view.showInDebtList(list, 0);
+
+
         }
 //        //获取头信息
 //        loadDebtAbstract();
@@ -108,35 +113,39 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
      */
     @Override
     public void loadInDebtList(final int billStatus, boolean firstScreen, int pageNo, int pageSize) {
-        Observable<ResultEntity<List<XAccountInfo>>> observable;
-        if (firstScreen) {
-            observable = api.queryTabAccountListInfo(userHelper.getProfile().getId(), true);
-        } else {
-            observable = api.queryTabAccountListInfo(userHelper.getProfile().getId(), billStatus, false, pageNo, pageSize);
-        }
-        Disposable dis =observable.compose(RxUtil.<ResultEntity<List<XAccountInfo>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<XAccountInfo>>>() {
-                               @Override
-                               public void accept(ResultEntity<List<XAccountInfo>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       debts.clear();
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           debts.addAll(result.getData());
+        if (userHelper.getProfile() == null) {
+            view.showNoUserLoginBlock();
+        } else{
+            Observable<ResultEntity<List<XAccountInfo>>> observable;
+            if (firstScreen) {
+                observable = api.queryTabAccountListInfo(userHelper.getProfile().getId(), true);
+            } else {
+                observable = api.queryTabAccountListInfo(userHelper.getProfile().getId(), billStatus, false, pageNo, pageSize);
+            }
+            Disposable dis = observable.compose(RxUtil.<ResultEntity<List<XAccountInfo>>>io2main())
+                    .subscribe(new Consumer<ResultEntity<List<XAccountInfo>>>() {
+                                   @Override
+                                   public void accept(ResultEntity<List<XAccountInfo>> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           debts.clear();
+                                           if (result.getData() != null && result.getData().size() > 0) {
+                                               debts.addAll(result.getData());
+                                           }
+                                           view.showInDebtList(debts, billStatus);
+                                       } else {
+                                           view.showErrorMsg(result.getMsg());
                                        }
-                                       view.showInDebtList(debts, billStatus);
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
                                    }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(TabAccountPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    logError(TabAccountPresenter.this, throwable);
+                                    view.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(dis);
+        }
     }
 
 

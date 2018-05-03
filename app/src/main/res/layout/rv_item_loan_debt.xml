@@ -15,10 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="25dp"
+            android:paddingBottom="15dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingTop="25dp"
+            android:paddingTop="15dp"
             tools:background="@android:color/white">
 
 
@@ -31,6 +31,7 @@
                 tools:src="@mipmap/ic_launcher" />
 
             <LinearLayout
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -45,6 +46,7 @@
                     tools:text="爱信钱包" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/debt_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -104,7 +106,7 @@
                 android:id="@+id/debt_visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:text="首页显示"
                 android:textColor="@android:color/white" />
         </LinearLayout>

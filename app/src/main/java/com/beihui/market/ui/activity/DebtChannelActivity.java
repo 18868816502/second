@@ -127,6 +127,12 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
         header.debtChannelNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * 埋点 	网贷记账自定义
+                 */
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_LOAN_CUSTOM_ACCOUNT);
+
                 presenter.addDebtChannel();
             }
         });

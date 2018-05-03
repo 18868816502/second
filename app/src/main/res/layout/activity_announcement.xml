@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-        style="@style/ToolBarStyle"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
         <TextView
-            style="@style/ToolBarTitleTextAppearance.Light"
+            android:textColor="@color/black_1"
+            android:textSize="17dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

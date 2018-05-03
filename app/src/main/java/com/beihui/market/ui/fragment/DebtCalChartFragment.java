@@ -340,9 +340,10 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
     }
 
     @Override
-    public void navigateCreditCardDebtDetail(String id, String logo, String bankName, String cardNum, boolean byHand) {
+    public void navigateCreditCardDebtDetail(String id, String billId, String logo, String bankName, String cardNum, boolean byHand) {
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
+        intent.putExtra("bill_id", billId);
         intent.putExtra("logo", logo);
         intent.putExtra("bank_name", bankName);
         intent.putExtra("card_num", cardNum);

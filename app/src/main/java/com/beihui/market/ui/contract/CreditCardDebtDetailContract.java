@@ -15,7 +15,7 @@ public interface CreditCardDebtDetailContract {
         /**
          * 加载账单详情
          */
-        void fetchDebtDetail();
+        void fetchDebtDetail(String billId);
 
         /**
          * 加载月份账单列表

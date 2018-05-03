@@ -37,8 +37,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
-    @BindView(R.id.debt_num)
-    TextView tvDebtNum;
+//    @BindView(R.id.debt_num)
+//    TextView tvDebtNum;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -114,7 +114,7 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void showLoanBillCount(int count) {
-        tvDebtNum.setText(String.format(Locale.CHINA, "您总共有%d个信用卡项目", count));
+//        tvDebtNum.setText(String.format(Locale.CHINA, "您总共有%d个信用卡项目", count));
     }
 
 
@@ -137,7 +137,7 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
     @Override
     public void navigateBillDebtDetail(LoanBill.Row bill) {
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
-        CreditCardDebtDetailActivity.putExtra(intent, bill.getRecordId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
+        CreditCardDebtDetailActivity.putExtra(intent, bill.getRecordId(), bill.getBillId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
         startActivityForResult(intent, 1);
     }
 }

@@ -24,12 +24,13 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
     private UserHelper userHelper;
 
     private String debtId;
+    private String billId;
 
     //在查询单个借款项目查看 就保存了该bean
     private DebtDetail debtDetail;
 
     @Inject
-    DebtDetailPresenter(Context context, String debtId, Api api, DebtDetailContract.View view) {
+    DebtDetailPresenter(Context context, String debtId,  Api api, DebtDetailContract.View view) {
         this.debtId = debtId;
         this.api = api;
         this.view = view;
@@ -40,8 +41,9 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
      * 单个借款项目查看
      */
     @Override
-    public void loadDebtDetail() {
-        Disposable dis = api.fetchLoanDebtDetail(userHelper.getProfile().getId(), debtId)
+    public void loadDebtDetail(String billId) {
+        this.billId = billId;
+        Disposable dis = api.fetchLoanDebtDetail(userHelper.getProfile().getId(), debtId, billId)
                 .compose(RxUtil.<ResultEntity<DebtDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<DebtDetail>>() {
                                @Override
@@ -162,7 +164,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
                                    if (result.isSuccess()) {
                                        view.showUpdateStatusSuccess("更新成功");
                                        //更新成功后刷新数据
-                                       loadDebtDetail();
+                                       loadDebtDetail(billId);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

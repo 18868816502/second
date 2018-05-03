@@ -72,7 +72,7 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
             helper.setText(R.id.channel_name, "");
         }
         //借款金额
-        helper.setText(R.id.debt_amount, "待还金额" + CommonUtils.keep2digitsWithoutZero(item.getAmount()) + "元");
+//        helper.setText(R.id.debt_amount, "待还金额" + CommonUtils.keep2digitsWithoutZero(item.getAmount()) + "元");
         switch (item.getStatus()) {
             case 1://待还
                 helper.setTextColor(R.id.status, colorUnpaid);
@@ -115,10 +115,27 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         } else {
             helper.setText(R.id.bank_card_num, "");
         }
+
+        switch (item.getStatus()) {
+            case 1://待还
+                helper.setTextColor(R.id.bank_card_status, colorUnpaid);
+                helper.setText(R.id.bank_card_status, "待还款");
+                break;
+            case 2://已还
+                helper.setTextColor(R.id.bank_card_status, colorPaid);
+                helper.setText(R.id.bank_card_status, "已还清");
+                break;
+            case 3://逾期
+                helper.setTextColor(R.id.bank_card_status, colorUnpaid);
+                helper.setText(R.id.bank_card_status, "待还款");
+                break;
+            default:
+                helper.setText(R.id.bank_card_status, "");
+        }
         //出账日
-        helper.setText(R.id.bill_day, String.format(Locale.CHINA, "每月%d日", item.getBillDay()));
+//        helper.setText(R.id.bill_day, String.format(Locale.CHINA, "每月%d日", item.getBillDay()));
         //还款日
-        helper.setText(R.id.due_day, String.format(Locale.CHINA, "每月%d日", item.getDueDay()));
+//        helper.setText(R.id.due_day, String.format(Locale.CHINA, "每月%d日", item.getDueDay()));
     }
 
     public void notifyLoanBillChanged(List<LoanBill.Row> list) {

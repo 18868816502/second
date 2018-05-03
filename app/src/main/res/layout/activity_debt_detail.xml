@@ -24,12 +24,10 @@
 
         <ImageView
             android:id="@+id/iv_debt_info_edit_right_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ToolBarIconStyle"
             android:layout_gravity="right"
-            android:layout_marginRight="16dp"
-            android:alpha="0"
-            android:src="@drawable/debt_detail_menu_fun" />
+            android:layout_marginRight="12dp"
+            android:src="@drawable/bill_more_icon" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -61,6 +59,7 @@
         android:background="@color/line" />
 
     <LinearLayout
+        android:id="@+id/ll_debt_info_foot_root"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">

@@ -4,6 +4,7 @@ package com.beihui.market.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class DebtDetail implements Parcelable {
@@ -42,6 +43,8 @@ public class DebtDetail implements Parcelable {
     public int termNum;
 
     private List<RepayPlanBean> repayPlan;
+
+    public DebtDetialShowBillBean showBill;
 
     public String getId() {
         return id;
@@ -395,4 +398,26 @@ public class DebtDetail implements Parcelable {
             return new DebtDetail[size];
         }
     };
+
+    public static class DebtDetialShowBillBean implements Serializable{
+        //	还款计划Id
+        public String id;
+        // 	账单Id
+        public String recordId;
+        // 期号
+        public int termNo;
+        // 当期还款日
+        public String termRepayDate;
+        // 	当期应还
+        public double termPayableAmount;
+        // 	当期状态
+        public int status;
+        // 创建时间
+        public String gmtCreate;
+        // 	更新时间
+        public String gmtModify;
+        public String userId;
+        // 	距离还款日
+        public int returnDay;
+    }
 }

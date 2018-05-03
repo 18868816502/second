@@ -52,6 +52,9 @@ public class XAccountInfo implements Serializable {
     //	最近逾期 true：是，false：否
     private boolean lastOverdue = false;
 
+    public boolean isAnalog = false;
+
+
     public boolean isShow() {
         return isShow;
     }

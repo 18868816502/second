@@ -12,7 +12,7 @@ public interface DebtDetailContract {
         /**
          * 加载借款项目详情
          */
-        void loadDebtDetail();
+        void loadDebtDetail(String billId);
 
         /**
          * 点击设置还款状态

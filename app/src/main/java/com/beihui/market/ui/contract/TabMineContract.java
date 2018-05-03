@@ -142,5 +142,10 @@ public interface TabMineContract {
          */
         void updateMyLoanVisible(boolean visible);
 
+        /**
+         * 消息数量
+         * @param data
+         */
+        void updateMessageNum(String data);
     }
 }

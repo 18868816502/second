@@ -31,14 +31,18 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+/**
+ * @author xhb
+ * 我的模块 我的账单 网贷列表
+ */
 public class MyLoanDebtListFragment extends BaseComponentFragment implements MyLoanBillContract.View {
 
     private final int billType = 1;
 
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
-    @BindView(R.id.debt_num)
-    TextView tvDebtNum;
+//    @BindView(R.id.debt_num)
+//    TextView tvDebtNum;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -115,7 +119,7 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void showLoanBillCount(int count) {
-        tvDebtNum.setText(String.format(Locale.CHINA, "您总共有%d个网贷项目", count));
+//        tvDebtNum.setText(String.format(Locale.CHINA, "您总共有%d个网贷项目", count));
     }
 
     @Override

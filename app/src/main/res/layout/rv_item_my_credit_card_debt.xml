@@ -18,8 +18,11 @@
             tools:background="@android:color/white">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
                 <com.beihui.market.view.CircleImageView
@@ -27,7 +30,6 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
                     app:civ_border_color="@color/line"
                     app:civ_border_width="0.5dp"
                     tools:src="@mipmap/ic_launcher" />
@@ -37,7 +39,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginTop="23dp"
                     android:textColor="@color/black_1"
                     android:textSize="15sp"
                     tools:text="广发银行" />
@@ -46,14 +47,30 @@
                     android:id="@+id/bank_card_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="13dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="8dp"
                     android:textColor="@color/black_2"
+                    android:textSize="14sp"
+                    tools:text="8888" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="1dp"/>
+
+                <TextView
+                    android:id="@+id/bank_card_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_2"
+                    android:layout_marginRight="30dp"
+                    android:drawablePadding="15dp"
+                    android:drawableRight="@drawable/home_forward"
                     android:textSize="14sp"
                     tools:text="8888" />
             </LinearLayout>
 
             <FrameLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -148,7 +165,7 @@
                 android:id="@+id/debt_visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:text="首页显示"
                 android:textColor="@android:color/white" />
         </LinearLayout>

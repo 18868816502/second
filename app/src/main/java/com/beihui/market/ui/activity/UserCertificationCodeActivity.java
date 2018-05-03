@@ -202,6 +202,9 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
     private void loginNoPwd(UserProfileAbstract result) {
         if (result.isNewUser()) {
             UserPsdEditActivity.launch(UserCertificationCodeActivity.this,1, pendingPhone);
+
+            //umeng统计
+            Statistic.onEvent(Events.LOGIN_REGISTER);
         } else {
             /**
              * 进入我的模块首页

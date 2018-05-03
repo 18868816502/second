@@ -7,7 +7,7 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-        style="@style/ToolBarStyle"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
@@ -25,7 +25,7 @@
                 android:background="@drawable/help_feed_left"
                 android:gravity="center"
                 android:text="@string/help"
-                android:textColor="@color/color_white_primary_select" />
+                android:textColor="@color/black_1" />
 
             <TextView
                 android:id="@+id/feedback"
@@ -34,7 +34,7 @@
                 android:background="@drawable/help_feed_right"
                 android:gravity="center"
                 android:text="@string/feedback"
-                android:textColor="@color/color_white_primary_select" />
+                android:textColor="@color/black_1" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -42,6 +42,5 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 </LinearLayout>
