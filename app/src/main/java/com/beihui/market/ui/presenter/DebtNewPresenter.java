@@ -44,6 +44,10 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
     private Api api;
     private DebtNewContract.View view;
     private UserHelper userHelper;
+
+    /**
+     * 该字段不为空 则为新增模式
+     */
     private DebtChannel debtChannel;
     /**
      * 该字段不为空，则为编辑账单模式
@@ -70,6 +74,14 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         }
     }
 
+    /**
+     * 一次性还款的api
+     * @param payDate    到期还款日，must
+     * @param debtAmount 到期还款金额， must
+     * @param capital    本金, non-must
+     * @param timeLimit  借款期限, non-must
+     * @param remark     备注，non-must
+     */
     @Override
     public void saveOneTimeDebt(@NonNull Date payDate, String debtAmount, String capital, String timeLimit, String remark) {
         if (TextUtils.isEmpty(debtAmount)) {
@@ -87,7 +99,8 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         params.put("userId", userHelper.getProfile().getId());
         params.put("channelId", channelId);
         if (debtChannel.isCustom()) {
-            params.put("projectName", debtChannel.getChannelName());
+            params.put("projectName", debtChannel.projectName);
+            params.put("channelName", "自定义");
         } else {
             params.put("channelName", debtChannel.getChannelName());
         }
@@ -119,6 +132,14 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         this.saveDebt(params);
     }
 
+    /**
+     * 分期还款的api
+     * @param payDate    首次还款日，must
+     * @param timeLimit  借款期限，must
+     * @param termAmount 每月还款金额，must
+     * @param capital    本金，non-must
+     * @param remark     备注，non-must
+     */
     @Override
     public void saveEvenDebt(@NonNull Date payDate, String timeLimit, String termAmount, String capital, String remark) {
         if (TextUtils.isEmpty(termAmount)) {
@@ -136,7 +157,8 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         params.put("userId", userHelper.getProfile().getId());
         params.put("channelId", channelId);
         if (debtChannel.isCustom()) {
-            params.put("projectName", debtChannel.getChannelName());
+            params.put("projectName", debtChannel.projectName);
+            params.put("channelName", "自定义");
         } else {
             params.put("channelName", debtChannel.getChannelName());
         }

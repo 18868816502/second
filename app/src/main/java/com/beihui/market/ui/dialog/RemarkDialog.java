@@ -81,7 +81,7 @@ public class RemarkDialog extends DialogFragment {
                             }
                         }, 100);
                     } else {
-                        ToastUtils.showShort(getContext(), "请输入昵称", null);
+                        ToastUtils.showShort(getContext(), "请输入备注", null);
                     }
                 }
             }

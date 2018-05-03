@@ -117,11 +117,11 @@ public interface ApiService {
      * @param billId 网贷分期账单Id 每一期的ID
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/queryloan")
+    @POST(BASE_PATH + "/accounting/newQueryloan")
     Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId, @Field("billId") String billId);
 
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/queryloan")
+    @POST(BASE_PATH + "/accounting/newQueryloan")
     Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
 
     /**
@@ -451,9 +451,11 @@ public interface ApiService {
 
     /**
      * 获取我的账单
+     * @author xhb
+     * /accounting/myBillList 换成 /accounting/newMyBillList
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/myBillList")
+    @POST(BASE_PATH + "/accounting/newMyBillList")
     Observable<ResultEntity<LoanBill>> fetchLoanBill(@Field("userId") String userId, @Field("billType") int billType, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**

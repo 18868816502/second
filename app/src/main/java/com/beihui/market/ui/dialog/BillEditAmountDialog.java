@@ -18,6 +18,10 @@ import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 
+/**
+ * @author xhb
+ * 输入还款金额
+ */
 public class BillEditAmountDialog extends DialogFragment {
     private EditText billAmount;
     private double pendingAmount;

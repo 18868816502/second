@@ -25,6 +25,8 @@ public class DebtChannel implements Parcelable {
     @Property
     private String customId; //自定义渠道id
 
+    public String projectName;
+
     public String getId() {
         return id;
     }
@@ -81,17 +83,17 @@ public class DebtChannel implements Parcelable {
     public DebtChannel() {
     }
 
-    @Generated(hash = 1265460127)
+    @Generated(hash = 1212294916)
     public DebtChannel(String id, String channelName, String channelInitials, String logo, String type,
-                       String customId) {
+            String customId, String projectName) {
         this.id = id;
         this.channelName = channelName;
         this.channelInitials = channelInitials;
         this.logo = logo;
         this.type = type;
         this.customId = customId;
+        this.projectName = projectName;
     }
-
 
     @Override
     public int describeContents() {
@@ -106,6 +108,14 @@ public class DebtChannel implements Parcelable {
         dest.writeString(this.logo);
         dest.writeString(this.type);
         dest.writeString(this.customId);
+    }
+
+    public String getProjectName() {
+        return this.projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     protected DebtChannel(Parcel in) {

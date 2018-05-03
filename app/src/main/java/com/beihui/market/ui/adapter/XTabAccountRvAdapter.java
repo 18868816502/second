@@ -283,7 +283,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                 @Override
                                 public void onEditAmountConfirm(double amount) {
                                     if (amount > accountBill.getAmount()) {
-                                        ToastUtils.showShort(mActivity, "只能还部分", null);
+                                        Toast.makeText(mActivity, "只能还部分", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), Double.parseDouble(keep2digitsWithoutZero(amount)), 2)
                                                 .compose(RxUtil.<ResultEntity>io2main())

@@ -186,6 +186,7 @@ public class DebtChannelPresenter extends BaseRxPresenter implements DebtChannel
     public void addDebtChannel() {
         if (customChannel != null) {
             final DebtChannel newChannel = new DebtChannel();
+            newChannel.setChannelName("自定义");
             newChannel.setId(java.util.UUID.randomUUID().toString());
             newChannel.setType("custom");
             newChannel.setLogo(customChannel.getLogo());

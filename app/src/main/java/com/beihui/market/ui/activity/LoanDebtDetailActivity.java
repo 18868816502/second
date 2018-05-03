@@ -95,6 +95,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     //还部分
     @BindView(R.id.rv_debt_info_foot_pay_part)
     TextView footSetPartPay;
+    private DebtDetail debtDetail;
 
     class Header {
         View itemView;
@@ -299,6 +300,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @SuppressLint("SetTextI18n")
     @Override
     public void showDebtDetail(final DebtDetail debtDetail) {
+        this.debtDetail = debtDetail;
         /**
          * 头卡片 背景颜色
          */
@@ -520,7 +522,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                     @Override
                     public void onEditAmountConfirm(double amount) {
                         if (amount > debtDetail.showBill.termPayableAmount) {
-                            ToastUtils.showShort(LoanDebtDetailActivity.this, "只能还部分", null);
+                            Toast.makeText(LoanDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
                         } else {
                             Api.getInstance().updateDebtStatus(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), Double.parseDouble(keep2digitsWithoutZero(amount)), 2)
                                     .compose(RxUtil.<ResultEntity>io2main())
@@ -664,5 +666,21 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         Intent intent = new Intent(this, DebtNewActivity.class);
         intent.putExtra("debt_detail", debtDetail);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
+    }
+
+    /**
+     * 设置已还 刷新数据
+     */
+    @Override
+    public void updateLoanDetail(String billId) {
+        /**
+         * 判断是一次性还款还是分期还款
+         * termType 1 为一次性还款 2 分期还款
+         */
+        if (debtDetail.getRepayType()== 1) {
+            finish();
+        } else {
+            presenter.loadDebtDetail(billId);
+        }
     }
 }

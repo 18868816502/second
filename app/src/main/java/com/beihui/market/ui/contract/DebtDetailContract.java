@@ -108,5 +108,8 @@ public interface DebtDetailContract {
          * @param debtDetail 借款详情
          */
         void navigateAddDebt(DebtDetail debtDetail);
+
+        void updateLoanDetail(String billId);
+
     }
 }

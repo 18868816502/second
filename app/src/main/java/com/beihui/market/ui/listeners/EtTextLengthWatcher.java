@@ -40,7 +40,7 @@ public class EtTextLengthWatcher implements TextWatcher {
             }
         }
         if (debtChannel != null) {
-            debtChannel.setChannelName(s.toString());
+            debtChannel.projectName = s.toString();
         }
     }
 

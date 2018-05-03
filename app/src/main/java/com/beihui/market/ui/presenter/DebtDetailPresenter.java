@@ -164,7 +164,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
                                    if (result.isSuccess()) {
                                        view.showUpdateStatusSuccess("更新成功");
                                        //更新成功后刷新数据
-                                       loadDebtDetail(billId);
+                                       view.updateLoanDetail(billId);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
