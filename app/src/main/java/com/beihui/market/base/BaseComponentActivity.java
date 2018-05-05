@@ -46,6 +46,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
             manager.popBackStackImmediate(null, 1);
         }
 
+
         ButterKnife.bind(this);
         configViews();
         initDatas();
