@@ -286,7 +286,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
 
     @Override
     public void saveDebtSuccess(String msg) {
-        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra("account", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

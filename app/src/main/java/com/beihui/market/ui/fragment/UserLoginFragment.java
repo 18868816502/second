@@ -214,7 +214,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void showLoginSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件,更新UI
         EventBus.getDefault().post(new UserLoginEvent());
         if (getView() != null) {

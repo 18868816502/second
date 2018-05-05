@@ -14,12 +14,16 @@ public class Umeng {
 
     public static void install(Context context) {
         //分享
-        PlatformConfig.setWeixin("wx85ba05e3d5eca8a5", "ed4bfef7288e94df20e2b3a4ef92d792");
+        /**
+         * 老的微信账号
+         */
+        //PlatformConfig.setWeixin("wx85ba05e3d5eca8a5", "ed4bfef7288e94df20e2b3a4ef92d792");
+        PlatformConfig.setWeixin("wx82d44ebf242141d3", "1865f152b919af142cb882f3375a1ffe");
         PlatformConfig.setQQZone("1106217443", "UiOL1Ct0h3tGOirD");
         PlatformConfig.setSinaWeibo("2037274409", "ad8ac41cb179ffcb92f28b312a055074", "http://sns.whalecloud.com");
 
         UMShareConfig config = new UMShareConfig();
-        config.isNeedAuthOnGetUserInfo(false);
+        config.isNeedAuthOnGetUserInfo(true);
         config.isOpenShareEditActivity(false);
         config.setSinaAuthType(UMShareConfig.AUTH_TYPE_SSO);
         UMShareAPI.get(context).setShareConfig(config);

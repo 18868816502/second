@@ -6,17 +6,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoginComponent;
 import com.beihui.market.injection.module.LoginModule;
+import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.UserCertificationCodeActivity;
+import com.beihui.market.ui.activity.UserProtocolActivity;
 import com.beihui.market.ui.activity.WeChatBindPhoneActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
@@ -153,7 +158,9 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
         switch (view.getId()) {
             //下一步
            case R.id.tv_login:
-                UserCertificationCodeActivity.launch(getActivity(),phoneNumber.getText().toString());
+                if (!TextUtils.isEmpty(phoneNumber.getText().toString()) && isCheckContract) {
+                    UserCertificationCodeActivity.launch(getActivity(), phoneNumber.getText().toString());
+                }
                 break;
             case R.id.iv_contract:
                 if (isCheckContract){
@@ -171,8 +178,21 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
                 validation();
 
                 break;
+            /**
+             * 跳转到用户协议
+             */
             case R.id.tv_contract:
-
+                startActivity(new Intent(getActivity(), UserProtocolActivity.class));
+                /**
+                 * 用下面 出现bug 用户协议点击返回应该返回登录注册页面，现在返回首页
+                 * 因为需要区分设置进入的
+                 */
+//                Intent intent = new Intent(getActivity(), ComWebViewActivity.class);
+//                String title = "用户协议";
+//                String url = NetConstants.H5_USER_AGREEMENT;
+//                intent.putExtra("title", title);
+//                intent.putExtra("url", url);
+//                startActivity(intent);
                 break;
             case R.id.iv_login_wechat:
                 UMAuthListener listener = new UMAuthListener() {
@@ -192,6 +212,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
                     @Override
                     public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
                         dismissProgress();
+                        Log.e("xjb", "i __ " + i + "throwble -- " + throwable.getMessage());
                         ToastUtils.showShort(getContext(), "授权失败", null);
                     }
 
@@ -216,7 +237,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void showLoginSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件,更新UI
         EventBus.getDefault().post(new UserLoginEvent());
         if (getView() != null) {

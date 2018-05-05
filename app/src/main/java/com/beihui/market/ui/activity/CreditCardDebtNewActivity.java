@@ -206,7 +206,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void showSaveCreditCardDebtSuccess(String msg) {
-        ToastUtils.showShort(this, msg, R.mipmap.white_success);
+//        ToastUtils.showShort(this, msg, R.mipmap.white_success);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {

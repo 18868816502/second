@@ -90,7 +90,7 @@
                 android:gravity="center"
                 android:minWidth="50dp"
                 android:text="获取"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#ff5200"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -130,13 +130,13 @@
 
 
     <TextView
+        android:background="@drawable/xshape_tab_mine_safe_back_bg"
+        android:textColor="#ff5200"
         android:id="@+id/confirm_bind"
         style="@style/TextButtonStyle"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_alpha_primary_btn"
-        android:text="确认绑定"
-        android:textColor="@android:color/white" />
+        android:text="确认绑定"/>
 
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -26,6 +27,9 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.StatusCode;
+import com.umeng.socialize.handler.UMWXHandler;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -175,6 +179,8 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showLogoutSuccess() {
+
+
         //发送用户退出全局事件
         EventBus.getDefault().post(new UserLogoutEvent());
 
@@ -182,6 +188,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
 
     @Override
     public void showUpdate(AppUpdate update) {

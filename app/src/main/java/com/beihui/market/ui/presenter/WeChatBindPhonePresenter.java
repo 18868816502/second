@@ -81,18 +81,29 @@ public class WeChatBindPhonePresenter extends BaseRxPresenter implements WeChatB
                                public void accept(ResultEntity<UserProfileAbstract> result) throws Exception {
                                    if (result.isSuccess()) {
                                        UserProfileAbstract profile = result.getData();
-                                       if (profile.isNewUser()) {
-                                           //新用户，去设置密码
-                                           view.navigateSetPwd(account);
-                                       } else {
-                                           //老用户，直接作为登录
-                                           //登录之后，将用户信息注册到本地
-                                           userHelper.update(result.getData(), account, context);
-                                           //保存用户id,缓存
-                                           SPUtils.setCacheUserId(context, result.getData().getId());
+                                       /**
+                                        * 不需要判断老用户
+                                        */
+//                                       if (profile.isNewUser()) {
+//                                           //新用户，去设置密码
+//                                           view.navigateSetPwd(account);
+//                                       } else {
+//                                           //老用户，直接作为登录
+//                                           //登录之后，将用户信息注册到本地
+//                                           userHelper.update(result.getData(), account, context);
+//                                           //保存用户id,缓存
+//                                           SPUtils.setCacheUserId(context, result.getData().getId());
+//
+//                                           view.showLoginSuccess();
+//                                       }
 
-                                           view.showLoginSuccess();
-                                       }
+                                       //老用户，直接作为登录
+                                       //登录之后，将用户信息注册到本地
+                                       userHelper.update(result.getData(), account, context);
+                                       //保存用户id,缓存
+                                       SPUtils.setCacheUserId(context, result.getData().getId());
+
+                                       view.showLoginSuccess();
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

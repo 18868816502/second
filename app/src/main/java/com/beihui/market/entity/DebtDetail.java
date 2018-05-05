@@ -34,6 +34,11 @@ public class DebtDetail implements Parcelable {
     private String firstRepayDate;
 
     /**
+     * 已还期数
+     */
+    public int returnedTerm;
+
+    /**
      * 距离还款日
      */
     public int returnDay;

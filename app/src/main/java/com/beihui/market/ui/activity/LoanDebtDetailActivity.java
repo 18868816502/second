@@ -312,7 +312,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
         header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
 
-        if (debtDetail.returnDay <= 3) {
+        if (debtDetail.showBill.returnDay <= 3) {
             header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
         } else {
             header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
@@ -338,7 +338,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             header.debtPayDay.setText("一次性还款");
         } else {
             //还款期数 当前期/总期数
-            header.debtPayDay.setText(debtDetail.showBill.termNo + "/" + debtDetail.getTerm());
+            header.debtPayDay.setText(debtDetail.returnedTerm + "/" + debtDetail.getTerm());
         }
 
         //当期还款日
@@ -393,7 +393,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             }
         });
 
-        adapter.notifyPayPlanChanged(debtDetail.getRepayPlan(), debtDetail.termNum);
+        adapter.notifyPayPlanChanged(debtDetail.getRepayPlan(), debtDetail.showBill.termNo);
 
 
         //渠道logo
@@ -531,6 +531,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                                    public void accept(ResultEntity result) throws Exception {
                                                        if (result.isSuccess()) {
                                                            Toast.makeText(LoanDebtDetailActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+                                                            /*
+                                                      * 刷新数据
+                                                      * xhb
+                                                      */
+                                                           presenter.loadDebtDetail(billId);
                                                        } else {
                                                            Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                        }

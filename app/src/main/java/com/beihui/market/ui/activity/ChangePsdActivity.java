@@ -97,6 +97,8 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
 
                 confirmBtn.setEnabled(LegalInputUtils.validatePassword(origin) && LegalInputUtils.validatePassword(newPsd) &&
                         LegalInputUtils.validatePassword(confirm));
+                confirmBtn.setBackground((LegalInputUtils.validatePassword(origin) && LegalInputUtils.validatePassword(newPsd) &&
+                        LegalInputUtils.validatePassword(confirm)) ? getResources().getDrawable(R.drawable.round_login_btn) :getResources().getDrawable(R.drawable.round_login_btn_grey));
             }
 
             @Override

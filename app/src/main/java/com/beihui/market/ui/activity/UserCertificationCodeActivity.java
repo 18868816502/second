@@ -174,6 +174,11 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                            if (result.isSuccess()) {
                                                //umeng统计
                                                Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
+
+                                               //登录之后，将用户信息注册到本地
+                                               UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
+                                               //保存用户id,缓存
+                                               SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
                                                /**
                                             * 调用登录接口
                                             */
@@ -207,10 +212,10 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
             Statistic.onEvent(Events.LOGIN_REGISTER);
         } else {
             /**
-             * 进入我的模块首页
+             * 进入账单模块首页
              */
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("mine", true);
+            intent.putExtra("account", true);
             startActivity(intent);
 
             Statistic.login(result.getId());

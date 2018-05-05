@@ -4,7 +4,9 @@ package com.beihui.market.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 

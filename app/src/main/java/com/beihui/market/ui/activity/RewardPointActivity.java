@@ -235,9 +235,9 @@ public class RewardPointActivity extends BaseComponentActivity {
                                                    msg = "应用评论 积分+" + points;
                                                }
                                            }
-                                           if (msg != null) {
-                                               ToastUtils.showShort(RewardPointActivity.this, msg, R.drawable.toast_smile);
-                                           }
+//                                           if (msg != null) {
+//                                               ToastUtils.showShort(RewardPointActivity.this, msg, R.drawable.toast_smile);
+//                                           }
                                        }
                                    }
                                },

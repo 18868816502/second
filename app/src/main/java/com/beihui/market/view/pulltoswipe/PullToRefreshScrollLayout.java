@@ -347,14 +347,14 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 		case RELEASE_TO_LOAD:
 			// 释放加载状态
 			loadStateTextView.setText("释放立即加载");
-			pullUpView.startAnimation(rotateAnimation);
+//			pullUpView.startAnimation(rotateAnimation);
 			break;
 		case LOADING:
 			// 正在加载状态
 			pullUpView.clearAnimation();
 			loadingView.setVisibility(View.INVISIBLE);
 			pullUpView.setVisibility(View.INVISIBLE);
-			loadingView.startAnimation(refreshingAnimation);
+//			loadingView.startAnimation(refreshingAnimation);
 			loadStateTextView.setText("正在加载...");
 			break;
 		case DONE:

@@ -34,7 +34,7 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
     @Override
     protected void convert(BaseViewHolder helper, LoanBill.Row item) {
         helper.addOnClickListener(R.id.content_container);
-        helper.addOnClickListener(R.id.hide_show);
+//        helper.addOnClickListener(R.id.hide_show);
 
         if (billType == 1) {
             //网贷账单
@@ -46,8 +46,8 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         //是否已隐藏
         boolean isHidden = item.getHide() == 0;//隐藏
         helper.setVisible(R.id.is_hidden, isHidden);
-        helper.setText(R.id.debt_visibility, !isHidden ? "首页隐藏" : "首页显示");
-        helper.getView(R.id.debt_eye).setSelected(!isHidden);
+//        helper.setText(R.id.debt_visibility, !isHidden ? "首页隐藏" : "首页显示");
+//        helper.getView(R.id.debt_eye).setSelected(!isHidden);
 
         //已还清的账单不能滑动操作
         ((SwipeMenuLayout) helper.getView(R.id.swipe_menu_layout)).setSwipeEnable(item.getStatus() != 2);

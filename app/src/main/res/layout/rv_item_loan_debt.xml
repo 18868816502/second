@@ -84,6 +84,7 @@
 
 
     <FrameLayout
+        android:visibility="gone"
         android:id="@+id/hide_show"
         android:layout_width="90dp"
         android:layout_height="match_parent"

@@ -156,7 +156,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/round_login_btn"
+            android:background="@drawable/round_login_btn_grey"
             android:text="@string/confirm_change"
             android:textColor="#ffffff" />
 

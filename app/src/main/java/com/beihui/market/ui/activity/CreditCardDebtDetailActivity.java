@@ -401,7 +401,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             /**
              * 头卡片 背景颜色
              */
-            if (debtDetail.returnDay <= 3) {
+            if (Integer.parseInt(debtDetail.showBill.getReturnDay()) <= 3) {
                 header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
                 header.tvStatus.setBackgroundColor(Color.parseColor("#ff6757"));
             } else {

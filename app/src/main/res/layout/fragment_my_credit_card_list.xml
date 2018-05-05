@@ -6,29 +6,61 @@
     android:layout_height="match_parent"
     tools:background="@color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/debt_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="17dp"
-            android:text="你总共有0个信用卡项目"
-            android:textColor="@color/black_2"
-            android:textSize="12sp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <LinearLayout
+            android:paddingTop="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white" />
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <ImageView
+                android:src="@drawable/normal_none_pic"
+                android:layout_width="150dp"
+                android:layout_height="130dp" />
+
+            <TextView
+                android:text="你还没有账单哦"
+                android:textSize="17sp"
+                android:textColor="@color/black_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_fg_credit_card_root"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/debt_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="17dp"
+                android:text="你总共有0个信用卡项目"
+                android:textColor="@color/black_2"
+                android:textSize="12sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 </com.beihui.market.view.StateLayout>

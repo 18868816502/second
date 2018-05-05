@@ -6,7 +6,35 @@
     android:layout_height="match_parent"
     tools:background="@color/white">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
+        android:paddingTop="100dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/normal_none_pic"
+            android:layout_width="150dp"
+            android:layout_height="130dp" />
+
+        <TextView
+            android:text="你还没有账单哦"
+            android:textSize="17sp"
+            android:textColor="@color/black_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_fg_loan_debt_root"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -30,5 +58,8 @@
             android:background="@android:color/white" />
 
     </LinearLayout>
+
+
+    </RelativeLayout>
 
 </com.beihui.market.view.StateLayout>

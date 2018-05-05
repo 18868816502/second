@@ -97,6 +97,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.UserAuthorizationActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.InvitationActivity"
@@ -230,6 +231,12 @@
 
         <activity
             android:name=".ui.activity.UserPsdEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UserProtocolActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TabNewsWebViewSecordActivity"
             android:screenOrientation="portrait" />
 
 

@@ -2,8 +2,11 @@ package com.beihui.market.ui.adapter;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -102,19 +107,21 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         if (accountBill.isAnalog) {
             //实例图标显示
             holder.mSampleIcon.setVisibility(View.VISIBLE);
+            holder.mSetBg.setVisibility(View.GONE);
+            holder.mArrow.setImageDrawable(mDownArrow);
+            holder.mArrow.setEnabled(false);
             //闹钟的显示
             if (position == 0) {
-                holder.mClock.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setText("逾期总数为1笔");
+                holder.mClock.setVisibility(View.GONE);
+                holder.mOverdueTotal.setVisibility(View.GONE);
 
                 holder.mDot.setImageDrawable(mRedDot);
                 holder.mCardBg.setBackground(mCardRedBg);
                 holder.mSetBg.setBackground(mCardPinkBg);
 
-                holder.mDateName.setText("逾期1天");
-                holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-                holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                holder.mDateName.setText("今天");
+                holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             } else {
                 holder.mClock.setVisibility(View.GONE);
                 holder.mOverdueTotal.setVisibility(View.GONE);
@@ -122,9 +129,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mCardBg.setBackground(mCardBlackBg);
                 holder.mSetBg.setBackground(mCardGraygBg);
 
-                holder.mDateName.setText("今天");
-                holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-                holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                holder.mDateName.setText("7天后");
+                holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             }
 
             //账单名称 网贷账单 信用卡账单
@@ -139,7 +146,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         //跳转到登陆页面
                         UserAuthorizationActivity.launch(mActivity, null);
                     } else {
-                        Toast.makeText(mActivity, "这是模拟数据，请添加账单", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "这是示例卡，请先添加真实账单", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -148,7 +155,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
             //实例图标隐藏
             holder.mSampleIcon.setVisibility(View.GONE);
-
+            holder.mArrow.setEnabled(true);
             //闹钟的显示
             if (position == 0) {
                 holder.mClock.setVisibility(View.VISIBLE);
@@ -216,55 +223,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             holder.mSetAllPay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //1-网贷 2-信用卡
-                    if (accountBill.getType() == 1) {
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), 2)
-                                .compose(RxUtil.<ResultEntity>io2main())
-                                .subscribe(new Consumer<ResultEntity>() {
-                                               @Override
-                                               public void accept(ResultEntity result) throws Exception {
-                                                   if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                       /**
-                                                        * 重新回到首屏
-                                                        */
-                                                       ((TabAccountFragment) mFragment).initStatus();
-                                                   } else {
-                                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                                   }
-                                               }
-                                           },
-                                        new Consumer<Throwable>() {
-                                            @Override
-                                            public void accept(Throwable throwable) throws Exception {
-                                                Log.e("exception_custom", throwable.getMessage());
-                                            }
-                                        });
-                    }
-                    if (accountBill.getType() == 2) {
-                        Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), 2)
-                                .compose(RxUtil.<ResultEntity>io2main())
-                                .subscribe(new Consumer<ResultEntity>() {
-                                               @Override
-                                               public void accept(ResultEntity result) throws Exception {
-                                                   if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                       /**
-                                                        * 重新回到首屏
-                                                        */
-                                                       ((TabAccountFragment) mFragment).initStatus();
-                                                   } else {
-                                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                                   }
-                                               }
-                                           },
-                                        new Consumer<Throwable>() {
-                                            @Override
-                                            public void accept(Throwable throwable) throws Exception {
-                                                Log.e("exception_custom", throwable.getMessage());
-                                            }
-                                        });
-                    }
+                    showSetAllPayDialog(accountBill);
                 }
             });
 
@@ -281,7 +240,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     BillEditAmountDialog dialog = new BillEditAmountDialog()
                             .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
                                 @Override
-                                public void onEditAmountConfirm(double amount) {
+                                public void onEditAmountConfirm(final double amount) {
                                     if (amount > accountBill.getAmount()) {
                                         Toast.makeText(mActivity, "只能还部分", Toast.LENGTH_SHORT).show();
                                     } else {
@@ -291,7 +250,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                @Override
                                                                public void accept(ResultEntity result) throws Exception {
                                                                    if (result.isSuccess()) {
-                                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                                       //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                                       accountBill.setAmount(accountBill.getAmount() - amount);
+                                                                       notifyItemChanged(position);
                                                                    } else {
                                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                                    }
@@ -369,15 +330,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             mDateName.setText("逾期" + Math.abs(returnDay) + "天");
             mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
             mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }else if (returnDay <= 15) {
-            mDateName.setText(Math.abs(returnDay) + "天后");
+        }else if (returnDay <= 30) {
+            mDateName.setText(Math.abs(returnDay) + "天后还款");
             mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
             mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }else if (returnDay > 15) {
+        }else if (returnDay > 30) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DATE, returnDay);
+            calendar.add(Calendar.DAY_OF_MONTH, returnDay);
             int month = calendar.get(Calendar.MONTH) + 1;
-            int day = calendar.get(Calendar.DATE) + 1;
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
             mDateName.setText(month+"月"+day+"日");
             mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
             mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
@@ -412,6 +373,87 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
     public void notifyDebtChangedMore(List<XAccountInfo> list) {
         dataSet.addAll(list);
         notifyDataSetChanged();
+    }
+
+
+    /**
+     * 设为已还
+     */
+    private void showSetAllPayDialog(final XAccountInfo accountBill) {
+        final Dialog dialog = new Dialog(mActivity, 0);
+        View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_debt_detail_set_status, null);
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (v.getId() == R.id.confirm) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
+                    //1-网贷 2-信用卡
+                    if (accountBill.getType() == 1) {
+                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), 2)
+                                .compose(RxUtil.<ResultEntity>io2main())
+                                .subscribe(new Consumer<ResultEntity>() {
+                                               @Override
+                                               public void accept(ResultEntity result) throws Exception {
+                                                   if (result.isSuccess()) {
+                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                       /**
+                                                        * 重新回到首屏
+                                                        */
+                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                   } else {
+                                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                   }
+                                               }
+                                           },
+                                        new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(Throwable throwable) throws Exception {
+                                                Log.e("exception_custom", throwable.getMessage());
+                                            }
+                                        });
+                    }
+                    if (accountBill.getType() == 2) {
+                        Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), 2)
+                                .compose(RxUtil.<ResultEntity>io2main())
+                                .subscribe(new Consumer<ResultEntity>() {
+                                               @Override
+                                               public void accept(ResultEntity result) throws Exception {
+                                                   if (result.isSuccess()) {
+                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                       /**
+                                                        * 重新回到首屏
+                                                        */
+                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                   } else {
+                                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                   }
+                                               }
+                                           },
+                                        new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(Throwable throwable) throws Exception {
+                                                Log.e("exception_custom", throwable.getMessage());
+                                            }
+                                        });
+                    }
+                }
+            }
+        };
+        dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
+        dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
+        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setAttributes(lp);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        dialog.show();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

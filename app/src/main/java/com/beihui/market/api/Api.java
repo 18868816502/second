@@ -228,7 +228,7 @@ public class Api {
      * @param pwd     用户密码
      */
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
-        return service.login(account, generatePwd(pwd, account), getChannelId());
+        return service.login(account, generatePwd(pwd, account), getChannelId(), 1);
     }
 
     /**
@@ -238,7 +238,7 @@ public class Api {
      *                2 代表的是验证码登录
      */
     public Observable<ResultEntity<UserProfileAbstract>> loginByCode(String account, String verifyCode) {
-        return service.loginByCode(account, "2", verifyCode, getChannelId());
+        return service.loginByCode(account, "2", verifyCode, getChannelId(), 1);
     }
 
     /**
@@ -247,7 +247,7 @@ public class Api {
      * @param account 用户账号
      */
     public Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(String account) {
-        return service.loginNoPwd(account, getChannelId());
+        return service.loginNoPwd(account, getChannelId(), 1);
     }
 
     /**
@@ -323,7 +323,7 @@ public class Api {
      * @param code     请求的验证码
      */
     public Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(String account, String wxOpenId, String wxName, String wxImage, String code) {
-        return service.verifyWeChatBindCode(account, wxOpenId, wxName, wxImage, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, code, getChannelId());
+        return service.verifyWeChatBindCode(account, wxOpenId, wxName, wxImage, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, code, getChannelId(), "1");
     }
 
     /**

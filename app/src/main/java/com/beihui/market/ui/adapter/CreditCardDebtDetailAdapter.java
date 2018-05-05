@@ -113,7 +113,8 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
                 }
                 break;
             case 3://逾期
-                SpannableString ss = new SpannableString("逾期" + Math.abs(bill.getReturnDay()) + "天");
+//                SpannableString ss = new SpannableString("逾期" + Math.abs(bill.getReturnDay()) + "天");
+                SpannableString ss = new SpannableString("逾期");
                 ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ff395e")), 2, ss.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 holder.setText(R.id.debt_status, ss);
                 break;

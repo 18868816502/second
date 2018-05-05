@@ -10,8 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
+        <ImageView
+            android:id="@+id/iv_tab_fg_news_web_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/btn_back_normal_black"
+            android:visibility="invisible" />
+
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/iv_tab_fg_news_web_title"
             style="@style/ToolBarTitleTextAppearance.Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,17 +36,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:progressDrawable="@drawable/horizontal_progress" />
+
         <com.beihui.market.view.BusinessWebView
             android:id="@+id/bwv_news_web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:progressDrawable="@drawable/horizontal_progress" />
+
     </FrameLayout>
 </LinearLayout>

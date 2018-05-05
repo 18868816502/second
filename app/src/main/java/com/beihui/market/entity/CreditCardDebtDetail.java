@@ -26,7 +26,7 @@ public class CreditCardDebtDetail implements Parcelable {
     private int status;
 
 
-    private ShowBillBean showBill;
+    public ShowBillBean showBill;
 
     private int maxFreeInterestDay;
 

@@ -26,6 +26,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * @author xhb
+ * 微信登录绑定手机号
+ */
 public class WeChatBindPhoneActivity extends BaseComponentActivity implements WeChatBindPhoneContract.View {
 
     private final int REQUEST_CODE_SET_PWD = 1;

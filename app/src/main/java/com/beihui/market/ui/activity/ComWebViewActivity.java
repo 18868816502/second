@@ -32,10 +32,6 @@ import butterknife.OnClick;
 public class ComWebViewActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.navigate)
-    ImageView navigateView;
-    @BindView(R.id.close)
-    ImageView closeView;
     @BindView(R.id.title)
     TextView titleTv;
     @BindView(R.id.web_view)
@@ -60,17 +56,16 @@ public class ComWebViewActivity extends BaseComponentActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
+        setupToolbar(toolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+
         String style = getIntent().getStringExtra("style");
         if (!TextUtils.isEmpty(style) && style.equals("light")) {
             toolbar.setBackgroundColor(Color.WHITE);
             titleTv.setTextColor(Color.BLACK);
             ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-            navigateView.setImageResource(R.mipmap.left_arrow_black);
-            closeView.setImageResource(R.drawable.close_black);
         } else {
             ImmersionBar.with(this).titleBar(toolbar).init();
-            navigateView.setImageResource(R.mipmap.left_arrow_white);
-            closeView.setImageResource(R.drawable.close_white);
         }
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -123,8 +118,4 @@ public class ComWebViewActivity extends BaseComponentActivity {
         }
     }
 
-    @OnClick({R.id.close})
-    void onBindViewClicked() {
-        finish();
-    }
 }

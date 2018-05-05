@@ -31,26 +31,26 @@ public class TabImage {
     private String selectedImage;
     //未选中图片
     private String unselectedImage;
-//    //马甲包Id
-//    private String packageId;
-//    //焦点 1-是 0-否
-//    private String focus;
-//
-//    public String getPackageId() {
-//        return packageId;
-//    }
-//
-//    public void setPackageId(String packageId) {
-//        this.packageId = packageId;
-//    }
-//
-//    public String getFocus() {
-//        return focus;
-//    }
-//
-//    public void setFocus(String focus) {
-//        this.focus = focus;
-//    }
+    //马甲包Id
+    private String packageId;
+    //焦点 1-是 0-否
+    private String focus;
+
+    public String getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(String packageId) {
+        this.packageId = packageId;
+    }
+
+    public String getFocus() {
+        return focus;
+    }
+
+    public void setFocus(String focus) {
+        this.focus = focus;
+    }
 
     public String getId() {
         return id;

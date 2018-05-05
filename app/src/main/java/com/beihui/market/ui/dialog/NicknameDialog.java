@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.beihui.market.R;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.EditTextUtils;
 
 public class NicknameDialog extends DialogFragment {
 
@@ -42,6 +43,7 @@ public class NicknameDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_nickname_edit, container, false);
         etNickName = view.findViewById(R.id.et_nickname);
+        EditTextUtils.addDisableEmojiInputFilter(etNickName);
         if (!TextUtils.isEmpty(nickName)){
             etNickName.setText(nickName);
         }

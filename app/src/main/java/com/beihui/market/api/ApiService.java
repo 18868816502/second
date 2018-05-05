@@ -103,11 +103,11 @@ public interface ApiService {
      */
 
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/updateRepayStatus")
+    @POST(BASE_PATH + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("repayAmount") double repayAmount, @Field("status") int status);
 
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/updateRepayStatus")
+    @POST(BASE_PATH + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
 
     /**
@@ -144,21 +144,21 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId);
+    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId, @Field("platform") int platform);
 
     /**
      * 密码登录
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("packageId") String packageId);
+    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("packageId") String packageId, @Field("platform") int platform);
 
     /**
      * 免密码登录
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("packageId") String packageId);
+    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("packageId") String packageId, @Field("platform") int platform);
 
     /**
      * 微信登录
@@ -186,9 +186,9 @@ public interface ApiService {
      * 校验微信绑定验证码
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/wx/authVerify")
+    @POST(BASE_PATH + "/wx/newAuthVerify")
     Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
-                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId);
+                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId, @Field("platform") String platform);
 
     /**
      * 注册

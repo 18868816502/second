@@ -32,6 +32,9 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
+import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.event.TabNewsWebViewFragmentClickEvent;
+import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateNews;
@@ -96,7 +99,6 @@ public class MainActivity extends BaseComponentActivity {
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
 
-
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
 
     private ImageView[] iconView;
@@ -118,12 +120,13 @@ public class MainActivity extends BaseComponentActivity {
         if (extras != null) {
             if (extras.getBoolean("account")) {
 //                navigationBar.select(R.id.tab_account);
-                navigationBar.select(R.id.tab_mine);
+
+                selectTab(R.id.tab_account);
             }
 
             if (extras.getBoolean("mine")) {
-//                navigationBar.select(R.id.tab_account);
-                navigationBar.select(R.id.tab_mine);
+//                navigationBar.select(R.id.tab_mine);
+                selectTab(R.id.tab_mine);
             }
         }
 //        if (getIntent().getBooleanExtra("home", false)) {
@@ -159,12 +162,12 @@ public class MainActivity extends BaseComponentActivity {
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }
+                if (selectedId == R.id.tab_news) {
+                    EventBus.getDefault().post(new TabNewsWebViewFragmentClickEvent());
+                }
             }
         });
-
-        //TODO 需要换回首页
-//        navigationBar.select(R.id.tab_account);
-        selectTab(R.id.tab_mine);
+        selectTab(R.id.tab_account);
 
         /**
          * 请求底部导航栏图标 文字 字体颜色
@@ -257,6 +260,7 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabFind);
                 }
                 ft.show(tabFind);
+                EventBus.getDefault().post(new TabNewsWebViewFragmentClickEvent());
                 break;
             //我的
             case R.id.tab_mine:
@@ -269,7 +273,6 @@ public class MainActivity extends BaseComponentActivity {
         }
         ft.commit();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -364,6 +367,23 @@ public class MainActivity extends BaseComponentActivity {
         final OkHttpClient client = new OkHttpClient();
         for (int i = 0; i < list.size(); ++i) {
             TabImage tabImage = list.get(i);
+            /**
+             * @author xhb
+             * focus配置app模块展示的优先级
+             */
+            if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
+                if (i == 0) {
+                    selectTab(R.id.tab_account);
+                } else if (i == 1) {
+                    selectTab(R.id.tab_news);
+                } else if (i == 2) {
+                    selectTab(R.id.tab_mine);
+                }
+            }
+            if (i == 1) {
+                EventBus.getDefault().post(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
+            }
+
             final int index = tabImage.getPosition() - 1;
             if (index < 0 || index >= textView.length) {
                 continue;

@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 7
-        versionName "2.1.0"
+        versionCode 8
+        versionName "3.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi target_sdk_version
@@ -69,8 +69,11 @@ android {
 
             applicationId "com.beihui.market"
 
-            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
-            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+//            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",

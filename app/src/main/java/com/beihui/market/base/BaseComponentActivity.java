@@ -36,8 +36,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
         configureComponent(App.getInstance().getAppComponent());
 
         super.onCreate(savedInstanceState);
-        //初始化个推
-        GeTuiClient.install(this);
+
 
         setContentView(getLayoutId());
         //初始化沉浸式
@@ -56,6 +55,8 @@ public abstract class BaseComponentActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Statistic.onResume(this);
+        //初始化个推
+        GeTuiClient.install(this);
     }
 
     @Override

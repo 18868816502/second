@@ -197,7 +197,7 @@ public class UserPsdEditActivity extends BaseComponentActivity {
          * 进入我的模块首页
          */
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("mine", true);
+        intent.putExtra("account", true);
         startActivity(intent);
         finish();
 

@@ -149,6 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/xshape_tab_mine_safe_back_bg"
+                    android:textColor="#ff5200"
                     android:gravity="center"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
@@ -156,8 +157,7 @@
                     android:paddingTop="13dp"
                     android:paddingBottom="13dp"
                     android:text="@string/exit_safely"
-                    android:textSize="17sp"
-                    android:textColor="#ff5200" />
+                    android:textSize="17sp" />
             </LinearLayout>
 
         </LinearLayout>

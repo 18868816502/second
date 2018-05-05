@@ -82,6 +82,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @BindView(R.id.rv_fg_tab_account_list)
     PulledRecyclerView mRecyclerView;
 
+    @BindView(R.id.rv_foot_account_tab_yes_pay)
+    TextView yesPay;
+    @BindView(R.id.rv_foot_account_tab_no_pay)
+    TextView noPay;
+
+
     public Activity mActivity;
 
     @Inject
@@ -263,6 +269,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
      * 回调首屏
      */
     public void initStatus() {
+        //获取头信息
+        presenter.loadDebtAbstract();
         presenter.loadInDebtList(0, true, 1, 10);
         mRecyclerView.scrollToPosition(0);
     }
@@ -296,19 +304,22 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 //TODO 没有数据 使用模拟数据 用户没有登录也是使用模拟数据
                 XAccountInfo analogLoan = new XAccountInfo();
                 analogLoan.isAnalog = true;
-                analogLoan.setTitle("51闪电购");
-                analogLoan.setAmount(1000.00);
+                analogLoan.setTitle("招商银行");
+                analogLoan.setAmount(1000);
                 analogLoan.setLastOverdue(true);
                 analogLoan.setOverdueTotal(-1);
 
                 XAccountInfo analogCard = new XAccountInfo();
                 analogCard.isAnalog = true;
-                analogCard.setTitle("农业银行（4512）");
-                analogCard.setAmount(1000.00);
+                analogCard.setTitle("分期乐");
+                analogCard.setAmount(2000);
                 analogCard.setLastOverdue(false);
                 analogCard.setOverdueTotal(0);
                 list.add(analogLoan);
                 list.add(analogCard);
+
+                mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
+                mLastThirtyDayWaitPayNum.setText("");
 
             }else if (list.size() < pageSize) {
                 mFootViewMoney.setVisibility(View.VISIBLE);
@@ -365,9 +376,32 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void showDebtInfo(DebtAbstract debtAbstract) {
         //近30天待还金额
-        mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));
+        if (debtAbstract.getLast30DayStayStill() <= 0D) {
+            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
+        } else {
+            mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));
+        }
         //近30天待还总笔数
-        mLastThirtyDayWaitPayNum.setText("共"+CommonUtils.keep2digitsWithoutZero(debtAbstract.last30DayStayStillCount)+"笔");
+        if (debtAbstract.last30DayStayStillCount > 0) {
+            mLastThirtyDayWaitPayNum.setText("共" + CommonUtils.keep2digitsWithoutZero(debtAbstract.last30DayStayStillCount) + "笔");
+        } else {
+            mLastThirtyDayWaitPayNum.setText("");
+        }
+
+        /**
+         * 已还 未还数据
+         */
+        if (debtAbstract.repayAmount > 0) {
+            yesPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.repayAmount));
+        } else {
+            yesPay.setText("0");
+        }
+
+        if (debtAbstract.unRepayAmount > 0) {
+            noPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.unRepayAmount));
+        } else {
+            noPay.setText("0");
+        }
     }
 
     /**

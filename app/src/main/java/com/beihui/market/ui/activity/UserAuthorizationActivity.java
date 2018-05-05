@@ -31,6 +31,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.drawable.BlurringDrawable;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,7 +67,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             intent.putExtra("phone", phone);
         }
         context.startActivity(intent);
-        context.overridePendingTransition(0, 0);
+        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
     }
 
     public static void launchWithPending(Activity context, AdBanner adBanner) {
@@ -75,7 +76,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             intent.putExtra("pendingAd", adBanner);
         }
         context.startActivity(intent);
-        context.overridePendingTransition(0, 0);
+        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
     }
 
     @Override
@@ -183,11 +184,11 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
                 break;
             case R.id.tv_change:
                 String changeText = tvChange.getText().toString();
-                if ("密码登陆".equals(changeText)) {
-                    tvChange.setText("免密码登陆");
+                if ("密码登录".equals(changeText)) {
+                    tvChange.setText("免密码登录");
                     EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_LOGIN_PSD));
                 } else {
-                    tvChange.setText("密码登陆");
+                    tvChange.setText("密码登录");
                     EventBus.getDefault().post(new AuthNavigationEvent(AuthNavigationEvent.TAG_LOGIN_FAST));
                 }
                 break;
@@ -278,6 +279,13 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         InputMethodUtil.closeSoftKeyboard(this);
         super.finish();
         overridePendingTransition(0, R.anim.slide_to_bottom);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
     }
 
 }

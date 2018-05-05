@@ -341,6 +341,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         }
     }
 
+    /**
+     * 个人中心页面
+     * @param userId 用户id
+     */
     @Override
     public void navigateUserProfile(String userId) {
         startActivity(new Intent(getActivity(), UserProfileActivity.class));
@@ -416,6 +420,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         } else if (Integer.parseInt(data) > 9) {
             tvMessageNum.setVisibility(View.VISIBLE);
             tvMessageNum.setText("9+");
+        } else if (Integer.parseInt(data) <= 0) {
+            tvMessageNum.setVisibility(View.GONE);
         } else {
             tvMessageNum.setVisibility(View.VISIBLE);
             tvMessageNum.setText(data);

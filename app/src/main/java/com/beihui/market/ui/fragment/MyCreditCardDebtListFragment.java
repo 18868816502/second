@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -41,6 +42,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 //    TextView tvDebtNum;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.ll_fg_credit_card_root)
+    LinearLayout mRoot;
 
     @Inject
     MyLoanBillPresenter presenter;
@@ -83,9 +86,11 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
                 ((SwipeMenuLayout) adapter.getViewByPosition(position, R.id.swipe_menu_layout)).quickClose();
                 if (view.getId() == R.id.content_container) {
                     presenter.clickLoanBill(position);
-                } else if (view.getId() == R.id.hide_show) {
-                    presenter.clickShowHideDebt(position);
                 }
+
+//                else if (view.getId() == R.id.hide_show) {
+//                    presenter.clickShowHideDebt(position);
+//                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -123,10 +128,16 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
         }
-        adapter.setEnableLoadMore(canLoadMore);
-        adapter.notifyLoanBillChanged(list);
+        if (list.size() > 0) {
+            mRoot.setVisibility(View.VISIBLE);
+            adapter.setEnableLoadMore(canLoadMore);
+            adapter.notifyLoanBillChanged(list);
 
-        stateLayout.switchState(list.size() > 0 ? StateLayout.STATE_CONTENT : StateLayout.STATE_EMPTY);
+            stateLayout.switchState(list.size() > 0 ? StateLayout.STATE_CONTENT : StateLayout.STATE_EMPTY);
+        } else {
+            mRoot.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

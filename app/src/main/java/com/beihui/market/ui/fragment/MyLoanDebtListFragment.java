@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -15,6 +16,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMyLoanBillComponent;
 import com.beihui.market.injection.module.MyLoanBillModule;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
+import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
@@ -45,6 +47,9 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 //    TextView tvDebtNum;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
+    @BindView(R.id.ll_fg_loan_debt_root)
+    LinearLayout mRoot;
 
     @Inject
     MyLoanBillPresenter presenter;
@@ -87,9 +92,11 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
                 ((SwipeMenuLayout) adapter.getViewByPosition(position, R.id.swipe_menu_layout)).quickClose();
                 if (view.getId() == R.id.content_container) {
                     presenter.clickLoanBill(position);
-                } else if (view.getId() == R.id.hide_show) {
-                    presenter.clickShowHideDebt(position);
                 }
+
+//                else if (view.getId() == R.id.hide_show) {
+//                    presenter.clickShowHideDebt(position);
+//                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -127,16 +134,22 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
         }
-        adapter.setEnableLoadMore(canLoadMore);
-        adapter.notifyLoanBillChanged(list);
+        if (list.size() > 0) {
+            mRoot.setVisibility(View.VISIBLE);
 
-        stateLayout.switchState(list.size() > 0 ? StateLayout.STATE_CONTENT : StateLayout.STATE_EMPTY);
+            adapter.setEnableLoadMore(canLoadMore);
+            adapter.notifyLoanBillChanged(list);
+            stateLayout.switchState(list.size() > 0 ? StateLayout.STATE_CONTENT : StateLayout.STATE_EMPTY);
+        } else {
+            mRoot.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void navigateLoanDebtDetail(LoanBill.Row bill) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", bill.getRecordId());
+        intent.putExtra("bill_id", bill.getBillId());
         startActivityForResult(intent, 1);
     }
 
