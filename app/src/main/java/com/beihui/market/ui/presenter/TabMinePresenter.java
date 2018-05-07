@@ -79,6 +79,8 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
                             });
 
             addDisposable(disMessage);
+        } else {
+            view.updateMessageNum("0");
         }
 
         Disposable dis = api.queryMenuVisible("my_loan_menu")

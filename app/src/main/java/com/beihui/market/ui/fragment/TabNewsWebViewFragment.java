@@ -89,6 +89,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     public Activity mActivity;
 
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(TabNewsWebViewFragmentTitleEvent event) {
         if (!TextUtils.isEmpty(event.title) && newsTitleName != null) {
@@ -99,8 +100,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(TabNewsWebViewFragmentClickEvent event) {
         if (webView != null && newsUrl != null) {
-            Log.e("newsUrl", "EventBus newsUrl--->     " + newsUrl);
-
             webView.loadUrl(newsUrl);
         }
     }
@@ -168,23 +167,19 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
          * 客户端监听器
          */
         webView.setWebViewClient(new WebViewClient() {
-            // url拦截
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // 使用自己的WebView组件来响应Url加载事件，而不是使用默认浏览器器加载页面
-//                Intent intent = new Intent(mActivity, TabNewsWebViewSecordActivity.class);
-//                intent.putExtra("find_detail_url", url);
-//                startActivity(intent);
-
-                webView.loadUrl(url);
-                // 相应完成返回true
-                return true;
-            }
 
             // 页面开始加载
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                Log.e("xhgga", "url--->   " +url);
+                Log.e("xhgga", "newsUrl--->   " +newsUrl);
+
+                if (url.equals(newsUrl)) {
+                    comeBack.setVisibility(View.GONE);
+                } else {
+                    comeBack.setVisibility(View.VISIBLE);
+                }
             }
 
             // 页面加载完成
@@ -292,14 +287,14 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             }
         });
 
-//        comeBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (webView.canGoBack()) {
-//                    webView.goBack();
-//                }
-//            }
-//        });
+        comeBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                }
+            }
+        });
 
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
     }

@@ -64,8 +64,7 @@
                 android:drawableRight="@drawable/home_forward"
                 android:gravity="center_vertical|right"
                 android:textColor="@color/black_1"
-                android:textSize="12sp"
-                tools:text="待还款" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

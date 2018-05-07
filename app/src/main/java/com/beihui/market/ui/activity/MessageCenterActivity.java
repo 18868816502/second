@@ -2,33 +2,45 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Animatable;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.Message;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMessageCenterComponent;
 import com.beihui.market.injection.module.MessageCenterModule;
 import com.beihui.market.ui.adapter.MessageCenterAdapter;
 import com.beihui.market.ui.contract.MessageCenterContract;
 import com.beihui.market.ui.presenter.MessageCenterPresenter;
+import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.ui.rvdecoration.MessageCenterItemDeco;
 import com.beihui.market.util.DateFormatUtils;
+import com.beihui.market.util.RxUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +49,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author xhb
@@ -53,6 +66,8 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
 
     @Inject
     MessageCenterPresenter presenter;
+    private ImageView mDot;
+
 
     @Override
     protected void onDestroy() {
@@ -62,6 +77,39 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
 //            headerViewHolder.animatable.stop();
 //        }
         super.onDestroy();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
+        if (profile != null) {
+            Api.getInstance().queryMessage(profile.getId())
+                    .compose(RxUtil.<ResultEntity<String>>io2main())
+                    .subscribe(new Consumer<ResultEntity<String>>() {
+                                   @Override
+                                   public void accept(ResultEntity<String> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           if (!TextUtils.isEmpty(result.getData()) && (Integer.parseInt(result.getData()) > 0)) {
+                                               mDot.setVisibility(View.VISIBLE);
+                                           } else {
+                                               mDot.setVisibility(View.GONE);
+                                           }
+                                       } else {
+                                           mDot.setVisibility(View.GONE);
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    mDot.setVisibility(View.GONE);
+                                }
+                            });
+        } else{
+            mDot.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -71,6 +119,8 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
 
     @Override
     public void configViews() {
+
+        String messageNum = getIntent().getStringExtra("MessageNum");
         setupToolbar(toolbar);
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
@@ -102,6 +152,9 @@ public class MessageCenterActivity extends BaseComponentActivity implements View
         headerViewHolder.msgItemView.setOnClickListener(this);
 //        headerViewHolder.refreshNewsTv.setOnClickListener(this);
         adapter.setHeaderView(view);
+
+
+        mDot = (ImageView)view.findViewById(R.id.iv_message_center_system_message_dot);
 
         SlidePanelHelper.attach(this);
     }

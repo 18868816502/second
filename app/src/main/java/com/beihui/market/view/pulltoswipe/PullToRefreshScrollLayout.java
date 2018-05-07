@@ -287,7 +287,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 				break;
 			case LOAD_ALL:
 				loadStateImageView.setVisibility(View.INVISIBLE);
-				loadStateTextView.setText("已加载全部");
+				loadStateTextView.setText("加载更多");
 				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
 				break;
 			case FAIL:

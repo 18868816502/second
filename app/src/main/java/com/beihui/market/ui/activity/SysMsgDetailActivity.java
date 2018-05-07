@@ -15,6 +15,7 @@ import com.beihui.market.injection.module.SysMsgDetailModule;
 import com.beihui.market.ui.contract.SysMsgDetailContract;
 import com.beihui.market.ui.presenter.SysMsgDetailPresenter;
 import com.beihui.market.util.DateFormatUtils;
+import com.gyf.barlibrary.ImmersionBar;
 
 import javax.inject.Inject;
 
@@ -51,7 +52,8 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     @Override
     public void configViews() {
         setupToolbar(toolbar);
-
+        //设置状态栏文字为黑色字体
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
     }
 

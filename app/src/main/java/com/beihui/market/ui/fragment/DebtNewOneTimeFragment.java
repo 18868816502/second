@@ -155,6 +155,8 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
 
     @OnClick({R.id.tv_one_time_dead_time, R.id.tv_one_time_confirm_button})
     public void onClick(View view){
+        InputMethodUtil.closeSoftKeyboard(getActivity());
+
         switch (view.getId()) {
             //到期还款日
             case R.id.tv_one_time_dead_time:

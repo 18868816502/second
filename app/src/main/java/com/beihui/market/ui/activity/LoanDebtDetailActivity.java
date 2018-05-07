@@ -347,7 +347,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         /**
          * 设置当前期号 index
          */
-        showSetStatus(debtDetail.termNum - 1, debtDetail.getRepayPlan().get(debtDetail.termNum - 1).getStatus());
+        showSetStatus(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1, debtDetail.getRepayPlan().get(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1).getStatus());
 
         /**
          * 设置备注
@@ -524,7 +524,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                         if (amount > debtDetail.showBill.termPayableAmount) {
                             Toast.makeText(LoanDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
                         } else {
-                            Api.getInstance().updateDebtStatus(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), Double.parseDouble(keep2digitsWithoutZero(amount)), 2)
+                            Api.getInstance().updateDebtStatus(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), amount, 2)
                                     .compose(RxUtil.<ResultEntity>io2main())
                                     .subscribe(new Consumer<ResultEntity>() {
                                                    @Override

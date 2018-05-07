@@ -244,15 +244,22 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                     if (amount > accountBill.getAmount()) {
                                         Toast.makeText(mActivity, "只能还部分", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), Double.parseDouble(keep2digitsWithoutZero(amount)), 2)
+                                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), amount, 2)
                                                 .compose(RxUtil.<ResultEntity>io2main())
                                                 .subscribe(new Consumer<ResultEntity>() {
                                                                @Override
                                                                public void accept(ResultEntity result) throws Exception {
                                                                    if (result.isSuccess()) {
                                                                        //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                                       accountBill.setAmount(accountBill.getAmount() - amount);
-                                                                       notifyItemChanged(position);
+                                                                       /**
+                                                                        * 如果还部分金额与待还金额相同 则需要回到首屏
+                                                                        */
+                                                                       if (accountBill.getAmount() - amount < 0.01) {
+                                                                           ((TabAccountFragment) mFragment).initStatus();
+                                                                       } else {
+                                                                           accountBill.setAmount(accountBill.getAmount() - amount);
+                                                                           notifyItemChanged(position);
+                                                                       }
                                                                    } else {
                                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                                    }

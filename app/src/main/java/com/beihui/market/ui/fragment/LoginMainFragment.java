@@ -2,6 +2,8 @@ package com.beihui.market.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -25,6 +28,7 @@ import com.beihui.market.ui.activity.UserProtocolActivity;
 import com.beihui.market.ui.activity.WeChatBindPhoneActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
+import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -38,6 +42,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -195,38 +200,57 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 //                startActivity(intent);
                 break;
             case R.id.iv_login_wechat:
-                UMAuthListener listener = new UMAuthListener() {
+                /**
+                 * 判断微信是否安装
+                 */
 
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
-                        showProgress();
+                PackageManager packageManager = getActivity().getPackageManager();// 获取packagemanager
+                List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+                if (pinfo != null) {
+                    boolean isShow = true;
+                    for (int i = 0; i < pinfo.size(); i++) {
+                        String pn = pinfo.get(i).packageName;
+                        if (pn.equals("com.tencent.mm")) {
+                            wxLogin();
+                            isShow = false;
+                        }
                     }
-
-                    @Override
-                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                        dismissProgress();
-                        wechatInfo = map;
-                        presenter.loginWithWeChat(wechatInfo.get("openid"));
+                    if (isShow) {
+                        ToastUtils.showShort(getContext(), "请安装微信", null);
                     }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                        dismissProgress();
-                        Log.e("xjb", "i __ " + i + "throwble -- " + throwable.getMessage());
-                        ToastUtils.showShort(getContext(), "授权失败", null);
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media, int i) {
-                        dismissProgress();
-                        ToastUtils.showShort(getContext(), "授权取消", null);
-                    }
-                };
-                UMShareAPI.get(getContext()).getPlatformInfo((Activity) getContext(), SHARE_MEDIA.WEIXIN, listener);
+                } else {
+                    wxLogin();
+                }
                 break;
         }
     }
 
+    private void wxLogin() {
+        UMAuthListener listener = new UMAuthListener() {
+
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                wechatInfo = map;
+                presenter.loginWithWeChat(wechatInfo.get("openid"));
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                Log.e("xjb", "i __ " + i + "throwble -- " + throwable.getMessage());
+                ToastUtils.showShort(getContext(), "授权失败", null);
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+                ToastUtils.showShort(getContext(), "授权取消", null);
+            }
+        };
+        UMShareAPI.get(getContext()).getPlatformInfo((Activity) getContext(), SHARE_MEDIA.WEIXIN, listener);
+    }
 
 
     @Override

@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -41,6 +43,8 @@ public class DebtNewActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.channel_name)
     TextView channelName;
+    @BindView(R.id.copy_tab_layout_root)
+    LinearLayout mTabRoot;
     @BindView(R.id.copy_tab_layout)
     PagerSlidingTab copyTabLayout;
     @BindView(R.id.view_pager)
@@ -165,6 +169,8 @@ public class DebtNewActivity extends BaseComponentActivity {
         debtChannel = getIntent().getParcelableExtra("debt_channel");
         if (debtChannel != null) {
             channelName.setText(debtChannel.getChannelName());
+
+            mTabRoot.setVisibility(View.VISIBLE);
         } else {
             debtDetail = getIntent().getParcelableExtra("debt_detail");
             channelName.setText(debtDetail.getChannelName());
@@ -173,6 +179,8 @@ public class DebtNewActivity extends BaseComponentActivity {
             debtChannel.setType("whatever");
             debtChannel.setChannelName(debtDetail.getChannelName());
             debtChannel.setId(debtDetail.getChannelId());
+
+            mTabRoot.setVisibility(View.GONE);
         }
 
         if (debtDetail != null) {

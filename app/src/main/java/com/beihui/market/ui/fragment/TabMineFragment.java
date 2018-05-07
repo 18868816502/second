@@ -352,7 +352,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     @Override
     public void navigateMessage(String userId) {
-        startActivity(new Intent(getActivity(), MessageCenterActivity.class));
+        startActivity( new Intent(getActivity(), MessageCenterActivity.class));
     }
 
     /**

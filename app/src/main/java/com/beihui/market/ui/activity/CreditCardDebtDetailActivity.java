@@ -449,6 +449,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 switch (showBill.getStatus()) {
                     case 1://待还
                         tvFootMiddleLine.setVisibility(View.VISIBLE);
+                        header.tvStatus.setVisibility(View.VISIBLE);
                         tvFootSetStatus.setEnabled(true);
                         tvFootSetStatus.setText("设为已还");
                         header.tvStatus.setText("待还款");
@@ -457,22 +458,26 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                         tvFootSetStatus.setText("已还清");
                         tvFootSetStatus.setEnabled(false);
                         tvFootMiddleLine.setVisibility(View.VISIBLE);
+                        header.tvStatus.setVisibility(View.VISIBLE);
                         header.tvStatus.setText("已还款");
                         break;
                     case 3://逾期
                         tvFootSetStatus.setText("设为已还");
                         tvFootSetStatus.setEnabled(true);
                         tvFootMiddleLine.setVisibility(View.VISIBLE);
+                        header.tvStatus.setVisibility(View.VISIBLE);
                         header.tvStatus.setText("已逾期");
                         break;
                     case 4://已出账
                         tvFootSetStatus.setVisibility(View.GONE);
                         tvFootMiddleLine.setVisibility(View.GONE);
+                        header.tvStatus.setVisibility(View.VISIBLE);
                         header.tvStatus.setText("已出账");
                         break;
                     case 5://未出账
                         tvFootSetStatus.setVisibility(View.GONE);
                         tvFootMiddleLine.setVisibility(View.GONE);
+                        header.tvStatus.setVisibility(View.VISIBLE);
                         header.tvStatus.setText("未出账");
                         break;
                     default:

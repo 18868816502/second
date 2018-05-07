@@ -51,9 +51,11 @@ import butterknife.BindView;
 
 /**
  * @date 20180419
- * @version 2.1.1
+ * @version 3.0.0
  * @author xhb
  * 发现 模块 使用WebView页面 (非资讯详情页)
+ *
+ * 弃用掉
  */
 public class TabNewsWebViewSecordActivity extends BaseActivity{
 

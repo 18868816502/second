@@ -20,9 +20,11 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +88,9 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_account_text)
     TextView tabAccountText;
 
+
+    @BindView(R.id.tab_news)
+    RelativeLayout tabNewsRoot;
     @BindView(R.id.tab_news_icon)
     ImageView tabNewsIcon;
     @BindView(R.id.tab_news_text)
@@ -121,12 +126,12 @@ public class MainActivity extends BaseComponentActivity {
             if (extras.getBoolean("account")) {
 //                navigationBar.select(R.id.tab_account);
 
-                selectTab(R.id.tab_account);
+                navigationBar.select(R.id.tab_account);
             }
 
             if (extras.getBoolean("mine")) {
 //                navigationBar.select(R.id.tab_mine);
-                selectTab(R.id.tab_mine);
+                navigationBar.select(R.id.tab_mine);
             }
         }
 //        if (getIntent().getBooleanExtra("home", false)) {
@@ -158,15 +163,22 @@ public class MainActivity extends BaseComponentActivity {
             public void onSelected(int selectedId) {
                 //点击音效
                 SoundUtils.getInstance().playTab();
-
-                if (selectedId != selectedFragmentId) {
+                if (selectedId != selectedFragmentId ) {
                     selectTab(selectedId);
                 }
-                if (selectedId == R.id.tab_news) {
-                    EventBus.getDefault().post(new TabNewsWebViewFragmentClickEvent());
-                }
+            }
+
+        });
+        tabNewsRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                navigationBar.select(R.id.tab_news);
+                selectTab(R.id.tab_news);
             }
         });
+
+        navigationBar.select(R.id.tab_account);
         selectTab(R.id.tab_account);
 
         /**
@@ -227,6 +239,8 @@ public class MainActivity extends BaseComponentActivity {
     public Fragment tabMine;
 
     private void selectTab(int id) {
+        selectedFragmentId = id;
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (tabHome == null) {
@@ -372,15 +386,15 @@ public class MainActivity extends BaseComponentActivity {
              * focus配置app模块展示的优先级
              */
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
-                if (i == 0) {
-                    selectTab(R.id.tab_account);
-                } else if (i == 1) {
-                    selectTab(R.id.tab_news);
-                } else if (i == 2) {
-                    selectTab(R.id.tab_mine);
+                if (tabImage.getPosition() == 1) {
+                    navigationBar.select(R.id.tab_account);
+                } else if (tabImage.getPosition() == 2) {
+                    navigationBar.select(R.id.tab_news);
+                } else if (tabImage.getPosition() == 3) {
+                    navigationBar.select(R.id.tab_mine);
                 }
             }
-            if (i == 1) {
+            if (tabImage.getPosition() == 2) {
                 EventBus.getDefault().post(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
             }
 

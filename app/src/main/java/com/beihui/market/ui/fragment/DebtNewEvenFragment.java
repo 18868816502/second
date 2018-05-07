@@ -172,6 +172,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
         switch (view.getId()) {
             //首次还款日
             case R.id.tv_even_debt_date: {
+
                 Calendar calendar = Calendar.getInstance(Locale.CHINA);
                 calendar.setTime((Date) firstDate.getTag());
 
@@ -219,7 +220,7 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
                         .build();
 
                 List<String> list = new ArrayList<>();
-                for (int i = 1; i <= 360; ++i) {
+                for (int i = 1; i <= 36; ++i) {
                     list.add(i + "个月");
                 }
                 pickerView.setPicker(list);
