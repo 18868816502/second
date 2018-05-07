@@ -761,14 +761,15 @@ public interface ApiService {
 
 
     /**
-     * 网贷账单/信用卡备注更新
+     * 查询消息数
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/count")
     Observable<ResultEntity<String>> queryMessage(@Field("userId") String userId);
 
+
     /**
-     * 查询消息数
+     * 网贷账单/信用卡备注更新
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/updateRemark")

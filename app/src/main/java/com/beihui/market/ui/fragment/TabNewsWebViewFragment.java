@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseTabFragment;
@@ -134,8 +135,10 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
 
     @Override
     public void onDestroy() {
-        webView.getSettings().setJavaScriptEnabled(false);
-        webView.destroy();
+        if (webView != null) {
+            webView.getSettings().setJavaScriptEnabled(false);
+            webView.destroy();
+        }
         super.onDestroy();
 
         if (EventBus.getDefault().isRegistered(this)) {
@@ -172,8 +175,8 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                Log.e("xhgga", "url--->   " +url);
-                Log.e("xhgga", "newsUrl--->   " +newsUrl);
+                Log.e("xhb", "url--->   " +url);
+                Log.e("xhb", "newsUrl--->   " +newsUrl);
 
                 if (url.equals(newsUrl)) {
                     comeBack.setVisibility(View.GONE);
@@ -248,13 +251,14 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
 
         //生成发现页链接
         String channelId = "unknown";
+        String versionName = BuildConfig.VERSION_NAME;
         try {
             channelId = App.getInstance().getPackageManager()
                     .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId);
+        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
 
 
         Log.e("newsUrl", "newsUrl--->     " + newsUrl);

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -23,6 +24,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.InvitationPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -46,6 +48,9 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     RecyclerView recyclerView;
     @BindView(R.id.invite)
     TextView inviteBtn;
+
+    @BindView(R.id.ac_invitation_sv_root)
+    ScrollView mScrollView;
 
     private InvitationAdapter adapter;
 
@@ -73,6 +78,8 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     @Override
     public void configViews() {
         setupToolbar(toolbar);
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
+
         adapter = new InvitationAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

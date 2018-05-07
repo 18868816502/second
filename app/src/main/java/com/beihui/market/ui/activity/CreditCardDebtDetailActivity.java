@@ -401,12 +401,12 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             /**
              * 头卡片 背景颜色
              */
-            if (Integer.parseInt(debtDetail.showBill.getReturnDay()) <= 3) {
-                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
-                header.tvStatus.setBackgroundColor(Color.parseColor("#ff6757"));
-            } else {
+            if (Integer.parseInt(debtDetail.showBill.getReturnDay()) > 3 || debtDetail.showBill.getStatus() == 2) {
                 header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
                 header.tvStatus.setBackgroundColor(Color.parseColor("#4e4e5d"));
+            } else {
+                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
+                header.tvStatus.setBackgroundColor(Color.parseColor("#ff6757"));
             }
 
             //字体颜色

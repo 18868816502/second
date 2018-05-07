@@ -164,7 +164,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         points.setVisibility(View.GONE);
 
         Glide.with(this)
-                .load(R.mipmap.mine_head_icon)
+                .load(R.mipmap.mine_head)
                 .asBitmap()
                 .into(avatarIv);
 

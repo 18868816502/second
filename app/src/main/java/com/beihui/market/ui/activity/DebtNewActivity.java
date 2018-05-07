@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -173,11 +174,16 @@ public class DebtNewActivity extends BaseComponentActivity {
             mTabRoot.setVisibility(View.VISIBLE);
         } else {
             debtDetail = getIntent().getParcelableExtra("debt_detail");
-            channelName.setText(debtDetail.getChannelName());
+            if (TextUtils.isEmpty(debtDetail.getProjectName())) {
+                channelName.setText(debtDetail.getChannelName());
+            } else {
+                channelName.setText(debtDetail.getProjectName());
+            }
 
             debtChannel = new DebtChannel();
             debtChannel.setType("whatever");
             debtChannel.setChannelName(debtDetail.getChannelName());
+            debtChannel.setProjectName(debtDetail.getProjectName());
             debtChannel.setId(debtDetail.getChannelId());
 
             mTabRoot.setVisibility(View.GONE);

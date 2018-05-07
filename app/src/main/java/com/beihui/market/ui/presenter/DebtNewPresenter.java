@@ -3,6 +3,7 @@ package com.beihui.market.ui.presenter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -101,8 +102,12 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         if (debtChannel.isCustom()) {
             params.put("projectName", debtChannel.projectName);
             params.put("channelName", "自定义");
+            Log.e("adf", "projectname + " + debtChannel.projectName);
         } else {
             params.put("channelName", debtChannel.getChannelName());
+            if (!TextUtils.isEmpty(debtChannel.projectName)) {
+                params.put("projectName", debtChannel.projectName);
+            }
         }
         params.put("repayType", DebtNewPresenter.METHOD_ONE_TIME);
         params.put("termType", 1);
@@ -159,8 +164,12 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         if (debtChannel.isCustom()) {
             params.put("projectName", debtChannel.projectName);
             params.put("channelName", "自定义");
+            Log.e("adf", "projectname + " + debtChannel.projectName);
         } else {
             params.put("channelName", debtChannel.getChannelName());
+            if (!TextUtils.isEmpty(debtChannel.projectName)) {
+                params.put("projectName", debtChannel.projectName);
+            }
         }
         params.put("repayType", DebtNewPresenter.METHOD_EVEN_DEBT);
         params.put("termType", 2);

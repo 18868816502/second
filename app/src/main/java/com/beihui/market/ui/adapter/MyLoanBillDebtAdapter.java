@@ -76,15 +76,15 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         switch (item.getStatus()) {
             case 1://待还
                 helper.setTextColor(R.id.status, colorUnpaid);
-//                helper.setText(R.id.status, "待还款");
+                helper.setText(R.id.status, "待还款");
                 break;
             case 2://已还
                 helper.setTextColor(R.id.status, colorPaid);
-//                helper.setText(R.id.status, "已还清");
+                helper.setText(R.id.status, "已还清");
                 break;
             case 3://逾期
                 helper.setTextColor(R.id.status, colorUnpaid);
-//                helper.setText(R.id.status, "待还款");
+                helper.setText(R.id.status, "待还款");
                 break;
             default:
                 helper.setText(R.id.status, "");

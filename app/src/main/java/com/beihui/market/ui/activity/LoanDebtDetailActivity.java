@@ -312,10 +312,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
         header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
 
-        if (debtDetail.showBill.returnDay <= 3) {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
-        } else {
+        if (debtDetail.showBill.returnDay > 3 || debtDetail.showBill.status == 2) {
             header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
+        } else {
+            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
         }
 
         /**
@@ -502,6 +502,14 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
             footSetAllPay.setEnabled(false);
+        }
+
+        if (newStatus == 3) {
+            footSetMiddleLine.setVisibility(View.VISIBLE);
+            footSetPartPay.setVisibility(View.VISIBLE);
+            footSetAllPay.setText("设为已还");
+            footSetPartPay.setText("还部分");
+            footSetAllPay.setEnabled(true);
         }
     }
 

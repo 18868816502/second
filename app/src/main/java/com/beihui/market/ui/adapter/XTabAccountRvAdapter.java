@@ -260,6 +260,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                            accountBill.setAmount(accountBill.getAmount() - amount);
                                                                            notifyItemChanged(position);
                                                                        }
+
+                                                                       //获取头信息
+                                                                       ((TabAccountFragment) mFragment).initHeaderData();
                                                                    } else {
                                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                                    }

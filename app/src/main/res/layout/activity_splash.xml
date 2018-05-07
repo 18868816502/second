@@ -5,6 +5,12 @@
     android:background="@android:color/white">
 
     <ImageView
+        android:id="@+id/bottom_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/splash_bottom_logo_new" />
+
+    <ImageView
         android:id="@+id/ad_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,11 +32,4 @@
         android:textSize="13sp"
         android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/bottom_logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:background="@android:color/white"
-        android:src="@drawable/splash_bottom_logo" />
 </FrameLayout>

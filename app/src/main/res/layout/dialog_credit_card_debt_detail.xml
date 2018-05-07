@@ -40,8 +40,8 @@
 
             <Switch
                 android:id="@+id/remind_switch"
-                android:track="@drawable/x_shape_thumb"
-                android:thumb="@drawable/x_shape_track"
+                android:track="@drawable/x_selector_thumb"
+                android:thumb="@drawable/x_selector_track"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right" />

@@ -26,6 +26,7 @@ import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.DebtNewPresenter;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
@@ -230,8 +231,13 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
             }
             //保存按钮
             case R.id.tv_debt_new_even_debt_save:
-                presenter.saveEvenDebt((Date) firstDate.getTag(), times.getTag() + "", payMoney.getText().toString(),
-                        "", remark.getText().toString());
+                /**
+                 * 防止重复点击
+                 */
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.saveEvenDebt((Date) firstDate.getTag(), times.getTag() + "", payMoney.getText().toString(),
+                            "", remark.getText().toString());
+                }
                 break;
         }
     }

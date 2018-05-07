@@ -20,7 +20,7 @@
                 style="@style/ToolBarIconStyle"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/left_arrow_black" />
+                android:src="@mipmap/btn_back_normal_black" />
 
             <FrameLayout
                 android:id="@+id/search"

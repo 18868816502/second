@@ -27,6 +27,8 @@ import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.DebtNewPresenter;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
@@ -156,7 +158,6 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
     @OnClick({R.id.tv_one_time_dead_time, R.id.tv_one_time_confirm_button})
     public void onClick(View view){
         InputMethodUtil.closeSoftKeyboard(getActivity());
-
         switch (view.getId()) {
             //到期还款日
             case R.id.tv_one_time_dead_time:
@@ -186,9 +187,11 @@ public class DebtNewOneTimeFragment extends BaseComponentFragment implements Deb
                 break;
             //确认按钮
             case R.id.tv_one_time_confirm_button:
-                presenter.saveOneTimeDebt((Date) tvDebtPayDay.getTag(), etDebtAmount.getText().toString(),  "",
-                         "", etRemark.getText().toString());
 
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.saveOneTimeDebt((Date) tvDebtPayDay.getTag(), etDebtAmount.getText().toString(), "",
+                            "", etRemark.getText().toString());
+                }
                 break;
         }
     }

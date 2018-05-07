@@ -29,7 +29,8 @@ public class NetConstants {
     /**
      * TODO 发现页 链接
      */
-    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5.html";
+//    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5.html";
+    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-v3.html";
 
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 
@@ -91,8 +92,8 @@ public class NetConstants {
      *
      * 生成发现页链接
      */
-    public static String generateNewsWebViewUrl(String userId, String channelId) {
-        return H5_FIND_WEVVIEW_DETAIL + "?isApp=1&userId=" + userId + "&packageId="+channelId;
+    public static String generateNewsWebViewUrl(String userId, String channelId, String version) {
+        return H5_FIND_WEVVIEW_DETAIL + "?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + version;
     }
 
     public static String generateProductUrl(String id) {

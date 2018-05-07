@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
@@ -256,6 +257,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
                 break;
             case R.id.iv_tab_account_header_today_button:
+                Toast.makeText(mActivity, "已至今日应还账单处，别再点啦", Toast.LENGTH_SHORT).show();
                 if (UserHelper.getInstance(mActivity).getProfile() != null) {
                     initStatus();
                 } else {
@@ -273,6 +275,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         presenter.loadDebtAbstract();
         presenter.loadInDebtList(0, true, 1, 10);
         mRecyclerView.scrollToPosition(0);
+    }
+
+    /**
+     * 刷新头信息
+     */
+    public void initHeaderData() {
+        //获取头信息
+        presenter.loadDebtAbstract();
     }
 
 
@@ -376,7 +386,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void showDebtInfo(DebtAbstract debtAbstract) {
         //近30天待还金额
-        if (debtAbstract.getLast30DayStayStill() <= 0D) {
+        if (debtAbstract.getLast30DayStayStill() <= 0D && debtAbstract.unRepayAmount <= 0D) {
             mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
         } else {
             mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));

@@ -303,10 +303,12 @@
         <LinearLayout
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="15dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="55dp">
 
             <TextView
                 android:id="@+id/tv_credit_card_remark"
@@ -323,12 +325,22 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:id="@+id/tv_credit_card_remark_button"
                 android:src="@drawable/xicon_accont_info_edit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <View
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
 
     </LinearLayout>
 
