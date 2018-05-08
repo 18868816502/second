@@ -122,28 +122,28 @@ android {
 //        }
 
         anbei { dimension "channel" }
-        baidu { dimension "channel" }
-        market91 { dimension "channel" }
-        anzhuomarket { dimension "channel" }
-        market360 { dimension "channel" }
-        yingyongbao { dimension "channel" }
-        xiaomi { dimension "channel" }
-        huawei { dimension "channel" }
-        VIVO { dimension "channel" }
-        OPPO { dimension "channel" }
-        meizu { dimension "channel" }
-        chuizi { dimension "channel" }
-        wandoujia { dimension "channel" }
-        samsung { dimension "channel" }
-        mumayi { dimension "channel" }
-        Nduo { dimension "channel" }
-        anzhi { dimension "channel" }
-        sougou { dimension "channel" }
-        liqumarket { dimension "channel" }
-        youyi { dimension "channel" }
-        anfen { dimension "channel" }
-        anzhuoyuan { dimension "channel" }
-        lvan { dimension "channel" }
+//        baidu { dimension "channel" }
+//        market91 { dimension "channel" }
+//        anzhuomarket { dimension "channel" }
+//        market360 { dimension "channel" }
+//        yingyongbao { dimension "channel" }
+//        xiaomi { dimension "channel" }
+//        huawei { dimension "channel" }
+//        VIVO { dimension "channel" }
+//        OPPO { dimension "channel" }
+//        meizu { dimension "channel" }
+//        chuizi { dimension "channel" }
+//        wandoujia { dimension "channel" }
+//        samsung { dimension "channel" }
+//        mumayi { dimension "channel" }
+//        Nduo { dimension "channel" }
+//        anzhi { dimension "channel" }
+//        sougou { dimension "channel" }
+//        liqumarket { dimension "channel" }
+//        youyi { dimension "channel" }
+//        anfen { dimension "channel" }
+//        anzhuoyuan { dimension "channel" }
+//        lvan { dimension "channel" }
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
