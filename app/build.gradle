@@ -121,7 +121,7 @@ android {
 //            signingConfig signingConfigs.loanmarkettest
 //        }
 
-        anbei { dimension "channel" }
+//        anbei { dimension "channel" }
 //        baidu { dimension "channel" }
 //        market91 { dimension "channel" }
 //        anzhuomarket { dimension "channel" }
@@ -144,6 +144,9 @@ android {
 //        anfen { dimension "channel" }
 //        anzhuoyuan { dimension "channel" }
 //        lvan { dimension "channel" }
+        jifeng  { dimension "channel" }
+        h5 { dimension "channel" }
+
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([

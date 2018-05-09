@@ -72,7 +72,7 @@ public class XTabAccountDialog extends DialogFragment {
     }
 
     @SuppressLint("InlinedApi")
-    @OnClick({R.id.ll_dialog_tab_account_net_loan, R.id.ll_dialog_tab_account_credit_card, R.id.ll_dialog_tab_account_cancel})
+    @OnClick({R.id.ll_dialog_tab_account_net_loan, R.id.ll_dialog_tab_account_credit_card,  R.id.ll_dialog_tab_account_hand, R.id.ll_dialog_tab_account_cancel})
     void OnViewClicked(View view) {
         switch (view.getId()) {
             //网贷记账
@@ -83,6 +83,13 @@ public class XTabAccountDialog extends DialogFragment {
             //信用卡账单 目前只需要网银导入 进入H5页面
             case R.id.ll_dialog_tab_account_credit_card:
                 startActivity(new Intent(getContext(), EBankActivity.class));
+                dismiss();
+                break;
+            //手动记账
+            case R.id.ll_dialog_tab_account_hand:
+
+                //TODO 手动记账
+
                 dismiss();
                 break;
             case R.id.ll_dialog_tab_account_cancel:
