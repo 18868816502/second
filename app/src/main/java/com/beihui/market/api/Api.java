@@ -1019,7 +1019,6 @@ public class Api {
             e.printStackTrace();
         }
 //        return service.queryBottomImage(version, "1", packageId);
-//        return service.queryBottomImage(version, "1",packageId);
         return service.queryBottomImage(version, "1");
     }
 
