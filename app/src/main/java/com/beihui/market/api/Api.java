@@ -8,6 +8,7 @@ import android.util.Log;
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
+import com.beihui.market.api.interceptor.PackageIdAndVersionNameInterceptor;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
@@ -67,6 +68,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -108,16 +110,16 @@ public class Api {
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                //设置拦截日志
                 .addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY))
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .cache(cache)
+                .addInterceptor(new PackageIdAndVersionNameInterceptor())
                 .addInterceptor(new AccessHeadInterceptor());
 
-
+        //设置拦截日志
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -228,7 +230,8 @@ public class Api {
      * @param pwd     用户密码
      */
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
-        return service.login(account, generatePwd(pwd, account), getChannelId(), 1);
+//        return service.login(account, generatePwd(pwd, account), getChannelId(), 1);
+        return service.login(account, generatePwd(pwd, account),  1);
     }
 
     /**
@@ -238,7 +241,8 @@ public class Api {
      *                2 代表的是验证码登录
      */
     public Observable<ResultEntity<UserProfileAbstract>> loginByCode(String account, String verifyCode) {
-        return service.loginByCode(account, "2", verifyCode, getChannelId(), 1);
+//        return service.loginByCode(account, "2", verifyCode, getChannelId(), 1);
+        return service.loginByCode(account, "2", verifyCode, 1);
     }
 
     /**
@@ -247,7 +251,8 @@ public class Api {
      * @param account 用户账号
      */
     public Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(String account) {
-        return service.loginNoPwd(account, getChannelId(), 1);
+//        return service.loginNoPwd(account, getChannelId(), 1);
+        return service.loginNoPwd(account, 1);
     }
 
     /**
@@ -265,7 +270,8 @@ public class Api {
      * @param phone 请求手机号
      */
     public Observable<ResultEntity<Phone>> requestRegisterSms(String phone) {
-        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_REGISTER, getChannelId());
+//        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_REGISTER, getChannelId());
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_REGISTER);
     }
 
     /**
@@ -274,7 +280,8 @@ public class Api {
      * @param phone 请求手机号
      */
     public Observable<ResultEntity<Phone>> requestRestPwdSms(String phone) {
-        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_RESET_PWD, getChannelId());
+//        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_RESET_PWD, getChannelId());
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_RESET_PWD);
     }
 
     /**
@@ -283,7 +290,8 @@ public class Api {
      * @param phone 请求手机号
      */
     public Observable<ResultEntity<Phone>> requestWeChatBindPwdSms(String phone) {
-        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, getChannelId());
+//        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, getChannelId());
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND);
     }
 
     /**
@@ -292,7 +300,8 @@ public class Api {
      * @param phone 请求手机号
      */
     public Observable<ResultEntity<Phone>> requestPhoneLogin(String phone) {
-        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_LOGIN, getChannelId());
+//        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_LOGIN, getChannelId());
+        return service.requestSms(phone, RequestConstants.VERIFICATION_TYPE_LOGIN);
     }
 
     /**
@@ -323,7 +332,8 @@ public class Api {
      * @param code     请求的验证码
      */
     public Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(String account, String wxOpenId, String wxName, String wxImage, String code) {
-        return service.verifyWeChatBindCode(account, wxOpenId, wxName, wxImage, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, code, getChannelId(), "1");
+//        return service.verifyWeChatBindCode(account, wxOpenId, wxName, wxImage, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, code, getChannelId(), "1");
+        return service.verifyWeChatBindCode(account, wxOpenId, wxName, wxImage, RequestConstants.VERIFICATION_TYPE_WE_CHAT_BIND, code, "1");
     }
 
     /**
@@ -337,7 +347,8 @@ public class Api {
      * @param inviteCode 邀请码，可空
      */
     public Observable<ResultEntity<UserProfileAbstract>> register(String phone, String pwd, String wxOpenId, String wxName, String wxImage, String inviteCode) {
-        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), wxOpenId, wxName, wxImage, inviteCode, getChannelId());
+//        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), wxOpenId, wxName, wxImage, inviteCode, getChannelId());
+        return service.register(RequestConstants.PLATFORM, phone, generatePwd(pwd, phone), wxOpenId, wxName, wxImage, inviteCode);
     }
 
     /**
@@ -508,7 +519,8 @@ public class Api {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType, channelId);
+//        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType, channelId);
+        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType);
     }
 
     /**
@@ -734,7 +746,8 @@ public class Api {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return service.queryAppUpdate(RequestConstants.PLATFORM + "", channelId);
+//        return service.queryAppUpdate(RequestConstants.PLATFORM + "", channelId);
+        return service.queryAppUpdate(RequestConstants.PLATFORM + "");
     }
 
     /**
@@ -1006,7 +1019,8 @@ public class Api {
             e.printStackTrace();
         }
 //        return service.queryBottomImage(version, "1", packageId);
-        return service.queryBottomImage(version, "1",packageId);
+//        return service.queryBottomImage(version, "1",packageId);
+        return service.queryBottomImage(version, "1");
     }
 
     /**

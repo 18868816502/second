@@ -144,21 +144,24 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId, @Field("platform") int platform);
+//    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId, @Field("platform") int platform);
+    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("platform") int platform);
 
     /**
      * 密码登录
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("packageId") String packageId, @Field("platform") int platform);
+//    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("packageId") String packageId, @Field("platform") int platform);
+    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("platform") int platform);
 
     /**
      * 免密码登录
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("packageId") String packageId, @Field("platform") int platform);
+//    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("packageId") String packageId, @Field("platform") int platform);
+    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("platform") int platform);
 
     /**
      * 微信登录
@@ -172,7 +175,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/sms/sendSms")
-    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type, @Field("packageId") String packageId);
+//    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type, @Field("packageId") String packageId);
+    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type);
 
     /**
      * 验证验证码
@@ -187,17 +191,22 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/wx/newAuthVerify")
-    Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
-                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId, @Field("platform") String platform);
+//    Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
+//                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId, @Field("platform") String platform);
+ Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
+                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("platform") String platform);
 
     /**
      * 注册
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/register")
+//    Observable<ResultEntity<UserProfileAbstract>> register(@Field("platform") int platform, @Field("account") String account, @Field("pwd") String pwd,
+//                                                           @Field("wxOpenId") String exOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
+//                                                           @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
     Observable<ResultEntity<UserProfileAbstract>> register(@Field("platform") int platform, @Field("account") String account, @Field("pwd") String pwd,
                                                            @Field("wxOpenId") String exOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
-                                                           @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
+                                                           @Field("inviteCode") String inviteCode);
 
     /**
      * 更新密码，重置或者修改
@@ -310,8 +319,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/supernatant/querySupernatant")
-    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType,
-                                                              @Field("packageId") String packageId);
+//    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType, @Field("packageId") String packageId);
+    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType);
 
     /**
      * 头条滚动信息
@@ -470,7 +479,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/version/queryVersion")
-    Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType, @Field("packageId") String packageId);
+//    Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType, @Field("packageId") String packageId);
+    Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType);
 
     /**
      * 用户反馈
@@ -645,7 +655,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/list")
-    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform, @Field("packageId") String packageId);
+//    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform, @Field("packageId") String packageId);
+    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform);
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/sum")

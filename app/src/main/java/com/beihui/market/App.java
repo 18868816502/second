@@ -1,6 +1,7 @@
 package com.beihui.market;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.ActivityTracker;
@@ -17,6 +18,11 @@ public class App extends Application {
 
     private static App sInstance;
     private AppComponent appComponent;
+
+    /**
+     * 渠道
+     */
+    public static String sChannelId = "unknown";
 
     @Override
     public void onCreate() {
@@ -38,6 +44,16 @@ public class App extends Application {
                     UserHelper.getInstance(this).getProfile().getUserName());
         }
         Ntalker.getBaseInstance().enableDebug(BuildConfig.DEBUG);
+
+
+        //生成发现页链接
+
+        try {
+            sChannelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 

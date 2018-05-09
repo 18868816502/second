@@ -1,18 +1,30 @@
 package com.beihui.market.api;
 
 
+import android.content.pm.PackageManager;
+
+import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 
 import java.util.List;
 
+/**
+ * TODO 关于链接后面拼接 + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME
+ * 需要检查
+ */
 public class NetConstants {
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
+
+    public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
 
     public static final String BASE_PATH = "/s1";
 
     public static final String PRODUCT_PATH = "/s3";
 
+    /**
+     * 一下两个是网络请求Request的两个字段
+     */
     public static final String SECRET_KEY = "0bca3e8e2baa42218040c5dbf6978f315e104e5c";
 
     public static final String ACCESS_KEY = "699b9305418757ef9a26e5a32ca9dbfb";
@@ -36,9 +48,9 @@ public class NetConstants {
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
 
-    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1";
+    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
-    public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1";
+    public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
     public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
 
@@ -53,7 +65,7 @@ public class NetConstants {
     /**
      * 用户协议H5
      */
-    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html";
+    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
 
     /**
@@ -81,7 +93,7 @@ public class NetConstants {
      * @desc 资讯模块 详情页面
      */
     public static String generateNewsUrl(String id, String userId) {
-        return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId;
+        return H5_NEWS_DETAIL + "?id=" + id + "&isApp=1&userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     /**
@@ -97,31 +109,33 @@ public class NetConstants {
     }
 
     public static String generateProductUrl(String id) {
-        return H5_LOAN_DETAIL + "?id=" + id + "&isApp=1";
+        return H5_LOAN_DETAIL + "?id=" + id + "&isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateInvitationUrl(String userId) {
-        return H5_INVITATION + "?id=" + userId;
+        return H5_INVITATION + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateInternalMessageUrl(String id) {
-        return H5_INTERNAL_MESSAGE + "?id=" + id;
+        return H5_INTERNAL_MESSAGE + "?id=" + id + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateTestUrl(String id) {
-        return H5_TEST + "?isApp=1&id=" + id;
+        return H5_TEST + "?isApp=1&id=" + id + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateCreditCardUrl(String id) {
-        return H5_CREDIT_CARD_CENTER + "?isApp=1&userId=" + id;
+        return H5_CREDIT_CARD_CENTER + "?isApp=1&userId=" + id + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateRewardPointsUrl(String id) {
-        return H5_REWARD_POINTS + "?isApp=1&userId=" + id;
+        return H5_REWARD_POINTS + "?isApp=1&userId=" + id + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateDebtAnalyzeUrl(String id) {
-        return H5_DEBT_ANALYZE + "?isApp=1&userId=" + id;
+
+
+        return H5_DEBT_ANALYZE + "?isApp=1&userId=" + id + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
 
@@ -133,6 +147,6 @@ public class NetConstants {
             }
             sb.deleteCharAt(sb.length() - 1);
         }
-        return H5_ONE_KEY_LOAN + "?isApp=1&pids=" + sb.toString() + "&userId=" + userId;
+        return H5_ONE_KEY_LOAN + "?isApp=1&pids=" + sb.toString() + "&userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 }

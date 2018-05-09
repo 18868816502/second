@@ -16,13 +16,20 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.beihui.market.R;
+import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.DebtChannelActivity;
+import com.beihui.market.ui.presenter.DebtChannelPresenter;
+import com.beihui.market.util.RxUtil;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author xhb
@@ -96,6 +103,34 @@ public class XTabAccountDialog extends DialogFragment {
                 dismiss();
                 break;
         }
+    }
+
+    /**
+     * 快速记账
+     * 不需要渠道ID ChannelID
+     * 不需要Logo
+     * TODO 跳转到新增网贷账单页面
+     */
+    public void addDebtChannel() {
+        DebtChannel newChannel = new DebtChannel();
+        newChannel.setChannelName("自定义");
+        newChannel.setId(java.util.UUID.randomUUID().toString());
+
+        Disposable dis = Observable.just(newChannel)
+                .observeOn(Schedulers.io())
+                .compose(RxUtil.<DebtChannel>io2main())
+                .subscribe(new Consumer<DebtChannel>() {
+                               @Override
+                               public void accept(DebtChannel channel) throws Exception {
+
+
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                            }
+                        });
     }
 
 }
