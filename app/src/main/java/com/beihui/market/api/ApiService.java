@@ -16,6 +16,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
+import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -134,6 +135,29 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/creditcard/bill")
     Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(@Field("userId") String userId, @Field("recordId") String recordId);
+
+
+    /**
+     * 更新快捷账单还款状态
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bookKeeping/updateStatus")
+    Observable<ResultEntity> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId, @Field("status") int status);
+
+    /**
+     * 更新快捷账单还款状态
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bookKeeping/updateStatus")
+    Observable<ResultEntity> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId, @Field("status") int status, @Field("amount") double amount);
+
+    /**
+     * 查询快捷账单还款详情
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bookKeeping/loadBill")
+    Observable<ResultEntity<FastDebtDetail>> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId);
+
 
 
     /****************************************************************************** 分割线 **************************************************************************************/
@@ -539,6 +563,12 @@ public interface ApiService {
     @POST(BASE_PATH + "/accounting/netLoadBill")
     Observable<ResultEntity> saveDebtImmediately(@FieldMap Map<String, Object> params);
 
+    /**
+     * 确认记账 快捷记账的api
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bookKeeping/save")
+    Observable<ResultEntity> saveFastDebt(@FieldMap Map<String, Object> params);
     /**
      * 获取银行列表
      */

@@ -17,8 +17,11 @@ import android.view.WindowManager;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.ui.activity.DebtNewActivity;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.DebtChannelActivity;
+import com.beihui.market.ui.activity.FastAddDebtActivity;
 import com.beihui.market.util.RxUtil;
 import com.umeng.socialize.media.UMWeb;
 
@@ -47,7 +50,7 @@ public class XTabAccountDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CommonBottomDialogStyle);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.XTaoAccountDialogStyle);
     }
 
     @Nullable
@@ -96,7 +99,12 @@ public class XTabAccountDialog extends DialogFragment {
             case R.id.ll_dialog_tab_account_hand:
 
                 //TODO 手动记账
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_LOAN_CHANNEL);
 
+                Intent intent = new Intent(getContext(), FastAddDebtActivity.class);
+//                intent.putExtra("debt_channel", getDebtChanel());
+                startActivity(intent);
                 dismiss();
                 break;
             case R.id.ll_dialog_tab_account_cancel:
@@ -111,26 +119,12 @@ public class XTabAccountDialog extends DialogFragment {
      * 不需要Logo
      * TODO 跳转到新增网贷账单页面
      */
-    public void addDebtChannel() {
+    public DebtChannel getDebtChanel() {
         DebtChannel newChannel = new DebtChannel();
         newChannel.setChannelName("自定义");
         newChannel.setId(java.util.UUID.randomUUID().toString());
 
-        Disposable dis = Observable.just(newChannel)
-                .observeOn(Schedulers.io())
-                .compose(RxUtil.<DebtChannel>io2main())
-                .subscribe(new Consumer<DebtChannel>() {
-                               @Override
-                               public void accept(DebtChannel channel) throws Exception {
-
-
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                            }
-                        });
+        return newChannel;
     }
 
 }

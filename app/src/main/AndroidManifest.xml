@@ -239,6 +239,15 @@
             android:name=".ui.activity.TabNewsWebViewSecordActivity"
             android:screenOrientation="portrait" />
 
+        <!--快速记账页面-->
+        <activity
+            android:name=".ui.activity.FastAddDebtActivity"
+            android:screenOrientation="portrait" />
+        <!--快速记账详情页面-->
+        <activity
+            android:name=".ui.activity.FastDebtDetailActivity"
+            android:screenOrientation="portrait" />
+
 
 
 

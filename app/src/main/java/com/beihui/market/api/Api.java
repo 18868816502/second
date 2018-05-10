@@ -25,6 +25,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
+import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -775,6 +776,43 @@ public class Api {
         return service.submitFeedback(userId, content, imageBase64, imageName);
     }
 
+    /**
+     *  确认记账 快捷记账的api
+     */
+    public Observable<ResultEntity> saveFastDebt(Map<String, Object> params) {
+        return service.saveFastDebt(params);
+    }
+
+    /**
+     * 更新信用卡账单还款状态
+     *
+     * @param userId 用户id
+     * @param billId	分期账单Id
+     * @param recordId 账单Id
+     * @param status 还款状态，状态 0-删除, 1-待还 2-已还
+     * @param amount 还款金额
+     */
+    public Observable<ResultEntity> updateFastDebtBillStatus(String userId, String billId, String recordId, int status, Double amount) {
+        if (amount == null ) {
+            return service.updateFastDebtBillStatus(userId, billId, recordId, status);
+        } else {
+            return service.updateFastDebtBillStatus(userId, billId, recordId, status, amount);
+        }
+    }
+
+
+    /**
+     * 更新信用卡账单还款状态
+     *
+     * @param userId 用户id
+     * @param billId	分期账单Id
+     * @param recordId 账单Id
+     */
+    public Observable<ResultEntity<FastDebtDetail>> queryFastDebtBillDetail(String userId, String billId, String recordId) {
+        return service.updateFastDebtBillStatus(userId, billId, recordId);
+    }
+
+
     /*****************************************************记账*******************************************************/
     /**
      * 查询记账首页宣传图片
@@ -832,6 +870,7 @@ public class Api {
     public Observable<ResultEntity> saveDebtImmediately(Map<String, Object> params) {
         return service.saveDebtImmediately(params);
     }
+
 
     /**
      * 获取银行列表

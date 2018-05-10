@@ -32,6 +32,7 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.DebtAnalyzeActivity;
+import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -244,36 +245,77 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                     if (amount > accountBill.getAmount()) {
                                         Toast.makeText(mActivity, "只能还部分", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), amount, 2)
-                                                .compose(RxUtil.<ResultEntity>io2main())
-                                                .subscribe(new Consumer<ResultEntity>() {
-                                                               @Override
-                                                               public void accept(ResultEntity result) throws Exception {
-                                                                   if (result.isSuccess()) {
-                                                                       //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                                       /**
-                                                                        * 如果还部分金额与待还金额相同 则需要回到首屏
-                                                                        */
-                                                                       if (accountBill.getAmount() - amount < 0.01) {
-                                                                           ((TabAccountFragment) mFragment).initStatus();
-                                                                       } else {
-                                                                           accountBill.setAmount(accountBill.getAmount() - amount);
-                                                                           notifyItemChanged(position);
-                                                                       }
+                                        /**
+                                      * 是网贷
+                                      */
+                                        if (accountBill.getType() == 2) {
+                                            Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), amount, 2)
+                                                    .compose(RxUtil.<ResultEntity>io2main())
+                                                    .subscribe(new Consumer<ResultEntity>() {
+                                                                   @Override
+                                                                   public void accept(ResultEntity result) throws Exception {
+                                                                       if (result.isSuccess()) {
+                                                                           //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                                           /**
+                                                                            * 如果还部分金额与待还金额相同 则需要回到首屏
+                                                                            */
+                                                                           if (accountBill.getAmount() - amount < 0.01) {
+                                                                               ((TabAccountFragment) mFragment).initStatus();
+                                                                           } else {
+                                                                               accountBill.setAmount(accountBill.getAmount() - amount);
+                                                                               notifyItemChanged(position);
+                                                                           }
 
-                                                                       //获取头信息
-                                                                       ((TabAccountFragment) mFragment).initHeaderData();
-                                                                   } else {
-                                                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                                           //获取头信息
+                                                                           ((TabAccountFragment) mFragment).initHeaderData();
+                                                                       } else {
+                                                                           Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                                       }
                                                                    }
-                                                               }
-                                                           },
-                                                        new Consumer<Throwable>() {
-                                                            @Override
-                                                            public void accept(Throwable throwable) throws Exception {
-                                                                Log.e("exception_custom", throwable.getMessage());
-                                                            }
-                                                        });
+                                                               },
+                                                            new Consumer<Throwable>() {
+                                                                @Override
+                                                                public void accept(Throwable throwable) throws Exception {
+                                                                    Log.e("exception_custom", throwable.getMessage());
+                                                                }
+                                                            });
+                                        }
+
+                                        /**
+                                      * 是快捷记账
+                                      */
+                                        if (accountBill.getType() == 3) {
+                                            Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), 2, amount)
+                                                    .compose(RxUtil.<ResultEntity>io2main())
+                                                    .subscribe(new Consumer<ResultEntity>() {
+                                                                   @Override
+                                                                   public void accept(ResultEntity result) throws Exception {
+                                                                       if (result.isSuccess()) {
+                                                                           //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                                           /**
+                                                                            * 如果还部分金额与待还金额相同 则需要回到首屏
+                                                                            */
+                                                                           if (accountBill.getAmount() - amount < 0.01) {
+                                                                               ((TabAccountFragment) mFragment).initStatus();
+                                                                           } else {
+                                                                               accountBill.setAmount(accountBill.getAmount() - amount);
+                                                                               notifyItemChanged(position);
+                                                                           }
+
+                                                                           //获取头信息
+                                                                           ((TabAccountFragment) mFragment).initHeaderData();
+                                                                       } else {
+                                                                           Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                                       }
+                                                                   }
+                                                               },
+                                                            new Consumer<Throwable>() {
+                                                                @Override
+                                                                public void accept(Throwable throwable) throws Exception {
+                                                                    Log.e("exception_custom", throwable.getMessage());
+                                                                }
+                                                            });
+                                        }
                                     }
                                 }
                             });
@@ -316,7 +358,13 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         intent.putExtra("debt_id", accountBill.getRecordId());
                         intent.putExtra("bill_id", accountBill.getBillId());
                         mActivity.startActivity(intent);
-                    } else {
+                    } else if (accountBill.getType() == 3) {
+                        //快速记账详情
+                        Intent intent = new Intent(mActivity, FastDebtDetailActivity.class);
+                        intent.putExtra("debt_id", accountBill.getRecordId());
+                        intent.putExtra("bill_id", accountBill.getBillId());
+                        mActivity.startActivity(intent);
+                    }else {
                         Intent intent = new Intent(mActivity, CreditCardDebtDetailActivity.class);
                         intent.putExtra("debt_id", accountBill.getRecordId());
                         intent.putExtra("bill_id", accountBill.getBillId());
@@ -426,6 +474,34 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     }
                     if (accountBill.getType() == 2) {
                         Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), 2)
+                                .compose(RxUtil.<ResultEntity>io2main())
+                                .subscribe(new Consumer<ResultEntity>() {
+                                               @Override
+                                               public void accept(ResultEntity result) throws Exception {
+                                                   if (result.isSuccess()) {
+                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                       /**
+                                                        * 重新回到首屏
+                                                        */
+                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                   } else {
+                                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                   }
+                                               }
+                                           },
+                                        new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(Throwable throwable) throws Exception {
+                                                Log.e("exception_custom", throwable.getMessage());
+                                            }
+                                        });
+                    }
+
+                    /**
+                     * 快捷账单
+                     */
+                    if (accountBill.getType() == 3) {
+                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), 2, null)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
