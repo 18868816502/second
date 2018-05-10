@@ -19,7 +19,6 @@ import com.beihui.market.R;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.DebtChannelActivity;
-import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.util.RxUtil;
 import com.umeng.socialize.media.UMWeb;
 
