@@ -35,6 +35,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author xhb
  * 网贷记账
  * 信用卡账单
+ * 快速记账
  */
 public class XTabAccountDialog extends DialogFragment {
 

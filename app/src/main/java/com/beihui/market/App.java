@@ -1,7 +1,9 @@
 package com.beihui.market;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.ActivityTracker;
@@ -11,6 +13,7 @@ import com.beihui.market.injection.component.DaggerAppComponent;
 import com.beihui.market.injection.module.ApiModule;
 import com.beihui.market.injection.module.AppModule;
 import com.beihui.market.umeng.Umeng;
+import com.umeng.analytics.AnalyticsConfig;
 
 import cn.xiaoneng.uiapi.Ntalker;
 
@@ -54,6 +57,10 @@ public class App extends Application {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+
+        String channel = AnalyticsConfig.getChannel(this);
+        Log.e("xhb", "友盟渠道名称-----> " + channel);
     }
 
 

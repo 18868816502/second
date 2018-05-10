@@ -21,6 +21,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
@@ -45,6 +46,8 @@ public class EBankActivity extends BaseComponentActivity {
     @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})
     @Override
     public void configViews() {
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
