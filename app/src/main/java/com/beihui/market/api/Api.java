@@ -111,7 +111,6 @@ public class Api {
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY))
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
@@ -122,9 +121,7 @@ public class Api {
 
         //设置拦截日志
         if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(logging);
+            builder.addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY));
         }
 
         return builder.build();
@@ -216,6 +213,27 @@ public class Api {
      */
     public Observable<ResultEntity<String>> queryMessage(String userId) {
         return service.queryMessage(userId);
+    }
+
+    /**
+     * 删除借款
+     *
+     * @param userId        用户id
+     * @param recordId 账单Id
+     */
+    public Observable<ResultEntity> deleteFastDebt(String userId, String recordId) {
+        return service.deleteFastDebt(userId, recordId);
+    }
+
+    /**
+     * 删除借款
+     *
+     * @param userId        用户id
+     * @param billId  分期账单Id
+     * @param remark   账单名称（UI显示的是备注）
+     */
+    public Observable<ResultEntity> updateFastDebtName(String userId, String billId, String remark) {
+        return service.updateFastDebtName(userId, billId, remark);
     }
 
     /****************************************************************************** 分割线 **************************************************************************************/

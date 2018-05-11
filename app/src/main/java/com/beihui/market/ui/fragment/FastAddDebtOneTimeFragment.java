@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -33,6 +35,7 @@ import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.TimePickerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,6 +47,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb
@@ -75,6 +80,12 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
     //依附的Activity
     private FragmentActivity activity;
 
+    public Handler mHandler = new Handler();
+
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    private FastDebtDetail fastDebtDetail;
 
     /**
      * 返回布局
@@ -103,10 +114,25 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
 
     @Override
     public void configViews() {
-        Date date = new Date();
-        //设置到期还款日 为今天
-        tvDebtPayDay.setText(dateFormat.format(date));
-        tvDebtPayDay.setTag(date);
+        if (fastDebtDetail == null) {
+            Date date = new Date();
+            //设置到期还款日 为今天
+            tvDebtPayDay.setText(dateFormat.format(date));
+            tvDebtPayDay.setTag(date);
+        } else {
+            //到期应还金额
+            etDebtAmount.setText(keep2digitsWithoutZero(fastDebtDetail.getPayableAmount()).replace(",", ""));//去货币化 也就是去掉逗号
+            //到期还款日
+            tvDebtPayDay.setText(fastDebtDetail.termRepayDate);
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                tvDebtPayDay.setTag(sdf.parse(fastDebtDetail.termRepayDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            //备注
+            etRemark.setText((TextUtils.isEmpty(fastDebtDetail.getProjectName()) || "快捷记账".equals(fastDebtDetail.getProjectName()))  ? "" : fastDebtDetail.getProjectName());
+        }
 
         //账单名称
         etAccountName.addTextChangedListener(new EtTextLengthWatcher(etAccountName, 16 * 2));
@@ -120,6 +146,19 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
         //限制emoji输入
         EditTextUtils.addDisableEmojiInputFilter(etRemark);
         EditTextUtils.addDisableEmojiInputFilter(etAccountName);
+
+        /**
+         * 开启软键盘
+         */
+        etDebtAmount.requestFocus();
+        if (!TextUtils.isEmpty(etDebtAmount.getText().toString())) {
+            etDebtAmount.setSelection(etDebtAmount.getText().toString().length());
+        }
+        mHandler.postDelayed(new Runnable(){
+            public void run() {
+                InputMethodUtil.openSoftKeyboard(activity, etDebtAmount);
+            }
+        }, 500);
     }
 
 
@@ -160,10 +199,41 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
              */
             case R.id.tv_one_time_confirm_button:
                 if (!FastClickUtils.isFastClick()) {
-                    saveDebt();
+                    if (fastDebtDetail != null) {
+                        //先删除订单
+                        deleteDebt();
+                    } else {
+                        saveDebt();
+                    }
                 }
                 break;
         }
+    }
+
+    /**
+     * 删除订单
+     */
+    private void deleteDebt() {
+        Api.getInstance().deleteFastDebt(UserHelper.getInstance(activity).getProfile().getId(), fastDebtDetail.getId())
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       saveDebt();
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+
+                            }
+                        });
+
     }
 
     /**
@@ -226,19 +296,13 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
 
     }
 
-    /**
-     * 注销presenter
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     /**
      * 获取Fragment
      */
-    public static FastAddDebtOneTimeFragment newInstance() {
+    public static FastAddDebtOneTimeFragment newInstance(FastDebtDetail fastDebtDetail) {
         FastAddDebtOneTimeFragment fragment = new FastAddDebtOneTimeFragment();
+        fragment.fastDebtDetail = fastDebtDetail;
         return fragment;
     }
 

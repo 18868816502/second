@@ -3,6 +3,7 @@ package com.beihui.market.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -70,16 +71,6 @@ public class DebtNewActivity extends BaseComponentActivity {
     public int getLayoutId() {
         return R.layout.activity_debt_new;
     }
-
-    /**
-     * 失去焦点 关闭软键盘
-     */
-    @Override
-    protected void onPause() {
-        InputMethodUtil.closeSoftKeyboard(this);
-        super.onPause();
-    }
-
 
 
     /**
@@ -163,7 +154,7 @@ public class DebtNewActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+        setupToolbarBackNavigation(toolbar, R.mipmap.btn_back_normal_black);
 
         viewPager.setAdapter(new DebtNewPagerAdapter(getSupportFragmentManager()));
         copyTabLayout.setViewPager(viewPager);

@@ -5,12 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.contract.DebtNewContract;
@@ -44,6 +47,10 @@ public class FastAddDebtActivity extends BaseComponentActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    private FastDebtDetail fastDebtDetail;
 
     //Fragment的标题
     private final String[] pageTitles = {"一次性还款", "分期还款"};
@@ -56,19 +63,10 @@ public class FastAddDebtActivity extends BaseComponentActivity {
         return R.layout.activity_debt_new;
     }
 
-    /**
-     * 失去焦点 关闭软键盘
-     */
-    @Override
-    protected void onPause() {
-        InputMethodUtil.closeSoftKeyboard(this);
-        super.onPause();
-    }
-
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
+        setupToolbarBackNavigation(toolbar, R.mipmap.btn_back_normal_black);
 
         viewPager.setAdapter(new DebtNewPagerAdapter(getSupportFragmentManager()));
         copyTabLayout.setViewPager(viewPager);
@@ -80,7 +78,21 @@ public class FastAddDebtActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-
+        channelName.setText("快捷记账");
+        fastDebtDetail =  getIntent().getParcelableExtra("fast_debt_detail");
+        if (fastDebtDetail == null) {
+            //新增账单
+            mTabRoot.setVisibility(View.VISIBLE);
+        } else {
+            //编辑账单
+            //隐藏tab
+            mTabRoot.setVisibility(View.GONE);
+            if (fastDebtDetail.getRepayType() == 1) {
+                viewPager.setCurrentItem(0);
+            } else {
+                viewPager.setCurrentItem(1);
+            }
+        }
     }
 
     @Override
@@ -104,9 +116,17 @@ public class FastAddDebtActivity extends BaseComponentActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return FastAddDebtOneTimeFragment.newInstance();
+                if (fastDebtDetail != null && fastDebtDetail.getRepayType() == 1) {
+                    return FastAddDebtOneTimeFragment.newInstance(fastDebtDetail);
+                } else {
+                    return FastAddDebtOneTimeFragment.newInstance(null);
+                }
             } else {
-                return FastAddDebtNewEvenFragment.newInstance();
+                if (fastDebtDetail != null && fastDebtDetail.getRepayType() == 2) {
+                    return FastAddDebtNewEvenFragment.newInstance(fastDebtDetail);
+                } else {
+                    return FastAddDebtNewEvenFragment.newInstance(null);
+                }
             }
         }
 

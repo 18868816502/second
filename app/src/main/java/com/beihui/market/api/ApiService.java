@@ -158,6 +158,19 @@ public interface ApiService {
     @POST(BASE_PATH + "/bookKeeping/loadBill")
     Observable<ResultEntity<FastDebtDetail>> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId);
 
+    /**
+     * 删除快捷记账账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bookKeeping/deleteBill")
+    Observable<ResultEntity> deleteFastDebt(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /**
+     * 修改快捷记账账单名称
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/bookKeeping/updateName")
+    Observable<ResultEntity> updateFastDebtName(@Field("userId") String userId, @Field("billId") String billId, @Field("projectName") String projectName);
 
 
     /****************************************************************************** 分割线 **************************************************************************************/
@@ -632,9 +645,10 @@ public interface ApiService {
 
     /**
      * 账单还款提醒设置
+     * accounting/updateRedmine 新接口替换老接口 accounting/redmine
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/redmine")
+    @POST(BASE_PATH + "/accounting/updateRedmine")
     Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("channelId") String channelId, @Field("cardId") String cardId, @Field("day") int day);
 
     /**

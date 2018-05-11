@@ -4,6 +4,7 @@ package com.beihui.market.ui.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtNewComponent;
@@ -34,6 +36,7 @@ import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,12 +44,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.LogRecord;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb
@@ -56,7 +62,6 @@ import io.reactivex.functions.Consumer;
 public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-
 
     private final SimpleDateFormat saveDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
@@ -82,14 +87,19 @@ public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
     @BindView(R.id.tv_debt_new_even_debt_save)
     TextView saveAccount;
 
-
     //依附的Activity
     private FragmentActivity activity;
 
+    public Handler mHandler = new Handler();
 
-    public static FastAddDebtNewEvenFragment newInstance() {
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    private FastDebtDetail fastDebtDetail;
+
+    public static FastAddDebtNewEvenFragment newInstance(FastDebtDetail fastDebtDetail) {
         FastAddDebtNewEvenFragment fragment = new FastAddDebtNewEvenFragment();
-
+        fragment.fastDebtDetail = fastDebtDetail;
         return fragment;
     }
 
@@ -100,7 +110,6 @@ public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
 
     /**
      * 布局
-     * @return
      */
     @Override
     public int getLayoutResId() {
@@ -116,12 +125,31 @@ public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
 
     @Override
     public void configViews() {
-        Date date = new Date();
-        firstDate.setText(dateFormat.format(date));
-        firstDate.setTag(date);
 
-        times.setText("6个月");
-        times.setTag(6);
+        if (fastDebtDetail == null) {
+            Date date = new Date();
+            firstDate.setText(dateFormat.format(date));
+            firstDate.setTag(date);
+
+            times.setText("6个月");
+            times.setTag(6);
+        } else {
+            //每月应还
+            payMoney.setText((keep2digitsWithoutZero(fastDebtDetail.termPayableAmount).replace(",", "")));
+            //首次还款日
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                firstDate.setText(fastDebtDetail.firstRepayDate);
+                firstDate.setTag(sdf.parse(fastDebtDetail.firstRepayDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            //还款期数
+            times.setText(fastDebtDetail.term + "个月");
+            times.setTag(fastDebtDetail.term);
+            //备注
+            remark.setText((TextUtils.isEmpty(fastDebtDetail.getProjectName()) || "快捷记账".equals(fastDebtDetail.getProjectName())) ? "" : fastDebtDetail.getProjectName());
+        }
 
         //账单名称
         accountName.addTextChangedListener(new EtTextLengthWatcher(accountName, 16 * 2));
@@ -134,6 +162,19 @@ public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
         //限制emoji输入
         EditTextUtils.addDisableEmojiInputFilter(remark);
         EditTextUtils.addDisableEmojiInputFilter(accountName);
+
+        /**
+         * 开启软键盘
+         */
+        payMoney.requestFocus();
+        if (!TextUtils.isEmpty(payMoney.getText().toString())) {
+            payMoney.setSelection(payMoney.getText().toString().length());
+        }
+        mHandler.postDelayed(new Runnable(){
+            public void run() {
+                InputMethodUtil.openSoftKeyboard(activity, payMoney);
+            }
+        }, 500);
     }
 
 
@@ -212,10 +253,36 @@ public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
             //保存按钮
             case R.id.tv_debt_new_even_debt_save:
                 if (!FastClickUtils.isFastClick()) {
-                    saveDebt();
+                    if (fastDebtDetail == null) {
+                        saveDebt();
+                    } else {
+                        deleteDebt();
+                    }
                 }
                 break;
         }
+    }
+
+    private void deleteDebt() {
+        Api.getInstance().deleteFastDebt(UserHelper.getInstance(activity).getProfile().getId(), fastDebtDetail.getId())
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       saveDebt();
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+
+                            }
+                        });
     }
 
     /**
@@ -275,8 +342,5 @@ public class FastAddDebtNewEvenFragment extends BaseComponentFragment{
 
                     }
                 });
-
     }
-
-
 }

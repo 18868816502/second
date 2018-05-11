@@ -2,12 +2,10 @@ package com.beihui.market.ui.adapter;
 
 
 import android.graphics.Color;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.FastDebtDetail;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -17,23 +15,23 @@ import java.util.List;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
- * 网贷详情适配器
+ * 快速记账详情适配器
  */
-public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBean, BaseViewHolder> {
+public class FastDebtDetailRVAdapter extends BaseQuickAdapter<FastDebtDetail.DetailListBean, BaseViewHolder> {
 
-    private List<DebtDetail.RepayPlanBean> dataSet = new ArrayList<>();
+    private List<FastDebtDetail.DetailListBean> dataSet = new ArrayList<>();
 
     public int currentIndex;
 
     private int[] colors = {Color.WHITE, Color.parseColor("#424251"), Color.parseColor("#909298"), Color.parseColor("#ff395e")};
     private String[] status = {"", "待还", "已还", "逾期"};
 
-    public DebtDetailRVAdapter() {
+    public FastDebtDetailRVAdapter() {
         super(R.layout.list_item_debt_detail_pay_plan);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, DebtDetail.RepayPlanBean item) {
+    protected void convert(final BaseViewHolder helper, FastDebtDetail.DetailListBean item) {
         helper.setText(R.id.th, item.getTermNo() + "期")      //设置期数
                 .setText(R.id.date, item.getTermRepayDate().replace("-", "."))    //设置日期
                 .setText(R.id.amount, "￥" + keep2digitsWithoutZero(item.getTermPayableAmount()))  //设置金额
@@ -43,7 +41,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
 
     }
 
-    public void notifyPayPlanChanged(List<DebtDetail.RepayPlanBean> list, int currentTerm) {
+    public void notifyPayPlanChanged(List<FastDebtDetail.DetailListBean> list, int currentTerm) {
         currentIndex = currentTerm;
         dataSet.clear();
         if (list != null && list.size() > 0) {

@@ -35,11 +35,13 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtDetailComponent;
 import com.beihui.market.injection.module.DebtDetailModule;
 import com.beihui.market.ui.adapter.DebtDetailRVAdapter;
+import com.beihui.market.ui.adapter.FastDebtDetailRVAdapter;
 import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
+import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
@@ -63,8 +65,6 @@ import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 public class FastDebtDetailActivity extends BaseComponentActivity {
 
     private static final int REQUEST_CODE_EDIT = 1;
-
-    static final String[] PAY_METHOD = {"到期一次性还款", "每月等额还款", "等额本金"};
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -132,7 +132,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
     }
 
     //期数列表适配器
-    private DebtDetailRVAdapter adapter;
+    private FastDebtDetailRVAdapter adapter;
     //头布局
     private Header header;
 
@@ -141,7 +141,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
     //分期账单ID
     private String billId;
 
-
+    //数据源 （包括列表数据 以及头数据ShowBill）
     private FastDebtDetail fastDebtDetail;
 
     /**
@@ -164,6 +164,13 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         debtId = intent.getStringExtra("debt_id");
         billId = intent.getStringExtra("bill_id");
 
+        loadDebtDetail();
+    }
+
+    /**
+     * 获取账单详情
+     */
+    private void loadDebtDetail() {
         Api.getInstance().queryFastDebtBillDetail(UserHelper.getInstance(this).getProfile().getId(),billId, debtId)
                 .compose(RxUtil.<ResultEntity<FastDebtDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<FastDebtDetail>>() {
@@ -195,7 +202,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 .inflate(R.layout.layout_debt_detail_header, recyclerView, false));
 
         /**
-         * 修改备注
+         * 修改备注 其实就是快捷记账的名称
          */
         header.remarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,34 +210,32 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
                     @Override
                     public void onNickNameChanged(final String remark) {
-                        if (TextUtils.isEmpty(remark) || remark.length() > 50) {
-                            Toast.makeText(FastDebtDetailActivity.this, "备注不能为空或者字数过多", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Api.getInstance().updateLoanOrCreditCardRemark(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), remark, debtId, 1)
-                                    .compose(RxUtil.<ResultEntity>io2main())
-                                    .subscribe(new Consumer<ResultEntity>() {
-                                                   @Override
-                                                   public void accept(ResultEntity result) throws Exception {
-                                                       if (result.isSuccess()) {
-                                                           header.remarkContent.setText(remark);
-                                                       } else {
-                                                           Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                                       }
+                        Api.getInstance().updateFastDebtName(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), billId, remark)
+                                .compose(RxUtil.<ResultEntity>io2main())
+                                .subscribe(new Consumer<ResultEntity>() {
+                                               @Override
+                                               public void accept(ResultEntity result) throws Exception {
+                                                   if (result.isSuccess()) {
+                                                       header.remarkContent.setText(remark);
+                                                   } else {
+                                                       Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
-                                               },
-                                            new Consumer<Throwable>() {
-                                                @Override
-                                                public void accept(Throwable throwable) throws Exception {
-                                                    Log.e("exception_custom", throwable.getMessage());
-                                                }
-                                            });;
-                        }
+                                               }
+                                           },
+                                        new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(Throwable throwable) throws Exception {
+                                                Log.e("exception_custom", throwable.getMessage());
+                                            }
+                                        });;
                     }
                 }).show(getSupportFragmentManager(), "remark");
             }
         });
 
-        adapter = new DebtDetailRVAdapter();
+        //创建适配器
+        adapter = new FastDebtDetailRVAdapter();
+        //添加头布局
         adapter.setHeaderView(header.itemView);
         /**
          * Item的点击事件
@@ -238,10 +243,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
                 ((TextView)view.findViewById(R.id.th)).setTextColor(Color.RED);
                 FastDebtDetailActivity.this.adapter.setThTextColor(position);
-//                presenter.clickSetStatus(position);
+                showSetStatus(position,  fastDebtDetail.getDetailList().get(position).getStatus());
             }
         });
         recyclerView.setAdapter(adapter);
@@ -288,11 +292,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 showMenu(true, fastDebtDetail.getRemind() != -1);
-
             }
         });
         //全部待还金额
-        header.debtTermAmount.setText(keep2digitsWithoutZero(fastDebtDetail.getStayReturnedAmount()));
+        header.debtTermAmount.setText(keep2digitsWithoutZero(fastDebtDetail.payableAmount));
         /**
          * 判断是一次性还款还是分期还款
          * termType 1 为一次性还款 2 分期还款
@@ -302,7 +305,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             header.debtPayDay.setText("一次性还款");
         } else {
             //还款期数 当前期/总期数
-            header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
+            header.debtPayDay.setText(fastDebtDetail.showBill.termNo + "/" + fastDebtDetail.getTerm());
         }
 
         //当期还款日
@@ -321,8 +324,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 设置标题
          */
-        String titleName = isEmpty(fastDebtDetail.getProjectName()) ? "快捷记账" : fastDebtDetail.getProjectName();
-        title.setText(titleName);
+        title.setText("快捷记账");
 
         /**
          * 当前期是否已还状态
@@ -343,6 +345,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         } else {
             mFootRoot.setVisibility(View.GONE);
         }
+
+        /**
+         * 设置已还
+         */
         footSetAllPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -350,21 +356,23 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             }
         });
 
+        /**
+         * 还部分
+         */
         footSetPartPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showSetPartPayDialog(fastDebtDetail, index);
+                showSetPartPayDialog(index);
             }
         });
 
-//        adapter.notifyPayPlanChanged(fastDebtDetail.getRepayPlan(), fastDebtDetail.showBill.termNo);
-
-
-
+        adapter.notifyPayPlanChanged(fastDebtDetail.getDetailList(), fastDebtDetail.showBill.termNo);
     }
 
 
-
+    /**
+     * 设置已还 或者未还 使用index获取list的分期账单ID
+     */
     public int index;
 
     /**
@@ -401,40 +409,36 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
     /**
      * 还部分
-     * @param index
      */
-    private void showSetPartPayDialog(final DebtDetail debtDetail, final int index) {
+    private void showSetPartPayDialog(final int pos) {
         BillEditAmountDialog dialog = new BillEditAmountDialog()
                 .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
                     @Override
-                    public void onEditAmountConfirm(double amount) {
-                        if (amount > debtDetail.showBill.termPayableAmount) {
-                            Toast.makeText(FastDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Api.getInstance().updateDebtStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), amount, 2)
-                                    .compose(RxUtil.<ResultEntity>io2main())
-                                    .subscribe(new Consumer<ResultEntity>() {
-                                                   @Override
-                                                   public void accept(ResultEntity result) throws Exception {
-                                                       if (result.isSuccess()) {
-                                                           Toast.makeText(FastDebtDetailActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
-                                                            /*
-                                                      * 刷新数据
-                                                      * xhb
-                                                      */
-//                                                           presenter.loadDebtDetail(billId);
+                    public void onEditAmountConfirm(final double amount) {
+                        final String billId = index == -1 ? fastDebtDetail.showBill.getId() : fastDebtDetail.getDetailList().get(pos).getId();
+                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(),  billId, debtId, 2,  amount)
+                                .compose(RxUtil.<ResultEntity>io2main())
+                                .subscribe(new Consumer<ResultEntity>() {
+                                               @Override
+                                               public void accept(ResultEntity result) throws Exception {
+                                                   if (result.isSuccess()) {
+                                                       if (amount - fastDebtDetail.getDetailList().get(pos).getRepayedAmount() < 0.01) {
+                                                           loadDebtDetail();
                                                        } else {
-                                                           Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                            //更新成功后刷新数据
+                                                           updateLoanDetail(billId);
                                                        }
+                                                   } else {
+                                                       showErrorMsg(result.getMsg());
                                                    }
-                                               },
-                                            new Consumer<Throwable>() {
-                                                @Override
-                                                public void accept(Throwable throwable) throws Exception {
-                                                    Log.e("exception_custom", throwable.getMessage());
-                                                }
-                                            });
-                        }
+                                               }
+                                           },
+                                        new Consumer<Throwable>() {
+                                            @Override
+                                            public void accept(Throwable throwable) throws Exception {
+                                                Log.e("exception_custom", throwable.getMessage());
+                                            }
+                                        });
                     }
                 });
         dialog.show(FastDebtDetailActivity.this.getSupportFragmentManager(), "paypart");
@@ -450,10 +454,29 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
                 if (v.getId() == R.id.confirm) {
-//                    presenter.updateDebtStatus(pos, 2);
+                    final String billId = index == -1 ? fastDebtDetail.showBill.getId() : fastDebtDetail.getDetailList().get(pos).getId();
+                    Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(),  billId, debtId, 2, null)
+                            .compose(RxUtil.<ResultEntity>io2main())
+                            .subscribe(new Consumer<ResultEntity>() {
+                                           @Override
+                                           public void accept(ResultEntity result) throws Exception {
+                                               if (result.isSuccess()) {
+                                                   //更新成功后刷新数据
+                                                   updateLoanDetail(billId);
+                                               } else {
+                                                   showErrorMsg(result.getMsg());
+                                               }
+                                           }
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(Throwable throwable) throws Exception {
+                                            Log.e("exception_custom", throwable.getMessage());
+                                        }
+                                    });
                 }
+                dialog.dismiss();
             }
         };
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
@@ -471,14 +494,6 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         dialog.show();
     }
 
-    /**
-     * 设置已还回调
-     * @param msg 相关消息
-     */
-    public void showUpdateStatusSuccess(String msg) {
-        //粗鲁的刷新账单
-//        presenter.loadDebtDetail(billId);
-    }
 
     /**
      * 标题栏 右上角事件 点击弹窗
@@ -493,14 +508,20 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                      public void onClick(View v) {
                                          dialog.dismiss();
                                          if (v.getId() == R.id.edit) {
-//                                             presenter.editDebt();
+                                             /**
+                                          * 跳转到快捷记账的编辑页面
+                                          */
+                                             navigateAddDebt();
                                          } else if (v.getId() == R.id.delete) {
                                              new CommNoneAndroidDialog().withMessage("确认删除该提醒吗？")
                                                      .withNegativeBtn("取消", null)
                                                      .withPositiveBtn("确认", new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
-//                                                             presenter.deleteDebt();
+                                                             /**
+                                                        * 删除账单
+                                                        */
+                                                             deleteDebt();
                                                          }
                                                      })
                                                      .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
@@ -510,18 +531,75 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                //更新还款提醒
-//                                presenter.clickUpdateRemind();
+                                /**
+                              * 更新还款提醒
+                              */
+                                 clickUpdateRemind();
                             }
                         })
                 .attachInitStatus(remind).show(getSupportFragmentManager(), "Operation");
 
     }
 
+    /**
+     * 更新还款提醒
+     */
+    private void clickUpdateRemind() {
+        final int remind = fastDebtDetail.getRemind() == -1 ? 1 : -1;
+        Api.getInstance().updateRemindStatus(UserHelper.getInstance(this).getProfile().getId(), fastDebtDetail.getId(), null, remind)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       fastDebtDetail.setRemind(remind);
+                                       showUpdateRemind(fastDebtDetail.getRemind() != -1);
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+                            }
+                        });
+    }
+
+    /**
+     * 更新还款提醒
+     */
     public void showUpdateRemind(boolean remind) {
         if (dialog != null) {
             dialog.updateRemind(remind);
         }
+    }
+
+    /**
+     * 删除账单
+     */
+    private void deleteDebt() {
+        Api.getInstance().deleteFastDebt(UserHelper.getInstance(this).getProfile().getId(), debtId)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       showDeleteDebtSuccess("删除成功");
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+
+                            }
+                        });
+
     }
 
     /**
@@ -543,12 +621,11 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
     /**
      * 跳转到编辑 详情页面
-     * @param debtDetail 借款详情
      */
-    public void navigateAddDebt(DebtDetail debtDetail) {
+    public void navigateAddDebt() {
         //一次性还款付息，等额本息跳转到新版本界面
-        Intent intent = new Intent(this, DebtNewActivity.class);
-        intent.putExtra("debt_detail", debtDetail);
+        Intent intent = new Intent(this, FastAddDebtActivity.class);
+        intent.putExtra("fast_debt_detail", fastDebtDetail);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 
@@ -559,11 +636,13 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 判断是一次性还款还是分期还款
          * termType 1 为一次性还款 2 分期还款
+         *
+         * 如果是一次性还款则关闭页面 如果是分期付款则刷新数据
          */
-//        if (debtDetail.getRepayType()== 1) {
-//            finish();
-//        } else {
-////            presenter.loadDebtDetail(billId);
-//        }
+        if (fastDebtDetail.getRepayType()== 1) {
+            finish();
+        } else {
+            loadDebtDetail();
+        }
     }
 }

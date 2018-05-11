@@ -71,6 +71,8 @@
 
             <com.beihui.market.view.ClearEditText
                 android:id="@+id/cet_even_debt_pay_money"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:background="@null"

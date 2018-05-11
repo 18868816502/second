@@ -4,6 +4,7 @@ package com.beihui.market.ui.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -83,6 +84,8 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
     @Inject
     DebtNewPresenter presenter;
 
+    public Handler mHandler = new Handler();
+
     //依附的Activity
     private FragmentActivity activity;
 
@@ -151,6 +154,19 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
         } else {
             accountNameRoot.setVisibility(View.GONE);
         }
+
+        /**
+         * 开启软键盘
+         */
+        payMoney.requestFocus();
+        if (!TextUtils.isEmpty(payMoney.getText().toString())) {
+            payMoney.setSelection(payMoney.getText().toString().length());
+        }
+        mHandler.postDelayed(new Runnable(){
+            public void run() {
+                InputMethodUtil.openSoftKeyboard(activity, payMoney);
+            }
+        }, 500);
     }
 
     @Override
@@ -257,38 +273,25 @@ public class DebtNewEvenFragment extends BaseComponentFragment implements DebtNe
      */
     @Override
     public void bindDebtDetail(DebtDetail debtDetail) {
-//        //首次还款日
-//        try {
-//            tvDebtPayDay.setTag(dateFormat.parse(debtDetail.getFirstRepayDate()));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        tvDebtPayDay.setText(debtDetail.getFirstRepayDate());
-//        //借款期限
-//        int monthLimit = debtDetail.getTerm();
-//        tvDebtTimeLimit.setText(monthLimit + "个月");
-//        tvDebtTimeLimit.setTag(monthLimit);
-//        //借款金额
-//        String amount = keep2digitsWithoutZero(debtDetail.getTermPayableAmount());
-//        if (amount.contains(",")) {
-//            amount = amount.replace(",", "");
-//        }
-//        etDebtTermAmount.setText(amount);
-//        //备注
-//        etRemark.setText(TextUtils.isEmpty(debtDetail.getRemark()) ? "" : debtDetail.getRemark());
-//        //高级模板
-//        if (debtDetail.getCapital() > 0) {
-//            //展开高级模板
-//            tvDebtInfoExpandCollapse.setSelected(true);
-//            tvDebtInfoExpandCollapse.setText(tvDebtInfoExpandCollapse.isSelected() ? "隐藏更多信息" : "添加更多信息");
-//            flDebtExtraInfoBlock.setVisibility(tvDebtInfoExpandCollapse.isSelected() ? View.VISIBLE : View.GONE);
-//            //借款本金
-//            String capital = keep2digitsWithoutZero(debtDetail.getCapital());
-//            if (capital.contains(",")) {
-//                capital = capital.replace(",", "");
-//            }
-//            etDebtCapitalAmount.setText(capital);
-//        }
+        //首次还款日
+        try {
+            firstDate.setTag(dateFormat.parse(debtDetail.getFirstRepayDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        firstDate.setText(debtDetail.getFirstRepayDate());
+        //借款期限
+        int monthLimit = debtDetail.getTerm();
+        times.setText(monthLimit + "个月");
+        times.setTag(monthLimit);
+        //借款金额
+        String amount = keep2digitsWithoutZero(debtDetail.getTermPayableAmount());
+        if (amount.contains(",")) {
+            amount = amount.replace(",", "");
+        }
+        payMoney.setText(amount);
+        //备注
+        remark.setText(TextUtils.isEmpty(debtDetail.getRemark()) ? "" : debtDetail.getRemark());
     }
 
     @Override

@@ -293,8 +293,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                        if (result.isSuccess()) {
                                                                            //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                                            /**
-                                                                            * 如果还部分金额与待还金额相同 则需要回到首屏
-                                                                            */
+                                                                    * 如果还部分金额与待还金额相同 则需要回到首屏
+                                                                    */
                                                                            if (accountBill.getAmount() - amount < 0.01) {
                                                                                ((TabAccountFragment) mFragment).initStatus();
                                                                            } else {

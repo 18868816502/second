@@ -1,6 +1,9 @@
 package com.beihui.market.entity;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.List;
  * @version 3.0.1
  * 快速记账详情bean
  */
-public class FastDebtDetail implements Serializable {
+public class FastDebtDetail implements Parcelable {
 
 
     /**
@@ -56,6 +59,69 @@ public class FastDebtDetail implements Serializable {
     public String firstRepayDate;
     public List<DetailListBean> detailList = new ArrayList<>();
     public ShowBillBean showBill;
+
+    protected FastDebtDetail(Parcel in) {
+        id = in.readString();
+        userId = in.readString();
+        projectName = in.readString();
+        repayType = in.readInt();
+        payableAmount = in.readDouble();
+        startDate = in.readString();
+        term = in.readInt();
+        remark = in.readString();
+        status = in.readInt();
+        gmtCreate = in.readString();
+        gmtModify = in.readString();
+        remind = in.readInt();
+        returnedTerm = in.readInt();
+        stayReturnedAmount = in.readDouble();
+        termRepayDate = in.readString();
+        termPayableAmount = in.readDouble();
+        firstRepayDate = in.readString();
+        detailList = in.createTypedArrayList(DetailListBean.CREATOR);
+        showBill = in.readParcelable(ShowBillBean.class.getClassLoader());
+    }
+
+    public static final Creator<FastDebtDetail> CREATOR = new Creator<FastDebtDetail>() {
+        @Override
+        public FastDebtDetail createFromParcel(Parcel in) {
+            return new FastDebtDetail(in);
+        }
+
+        @Override
+        public FastDebtDetail[] newArray(int size) {
+            return new FastDebtDetail[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.userId);
+        dest.writeString(this.projectName);
+        dest.writeInt(this.repayType);
+        dest.writeDouble(this.payableAmount);
+        dest.writeString(this.startDate);
+        dest.writeInt(this.term);
+        dest.writeString(this.remark);
+        dest.writeInt(this.status);
+        dest.writeString(this.gmtCreate);
+        dest.writeString(this.gmtModify);
+        dest.writeInt(this.remind);
+        dest.writeInt(this.returnedTerm);
+        dest.writeDouble(this.stayReturnedAmount);
+        dest.writeString(this.termRepayDate);
+        dest.writeDouble(this.termPayableAmount);
+        dest.writeString(this.firstRepayDate);
+        dest.writeTypedList(this.detailList);
+        dest.writeParcelable(this.showBill, 0);
+    }
+
 
     public String getId() {
         return id;
@@ -153,14 +219,6 @@ public class FastDebtDetail implements Serializable {
         this.remind = remind;
     }
 
-    public ShowBillBean getShowBill() {
-        return showBill;
-    }
-
-    public void setShowBill(ShowBillBean showBill) {
-        this.showBill = showBill;
-    }
-
     public int getReturnedTerm() {
         return returnedTerm;
     }
@@ -209,7 +267,15 @@ public class FastDebtDetail implements Serializable {
         this.detailList = detailList;
     }
 
-    public static class ShowBillBean {
+    public ShowBillBean getShowBill() {
+        return showBill;
+    }
+
+    public void setShowBill(ShowBillBean showBill) {
+        this.showBill = showBill;
+    }
+
+    public static class ShowBillBean implements Parcelable{
         /**
          * id : c5ad045e4efb42feab40520619bd2deb
          * userId : 9477aa0c6de641d7adb1eb3e3600c42a
@@ -235,6 +301,52 @@ public class FastDebtDetail implements Serializable {
         public String gmtModify;
         public double repayedAmount;
         public int returnDay;
+
+        protected ShowBillBean(Parcel in) {
+            id = in.readString();
+            userId = in.readString();
+            recordId = in.readString();
+            termNo = in.readInt();
+            termRepayDate = in.readString();
+            termPayableAmount = in.readDouble();
+            status = in.readInt();
+            gmtCreate = in.readString();
+            gmtModify = in.readString();
+            repayedAmount = in.readDouble();
+            returnDay = in.readInt();
+        }
+
+        public static final Creator<ShowBillBean> CREATOR = new Creator<ShowBillBean>() {
+            @Override
+            public ShowBillBean createFromParcel(Parcel in) {
+                return new ShowBillBean(in);
+            }
+
+            @Override
+            public ShowBillBean[] newArray(int size) {
+                return new ShowBillBean[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.userId);
+            dest.writeString(this.recordId);
+            dest.writeInt(this.termNo);
+            dest.writeString(this.termRepayDate);
+            dest.writeDouble(this.termPayableAmount);
+            dest.writeInt(this.status);
+            dest.writeString(this.gmtCreate);
+            dest.writeString(this.gmtModify);
+            dest.writeDouble(this.repayedAmount);
+            dest.writeInt(this.returnDay);
+        }
 
         public String getId() {
             return id;
@@ -325,7 +437,7 @@ public class FastDebtDetail implements Serializable {
         }
     }
 
-    public static class DetailListBean {
+    public static class DetailListBean implements Parcelable{
         /**
          * id : c5ad045e4efb42feab40520619bd2deb
          * userId : 9477aa0c6de641d7adb1eb3e3600c42a
@@ -339,7 +451,6 @@ public class FastDebtDetail implements Serializable {
          * repayedAmount : 0.0
          * returnDay : 0
          */
-
         private String id;
         private String userId;
         private String recordId;
@@ -351,6 +462,52 @@ public class FastDebtDetail implements Serializable {
         private String gmtModify;
         private double repayedAmount;
         private int returnDay;
+
+        protected DetailListBean(Parcel in) {
+            id = in.readString();
+            userId = in.readString();
+            recordId = in.readString();
+            termNo = in.readInt();
+            termRepayDate = in.readString();
+            termPayableAmount = in.readDouble();
+            status = in.readInt();
+            gmtCreate = in.readString();
+            gmtModify = in.readString();
+            repayedAmount = in.readDouble();
+            returnDay = in.readInt();
+        }
+
+        public static final Creator<DetailListBean> CREATOR = new Creator<DetailListBean>() {
+            @Override
+            public DetailListBean createFromParcel(Parcel in) {
+                return new DetailListBean(in);
+            }
+
+            @Override
+            public DetailListBean[] newArray(int size) {
+                return new DetailListBean[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.userId);
+            dest.writeString(this.recordId);
+            dest.writeInt(this.termNo);
+            dest.writeString(this.termRepayDate);
+            dest.writeDouble(this.termPayableAmount);
+            dest.writeInt(this.status);
+            dest.writeString(this.gmtCreate);
+            dest.writeString(this.gmtModify);
+            dest.writeDouble(this.repayedAmount);
+            dest.writeInt(this.returnDay);
+        }
 
         public String getId() {
             return id;
