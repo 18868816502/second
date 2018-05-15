@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 8
-        versionName "3.0.0"
+        versionCode 9
+        versionName "3.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi target_sdk_version
@@ -69,15 +69,15 @@ android {
 
             applicationId "com.beihui.market"
 
-//            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
 
 //            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
 //            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
-
-            buildConfigField("String", "DOMAIN", "\"http://192.168.1.179:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
+//
+//            buildConfigField("String", "DOMAIN", "\"http://192.168.1.179:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
 
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
@@ -98,34 +98,34 @@ android {
             signingConfig signingConfigs.loanmarket
         }
 
-//        loanmarkettest {
-//            dimension "id"
-//
-//            applicationId "com.beihui.market.test"
-//
-//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-//
-//            manifestPlaceholders = [
-//                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
-//                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
-//                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
-//
-//                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-//
-//                    qqappid         : "1106280475",
-//
-//                    PACKAGE_NAME    : applicationId
-//            ]
-//
-//            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-//            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
-//            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
-//
-//            signingConfig signingConfigs.loanmarkettest
-//        }
+        loanmarkettest {
+            dimension "id"
 
-//        anbei { dimension "channel" }
+            applicationId "com.beihui.market.test"
+
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+
+            manifestPlaceholders = [
+                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
+                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
+                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
+
+                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
+
+                    qqappid         : "1106280475",
+
+                    PACKAGE_NAME    : applicationId
+            ]
+
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+
+            signingConfig signingConfigs.loanmarkettest
+        }
+
+        anbei { dimension "channel" }
 //        baidu { dimension "channel" }
 //        market91 { dimension "channel" }
 //        anzhuomarket { dimension "channel" }
@@ -148,8 +148,8 @@ android {
 //        anfen { dimension "channel" }
 //        anzhuoyuan { dimension "channel" }
 //        lvan { dimension "channel" }
-        jifeng  { dimension "channel" }
-        h5 { dimension "channel" }
+//        jifeng  { dimension "channel" }
+//        h5 { dimension "channel" }
 
 
         productFlavors.all { flavor ->

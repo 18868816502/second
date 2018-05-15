@@ -151,4 +151,9 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
         CreditCardDebtDetailActivity.putExtra(intent, bill.getRecordId(), bill.getBillId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
         startActivityForResult(intent, 1);
     }
+
+    @Override
+    public void navigateFastDebtDetail(LoanBill.Row loanBill) {
+        //
+    }
 }

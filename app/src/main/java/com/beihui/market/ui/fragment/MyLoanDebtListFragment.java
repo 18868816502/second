@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.beihui.market.entity.LoanBill;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMyLoanBillComponent;
 import com.beihui.market.injection.module.MyLoanBillModule;
+import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
@@ -40,6 +42,7 @@ import butterknife.BindView;
 public class MyLoanDebtListFragment extends BaseComponentFragment implements MyLoanBillContract.View {
 
     private final int billType = 1;
+    private final int FastbillType = 3;
 
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
@@ -55,6 +58,9 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     MyLoanBillPresenter presenter;
 
     private MyLoanBillDebtAdapter adapter;
+
+    public int mPosition = 1;
+
 
     @Override
     public void onDestroyView() {
@@ -77,13 +83,15 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void configViews() {
+        mPosition = ((MyDebtActivity)getActivity()).mPosition;
+
         stateLayout.setStateViewProvider(new DebtStateProvider());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyLoanBillDebtAdapter(R.layout.rv_item_loan_debt, billType);
+        adapter = new MyLoanBillDebtAdapter(R.layout.rv_item_loan_debt, mPosition == 1 ? billType : FastbillType);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                presenter.fetchLoanBill(billType);
+                presenter.fetchLoanBill(mPosition == 1 ? billType : FastbillType);
             }
         }, recyclerView);
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -107,7 +115,7 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void initDatas() {
-        presenter.fetchLoanBill(billType);
+        presenter.fetchLoanBill(mPosition == 1 ? billType : FastbillType);
     }
 
     @Override
@@ -145,6 +153,10 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
         }
     }
 
+    /**
+     * 跳转到网贷账单详情
+     * @param bill 账单
+     */
     @Override
     public void navigateLoanDebtDetail(LoanBill.Row bill) {
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
@@ -156,5 +168,13 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     @Override
     public void navigateBillDebtDetail(LoanBill.Row bill) {
         //
+    }
+
+    @Override
+    public void navigateFastDebtDetail(LoanBill.Row loanBill) {
+        Intent intent = new Intent(getContext(), FastDebtDetailActivity.class);
+        intent.putExtra("debt_id", loanBill.getRecordId());
+        intent.putExtra("bill_id", loanBill.getBillId());
+        startActivity(intent);
     }
 }

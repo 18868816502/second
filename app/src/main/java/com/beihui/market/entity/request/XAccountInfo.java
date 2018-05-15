@@ -52,6 +52,12 @@ public class XAccountInfo implements Serializable {
     //	最近逾期 true：是，false：否
     private boolean lastOverdue = false;
 
+    //出账日期
+    public String billDate;
+
+    //距离出账单日
+    public int outBillDay;
+
     public boolean isAnalog = false;
 
 

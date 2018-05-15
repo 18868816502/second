@@ -210,13 +210,14 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
                     @Override
                     public void onNickNameChanged(final String remark) {
-                        Api.getInstance().updateFastDebtName(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), billId, remark)
+                        Api.getInstance().updateFastDebtName(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtId, remark)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
                                                        header.remarkContent.setText(remark);
+                                                       fastDebtDetail.setProjectName(remark);
                                                    } else {
                                                        Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -319,7 +320,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getRemark())? "备注" : fastDebtDetail.getRemark());
+        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : fastDebtDetail.getProjectName());
 
         /**
          * 设置标题
@@ -422,7 +423,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       if (amount - fastDebtDetail.getDetailList().get(pos).getRepayedAmount() < 0.01) {
+                                                       if (amount - fastDebtDetail.getDetailList().get(pos).getTermPayableAmount() < 0.01) {
                                                            loadDebtDetail();
                                                        } else {
                                                             //更新成功后刷新数据

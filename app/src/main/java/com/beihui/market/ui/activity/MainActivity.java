@@ -1,7 +1,6 @@
 package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -19,10 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,18 +30,20 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
-import com.beihui.market.entity.request.XAccountInfo;
-import com.beihui.market.event.TabNewsWebViewFragmentClickEvent;
+import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
+import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
+import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.fragment.TabLoanFragment;
 import com.beihui.market.ui.fragment.TabMineFragment;
-import com.beihui.market.ui.fragment.TabNewsFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
@@ -66,6 +64,7 @@ import java.util.List;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -139,6 +138,94 @@ public class MainActivity extends BaseComponentActivity {
 //        }
     }
 
+    /**
+     * 广告页弹窗
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (SPUtils.getShowMainAddBanner(this)) {
+            SPUtils.setShowMainAddBanner(this, false);
+
+            Api.getInstance().querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
+                    .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
+                    .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
+                                   @Override
+                                   public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           AdBanner adBanner = result.getData().get(0);
+                                           if (!adBanner.getId().equals(SPUtils.getValue(MainActivity.this, adBanner.getId()))) {
+                                               showAdDialog(adBanner);
+                                           }
+                                           //更新广告展示时间
+                                           SPUtils.setLastAdShowTime(MainActivity.this, System.currentTimeMillis());
+                                       } else {
+                                           showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+
+                                }
+                            });
+        }
+    }
+
+    private void showAdDialog(final AdBanner ad) {
+        //umeng统计
+        Statistic.onEvent(Events.RESUME_AD_DIALOG);
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
+
+        new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //umeng统计
+                Statistic.onEvent(Events.CLICK_AD_DIALOG);
+
+                //统计点击
+                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
+
+                //是否需要登录
+                if (ad.needLogin()) {
+                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null) {
+                        UserAuthorizationActivity.launchWithPending(MainActivity.this, ad);
+                        return;
+                    }
+                }
+
+                //跳原生还是跳Web
+                if (ad.isNative()) {
+                    Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
+                    intent.putExtra("loanId", ad.getLocalId());
+                    startActivity(intent);
+
+                    SPUtils.setValue(MainActivity.this, ad.getId());
+                } else if (!TextUtils.isEmpty(ad.getUrl())) {
+                    String url = ad.getUrl();
+                    if (url.contains("USERID") && UserHelper.getInstance(MainActivity.this).getProfile() != null) {
+                        url = url.replace("USERID", UserHelper.getInstance(MainActivity.this).getProfile().getId());
+                    }
+                    Intent intent = new Intent(MainActivity.this, ComWebViewActivity.class);
+                    intent.putExtra("title", ad.getTitle());
+                    intent.putExtra("url", url);
+                    startActivity(intent);
+
+                    SPUtils.setValue(MainActivity.this, ad.getId());
+                }
+            }
+        }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
+    }
+
+
+
     @Override
     protected void onDestroy() {
         updateHelper.destroy();
@@ -168,14 +255,6 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
 
-        });
-        tabNewsRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                navigationBar.select(R.id.tab_news);
-                selectTab(R.id.tab_news);
-            }
         });
 
         navigationBar.select(R.id.tab_account);
@@ -274,7 +353,6 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabFind);
                 }
                 ft.show(tabFind);
-                EventBus.getDefault().post(new TabNewsWebViewFragmentClickEvent());
                 break;
             //我的
             case R.id.tab_mine:

@@ -33,6 +33,7 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
 
     private boolean canLoadMore;
     private int curPage = 1;
+    private int fastCurPage = 1;
 
     @Inject
     MyLoanBillPresenter(Context context, Api api, MyLoanBillContract.View view) {
@@ -42,14 +43,18 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
     }
 
     @Override
-    public void fetchLoanBill(int billTyp) {
-        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, curPage, PAGE_SIZE)
+    public void fetchLoanBill(final int billTyp) {
+        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, billTyp == 1 ? curPage : fastCurPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanBill>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanBill>>() {
                                @Override
                                public void accept(ResultEntity<LoanBill> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       curPage++;
+                                       if (billTyp == 1) {
+                                            curPage++;
+                                       } else {
+                                           fastCurPage++;
+                                       }
                                        int size = 0;
                                        if (result.getData() != null) {
                                            loanBillCount = result.getData().getTotal();
@@ -81,8 +86,10 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
         LoanBill.Row loanBill = loanBillList.get(index);
         if (loanBill.getBillType() == 1) {
             view.navigateLoanDebtDetail(loanBill);
-        } else {
+        } else if (loanBill.getBillType() == 2){
             view.navigateBillDebtDetail(loanBill);
+        } else {
+            view.navigateFastDebtDetail(loanBill);
         }
     }
 

@@ -248,7 +248,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                         /**
                                       * 是网贷
                                       */
-                                        if (accountBill.getType() == 2) {
+                                        if (accountBill.getType() == 1) {
                                             Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), amount, 2)
                                                     .compose(RxUtil.<ResultEntity>io2main())
                                                     .subscribe(new Consumer<ResultEntity>() {

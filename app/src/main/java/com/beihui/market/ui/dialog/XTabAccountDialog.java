@@ -95,15 +95,16 @@ public class XTabAccountDialog extends DialogFragment {
                 startActivity(new Intent(getContext(), EBankActivity.class));
                 dismiss();
                 break;
-            //手动记账
+            /**
+             * 快速记账
+             * 不需要渠道ID ChannelID
+             * 不需要Logo
+             * TODO 跳转到新增网贷账单页面
+             */
             case R.id.ll_dialog_tab_account_hand:
-
-                //TODO 手动记账
-                //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_CLICK_LOAN_CHANNEL);
-
+                //pv，uv统计 快捷记账按钮
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_FAST_ACCOUNT);
                 Intent intent = new Intent(getContext(), FastAddDebtActivity.class);
-//                intent.putExtra("debt_channel", getDebtChanel());
                 startActivity(intent);
                 dismiss();
                 break;
@@ -113,18 +114,5 @@ public class XTabAccountDialog extends DialogFragment {
         }
     }
 
-    /**
-     * 快速记账
-     * 不需要渠道ID ChannelID
-     * 不需要Logo
-     * TODO 跳转到新增网贷账单页面
-     */
-    public DebtChannel getDebtChanel() {
-        DebtChannel newChannel = new DebtChannel();
-        newChannel.setChannelName("自定义");
-        newChannel.setId(java.util.UUID.randomUUID().toString());
-
-        return newChannel;
-    }
 
 }

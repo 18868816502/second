@@ -83,7 +83,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
      */
     @Override
     public void loadDebtAbstract() {
-        Disposable dis = api.queryTabAccountHeaderInfo(userHelper.getProfile().getId(), 3)//获取网贷+信用卡负债摘要
+        Disposable dis = api.queryTabAccountHeaderInfo(userHelper.getProfile().getId(), 6)//获取网贷+信用卡负债摘要+快捷记账
                 .compose(RxUtil.<ResultEntity<DebtAbstract>>io2main())
                 .subscribe(new Consumer<ResultEntity<DebtAbstract>>() {
                                @Override

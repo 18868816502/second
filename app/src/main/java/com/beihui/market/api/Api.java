@@ -157,14 +157,14 @@ public class Api {
      * @param pageNo 页码
      */
     public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, int billStatus, boolean firstScreen, int pageNo, int pageSize) {
-        return service.queryTabAccountListInfo(userId, billStatus, firstScreen, pageNo, pageSize);
+        return service.queryTabAccountListInfo(userId, billStatus, firstScreen, 6, pageNo, pageSize);
     }
     /**
      * 获取账单信息列表
      * @version 3.0.0
      */
     public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, boolean firstScreen) {
-        return service.queryTabAccountListInfo(userId, firstScreen);
+        return service.queryTabAccountListInfo(userId, firstScreen, 6);
     }
 
     /**
@@ -229,11 +229,11 @@ public class Api {
      * 删除借款
      *
      * @param userId        用户id
-     * @param billId  分期账单Id
+     * @param recordId  账单Id
      * @param remark   账单名称（UI显示的是备注）
      */
-    public Observable<ResultEntity> updateFastDebtName(String userId, String billId, String remark) {
-        return service.updateFastDebtName(userId, billId, remark);
+    public Observable<ResultEntity> updateFastDebtName(String userId, String recordId, String remark) {
+        return service.updateFastDebtName(userId, recordId, remark);
     }
 
     /****************************************************************************** 分割线 **************************************************************************************/
@@ -1089,7 +1089,7 @@ public class Api {
 
         //注销packageId
 //        return service.queryBottomImage(version, "1", packageId);
-        return service.queryBottomImage(version, "1");
+        return service.queryBottomImage( "1");
     }
 
     /**

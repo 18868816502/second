@@ -69,5 +69,10 @@ public interface MyLoanBillContract {
          */
         void navigateBillDebtDetail(LoanBill.Row bill);
 
+        /**
+         * 唤醒快捷记账详情页
+         * @param loanBill
+         */
+        void navigateFastDebtDetail(LoanBill.Row loanBill);
     }
 }

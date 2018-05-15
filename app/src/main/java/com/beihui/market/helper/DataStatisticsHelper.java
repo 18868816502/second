@@ -3,6 +3,7 @@ package com.beihui.market.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.beihui.market.App;
 import com.beihui.market.api.Api;
@@ -235,6 +236,16 @@ public class DataStatisticsHelper {
      */
     public static final String ID_BILL_NET_LOAN_TAB_BY_STAGES = "NetLoadBtn0002";
 
+    /**
+     * APP开启事件
+     */
+    public static final String ID_OPEN_APP = "OPEN_APP";
+
+    /**
+     * 快捷记账按钮
+     */
+    public static final String ID_BILL_NET_FAST_ACCOUNT = "BookKeepingBtn0001";
+
     @Inject
     Api api;
     @Inject
@@ -368,6 +379,30 @@ public class DataStatisticsHelper {
             userId = SPUtils.getCacheUserId(context);
         }
         api.onCountUv(id, userId)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity resultEntity) throws Exception {
+                                   if (!resultEntity.isSuccess()) {
+                                       LogUtils.e(TAG, "count uv error event id=" + id + ", message=" + resultEntity.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                LogUtils.e(TAG, "count uv error event id = " + id + " " + throwable);
+                            }
+                        });
+    }
+
+    /**
+     * 数据统计
+     *
+     * @param id 事件id
+     */
+    public void onCountUv(final String id, String androidId) {
+        api.onCountUv(id, androidId)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

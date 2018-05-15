@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="快速记账"
+            android:text="快捷记账"
             android:textColor="@color/black_1"
             android:textSize="17sp" />
 

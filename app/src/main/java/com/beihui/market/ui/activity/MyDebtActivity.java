@@ -32,6 +32,8 @@ public class MyDebtActivity extends BaseComponentActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
+    public String[] mTabTitle = new String[]{"信用卡", "网贷", "快捷记账"};
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_my_debt;
@@ -59,6 +61,8 @@ public class MyDebtActivity extends BaseComponentActivity {
 
     }
 
+    public int mPosition = 0;
+
     class MyDebtPager extends FragmentPagerAdapter {
 
         MyDebtPager(FragmentManager fm) {
@@ -67,17 +71,18 @@ public class MyDebtActivity extends BaseComponentActivity {
 
         @Override
         public Fragment getItem(int position) {
+            mPosition = position;
             return position == 0 ? new MyCreditCardDebtListFragment() : new MyLoanDebtListFragment();
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return position == 0 ? "信用卡" : "网贷";
+            return mTabTitle[position];
         }
     }
 }

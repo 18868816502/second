@@ -88,11 +88,11 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/bill/index")
-    Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("billStatus") int billStatus, @Field("firstScreen") boolean firstScreen, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("billStatus") int billStatus, @Field("firstScreen") boolean firstScreen, @Field("billType") int billType, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/bill/index")
-    Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("firstScreen") boolean firstScreen);
+    Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("firstScreen") boolean firstScreen, @Field("billType") int billType);
 
 
     /**
@@ -170,7 +170,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/bookKeeping/updateName")
-    Observable<ResultEntity> updateFastDebtName(@Field("userId") String userId, @Field("billId") String billId, @Field("projectName") String projectName);
+    Observable<ResultEntity> updateFastDebtName(@Field("userId") String userId, @Field("recordId") String recordId, @Field("projectName") String projectName);
 
 
     /****************************************************************************** 分割线 **************************************************************************************/
@@ -700,7 +700,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/list")
 //    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform, @Field("packageId") String packageId);
-    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform);
+    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("platform") String platform);
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/sum")

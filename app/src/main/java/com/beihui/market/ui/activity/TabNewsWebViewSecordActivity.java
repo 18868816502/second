@@ -1,21 +1,14 @@
 package com.beihui.market.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -25,27 +18,11 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.beihui.market.App;
 import com.beihui.market.R;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseActivity;
-import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.event.TabNewsWebViewFragmentClickEvent;
-import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
-import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
-import com.beihui.market.helper.UserHelper;
-import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
-import com.beihui.market.umeng.Events;
-import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 

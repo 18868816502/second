@@ -36,7 +36,7 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         helper.addOnClickListener(R.id.content_container);
 //        helper.addOnClickListener(R.id.hide_show);
 
-        if (billType == 1) {
+        if (billType == 1 || billType == 3) {
             //网贷账单
             bindLoanDebt(helper, item);
         } else {
@@ -44,8 +44,8 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
             bindBillDebt(helper, item);
         }
         //是否已隐藏
-        boolean isHidden = item.getHide() == 0;//隐藏
-        helper.setVisible(R.id.is_hidden, isHidden);
+//        boolean isHidden = item.getHide() == 0;//隐藏
+//        helper.setVisible(R.id.is_hidden, isHidden);
 //        helper.setText(R.id.debt_visibility, !isHidden ? "首页隐藏" : "首页显示");
 //        helper.getView(R.id.debt_eye).setSelected(!isHidden);
 
@@ -60,16 +60,25 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
                     .load(item.getLogo())
                     .asBitmap()
                     .centerCrop()
-                    .placeholder(R.drawable.image_place_holder)
+                    .placeholder(R.drawable.mine_bank_default_icon)
                     .into((ImageView) helper.getView(R.id.channel_logo));
         } else {
-            ((ImageView) helper.getView(R.id.channel_logo)).setImageResource(R.drawable.image_place_holder);
+            ((ImageView) helper.getView(R.id.channel_logo)).setImageResource(R.drawable.mine_bank_default_icon);
         }
-        //渠道名称
-        if (!isEmpty(item.getChannelName())) {
-            helper.setText(R.id.channel_name, item.getChannelName());
+        //渠道名称 如果是快捷记账则为账单名称
+        if (billType == 1) {
+            if (!isEmpty(item.getChannelName())) {
+                helper.setText(R.id.channel_name, item.getChannelName());
+            } else {
+                helper.setText(R.id.channel_name, "");
+
+            }
         } else {
-            helper.setText(R.id.channel_name, "");
+            if (!isEmpty(item.getBillName())) {
+                helper.setText(R.id.channel_name, item.getBillName());
+            } else {
+                helper.setText(R.id.channel_name, "");
+            }
         }
         //借款金额
 //        helper.setText(R.id.debt_amount, "待还金额" + CommonUtils.keep2digitsWithoutZero(item.getAmount()) + "元");

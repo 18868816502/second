@@ -1,18 +1,20 @@
 package com.beihui.market;
 
 import android.app.Application;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.ActivityTracker;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAppComponent;
 import com.beihui.market.injection.module.ApiModule;
 import com.beihui.market.injection.module.AppModule;
 import com.beihui.market.umeng.Umeng;
+import com.beihui.market.util.SPUtils;
 import com.umeng.analytics.AnalyticsConfig;
 
 import cn.xiaoneng.uiapi.Ntalker;
@@ -31,6 +33,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        /**
+         * 用于启动首页广告
+         */
+        SPUtils.setShowMainAddBanner(this, true);
         /**
          * 调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
          * Application通过此接口提供了一套回调方法，用于让开发者对Activity的生命周期事件进行集中处理
@@ -61,6 +67,17 @@ public class App extends Application {
 
         String channel = AnalyticsConfig.getChannel(this);
         Log.e("xhb", "友盟渠道名称-----> " + channel);
+
+        /**
+         * app开启事件
+         */
+        //pv，uv统计
+        String androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (UserHelper.getInstance(this).getProfile() != null && UserHelper.getInstance(this).getProfile().getId() != null) {
+            DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
+        } else {
+            DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
+        }
     }
 
 

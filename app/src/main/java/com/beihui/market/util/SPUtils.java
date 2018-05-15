@@ -126,4 +126,27 @@ public class SPUtils {
         editor.apply();
     }
 
+    public static void setValue(Context context, String value) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(value, value);
+        editor.commit();
+    }
+
+    public static String getValue(Context context, String key) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString(key, null);
+    }
+
+    public static void setShowMainAddBanner(Context context, boolean isShow) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("showMainAdBanner", isShow);
+        editor.commit();
+    }
+
+    public static boolean getShowMainAddBanner(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("showMainAdBanner", false);
+    }
 }
