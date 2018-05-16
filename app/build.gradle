@@ -98,32 +98,32 @@ android {
             signingConfig signingConfigs.loanmarket
         }
 
-        loanmarkettest {
-            dimension "id"
-
-            applicationId "com.beihui.market.test"
-
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-
-            manifestPlaceholders = [
-                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
-                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
-                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
-
-                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-
-                    qqappid         : "1106280475",
-
-                    PACKAGE_NAME    : applicationId
-            ]
-
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
-
-            signingConfig signingConfigs.loanmarkettest
-        }
+//        loanmarkettest {
+//            dimension "id"
+//
+//            applicationId "com.beihui.market.test"
+//
+//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+//
+//            manifestPlaceholders = [
+//                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
+//                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
+//                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
+//
+//                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
+//
+//                    qqappid         : "1106280475",
+//
+//                    PACKAGE_NAME    : applicationId
+//            ]
+//
+//            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
+//            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
+//            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+//
+//            signingConfig signingConfigs.loanmarkettest
+//        }
 
         anbei { dimension "channel" }
 //        baidu { dimension "channel" }

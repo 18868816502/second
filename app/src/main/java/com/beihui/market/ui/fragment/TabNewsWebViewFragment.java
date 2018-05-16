@@ -42,9 +42,13 @@ import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
 
+import org.apache.commons.codec.Encoder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 
@@ -247,9 +251,11 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
                 Log.e("xhb", "newsUrl--->   " +newsUrl);
 
                 if (url.equals(newsUrl)) {
+                    swipeRefreshLayout.setEnabled(true);
                     comeBack.setVisibility(View.GONE);
                     newsTitleName.setText(mTitleName);
                 } else {
+                    swipeRefreshLayout.setEnabled(false);
                     String mTitleName = "";
                     if (url.contains("title")) {
                         int index = url.indexOf("?");
@@ -265,7 +271,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
                         } else {
                             mTitleName = temp.replace("title=", "");
                         }
-                        newsTitleName.setText(mTitleName);
+                        newsTitleName.setText(URLDecoder.decode(mTitleName));
                     }
                     comeBack.setVisibility(View.VISIBLE);
                 }
