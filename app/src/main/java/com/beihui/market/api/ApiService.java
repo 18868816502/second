@@ -295,6 +295,8 @@ public interface ApiService {
     @POST(BASE_PATH + "/clientUser/logout")
     Observable<ResultEntity> logout(@Field("userId") String id);
 
+
+
     /**
      * 消息中心-公告
      */
