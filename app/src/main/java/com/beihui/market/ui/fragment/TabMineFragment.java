@@ -30,6 +30,7 @@ import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
+import com.beihui.market.ui.activity.SysMsgActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
@@ -350,9 +351,15 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         startActivity(new Intent(getActivity(), UserProfileActivity.class));
     }
 
+    /**
+     * 直接进入系统消息 抛弃公告的选择
+     * @param userId 用户id
+     */
     @Override
     public void navigateMessage(String userId) {
-        startActivity( new Intent(getActivity(), MessageCenterActivity.class));
+//        startActivity( new Intent(getActivity(), MessageCenterActivity.class));
+        Intent intent = new Intent(getActivity(), SysMsgActivity.class);
+        startActivity(intent);
     }
 
     /**

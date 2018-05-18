@@ -70,6 +70,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 SysMsg.Row row = (SysMsg.Row) adapter.getData().get(position);
+                row.setIsRead(1);
+                adapter.notifyItemChanged(position);
                 if (row.getStyle() == 0) {
                     Intent intent = new Intent(SysMsgActivity.this, SysMsgDetailActivity.class);
                     intent.putExtra("sysMsg", row);

@@ -29,6 +29,7 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
             helper.setText(R.id.content, item.getExplain());
         }
         helper.setText(R.id.date, dateFormat.format(new Date(item.getGmtCreate())));
+        helper.setGone(R.id.iv_system_message_dot, item.getIsRead() == 0); //是否已读，0未读，1已读
     }
 
     public void notifySysMsgChanged(List<SysMsg.Row> list) {
