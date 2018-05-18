@@ -75,6 +75,15 @@ public class AppUpdateHelper {
                                    if (result.isSuccess() && result.getData() != null) {
                                        app = result.getData();
                                        handleUpdate(app, weakReference);
+                                       /**
+                                     * 审核 1-资讯页，2-借贷页
+                                     */
+                                       if (app.audit == 1) {
+
+                                       }
+                                       if (app.audit == 2) {
+
+                                       }
                                    }
                                }
                            },

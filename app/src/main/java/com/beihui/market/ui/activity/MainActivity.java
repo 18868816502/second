@@ -259,17 +259,16 @@ public class MainActivity extends BaseComponentActivity {
 
         navigationBar.select(R.id.tab_account);
         selectTab(R.id.tab_account);
-
-        /**
-         * 请求底部导航栏图标 文字 字体颜色
-         */
-        queryBottomImage();
     }
 
     @Override
     public void initDatas() {
         checkPermission();
         updateHelper.checkUpdate(this);
+        /**
+         * 请求底部导航栏图标 文字 字体颜色
+         */
+        queryBottomImage();
     }
 
     //空事件
