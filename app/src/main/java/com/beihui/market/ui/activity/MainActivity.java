@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.event.ShowGuide;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
@@ -49,6 +51,7 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.view.BottomNavigationBar;
+import com.beihui.market.view.MarqueeTextView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -100,6 +103,9 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_mine_text)
     TextView tabMineText;
 
+    @BindView(R.id.tv_tab_account_notice)
+    MarqueeTextView mNotice;
+
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
 
@@ -144,7 +150,6 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         if (SPUtils.getShowMainAddBanner(this)) {
             SPUtils.setShowMainAddBanner(this, false);
 
@@ -259,6 +264,11 @@ public class MainActivity extends BaseComponentActivity {
 
         navigationBar.select(R.id.tab_account);
         selectTab(R.id.tab_account);
+
+        mNotice.setText("广播");
+        mNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mNotice.requestFocus();
+        mNotice.setFocusableInTouchMode(true);
     }
 
     @Override
@@ -344,6 +354,7 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
+                EventBus.getDefault().post(new ShowGuide());
                 break;
             //发现
             case R.id.tab_news:

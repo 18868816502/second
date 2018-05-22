@@ -47,6 +47,7 @@ import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
+import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
@@ -234,6 +235,14 @@ public class Api {
      */
     public Observable<ResultEntity> updateFastDebtName(String userId, String recordId, String remark) {
         return service.updateFastDebtName(userId, recordId, remark);
+    }
+
+    /**
+     * @version 3.1.0
+     * @desc 首页列表
+     */
+    public Observable<ResultEntity<TabAccountBean>> queryTabAccountList(String userId) {
+        return service.queryTabAccountList(userId);
     }
 
     /****************************************************************************** 分割线 **************************************************************************************/

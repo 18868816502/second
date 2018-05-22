@@ -4,17 +4,10 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/iv_bill_guide_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:src="@drawable/bill_guide_arrow" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="66dp"
-        android:src="@drawable/bill_guide_click_add" />
+        android:src="@drawable/bill_guide1_icon" />
 
 </FrameLayout>

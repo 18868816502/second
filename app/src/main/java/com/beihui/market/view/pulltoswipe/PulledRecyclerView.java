@@ -49,10 +49,12 @@ public class PulledRecyclerView extends RecyclerView implements Pulled {
     public boolean canPullDown() {
         if (getLayoutManager().getChildCount()== 0) {
             // 没有item的时候也可以下拉刷新
-            return true;
+//            return true;
+            return false;
         } else if (((LinearLayoutManager)getLayoutManager()).findFirstVisibleItemPosition() == 0 && getChildAt(0).getTop() >= 0) {
             // 滑到ListView的顶部了
-            return true;
+//            return true;
+            return false;
         } else
             return false;
     }
@@ -65,8 +67,9 @@ public class PulledRecyclerView extends RecyclerView implements Pulled {
         }
 
         // 滑到底部了
-        if (computeVerticalScrollExtent() +computeVerticalScrollOffset() >= computeVerticalScrollRange())
+        if (computeVerticalScrollExtent() +computeVerticalScrollOffset() >= computeVerticalScrollRange()) {
             return true;
+        }
 
         return false;
     }

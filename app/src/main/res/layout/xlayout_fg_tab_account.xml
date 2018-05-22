@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include layout="@layout/x_pull_to_refresh_head"/>
+            <include layout="@layout/x_pull_to_refresh_head"
+                android:visibility="gone"/>
 
             <com.beihui.market.view.pulltoswipe.PulledRecyclerView
                 android:id="@+id/rv_fg_tab_account_list"

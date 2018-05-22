@@ -15,6 +15,13 @@
         <attr name="pst_textAllCaps" format="boolean" />
     </declare-styleable>
 
+    <!--LinChartView 柱形图的属性-->
+    <!-- 自定义控件的名称 -->
+    <declare-styleable name="LinChartView">
+        <!-- 自定义的属性名称 和对应的单位 -->
+        <attr name="linChartViewHeight" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="CircularProgressBar">
         <attr name="cpbStyle" format="reference" />
         <attr name="cpb_color" format="color" />

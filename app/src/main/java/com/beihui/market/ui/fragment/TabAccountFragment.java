@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +20,9 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.event.ShowGuide;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.helper.UserHelper;
@@ -34,6 +37,7 @@ import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.DebtSourceActivity;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
+import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.XTabAccountRvAdapter;
 import com.beihui.market.ui.contract.TabAccountContract;
@@ -41,6 +45,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.dialog.XTabAccountDialog;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
@@ -49,6 +54,10 @@ import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.beihui.market.view.refreshlayout.manager.ComRefreshManager;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,6 +65,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 import static com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout.DONE;
 
@@ -99,14 +112,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     //上拉与下拉的刷新监听器
     public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
-    //要查询的页数
-    public int overduePageNo = 1;
-    public int noOverduePageNo = 2;
-    //当页数据条数
-    public int pageSize = 10;
-
-    public Boolean isNoMoreData = false;
-    public Boolean isNoRefreshData = false;
 
     /**
      * 统计点击tab事件
@@ -147,11 +152,19 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 .inject(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEvent(ShowGuide showGuide) {
+        showGuide();
+    }
+
     /**
      * 初始化数据
      */
     @Override
     public void initDatas() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mActivity = getActivity();
         mAdapter = new XTabAccountRvAdapter(mActivity, this);
         LinearLayoutManager manager = new LinearLayoutManager(mActivity);
@@ -170,39 +183,23 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
             @Override
             public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                if (UserHelper.getInstance(mActivity).getProfile() == null) {
-                    showNoUserLoginBlock();
-                    mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
-                    mPullToRefreshListener.onRefresh(mPullContainer);
-                } else {
-                    if (!isNoRefreshData) {
-                        //请求的是逾期的
-                        presenter.loadInDebtList(3, false, overduePageNo, 10);
-                    } else {
-                        mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
-                        mPullToRefreshListener.onRefresh(mPullContainer);
-                    }
-                }
+                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
+                mPullToRefreshListener.onRefresh(mPullContainer);
             }
 
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
             @Override
             public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                if (UserHelper.getInstance(mActivity).getProfile() == null) {
-                    showNoUserLoginBlock();
-                    mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
-                    mPullContainer.hide();
-                } else {
-                    if (!isNoMoreData) {
-                        presenter.loadInDebtList(1, false, noOverduePageNo, 10);
-                    } else {
-                        mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
-                        mPullContainer.hide();
-                    }
-                }
+                mFootViewMoney.setVisibility(View.VISIBLE);
+                moreView.setVisibility(View.INVISIBLE);
+                mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
+                mPullContainer.hide();
             }
         });
+
+
     }
+
 
     /**
      * 查询信用卡账单采集结果
@@ -236,6 +233,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
+
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
 
@@ -273,7 +274,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void initStatus() {
         //获取头信息
         presenter.loadDebtAbstract();
-        presenter.loadInDebtList(0, true, 1, 10);
+        presenter.loadInDebtList();
         mRecyclerView.scrollToPosition(0);
     }
 
@@ -304,79 +305,63 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
      * @param list 账单列表
      */
     @Override
-    public void showInDebtList(List<XAccountInfo> list, int billType) {
-        if (billType == 0) {
-            overduePageNo=1;
-            noOverduePageNo=2;
-            isNoMoreData = false;
-            isNoRefreshData = false;
-            if (list.size() == 0) {
-                //TODO 没有数据 使用模拟数据 用户没有登录也是使用模拟数据
-                XAccountInfo analogLoan = new XAccountInfo();
-                analogLoan.isAnalog = true;
-                analogLoan.setTitle("招商银行");
-                analogLoan.setAmount(1000);
-                analogLoan.setLastOverdue(true);
-                analogLoan.setOverdueTotal(-1);
+    public void showInDebtList(List<TabAccountBean.OverdueListBean> list) {
+        if (list.size() == 0) {
+            //TODO 没有数据 使用模拟数据 用户没有登录也是使用模拟数据
+            TabAccountBean.OverdueListBean analogLoan = new TabAccountBean.OverdueListBean();
+            analogLoan.isAnalog = true;
+            analogLoan.setTitle("招商银行");
+            analogLoan.setAmount(1000);
+            analogLoan.setLastOverdue(true);
+            analogLoan.setOverdueTotal(-1);
+            analogLoan.setType(2);//账单类型 1-网贷 2-信用卡 3-快捷记账
 
-                XAccountInfo analogCard = new XAccountInfo();
-                analogCard.isAnalog = true;
-                analogCard.setTitle("分期乐");
-                analogCard.setAmount(2000);
-                analogCard.setLastOverdue(false);
-                analogCard.setOverdueTotal(0);
-                list.add(analogLoan);
-                list.add(analogCard);
+            TabAccountBean.OverdueListBean analogCard = new TabAccountBean.OverdueListBean();
+            analogCard.isAnalog = true;
+            analogCard.setTitle("分期乐");
+            analogCard.setAmount(2000);
+            analogCard.setLastOverdue(false);
+            analogCard.setOverdueTotal(0);
+            list.add(analogLoan);
+            list.add(analogCard);
+            analogLoan.setType(1);
 
-                mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
-                mLastThirtyDayWaitPayNum.setText("");
+            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
+            mLastThirtyDayWaitPayNum.setText("");
 
-            }else if (list.size() < pageSize) {
-                mFootViewMoney.setVisibility(View.VISIBLE);
-                moreView.setVisibility(View.INVISIBLE);
-
-                if (list.get(0).getOverdueTotal() <= 1) {
-                    isNoRefreshData = true;
-                }
-                isNoMoreData = true;
-            }  else {
-                mFootViewMoney.setVisibility(View.GONE);
-                moreView.setVisibility(View.VISIBLE);
-            }
-
-            mAdapter.notifyDebtChanged(list);
         }
-        if (billType == 3) {
-            if (list.size() < pageSize) {
-                isNoRefreshData = true;
-            } else {
-                isNoRefreshData = false;
-                overduePageNo++;
-            }
-            mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
-            mPullToRefreshListener.onRefresh(mPullContainer);
-            mAdapter.notifyDebtChangedRefresh(list);
-        }
-        if (billType == 1 || billType == 2) {
-            if (list.size() < pageSize) {
-                //说明上拉已经没有数据了 可以显示未还 已还数据了
-                isNoMoreData = true;
-                mFootViewMoney.setVisibility(View.VISIBLE);
-                moreView.setVisibility(View.INVISIBLE);
-                mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
-                mPullContainer.hide();
-            } else {
-                mFootViewMoney.setVisibility(View.GONE);
-                moreView.setVisibility(View.VISIBLE);
-                isNoMoreData = false;
-                noOverduePageNo++;
-
-                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
-                mPullToRefreshListener.onLoadMore(mPullContainer);
-            }
-
-            mAdapter.notifyDebtChangedMore(list);
-        }
+        mAdapter.notifyDebtChanged(list);
+//        if (billType == 3) {
+//            if (list.size() < pageSize) {
+//                isNoRefreshData = true;
+//            } else {
+//                isNoRefreshData = false;
+//                overduePageNo++;
+//            }
+//            mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
+//            mPullToRefreshListener.onRefresh(mPullContainer);
+//            mAdapter.notifyDebtChangedRefresh(list);
+//        }
+//        if (billType == 1 || billType == 2) {
+//            if (list.size() < pageSize) {
+//                //说明上拉已经没有数据了 可以显示未还 已还数据了
+//                isNoMoreData = true;
+//                mFootViewMoney.setVisibility(View.VISIBLE);
+//                moreView.setVisibility(View.INVISIBLE);
+//                mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
+//                mPullContainer.hide();
+//            } else {
+//                mFootViewMoney.setVisibility(View.GONE);
+//                moreView.setVisibility(View.VISIBLE);
+//                isNoMoreData = false;
+//                noOverduePageNo++;
+//
+//                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
+//                mPullToRefreshListener.onLoadMore(mPullContainer);
+//            }
+//
+//            mAdapter.notifyDebtChangedMore(list);
+//        }
     }
 
 
@@ -424,7 +409,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     /**
      * 需要跳转到登陆页面
-     * TODO
      */
     @Override
     public void showNoUserLoginBlock() {
@@ -477,7 +461,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
 //    private DebtRVAdapter adapter;
 
-//    private HighLight infoHighLight;
+    private HighLight infoHighLight;
 //    private boolean eyeClosed;
 //
 //    private ComRefreshManager comRefreshManager;
@@ -691,35 +675,63 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @Override
     public void showGuide() {
-//        infoHighLight = new HighLight(getActivity())
-//                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-//                    @Override
-//                    public void onLayouted() {
-//                        infoHighLight
-//                                .addHighLight(addView, R.layout.layout_tab_account_highlight_guide, new OnBaseCallback() {
-//                                    @Override
-//                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-//                                        marginInfo.rightMargin = rectF.width() / 2 + 20;
-//                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height();
-//                                    }
-//                                }, new CircleLightShape())
-//                                .addHighLight(guideConfirmAnchor, R.layout.layout_highlight_confirm, new OnBaseCallback() {
-//                                    @Override
-//                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-//                                        marginInfo.rightMargin = rightMargin / 2;
-//                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90;
-//                                    }
-//                                }, new CircleLightShape())
-//                                .autoRemove(false)
-//                                .show();
-//                        infoHighLight.getHightLightView().findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                infoHighLight.remove();
-//                            }
-//                        });
-//                    }
-//                });
+        infoHighLight = new HighLight(getActivity())
+                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                    @Override
+                    public void onLayouted() {
+                        infoHighLight
+                                .autoRemove(false)
+                                .intercept(true)
+                                .enableNext()
+                                .addHighLight(R.id.iv_tab_account_header_add, R.layout.layout_tab_account_highlight_guide, new OnBaseCallback() {
+                                    @Override
+                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                        marginInfo.rightMargin = rectF.width() / 2;
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + 3;
+                                    }
+                                }, new CircleLightShape())
+                                .addHighLight(R.id.iv_tab_account_header_bill_loan, R.layout.layout_highlight_confirm, new OnBaseCallback() {
+                                    @Override
+                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                        marginInfo.leftMargin = Px2DpUtils.dp2px(mActivity, 10);
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height();
+                                    }
+                                }, new CircleLightShape())
+                                .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {
+                                    @Override
+                                    public void onRemove() {
+                                        //监听移除回调
+                                    }
+                                })
+                                .setOnShowCallback(new HighLightInterface.OnShowCallback() {
+                                    @Override
+                                    public void onShow(HightLightView hightLightView) {
+                                        //监听显示回调
+                                    }
+                                }).setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                                    @Override
+                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                        if (targetView.getId() == R.id.iv_tab_account_header_add) {
+
+                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        infoHighLight.next();
+                                                    }
+                                                });
+                                        } else {
+                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_two).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    infoHighLight.remove();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }).show();
+                    }
+                });
     }
 
     @Override

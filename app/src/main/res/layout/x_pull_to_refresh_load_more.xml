@@ -38,6 +38,7 @@
                 android:background="@drawable/x_pull_to_refresh_loading" />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/x_load_state_tv_more_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +58,6 @@
 
             <!--账单未还总额  账单已还总额-->
             <include
-                android:visibility="gone"
                 android:id="@+id/include_tab_account_foot_view"
                 layout="@layout/xlayout_tab_account_foot_view"/>
 

@@ -27,6 +27,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AccountBill;
+import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
@@ -43,6 +44,9 @@ import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,7 +66,7 @@ import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdapter.ViewHolder> {
 
     //数据源
-    private List<XAccountInfo> dataSet = new ArrayList<>();
+    private List<TabAccountBean.OverdueListBean> dataSet = new ArrayList<>();
 
     public static final int VIEW_NORMAL = R.layout.xitem_tab_account_info;
 
@@ -104,13 +108,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final XAccountInfo accountBill = dataSet.get(position);
+        final TabAccountBean.OverdueListBean accountBill = dataSet.get(position);
         if (accountBill.isAnalog) {
+            holder.swipeMenuLayout.setSwipeEnable(false);
+            holder.mAvatar.setVisibility(View.GONE);
             //实例图标显示
             holder.mSampleIcon.setVisibility(View.VISIBLE);
             holder.mSetBg.setVisibility(View.GONE);
-            holder.mArrow.setImageDrawable(mDownArrow);
-            holder.mArrow.setEnabled(false);
+//            holder.mArrow.setImageDrawable(mDownArrow);
+//            holder.mArrow.setEnabled(false);
             //闹钟的显示
             if (position == 0) {
                 holder.mClock.setVisibility(View.GONE);
@@ -153,10 +159,13 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             });
 
         } else {
-
+            holder.swipeMenuLayout.setSwipeEnable(true);
+            holder.mAvatar.setVisibility(View.VISIBLE);
+            Glide.with(mActivity).load(accountBill.getLogoUrl()).skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.mAvatar);
             //实例图标隐藏
             holder.mSampleIcon.setVisibility(View.GONE);
-            holder.mArrow.setEnabled(true);
+//            holder.mArrow.setEnabled(true);
             //闹钟的显示
             if (position == 0) {
                 holder.mClock.setVisibility(View.VISIBLE);
@@ -172,10 +181,11 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
 
             if (accountBill.isShow) {
-                holder.mArrow.setImageDrawable(mUpArrow);
-                holder.mSetBg.setVisibility(View.VISIBLE);
+//                holder.mArrow.setImageDrawable(mUpArrow);
+//                holder.mSetBg.setVisibility(View.VISIBLE);
+                holder.mSetBg.setVisibility(View.GONE);
             } else {
-                holder.mArrow.setImageDrawable(mDownArrow);
+//                holder.mArrow.setImageDrawable(mDownArrow);
                 holder.mSetBg.setVisibility(View.GONE);
             }
 
@@ -214,21 +224,21 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
              */
             if (accountBill.getType() == 1) {
                 //显示还部分
-                holder.mSetPartPay.setVisibility(View.VISIBLE);
+                holder.payPart.setVisibility(View.VISIBLE);
             }
             if (accountBill.getType() == 2) {
                 //隐藏还部分
-                holder.mSetPartPay.setVisibility(View.GONE);
+                holder.payPart.setVisibility(View.GONE);
             }
 
-            holder.mSetAllPay.setOnClickListener(new View.OnClickListener() {
+            holder.payAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showSetAllPayDialog(accountBill);
                 }
             });
 
-            holder.mSetPartPay.setOnClickListener(new View.OnClickListener() {
+            holder.payPart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     /**
@@ -326,26 +336,26 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             /**
              * 箭头的点击事件
              */
-            holder.mArrow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (accountBill.isShow) {
-                        holder.mArrow.setImageDrawable(mDownArrow);
-                        holder.mSetBg.setVisibility(View.GONE);
-                    } else {
-                        /**
-                        * 埋点 	卡片下拉按钮点击数据
-                        */
-                        //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_ARROW);
-
-
-                        holder.mArrow.setImageDrawable(mUpArrow);
-                        holder.mSetBg.setVisibility(View.VISIBLE);
-                    }
-                    accountBill.isShow = !accountBill.isShow;
-                }
-            });
+//            holder.mArrow.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (accountBill.isShow) {
+//                        holder.mArrow.setImageDrawable(mDownArrow);
+//                        holder.mSetBg.setVisibility(View.GONE);
+//                    } else {
+//                        /**
+//                        * 埋点 	卡片下拉按钮点击数据
+//                        */
+//                        //pv，uv统计
+//                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_ARROW);
+//
+//
+//                        holder.mArrow.setImageDrawable(mUpArrow);
+//                        holder.mSetBg.setVisibility(View.VISIBLE);
+//                    }
+//                    accountBill.isShow = !accountBill.isShow;
+//                }
+//            });
 
             /**
              * 账单类型 1-网贷 2-信用卡
@@ -408,7 +418,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         return dataSet.size();
     }
 
-    public void notifyDebtChanged(List<XAccountInfo> list) {
+    public void notifyDebtChanged(List<TabAccountBean.OverdueListBean> list) {
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);
@@ -416,28 +426,29 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         notifyDataSetChanged();
     }
 
-    public void notifyDebtChangedRefresh(List<XAccountInfo> list) {
+    public void notifyDebtChangedRefresh(List<TabAccountBean.OverdueListBean> list) {
         int size = list.size();
         if (dataSet.get(0).isLastOverdue() && size > 0) {
             list.remove(0);
         }
-        ListIterator<XAccountInfo> iterator = list.listIterator();
+        ListIterator<TabAccountBean.OverdueListBean> iterator = list.listIterator();
         while (iterator.hasNext()) {
             dataSet.add(0, iterator.next());
         }
         notifyDataSetChanged();
     }
 
-    public void notifyDebtChangedMore(List<XAccountInfo> list) {
+    public void notifyDebtChangedMore(List<TabAccountBean.OverdueListBean> list) {
         dataSet.addAll(list);
         notifyDataSetChanged();
     }
 
 
+
     /**
      * 设为已还
      */
-    private void showSetAllPayDialog(final XAccountInfo accountBill) {
+    private void showSetAllPayDialog(final TabAccountBean.OverdueListBean accountBill) {
         final Dialog dialog = new Dialog(mActivity, 0);
         View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -544,15 +555,20 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public SwipeMenuLayout swipeMenuLayout;
+        public TextView payPart;
+        public TextView payAll;
+
         public ImageView mClock;
-        public ImageView mArrow;
+        public ImageView mAvatar;
+//        public ImageView mArrow;
         public ImageView mSampleIcon;
         public ImageView mDot;
         public TextView mDateName;
         public TextView mAccountTypeName;
         public TextView mAccountTypeMoney;
-        public TextView mSetAllPay;
-        public TextView mSetPartPay;
+//        public TextView mSetAllPay;
+//        public TextView mSetPartPay;
         //逾期总数
         public TextView mOverdueTotal;
 
@@ -562,15 +578,20 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
+
+            swipeMenuLayout = (SwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
+            payPart = (TextView) itemView.findViewById(R.id.tv_shape_tab_account_no_reply);
+            payAll = (TextView) itemView.findViewById(R.id.tv_shape_tab_account_reply);
             mClock = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_clock);
-            mArrow = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_arrow);
+            mAvatar = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_avatar);
+//            mArrow = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_arrow);
             mDot = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_dot);
             mSampleIcon = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_sample_icon);
             mDateName = (TextView) itemView.findViewById(R.id.tv_item_tab_account_date_name);
             mAccountTypeName = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_name_type);
             mAccountTypeMoney = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_money);
-            mSetAllPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_all_pay);
-            mSetPartPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_part_pay);
+//            mSetAllPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_all_pay);
+//            mSetPartPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_part_pay);
             mOverdueTotal = (TextView) itemView.findViewById(R.id.iv_item_tab_account_overdue_total);
 
             mCardBg = (LinearLayout) itemView.findViewById(R.id.ll_item_tab_account_card);

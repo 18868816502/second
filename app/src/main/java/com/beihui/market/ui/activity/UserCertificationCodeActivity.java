@@ -114,6 +114,8 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
             }
         };
         verifyCode.addTextChangedListener(textWatcher);
+
+        clickGetCode();
     }
 
     @Override
@@ -136,34 +138,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
              * 点击获取验证码
              */
             case R.id.fetch_text:
-                fetchText.setEnabled(false);
-
-                countDownTimer = new CountDownTimerUtils(fetchText, verifyCode);
-                countDownTimer.start();
-
-                Api.getInstance().requestPhoneLogin(pendingPhone)
-                        .compose(RxUtil.<ResultEntity<Phone>>io2main())
-                        .subscribe(new Consumer<ResultEntity<Phone>>() {
-                                       @Override
-                                       public void accept(ResultEntity<Phone> result) throws Exception {
-                                           fetchText.setEnabled(true);
-                                           if (result.isSuccess()) {
-                                               //umeng统计
-                                               Statistic.onEvent(Events.REGISTER_GET_VERIFY_SUCCESS);
-                                           } else {
-                                               //umeng统计
-                                               Statistic.onEvent(Events.REGISTER_GET_VERIFY_FAILED);
-                                               showErrorMsg(result.getMsg());
-                                           }
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        fetchText.setEnabled(true);
-                                        showErrorMsg("网络错误");
-                                    }
-                                });
+                clickGetCode();
                 break;
             //点击登录 验证验证码
             case R.id.tv_login:
@@ -198,6 +173,37 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                 });
                 break;
         }
+    }
+
+    private void clickGetCode() {
+        fetchText.setEnabled(false);
+
+        countDownTimer = new CountDownTimerUtils(fetchText, verifyCode);
+        countDownTimer.start();
+
+        Api.getInstance().requestPhoneLogin(pendingPhone)
+                .compose(RxUtil.<ResultEntity<Phone>>io2main())
+                .subscribe(new Consumer<ResultEntity<Phone>>() {
+                               @Override
+                               public void accept(ResultEntity<Phone> result) throws Exception {
+                                   fetchText.setEnabled(true);
+                                   if (result.isSuccess()) {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.REGISTER_GET_VERIFY_SUCCESS);
+                                   } else {
+                                       //umeng统计
+                                       Statistic.onEvent(Events.REGISTER_GET_VERIFY_FAILED);
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                fetchText.setEnabled(true);
+                                showErrorMsg("网络错误");
+                            }
+                        });
     }
 
 

@@ -8,6 +8,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -36,7 +37,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     private TabAccountContract.View view;
     private UserHelper userHelper;
 
-    private List<XAccountInfo> debts = new ArrayList<>();
+    private List<TabAccountBean.OverdueListBean> debts = new ArrayList<>();
 
     //账单 头信息
     private DebtAbstract anAbstract;
@@ -58,16 +59,16 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
 
             if (debts.size() > 0) {
                 view.showDebtInfo(anAbstract);
-                view.showInDebtList(debts, 0);
+                view.showInDebtList(debts);
             }
             //获取头信息
             loadDebtAbstract();
             //获取列表信息
-            loadInDebtList(0, true, 1, 10);
+            loadInDebtList();
         } else {
             //获取列表信息
-            List<XAccountInfo> list = new ArrayList<>();
-            view.showInDebtList(list, 0);
+            List<TabAccountBean.OverdueListBean> list = new ArrayList<>();
+            view.showInDebtList(list);
 
 
         }
@@ -112,26 +113,22 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
      * 获取列表信息
      */
     @Override
-    public void loadInDebtList(final int billStatus, boolean firstScreen, int pageNo, int pageSize) {
+    public void loadInDebtList() {
         if (userHelper.getProfile() == null) {
             view.showNoUserLoginBlock();
         } else{
-            Observable<ResultEntity<List<XAccountInfo>>> observable;
-            if (firstScreen) {
-                observable = api.queryTabAccountListInfo(userHelper.getProfile().getId(), true);
-            } else {
-                observable = api.queryTabAccountListInfo(userHelper.getProfile().getId(), billStatus, false, pageNo, pageSize);
-            }
-            Disposable dis = observable.compose(RxUtil.<ResultEntity<List<XAccountInfo>>>io2main())
-                    .subscribe(new Consumer<ResultEntity<List<XAccountInfo>>>() {
+            Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId())
+                  .compose(RxUtil.<ResultEntity<TabAccountBean>>io2main())
+                    .subscribe(new Consumer<ResultEntity<TabAccountBean>>() {
                                    @Override
-                                   public void accept(ResultEntity<List<XAccountInfo>> result) throws Exception {
+                                   public void accept(ResultEntity<TabAccountBean> result) throws Exception {
                                        if (result.isSuccess()) {
                                            debts.clear();
-                                           if (result.getData() != null && result.getData().size() > 0) {
-                                               debts.addAll(result.getData());
+                                           if (result.getData() != null) {
+                                               debts.addAll(result.getData().getOverdueList());
+                                               debts.addAll(result.getData().getUnpayList());
                                            }
-                                           view.showInDebtList(debts, billStatus);
+                                           view.showInDebtList(debts);
                                        } else {
                                            view.showErrorMsg(result.getMsg());
                                        }

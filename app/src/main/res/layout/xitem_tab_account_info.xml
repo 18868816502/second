@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--TODO 去掉数据-->
 <com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_menu_layout"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,10 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:paddingRight="10dp">
 
 
         <!--以此布局为基准-->
@@ -45,9 +45,18 @@
                 android:paddingRight="16dp"
                 android:paddingTop="18dp">
 
+                <ImageView
+                    android:id="@+id/iv_item_tab_account_avatar"
+                    android:visibility="gone"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"/>
+
                 <!--网贷名称 或者 信用卡名称-->
                 <TextView
                     android:id="@+id/tv_item_tab_acount_name_type"
+                    android:layout_toRightOf="@id/iv_item_tab_account_avatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
@@ -60,6 +69,7 @@
                 <!--网贷名称 或者 信用卡名称金额-->
                 <TextView
                     android:id="@+id/tv_item_tab_acount_loan_money"
+                    android:layout_toRightOf="@id/iv_item_tab_account_avatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_item_tab_acount_name_type"
@@ -77,15 +87,15 @@
                     android:layout_toRightOf="@id/tv_item_tab_acount_name_type"
                     android:src="@drawable/xbill_example_icon" />
 
-                <!--箭头-->
-                <ImageView
-                    android:id="@+id/iv_item_tab_acount_arrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:padding="10dp"
-                    android:src="@drawable/xbill_down_arrow" />
+                <!--&lt;!&ndash;箭头&ndash;&gt;-->
+                <!--<ImageView-->
+                    <!--android:id="@+id/iv_item_tab_acount_arrow"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:src="@drawable/xbill_down_arrow" />-->
 
             </RelativeLayout>
 
@@ -179,6 +189,7 @@
         android:layout_height="90dp">
 
         <TextView
+            android:id="@+id/tv_shape_tab_account_no_reply"
             android:background="@drawable/x_shape_tab_account_no_reply"
             android:text="还部分"
             android:textColor="@color/white"
@@ -189,6 +200,7 @@
             android:layout_height="44dp" />
 
         <TextView
+            android:id="@+id/tv_shape_tab_account_reply"
             android:background="@drawable/x_shape_tab_account_reply"
             android:text="设为已还"
             android:gravity="center"
