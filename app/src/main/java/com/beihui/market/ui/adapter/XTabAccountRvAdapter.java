@@ -44,6 +44,8 @@ import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.CircleImageView;
+import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
@@ -129,6 +131,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mDateName.setText("今天");
                 holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+                holder.mAccountTypeName.setTextColor(Color.parseColor("#ffffff"));
+                holder.mAccountTypeMoney.setTextColor(Color.parseColor("#ffffff"));
             } else {
                 holder.mClock.setVisibility(View.GONE);
                 holder.mOverdueTotal.setVisibility(View.GONE);
@@ -139,6 +144,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mDateName.setText("7天后");
                 holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
                 holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+
+                holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
+                holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
             }
 
             //账单名称 网贷账单 信用卡账单
@@ -160,6 +168,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
         } else {
             holder.swipeMenuLayout.setSwipeEnable(true);
+
             holder.mAvatar.setVisibility(View.VISIBLE);
             Glide.with(mActivity).load(accountBill.getLogoUrl()).skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.mAvatar);
@@ -178,7 +187,13 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             //账单名称 网贷账单 信用卡账单
             holder.mAccountTypeName.setText(accountBill.getTitle());
             //当期应还
-            holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
+            StringBuilder builder = new StringBuilder();
+            if (accountBill.getType() == 2) {
+                builder.append(accountBill.getMonth()+"月");
+            } else {
+                builder.append(accountBill.getTerm()+"/" ).append(accountBill.getTotalTerm()+"");
+            }
+            holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()) + "    " + builder.toString());
 
             if (accountBill.isShow) {
 //                holder.mArrow.setImageDrawable(mUpArrow);
@@ -192,20 +207,26 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             /**
              * 逾期或者最近三天还款日 显示小红点 背景颜色
              */
-            if (accountBill.getReturnDay() <= 3) {
+            if (accountBill.getReturnDay() <= 3 &&( accountBill.getStatus() == 1 || accountBill.getStatus() == 2 || accountBill.getStatus() == 3)) {
                 holder.mDot.setImageDrawable(mRedDot);
                 holder.mCardBg.setBackground(mCardRedBg);
                 holder.mSetBg.setBackground(mCardPinkBg);
+
+                holder.mAccountTypeName.setTextColor(Color.parseColor("#ffffff"));
+                holder.mAccountTypeMoney.setTextColor(Color.parseColor("#ffffff"));
             } else {
                 holder.mDot.setImageDrawable(mGrayDot);
                 holder.mCardBg.setBackground(mCardBlackBg);
                 holder.mSetBg.setBackground(mCardGraygBg);
+
+                holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
+                holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
             }
 
             /**
              * 逾期时间
              */
-            getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay());
+            getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay());
 
             //是否是最近的逾期
             if (accountBill.isLastOverdue()) {
@@ -389,25 +410,37 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         }
     }
 
-    private void getDeteName(TextView mDateName, String replyTime, int returnDay) {
-        if (returnDay == 0) {
-            mDateName.setText("今天");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        }else if (returnDay < 0) {
-            mDateName.setText("逾期" + Math.abs(returnDay) + "天");
+    private void getDeteName(TextView mDateName, String replyTime, int returnDay, int status, int outBillDay) {
+        if (status == 1 || status == 2 || status == 3) {
+            if (returnDay == 0) {
+                mDateName.setText("今天");
+                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            } else if (returnDay < 0) {
+                mDateName.setText("逾期" + Math.abs(returnDay) + "天");
+                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            } else if (returnDay <= 30) {
+                mDateName.setText(Math.abs(returnDay) + "天后还款");
+                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            } else if (returnDay > 30) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, returnDay);
+                int month = calendar.get(Calendar.MONTH) + 1;
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                mDateName.setText(month + "月" + day + "日");
+                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            }
+        }
+        if (status == 4) {
+            mDateName.setText("已出账");
             mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
             mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }else if (returnDay <= 30) {
-            mDateName.setText(Math.abs(returnDay) + "天后还款");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }else if (returnDay > 30) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, returnDay);
-            int month = calendar.get(Calendar.MONTH) + 1;
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            mDateName.setText(month+"月"+day+"日");
+        }
+        if (status == 5) {
+            mDateName.setText(outBillDay+"天后出账");
             mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
             mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
         }
@@ -555,12 +588,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public SwipeMenuLayout swipeMenuLayout;
+        public CustomSwipeMenuLayout swipeMenuLayout;
         public TextView payPart;
         public TextView payAll;
 
         public ImageView mClock;
-        public ImageView mAvatar;
+        public CircleImageView mAvatar;
 //        public ImageView mArrow;
         public ImageView mSampleIcon;
         public ImageView mDot;
@@ -579,11 +612,11 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         public ViewHolder(View itemView) {
             super(itemView);
 
-            swipeMenuLayout = (SwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
+            swipeMenuLayout = (CustomSwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
             payPart = (TextView) itemView.findViewById(R.id.tv_shape_tab_account_no_reply);
             payAll = (TextView) itemView.findViewById(R.id.tv_shape_tab_account_reply);
             mClock = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_clock);
-            mAvatar = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_avatar);
+            mAvatar = (CircleImageView) itemView.findViewById(R.id.iv_item_tab_account_avatar);
 //            mArrow = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_arrow);
             mDot = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_dot);
             mSampleIcon = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_sample_icon);

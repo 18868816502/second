@@ -21,6 +21,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
+import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.event.ShowGuide;
@@ -50,6 +52,7 @@ import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.beihui.market.view.MarqueeTextView;
 import com.bumptech.glide.Glide;
@@ -106,6 +109,11 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tv_tab_account_notice)
     MarqueeTextView mNotice;
 
+    @BindView(R.id.iv_ac_main_notice_cross)
+    ImageView mNoticeCross;
+    @BindView(R.id.ll_ac_main_notice_root)
+    LinearLayout mRoot;
+
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
 
@@ -119,6 +127,11 @@ public class MainActivity extends BaseComponentActivity {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
+    /**
+     * 最新公告ID
+     */
+    private String mNoticeId ="";
 
     /**
      * 重新进入MainActivity切换的对应的Fragment
@@ -265,10 +278,6 @@ public class MainActivity extends BaseComponentActivity {
         navigationBar.select(R.id.tab_account);
         selectTab(R.id.tab_account);
 
-        mNotice.setText("广播");
-        mNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
-        mNotice.requestFocus();
-        mNotice.setFocusableInTouchMode(true);
     }
 
     @Override
@@ -279,6 +288,47 @@ public class MainActivity extends BaseComponentActivity {
          * 请求底部导航栏图标 文字 字体颜色
          */
         queryBottomImage();
+
+        /**
+         * 查询公告
+         */
+        Api.getInstance().getNewNotice().compose(RxUtil.<ResultEntity<LastNoticeBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<LastNoticeBean>>() {
+                               @Override
+                               public void accept(ResultEntity<LastNoticeBean> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (!result.getData().getId().equals(SPUtils.getValue(MainActivity.this, result.getData().getId()))) {
+                                           mRoot.setVisibility(View.VISIBLE);
+                                           mNotice.setText("【" + result.getData().getTitle() + "】" + result.getData().getExplain());
+                                           mNoticeId = result.getData().getId();
+
+
+                                           mNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
+                                           mNotice.requestFocus();
+                                           mNotice.setFocusableInTouchMode(true);
+                                       }
+                                   } else {
+                                       Toast.makeText(MainActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(final Throwable throwable) throws Exception {
+
+                            }
+                        });
+
+        /**
+         * 关闭公告并记录最新公告ID
+         */
+        mNoticeCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRoot.setVisibility(View.GONE);
+                SPUtils.setValue(MainActivity.this, mNoticeId);
+            }
+        });
     }
 
     //空事件

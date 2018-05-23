@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--TODO 去掉数据-->
-<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.beihui.market.view.CustomSwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_menu_layout"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="10dp"
@@ -45,13 +46,14 @@
                 android:paddingRight="16dp"
                 android:paddingTop="18dp">
 
-                <ImageView
+
+                <com.beihui.market.view.CircleImageView
                     android:id="@+id/iv_item_tab_account_avatar"
                     android:visibility="gone"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="10dp"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true" />
 
                 <!--网贷名称 或者 信用卡名称-->
                 <TextView
@@ -212,4 +214,4 @@
 
     </LinearLayout>
 
-</com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+</com.beihui.market.view.CustomSwipeMenuLayout>

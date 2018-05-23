@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/help_feed_bg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_left"
+                android:gravity="center"
+                android:text="周"
+                android:textColor="@color/black_1" />
+
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_right"
+                android:gravity="center"
+                android:text="月"
+                android:textColor="@color/black_1" />
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_ac_bill_loan_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

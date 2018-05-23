@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <FrameLayout
@@ -12,9 +12,27 @@
         android:layout_weight="1" />
 
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_ac_main_notice_root"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/xshape_tab_account_bg"
         android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="20dp">
+        android:layout_height="wrap_content">
+
+        <!--图标-->
+        <ImageView
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/bill_notice_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <com.beihui.market.view.MarqueeTextView
             android:id="@+id/tv_tab_account_notice"
@@ -24,8 +42,20 @@
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:ellipsize="marquee"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp" />
+
+        <!--图标-->
+        <ImageView
+            android:id="@+id/iv_ac_main_notice_cross"
+            android:paddingRight="10dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/bill_close_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

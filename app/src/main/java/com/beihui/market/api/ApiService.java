@@ -3,9 +3,12 @@ package com.beihui.market.api;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
+import com.beihui.market.entity.AnalysisChartBean;
+import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
+import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreditCard;
@@ -20,6 +23,7 @@ import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.LoanBill;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -180,6 +184,37 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/index/v310")
     Observable<ResultEntity<TabAccountBean>> queryTabAccountList(@Field("userId") String userId);
+
+    /**
+     * @version 3.1.0
+     * @desc 网贷分析 底部数据
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/analysis/overview")
+    Observable<ResultEntity<AnalysisOverviewBean>> queryAnalysisOverview(@Field("userId") String userId);
+
+    /**
+     * @version 3.1.0
+     * @desc 网贷分析 底部数据
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/analysis/barGraph")
+    Observable<ResultEntity<List<AnalysisChartBean>>> queryAnalysisOverviewChart(@Field("userId") String userId, @Field("type") int type, @Field("startTime") String startTime, @Field("endTime") String endTime);
+
+    /**
+     * @version 3.1.0
+     * @desc 网贷分析 列表数据
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/analysis/listInTime")
+    Observable<ResultEntity<BillLoanAnalysisBean>> queryAnalysisOverviewList(@Field("userId") String userId, @Field("type") int type, @Field("time") String time);
+
+    /**
+     * @version 3.1.0
+     * @desc 获取最新公告
+     */
+    @POST(BASE_PATH + "/notice/lastNotice")
+    Observable<ResultEntity<LastNoticeBean>> getNewNotice();
 
     /****************************************************************************** 分割线 **************************************************************************************/
 

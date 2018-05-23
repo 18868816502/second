@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtComponent;
 import com.beihui.market.injection.module.DebtModule;
+import com.beihui.market.ui.activity.BillLoanAnalysisActivity;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.CreditCardWebActivity;
 import com.beihui.market.ui.activity.DebtAnalyzeActivity;
@@ -46,6 +49,7 @@ import com.beihui.market.ui.dialog.XTabAccountDialog;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
@@ -70,7 +74,6 @@ import zhy.com.highlight.position.OnBaseCallback;
 import zhy.com.highlight.shape.CircleLightShape;
 import zhy.com.highlight.view.HightLightView;
 
-import static com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout.DONE;
 
 /**
  * 账单 模块 Fragment
@@ -100,6 +103,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     TextView yesPay;
     @BindView(R.id.rv_foot_account_tab_no_pay)
     TextView noPay;
+
+    @BindView(R.id.fl_tab_account_header_bill_loan)
+    FrameLayout billLoamAnalysis;
 
 
     public Activity mActivity;
@@ -154,7 +160,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(ShowGuide showGuide) {
-        showGuide();
+//        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuide"))) {
+            showGuide();
+            SPUtils.setValue(mActivity, "showGuide");
+//        }
     }
 
     /**
@@ -240,7 +249,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     }
 
 
-    @OnClick({R.id.iv_tab_account_header_add, R.id.iv_tab_account_header_today_button})
+    @OnClick({R.id.iv_tab_account_header_add, R.id.iv_tab_account_header_today_button, R.id.fl_tab_account_header_bill_loan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //添加账单
@@ -258,12 +267,20 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
                 break;
             case R.id.iv_tab_account_header_today_button:
-                Toast.makeText(mActivity, "已至今日应还账单处，别再点啦", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mActivity, "已至今日应还账单处，别再点啦", Toast.LENGTH_SHORT).show();
                 if (UserHelper.getInstance(mActivity).getProfile() != null) {
-                    initStatus();
+                    /**
+                     * TODOD 点击今天的按钮事件
+                     */
+//                    initStatus();
                 } else {
                     showNoUserLoginBlock();
                 }
+                break;
+
+            //进入网贷分析
+            case R.id.fl_tab_account_header_bill_loan:
+                startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
                 break;
         }
     }
@@ -687,14 +704,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.rightMargin = rectF.width() / 2;
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + 3;
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + 6;
                                     }
                                 }, new CircleLightShape())
                                 .addHighLight(R.id.iv_tab_account_header_bill_loan, R.layout.layout_highlight_confirm, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.leftMargin = Px2DpUtils.dp2px(mActivity, 10);
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height();
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - 2;
                                     }
                                 }, new CircleLightShape())
                                 .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {

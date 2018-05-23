@@ -43,7 +43,8 @@ public class NetConstants {
      */
 //    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5.html";
 //    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "http://192.168.1.40:100/findH5-av301.html";
-    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-av301.html";
+    public static String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-av301.html";
+    public static final String H5_FIND_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/findH5-av301.html";
 
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 

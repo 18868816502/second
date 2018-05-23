@@ -12,9 +12,12 @@ import com.beihui.market.api.interceptor.PackageIdAndVersionNameInterceptor;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
+import com.beihui.market.entity.AnalysisChartBean;
+import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
+import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreditCard;
@@ -29,6 +32,7 @@ import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
+import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.LoanBill;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -243,6 +247,37 @@ public class Api {
      */
     public Observable<ResultEntity<TabAccountBean>> queryTabAccountList(String userId) {
         return service.queryTabAccountList(userId);
+    }
+
+    /**
+     * @version 3.1.0
+     * @desc 网贷分析
+     */
+    public Observable<ResultEntity<AnalysisOverviewBean>> queryAnalysisOverview(String userId) {
+        return service.queryAnalysisOverview(userId);
+    }
+
+    /**
+     * @version 3.1.0
+     * @desc 网贷分析 柱状图
+     */
+    public Observable<ResultEntity<List<AnalysisChartBean>>> queryAnalysisOverviewChart(String userId, int type, String startTime, String endTime) {
+        return service .queryAnalysisOverviewChart(userId, type, startTime, endTime);
+    }
+
+    /**
+     * @version 3.1.0
+     * @desc 网贷分析 列表数据
+     */
+    public Observable<ResultEntity<BillLoanAnalysisBean>> queryAnalysisOverviewList(String userId, int type, String time) {
+        return service .queryAnalysisOverviewList(userId, type, time);
+    }
+
+    /**
+     * 获取最新公告
+     */
+    public Observable<ResultEntity<LastNoticeBean>> getNewNotice() {
+        return service.getNewNotice();
     }
 
     /****************************************************************************** 分割线 **************************************************************************************/

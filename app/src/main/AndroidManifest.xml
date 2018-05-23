@@ -247,6 +247,10 @@
         <activity
             android:name=".ui.activity.FastDebtDetailActivity"
             android:screenOrientation="portrait" />
+        <!--网贷分析页面-->
+        <activity android:name=".ui.activity.BillLoanAnalysisActivity"
+            android:screenOrientation="portrait"/>
+
 
 
 

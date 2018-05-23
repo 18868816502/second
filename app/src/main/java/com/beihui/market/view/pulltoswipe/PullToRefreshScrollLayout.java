@@ -18,6 +18,11 @@ import android.widget.TextView;
 
 
 import com.beihui.market.R;
+import com.beihui.market.event.InsideViewPagerBus;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -128,6 +133,16 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 
 	private Context mContext;
 
+	@Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+	public void onMainEvent(InsideViewPagerBus bus) {
+		this.isRequestInterceptTouchEvent = bus.isRequestInterceptTouchEvent;
+	}
+
+	/**
+	 * xhb修改代码 为了首页卡片不冲突 viewPager
+	 */
+	public boolean isRequestInterceptTouchEvent = false;
+
 	/**
 	 * 执行自动回滚的handler
 	 */
@@ -215,6 +230,11 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	 * 初始化布局
      */
 	private void initView(Context context) {
+		if (!EventBus.getDefault().isRegistered(this)) {
+			EventBus.getDefault().register(this);
+		}
+
+
 		mContext = context;
 		timer = new MyTimer(updateHandler);
 		rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation(
@@ -372,11 +392,28 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	}
 
 	/**
+	 * 不限制上拉或下拉
+	 */
+	public void limitPull() {
+		canPullDown = false;
+		canPullUp = false;
+	}
+
+	/**
 	 * 非 Javadoc 由父控件决定是否分发事件，防止事件冲突
 	 * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)
 	 */
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
+		/**
+		 * xhb修改代码 为了首页卡片不冲突 viewPager
+		 */
+		if (isRequestInterceptTouchEvent) {
+			// 事件分发交给父类
+			super.dispatchTouchEvent(ev);
+			return true;
+		}
+
 		switch (ev.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:
 			downY = ev.getY();
