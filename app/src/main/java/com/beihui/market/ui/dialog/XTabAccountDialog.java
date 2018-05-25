@@ -128,7 +128,8 @@ public class XTabAccountDialog extends DialogFragment {
 
                 //设置协议地址
                 mxParam.setAgreementUrl(NetConstants.H5_USER_REGISTRATION_PROTOCOL);
-                mxParam.setAgreementEntryText("数据采集服务协议");
+//                mxParam.setAgreementUrl("http://192.168.1.40:100/majiabao/moxie-protocol.html?isApp=1");
+                mxParam.setAgreementEntryText("同意《数据采集服务协议》");
                 //自定义Title, 还有更多方法请用IDE查看
                 TitleParams titleParams = new TitleParams.Builder()
                                         //设置返回键的icon，不设置此方法会默认使用魔蝎的icon
