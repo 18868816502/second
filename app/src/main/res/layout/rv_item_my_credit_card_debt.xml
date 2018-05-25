@@ -131,6 +131,7 @@
 
         <TextView
             android:id="@+id/is_hidden"
+            android:visibility="invisible"
             android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_gravity="right"

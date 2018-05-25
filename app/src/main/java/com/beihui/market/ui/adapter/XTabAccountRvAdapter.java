@@ -97,8 +97,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
         mCardRedBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg);
         mCardPinkBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_pink_bg);
-        mCardBlackBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg);
-        mCardGraygBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_gray_bg);
+        mCardBlackBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_black_v310_bg);
+        mCardGraygBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_black_v310_bg);
 
     }
 
@@ -113,7 +113,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         final TabAccountBean.OverdueListBean accountBill = dataSet.get(position);
         if (accountBill.isAnalog) {
             holder.swipeMenuLayout.setSwipeEnable(false);
-            holder.mAvatar.setVisibility(View.GONE);
+            holder.mAvatar.setVisibility(View.VISIBLE);
+
             //实例图标显示
             holder.mSampleIcon.setVisibility(View.VISIBLE);
             holder.mSetBg.setVisibility(View.GONE);
@@ -121,6 +122,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 //            holder.mArrow.setEnabled(false);
             //闹钟的显示
             if (position == 0) {
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_zsyh_icon));
                 holder.mClock.setVisibility(View.GONE);
                 holder.mOverdueTotal.setVisibility(View.GONE);
 
@@ -134,7 +136,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
                 holder.mAccountTypeName.setTextColor(Color.parseColor("#ffffff"));
                 holder.mAccountTypeMoney.setTextColor(Color.parseColor("#ffffff"));
+                holder.mAccountTypeTerm.setTextColor(Color.parseColor("#ffffff"));
             } else {
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_fql_icon));
                 holder.mClock.setVisibility(View.GONE);
                 holder.mOverdueTotal.setVisibility(View.GONE);
                 holder.mDot.setImageDrawable(mGrayDot);
@@ -147,12 +151,14 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
                 holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
                 holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
+                holder.mAccountTypeTerm.setTextColor(Color.parseColor("#424251"));
             }
 
             //账单名称 网贷账单 信用卡账单
             holder.mAccountTypeName.setText(accountBill.getTitle());
             //当期应还
             holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
+            holder.mAccountTypeTerm.setText("4月");
 
             holder.mCardBg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -170,19 +176,25 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             holder.swipeMenuLayout.setSwipeEnable(true);
 
             holder.mAvatar.setVisibility(View.VISIBLE);
-            Glide.with(mActivity).load(accountBill.getLogoUrl()).skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.mAvatar);
+
+            if (accountBill.getType() == 1) {
+                //网贷账单
+                Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon)
+                        .into(holder.mAvatar);
+            } else if (accountBill.getType() == 3){
+                //快捷记账
+                Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.mine_mail_icon)
+                        .into(holder.mAvatar);
+            } else {
+                //信用卡账单
+                Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon)
+                        .into(holder.mAvatar);
+            }
+
+
             //实例图标隐藏
             holder.mSampleIcon.setVisibility(View.GONE);
 //            holder.mArrow.setEnabled(true);
-            //闹钟的显示
-            if (position == 0) {
-                holder.mClock.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setVisibility(View.VISIBLE);
-            } else {
-                holder.mClock.setVisibility(View.GONE);
-                holder.mOverdueTotal.setVisibility(View.GONE);
-            }
 
             //账单名称 网贷账单 信用卡账单
             holder.mAccountTypeName.setText(accountBill.getTitle());
@@ -193,7 +205,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             } else {
                 builder.append(accountBill.getTerm()+"/" ).append(accountBill.getTotalTerm()+"");
             }
-            holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()) + "    " + builder.toString());
+            holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
+            holder.mAccountTypeTerm.setText(builder.toString());
 
             if (accountBill.isShow) {
 //                holder.mArrow.setImageDrawable(mUpArrow);
@@ -214,6 +227,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
                 holder.mAccountTypeName.setTextColor(Color.parseColor("#ffffff"));
                 holder.mAccountTypeMoney.setTextColor(Color.parseColor("#ffffff"));
+                holder.mAccountTypeTerm.setTextColor(Color.parseColor("#ffffff"));
             } else {
                 holder.mDot.setImageDrawable(mGrayDot);
                 holder.mCardBg.setBackground(mCardBlackBg);
@@ -221,6 +235,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
                 holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
                 holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
+                holder.mAccountTypeTerm.setTextColor(Color.parseColor("#424251"));
             }
 
             /**
@@ -291,7 +306,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                             * 如果还部分金额与待还金额相同 则需要回到首屏
                                                                             */
                                                                            if (accountBill.getAmount() - amount < 0.01) {
-                                                                               ((TabAccountFragment) mFragment).initStatus();
+                                                                               ((TabAccountFragment) mFragment).refreshData();
                                                                            } else {
                                                                                accountBill.setAmount(accountBill.getAmount() - amount);
                                                                                notifyItemChanged(position);
@@ -327,7 +342,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                     * 如果还部分金额与待还金额相同 则需要回到首屏
                                                                     */
                                                                            if (accountBill.getAmount() - amount < 0.01) {
-                                                                               ((TabAccountFragment) mFragment).initStatus();
+                                                                               ((TabAccountFragment) mFragment).refreshData();
                                                                            } else {
                                                                                accountBill.setAmount(accountBill.getAmount() - amount);
                                                                                notifyItemChanged(position);
@@ -503,7 +518,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                        /**
                                                         * 重新回到首屏
                                                         */
-                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                       ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -527,7 +542,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                        /**
                                                         * 重新回到首屏
                                                         */
-                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                       ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -555,7 +570,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                        /**
                                                         * 重新回到首屏
                                                         */
-                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                       ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -600,6 +615,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         public TextView mDateName;
         public TextView mAccountTypeName;
         public TextView mAccountTypeMoney;
+        public TextView mAccountTypeTerm;
 //        public TextView mSetAllPay;
 //        public TextView mSetPartPay;
         //逾期总数
@@ -623,6 +639,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             mDateName = (TextView) itemView.findViewById(R.id.tv_item_tab_account_date_name);
             mAccountTypeName = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_name_type);
             mAccountTypeMoney = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_money);
+            mAccountTypeTerm = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_term);
 //            mSetAllPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_all_pay);
 //            mSetPartPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_part_pay);
             mOverdueTotal = (TextView) itemView.findViewById(R.id.iv_item_tab_account_overdue_total);

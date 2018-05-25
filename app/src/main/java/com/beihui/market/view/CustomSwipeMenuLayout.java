@@ -26,19 +26,19 @@ public class CustomSwipeMenuLayout extends SwipeMenuLayout {
         super(context, attrs, defStyleAttr);
     }
 
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//            case MotionEvent.ACTION_MOVE:
-//                EventBus.getDefault().postSticky(new InsideViewPagerBus(true));
-//                break;
-//            case MotionEvent.ACTION_UP:
-//            case MotionEvent.ACTION_CANCEL:
-//                EventBus.getDefault().postSticky(new InsideViewPagerBus(false));
-//                break;
-//        }
-//        super.dispatchTouchEvent(event);
-//        return true;
-//    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                EventBus.getDefault().postSticky(new InsideViewPagerBus(true));
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                EventBus.getDefault().postSticky(new InsideViewPagerBus(false));
+                break;
+        }
+        super.dispatchTouchEvent(event);
+        return true;
+    }
 }

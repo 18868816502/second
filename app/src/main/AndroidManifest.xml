@@ -356,6 +356,32 @@
         <meta-data
             android:name="CHANNEL_ID"
             android:value="${CHANNEL_ID}" />
+
+
+        <!--********************************************* 魔蝎信用 *******************************************-->
+        <activity
+            android:name="com.moxie.client.MainActivity"/>
+
+
+        <activity
+            android:name="com.moxie.client.accessible.AccessibleCrawlerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+
+        <service
+            android:name="com.moxie.client.accessible.AccessibleCrawlerService"
+            android:enabled="true"
+            android:exported="true" android:label="@string/accessibility_name"
+            android:accessibilityFlags="flagReportViewIds"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice" android:resource="@xml/accessible_crawler_config" />
+        </service>
     </application>
 
 </manifest>

@@ -41,16 +41,7 @@
 
             </FrameLayout>
 
-            <!--切换到今天-->
-            <ImageView
-                android:id="@+id/iv_tab_account_header_today_button"
-                android:layout_width="54dp"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:paddingLeft="17dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                android:src="@drawable/xbill_today_btn" />
+
 
         </LinearLayout>
 
@@ -73,7 +64,7 @@
 
     <!--近30天未还-->
     <LinearLayout
-        android:layout_marginTop="-20dp"
+        android:layout_marginTop="-10dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"

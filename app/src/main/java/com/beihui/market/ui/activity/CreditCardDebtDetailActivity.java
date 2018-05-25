@@ -20,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.BillDetail;
@@ -48,12 +50,21 @@ import com.beihui.market.view.EditTextUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+import com.moxie.client.exception.ExceptionType;
+import com.moxie.client.exception.MoxieException;
+import com.moxie.client.manager.MoxieCallBack;
+import com.moxie.client.manager.MoxieCallBackData;
+import com.moxie.client.manager.MoxieContext;
+import com.moxie.client.manager.MoxieSDK;
+import com.moxie.client.model.MxParam;
+import com.moxie.client.model.TitleParams;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -340,7 +351,14 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         flDebtStatusOperationBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreditCardDebtDetailActivity.this, EBankActivity.class));
+
+                /**
+                 * @version 3.10
+                 * @desc 使用魔蝎信用
+                 */
+//                startActivity(new Intent(CreditCardDebtDetailActivity.this, EBankActivity.class));
+
+                loginMoxie(debtDetail.moxieCode);
             }
         });
     }
@@ -663,5 +681,128 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             detailAdapter.loadMoreComplete();
         }
         detailAdapter.setEnableLoadMore(false);
+    }
+
+
+    /**
+     * TODO
+     * @version 3.1.0
+     * @author xhb
+     */
+    private void loginMoxie(String bankTag) {
+        MxParam mxParam = new MxParam();
+        mxParam.setUserId(UserHelper.getInstance(this).getProfile().getId());
+        mxParam.setApiKey(BuildConfig.MOXIE_APP_KEY);
+        mxParam.setFunction(MxParam.PARAM_FUNCTION_ONLINEBANK);
+        mxParam.setItemType(MxParam.PARAM_ITEM_TYPE_CREDITCARD);  //信用卡
+        mxParam.setItemCode(bankTag);
+        mxParam.setQuitDisable(false);
+
+
+        //设置协议地址
+        mxParam.setAgreementUrl(NetConstants.H5_USER_REGISTRATION_PROTOCOL);
+
+        //自定义Title, 还有更多方法请用IDE查看
+        TitleParams titleParams = new TitleParams.Builder()
+                //设置返回键的icon，不设置此方法会默认使用魔蝎的icon
+                .leftNormalImgResId(R.mipmap.btn_back_normal_black)
+                //用于设置selector，表示按下的效果，不设置默认使leftNormalImgResId()设置的图片
+                .leftPressedImgResId(R.mipmap.btn_back_normal_black)
+                //标题字体颜色
+                .titleColor(getResources().getColor(R.color.black_1))
+                //title背景色
+                .backgroundColor(getResources().getColor(R.color.white))
+                //设置右边icon
+                .rightNormalImgResId(R.drawable.moxie_client_banner_refresh_black)
+                //是否支持沉浸式
+                .immersedEnable(true)
+                .build();
+        mxParam.setTitleParams(titleParams);
+
+        MoxieSDK.getInstance().start(CreditCardDebtDetailActivity.this, mxParam, new MoxieCallBack() {
+            @Override
+            public boolean callback(MoxieContext moxieContext, MoxieCallBackData moxieCallBackData) {
+                Log.e("customMoxie", Thread.currentThread().getName());
+                Log.e("customMoxie", "魔蝎回调 成功");
+                if (moxieCallBackData != null) {
+                    Log.e("customMoxie", "MoxieSDK Callback Data : "+ moxieCallBackData.toString());
+                    Log.e("customMoxie", "MoxieSDK Callback Code : "+ moxieCallBackData.toString());
+                    switch (moxieCallBackData.getCode()) {
+                        /**
+                         * 账单导入中
+                         *
+                         * 如果用户正在导入魔蝎SDK会出现这个情况，如需获取最终状态请轮询贵方后台接口
+                         * 魔蝎后台会向贵方后台推送Task通知和Bill通知
+                         * Task通知：登录成功/登录失败
+                         * Bill通知：账单通知
+                         */
+                        case MxParam.ResultCode.IMPORTING:
+                            if(moxieCallBackData.isLoginDone()) {
+                                //状态为IMPORTING, 且loginDone为true，说明这个时候已经在采集中，已经登录成功
+                                Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            } else {
+                                //状态为IMPORTING, 且loginDone为false，说明这个时候正在登录中
+                                Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            }
+                            break;
+                        /**
+                         * 任务还未开始
+                         *
+                         * 假如有弹框需求，可以参考 {@link BigdataFragment#showDialog(MoxieContext)}
+                         *
+                         * example:
+                         *  case MxParam.ResultCode.IMPORT_UNSTART:
+                         *      showDialog(moxieContext);
+                         *      return true;
+                         * */
+                        case MxParam.ResultCode.IMPORT_UNSTART:
+                            Log.e("customMoxie", "任务未开始");
+                            break;
+                        case MxParam.ResultCode.THIRD_PARTY_SERVER_ERROR:
+//                            Toast.makeText(getContext(), "导入失败(平台方服务问题)", Toast.LENGTH_SHORT).show();
+                            break;
+                        case MxParam.ResultCode.MOXIE_SERVER_ERROR:
+//                            Toast.makeText(getContext(), "导入失败(魔蝎数据服务异常)", Toast.LENGTH_SHORT).show();
+                            break;
+                        case MxParam.ResultCode.USER_INPUT_ERROR:
+//                            Toast.makeText(getContext(), "导入失败(" + moxieCallBackData.getMessage() + ")", Toast.LENGTH_SHORT).show();
+                            break;
+                        case MxParam.ResultCode.IMPORT_FAIL:
+//                            Toast.makeText(getContext(), "导入失败", Toast.LENGTH_SHORT).show();
+                            break;
+                        case MxParam.ResultCode.IMPORT_SUCCESS:
+                            Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            //根据taskType进行对应的处理
+                            switch (moxieCallBackData.getTaskType()) {
+                                case MxParam.PARAM_FUNCTION_EMAIL:
+//                                    Toast.makeText(getContext(), "邮箱导入成功", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case MxParam.PARAM_FUNCTION_ONLINEBANK:
+//                                    Toast.makeText(getContext(), "网银导入成功", Toast.LENGTH_SHORT).show();
+                                    break;
+                                //.....
+                                default:
+//                                    Toast.makeText(getContext(), "导入成功", Toast.LENGTH_SHORT).show();
+                            }
+                            moxieContext.finish();
+                            return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void onError(MoxieContext moxieContext, MoxieException moxieException) {
+                super.onError(moxieContext, moxieException);
+                Log.e("customMoxie","魔蝎失败" + moxieException.getMessage());
+                if(moxieException.getExceptionType() == ExceptionType.SDK_HAS_STARTED){
+//                    Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if(moxieException.getExceptionType() == ExceptionType.SDK_LACK_PARAMETERS){
+//                    Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                moxieContext.finish();
+            }
+        });
+
     }
 }

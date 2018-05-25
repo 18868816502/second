@@ -2,18 +2,35 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="60dp"
-    android:layout_height="230dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.beihui.market.view.multiChildHistogram.SingleChartView
+    <FrameLayout
+        android:id="@+id/fl_item_chart_bill_loan"
         android:layout_width="60dp"
-        android:layout_height="160dp">
+        android:layout_height="wrap_content">
+
+    <com.beihui.market.view.multiChildHistogram.SingleChartView
+        android:id="@+id/scv_item_chart_bill_loan"
+        android:layout_width="60dp"
+        android:layout_height="140dp">
 
     </com.beihui.market.view.multiChildHistogram.SingleChartView>
 
+    </FrameLayout>
+
+    <View
+        android:background="@color/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dfafadsfadsfadsfadfadfsadfdsfa" />
+        android:id="@+id/tv_item_chart_bill_bottom_text"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:textColor="@color/black_1"
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 
 </LinearLayout>

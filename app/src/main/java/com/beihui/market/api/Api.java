@@ -53,6 +53,7 @@ import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabImage;
+import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UsedEmail;
@@ -1120,7 +1121,7 @@ public class Api {
     /**
      * 查询底部栏图标
      */
-    public Observable<ResultEntity<List<TabImage>>> queryBottomImage() {
+    public Observable<ResultEntity<TabImageBean>> queryBottomImage() {
         String version = "";
         String packageId = "";
         try {

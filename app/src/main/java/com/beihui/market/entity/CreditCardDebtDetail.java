@@ -25,6 +25,10 @@ public class CreditCardDebtDetail implements Parcelable {
     private String lastCollectionDate;
     private int status;
 
+    /**
+     * @version 3.1.0
+     */
+    public String moxieCode;
 
     public ShowBillBean showBill;
 

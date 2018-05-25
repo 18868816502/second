@@ -14,14 +14,24 @@ public class AnalysisChartBean implements Serializable {
      * time : 2018-01
      */
 
-    private int amount;
+    //数量
+    private Double amount;
+
+    //底部文字
     private String time;
 
-    public int getAmount() {
+    //数据展示
+    public String showAmount;
+
+    //是否选中
+    public boolean isSelect = false;
+
+
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

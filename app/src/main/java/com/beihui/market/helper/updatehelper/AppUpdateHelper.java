@@ -77,15 +77,6 @@ public class AppUpdateHelper {
                                    if (result.isSuccess() && result.getData() != null) {
                                        app = result.getData();
                                        handleUpdate(app, weakReference);
-                                       /**
-                                     * 审核 1-资讯页，2-借贷页
-                                     */
-                                       if (app.audit == 1) {
-                                           NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information.html";
-                                       }
-                                       if (app.audit == 2) {
-                                           NetConstants.H5_FIND_WEVVIEW_DETAIL  = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
-                                       }
                                    }
                                }
                            },

@@ -8,7 +8,8 @@
 
     <!--标题-->
     <TextView
-        android:text="近两周的趋势"
+        android:id="@+id/rv_item_analysis_title"
+        android:text=""
         android:textColor="#9F9FAC"
         android:textSize="13sp"
         android:gravity="center"
@@ -17,180 +18,10 @@
         android:layout_height="20dp" />
 
 
-    <!--&lt;!&ndash;柱状图&ndash;&gt;-->
-    <!--<com.beihui.market.view.multiChildHistogram.MultiGroupHistogramView-->
-        <!--android:id="@+id/lcl_ac_bill_loan_chart"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="180dp"-->
-        <!--app:chartPaddingTop="15dp"-->
-        <!--app:coordinateAxisColor="#FF727884"-->
-        <!--app:coordinateAxisWidth="1dp"-->
-        <!--app:distanceFormGroupNameToAxis="10dp"-->
-        <!--app:distanceFromValueToHistogram="10dp"-->
-        <!--app:groupInterval="40dp"-->
-        <!--app:groupNameTextColor="#FF727884"-->
-        <!--app:groupNameTextSize="13sp"-->
-        <!--app:histogramHistogramWidth="20dp"-->
-        <!--app:histogramInterval="15dp"-->
-        <!--app:histogramPaddingEnd="15dp"-->
-        <!--app:histogramPaddingStart="15dp"-->
-        <!--app:histogramValueDecimalCount="TWO"-->
-        <!--app:histogramValueTextColor="#FF727884"-->
-        <!--app:histogramValueTextSize="10sp" />-->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rc_chart_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <View
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="#fff5f5f5"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:weightSum="4">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2018年"
-                android:textColor="#424251"
-                android:textSize="10sp" />
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal">
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#424251"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="5"
-                    android:textColor="#424251"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="月"
-                    android:textColor="#424251"
-                    android:textSize="10sp" />
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/line" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="未还"
-                android:textColor="#808080"
-                android:textSize="11sp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="2596.00"
-                android:textColor="#424251"
-                android:textSize="13sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已还"
-                android:textColor="#808080"
-                android:textSize="11sp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="2596.00"
-                android:textColor="#424251"
-                android:textSize="13sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="逾期"
-                android:textColor="#808080"
-                android:textSize="11sp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="2596.00"
-                android:textColor="#424251"
-                android:textSize="13sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </LinearLayout>

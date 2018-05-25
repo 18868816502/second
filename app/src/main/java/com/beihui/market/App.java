@@ -15,6 +15,7 @@ import com.beihui.market.injection.module.ApiModule;
 import com.beihui.market.injection.module.AppModule;
 import com.beihui.market.umeng.Umeng;
 import com.beihui.market.util.SPUtils;
+import com.moxie.client.manager.MoxieSDK;
 import com.umeng.analytics.AnalyticsConfig;
 
 import cn.xiaoneng.uiapi.Ntalker;
@@ -45,6 +46,9 @@ public class App extends Application {
         initComponent();
 
         Umeng.install(this);
+
+        //初始化魔蝎
+        MoxieSDK.init(this);
 
         Ntalker.getBaseInstance().initSDK(this, Constant.XN_SITE_ID, Constant.XN_SITE_KEY);
         //如果用户已登录，则登录小能客服

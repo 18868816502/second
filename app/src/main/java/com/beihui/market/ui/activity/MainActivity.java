@@ -26,13 +26,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.TabImage;
+import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.event.ShowGuide;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
@@ -113,6 +116,7 @@ public class MainActivity extends BaseComponentActivity {
     ImageView mNoticeCross;
     @BindView(R.id.ll_ac_main_notice_root)
     LinearLayout mRoot;
+
 
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
@@ -299,11 +303,13 @@ public class MainActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        if (!result.getData().getId().equals(SPUtils.getValue(MainActivity.this, result.getData().getId()))) {
                                            mRoot.setVisibility(View.VISIBLE);
-                                           mNotice.setText("【" + result.getData().getTitle() + "】" + result.getData().getExplain());
+                                           //mNotice.setText("【" + result.getData().getTitle() + "】" + result.getData().getExplain());
+                                           mNotice.setText(result.getData().getExplain());
                                            mNoticeId = result.getData().getId();
 
 
                                            mNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
+                                           mNotice.setSelected(true);
                                            mNotice.requestFocus();
                                            mNotice.setFocusableInTouchMode(true);
                                        }
@@ -464,13 +470,24 @@ public class MainActivity extends BaseComponentActivity {
 
     private void queryBottomImage() {
         Api.getInstance().queryBottomImage()
-                .compose(RxUtil.<ResultEntity<List<TabImage>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<TabImage>>>() {
+                .compose(RxUtil.<ResultEntity<TabImageBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<TabImageBean>>() {
                                @Override
-                               public void accept(ResultEntity<List<TabImage>> result) throws Exception {
+                               public void accept(ResultEntity<TabImageBean> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           updateBottomSelector(result.getData());
+                                       if (result.getData() != null) {
+                                           /**
+                                         * 审核 1-资讯页，2-借贷页
+                                         */
+                                           if (result.getData().audit == 1) {
+                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information.html";
+                                           }
+                                           if (result.getData().audit == 2) {
+                                               NetConstants.H5_FIND_WEVVIEW_DETAIL  = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
+                                           }
+                                           if (result.getData().bottomList.size() > 0) {
+                                               updateBottomSelector(result.getData().bottomList);
+                                           }
                                        }
                                    }
                                }

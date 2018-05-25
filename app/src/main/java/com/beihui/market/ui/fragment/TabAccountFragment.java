@@ -25,6 +25,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.event.ShowGuide;
+import com.beihui.market.event.XTabAccountDialogMoxieFinishEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.helper.UserHelper;
@@ -107,8 +108,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @BindView(R.id.fl_tab_account_header_bill_loan)
     FrameLayout billLoamAnalysis;
 
+    @BindView(R.id.iv_tab_account_header_today_button)
+    ImageView todayButton;
+
 
     public Activity mActivity;
+
+
+    public boolean pullRefresh = false;
 
     @Inject
     TabAccountPresenter presenter;
@@ -116,8 +123,13 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     //适配器
     public XTabAccountRvAdapter mAdapter;
 
+    //高亮
+    private HighLight infoHighLight;
+
     //上拉与下拉的刷新监听器
     public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
+    private LinearLayoutManager manager;
+    private int scrollToPosition = 0;
 
     /**
      * 统计点击tab事件
@@ -160,23 +172,31 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(ShowGuide showGuide) {
-//        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuide"))) {
+        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuide"))) {
             showGuide();
             SPUtils.setValue(mActivity, "showGuide");
-//        }
+        }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainMoxieEvent(XTabAccountDialogMoxieFinishEvent event) {
+        Toast.makeText(mActivity, "3秒后刷新页面信用卡就会显示啦", Toast.LENGTH_SHORT).show();
+    }
+
 
     /**
      * 初始化数据
      */
     @Override
     public void initDatas() {
+        scrollToPosition = 0;
+        pullRefresh = false;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         mActivity = getActivity();
         mAdapter = new XTabAccountRvAdapter(mActivity, this);
-        LinearLayoutManager manager = new LinearLayoutManager(mActivity);
+        manager = new LinearLayoutManager(mActivity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
@@ -192,8 +212,15 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
             @Override
             public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
-                mPullToRefreshListener.onRefresh(mPullContainer);
+                if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
+                    pullRefresh = true;
+                    presenter.onRefresh();
+                } else {
+                    mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
+                    mPullToRefreshListener.onRefresh(mPullContainer);
+
+                    pullRefresh = false;
+                }
             }
 
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
@@ -206,9 +233,30 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             }
         });
 
-
+        mRecyclerView.setOnItemScrollChanged(new PulledRecyclerView.OnItemScrollChanged() {
+            @Override
+            public void onScrollChanged() {
+                //判断是当前layoutManager是否为LinearLayoutManager
+                // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+                if (manager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearManager = (LinearLayoutManager) manager;
+                    //获取最后一个可见view的位置
+                    int lastItemPosition = linearManager.findLastVisibleItemPosition();
+                    //获取第一个可见view的位置
+                    int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+                    if (Math.abs(scrollToPosition - firstItemPosition) > 3) {
+                        todayButton.setVisibility(View.VISIBLE);
+                    } else {
+                        todayButton.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
+    public void refreshData(){
+        presenter.onRefresh();
+    }
 
     /**
      * 查询信用卡账单采集结果
@@ -227,6 +275,11 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
             }
         });
+
+        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuide"))) {
+            showGuide();
+            SPUtils.setValue(mActivity, "showGuide");
+        }
     }
 
     //空事件
@@ -273,6 +326,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                      * TODOD 点击今天的按钮事件
                      */
 //                    initStatus();
+                    manager.scrollToPositionWithOffset(scrollToPosition, 0);
                 } else {
                     showNoUserLoginBlock();
                 }
@@ -280,7 +334,11 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
             //进入网贷分析
             case R.id.fl_tab_account_header_bill_loan:
-                startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
+                if (UserHelper.getInstance(mActivity).getProfile() != null) {
+                    startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
+                } else {
+                    showNoUserLoginBlock();
+                }
                 break;
         }
     }
@@ -288,12 +346,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     /**
      * 回调首屏
      */
-    public void initStatus() {
-        //获取头信息
-        presenter.loadDebtAbstract();
-        presenter.loadInDebtList();
-        mRecyclerView.scrollToPosition(0);
-    }
+//    public void initStatus() {
+//        //获取头信息
+//        presenter.loadDebtAbstract();
+//        presenter.loadInDebtList();
+//        mRecyclerView.scrollToPosition(scrollToPosition);
+//    }
 
     /**
      * 刷新头信息
@@ -348,6 +406,24 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
         }
         mAdapter.notifyDebtChanged(list);
+
+        if (pullRefresh) {
+            mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
+            mPullToRefreshListener.onRefresh(mPullContainer);
+        }
+
+        pullRefresh = false;
+
+        //滚动到逾期那一个条目
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            if (list.get(i).isLastOverdue()) {
+                scrollToPosition = i;
+                manager.scrollToPositionWithOffset(scrollToPosition, 0);
+            }
+        }
+
+
 //        if (billType == 3) {
 //            if (list.size() < pageSize) {
 //                isNoRefreshData = true;
@@ -478,7 +554,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
 //    private DebtRVAdapter adapter;
 
-    private HighLight infoHighLight;
+
 //    private boolean eyeClosed;
 //
 //    private ComRefreshManager comRefreshManager;
@@ -704,14 +780,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.rightMargin = rectF.width() / 2;
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + 6;
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + Px2DpUtils.dp2px(mActivity, 5);
                                     }
                                 }, new CircleLightShape())
                                 .addHighLight(R.id.iv_tab_account_header_bill_loan, R.layout.layout_highlight_confirm, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.leftMargin = Px2DpUtils.dp2px(mActivity, 10);
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - 2;
+                                        marginInfo.leftMargin = Px2DpUtils.dp2px(mActivity, 6);
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - Px2DpUtils.dp2px(mActivity, 2);
                                     }
                                 }, new CircleLightShape())
                                 .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {

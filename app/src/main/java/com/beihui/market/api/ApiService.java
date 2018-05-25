@@ -44,6 +44,7 @@ import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabImage;
+import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UsedEmail;
@@ -741,9 +742,9 @@ public interface ApiService {
      * 查询底部栏图标
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/bottom/list")
+    @POST(BASE_PATH + "/bottom/auditList")
 //    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("version") String version, @Field("platform") String platform, @Field("packageId") String packageId);
-    Observable<ResultEntity<List<TabImage>>> queryBottomImage(@Field("platform") String platform);
+    Observable<ResultEntity<TabImageBean>> queryBottomImage(@Field("platform") String platform);
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/sum")

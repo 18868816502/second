@@ -1,7 +1,9 @@
 package com.beihui.market.entity;
 
 
-public class TabImage {
+import java.io.Serializable;
+
+public class TabImage implements Serializable{
 
     //菜单Id
     private String id;

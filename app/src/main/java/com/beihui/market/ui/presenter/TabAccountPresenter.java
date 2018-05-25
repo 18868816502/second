@@ -79,6 +79,19 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     }
 
 
+    public void onRefresh(){
+        if (userHelper.getProfile() != null) {
+            //获取头信息
+            loadDebtAbstract();
+            //获取列表信息
+            loadInDebtList();
+        } else {
+            //获取列表信息
+            List<TabAccountBean.OverdueListBean> list = new ArrayList<>();
+            view.showInDebtList(list);
+        }
+    }
+
     /**
      * 获取头信息
      */
@@ -118,7 +131,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             view.showNoUserLoginBlock();
         } else{
             Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId())
-                  .compose(RxUtil.<ResultEntity<TabAccountBean>>io2main())
+                    .compose(RxUtil.<ResultEntity<TabAccountBean>>io2main())
                     .subscribe(new Consumer<ResultEntity<TabAccountBean>>() {
                                    @Override
                                    public void accept(ResultEntity<TabAccountBean> result) throws Exception {

@@ -13,9 +13,16 @@ public class BillLoanAnalysisBean implements Serializable {
 
     private String startTime;
     private String endTime;
-    private int overAmount;
-    private int returnAmount;
-    private double unpayAmount;
+    private int overAmount = 0;
+    private int returnAmount = 0;
+    private double unpayAmount = 0;
+
+    /**
+     * 自定义
+     */
+    public String timeTitleTop;
+    public String timeTitleBottom;
+
     private List<ListBean> list = new ArrayList<>();
 
     public String getStartTime() {

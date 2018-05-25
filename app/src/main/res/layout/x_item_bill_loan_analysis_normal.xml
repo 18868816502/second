@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_normal_loan_analysis_root"
     android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.beihui.market.view.CircleImageView
-        android:id="@+id/avatar"
+        android:id="@+id/civ_item_normal_loan_analysis"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_gravity="center"
@@ -22,17 +27,20 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="91机速购"
+            android:id="@+id/tv_item_normal_loan_analysis_name"
+            android:text=""
+            android:maxWidth="200dp"
             android:textColor="#999999"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/tv_item_normal_loan_analysis_date"
             android:layout_marginTop="5dp"
             android:textColor="#424251"
             android:textSize="13sp"
-            android:text="645412.00  5/5"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -55,10 +63,11 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/tv_item_normal_loan_analysis_status"
             android:layout_marginTop="5dp"
             android:textColor="#424251"
             android:textSize="12sp"
-            android:text="已还"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
