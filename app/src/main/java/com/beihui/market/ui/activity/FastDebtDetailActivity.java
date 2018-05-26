@@ -306,7 +306,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             header.debtPayDay.setText("一次性还款");
         } else {
             //还款期数 当前期/总期数
-            header.debtPayDay.setText(fastDebtDetail.showBill.termNo + "/" + fastDebtDetail.getTerm());
+            header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
         }
 
         //当期还款日

@@ -271,7 +271,7 @@ public class Api {
      * @desc 网贷分析 列表数据
      */
     public Observable<ResultEntity<BillLoanAnalysisBean>> queryAnalysisOverviewList(String userId, int type, String time) {
-        return service .queryAnalysisOverviewList(userId, type, time);
+        return service.queryAnalysisOverviewList(userId, type, time);
     }
 
     /**

@@ -45,6 +45,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
+
 /**
  * Created by admin on 2018/5/22.
  * 网贷分析
@@ -125,7 +126,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
         switch (view.getId()) {
             case R.id.tv_ac_bill_loan_analysis_week:
                 type = 2;
-                if (selectId == R.id.tv_ac_bill_loan_analysis_week) {
+                if (selectId != R.id.tv_ac_bill_loan_analysis_week) {
                     mWeek.setSelected(true);
                     mMonth.setSelected(false);
 
@@ -141,7 +142,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                 break;
             case R.id.tv_ac_bill_loan_analysis_month:
                 type = 3;
-                if (selectId == R.id.tv_ac_bill_loan_analysis_month) {
+                if (selectId != R.id.tv_ac_bill_loan_analysis_month) {
                     mWeek.setSelected(false);
                     mMonth.setSelected(true);
 
@@ -323,6 +324,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                 .subscribe(new Consumer<ResultEntity<BillLoanAnalysisBean>>() {
                                @Override
                                public void accept(ResultEntity<BillLoanAnalysisBean> result) throws Exception {
+                                   Log.e("calendar" , "result.isSuccess()---> " + result.isSuccess());
                                    if (result.isSuccess()) {
                                        mAdapter.notifyListData(result.getData(), timeTitleTop, timeTitleBottom);
                                    } else {
@@ -333,7 +335,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-
+                                Log.e("calendar" , "throwable.getMessage()---> " + throwable.getMessage());
                             }
                         });
     }
@@ -370,3 +372,4 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
 
     }
 }
+

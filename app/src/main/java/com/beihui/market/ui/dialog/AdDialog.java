@@ -38,7 +38,6 @@ public class AdDialog extends DialogFragment {
         view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SPUtils.setValue(getContext(), ad.getId());
                 dismiss();
             }
         });

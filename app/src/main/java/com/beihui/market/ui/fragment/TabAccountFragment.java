@@ -5,11 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,6 @@ import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.TabAccountBean;
-import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.event.ShowGuide;
 import com.beihui.market.event.XTabAccountDialogMoxieFinishEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
@@ -41,7 +40,6 @@ import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.DebtSourceActivity;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
-import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.XTabAccountRvAdapter;
 import com.beihui.market.ui.contract.TabAccountContract;
@@ -49,6 +47,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.dialog.XTabAccountDialog;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
@@ -56,7 +55,6 @@ import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
-import com.beihui.market.view.refreshlayout.manager.ComRefreshManager;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -170,17 +168,41 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 .inject(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainEvent(ShowGuide showGuide) {
-        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuide"))) {
-            showGuide();
-            SPUtils.setValue(mActivity, "showGuide");
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onMainMoxieEvent(XTabAccountDialogMoxieFinishEvent event) {
+        Toast.makeText(mActivity, "3秒后刷新页面信用卡就会显示啦", Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainMoxieEvent(XTabAccountDialogMoxieFinishEvent event) {
-        Toast.makeText(mActivity, "3秒后刷新页面信用卡就会显示啦", Toast.LENGTH_SHORT).show();
+    public void onMainEvent(ShowGuide showGuide) {
+        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuideButton1"))) {
+            showGuide();
+            SPUtils.setValue(mActivity, "showGuideButton1");
+        }
+    }
+
+    /**
+     * 查询信用卡账单采集结果
+     * presenter.onStart 调用头布局数据 与 列表数据 接口
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onStart();
+
+        NutEmailLeadInListener.getInstance().checkLeadInResult(new NutEmailLeadInListener.OnCheckLeadInResultListener() {
+            @Override
+            public void onCheckLeadInResult(boolean success) {
+                if (success) {
+                    ToastUtils.showLeadInResultToast(getContext());
+                }
+            }
+        });
+
+        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuideButton1"))) {
+            showGuide();
+            SPUtils.setValue(mActivity, "showGuideButton1");
+        }
     }
 
 
@@ -258,34 +280,18 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         presenter.onRefresh();
     }
 
-    /**
-     * 查询信用卡账单采集结果
-     * presenter.onStart 调用头布局数据 与 列表数据 接口
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.onStart();
 
-        NutEmailLeadInListener.getInstance().checkLeadInResult(new NutEmailLeadInListener.OnCheckLeadInResultListener() {
-            @Override
-            public void onCheckLeadInResult(boolean success) {
-                if (success) {
-                    ToastUtils.showLeadInResultToast(getContext());
-                }
-            }
-        });
-
-        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuide"))) {
-            showGuide();
-            SPUtils.setValue(mActivity, "showGuide");
-        }
-    }
 
     //空事件
     @Override
     public void setPresenter(TabAccountContract.Presenter presenter) {
         //
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 
     /**
@@ -334,10 +340,15 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
             //进入网贷分析
             case R.id.fl_tab_account_header_bill_loan:
-                if (UserHelper.getInstance(mActivity).getProfile() != null) {
-                    startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
-                } else {
-                    showNoUserLoginBlock();
+                /**
+                 * 防止重复点击
+                 */
+                if (!FastClickUtils.isFastClick()) {
+                    if (UserHelper.getInstance(mActivity).getProfile() != null) {
+                        startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
+                    } else {
+                        showNoUserLoginBlock();
+                    }
                 }
                 break;
         }

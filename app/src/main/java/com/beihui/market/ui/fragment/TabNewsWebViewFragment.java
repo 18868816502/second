@@ -32,6 +32,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
+import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
@@ -75,6 +76,10 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
 //    @BindView(R.id.scroll_view_container)
 //    ScrollView scrollView;
 
+    /**
+     * 拼接URL
+     */
+    public static String newsUrl = null;
 
     //依赖的activity
     public Activity mActivity;
@@ -90,6 +95,15 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             newsTitleName.setText(event.title);
             mTitleName = event.title;
         }
+    }
+
+    /**
+     * 判断审核的状态
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUrlEvent(TabNewsWebViewFragmentUrlEvent event) {
+        load();
     }
 
 
@@ -148,10 +162,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
         SlidePanelHelper.attach(mActivity);
     }
 
-    /**
-     * 拼接URL
-     */
-    private String newsUrl = null;
+
 
     @Override
     public void initDatas() {}
@@ -160,28 +171,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     public void onResume() {
         super.onResume();
 
-        String userId = null;
-        if (UserHelper.getInstance(mActivity).getProfile() != null) {
-            userId = UserHelper.getInstance(mActivity).getProfile().getId();
-        }
-
-        if (TextUtils.isEmpty(userId)) {
-            userId = "";
-        }
-
-        //生成发现页链接
-        String channelId = "unknown";
-        String versionName = BuildConfig.VERSION_NAME;
-        try {
-            channelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
-
-        Log.e("newsUrl", "newsUrl--->     " + newsUrl);
-        webView.loadUrl(newsUrl);
+        load();
 
         /**
          * 在fragment里面 webView监听返回键事件
@@ -313,6 +303,35 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             }
         });
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
+    }
+
+
+    /**
+     * webView 加载Url
+     */
+    private void load() {
+        String userId = null;
+        if (UserHelper.getInstance(mActivity).getProfile() != null) {
+            userId = UserHelper.getInstance(mActivity).getProfile().getId();
+        }
+
+        if (TextUtils.isEmpty(userId)) {
+            userId = "";
+        }
+
+        //生成发现页链接
+        String channelId = "unknown";
+        String versionName = BuildConfig.VERSION_NAME;
+        try {
+            channelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
+
+        Log.e("newsUrl", "newsUrl--->     " + newsUrl);
+        webView.loadUrl(newsUrl);
     }
 
 

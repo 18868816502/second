@@ -39,6 +39,7 @@ import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.event.ShowGuide;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
+import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
@@ -279,9 +280,6 @@ public class MainActivity extends BaseComponentActivity {
 
         });
 
-        navigationBar.select(R.id.tab_account);
-        selectTab(R.id.tab_account);
-
     }
 
     @Override
@@ -410,7 +408,6 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
-                EventBus.getDefault().post(new ShowGuide());
                 break;
             //发现
             case R.id.tab_news:
@@ -430,6 +427,10 @@ public class MainActivity extends BaseComponentActivity {
                 break;
         }
         ft.commit();
+        if (id == R.id.tab_account) {
+            Log.e("adfsjafl", "shfodshfjldfjlfj");
+            EventBus.getDefault().postSticky(new ShowGuide());
+        }
     }
 
     @Override
@@ -481,13 +482,20 @@ public class MainActivity extends BaseComponentActivity {
                                          */
                                            if (result.getData().audit == 1) {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information.html";
+                                               EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
+
                                            }
                                            if (result.getData().audit == 2) {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL  = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
+                                               EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
                                            }
                                            if (result.getData().bottomList.size() > 0) {
                                                updateBottomSelector(result.getData().bottomList);
+                                           } else {
+                                               navigationBar.select(R.id.tab_account);
                                            }
+                                       } else {
+                                           navigationBar.select(R.id.tab_account);
                                        }
                                    }
                                }
@@ -499,6 +507,8 @@ public class MainActivity extends BaseComponentActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        navigationBar.select(R.id.tab_account);
+
                                         try {
                                             throw throwable;
                                         } catch (Throwable throwable1) {
@@ -548,6 +558,8 @@ public class MainActivity extends BaseComponentActivity {
                 } else if (tabImage.getPosition() == 3) {
                     navigationBar.select(R.id.tab_mine);
                 }
+            } else {
+                navigationBar.select(R.id.tab_account);
             }
             if (tabImage.getPosition() == 2) {
                 EventBus.getDefault().post(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));

@@ -67,7 +67,12 @@ public class NetConstants {
     /**
      * 用户协议H5
      */
-    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+
+    /**
+     * 魔蝎协议
+     */
+    public static final String H5_USER_MOXIE_PROTOCOL = H5_DOMAIN + "/majiabao/moxie-protocol.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
 
     /**

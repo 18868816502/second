@@ -13,8 +13,8 @@ public class BillLoanAnalysisBean implements Serializable {
 
     private String startTime;
     private String endTime;
-    private int overAmount = 0;
-    private int returnAmount = 0;
+    private double overAmount = 0;
+    private double returnAmount = 0;
     private double unpayAmount = 0;
 
     /**
@@ -41,19 +41,19 @@ public class BillLoanAnalysisBean implements Serializable {
         this.endTime = endTime;
     }
 
-    public int getOverAmount() {
+    public double getOverAmount() {
         return overAmount;
     }
 
-    public void setOverAmount(int overAmount) {
+    public void setOverAmount(double overAmount) {
         this.overAmount = overAmount;
     }
 
-    public int getReturnAmount() {
+    public double getReturnAmount() {
         return returnAmount;
     }
 
-    public void setReturnAmount(int returnAmount) {
+    public void setReturnAmount(double returnAmount) {
         this.returnAmount = returnAmount;
     }
 

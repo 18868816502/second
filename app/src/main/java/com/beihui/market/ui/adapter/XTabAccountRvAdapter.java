@@ -42,11 +42,13 @@ import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
@@ -137,6 +139,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mAccountTypeName.setTextColor(Color.parseColor("#ffffff"));
                 holder.mAccountTypeMoney.setTextColor(Color.parseColor("#ffffff"));
                 holder.mAccountTypeTerm.setTextColor(Color.parseColor("#ffffff"));
+
+                holder.mAccountTypeTerm.setText("6月");
             } else {
                 holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_fql_icon));
                 holder.mClock.setVisibility(View.GONE);
@@ -152,13 +156,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
                 holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
                 holder.mAccountTypeTerm.setTextColor(Color.parseColor("#424251"));
+
+                holder.mAccountTypeTerm.setText("1/1");
             }
 
             //账单名称 网贷账单 信用卡账单
             holder.mAccountTypeName.setText(accountBill.getTitle());
             //当期应还
             holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
-            holder.mAccountTypeTerm.setText("4月");
+
 
             holder.mCardBg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -185,6 +191,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 //快捷记账
                 Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.mine_mail_icon)
                         .into(holder.mAvatar);
+
             } else {
                 //信用卡账单
                 Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon)
@@ -399,6 +406,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             holder.mCardBg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /**
+                     * 防止重复点击
+                     */
+                    if (FastClickUtils.isFastClick()) {
+                        return;
+                    }
                     if (accountBill.getType() == 1) {
                         Intent intent = new Intent(mActivity, LoanDebtDetailActivity.class);
                         intent.putExtra("debt_id", accountBill.getRecordId());
