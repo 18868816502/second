@@ -29,19 +29,23 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="5dp"
             android:src="@drawable/bill_notice_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
+
         <com.beihui.market.view.MarqueeTextView
             android:id="@+id/tv_tab_account_notice"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:ellipsize="marquee"
+
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="20dp" />

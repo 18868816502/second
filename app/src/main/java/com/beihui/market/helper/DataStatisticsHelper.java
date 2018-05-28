@@ -246,6 +246,11 @@ public class DataStatisticsHelper {
      */
     public static final String ID_BILL_NET_FAST_ACCOUNT = "BookKeepingBtn0001";
 
+    /**
+     * 负债分析按钮
+     */
+    public static final String ID_BILL_NET_BILL_LOAN_ANALYSIS = "DebtAnalysis0001";
+
     @Inject
     Api api;
     @Inject

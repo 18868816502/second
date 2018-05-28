@@ -81,6 +81,9 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(BillLoanRvAdapterEvent event) {
+
+        mAdapter.mShowFirstItemPosition = true;
+
         int position = event.position;
         Log.e("adapter", "posistion-->" + position);
         if (type == 2) {
@@ -129,7 +132,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                 if (selectId != R.id.tv_ac_bill_loan_analysis_week) {
                     mWeek.setSelected(true);
                     mMonth.setSelected(false);
-
+                    mAdapter.mShowFirstItemPosition = false;
                     //柱状图数据
                     requestChartData(Calendar.getInstance());
                     //请求列表数据
@@ -145,7 +148,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                 if (selectId != R.id.tv_ac_bill_loan_analysis_month) {
                     mWeek.setSelected(false);
                     mMonth.setSelected(true);
-
+                    mAdapter.mShowFirstItemPosition = false;
                     //柱状图数据
                     requestChartData(Calendar.getInstance());
                     //请求列表数据
@@ -201,6 +204,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mAdapter.mShowFirstItemPosition = false;
         //柱状图数据
         requestChartData(Calendar.getInstance());
         //请求列表数据

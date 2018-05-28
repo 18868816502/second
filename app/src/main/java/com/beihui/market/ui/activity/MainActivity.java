@@ -37,7 +37,6 @@ import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.request.RequestConstants;
-import com.beihui.market.event.ShowGuide;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
 import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
@@ -72,6 +71,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -147,13 +147,10 @@ public class MainActivity extends BaseComponentActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.getBoolean("account")) {
-//                navigationBar.select(R.id.tab_account);
-
                 navigationBar.select(R.id.tab_account);
             }
 
             if (extras.getBoolean("mine")) {
-//                navigationBar.select(R.id.tab_mine);
                 navigationBar.select(R.id.tab_mine);
             }
         }
@@ -277,9 +274,7 @@ public class MainActivity extends BaseComponentActivity {
                     selectTab(selectedId);
                 }
             }
-
         });
-
     }
 
     @Override
@@ -301,14 +296,13 @@ public class MainActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        if (!result.getData().getId().equals(SPUtils.getValue(MainActivity.this, result.getData().getId()))) {
                                            mRoot.setVisibility(View.VISIBLE);
-                                           //mNotice.setText("【" + result.getData().getTitle() + "】" + result.getData().getExplain());
+//                                              mNotice.init("年后的给个价啦年后的给个价啦价啦啦价", 0.9f, 0, mNotice.getMeasuredWidth());
+//                                              mNotice.startFloating();
+
+
                                            mNotice.setText(result.getData().getExplain());
                                            mNoticeId = result.getData().getId();
-
-
-                                           mNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
-                                           mNotice.setSelected(true);
-                                           mNotice.requestFocus();
+                                           mNotice.setFocusable(true);
                                            mNotice.setFocusableInTouchMode(true);
                                        }
                                    } else {
@@ -333,6 +327,11 @@ public class MainActivity extends BaseComponentActivity {
                 SPUtils.setValue(MainActivity.this, mNoticeId);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     //空事件
@@ -382,24 +381,17 @@ public class MainActivity extends BaseComponentActivity {
 
     private void selectTab(int id) {
         selectedFragmentId = id;
-
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (tabHome == null) {
-            tabHome = TabAccountFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabHome);
+        if (tabHome != null) {
+            ft.hide(tabHome);
         }
-        ft.hide(tabHome);
-        if (tabFind == null) {
-            tabFind = TabNewsWebViewFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabFind);
+        if (tabFind != null) {
+            ft.hide(tabFind);
         }
-        ft.hide(tabFind);
-        if (tabMine == null) {
-            tabMine = TabMineFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabMine);
+        if (tabMine != null) {
+            ft.hide(tabMine);
         }
-        ft.hide(tabMine);
         switch (id) {
             //账单
             case R.id.tab_account:
@@ -427,10 +419,6 @@ public class MainActivity extends BaseComponentActivity {
                 break;
         }
         ft.commit();
-        if (id == R.id.tab_account) {
-            Log.e("adfsjafl", "shfodshfjldfjlfj");
-            EventBus.getDefault().postSticky(new ShowGuide());
-        }
     }
 
     @Override
@@ -544,6 +532,7 @@ public class MainActivity extends BaseComponentActivity {
         }
 
         final OkHttpClient client = new OkHttpClient();
+        boolean isShowTabAccount = true;
         for (int i = 0; i < list.size(); ++i) {
             TabImage tabImage = list.get(i);
             /**
@@ -553,16 +542,17 @@ public class MainActivity extends BaseComponentActivity {
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
                 if (tabImage.getPosition() == 1) {
                     navigationBar.select(R.id.tab_account);
+                    isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 2) {
                     navigationBar.select(R.id.tab_news);
+                    isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 3) {
                     navigationBar.select(R.id.tab_mine);
+                    isShowTabAccount = false;
                 }
-            } else {
-                navigationBar.select(R.id.tab_account);
             }
             if (tabImage.getPosition() == 2) {
-                EventBus.getDefault().post(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
+                EventBus.getDefault().postSticky(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
             }
 
             final int index = tabImage.getPosition() - 1;
@@ -633,6 +623,13 @@ public class MainActivity extends BaseComponentActivity {
                                     }
                                 });
             }
+        }
+        /**
+         * @author xhb
+         * @desc 都没有选择那就选择首页
+         */
+        if (isShowTabAccount) {
+            navigationBar.select(R.id.tab_account);
         }
     }
 

@@ -347,33 +347,6 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             tvDebtStatusOperation.setText("更新账单");
             tvDebtStatusTime.setVisibility(View.VISIBLE);
         }
-        mxParam = new MxParam();
-        mxParam.setUserId(UserHelper.getInstance(this).getProfile().getId());
-        mxParam.setApiKey(BuildConfig.MOXIE_APP_KEY);
-        mxParam.setQuitDisable(false);
-
-
-        //设置协议地址
-        mxParam.setAgreementUrl(NetConstants.H5_USER_MOXIE_PROTOCOL);
-
-        //自定义Title, 还有更多方法请用IDE查看
-        TitleParams titleParams = new TitleParams.Builder()
-                //设置返回键的icon，不设置此方法会默认使用魔蝎的icon
-                .leftNormalImgResId(R.mipmap.btn_back_normal_black)
-                //用于设置selector，表示按下的效果，不设置默认使leftNormalImgResId()设置的图片
-                .leftPressedImgResId(R.mipmap.btn_back_normal_black)
-                //标题字体颜色
-                .titleColor(getResources().getColor(R.color.black_1))
-                //title背景色
-                .backgroundColor(getResources().getColor(R.color.white))
-                //设置右边icon
-                .rightNormalImgResId(R.drawable.moxie_client_banner_refresh_black)
-                //是否支持沉浸式
-                .immersedEnable(true)
-                .build();
-        mxParam.setTitleParams(titleParams);
-
-
 
         flDebtStatusOperationBlock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -735,10 +708,32 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         mxParam.setApiKey(BuildConfig.MOXIE_APP_KEY);
         mxParam.setQuitDisable(false);
 
+        mxParam.setQuitLoginDone(MxParam.PARAM_COMMON_YES);
         //设置协议地址
         mxParam.setAgreementUrl(NetConstants.H5_USER_MOXIE_PROTOCOL);
         mxParam.setFunction(MxParam.PARAM_FUNCTION_ONLINEBANK);
         mxParam.setItemType(MxParam.PARAM_ITEM_TYPE_CREDITCARD);  //信用卡
+
+        //设置协议地址
+        mxParam.setAgreementUrl(NetConstants.H5_USER_MOXIE_PROTOCOL);
+
+        //自定义Title, 还有更多方法请用IDE查看
+        TitleParams titleParams = new TitleParams.Builder()
+                //设置返回键的icon，不设置此方法会默认使用魔蝎的icon
+                .leftNormalImgResId(R.mipmap.btn_back_normal_black)
+                //用于设置selector，表示按下的效果，不设置默认使leftNormalImgResId()设置的图片
+                .leftPressedImgResId(R.mipmap.btn_back_normal_black)
+                //标题字体颜色
+                .titleColor(getResources().getColor(R.color.black_1))
+                //title背景色
+                .backgroundColor(getResources().getColor(R.color.white))
+                //设置右边icon
+                .rightNormalImgResId(R.drawable.moxie_client_banner_refresh_black)
+                //是否支持沉浸式
+                .immersedEnable(true)
+                .build();
+        mxParam.setTitleParams(titleParams);
+
         mxParam.setItemCode(bankTag);
         MoxieSDK.getInstance().start(CreditCardDebtDetailActivity.this, mxParam, new MoxieCallBack() {
             @Override
@@ -818,11 +813,10 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 super.onError(moxieContext, moxieException);
                 Log.e("customMoxie","魔蝎失败" + moxieException.getMessage());
                 if(moxieException.getExceptionType() == ExceptionType.SDK_HAS_STARTED){
-//                    Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreditCardDebtDetailActivity.this, moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 } else if(moxieException.getExceptionType() == ExceptionType.SDK_LACK_PARAMETERS){
-//                    Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreditCardDebtDetailActivity.this, moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                moxieContext.finish();
             }
         });
 

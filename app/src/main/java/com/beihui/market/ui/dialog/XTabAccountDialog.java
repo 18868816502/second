@@ -72,36 +72,6 @@ public class XTabAccountDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.XTaoAccountDialogStyle);
-
-        mxParam = new MxParam();
-        mxParam.setUserId(UserHelper.getInstance(getActivity()).getProfile().getId());
-        mxParam.setApiKey(BuildConfig.MOXIE_APP_KEY);
-        mxParam.setFunction(MxParam.PARAM_FUNCTION_ONLINEBANK);
-        HashMap<String, String> loginCustomBank = new HashMap<String, String>();
-        loginCustomBank.put(MxParam.PARAM_CUSTOM_LOGIN_TYPE, MxParam.PARAM_ITEM_TYPE_CREDITCARD);// MxParam.PARAM_ITEM_TYPE_CREDITCAR:信用卡 MxParam.PARAM_ITEM_TYPE_DEBITCARD:借记卡
-        mxParam.setLoginCustom(loginCustomBank);
-        mxParam.setQuitDisable(false);
-
-
-        //设置协议地址
-        mxParam.setAgreementUrl(NetConstants.H5_USER_MOXIE_PROTOCOL);
-        mxParam.setAgreementEntryText("同意《数据采集服务协议》");
-        //自定义Title, 还有更多方法请用IDE查看
-        TitleParams titleParams = new TitleParams.Builder()
-                //设置返回键的icon，不设置此方法会默认使用魔蝎的icon
-                .leftNormalImgResId(R.mipmap.btn_back_normal_black)
-                //用于设置selector，表示按下的效果，不设置默认使leftNormalImgResId()设置的图片
-                .leftPressedImgResId(R.mipmap.btn_back_normal_black)
-                //标题字体颜色
-                .titleColor(getContext().getResources().getColor(R.color.black_1))
-                //title背景色
-                .backgroundColor(getContext().getResources().getColor(R.color.white))
-                //设置右边icon
-                .rightNormalImgResId(R.drawable.moxie_client_banner_refresh_black)
-                //是否支持沉浸式
-                .immersedEnable(true)
-                .build();
-        mxParam.setTitleParams(titleParams);
     }
 
     @Nullable
@@ -127,9 +97,10 @@ public class XTabAccountDialog extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
+        //用来清理数据或解除引用
+        MoxieSDK.getInstance().clear();
     }
 
     public static final String TAG ="aaaa";
@@ -175,6 +146,37 @@ public class XTabAccountDialog extends DialogFragment {
     }
 
     private void startMoxie() {
+
+        mxParam = new MxParam();
+        mxParam.setUserId(UserHelper.getInstance(getActivity()).getProfile().getId());
+        mxParam.setApiKey(BuildConfig.MOXIE_APP_KEY);
+        mxParam.setFunction(MxParam.PARAM_FUNCTION_ONLINEBANK);
+        HashMap<String, String> loginCustomBank = new HashMap<String, String>();
+        loginCustomBank.put(MxParam.PARAM_CUSTOM_LOGIN_TYPE, MxParam.PARAM_ITEM_TYPE_CREDITCARD);// MxParam.PARAM_ITEM_TYPE_CREDITCAR:信用卡 MxParam.PARAM_ITEM_TYPE_DEBITCARD:借记卡
+        mxParam.setLoginCustom(loginCustomBank);
+        mxParam.setQuitDisable(false);
+
+
+        //设置协议地址
+        mxParam.setAgreementUrl(NetConstants.H5_USER_MOXIE_PROTOCOL);
+        mxParam.setAgreementEntryText("同意《数据采集服务协议》");
+        //自定义Title, 还有更多方法请用IDE查看
+        TitleParams titleParams = new TitleParams.Builder()
+                //设置返回键的icon，不设置此方法会默认使用魔蝎的icon
+                .leftNormalImgResId(R.mipmap.btn_back_normal_black)
+                //用于设置selector，表示按下的效果，不设置默认使leftNormalImgResId()设置的图片
+                .leftPressedImgResId(R.mipmap.btn_back_normal_black)
+                //标题字体颜色
+                .titleColor(getContext().getResources().getColor(R.color.black_1))
+                //title背景色
+                .backgroundColor(getContext().getResources().getColor(R.color.white))
+                //设置右边icon
+                .rightNormalImgResId(R.drawable.moxie_client_banner_refresh_black)
+                //是否支持沉浸式
+                .immersedEnable(true)
+                .build();
+        mxParam.setTitleParams(titleParams);
+
         MoxieSDK.getInstance().start(getActivity(), mxParam, new MoxieCallBack() {
             @Override
             public boolean callback(MoxieContext moxieContext, MoxieCallBackData moxieCallBackData) {
@@ -254,13 +256,10 @@ public class XTabAccountDialog extends DialogFragment {
                 super.onError(moxieContext, moxieException);
                 Log.e(TAG,"魔蝎失败" + moxieException.getMessage());
                 if(moxieException.getExceptionType() == ExceptionType.SDK_HAS_STARTED){
-//                            Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 } else if(moxieException.getExceptionType() == ExceptionType.SDK_LACK_PARAMETERS){
-//                            Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                moxieContext.finish();
-                EventBus.getDefault().post(new XTabAccountDialogMoxieFinishEvent());
-
             }
         });
     }

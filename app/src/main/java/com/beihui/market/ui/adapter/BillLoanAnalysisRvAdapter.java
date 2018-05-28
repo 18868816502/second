@@ -21,12 +21,14 @@ import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramChildData;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramGroupData;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramView;
+import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,8 +69,16 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
     //没有数据的布局
     public static final int VIEW_NODATA = R.layout.x_item_bill_loan_analysis_nodata;
+    private LinearLayoutManager manager;
+    public int firstItemPosition = -1;
+    public boolean mShowFirstItemPosition = false;
+
     public BillLoanAnalysisRvAdapter(Activity mActivity) {
         this.mActivity = mActivity;
+
+        mAdapter = new BillLoanRvAdapter(mActivity);
+        manager = new LinearLayoutManager(mActivity);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
     }
 
     @Override
@@ -77,27 +87,41 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (holder.viewType == VIEW_HEADER) {
-            mAdapter = new BillLoanRvAdapter(mActivity);
-            LinearLayoutManager manager = new LinearLayoutManager(mActivity);
-            manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        if (holder.viewType == VIEW_HEADER ) {
             holder.multiGroupHistogramView.setLayoutManager(manager);
             holder.multiGroupHistogramView.setAdapter(mAdapter);
             mAdapter.notifyChartData(mList, mType);
-
-            if (mType == 2) {
-                holder.multiGroupHistogramView.scrollToPosition(10);
-            }
-            if (mType == 3) {
-                holder.multiGroupHistogramView.scrollToPosition(4);
+            Log.e("dfasaf", "firstItemPosition ---> " +firstItemPosition);
+            Log.e("dfasaf", "mShowFirstItemPosition ---> " +mShowFirstItemPosition);
+            if (firstItemPosition != -1 && mShowFirstItemPosition) {
+                manager.scrollToPositionWithOffset(firstItemPosition, 0);
+            } else {
+                if (mType == 2) {
+//                    holder.multiGroupHistogramView.scrollToPosition(10);
+//                     manager.scrollToPositionWithOffset(10, 0);
+                    holder.multiGroupHistogramView.smoothScrollToPosition(15);
+                } else if (mType == 3) {
+//                    holder.multiGroupHistogramView.scrollToPosition(4);
+//                    manager.scrollToPositionWithOffset(4, 0);
+                    holder.multiGroupHistogramView.smoothScrollToPosition(9);
+                }
             }
 
             /**
              * 标题
              */
             holder.mTitle.setText(mType == 2 ? "近12周还款趋势" : "近6月还款趋势");
+
+            holder.multiGroupHistogramView.setOnItemScrollChanged(new PulledRecyclerView.OnItemScrollChanged() {
+                @Override
+                public void onScrollChanged() {
+                    // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+                    firstItemPosition = manager.findFirstVisibleItemPosition();
+                }
+            });
         }
 
         /**
@@ -297,7 +321,7 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
         //头布局
         //MultiGroupHistogramView multiGroupHistogramView;
-        public RecyclerView multiGroupHistogramView;
+        public PulledRecyclerView multiGroupHistogramView;
         public TextView mTitle;
 
         //头布局 未还已还逾期数据
@@ -327,7 +351,7 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
                 mTitle = (TextView)itemView.findViewById(R.id.rv_item_analysis_title);
-                multiGroupHistogramView = (RecyclerView)itemView.findViewById(R.id.rc_chart_view);
+                multiGroupHistogramView = (PulledRecyclerView)itemView.findViewById(R.id.rc_chart_view);
             }
             if (viewType == VIEW_HEADER_DATA) {
                 mYear = (TextView)itemView.findViewById(R.id.tv_item_loan_analysis_year);

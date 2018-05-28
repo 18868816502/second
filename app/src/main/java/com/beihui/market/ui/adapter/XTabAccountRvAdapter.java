@@ -50,6 +50,9 @@ import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.ArrayList;
@@ -185,17 +188,38 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
             if (accountBill.getType() == 1) {
                 //网贷账单
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_internetbank_icon));
                 Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon)
-                        .into(holder.mAvatar);
+//                        .into(holder.mAvatar);
+                        .into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        holder.mAvatar.setImageDrawable(resource);
+                    }
+                });
             } else if (accountBill.getType() == 3){
                 //快捷记账
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.mine_mail_icon));
                 Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.mine_mail_icon)
-                        .into(holder.mAvatar);
+//                        .into(holder.mAvatar);
+                        .into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        holder.mAvatar.setImageDrawable(resource);
+                    }
+                });
 
             } else {
                 //信用卡账单
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.mine_bank_default_icon));
                 Glide.with(mActivity).load(accountBill.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon)
-                        .into(holder.mAvatar);
+//                        .into(holder.mAvatar);
+                        .into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        holder.mAvatar.setImageDrawable(resource);
+                    }
+                });
             }
 
 

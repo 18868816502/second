@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,20 +174,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         Toast.makeText(mActivity, "3秒后刷新页面信用卡就会显示啦", Toast.LENGTH_SHORT).show();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainEvent(ShowGuide showGuide) {
-        if (TextUtils.isEmpty(SPUtils.getValue(mActivity, "showGuideButton1"))) {
-            showGuide();
-            SPUtils.setValue(mActivity, "showGuideButton1");
-        }
-    }
-
     /**
      * 查询信用卡账单采集结果
      * presenter.onStart 调用头布局数据 与 列表数据 接口
      */
     @Override
     public void onResume() {
+        Log.e("fragmetnasdf", "TabAccountFragment onResume --> ");
+
         super.onResume();
         presenter.onStart();
 
@@ -345,6 +340,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                  */
                 if (!FastClickUtils.isFastClick()) {
                     if (UserHelper.getInstance(mActivity).getProfile() != null) {
+                        //pv，uv统计 快捷记账按钮
+                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_BILL_LOAN_ANALYSIS);
                         startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
                     } else {
                         showNoUserLoginBlock();

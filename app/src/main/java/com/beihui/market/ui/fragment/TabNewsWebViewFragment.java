@@ -42,6 +42,7 @@ import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.apache.commons.codec.Encoder;
 import org.greenrobot.eventbus.EventBus;
@@ -88,9 +89,20 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
      * 标题
      */
     public String mTitleName;
+    private TabNewsWebViewFragmentTitleEvent event;
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMainEvent(TabNewsWebViewFragmentTitleEvent event) {
+        this.event = event;
+        if (!TextUtils.isEmpty(event.title) && newsTitleName != null) {
+            newsTitleName.setText(event.title);
+            mTitleName = event.title;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         if (!TextUtils.isEmpty(event.title) && newsTitleName != null) {
             newsTitleName.setText(event.title);
             mTitleName = event.title;
@@ -132,10 +144,13 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        //设置状态栏文字为黑色字体
         if (TextUtils.isEmpty(mTitleName)) {
             mTitleName = getActivity().getResources().getString(R.string.tab_news);
         }
     }
+
+
 
     @Override
     public void onDestroy() {

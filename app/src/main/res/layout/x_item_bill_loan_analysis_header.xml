@@ -18,7 +18,7 @@
         android:layout_height="20dp" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <com.beihui.market.view.pulltoswipe.PulledRecyclerView
         android:id="@+id/rc_chart_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

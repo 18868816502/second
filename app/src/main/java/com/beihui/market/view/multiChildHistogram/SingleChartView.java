@@ -105,8 +105,13 @@ public class SingleChartView extends View {
             path.lineTo(getWidth() / 2 + DpUtils.dip2px(mContext, 3), chartHeight - DpUtils.dip2px(mContext, 15));
             canvas.drawPath(path, linePaint);
 
+
+            //左侧文字颜色
+            textTopPaint.setColor(Color.parseColor("#000000"));
             canvas.drawText(number, getWidth() / 2, chartHeight - DpUtils.dip2px(mContext, 23), textTopPaint);
         } else {
+            //左侧文字颜色
+            textTopPaint.setColor(Color.parseColor("#B3B3B3"));
             canvas.drawText(number, getWidth() / 2, chartHeight - DpUtils.dip2px(mContext, 8), textTopPaint);
         }
     }
