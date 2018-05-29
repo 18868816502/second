@@ -2,7 +2,6 @@
 <com.beihui.market.view.CustomSwipeMenuLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_menu_layout"
-    android:layout_marginTop="5dp"
     android:layout_marginBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -45,15 +44,14 @@
                 android:id="@+id/rl_item_tab_acount_set_pay_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="17dp"
+                android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingTop="18dp">
+                android:paddingTop="8dp">
 
 
                 <com.beihui.market.view.CircleImageView
                     android:id="@+id/iv_item_tab_account_avatar"
-                    android:visibility="gone"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="10dp"
@@ -163,7 +161,7 @@
             android:layout_height="16dp"
             android:layout_below="@id/ll_item_tab_account_card"
             android:layout_marginLeft="63.5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:src="@drawable/xbill_time_icon" />
 
@@ -174,9 +172,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_item_tab_account_card"
             android:layout_marginLeft="90dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="6dp"
             android:background="@color/white"
-            android:text="逾期总数为10笔"
+            android:text="以上共1笔逾期笔数"
             android:textSize="12sp" />
 
 
@@ -210,7 +208,7 @@
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:paddingRight="10dp"
-        android:layout_height="90dp">
+        android:layout_height="70dp">
 
         <TextView
             android:id="@+id/tv_shape_tab_account_no_reply"

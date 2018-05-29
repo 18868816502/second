@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.beihui.market.R;
+import com.beihui.market.util.Px2DpUtils;
 
 /**
  * Created by admin on 2018/5/22.
@@ -52,7 +53,7 @@ public class SingleChartView extends View {
     }
 
     private void init() {
-        linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        linePaint = new Paint();
         linePaint.setStyle(Paint.Style.FILL);
         linePaint.setStrokeWidth(2);
         linePaint.setColor(Color.parseColor("#000000"));
@@ -62,11 +63,11 @@ public class SingleChartView extends View {
 
 
         //绘制上方数量
-        textTopPaint = new Paint();
+        textTopPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         //左侧文字颜色
         textTopPaint.setColor(Color.parseColor("#B3B3B3"));
         //左侧字体为16px
-        textTopPaint.setTextSize(20);
+        textTopPaint.setTextSize(Px2DpUtils.dp2px(mContext, 12));
         //设置文字左对齐
         textTopPaint.setTextAlign(Paint.Align.CENTER);
 

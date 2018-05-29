@@ -472,8 +472,7 @@ public class MainActivity extends BaseComponentActivity {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information.html";
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
 
-                                           }
-                                           if (result.getData().audit == 2) {
+                                           } else if (result.getData().audit == 2) {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL  = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
                                            }

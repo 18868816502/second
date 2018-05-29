@@ -209,7 +209,10 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 
     public static void putExtra(Intent intent, String debtId, String billId, boolean byHand, String banKName, String cardNum, String logo) {
         intent.putExtra("debt_id", debtId);
+        //过时了
         intent.putExtra("billId", billId);
+        //@version 3.1.0
+        intent.putExtra("bill_id", billId);
         intent.putExtra("by_hand", byHand);
         intent.putExtra("bank_name", banKName);
         intent.putExtra("card_num", cardNum);

@@ -16,7 +16,7 @@
     <TextView
         android:textSize="17sp"
         android:textColor="#424251"
-        android:text="还没有你要的账单哦"
+        android:text="没有要还的账单哦"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

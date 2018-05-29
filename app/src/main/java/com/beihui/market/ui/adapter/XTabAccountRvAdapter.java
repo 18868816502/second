@@ -278,7 +278,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             if (accountBill.isLastOverdue()) {
                 holder.mClock.setVisibility(View.VISIBLE);
                 holder.mOverdueTotal.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setText("逾期总数为" + accountBill.getOverdueTotal() + "笔");
+                holder.mOverdueTotal.setText("以上共" + accountBill.getOverdueTotal() + "笔逾期笔数");
             } else {
                 holder.mClock.setVisibility(View.GONE);
                 holder.mOverdueTotal.setVisibility(View.GONE);

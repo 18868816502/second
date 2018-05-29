@@ -89,12 +89,12 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
      * 标题
      */
     public String mTitleName;
-    private TabNewsWebViewFragmentTitleEvent event;
+    private TabNewsWebViewFragmentTitleEvent event = null;
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMainEvent(TabNewsWebViewFragmentTitleEvent event) {
         this.event = event;
-        if (!TextUtils.isEmpty(event.title) && newsTitleName != null) {
+        if (event != null && !TextUtils.isEmpty(event.title) && newsTitleName != null) {
             newsTitleName.setText(event.title);
             mTitleName = event.title;
         }
@@ -103,7 +103,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @Override
     public void onStart() {
         super.onStart();
-        if (!TextUtils.isEmpty(event.title) && newsTitleName != null) {
+        if (event != null && !TextUtils.isEmpty(event.title) && newsTitleName != null) {
             newsTitleName.setText(event.title);
             mTitleName = event.title;
         }
