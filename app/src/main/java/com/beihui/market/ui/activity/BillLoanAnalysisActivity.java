@@ -20,6 +20,7 @@ import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.BillLoanAnalysisRvAdapter;
@@ -104,7 +105,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-
+        SlidePanelHelper.attach(this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

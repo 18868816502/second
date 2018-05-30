@@ -174,7 +174,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @Override
     public void configViews() {
         comeBack.setVisibility(View.GONE);
-        SlidePanelHelper.attach(mActivity);
     }
 
 
