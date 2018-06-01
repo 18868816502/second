@@ -29,6 +29,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -51,6 +52,8 @@ import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -247,18 +250,39 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             }
         });
 
-        adapter = new DebtDetailRVAdapter();
+        adapter = new DebtDetailRVAdapter(this);
         adapter.setHeaderView(header.itemView);
         /**
          * Item的点击事件
          */
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 ((TextView)view.findViewById(R.id.th)).setTextColor(Color.RED);
                 LoanDebtDetailActivity.this.adapter.setThTextColor(position);
                 presenter.clickSetStatus(position);
+
+                /**
+                 * 请求还款记录
+                 */
+                Api.getInstance().getDebeDetailRecord(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId())
+                        .compose(RxUtil.<ResultEntity<List<DebeDetailRecord>>>io2main())
+                        .subscribe(new Consumer<ResultEntity<List<DebeDetailRecord>>>() {
+                                       @Override
+                                       public void accept(ResultEntity<List<DebeDetailRecord>> result) throws Exception {
+                                           if (result.isSuccess()) {
+                                               LoanDebtDetailActivity.this.adapter.showDebtDetailRecord(position, result.getData());
+                                           } else {
+                                               Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                           }
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        Log.e("exception_custom", throwable.getMessage());
+                                    }
+                                });
             }
         });
         recyclerView.setAdapter(adapter);

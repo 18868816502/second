@@ -24,6 +24,7 @@ import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
+import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
@@ -279,6 +280,22 @@ public class Api {
      */
     public Observable<ResultEntity<LastNoticeBean>> getNewNotice() {
         return service.getNewNotice();
+    }
+
+    /**
+     * @version 3.2.0
+     * 查询网贷账单的还款记录
+     */
+    public Observable<ResultEntity<List<DebeDetailRecord>>> getDebeDetailRecord(String userId, String billId) {
+        return service.getDebeDetailRecord(userId, billId);
+    }
+
+    /**
+     * @version 3.2.0
+     * 查询快捷账单的还款记录
+     */
+    public Observable<ResultEntity<List<DebeDetailRecord>>> getFastDetailRecord(String userId, String billId) {
+        return service.getFastDetailRecord(userId, billId);
     }
 
     /****************************************************************************** 分割线 **************************************************************************************/
