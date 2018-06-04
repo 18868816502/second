@@ -38,7 +38,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="5dp"
         android:background="@android:color/white"
-        android:drawableLeft="@drawable/debt_channel_new"
+        android:drawableLeft="@drawable/bill_internetbank_icon"
         android:drawablePadding="15dp"
         android:gravity="center_vertical"
         android:paddingLeft="18dp"

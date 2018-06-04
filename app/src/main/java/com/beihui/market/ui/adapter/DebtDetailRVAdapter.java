@@ -29,6 +29,7 @@ import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBean, BaseViewHolder> {
 
     public static final int VIEW_ITEM_TYPE = R.layout.x_item_debt_detail_pay_detail;
+    public static final int VIEW_ITEM_NO_RECORD = R.layout.x_item_debt_detail_no_record;
 
     public Drawable upIcon;
     public Drawable dowmIcon;
@@ -43,6 +44,9 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
 
     private int[] colors = {Color.WHITE, Color.parseColor("#424251"), Color.parseColor("#909298"), Color.parseColor("#ff395e")};
     private String[] status = {"", "待还", "已还", "逾期"};
+
+    //
+    private Integer showOldPosition = null;
 
     public DebtDetailRVAdapter(Activity activity) {
         super(R.layout.list_item_debt_detail_pay_plan);
@@ -59,7 +63,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
                 .setText(R.id.status, status[item.getStatus()])
                 .setTextColor(R.id.status, colors[item.getStatus()])
                 .setTextColor(R.id.th, item.getTermNo() == currentIndex ? Color.RED : Color.parseColor("#424251"))
-                .setImageDrawable(R.id.iv_item_debt_detail_pay_arrow, (clickCurrentIndex != null && item.getTermNo() == clickCurrentIndex) ? upIcon : dowmIcon);
+                .setImageDrawable(R.id.iv_item_debt_detail_pay_arrow, item.isShow ? upIcon : dowmIcon);
         LinearLayout payPlanRoot = helper.<LinearLayout>getView(R.id.ll_item_debt_detail_play_detail);
         int childCount = payPlanRoot.getChildCount();
 
@@ -67,31 +71,37 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
             payPlanRoot.removeAllViews();
         }
         int size = mDebeDetailRecordList.size();
-        if (clickCurrentIndex != null && item.getTermNo() == clickCurrentIndex && size > 0) {
-            for (int i = 0; i < size; i++) {
-                DebeDetailRecord record = mDebeDetailRecordList.get(i);
-                View itemView = LayoutInflater.from(mActivity).inflate(VIEW_ITEM_TYPE, null, false);
+        if (item.isShow) {
+            if (size <= 0) {
+                //装载暂无记录的布局
+                View itemView = LayoutInflater.from(mActivity).inflate(VIEW_ITEM_NO_RECORD, null, false);
                 payPlanRoot.addView(itemView);
-                TextView header = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_record);
-                View line = itemView.findViewById(R.id.tv_item_pay_detail_under_line);
-                TextView content = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_content);
-                TextView date = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_date);
-                TextView money = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_money);
-                if (i == 0) {
-                    header.setVisibility(View.VISIBLE);
-                    line.setVisibility(View.VISIBLE);
-                } else {
-                    header.setVisibility(View.GONE);
-                    line.setVisibility(View.GONE);
-                }
+            } else {
+                for (int i = 0; i < size; i++) {
+                    DebeDetailRecord record = mDebeDetailRecordList.get(i);
+                    View itemView = LayoutInflater.from(mActivity).inflate(VIEW_ITEM_TYPE, null, false);
+                    payPlanRoot.addView(itemView);
+                    TextView header = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_record);
+                    View line = itemView.findViewById(R.id.tv_item_pay_detail_under_line);
+                    TextView content = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_content);
+                    TextView date = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_date);
+                    TextView money = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_money);
+                    if (i == 0) {
+                        header.setVisibility(View.VISIBLE);
+                        line.setVisibility(View.VISIBLE);
+                    } else {
+                        header.setVisibility(View.GONE);
+                        line.setVisibility(View.GONE);
+                    }
 
-                if (TextUtils.isEmpty(record.discription)) {
-                    content.setText(record.discription);
+                    if (!TextUtils.isEmpty(record.discription)) {
+                        content.setText(record.discription);
+                    }
+                    if (!TextUtils.isEmpty(record.transDate)) {
+                        date.setText(record.transDate.substring(5, 10).replace("-", "/"));
+                    }
+                    money.setText(keep2digitsWithoutZero(record.amount));
                 }
-                if (TextUtils.isEmpty(record.transDate)) {
-                    date.setText(record.transDate.substring(5, 5).replace("-", "/"));
-                }
-                money.setText(keep2digitsWithoutZero(record.amount));
             }
         }
     }
@@ -117,6 +127,13 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
         }
         mDebeDetailRecordList.addAll(debeDetailRecordList);
         clickCurrentIndex = position + 1;
+        if (this.showOldPosition == null || this.showOldPosition == position) {
+            dataSet.get(position).isShow = !dataSet.get(position).isShow ;
+        } else {
+            dataSet.get(position).isShow = true;
+            dataSet.get(showOldPosition).isShow = false;
+        }
+        this.showOldPosition = position;
         notifyDataSetChanged();
     }
 }

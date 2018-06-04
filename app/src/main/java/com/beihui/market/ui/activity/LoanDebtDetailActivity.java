@@ -390,23 +390,32 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
          */
         //先设置底部状态 1 "待还", 2 "已还", 3，"逾期"
         if (debtDetail.showBill.status == 1 || debtDetail.showBill.status == 3) {
+            mFootRoot.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
             footSetPartPay.setText("还部分");
             footSetAllPay.setEnabled(true);
         } else if (debtDetail.showBill.status == 2) {
+            mFootRoot.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
-            footSetAllPay.setEnabled(false);
+//            footSetAllPay.setEnabled(false);
+            footSetAllPay.setEnabled(true);
         } else {
             mFootRoot.setVisibility(View.GONE);
         }
         footSetAllPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSetAllPayDialog(index);
+                if ("已还".equals(footSetAllPay.getText().toString())) {
+                    //设置为待还
+                    showSetAllPayDialog(index, 1);
+                } else {
+                    //设置为已还
+                    showSetAllPayDialog(index, 2);
+                }
             }
         });
 
@@ -525,7 +534,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
-            footSetAllPay.setEnabled(false);
+            footSetAllPay.setEnabled(true);
         }
 
         if (newStatus == 3) {
@@ -589,7 +598,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
      * 设为已还
      * @param pos
      */
-    private void showSetAllPayDialog(final int pos) {
+    private void showSetAllPayDialog(final int pos, final int status) {
         final Dialog dialog = new Dialog(LoanDebtDetailActivity.this, 0);
         View dialogView = LayoutInflater.from(LoanDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -600,7 +609,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                     //pv，uv统计
                     //DataStatisticsHelper.getInstance().onCountUv(status == 2 ? DataStatisticsHelper.ID_SET_STATUS_PAID : DataStatisticsHelper.ID_SET_STATUS_UNPAID);
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
-                    presenter.updateDebtStatus(pos, 2);
+                    presenter.updateDebtStatus(pos, status);
                 }
             }
         };

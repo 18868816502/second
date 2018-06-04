@@ -463,6 +463,11 @@ public class FastDebtDetail implements Parcelable {
         private double repayedAmount;
         private int returnDay;
 
+        /**
+         * 是否展示还款记录
+         */
+        public boolean isShow = false;
+
         protected DetailListBean(Parcel in) {
             id = in.readString();
             userId = in.readString();

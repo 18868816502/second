@@ -250,6 +250,12 @@ public class DebtDetail implements Parcelable {
         private double termPayableAmount;
         private int status;
 
+        /**
+         * 是否展示还款记录
+         */
+        public boolean isShow = false;
+
+
         public String getId() {
             return id;
         }

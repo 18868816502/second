@@ -27,6 +27,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -47,6 +48,8 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -235,7 +238,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         });
 
         //创建适配器
-        adapter = new FastDebtDetailRVAdapter();
+        adapter = new FastDebtDetailRVAdapter(this);
         //添加头布局
         adapter.setHeaderView(header.itemView);
         /**
@@ -243,10 +246,32 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
          */
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 ((TextView)view.findViewById(R.id.th)).setTextColor(Color.RED);
                 FastDebtDetailActivity.this.adapter.setThTextColor(position);
                 showSetStatus(position,  fastDebtDetail.getDetailList().get(position).getStatus());
+
+                /**
+                 * 请求还款记录
+                 */
+                Api.getInstance().getFastDetailRecord(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), fastDebtDetail.getDetailList().get(index).getId())
+                        .compose(RxUtil.<ResultEntity<List<DebeDetailRecord>>>io2main())
+                        .subscribe(new Consumer<ResultEntity<List<DebeDetailRecord>>>() {
+                                       @Override
+                                       public void accept(ResultEntity<List<DebeDetailRecord>> result) throws Exception {
+                                           if (result.isSuccess()) {
+                                               FastDebtDetailActivity.this.adapter.showDebtDetailRecord(position, result.getData());
+                                           } else {
+                                               Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                           }
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        Log.e("exception_custom", throwable.getMessage());
+                                    }
+                                });
             }
         });
         recyclerView.setAdapter(adapter);
