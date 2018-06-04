@@ -34,8 +34,8 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     private String billId;
     private UserHelper userHelper;
 
-    private CreditCardDebtDetail debtDetail;
-    private List<CreditCardDebtBill> billList = new ArrayList<>();
+    public CreditCardDebtDetail debtDetail;
+    public List<CreditCardDebtBill> billList = new ArrayList<>();
     private Map<CreditCardDebtBill, List<BillDetail>> bill2Detail = new HashMap<>();
     private int curPageNo = 1;
 
@@ -95,6 +95,9 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                            size = result.getData().size();
                                        }
                                        view.showDebtBillList(Collections.unmodifiableList(billList), size == PAGE_SIZE);
+                                       if (billList.size() > 0) {
+                                           view.showStatus(billList.get(0).getStatus());
+                                       }
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

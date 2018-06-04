@@ -14,4 +14,5 @@ public class DebeDetailRecord implements Serializable {
     public String transDate;
     //还款金额
     public Double amount;
+
 }

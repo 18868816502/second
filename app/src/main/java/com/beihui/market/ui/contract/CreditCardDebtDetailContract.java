@@ -76,6 +76,12 @@ public interface CreditCardDebtDetailContract {
         void showDebtDetailInfo(CreditCardDebtDetail debtDetail);
 
         /**
+         * 显示账单详情信息
+         *
+         */
+        void showStatus(int status);
+
+        /**
          * 显示月份账单列表
          *
          * @param list        月份账单列表

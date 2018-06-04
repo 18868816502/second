@@ -257,6 +257,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.month_bill_container: {
+                        Log.e("position", "position--> " + position);
+                        showStatus(((CreditCardDebtDetailPresenter)presenter).billList.get(position).getStatus());
+
                         CreditCardDebtDetailMultiEntity entity = (CreditCardDebtDetailMultiEntity) adapter.getItem(position);
                         if (entity != null) {
                             if (entity.isExpanded()) {
@@ -480,46 +483,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                  * 账单状态
                  */
                 tvFootSetStatus.setVisibility(View.VISIBLE);
-                switch (showBill.getStatus()) {
-                    case 1://待还
-                        tvFootMiddleLine.setVisibility(View.VISIBLE);
-                        header.tvStatus.setVisibility(View.VISIBLE);
-                        tvFootSetStatus.setEnabled(true);
-                        tvFootSetStatus.setText("设为已还");
-                        header.tvStatus.setText("待还款");
-                        break;
-                    case 2://已还
-                        tvFootSetStatus.setText("已还清");
-                        tvFootSetStatus.setEnabled(false);
-                        tvFootMiddleLine.setVisibility(View.VISIBLE);
-                        header.tvStatus.setVisibility(View.VISIBLE);
-                        header.tvStatus.setText("已还款");
-                        break;
-                    case 3://逾期
-                        tvFootSetStatus.setText("设为已还");
-                        tvFootSetStatus.setEnabled(true);
-                        tvFootMiddleLine.setVisibility(View.VISIBLE);
-                        header.tvStatus.setVisibility(View.VISIBLE);
-                        header.tvStatus.setText("已逾期");
-                        break;
-                    case 4://已出账
-                        tvFootSetStatus.setVisibility(View.GONE);
-                        tvFootMiddleLine.setVisibility(View.GONE);
-                        header.tvStatus.setVisibility(View.VISIBLE);
-                        header.tvStatus.setText("已出账");
-                        break;
-                    case 5://未出账
-                        tvFootSetStatus.setVisibility(View.GONE);
-                        tvFootMiddleLine.setVisibility(View.GONE);
-                        header.tvStatus.setVisibility(View.VISIBLE);
-                        header.tvStatus.setText("未出账");
-                        break;
-                    default:
-                        tvFootSetStatus.setVisibility(View.GONE);
-                        tvFootMiddleLine.setVisibility(View.GONE);
-                        header.tvStatus.setVisibility(View.GONE);
-                        break;
-                }
+//                showStatus(showBill.getStatus());
                 /**
                 * 设置已还
                 */
@@ -591,6 +555,56 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     }
                 });
             }
+        }
+    }
+
+    /**
+     * 显示状态
+     */
+    @Override
+    public void showStatus(int status) {
+        switch (status) {
+            case 1://待还
+                tvFootSetStatus.setVisibility(View.VISIBLE);
+                tvFootMiddleLine.setVisibility(View.VISIBLE);
+                header.tvStatus.setVisibility(View.VISIBLE);
+                tvFootSetStatus.setEnabled(true);
+                tvFootSetStatus.setText("设为已还");
+                header.tvStatus.setText("待还款");
+                break;
+            case 2://已还
+                tvFootSetStatus.setVisibility(View.VISIBLE);
+                tvFootSetStatus.setText("已还");
+                tvFootSetStatus.setEnabled(false);
+                tvFootMiddleLine.setVisibility(View.VISIBLE);
+                header.tvStatus.setVisibility(View.VISIBLE);
+                header.tvStatus.setText("已还款");
+                break;
+            case 3://逾期
+                tvFootSetStatus.setVisibility(View.VISIBLE);
+                tvFootSetStatus.setText("设为已还");
+                tvFootSetStatus.setEnabled(true);
+                tvFootMiddleLine.setVisibility(View.VISIBLE);
+                header.tvStatus.setVisibility(View.VISIBLE);
+                header.tvStatus.setText("已逾期");
+                break;
+            case 4://已出账
+                tvFootSetStatus.setVisibility(View.GONE);
+                tvFootMiddleLine.setVisibility(View.GONE);
+                header.tvStatus.setVisibility(View.VISIBLE);
+                header.tvStatus.setText("已出账");
+                break;
+            case 5://未出账
+                tvFootSetStatus.setVisibility(View.GONE);
+                tvFootMiddleLine.setVisibility(View.GONE);
+                header.tvStatus.setVisibility(View.VISIBLE);
+                header.tvStatus.setText("未出账");
+                break;
+            default:
+                tvFootSetStatus.setVisibility(View.GONE);
+                tvFootMiddleLine.setVisibility(View.GONE);
+                header.tvStatus.setVisibility(View.GONE);
+                break;
         }
     }
 

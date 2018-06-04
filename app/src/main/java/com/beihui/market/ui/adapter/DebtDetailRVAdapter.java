@@ -82,16 +82,16 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
                     View itemView = LayoutInflater.from(mActivity).inflate(VIEW_ITEM_TYPE, null, false);
                     payPlanRoot.addView(itemView);
                     TextView header = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_record);
-                    View line = itemView.findViewById(R.id.tv_item_pay_detail_under_line);
+//                    View line = itemView.findViewById(R.id.tv_item_pay_detail_under_line);
                     TextView content = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_content);
                     TextView date = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_date);
                     TextView money = (TextView) itemView.findViewById(R.id.tv_item_pay_detail_money);
                     if (i == 0) {
                         header.setVisibility(View.VISIBLE);
-                        line.setVisibility(View.VISIBLE);
+//                        line.setVisibility(View.VISIBLE);
                     } else {
                         header.setVisibility(View.GONE);
-                        line.setVisibility(View.GONE);
+//                        line.setVisibility(View.GONE);
                     }
 
                     if (!TextUtils.isEmpty(record.discription)) {
