@@ -175,6 +175,6 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
         Intent intent = new Intent(getContext(), FastDebtDetailActivity.class);
         intent.putExtra("debt_id", loanBill.getRecordId());
         intent.putExtra("bill_id", loanBill.getBillId());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 }
