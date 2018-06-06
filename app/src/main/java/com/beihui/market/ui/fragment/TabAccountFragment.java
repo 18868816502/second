@@ -412,6 +412,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
             mLastThirtyDayWaitPayNum.setText("");
 
+            yesPay.setText("0");
+            noPay.setText("0");
+
         }
         mAdapter.notifyDebtChanged(list);
 

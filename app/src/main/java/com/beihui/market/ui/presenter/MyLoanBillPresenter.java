@@ -29,11 +29,11 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
     private UserHelper userHelper;
 
     private int loanBillCount;
-    private List<LoanBill.Row> loanBillList = new ArrayList<>();
+    public List<LoanBill.Row> loanBillList = new ArrayList<>();
 
     private boolean canLoadMore;
-    private int curPage = 1;
-    private int fastCurPage = 1;
+    public int curPage = 1;
+    public int fastCurPage = 1;
 
     @Inject
     MyLoanBillPresenter(Context context, Api api, MyLoanBillContract.View view) {

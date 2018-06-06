@@ -56,14 +56,17 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, DebtDetail.RepayPlanBean item) {
+    protected void convert(final BaseViewHolder helper, final DebtDetail.RepayPlanBean item) {
         helper.setText(R.id.th, item.getTermNo() + "期")      //设置期数
                 .setText(R.id.date, item.getTermRepayDate().replace("-", "."))    //设置日期
-                .setText(R.id.amount, "￥" + keep2digitsWithoutZero(item.getTermPayableAmount()))  //设置金额
+                .setText(R.id.amount, "¥" + keep2digitsWithoutZero(item.getTermPayableAmount()))  //设置金额
                 .setText(R.id.status, status[item.getStatus()])
                 .setTextColor(R.id.status, colors[item.getStatus()])
                 .setTextColor(R.id.th, item.getTermNo() == currentIndex ? Color.RED : Color.parseColor("#424251"))
-                .setImageDrawable(R.id.iv_item_debt_detail_pay_arrow, item.isShow ? upIcon : dowmIcon);
+                .addOnClickListener(R.id.ll_item_debt_detail_root);
+
+        helper.getView(R.id.iv_item_debt_detail_pay_arrow).setRotation(item.isShow  ?  90 : 0);
+
         LinearLayout payPlanRoot = helper.<LinearLayout>getView(R.id.ll_item_debt_detail_play_detail);
         int childCount = payPlanRoot.getChildCount();
 
@@ -120,6 +123,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
         currentIndex = position + 1;
         notifyDataSetChanged();
     }
+
 
     public void showDebtDetailRecord(int position, List<DebeDetailRecord> debeDetailRecordList) {
         if (mDebeDetailRecordList.size() > 0) {

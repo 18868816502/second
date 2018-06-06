@@ -103,6 +103,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
         presenter.fetchLoanBill(billType);
     }
 
+
+
     @Override
     protected void configureComponent(AppComponent appComponent) {
         DaggerMyLoanBillComponent.builder()

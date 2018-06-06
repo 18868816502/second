@@ -266,7 +266,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/wx/login")
-    Observable<ResultEntity<UserProfileAbstract>> loginWithWechat(@Field("openId") String openId);
+    Observable<ResultEntity<UserProfileAbstract>>   loginWithWechat(@Field("openId") String openId, @Field("platform") int platform);
 
     /**
      * 请求验证码
@@ -707,10 +707,14 @@ public interface ApiService {
     /**
      * 账单还款提醒设置
      * accounting/updateRedmine 新接口替换老接口 accounting/redmine
+     * type 类型 1-网贷 2-信用卡 3-手动记账
+     * recordId 网贷账单Id/信用卡Id/手动账单Id
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/accounting/updateRedmine")
-    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("channelId") String channelId, @Field("cardId") String cardId, @Field("day") int day);
+    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("type") String type, @Field("recordId") String recordId, @Field("day") int day);
+    // channelId 账单Id     cardId  信用卡Id
+//    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("recordId") String recordId, @Field("cardId") String cardId, @Field("day") int day);
 
     /**
      * 删除借款

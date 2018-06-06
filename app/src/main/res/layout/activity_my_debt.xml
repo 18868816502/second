@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:text="我的账单"
             android:textSize="16sp"
-            android:textColor="@color/black_2"
+            android:textColor="@color/black_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

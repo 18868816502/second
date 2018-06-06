@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.LoanBill;
+import com.beihui.market.event.MyLoanDebtListFragmentEvent;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMyLoanBillComponent;
 import com.beihui.market.injection.module.MyLoanBillModule;
@@ -27,6 +29,10 @@ import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.DebtStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Locale;
@@ -62,19 +68,37 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     public int mPosition = 1;
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onMainEvent(MyLoanDebtListFragmentEvent event){
+        if ((mPosition == 1  && ((MyLoanBillPresenter)presenter).curPage > 1) ||( mPosition == 2 && ((MyLoanBillPresenter)presenter).fastCurPage > 1)) {
+            ((MyLoanBillPresenter) presenter).curPage = 1;
+            ((MyLoanBillPresenter) presenter).fastCurPage = 1;
+            int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
+            if (size > 0) {
+                ((MyLoanBillPresenter) presenter).loanBillList.clear();
+            }
+            presenter.fetchLoanBill(mPosition == 1 ? billType : FastbillType);
+
+            Log.e("asdfa", "aaaaaaaaaaaaaaaaaaaa");
+        }
+    }
+
     @Override
     public void onDestroyView() {
         presenter.onDestroy();
         super.onDestroyView();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
-            presenter.debtDeleted(data.getStringExtra("deleteDebtId"));
-        }
+        Log.e("asdfa", "dasfasdfasdfdsf");
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK & data != null) {
+//            presenter.debtDeleted(data.getStringExtra("deleteDebtId"));
+//            }
     }
+
 
     @Override
     public int getLayoutResId() {
@@ -111,11 +135,24 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
         float density = getResources().getDisplayMetrics().density;
         recyclerView.addItemDecoration(new CommVerItemDeco((int) (density * 0.5), (int) (15 * density), (int) (15 * density)));
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
     }
 
     @Override
     public void initDatas() {
         presenter.fetchLoanBill(mPosition == 1 ? billType : FastbillType);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

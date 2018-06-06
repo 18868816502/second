@@ -20,14 +20,33 @@
             android:paddingRight="8dp"
             android:paddingTop="25dp">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/black_1"
-                android:textSize="16sp"
-                tools:text="修改分期状态为已还" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black_1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="修改分期状态为已还"/>
+
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black_1"
+                    android:textSize="16sp"
+                    tools:text="修改分期状态为已还" />
+
+            </LinearLayout>
 
         </FrameLayout>
 
@@ -50,7 +69,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="取消"
-                    android:textColor="@color/black_2"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
 
                 <TextView
@@ -61,7 +80,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="确认"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/red"
                     android:textSize="16sp" />
 
             </LinearLayout>

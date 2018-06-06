@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_1"
                     android:textSize="15sp"
-                    tools:text="￥ 1,578" />
+                    tools:text="¥ 1,578" />
             </LinearLayout>
 
             <TextView

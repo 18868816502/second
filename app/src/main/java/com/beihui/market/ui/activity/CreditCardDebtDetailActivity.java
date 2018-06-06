@@ -482,7 +482,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 /**
                  * 账单状态
                  */
-                tvFootSetStatus.setVisibility(View.VISIBLE);
+//                tvFootSetStatus.setVisibility(View.VISIBLE);
 //                showStatus(showBill.getStatus());
                 /**
                 * 设置已还

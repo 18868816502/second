@@ -50,6 +50,6 @@
         android:layout_gravity="right|center_vertical"
         android:textColor="@color/black_1"
         android:textSize="12sp"
-        tools:text="￥ 1,066" />
+        tools:text="¥ 1,066" />
 
 </FrameLayout>

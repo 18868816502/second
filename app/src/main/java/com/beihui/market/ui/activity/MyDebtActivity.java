@@ -57,6 +57,18 @@ public class MyDebtActivity extends BaseComponentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPosition == 1) {
+
+        }
+
+        if (mPosition == 1) {
+
+        }
+    }
+
+    @Override
     protected void configureComponent(AppComponent appComponent) {
 
     }

@@ -345,7 +345,7 @@ public class Api {
      * @param openId 微信openId
      */
     public Observable<ResultEntity<UserProfileAbstract>> loginWithWechat(String openId) {
-        return service.loginWithWechat(openId);
+        return service.loginWithWechat(openId, 1);
     }
 
     /**
@@ -1049,12 +1049,10 @@ public class Api {
      * 更新账单提醒状态
      *
      * @param userId    用户id
-     * @param channelId 渠道id，网贷账单需要
-     * @param cardId    信用卡id，信用卡账单需要
      * @param day       -1-不提醒，1-提前1天，2-提前2天
      */
-    public Observable<ResultEntity> updateRemindStatus(String userId, String channelId, String cardId, int day) {
-        return service.updateDebtRemindStatus(userId, channelId, cardId, day);
+    public Observable<ResultEntity> updateRemindStatus(String userId, String type, String recordId, int day) {
+        return service.updateDebtRemindStatus(userId, type, recordId, day);
     }
 
     /**

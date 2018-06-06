@@ -22,8 +22,12 @@ import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramChildData;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramGroupData;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramView;
 import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
+import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,13 +167,40 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
             if (listBean.getType() == 1) {
                 //网贷账单
-                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon).into(holder.mAvatar);
+//                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon).into(holder.mAvatar);
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_internetbank_icon));
+                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon)
+//                        .into(holder.mAvatar);
+                        .into(new SimpleTarget<GlideDrawable>() {
+                            @Override
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                                holder.mAvatar.setImageDrawable(resource);
+                            }
+                        });
             } else if (listBean.getType() == 3){
                 //快捷记账
-                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_mail_icon).into(holder.mAvatar);
+//                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_mail_icon).into(holder.mAvatar);
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.mine_mail_icon));
+                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_mail_icon)
+//                        .into(holder.mAvatar);
+                        .into(new SimpleTarget<GlideDrawable>() {
+                            @Override
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                                holder.mAvatar.setImageDrawable(resource);
+                            }
+                        });
             } else {
                 //信用卡账单
-                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon).into(holder.mAvatar);
+//                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon).into(holder.mAvatar);
+                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.mine_bank_default_icon));
+                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon)
+//                        .into(holder.mAvatar);
+                        .into(new SimpleTarget<GlideDrawable>() {
+                            @Override
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                                holder.mAvatar.setImageDrawable(resource);
+                            }
+                        });
             }
 
             holder.mName.setText(listBean.getTitle());

@@ -31,6 +31,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.event.MyLoanDebtListFragmentEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
@@ -52,6 +53,8 @@ import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -188,6 +191,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     private CreditCardDebtDetailDialog dialog;
 
     /**
+     * 还款金额
+     */
+    public String money;
+
+    /**
      * 初始化 埋点
      */
     @Override
@@ -255,34 +263,36 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         /**
          * Item的点击事件
          */
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
-                ((TextView)view.findViewById(R.id.th)).setTextColor(Color.RED);
-                LoanDebtDetailActivity.this.adapter.setThTextColor(position);
-                presenter.clickSetStatus(position);
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+                if (view.getId() == R.id.ll_item_debt_detail_root) {
+                    ((TextView) view.findViewById(R.id.th)).setTextColor(Color.RED);
+                    LoanDebtDetailActivity.this.adapter.setThTextColor(position);
+                    presenter.clickSetStatus(position);
 
-                /**
-                 * 请求还款记录
-                 */
-                Api.getInstance().getDebeDetailRecord(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId())
-                        .compose(RxUtil.<ResultEntity<List<DebeDetailRecord>>>io2main())
-                        .subscribe(new Consumer<ResultEntity<List<DebeDetailRecord>>>() {
-                                       @Override
-                                       public void accept(ResultEntity<List<DebeDetailRecord>> result) throws Exception {
-                                           if (result.isSuccess()) {
-                                               LoanDebtDetailActivity.this.adapter.showDebtDetailRecord(position, result.getData());
-                                           } else {
-                                               Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                    /**
+                     * 请求还款记录
+                     */
+                    Api.getInstance().getDebeDetailRecord(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId())
+                            .compose(RxUtil.<ResultEntity<List<DebeDetailRecord>>>io2main())
+                            .subscribe(new Consumer<ResultEntity<List<DebeDetailRecord>>>() {
+                                           @Override
+                                           public void accept(ResultEntity<List<DebeDetailRecord>> result) throws Exception {
+                                               if (result.isSuccess()) {
+                                                   LoanDebtDetailActivity.this.adapter.showDebtDetailRecord(position, result.getData());
+                                               } else {
+                                                   Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                               }
                                            }
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        Log.e("exception_custom", throwable.getMessage());
-                                    }
-                                });
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(Throwable throwable) throws Exception {
+                                            Log.e("exception_custom", throwable.getMessage());
+                                        }
+                                    });
+                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -395,6 +405,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
             footSetPartPay.setText("还部分");
+            money = keep2digitsWithoutZero(debtDetail.showBill.termPayableAmount);
             footSetAllPay.setEnabled(true);
         } else if (debtDetail.showBill.status == 2) {
             mFootRoot.setVisibility(View.VISIBLE);
@@ -615,7 +626,21 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         };
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
         dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
+        /**
+         * 1 设置为待还
+         * 2 设置为已还
+         */
+        /**
+         * 1 设置为待还
+         * 2 设置为已还
+         */
+        if (status == 1) {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为未还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定本期账单设为未还？");
+        } else {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为已还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定还款"+money+"元");
+        }
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
@@ -729,4 +754,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             presenter.loadDebtDetail(billId);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent());
+    }
+
 }
