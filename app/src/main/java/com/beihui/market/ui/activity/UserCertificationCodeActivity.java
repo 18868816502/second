@@ -23,6 +23,7 @@ import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.ClearEditText;
@@ -80,7 +81,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                 .init();
 
         pendingPhone = getIntent().getStringExtra("pendingPhone");
-        tvPhone.setText(pendingPhone);
+        tvPhone.setText(LegalInputUtils.formatMobile(pendingPhone));
         tvLogin.setClickable(false);
         setupToolbar(toolbar);
         SlidePanelHelper.attach(this);

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.view.CircleImageView;
+import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramChildData;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramGroupData;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramView;
@@ -164,44 +166,19 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
          */
         if (holder.viewType == VIEW_NORMAL) {
             final BillLoanAnalysisBean.ListBean listBean = mListBean.getList().get(getPosition(position));
-
+            int placeHolder;
             if (listBean.getType() == 1) {
                 //网贷账单
-//                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon).into(holder.mAvatar);
-                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_internetbank_icon));
-                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.bill_internetbank_icon)
-//                        .into(holder.mAvatar);
-                        .into(new SimpleTarget<GlideDrawable>() {
-                            @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                                holder.mAvatar.setImageDrawable(resource);
-                            }
-                        });
+                placeHolder = R.drawable.bill_internetbank_icon;
             } else if (listBean.getType() == 3){
                 //快捷记账
-//                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_mail_icon).into(holder.mAvatar);
-                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.mine_mail_icon));
-                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_mail_icon)
-//                        .into(holder.mAvatar);
-                        .into(new SimpleTarget<GlideDrawable>() {
-                            @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                                holder.mAvatar.setImageDrawable(resource);
-                            }
-                        });
+                placeHolder = R.drawable.mine_mail_icon;
             } else {
                 //信用卡账单
-//                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon).into(holder.mAvatar);
-                holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.mine_bank_default_icon));
-                Glide.with(mActivity).load(listBean.getLogoUrl()).placeholder(R.drawable.mine_bank_default_icon)
-//                        .into(holder.mAvatar);
-                        .into(new SimpleTarget<GlideDrawable>() {
-                            @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                                holder.mAvatar.setImageDrawable(resource);
-                            }
-                        });
+                placeHolder = R.drawable.mine_bank_default_icon;
             }
+            Glide.with(mActivity).load(listBean.getLogoUrl()).centerCrop().transform(new GlideCircleTransform(mActivity)).placeholder(placeHolder).into(holder.mAvatar);
+
 
             holder.mName.setText(listBean.getTitle());
 
@@ -366,7 +343,7 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
         //列表布局
         public LinearLayout mListRoot;
-        public CircleImageView mAvatar;
+        public ImageView mAvatar;
         public TextView mName;
         public TextView mDate;
         public TextView mStatus;
@@ -396,7 +373,7 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
             }
             if (viewType == VIEW_NORMAL) {
                 mListRoot = (LinearLayout)itemView.findViewById(R.id.ll_item_normal_loan_analysis_root);
-                mAvatar = (CircleImageView)itemView.findViewById(R.id.civ_item_normal_loan_analysis);
+                mAvatar = (ImageView)itemView.findViewById(R.id.civ_item_normal_loan_analysis);
                 mName = (TextView)itemView.findViewById(R.id.tv_item_normal_loan_analysis_name);
                 mDate = (TextView)itemView.findViewById(R.id.tv_item_normal_loan_analysis_date);
                 mStatus = (TextView)itemView.findViewById(R.id.tv_item_normal_loan_analysis_status);

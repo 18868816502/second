@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 自定义键盘背景颜色集 -->
+    <!--键盘按下的颜色-->
+    <color name="custom_key_gray_pressed">#3c3e52</color>
+    <!--键盘为按下的颜色-->
+    <color name="custom_key_gray">#37394d</color>
+    <!--键盘文字颜色-->
+    <color name="text_color_gray_3">#ffffff</color>
+
+
+    <color name="custom_key_red">#f24957</color>
+    <color name="custom_key_red_pressed">#d9414e</color>
+
+    <color name="custom_key_blue">#4377bf</color>
+    <color name="custom_key_blue_pressed">#3a67a6</color>
+
+    <color name="custom_key_grayl">#c8cacc</color>
+    <color name="custom_key_grayl_pressed">#f58349</color>
+    <!--文字-->
+    <color name="text_color_gray_6">#666666</color>
+    <color name="text_color_gray_9">#999999</color>
+    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_red">#f55754</color>
+    <color name="text_color_blue">#007eff</color>
+    <color name="text_color_yellow">#fffc01</color>
+<!--00000000000000000000000000000000000000000000000000000000000000000000-->
+
+
     <color name="colorPrimary">#5591FF</color>
     <color name="colorPrimaryDark">#5591FF</color>
     <color name="colorAccent">#5591FF</color>

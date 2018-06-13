@@ -26,6 +26,8 @@ public class CommNoneAndroidDialog extends DialogFragment {
     TextView positiveTv;
     TextView negativeTv;
 
+    int message_color = Color.parseColor("#424251");
+
     private String title;
     private String message;
     private String positiveStr;
@@ -52,6 +54,8 @@ public class CommNoneAndroidDialog extends DialogFragment {
         btnContainer = (FrameLayout) view.findViewById(R.id.btn_container);
         positiveTv = (TextView) view.findViewById(R.id.positive_btn);
         negativeTv = (TextView) view.findViewById(R.id.negative_btn);
+
+        messageTv.setTextColor(message_color);
 
         configureViews();
         return view;
@@ -123,6 +127,13 @@ public class CommNoneAndroidDialog extends DialogFragment {
 
     public CommNoneAndroidDialog withMessage(String message) {
         this.message = message;
+        message_color = Color.parseColor("#424251");
+        return this;
+    }
+
+    public CommNoneAndroidDialog withMessageByGray(String message) {
+        this.message = message;
+        message_color = Color.parseColor("#909298");
         return this;
     }
 

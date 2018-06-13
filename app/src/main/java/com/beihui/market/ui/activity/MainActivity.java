@@ -275,6 +275,13 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
+
+        findViewById(R.id.iv_add_add_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
+            }
+        });
     }
 
     @Override

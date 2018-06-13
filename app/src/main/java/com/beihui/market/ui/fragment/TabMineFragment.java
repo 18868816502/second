@@ -1,7 +1,9 @@
 package com.beihui.market.ui.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,7 +134,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         //noinspection ConstantConditions
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        wechatSurpriseView.setVisibility(SPUtils.getWechatSurpriseClicked(getContext()) ? View.GONE : View.VISIBLE);
+        //wechatSurpriseView.setVisibility(SPUtils.getWechatSurpriseClicked(getContext()) ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -182,9 +185,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     }
 
     @OnClick({R.id.contact_kefu, R.id.mine_msg,
-            R.id.mine_bill, R.id.login, R.id.avatar, R.id.user_name,
+            R.id.mine_bill, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
             R.id.my_collection, R.id.reward_points, R.id.invite_friend,
-            R.id.helper_feedback, R.id.settings, R.id.wechat_public})
+            R.id.helper_feedback, R.id.star_me, R.id.wechat_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //我的账单
@@ -223,7 +226,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
 
-            case R.id.user_name:
+            case R.id.ll_navigate_user_profile:
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickUserProfile();
                 }
@@ -271,26 +274,51 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_WECHAT);
 
                 new WeChatPublicDialog().show(getChildFragmentManager(), WeChatPublicDialog.class.getSimpleName());
-                if (wechatSurpriseView.getVisibility() != View.GONE) {
-                    wechatSurpriseView.setVisibility(View.GONE);
-                    SPUtils.setWechatSurpriseClicked(getContext(), true);
-                }
+//                if (wechatSurpriseView.getVisibility() != View.GONE) {
+//                    wechatSurpriseView.setVisibility(View.GONE);
+//                    SPUtils.setWechatSurpriseClicked(getContext(), true);
+//                }
                 break;
 
             /**
-             * 进入设置页面
+             * 鼓励一下
              */
-            case R.id.settings:
-                //umeng统计
-                Statistic.onEvent(Events.MINE_CLICK_SETTING);
-
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickSetting();
+            case R.id.star_me:
+//               String model=android.os.Build.MODEL;
+                //品牌
+                String brand=android.os.Build.BRAND;
+                //制造商
+                String manufacturer=android.os.Build.MANUFACTURER;
+                Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
+                if ("samsung".equals(manufacturer)) {
+                    goToSamsungappsMarket();
+                } else {
+                    try {
+                        Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getActivity().getApplicationInfo().packageName));
+                        startActivity(toMarket);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
 
             default:
                 break;
+        }
+    }
+
+    /**
+     * https://www.cnblogs.com/qwangxiao/p/8030389.html
+     */
+    public void goToSamsungappsMarket(){
+        Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" + getActivity().getApplicationInfo().packageName);
+        Intent goToMarket = new Intent();
+        goToMarket.setClassName("com.sec.android.app.samsungapps", "com.sec.android.app.samsungapps.Main");
+        goToMarket.setData(uri);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

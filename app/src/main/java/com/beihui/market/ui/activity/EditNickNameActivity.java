@@ -1,5 +1,7 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -18,6 +20,8 @@ import com.beihui.market.ui.contract.EditUserNameContract;
 import com.beihui.market.ui.presenter.EditUserNamePresenter;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.ClearEditText;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.io.UnsupportedEncodingException;
 
@@ -26,17 +30,23 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
+/**
+ * 修改昵称的页面
+ */
 public class EditNickNameActivity extends BaseComponentActivity implements EditUserNameContract.View {
+
+    public static final int RESULT_OK_EDIT_NICK_NAME_ACTIVITY = 10;
+
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.edit_text)
-    EditText editText;
+    ClearEditText editText;
     @BindView(R.id.confirm)
     TextView confirmBtn;
 
     @Inject
     EditUserNamePresenter presenter;
+    private int black_2;
 
     @Override
     protected void onDestroy() {
@@ -52,7 +62,10 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
     @Override
     public void configViews() {
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
+
+
         InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -98,7 +111,9 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                confirmBtn.setEnabled(editText.getText().toString().trim().length() > 0);
+                boolean isConfirm = editText.getText().toString().trim().length() > 0 && editText.getText().toString().trim().length() < 17;
+                confirmBtn.setEnabled(isConfirm);
+                confirmBtn.setTextColor(isConfirm ? Color.parseColor("#ff5240") : black_2);
             }
 
             @Override
@@ -112,6 +127,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
     @Override
     public void initDatas() {
+        black_2 = getResources().getColor(R.color.black_2);
         presenter.onStart();
     }
 
@@ -147,9 +163,12 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     }
 
     @Override
-    public void showUpdateNameSuccess(String msg) {
+    public void showUpdateNameSuccess(String msg, String nickName) {
         dismissProgress();
         ToastUtils.showShort(this, msg, null);
+        Intent intent = new Intent();
+        intent.putExtra("updateNickName", nickName);
+        setResult(RESULT_OK_EDIT_NICK_NAME_ACTIVITY, intent);
         finish();
     }
 

@@ -250,9 +250,15 @@
         <!--网贷分析页面-->
         <activity android:name=".ui.activity.BillLoanAnalysisActivity"
             android:screenOrientation="portrait"/>
-
-
-
+        <!--输入新手机号码-->
+        <activity android:name=".ui.activity.InputNewMobileActivity"
+            android:screenOrientation="portrait"/>
+        <!--记账流程-->
+        <activity android:name=".ui.activity.AccountFlowActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
+            android:alwaysRetainTaskState="true"
+            android:screenOrientation="portrait"/>
 
 
 

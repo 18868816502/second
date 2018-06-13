@@ -53,7 +53,7 @@
                     android:id="@+id/tv_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1377 7228 555"
+                    android:text="137 7728 5555"
                     android:textColor="@color/black_2"
                     android:textSize="12sp" />
             </LinearLayout>

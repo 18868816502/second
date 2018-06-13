@@ -3,6 +3,7 @@ package com.beihui.market.ui.adapter;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,21 +58,44 @@ public class BillLoanRvAdapter extends RecyclerView.Adapter<BillLoanRvAdapter.Vi
         final AnalysisChartBean analysisChartBean = mList.get(position);
         //柱形图高度
         final double chartHeidht = analysisChartBean.getAmount()/maxAmout;
+        Double leftHeight = null;
+        Double rightHeight = null;
+        if (position > 0) {
+            leftHeight=mList.get(position-1).getAmount()/maxAmout;
+        }
+        if (mType == 2 && position <= mList.size() - 2) {
+            rightHeight=mList.get(position+1).getAmount()/maxAmout;
+        }
+        if (mType == 3 && position <= mList.size() - 2) {
+            rightHeight=mList.get(position+1).getAmount()/maxAmout;
+        }
+
+
+
         if (mList.get(position).isSelect) {
             holder.bottomText.setTextColor(Color.parseColor("#424251"));
-            if ((mType == 2 && position < 12) || (mType == 3 && position < 6)){
-                holder.singleChartView.notifyChartColor(chartHeidht, analysisChartBean.showAmount  + "", true);
-            } else {
-                holder.singleChartView.notifyChartColor(chartHeidht, analysisChartBean.showAmount  + "", true, 0);
-            }
+//            if ((mType == 2 && position < 12) || (mType == 3 && position < 6)){
+//                holder.singleChartView.notifyChartColor(chartHeidht,leftHeight, rightHeight, analysisChartBean.showAmount  + "",mList.get(position).isSelect);
+//            } else {
+//                holder.singleChartView.notifyChartColor(chartHeidht,leftHeight, rightHeight, analysisChartBean.showAmount  + "", mList.get(position).isSelect, 0);
+//            }
         } else {
             holder.bottomText.setTextColor(Color.parseColor("#B3B3B3"));
-            if ((mType == 2 && position < 12) || (mType == 3 && position < 6)){
-                holder.singleChartView.notifyChartColor(chartHeidht, analysisChartBean.showAmount + "", false);
-            } else {
-                holder.singleChartView.notifyChartColor(chartHeidht, analysisChartBean.showAmount + "", false, 0);
-            }
+//            if ((mType == 2 && position < 12) || (mType == 3 && position < 6)){
+//                holder.singleChartView.notifyChartColor(chartHeidht, leftHeight, rightHeight,analysisChartBean.showAmount + "", mList.get(position).isSelect);
+//            } else {
+//                holder.singleChartView.notifyChartColor(chartHeidht, leftHeight, rightHeight,analysisChartBean.showAmount + "", mList.get(position).isSelect, 0);
+//            }
         }
+        int line;
+        if ((mType == 2 && position < 12) || (mType == 3 && position < 6)) {
+            line = 0;
+        } else if ((mType == 2 && position == 12) || (mType == 3 && position == 6)) {
+            line = 1;
+        } else {
+            line = 2;
+        }
+        holder.singleChartView.notifyChartColor(chartHeidht, leftHeight, rightHeight,analysisChartBean.showAmount + "", mList.get(position).isSelect, line);
 
         //底部文字
         String[] split = analysisChartBean.getTime().split("-");

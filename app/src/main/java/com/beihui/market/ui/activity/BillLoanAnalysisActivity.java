@@ -130,6 +130,9 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
         switch (view.getId()) {
             case R.id.tv_ac_bill_loan_analysis_week:
                 type = 2;
+                if (mAdapter != null) {
+                    mAdapter.setType(2);
+                }
                 if (selectId != R.id.tv_ac_bill_loan_analysis_week) {
                     mWeek.setSelected(true);
                     mMonth.setSelected(false);
@@ -140,12 +143,13 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                     requestListData(Calendar.getInstance());
                 }
                 selectId = view.getId();
-                if (mAdapter != null) {
-                    mAdapter.setType(2);
-                }
+
                 break;
             case R.id.tv_ac_bill_loan_analysis_month:
                 type = 3;
+                if (mAdapter != null) {
+                    mAdapter.setType(3);
+                }
                 if (selectId != R.id.tv_ac_bill_loan_analysis_month) {
                     mWeek.setSelected(false);
                     mMonth.setSelected(true);
@@ -156,9 +160,6 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                     requestListData(Calendar.getInstance());
                 }
                 selectId = view.getId();
-                if (mAdapter != null) {
-                    mAdapter.setType(3);
-                }
                 break;
         }
     }

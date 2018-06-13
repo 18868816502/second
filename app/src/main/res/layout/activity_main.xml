@@ -168,6 +168,13 @@
                     android:textColor="@color/select_blue_grey"
                     android:textSize="12sp" />
 
+                <ImageView
+                    android:id="@+id/iv_add_add_add"
+                    android:background="@color/white"
+                    android:src="@drawable/bill_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </RelativeLayout>
 
             <RelativeLayout
