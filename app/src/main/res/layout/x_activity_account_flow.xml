@@ -16,6 +16,7 @@
 
 
         <ImageView
+            android:id="@+id/iv_ac_account_flow_confirm"
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
             android:src="@drawable/x_confirm"
@@ -37,7 +38,7 @@
                 android:background="@drawable/help_feed_left"
                 android:gravity="center"
                 android:text="通用"
-                android:textColor="@color/c_ff5240" />
+                android:textColor="@drawable/x_account_flow_tab_selector" />
 
             <TextView
                 android:id="@+id/tv_loan_account_flow"
@@ -48,7 +49,7 @@
                 android:layout_marginRight="-1dp"
                 android:gravity="center"
                 android:text="网贷"
-                android:textColor="@color/c_ff5240" />
+                android:textColor="@drawable/x_account_flow_tab_selector" />
 
             <TextView
                 android:id="@+id/tv_credit_card_flow"
@@ -57,145 +58,16 @@
                 android:background="@drawable/help_feed_right"
                 android:gravity="center"
                 android:text="信用卡"
-                android:textColor="@color/c_ff5240" />
+                android:textColor="@drawable/x_account_flow_tab_selector" />
 
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
 
-    <!--借款金额-->
-    <LinearLayout
-        android:padding="15dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fl_ac_account_flow_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@drawable/x_account_flow_sample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_marginLeft="12dp"
-            android:text="借款"
-            android:textColor="@color/black_1"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="2dp"/>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_gravity="right"
-                android:text="每期金额"
-                android:textColor="@color/black_2"
-                android:textSize="10sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.beihui.market.view.AutoAdjustSizeEditText
-                android:id="@+id/auto_et_num"
-                android:gravity="right"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="12332313423456.00"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:inputType="number"
-                android:background="@null"
-                android:textSize="28sp"
-                android:textColor="@color/black_1"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-    <View
-        android:background="@color/common_bg"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_account_flow"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <LinearLayout
-        android:layout_marginBottom="206dp"
-        android:id="@+id/ll_account_flow_bottom"
-        android:background="#fafafa"
-        android:paddingRight="15dp"
-        android:paddingLeft="15dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
-
-        <!--首次还款日-->
-        <TextView
-            android:background="@drawable/xshape_account_flow_bg"
-            android:text="首次还款日"
-            android:textColor="@color/black_2"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <!--还款周期-->
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/xshape_account_flow_bg"
-            android:text="还款周期"
-            android:textColor="@color/black_2"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_weight="1"/>
-
-        <LinearLayout
-            android:id="@+id/ll_account_flow_remark"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:background="@drawable/xshape_account_flow_edit_mark_bg"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:src="@drawable/x_account_flow_edit_mark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="备注"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/black_2"
-                android:textSize="13sp"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
 

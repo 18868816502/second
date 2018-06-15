@@ -54,7 +54,7 @@ public class AlphabetIndexBar extends View {
 
         alphabetPadding = (int) (getResources().getDisplayMetrics().density * 5);
 
-        alphabetPaint.setColor(Color.parseColor("#5c92ff"));
+        alphabetPaint.setColor(Color.parseColor("#FF5240"));
         alphabetPaint.setTextSize(8 * getResources().getDisplayMetrics().density);
         alphabetPaint.setTextAlign(Paint.Align.CENTER);
         alphabetPaint.setAntiAlias(true);
@@ -67,7 +67,7 @@ public class AlphabetIndexBar extends View {
         selectedTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
 
         selectedBgPaint.setAntiAlias(true);
-        selectedBgPaint.setColor(Color.parseColor("#5c92ff"));
+        selectedBgPaint.setColor(Color.parseColor("#FF5240"));
 
         Paint.FontMetricsInt fontMetricsInt = new Paint.FontMetricsInt();
         alphabetPaint.getFontMetricsInt(fontMetricsInt);

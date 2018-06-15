@@ -151,6 +151,8 @@ public class WheelOptions<T> {
         // 选项1
         wv_option1.setAdapter(new ArrayWheelAdapter(mOptions1Items, len));// 设置显示数据
         wv_option1.setCurrentItem(0);// 初始化时显示的数据
+
+
         // 选项2
         if (N_mOptions2Items != null)
             wv_option2.setAdapter(new ArrayWheelAdapter(N_mOptions2Items));// 设置显示数据

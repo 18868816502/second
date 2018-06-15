@@ -1,10 +1,12 @@
 package com.beihui.market.view.customekeyboard;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.inputmethodservice.KeyboardView;
 import android.os.Build;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,11 +14,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.beihui.market.R;
+import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.SPUtils;
 
 import java.lang.reflect.Method;
 
@@ -27,6 +33,8 @@ import java.lang.reflect.Method;
 
 public class CustomKeyboardManager implements OnFocusChangeListener {
     private static final String TAG = "CustomKeyboardManager";
+
+    public Handler mHandler = new Handler();
 
     private Context mContext;
     private ViewGroup mRootView;
@@ -124,11 +132,12 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
     public void onFocusChange(View v, boolean hasFocus) {
         if (v instanceof EditText) {
             final EditText attachEditText = (EditText) v;
-            if (hasFocus) {
-                showSoftKeyboard(attachEditText);
-            } else {
-                hideSoftKeyboard(attachEditText);
-            }
+//            if (hasFocus) {
+//                showSoftKeyboard(attachEditText);
+//            }
+//            else {
+//                hideSoftKeyboard(attachEditText);
+//            }
         }
     }
 
@@ -138,37 +147,59 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
             Log.e(TAG, "The EditText no bind CustomBaseKeyboard!");
             return;
         }
+        if (isShow) {
+            return;
+        }
         keyboard.setCurEditText(view);
         keyboard.setNextFocusView(etFocusScavenger); //为键盘设置下一个焦点响应控件.
         refreshKeyboard(keyboard); //设置键盘keyboard到KeyboardView中.
 
         //将键盘布局加入到根布局中.
         mRootView.addView(mKeyboardViewContainer, mKeyboardViewLayoutParams);
-        //设置加载动画.
-//        mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.down_to_up));
+        isShow = true;
 
-        int moveHeight = getMoveHeight(view);
-        if (moveHeight > 0) {
-            mRootView.getChildAt(0).scrollBy(0, moveHeight); //移动屏幕
-        } else {
-            moveHeight = 0;
+//        int moveHeight = getMoveHeight(view);
+//        if (moveHeight > 0) {
+//            mRootView.getChildAt(0).scrollBy(0, moveHeight); //移动屏幕
+//        } else {
+//            moveHeight = 0;
+//        }
+//        moveHeight = 0;
+
+        ViewGroup.LayoutParams layoutParams = mShowUnderView.getLayoutParams();
+        if (layoutParams.height < Px2DpUtils.dp2px(mContext, 206)) {
+            layoutParams.height += Px2DpUtils.dp2px(mContext, 206);
+            mShowUnderView.setLayoutParams(layoutParams);
         }
 
-        view.setTag(R.id.keyboard_view_move_height, moveHeight);
+//        view.setTag(R.id.keyboard_view_move_height, moveHeight);
+
+        //设置加载动画.
+        mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.down_to_up));
     }
 
     public void hideSoftKeyboard(EditText view) {
-        int moveHeight = 0;
-        Object tag = view.getTag(R.id.keyboard_view_move_height);
-        if (null != tag) moveHeight = (int) tag;
-        if (moveHeight > 0) { //复原屏幕
-            mRootView.getChildAt(0).scrollBy(0, -1 * moveHeight);
-            view.setTag(R.id.keyboard_view_move_height, 0);
+//        int moveHeight = 0;
+//        Object tag = view.getTag(R.id.keyboard_view_move_height);
+//        if (null != tag) moveHeight = (int) tag;
+//        if (moveHeight > 0) { //复原屏幕
+//            mRootView.getChildAt(0).scrollBy(0, -1 * moveHeight);
+//            view.setTag(R.id.keyboard_view_move_height, 0);
+//        }
+
+        if (!isShow) {
+            return;
         }
 
+        ViewGroup.LayoutParams layoutParams = mShowUnderView.getLayoutParams();
+        if (layoutParams.height > Px2DpUtils.dp2px(mContext, 206)) {
+            layoutParams.height -= Px2DpUtils.dp2px(mContext, 206);
+            mShowUnderView.setLayoutParams(layoutParams);
+        }
         mRootView.removeView(mKeyboardViewContainer); //将键盘从根布局中移除.
+        isShow = false;
 
-//        mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.up_to_hide));
+        mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.up_to_hide));
     }
 
     /**
@@ -196,4 +227,31 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
             editText.setInputType(InputType.TYPE_NULL);
         }
     }
+
+    public boolean isShow = false;
+    public static boolean isOpenAnim = false;
+
+    /**
+     * 范围显示与隐藏时间控件的移动动画
+     */
+    private void initTimeViewAnimation(float start, final float end) {
+        ValueAnimator animator = ValueAnimator.ofFloat(start, end);
+        animator.setDuration(3000);
+        animator.setStartDelay(20);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                if (value == end) {
+                    isOpenAnim = false;
+                } else {
+                    isOpenAnim = true;
+                }
+                mShowUnderView.scrollTo(0, (int) value);
+            }
+        });
+        animator.start();
+    }
+
 }

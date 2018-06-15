@@ -19,6 +19,7 @@ public class NetConstants {
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
 
     public static final String BASE_PATH = "/s1";
+    public static final String BASE_PATH_S_FOUR = "/s4";
 
     public static final String PRODUCT_PATH = "/s3";
 

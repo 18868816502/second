@@ -10,6 +10,7 @@ import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
 import com.beihui.market.api.interceptor.PackageIdAndVersionNameInterceptor;
 import com.beihui.market.entity.AccountBill;
+import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AnalysisChartBean;
@@ -22,6 +23,7 @@ import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
+import com.beihui.market.entity.CreditCardBean;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.entity.DebeDetailRecord;
@@ -83,6 +85,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.Field;
 
 public class Api {
 
@@ -144,6 +147,27 @@ public class Api {
                 .build();
         service = retrofit.create(ApiService.class);
     }
+
+    /*************************************************新接口*****************************************/
+
+    /**
+     * 获取通用记账图标列表
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<List<AccountFlowIconBean>>> queryIconList(String userId, String type) {
+        return service.queryIconList("1", userId, type);
+    }
+
+    /**
+     * 魔蝎银行列表
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<List<CreditCardBean>>> queryBankList() {
+        return service.queryBankList();
+    }
+
+    /*************************************************新接口*****************************************/
+
 
     /**
      * 获取账单信息摘要

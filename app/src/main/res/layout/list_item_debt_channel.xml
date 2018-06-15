@@ -7,7 +7,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
-    <com.beihui.market.view.CircleImageView
+    <ImageView
         android:id="@+id/debt_channel_image"
         android:layout_width="30dp"
         android:layout_height="30dp"

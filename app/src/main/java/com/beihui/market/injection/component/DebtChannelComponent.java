@@ -3,6 +3,7 @@ package com.beihui.market.injection.component;
 
 import com.beihui.market.injection.module.DebtChannelModule;
 import com.beihui.market.ui.activity.DebtChannelActivity;
+import com.beihui.market.ui.fragment.AccountFlowLoanFragment;
 
 import dagger.Component;
 
@@ -14,4 +15,6 @@ import dagger.Component;
 public interface DebtChannelComponent {
 
     void inject(DebtChannelActivity activity);
+
+    void inject(AccountFlowLoanFragment flowLoanFragment);
 }

@@ -35,7 +35,7 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return 20;
+        return 30;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

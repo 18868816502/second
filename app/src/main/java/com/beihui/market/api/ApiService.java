@@ -1,6 +1,7 @@
 package com.beihui.market.api;
 
 import com.beihui.market.entity.AccountBill;
+import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AnalysisChartBean;
@@ -13,6 +14,7 @@ import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
+import com.beihui.market.entity.CreditCardBean;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.entity.DebeDetailRecord;
@@ -67,12 +69,33 @@ import retrofit2.http.POST;
 
 import static com.beihui.market.api.NetConstants.BASE_PATH;
 import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
+import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
  * 请求接口
  */
 public interface ApiService {
+
+
+    /*************************************************新接口*****************************************/
+    /**
+     * @author xhb
+     * 获取通用记账图标列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/listIcon")
+    Observable<ResultEntity<List<AccountFlowIconBean>>> queryIconList(@Field("appShow") String appShow, @Field("userId") String userId, @Field("type") String type);
+
+    /**
+     * @author xhb
+     * 魔蝎银行列表
+     */
+    @POST(BASE_PATH_S_FOUR + "/creditcard/moxie/bankList")
+    Observable<ResultEntity<List<CreditCardBean>>> queryBankList();
+
+    /*************************************************新接口*****************************************/
+
 
     /**
      * @author xhb

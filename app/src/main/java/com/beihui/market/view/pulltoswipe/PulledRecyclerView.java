@@ -83,6 +83,7 @@ public class PulledRecyclerView extends RecyclerView implements Pulled {
         }
     }
 
+
     public OnItemScrollChanged onItemScrollChanged;
 
     public void setOnItemScrollChanged(OnItemScrollChanged onItemScrollChanged) {
