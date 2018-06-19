@@ -156,6 +156,7 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
 
         //将键盘布局加入到根布局中.
         mRootView.addView(mKeyboardViewContainer, mKeyboardViewLayoutParams);
+        mShowUnderView.setVisibility(View.VISIBLE);
         isShow = true;
 
 //        int moveHeight = getMoveHeight(view);
@@ -178,7 +179,7 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
         mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.down_to_up));
     }
 
-    public void hideSoftKeyboard(EditText view) {
+    public void hideSoftKeyboard(EditText view, int type) {
 //        int moveHeight = 0;
 //        Object tag = view.getTag(R.id.keyboard_view_move_height);
 //        if (null != tag) moveHeight = (int) tag;
@@ -197,6 +198,9 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
             mShowUnderView.setLayoutParams(layoutParams);
         }
         mRootView.removeView(mKeyboardViewContainer); //将键盘从根布局中移除.
+        if (type == 1) {
+            mShowUnderView.setVisibility(View.GONE);
+        }
         isShow = false;
 
         mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.up_to_hide));

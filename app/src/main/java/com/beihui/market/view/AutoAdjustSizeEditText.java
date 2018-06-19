@@ -11,6 +11,8 @@ import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.beihui.market.util.Px2DpUtils;
+
 /**
  * Created by admin on 2018/6/13.
  */
@@ -20,12 +22,22 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
     private Paint mTextPaint;
     private float mTextSize;
 
+    public Context mContext;
+    private int maxSize;
+    private int minSize;
+
     public AutoAdjustSizeEditText(Context context) {
         super(context);
+        mContext = context;
+        maxSize = Px2DpUtils.sp2px(mContext, 27);
+        minSize = Px2DpUtils.sp2px(mContext, 15);
     }
 
     public AutoAdjustSizeEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
+        maxSize = Px2DpUtils.sp2px(mContext, 27);
+        minSize = Px2DpUtils.sp2px(mContext, 15);
     }
 
     /**
@@ -44,35 +56,59 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
         Rect boundsRect = new Rect();
         Rect boundsCharsRect = new Rect();
         mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
-//        mTextPaint.getTextBounds(text, 0, 1, boundsCharsRect);
+        mTextPaint.getTextBounds("0", 0, 1, boundsCharsRect);
         int textWidth = boundsRect.width();
         int charWidth = boundsCharsRect.width();
         mTextSize = getTextSize();
-        while (textWidth > availableTextViewWidth) {
-//            if ((textWidth - availableTextViewWidth) > charWidth) {
-//                mTextSize += 1;
-//            } else {
-                mTextSize -= 1;
-//            }
-            mTextPaint.setTextSize(mTextSize);
-            textWidth = mTextPaint.getTextWidths(text, charsWidthArr);
-        }
 
+        while (Math.abs(textWidth - availableTextViewWidth) > charWidth) {
+            Log.e("adfas", "textWidth ---> " + textWidth);
+            Log.e("adfas", "availableTextViewWidth ---> " + availableTextViewWidth);
+            Log.e("adfas", "textWidth - availableTextViewWidth ---> " + (textWidth - availableTextViewWidth));
+            Log.e("adfas", "charWidth---> " + charWidth);
+            Log.e("adfas", "Px2DpUtils.sp2px(mContext, 27) ---> " + maxSize);
+            Log.e("adfas", "Px2DpUtils.sp2px(mContext, 15) ---> " + minSize);
+            Log.e("adfas", "mTextSize ---> " + mTextSize);
+
+            if (textWidth > availableTextViewWidth) {
+                if (mTextSize > minSize) {
+                    mTextSize -= 1;
+                } else {
+                    break;
+                }
+            } else {
+                if (mTextSize < maxSize) {
+                    mTextSize += 1;
+                } else {
+                    break;
+                }
+            }
+            mTextPaint.setTextSize(mTextSize);
+            mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
+            textWidth = boundsRect.width();
+        }
         this.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
     }
 
-//    @Override
-//    protected void onSelectionChanged(int selStart, int selEnd) {
-//        super.onSelectionChanged(selStart, selEnd);
-//        //保证光标始终在最后面
-//        if(selStart==selEnd){//防止不能多选
-//            setSelection(getText().length());
-//        }
-//
-//    }
+    @Override
+    protected void onSelectionChanged(int selStart, int selEnd) {
+        super.onSelectionChanged(selStart, selEnd);
+        //保证光标始终在最后面
+        if(selStart==selEnd){//防止不能多选
+            setSelection(getText().length());
+        }
+    }
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+    }
+
+    @Override
+    protected void onTextChanged(CharSequence text, int start, int before, int after) {
+        super.onTextChanged(text, start, before, after);
         refitText(this.getText().toString(), this.getWidth());
     }
 

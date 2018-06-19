@@ -135,6 +135,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     @Override
     public void configViews() {
         activity = getActivity();
+        mBottom.setVisibility(View.GONE);
 
         adapter = new AccountFlowLoanRvAdapter(R.layout.list_item_debt_channel);
 
@@ -183,7 +184,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                   //向上滚动  显示自定义键盘
                   customKeyboardManager.showSoftKeyboard(etInputPrice);
               } else {
-                  customKeyboardManager.hideSoftKeyboard(etInputPrice);
+                  customKeyboardManager.hideSoftKeyboard(etInputPrice, 1);
               }
            }
        });

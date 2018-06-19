@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--@author xhb 账单模块头布局-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white"
+    android:background="@drawable/x_tab_account_toolbar_bg"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_tab_account_header_tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"/>
 
     <LinearLayout
-        android:paddingTop="5dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

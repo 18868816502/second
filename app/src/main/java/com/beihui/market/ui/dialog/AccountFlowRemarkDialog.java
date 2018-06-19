@@ -99,7 +99,11 @@ public class AccountFlowRemarkDialog extends DialogFragment {
         manager.showSoftInput(editText, 0);
     }
 
-    private String[] mVals = new String[]
-            {"吃饭", "交钱", "购物", "这是什么", "你在干嘛呢", "走",
-                    "哈哈哈哈哈", "你说呢", "不要这样子", "嘿嘿嘿", "aaaaaaaaaaaaaaaa"};
+    private String[] mVals = new String[]{};
+
+    public void setTagList(String[] remarks) {
+        if (remarks.length > 0) {
+            mVals = remarks;
+        }
+    }
 }

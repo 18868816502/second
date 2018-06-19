@@ -159,6 +159,22 @@ public class Api {
     }
 
     /**
+     * 获取通用记账图标列表
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<List<AccountFlowIconBean>>> queryCustomIconList() {
+        return service.queryCustomIconList("1",  "LCustom");
+    }
+
+    /**
+     * 获取通用记账图标列表
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity> saveCustomIcon(String userId, String iconName, String iconId, String type) {
+        return service.saveCustomIcon(userId,  iconName, iconId, type);
+    }
+
+    /**
      * 魔蝎银行列表
      * @version 4.0.0
      */

@@ -259,6 +259,9 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged"
             android:alwaysRetainTaskState="true"
             android:screenOrientation="portrait"/>
+        <!--记账流程 账单类型选择-->
+        <activity android:name=".ui.activity.AccountFlowTypeActivity"
+            android:screenOrientation="portrait"/>
 
 
 

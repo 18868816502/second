@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_account_flow_root"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="match_parent"
@@ -9,12 +10,14 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/iv_item_account_flow_icon"
         android:src="@drawable/x_account_flow_sample"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginBottom="8dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
 
     <TextView
-        android:layout_marginTop="8dp"
+        android:id="@+id/tv_item_account_flow_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="借款"

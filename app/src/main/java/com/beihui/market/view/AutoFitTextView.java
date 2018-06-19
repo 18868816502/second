@@ -52,4 +52,5 @@ public class AutoFitTextView extends android.support.v7.widget.AppCompatTextView
         super.onDraw(canvas);
         refitText(this.getText().toString(), this.getWidth());
     }
+
 }

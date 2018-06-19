@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -90,6 +91,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
         fragmentList.add(mNormalFragment);
         fragmentList.add(mLoanFragment);
         fragmentList.add(mCreditCardFragment);
+
+        SlidePanelHelper.attach(this);
     }
 
 
@@ -98,6 +101,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
         MyFragmentViewPgaerAdapter adapter = new MyFragmentViewPgaerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
+
         mAccountFlowNormal.setSelected(true);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -108,14 +112,15 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
             @Override
             public void onPageSelected(int position) {
+
                 if (position == 0) {
                     mAccountFlowNormal.setSelected(true);
                     mAccountFlowLoan.setSelected(false);
                     mAccountFlowCreditCard.setSelected(false);
 
-                    mLoanFragment.customKeyboardManager.hideSoftKeyboard(mLoanFragment.etInputPrice);
                     selectedFragmentId = R.id.tv_normal_account_flow;
-
+                    mLoanFragment.customKeyboardManager.hideSoftKeyboard(mLoanFragment.etInputPrice, 1);
+                    mNormalFragment.customKeyboardManager.showSoftKeyboard(mNormalFragment.etInputPrice);
                     mConFirmOrRefrsh.setVisibility(View.VISIBLE);
                 }
                 if (position == 1) {
@@ -123,7 +128,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     mAccountFlowLoan.setSelected(true);
                     mAccountFlowCreditCard.setSelected(false);
 
-                    mNormalFragment.customKeyboardManager.hideSoftKeyboard(mNormalFragment.etInputPrice);
+                    mNormalFragment.customKeyboardManager.hideSoftKeyboard(mNormalFragment.etInputPrice, 0);
                     selectedFragmentId = R.id.tv_loan_account_flow;
 
                     mConFirmOrRefrsh.setVisibility(View.VISIBLE);
@@ -133,8 +138,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     mAccountFlowLoan.setSelected(false);
                     mAccountFlowCreditCard.setSelected(true);
 
-                    mNormalFragment.customKeyboardManager.hideSoftKeyboard(mNormalFragment.etInputPrice);
-                    mLoanFragment.customKeyboardManager.hideSoftKeyboard(mLoanFragment.etInputPrice);
+                    mNormalFragment.customKeyboardManager.hideSoftKeyboard(mNormalFragment.etInputPrice, 0);
+                    mLoanFragment.customKeyboardManager.hideSoftKeyboard(mLoanFragment.etInputPrice, 1);
                     selectedFragmentId = R.id.tv_credit_card_flow;
 
                     mConFirmOrRefrsh.setVisibility(View.GONE);

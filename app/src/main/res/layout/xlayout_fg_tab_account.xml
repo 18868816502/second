@@ -6,8 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--头部布局-->
-    <include layout="@layout/xlayout_fg_tab_account_head"/>
+    <android.support.v7.widget.Toolbar
+        android:background="@drawable/x_tab_account_toolbar_bg"
+        android:id="@+id/tb_tab_account_header_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_gravity="center"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:text="@string/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <!--&lt;!&ndash;头部布局&ndash;&gt;-->
+    <!--<include layout="@layout/xlayout_fg_tab_account_head"/>-->
 
     <!--列表-->
     <RelativeLayout

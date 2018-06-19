@@ -89,6 +89,22 @@ public interface ApiService {
 
     /**
      * @author xhb
+     * 获取通用记账图标列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/getCommonIcon")
+    Observable<ResultEntity<List<AccountFlowIconBean>>> queryCustomIconList(@Field("appShow") String appShow, @Field("type") String type);
+
+    /**
+     * @author xhb
+     * 获取通用记账图标列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/saveCustomIcon")
+    Observable<ResultEntity> saveCustomIcon(@Field("userId") String userId, @Field("iconName") String iconName, @Field("iconId") String iconId, @Field("type") String type);
+
+    /**
+     * @author xhb
      * 魔蝎银行列表
      */
     @POST(BASE_PATH_S_FOUR + "/creditcard/moxie/bankList")

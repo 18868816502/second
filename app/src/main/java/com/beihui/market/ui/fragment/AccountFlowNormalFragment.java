@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +27,13 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
+import com.beihui.market.entity.AccountFlowIconBean;
+import com.beihui.market.event.AccountFlowTypeActivityEvent;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.AccountFlowTypeActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
@@ -48,11 +52,18 @@ import com.beihui.market.view.flowlayout.TagFlowLayout;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
+import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -83,8 +94,19 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     @BindView(R.id.auto_et_num)
     public AutoAdjustSizeEditText etInputPrice;
 
+
     @BindView(R.id.tv_fg_first_pay_loan_date)
-    TextView mFirstPayLoanDate;
+    TextView mFirstPayNormalDate;
+    @BindView(R.id.tv_fg_first_pay_loan_times)
+    TextView mFirstPayNormalTime;
+
+
+    @BindView(R.id.tv_account_flow_normal_type_name)
+    TextView mTypeName;
+    @BindView(R.id.iv_fg_account_flow_normal_icon)
+    ImageView mTypeIcon;
+
+    private List<AccountFlowIconBean> list = new ArrayList<>();
 
 
     //自定义键盘管理
@@ -97,6 +119,15 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     //软键盘帮助类
     private KeyBoardHelper boardHelper;
     private AccountFlowRemarkDialog dialog;
+    private String[] remarks = null;
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEvent(AccountFlowTypeActivityEvent event){
+        if (mAdapter != null && event.bean != null) {
+            list.add(event.bean);
+            mAdapter.notifyDebtChannelChanged(list);
+        }
+    }
 
     @Override
     public int getLayoutResId() {
@@ -106,13 +137,17 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     @Override
     public void configViews() {
         activity = getActivity();
-        mAdapter = new AccountFlowAdapter(activity);
+        mBottom.setVisibility(View.VISIBLE);
+
+        mAdapter = new AccountFlowAdapter(activity, 1);
         GridLayoutManager manager = new GridLayoutManager(activity, 5);
         manager.setOrientation(GridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
 
-        SlidePanelHelper.attach(activity);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public BigDecimal sum;
@@ -156,7 +191,6 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
          * 43 : +   45 : -
          * -5 : 退格  61 : =  46 : .
          */
-
         CustomBaseKeyboard priceKeyboard = new CustomBaseKeyboard(activity, R.xml.stock_price_num_keyboard) {
             @Override
             public boolean handleSpecialKey(EditText etCurrent, int primaryCode) {
@@ -164,6 +198,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 String currentContent = etCurrent.getText().toString();
                 //为空不拦截操作
                 if (TextUtils.isEmpty(currentContent)) {
+                    etCurrent.setText("0.00");
                     if (primaryCode == 48) {
                         return true;
                     }
@@ -258,17 +293,69 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     //向上滚动  显示自定义键盘
                     customKeyboardManager.showSoftKeyboard(etInputPrice);
                 } else {
-                    customKeyboardManager.hideSoftKeyboard(etInputPrice);
+                    customKeyboardManager.hideSoftKeyboard(etInputPrice, 0);
+                }
+            }
+        });
+
+        /**
+         * 适配器item的点击事件
+         */
+        mAdapter.setOnItemClickListener(new AccountFlowAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(AccountFlowIconBean bean) {
+                Glide.with(activity).load(bean.logo).into(mTypeIcon);
+                if (!TextUtils.isEmpty(bean.iconName)) {
+                    mTypeName.setText(bean.iconName);
+                } else {
+                    mTypeName.setText("");
                 }
             }
         });
 
 
+        /**
+         * 自定义键盘关联
+         */
         customKeyboardManager.attachTo(etInputPrice, priceKeyboard);
         customKeyboardManager.setShowUnderView(mBottom);
-        customKeyboardManager.showSoftKeyboard(etInputPrice);
-    }
 
+
+        /**
+         * 请求通用类型列表
+         */
+        Api.getInstance().queryIconList(UserHelper.getInstance(activity).getProfile().getId(), "LCommon").compose(RxUtil.<ResultEntity<List<AccountFlowIconBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<AccountFlowIconBean>>>() {
+                               @Override
+                               public void accept(ResultEntity<List<AccountFlowIconBean>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (mAdapter != null) {
+                                           if (list.size() > 0) {
+                                               list.clear();
+                                           }
+                                           list.addAll(result.getData());
+                                           if (list.size() > 0) {
+                                               Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
+                                               if (!TextUtils.isEmpty(list.get(0).iconName)) {
+                                                   mTypeName.setText(list.get(0).iconName);
+                                               }
+
+                                               remarks = list.get(0).remark.split(",");
+                                           }
+                                           mAdapter.notifyDebtChannelChanged(list);
+                                       }
+                                   } else {
+                                       Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("exception_custom", throwable.getMessage());
+                            }
+                        });
+    }
 
 
     /**
@@ -283,6 +370,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 break;
             case R.id.ll_account_flow_remark:
                 dialog = new AccountFlowRemarkDialog();
+                if (remarks != null) {
+                    dialog.setTagList(remarks);
+                }
                 dialog.show(getFragmentManager(), "accountflowremark");
                 break;
             case R.id.tv_fg_first_pay_loan_times:
@@ -292,7 +382,6 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 customKeyboardManager.showSoftKeyboard(etInputPrice);
                 break;
         }
-
     }
 
 
@@ -300,31 +389,13 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
      * 还款周期
      */
     private void showLoanTimes() {
-        OptionsPickerView pickerView = new OptionsPickerView.Builder(getContext(), new OptionsPickerView.OnOptionsSelectListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                int monthLimit = options1 + 1;
-//                times.setText(monthLimit + "个月");
-//                times.setTag(monthLimit);
-            }
-        }).setCancelText("取消")
-                .setCancelColor(Color.parseColor("#808080"))
-                .setSubmitText("确认")
-                .setSubmitColor(Color.parseColor("#287BF7"))
-                .setTitleText("选择还款周期和期数")
-                .setTitleColor((Color.parseColor("#2E2E2E")))
-                .setTitleBgColor(Color.WHITE)
-                .setBgColor(Color.WHITE)
-                .build();
 
-
-        List<String> option1 = new ArrayList<>();
+        final List<String> option1 = new ArrayList<>();
         for (int i = 0; i < mRepaymentCycle.length; i++) {
             option1.add(mRepaymentCycle[i]);
         }
 
-        List<List<String>> option2 = new ArrayList<>();
+        final List<List<String>> option2 = new ArrayList<>();
         for (int i = 1; i <= 12; ++i) {
             List<String> list = new ArrayList<>();
             list.add("循环");
@@ -338,6 +409,28 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
             }
             option2.add(list);
         }
+
+        OptionsPickerView pickerView = new OptionsPickerView.Builder(getContext(), new OptionsPickerView.OnOptionsSelectListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                String monthLimit = option1.get(options1);
+                String termLimit = " " + option2.get(options1).get(options2);
+                mFirstPayNormalTime.setText(monthLimit + termLimit);
+                mFirstPayNormalTime.setTag(monthLimit + termLimit);
+            }
+        }).setCancelText("取消")
+                .setCancelColor(Color.parseColor("#808080"))
+                .setSubmitText("确认")
+                .setSubmitColor(Color.parseColor("#287BF7"))
+                .setTitleText("选择还款周期和期数")
+                .setTitleColor((Color.parseColor("#2E2E2E")))
+                .setTitleBgColor(Color.WHITE)
+                .setBgColor(Color.WHITE)
+                .build();
+
+
+
         pickerView.setPicker(option1, option2);
         pickerView.setSelectOptions(0, 1);
         pickerView.show();
@@ -349,16 +442,16 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
      */
     private void showFirstPayLoanDateDialog() {
         Date date = new Date();
-        mFirstPayLoanDate.setTag(date);
+        mFirstPayNormalDate.setTag(date);
 
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
-        calendar.setTime((Date) mFirstPayLoanDate.getTag());
+        calendar.setTime((Date) mFirstPayNormalDate.getTag());
 
         TimePickerView pickerView = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                mFirstPayLoanDate.setTag(date);
-                mFirstPayLoanDate.setText(dateFormat.format(date));
+                mFirstPayNormalDate.setTag(date);
+                mFirstPayNormalDate.setText(dateFormat.format(date));
             }
         }).setType(new boolean[]{true, true, true, false, false, false})
                 .setCancelText("取消")
@@ -378,9 +471,15 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
     protected void configureComponent(AppComponent appComponent) {
 
     }
-
-
 }

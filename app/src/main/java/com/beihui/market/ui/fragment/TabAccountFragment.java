@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
@@ -83,12 +84,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @BindView(R.id.tb_tab_account_header_tool_bar)
     Toolbar mToolBar;
-    //30天待还
-    @BindView(R.id.tv_last_one_month_wait_pay)
-    TextView mLastThirtyDayWaitPay;
-    //30天待还 总笔数
-    @BindView(R.id.tv_last_one_month_wait_pay_num)
-    TextView mLastThirtyDayWaitPayNum;
+//    //30天待还
+//    @BindView(R.id.tv_last_one_month_wait_pay)
+//    TextView mLastThirtyDayWaitPay;
+//    //30天待还 总笔数
+//    @BindView(R.id.tv_last_one_month_wait_pay_num)
+//    TextView mLastThirtyDayWaitPayNum;
     @BindView(R.id.include_tab_account_foot_view)
     View mFootViewMoney;
     @BindView(R.id.x_load_state_tv_more_view)
@@ -104,8 +105,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @BindView(R.id.rv_foot_account_tab_no_pay)
     TextView noPay;
 
-    @BindView(R.id.fl_tab_account_header_bill_loan)
-    FrameLayout billLoamAnalysis;
+//    @BindView(R.id.fl_tab_account_header_bill_loan)
+//    FrameLayout billLoamAnalysis;
 
     @BindView(R.id.iv_tab_account_header_today_button)
     ImageView todayButton;
@@ -303,23 +304,24 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     }
 
 
-    @OnClick({R.id.iv_tab_account_header_add, R.id.iv_tab_account_header_today_button, R.id.fl_tab_account_header_bill_loan})
+//    @OnClick({R.id.iv_tab_account_header_add, R.id.iv_tab_account_header_today_button, R.id.fl_tab_account_header_bill_loan})
+    @OnClick({ R.id.iv_tab_account_header_today_button})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            //添加账单
-            case R.id.iv_tab_account_header_add:
-                if (UserHelper.getInstance(mActivity).getProfile() != null) {
-                    //pv，uv统计
-                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_NEW_BILL);
-                    //点击音效
-                    SoundUtils.getInstance().playAdd();
-
-                    XTabAccountDialog dialog = new XTabAccountDialog();
-                    dialog.show(getChildFragmentManager(), ShareDialog.class.getSimpleName());
-                } else {
-                    showNoUserLoginBlock();
-                }
-                break;
+//            //添加账单
+//            case R.id.iv_tab_account_header_add:
+//                if (UserHelper.getInstance(mActivity).getProfile() != null) {
+//                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_NEW_BILL);
+//                    //点击音效
+//                    SoundUtils.getInstance().playAdd();
+//
+//                    XTabAccountDialog dialog = new XTabAccountDialog();
+//                    dialog.show(getChildFragmentManager(), ShareDialog.class.getSimpleName());
+//                } else {
+//                    showNoUserLoginBlock();
+//                }
+//                break;
             case R.id.iv_tab_account_header_today_button:
 //                Toast.makeText(mActivity, "已至今日应还账单处，别再点啦", Toast.LENGTH_SHORT).show();
                 if (UserHelper.getInstance(mActivity).getProfile() != null) {
@@ -333,21 +335,21 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
                 break;
 
-            //进入网贷分析
-            case R.id.fl_tab_account_header_bill_loan:
-                /**
-                 * 防止重复点击
-                 */
-                if (!FastClickUtils.isFastClick()) {
-                    if (UserHelper.getInstance(mActivity).getProfile() != null) {
-                        //pv，uv统计 快捷记账按钮
-                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_BILL_LOAN_ANALYSIS);
-                        startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
-                    } else {
-                        showNoUserLoginBlock();
-                    }
-                }
-                break;
+//            //进入网贷分析
+//            case R.id.fl_tab_account_header_bill_loan:
+//                /**
+//                 * 防止重复点击
+//                 */
+//                if (!FastClickUtils.isFastClick()) {
+//                    if (UserHelper.getInstance(mActivity).getProfile() != null) {
+//                        //pv，uv统计 快捷记账按钮
+//                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_BILL_LOAN_ANALYSIS);
+//                        startActivity(new Intent(mActivity, BillLoanAnalysisActivity.class));
+//                    } else {
+//                        showNoUserLoginBlock();
+//                    }
+//                }
+//                break;
         }
     }
 
@@ -373,13 +375,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void configViews() {
         //设置状态栏文字为黑色字体
-        ImmersionBar.with(this).titleBar(mToolBar).statusBarDarkFont(true).init();
-        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
-        //设置toolbar的高度为状态栏相同高度
-        mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);
-        ViewGroup.LayoutParams lp = mToolBar.getLayoutParams();
-        lp.height = statusHeight;
-        mToolBar.setLayoutParams(lp);
+        ImmersionBar.with(this).transparentBar().titleBar(mToolBar).init();
+//        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+//        //设置toolbar的高度为状态栏相同高度
+//        mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);
+//        ViewGroup.LayoutParams lp = mToolBar.getLayoutParams();
+//        lp.height = statusHeight;
+//        lp.height = 0;
+//        mToolBar.setLayoutParams(lp);
     }
 
 
@@ -408,9 +411,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             list.add(analogLoan);
             list.add(analogCard);
             analogLoan.setType(1);
-
-            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
-            mLastThirtyDayWaitPayNum.setText("");
+//
+//            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
+//            mLastThirtyDayWaitPayNum.setText("");
 
             yesPay.setText("0");
             noPay.setText("0");
@@ -475,17 +478,17 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void showDebtInfo(DebtAbstract debtAbstract) {
         //近30天待还金额
-        if (debtAbstract.getLast30DayStayStill() <= 0D && debtAbstract.unRepayAmount <= 0D) {
-            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
-        } else {
-            mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));
-        }
-        //近30天待还总笔数
-        if (debtAbstract.last30DayStayStillCount > 0) {
-            mLastThirtyDayWaitPayNum.setText("共" + CommonUtils.keep2digitsWithoutZero(debtAbstract.last30DayStayStillCount) + "笔");
-        } else {
-            mLastThirtyDayWaitPayNum.setText("");
-        }
+//        if (debtAbstract.getLast30DayStayStill() <= 0D && debtAbstract.unRepayAmount <= 0D) {
+//            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
+//        } else {
+//            mLastThirtyDayWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));
+//        }
+//        //近30天待还总笔数
+//        if (debtAbstract.last30DayStayStillCount > 0) {
+//            mLastThirtyDayWaitPayNum.setText("共" + CommonUtils.keep2digitsWithoutZero(debtAbstract.last30DayStayStillCount) + "笔");
+//        } else {
+//            mLastThirtyDayWaitPayNum.setText("");
+//        }
 
         /**
          * 已还 未还数据
