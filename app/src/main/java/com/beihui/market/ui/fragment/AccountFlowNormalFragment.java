@@ -320,7 +320,6 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         customKeyboardManager.attachTo(etInputPrice, priceKeyboard);
         customKeyboardManager.setShowUnderView(mBottom);
 
-
         /**
          * 请求通用类型列表
          */

@@ -87,6 +87,34 @@
             android:orientation="horizontal">
 
             <RelativeLayout
+                android:id="@+id/tab_forms_root"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="3dp">
+
+                <ImageView
+                    android:id="@+id/tab_forms_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:focusable="false"
+                    android:src="@drawable/x_tap_analyze_icon" />
+
+                <TextView
+                    android:id="@+id/tab_forms_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tab_forms_icon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:text="报表"
+                    android:textColor="@color/select_blue_grey"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/tab_account"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -112,35 +140,16 @@
                     android:textColor="@color/select_blue_grey"
                     android:textSize="12sp" />
 
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/iv_bill_add_buttom"
+                    android:background="@color/white"
+                    android:src="@drawable/x_tab_bill_add_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </RelativeLayout>
 
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/tab_home"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:padding="3dp">-->
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/tab_home_icon"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:focusable="false"-->
-                    <!--android:src="@drawable/tab_loan" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/tab_home_text"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/tab_home_icon"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_marginTop="3dp"-->
-                    <!--android:text="借款"-->
-                    <!--android:textColor="@color/select_blue_grey"-->
-                    <!--android:textSize="12sp" />-->
-
-            <!--</RelativeLayout>-->
 
             <RelativeLayout
                 android:id="@+id/tab_news"
@@ -168,40 +177,6 @@
                     android:textColor="@color/select_blue_grey"
                     android:textSize="12sp" />
 
-                <ImageView
-                    android:id="@+id/iv_add_add_add"
-                    android:background="@color/white"
-                    android:src="@drawable/bill_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/tab_mine"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="3dp">
-
-                <ImageView
-                    android:id="@+id/tab_mine_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:focusable="false"
-                    android:src="@drawable/tab_mine" />
-
-                <TextView
-                    android:id="@+id/tab_mine_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tab_mine_icon"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="3dp"
-                    android:text="@string/tab_mine"
-                    android:textColor="@color/select_blue_grey"
-                    android:textSize="12sp" />
             </RelativeLayout>
 
         </com.beihui.market.view.BottomNavigationBar>

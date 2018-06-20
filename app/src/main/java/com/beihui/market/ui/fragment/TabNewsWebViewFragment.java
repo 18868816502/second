@@ -1,13 +1,18 @@
 package com.beihui.market.ui.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -30,29 +35,35 @@ import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
+import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
 import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
-import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.activity.MainActivity;
+import com.beihui.market.ui.activity.TabMineActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
+import com.beihui.market.view.CircleImageView;
+import com.beihui.market.view.GlideCircleTransform;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
-import org.apache.commons.codec.Encoder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @date 20180419
@@ -68,14 +79,12 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     ImageView comeBack;
     @BindView(R.id.iv_tab_fg_news_web_title)
     TextView newsTitleName;
-    @BindView(R.id.bwv_news_web_view)
-    BusinessWebView webView;
-//    @BindView(R.id.progress_bar)
-//    ProgressBar progressBar;
-    @BindView(R.id.swipe_container)
-    SwipeRefreshLayout swipeRefreshLayout;
-//    @BindView(R.id.scroll_view_container)
-//    ScrollView scrollView;
+    @BindView(R.id.iv_tab_fg_news_web_activity)
+    TextView activityName;
+    @BindView(R.id.iv_tab_fg_news_web_user)
+    CircleImageView mUserAvatar;
+    @BindView(R.id.fl_tab_news_web_container)
+    ViewPager viewPager;
 
     /**
      * 拼接URL
@@ -83,22 +92,21 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     public static String newsUrl = null;
 
     //依赖的activity
-    public Activity mActivity;
+    public FragmentActivity mActivity;
+    //发现
+    public TabNewsWebViewOneFragment mFindFragment = new TabNewsWebViewOneFragment();
+    //活动
+    public TabNewsWebViewTwoFragment mActivityFragment = new TabNewsWebViewTwoFragment();
+
+    public List<BaseComponentFragment> fragmentList = new ArrayList<>();
+
+    private int selectedFragmentId = R.id.iv_tab_fg_news_web_title;
 
     /**
      * 标题
      */
     public String mTitleName;
     private TabNewsWebViewFragmentTitleEvent event = null;
-
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onMainEvent(TabNewsWebViewFragmentTitleEvent event) {
-        this.event = event;
-        if (event != null && !TextUtils.isEmpty(event.title) && newsTitleName != null) {
-            newsTitleName.setText(event.title);
-            mTitleName = event.title;
-        }
-    }
 
     @Override
     public void onStart() {
@@ -107,15 +115,9 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             newsTitleName.setText(event.title);
             mTitleName = event.title;
         }
-    }
-
-    /**
-     * 判断审核的状态
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUrlEvent(TabNewsWebViewFragmentUrlEvent event) {
-        load();
+        if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
+            Glide.with(mActivity).load(UserHelper.getInstance(mActivity).getProfile().getHeadPortrait()).bitmapTransform(new GlideCircleTransform(mActivity)).placeholder(R.mipmap.mine_head).into(mUserAvatar);
+        }
     }
 
 
@@ -126,44 +128,24 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mActivity = getActivity();
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
-
         //umeng统计
         Statistic.onEvent(Events.ENTER_NEWS_PAGE);
 
         return super.onCreateView(inflater, container, savedInstanceState);
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         //设置状态栏文字为黑色字体
         if (TextUtils.isEmpty(mTitleName)) {
             mTitleName = getActivity().getResources().getString(R.string.tab_news);
         }
     }
 
-
-
-    @Override
-    public void onDestroy() {
-        if (webView != null) {
-            webView.getSettings().setJavaScriptEnabled(false);
-            webView.destroy();
-        }
-        super.onDestroy();
-
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
 
     @Override
     public int getLayoutResId() {
@@ -174,210 +156,97 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @Override
     public void configViews() {
         comeBack.setVisibility(View.GONE);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+
+        fragmentList.add(mFindFragment);
+        fragmentList.add(mActivityFragment);
+
+        MyFragmentViewPgaerAdapter adapter = new MyFragmentViewPgaerAdapter(mActivity.getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
+
+        newsTitleName.setSelected(true);
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if (position == 0) {
+                    newsTitleName.setSelected(true);
+                    activityName.setSelected(false);
+
+                    selectedFragmentId = R.id.iv_tab_fg_news_web_title;
+                }
+                if (position == 1) {
+                    newsTitleName.setSelected(false);
+                    activityName.setSelected(true);
+
+                    selectedFragmentId = R.id.iv_tab_fg_news_web_activity;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
-
+    /**
+     * 点击事件
+     */
+    @OnClick({R.id.iv_tab_fg_news_web_user, R.id.iv_tab_fg_news_web_title, R.id.iv_tab_fg_news_web_activity})
+    public void onItemClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_tab_fg_news_web_user:
+                if (UserHelper.getInstance(mActivity).getProfile() == null || UserHelper.getInstance(mActivity).getProfile().getId() == null) {
+                    UserAuthorizationActivity.launch(getActivity(), null);
+                } else {
+                    mActivity.startActivity(new Intent(mActivity, TabMineActivity.class));
+                }
+                break;
+            case R.id.iv_tab_fg_news_web_title:
+                if (selectedFragmentId != R.id.iv_tab_fg_news_web_title) {
+                    viewPager.setCurrentItem(0);
+                }
+                break;
+            case R.id.iv_tab_fg_news_web_activity:
+                if (selectedFragmentId != R.id.iv_tab_fg_news_web_activity) {
+                    viewPager.setCurrentItem(1);
+                }
+                break;
+        }
+    }
 
     @Override
     public void initDatas() {}
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        load();
-
-        /**
-         * 在fragment里面 webView监听返回键事件
-         */
-        webView.setFocusable(true);
-        webView.setFocusableInTouchMode(true);
-        webView.requestFocus();
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (webView.canGoBack()) {
-                        webView.goBack();
-                    } else {
-                        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 1) {
-                            mActivity.finish();
-                            return true;
-                        } else{
-                            Toast.makeText(mActivity, "再按一次退出", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                return false;
-            }
-        });
-
-
-        webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress > 0) {
-
-                }
-            }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (webView != null && newsUrl != null) {
-                    webView.loadUrl(newsUrl);
-                }
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        swipeRefreshLayout.setColorScheme(R.color.colorPrimary);
-        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-            @Override
-            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
-                return !"0".equals(mScrollY);
-            }
-        });
-
-        /**
-         * 客户端监听器
-         */
-        webView.setWebViewClient(new WebViewClient() {
-
-            // 页面开始加载
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                Log.e("xhb", "url--->   " +url);
-                Log.e("xhb", "newsUrl--->   " +newsUrl);
-
-                if (url.equals(newsUrl)) {
-                    swipeRefreshLayout.setEnabled(true);
-                    comeBack.setVisibility(View.GONE);
-                    newsTitleName.setText(mTitleName);
-                } else {
-                    swipeRefreshLayout.setEnabled(false);
-                    String mTitleName = "";
-                    if (url.contains("title")) {
-                        int index = url.indexOf("?");
-                        String temp = url.substring(index + 1);
-                        if (temp.contains("&")) {
-                            String[] keyValue = temp.split("&");
-                            for (String str : keyValue) {
-                                if (str.contains("title")) {
-                                    mTitleName = str.replace("title=", "");
-                                    break;
-                                }
-                            }
-                        } else {
-                            mTitleName = temp.replace("title=", "");
-                        }
-                        newsTitleName.setText(URLDecoder.decode(mTitleName));
-                    }
-                    comeBack.setVisibility(View.VISIBLE);
-                }
-            }
-
-            // 页面加载完成
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            // WebView加载的所有资源url
-            @Override
-            public void onLoadResource(WebView view, String url) {
-                super.onLoadResource(view, url);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-            }
-        });
-
-        webView.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                ((MainActivity)mActivity).startActivityWithoutOverride(intent);
-            }
-        });
-
-        comeBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (webView.canGoBack()) {
-                    webView.goBack();
-                }
-            }
-        });
-        webView.addJavascriptInterface(new mobileJsMethod(), "android");
-    }
-
-
-    /**
-     * webView 加载Url
-     */
-    private void load() {
-        String userId = null;
-        if (UserHelper.getInstance(mActivity).getProfile() != null) {
-            userId = UserHelper.getInstance(mActivity).getProfile().getId();
-        }
-
-        if (TextUtils.isEmpty(userId)) {
-            userId = "";
-        }
-
-        //生成发现页链接
-        String channelId = "unknown";
-        String versionName = BuildConfig.VERSION_NAME;
-        try {
-            channelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
-
-        Log.e("newsUrl", "newsUrl--->     " + newsUrl);
-        webView.loadUrl(newsUrl);
-    }
-
-
-    /**
-     * 调用js
-     */
-    class mobileJsMethod{
-        /**
-         * 跳转到登陆页面
-         */
-        @JavascriptInterface
-        public void authorize(String nextUrl){
-            UserAuthorizationActivity.launch(getActivity(), null);
-        }
-
-        /**
-         * 获取HTML滑动的Y轴的值
-         */
-        @JavascriptInterface
-        public void getFindHtmlScrollY(String scrollY){
-            mScrollY = scrollY;
-        }
-    }
-
-    /**
-     * HTML Y轴坐标
-     */
-    public String mScrollY = "0";
-
-
-    @Override
     protected void configureComponent(AppComponent appComponent) {
 
+    }
+
+    class MyFragmentViewPgaerAdapter extends FragmentPagerAdapter {
+
+        public MyFragmentViewPgaerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
     }
 }

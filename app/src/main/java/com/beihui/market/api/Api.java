@@ -32,6 +32,7 @@ import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.FastDebtDetail;
+import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -55,6 +56,7 @@ import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabAccountBean;
+import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
@@ -180,6 +182,32 @@ public class Api {
      */
     public Observable<ResultEntity<List<CreditCardBean>>> queryBankList() {
         return service.queryBankList();
+    }
+
+    /**
+     * 魔蝎银行列表
+     * @version 4.0.0
+     * @type  集合类型 1-待还 2-已还 3-全部
+     */
+    public Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(String userId, int collectType, int pageNo, int pageSize) {
+        return service.queryTabAccountList(userId, collectType, pageNo, pageSize);
+    }
+
+    /**
+     * 魔蝎银行列表
+     * @version 4.0.0
+     * @type  集合类型 1-待还 2-已还 3-全部
+     */
+    public Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(String userId, int collectType) {
+        return service.queryTabAccountList(userId, collectType);
+    }
+
+    /**
+     * 魔蝎银行列表
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(String groupId) {
+        return service.queryGroupProductList(groupId);
     }
 
     /*************************************************新接口*****************************************/

@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,7 +46,6 @@ import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -55,7 +53,6 @@ import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.beihui.market.view.MarqueeTextView;
 import com.bumptech.glide.Glide;
@@ -71,7 +68,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -91,13 +87,16 @@ public class MainActivity extends BaseComponentActivity {
     BottomNavigationBar navigationBar;
 
     //账单图标
+    @BindView(R.id.tab_account)
+    RelativeLayout tabAccountRoot;
+    //账单图标
     @BindView(R.id.tab_account_icon)
     ImageView tabAccountIcon;
     //账单
     @BindView(R.id.tab_account_text)
     TextView tabAccountText;
 
-
+    //发现
     @BindView(R.id.tab_news)
     RelativeLayout tabNewsRoot;
     @BindView(R.id.tab_news_icon)
@@ -105,10 +104,11 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_news_text)
     TextView tabNewsText;
 
-    @BindView(R.id.tab_mine_icon)
-    ImageView tabMineIcon;
-    @BindView(R.id.tab_mine_text)
-    TextView tabMineText;
+    //报表
+    @BindView(R.id.tab_forms_icon)
+    ImageView tabFomrsIcon;
+    @BindView(R.id.tab_forms_text)
+    TextView tabFormsText;
 
     @BindView(R.id.tv_tab_account_notice)
     MarqueeTextView mNotice;
@@ -117,6 +117,9 @@ public class MainActivity extends BaseComponentActivity {
     ImageView mNoticeCross;
     @BindView(R.id.ll_ac_main_notice_root)
     LinearLayout mRoot;
+
+    @BindView(R.id.iv_bill_add_buttom)
+    ImageView mAddBill;
 
 
     //保存正切换的底部模块 ID
@@ -149,14 +152,7 @@ public class MainActivity extends BaseComponentActivity {
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_account);
             }
-
-            if (extras.getBoolean("mine")) {
-                navigationBar.select(R.id.tab_mine);
-            }
         }
-//        if (getIntent().getBooleanExtra("home", false)) {
-//            navigationBar.select(R.id.tab_home);
-//        }
     }
 
     /**
@@ -260,8 +256,8 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabAccountIcon, tabNewsIcon, tabMineIcon};
-        textView = new TextView[]{ tabAccountText, tabNewsText, tabMineText};
+        iconView = new ImageView[]{tabFomrsIcon, tabAccountIcon, tabNewsIcon};
+        textView = new TextView[]{ tabFormsText, tabAccountText, tabNewsText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
@@ -276,12 +272,6 @@ public class MainActivity extends BaseComponentActivity {
             }
         });
 
-        findViewById(R.id.iv_add_add_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
-            }
-        });
     }
 
     @Override
@@ -303,10 +293,6 @@ public class MainActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        if (!result.getData().getId().equals(SPUtils.getValue(MainActivity.this, result.getData().getId()))) {
                                            mRoot.setVisibility(View.VISIBLE);
-//                                              mNotice.init("年后的给个价啦年后的给个价啦价啦啦价", 0.9f, 0, mNotice.getMeasuredWidth());
-//                                              mNotice.startFloating();
-
-
                                            mNotice.setText(result.getData().getExplain());
                                            mNoticeId = result.getData().getId();
                                            mNotice.setFocusable(true);
@@ -334,6 +320,16 @@ public class MainActivity extends BaseComponentActivity {
                 SPUtils.setValue(MainActivity.this, mNoticeId);
             }
         });
+
+        /**
+         * 添加账单
+         */
+        mAddBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
+            }
+        });
     }
 
     @Override
@@ -344,7 +340,6 @@ public class MainActivity extends BaseComponentActivity {
     //空事件
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -383,23 +378,32 @@ public class MainActivity extends BaseComponentActivity {
      * 三大模块
      */
     public Fragment tabHome;
+    public Fragment tabForm;
     public Fragment tabFind;
-    public Fragment tabMine;
 
     private void selectTab(int id) {
         selectedFragmentId = id;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        if (tabForm != null) {
+            ft.hide(tabForm);
+        }
         if (tabHome != null) {
             ft.hide(tabHome);
         }
         if (tabFind != null) {
             ft.hide(tabFind);
         }
-        if (tabMine != null) {
-            ft.hide(tabMine);
-        }
         switch (id) {
+            //报表
+            case R.id.tab_forms_root:
+                if (tabForm == null) {
+                    tabForm = BillLoanAnalysisFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabForm);
+                }
+                ft.show(tabForm);
+                mAddBill.setVisibility(View.GONE);
+                break;
             //账单
             case R.id.tab_account:
                 if (tabHome == null) {
@@ -407,6 +411,7 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
+                mAddBill.setVisibility(View.VISIBLE);
                 break;
             //发现
             case R.id.tab_news:
@@ -415,14 +420,7 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabFind);
                 }
                 ft.show(tabFind);
-                break;
-            //我的
-            case R.id.tab_mine:
-                if (tabMine == null) {
-                    tabMine = TabMineFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabMine);
-                }
-                ft.show(tabMine);
+                mAddBill.setVisibility(View.GONE);
                 break;
         }
         ft.commit();
@@ -547,17 +545,17 @@ public class MainActivity extends BaseComponentActivity {
              */
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
                 if (tabImage.getPosition() == 1) {
-                    navigationBar.select(R.id.tab_account);
+                    navigationBar.select(R.id.tab_forms_root);
                     isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 2) {
-                    navigationBar.select(R.id.tab_news);
+                    navigationBar.select(R.id.tab_account);
                     isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 3) {
-                    navigationBar.select(R.id.tab_mine);
+                    navigationBar.select(R.id.tab_news);
                     isShowTabAccount = false;
                 }
             }
-            if (tabImage.getPosition() == 2) {
+            if (tabImage.getPosition() == 3) {
                 EventBus.getDefault().postSticky(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
             }
 

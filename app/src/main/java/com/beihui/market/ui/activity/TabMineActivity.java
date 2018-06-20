@@ -1,4 +1,4 @@
-package com.beihui.market.ui.fragment;
+package com.beihui.market.ui.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.DataStatisticsHelper;
@@ -64,7 +66,7 @@ import cn.xiaoneng.uiapi.Ntalker;
  * @author xhb
  * 我的 模块 Fragment
  */
-public class TabMineFragment extends BaseTabFragment implements TabMineContract.View {
+public class TabMineActivity extends BaseComponentActivity implements TabMineContract.View {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -88,25 +90,17 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     private String pendingPhone;
 
-    public static TabMineFragment newInstance() {
-        return new TabMineFragment();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //umeng统计
         Statistic.onEvent(Events.ENTER_MINE_PAGE);
-
-        EventBus.getDefault().register(this);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
+
 
     @Override
     public void onResume() {
@@ -114,25 +108,27 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         presenter.onStart();
     }
 
+
     @Override
-    public void onDestroyView() {
+    public void onDestroy() {
         presenter.onDestroy();
-        EventBus.getDefault().unregister(this);
-        super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        super.onDestroy();
     }
 
     @Override
-    public int getLayoutResId() {
+    public int getLayoutId() {
         return R.layout.fragment_tab_mine;
     }
 
     @Override
     public void configViews() {
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.white).statusBarDarkFont(true).init();;
-        activity.setSupportActionBar(toolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();;
+        setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //wechatSurpriseView.setVisibility(SPUtils.getWechatSurpriseClicked(getContext()) ? View.GONE : View.VISIBLE);
     }
@@ -154,7 +150,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Subscribe
     public void onLogin(UserLoginEvent event) {
         //登录小能客服
-        UserHelper.Profile profile = UserHelper.getInstance(getContext()).getProfile();
+        UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
         Ntalker.getBaseInstance().login(profile.getId(), profile.getUserName());
     }
 
@@ -174,8 +170,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
         pendingPhone = event.pendingPhone;
         if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)
-                && getView() != null) {
-            getView().postDelayed(new Runnable() {
+                && toolbar != null) {
+            toolbar.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     navigateLogin();
@@ -273,7 +269,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_WECHAT);
 
-                new WeChatPublicDialog().show(getChildFragmentManager(), WeChatPublicDialog.class.getSimpleName());
+                new WeChatPublicDialog().show(getSupportFragmentManager(), WeChatPublicDialog.class.getSimpleName());
 //                if (wechatSurpriseView.getVisibility() != View.GONE) {
 //                    wechatSurpriseView.setVisibility(View.GONE);
 //                    SPUtils.setWechatSurpriseClicked(getContext(), true);
@@ -294,7 +290,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                     goToSamsungappsMarket();
                 } else {
                     try {
-                        Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getActivity().getApplicationInfo().packageName));
+                        Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName));
                         startActivity(toMarket);
                     } catch (ActivityNotFoundException e) {
                         e.printStackTrace();
@@ -311,7 +307,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      * https://www.cnblogs.com/qwangxiao/p/8030389.html
      */
     public void goToSamsungappsMarket(){
-        Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" + getActivity().getApplicationInfo().packageName);
+        Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" +getApplicationInfo().packageName);
         Intent goToMarket = new Intent();
         goToMarket.setClassName("com.sec.android.app.samsungapps", "com.sec.android.app.samsungapps.Main");
         goToMarket.setData(uri);
@@ -332,7 +328,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         loginTv.setVisibility(View.GONE);
         userNameTv.setVisibility(View.VISIBLE);
         if (profile.getHeadPortrait() != null) {
-            Glide.with(getContext())
+            Glide.with(this)
                     .load(profile.getHeadPortrait())
                     .asBitmap()
                     .into(avatarIv);
@@ -363,10 +359,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateLogin() {
         if (pendingPhone != null) {
-            UserAuthorizationActivity.launch(getActivity(), pendingPhone);
+            UserAuthorizationActivity.launch(this, pendingPhone);
             pendingPhone = null;
         } else {
-            UserAuthorizationActivity.launch(getActivity(), null);
+            UserAuthorizationActivity.launch(this, null);
         }
     }
 
@@ -376,7 +372,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      */
     @Override
     public void navigateUserProfile(String userId) {
-        startActivity(new Intent(getActivity(), UserProfileActivity.class));
+        startActivity(new Intent(this, UserProfileActivity.class));
     }
 
     /**
@@ -386,7 +382,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateMessage(String userId) {
 //        startActivity( new Intent(getActivity(), MessageCenterActivity.class));
-        Intent intent = new Intent(getActivity(), SysMsgActivity.class);
+        Intent intent = new Intent(this, SysMsgActivity.class);
         startActivity(intent);
     }
 
@@ -396,33 +392,33 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      */
     @Override
     public void navigateMineBill(String userId) {
-        startActivity(new Intent(getActivity(), MyDebtActivity.class));
+        startActivity(new Intent(this, MyDebtActivity.class));
     }
 
     @Override
     public void navigateCollection(String userId) {
-        startActivity(new Intent(getActivity(), CollectionActivity.class));
+        startActivity(new Intent(this, CollectionActivity.class));
     }
 
     @Override
     public void navigateRewardPoints() {
-        startActivity(new Intent(getActivity(), RewardPointActivity.class));
+        startActivity(new Intent(this, RewardPointActivity.class));
     }
 
     @Override
     public void navigateInvitation(String userId) {
-        startActivity(new Intent(getActivity(), InvitationActivity.class));
+        startActivity(new Intent(this, InvitationActivity.class));
     }
 
     @Override
     public void navigateContactKefu(String userId, String userName) {
         //调起聊天窗口
-        Ntalker.getBaseInstance().startChat(getContext(), Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
+        Ntalker.getBaseInstance().startChat(this, Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
     }
 
     @Override
     public void navigateHelpAndFeedback(String userId) {
-        startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
+        startActivity(new Intent(this, HelpAndFeedActivity.class));
     }
 
     /**
@@ -431,7 +427,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      */
     @Override
     public void navigateSetting(String userId) {
-        startActivity(new Intent(getActivity(), SettingsActivity.class));
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     /**
@@ -462,4 +458,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
             tvMessageNum.setText(data);
         }
     }
+
+
 }

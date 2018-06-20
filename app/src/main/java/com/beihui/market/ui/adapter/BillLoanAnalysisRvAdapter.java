@@ -141,17 +141,14 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
                 holder.mYear.setText(mListBean.timeTitleTop);
             }
             if (TextUtils.isEmpty(mListBean.timeTitleBottom)) {
-                holder.mDeatilDateOne.setText("");
                 holder.mDeatilDateTwo.setText("");
                 holder.mDeatilDateThree.setText("");
             } else {
                 if (mType == 2) {
-                    holder.mDeatilDateOne.setText("第");
                     holder.mDeatilDateTwo.setText(mListBean.timeTitleBottom);
                     holder.mDeatilDateThree.setText("周");
                 }
                 if (mType == 3) {
-                    holder.mDeatilDateOne.setText("");
                     holder.mDeatilDateTwo.setText(mListBean.timeTitleBottom);
                     holder.mDeatilDateThree.setText("月");
                 }
@@ -334,7 +331,6 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
         //头布局 未还已还逾期数据
         public TextView mYear;
-        public TextView mDeatilDateOne;
         public TextView mDeatilDateTwo;
         public TextView mDeatilDateThree;
         public TextView mUnPay;
@@ -363,7 +359,6 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
             }
             if (viewType == VIEW_HEADER_DATA) {
                 mYear = (TextView)itemView.findViewById(R.id.tv_item_loan_analysis_year);
-                mDeatilDateOne = (TextView)itemView.findViewById(R.id.tv_item_date_type_one);
                 mDeatilDateTwo = (TextView)itemView.findViewById(R.id.tv_item_date_type_two);
                 mDeatilDateThree = (TextView)itemView.findViewById(R.id.tv_item_date_type_three);
 

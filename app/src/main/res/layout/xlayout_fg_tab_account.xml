@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:background="@drawable/x_tab_account_toolbar_bg"
+        android:background="#144A9E"
         android:id="@+id/tb_tab_account_header_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 
-        <TextView
-            android:layout_gravity="center"
-            android:textSize="17sp"
-            android:textColor="@color/white"
-            android:text="@string/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
 
     </android.support.v7.widget.Toolbar>
 
     <!--&lt;!&ndash;头部布局&ndash;&gt;-->
     <!--<include layout="@layout/xlayout_fg_tab_account_head"/>-->
-
-    <!--列表-->
-    <RelativeLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_tab_account_refresh_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <View
-            android:layout_marginLeft="80.5dp"
-            android:background="@color/line"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"/>
-
-        <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout
-            android:id="@+id/prl_fg_tab_account_list"
+        <!--列表-->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include layout="@layout/x_pull_to_refresh_head"/>
-
-            <com.beihui.market.view.pulltoswipe.PulledRecyclerView
-                android:id="@+id/rv_fg_tab_account_list"
-                android:background="@color/transparent"
-                android:layout_width="match_parent"
+            <View
+                android:layout_marginLeft="35.5dp"
+                android:background="@color/line"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"/>
 
-            <include layout="@layout/x_pull_to_refresh_load_more"/>
+            <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout
+                android:id="@+id/prl_fg_tab_account_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
+                <include layout="@layout/x_pull_to_refresh_head"/>
 
-        <!--切换到今天-->
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/iv_tab_account_header_today_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:padding="10dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/xbill_today_btn" />
-    </RelativeLayout>
+                <com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView
+                    android:id="@+id/rv_fg_tab_account_list"
+                    android:background="@color/transparent"
+                    android:overScrollMode="never"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <include layout="@layout/x_pull_to_refresh_load_more"/>
+
+            </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
+
+            <TextView
+                android:id="@+id/rv_fg_tab_account_title"
+                android:background="#00144A9E"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="@string/app_name"
+                android:textSize="17sp" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

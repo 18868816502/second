@@ -23,6 +23,7 @@ import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.FastDebtDetail;
+import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -46,6 +47,7 @@ import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabAccountBean;
+import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
@@ -76,7 +78,6 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
  * 请求接口
  */
 public interface ApiService {
-
 
     /*************************************************新接口*****************************************/
     /**
@@ -109,6 +110,30 @@ public interface ApiService {
      */
     @POST(BASE_PATH_S_FOUR + "/creditcard/moxie/bankList")
     Observable<ResultEntity<List<CreditCardBean>>> queryBankList();
+
+    /**
+     * @author xhb
+     * 获取首页账单列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/accounting/index/v400")
+    Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(@Field("userId") String userId, @Field("collectType") int iconNcollectTypeame, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * @author xhb
+     * 获取首页账单列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/accounting/index/v400")
+    Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(@Field("userId") String userId, @Field("collectType") int iconNcollectTypeame);
+
+    /**
+     * @author xhb
+     * 获取首页账单列表
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/product/groupProduct/list")
+    Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(@Field("groupId") String groupId);
 
     /*************************************************新接口*****************************************/
 
@@ -305,7 +330,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/wx/login")
-    Observable<ResultEntity<UserProfileAbstract>>   loginWithWechat(@Field("openId") String openId, @Field("platform") int platform);
+    Observable<ResultEntity<UserProfileAbstract>> loginWithWechat(@Field("openId") String openId, @Field("platform") int platform);
 
     /**
      * 请求验证码

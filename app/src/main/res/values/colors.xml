@@ -27,10 +27,15 @@
 <!--00000000000000000000000000000000000000000000000000000000000000000000-->
 
 
-    <color name="colorPrimary">#5591FF</color>
-    <color name="colorPrimaryDark">#5591FF</color>
+    <!--<color name="colorPrimary">#5591FF</color>-->
+    <!--<color name="colorPrimaryDark">#5591FF</color>-->
+    <!--<color name="colorAccent">#5591FF</color> -->
+
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#5591FF</color>
 
+    <color name="refresh_one">#144A9E</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#ff0000</color>

@@ -1,237 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?><!--TODO 去掉数据-->
-<com.beihui.market.view.CustomSwipeMenuLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_menu_layout"
-    android:layout_marginBottom="10dp"
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
+        android:id="@+id/rl_item_tab_account_normal_top_root"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
+        <RelativeLayout
+            android:id="@+id/iv_item_tab_account_dot_root"
+            android:layout_marginLeft="25.5dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp">
 
-        <!--以此布局为基准-->
-        <View
-            android:id="@+id/iv_item_tab_account_base_line"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="70dp"
-            android:background="@color/transparent"
-            android:src="@drawable/xbill_time_icon" />
-
-
-        <!--卡信息-->
-        <LinearLayout
-            android:id="@+id/ll_item_tab_account_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="3dp"
-            android:layout_toRightOf="@id/iv_item_tab_account_base_line"
-            android:background="@drawable/xshape_tab_account_card_pink_bg"
-            android:orientation="vertical">
-
-            <RelativeLayout
+            <!--小红点-->
+            <ImageView
+                android:id="@+id/iv_item_tab_account_dot"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/rl_item_tab_acount_set_pay_bg"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/xshape_tab_account_red_circle" />
 
-
-                <com.beihui.market.view.CircleImageView
-                    android:id="@+id/iv_item_tab_account_avatar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_centerVertical="true" />
-
-                <!--网贷名称 或者 信用卡名称-->
-                <TextView
-                    android:id="@+id/tv_item_tab_acount_name_type"
-                    android:layout_toRightOf="@id/iv_item_tab_account_avatar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="50dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="招商银行"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-                <!--网贷名称 或者 信用卡名称金额-->
-                <TextView
-                    android:id="@+id/tv_item_tab_acount_loan_money"
-                    android:layout_toRightOf="@id/iv_item_tab_account_avatar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_item_tab_acount_name_type"
-                    android:layout_marginTop="15dp"
-                    android:text="100"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:text=""
-                    android:layout_marginTop="15dp"
-                    android:gravity="right"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/tv_item_tab_acount_loan_term"
-                    android:layout_toRightOf="@id/tv_item_tab_acount_loan_money"
-                    android:layout_below="@id/tv_item_tab_acount_name_type"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-
-                <!--&lt;!&ndash;箭头&ndash;&gt;-->
-                <!--<ImageView-->
-                    <!--android:id="@+id/iv_item_tab_acount_arrow"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:src="@drawable/xbill_down_arrow" />-->
-
-            </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/iv_item_tab_acount_sample_icon"
-                    android:layout_marginTop="-3dp"
-                    android:layout_marginRight="-3dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/xbill_example_icon" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_item_tab_acount_set_pay_bg"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="-10dp"
-                android:background="@drawable/xshape_tab_account_card_pink_bg"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_item_tab_acount_all_pay"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="设为已还"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_item_tab_acount_part_pay"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="还部分"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!--闹钟-->
-        <ImageView
-            android:id="@+id/iv_item_tab_account_clock"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_below="@id/ll_item_tab_account_card"
-            android:layout_marginLeft="63.5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/white"
-            android:src="@drawable/xbill_time_icon" />
-
-        <!--逾期总数量-->
-        <TextView
-            android:id="@+id/iv_item_tab_account_overdue_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_item_tab_account_card"
-            android:layout_marginLeft="90dp"
-            android:layout_marginTop="6dp"
-            android:background="@color/white"
-            android:text="以上共1笔逾期笔数"
-            android:textSize="12sp" />
-
+        </RelativeLayout>
 
         <!--还款日期-->
         <TextView
             android:id="@+id/tv_item_tab_account_date_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_item_tab_account_base_line"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="11dp"
-            android:layout_toLeftOf="@id/ll_item_tab_account_card"
+            android:layout_toRightOf="@id/iv_item_tab_account_dot_root"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
             android:text="今天"
             android:textColor="@color/black_1"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
-        <!--小红点-->
-        <ImageView
-            android:id="@+id/iv_item_tab_account_dot"
+        <!--共几笔-->
+        <TextView
+            android:id="@+id/tv_item_tab_account_count_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_item_tab_account_base_line"
-            android:layout_marginLeft="67dp"
-            android:layout_marginTop="14dp"
-            android:src="@drawable/xshape_tab_account_red_circle" />
+            android:layout_toRightOf="@id/tv_item_tab_account_date_name"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="@color/black_2"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_item_tab_account_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_item_tab_account_count_name"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="@color/black_2"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_item_tab_account_count_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_item_tab_account_count"
+            android:layout_centerVertical="true"
+            android:text="笔"
+            android:textColor="@color/black_2"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_width="wrap_content"
+    <com.beihui.market.view.CustomSwipeMenuLayout
         android:paddingRight="10dp"
-        android:layout_height="70dp">
+        android:id="@+id/swipe_menu_layout"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_shape_tab_account_no_reply"
-            android:background="@drawable/x_shape_tab_account_no_reply"
-            android:text="还部分"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:layout_marginRight="5dp"
-            android:layout_width="44dp"
-            android:layout_height="44dp" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_shape_tab_account_reply"
-            android:background="@drawable/x_shape_tab_account_reply"
-            android:text="设为已还"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:padding="5dp"
-            android:textSize="12sp"
-            android:layout_width="44dp"
-            android:layout_height="44dp" />
+            <!--卡信息-->
+            <LinearLayout
+                android:id="@+id/ll_item_tab_account_card"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="65dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="@drawable/x_card_background"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_item_tab_account_avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true" />
 
-</com.beihui.market.view.CustomSwipeMenuLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!--网贷名称 或者 信用卡名称-->
+                        <TextView
+                            android:id="@+id/tv_item_tab_acount_name_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="招商银行"
+                            android:textStyle="bold"
+                            android:textColor="@color/black_1"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="1dp" />
+
+                        <!--网贷名称 或者 信用卡名称金额-->
+                        <TextView
+                            android:id="@+id/tv_item_tab_acount_loan_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100"
+                            android:textStyle="bold"
+                            android:textColor="@color/black_1"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!--网贷名称 或者 信用卡名称-->
+                        <TextView
+                            android:id="@+id/tv_item_tab_acount_remark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textStyle="bold"
+                            android:textColor="@color/black_2"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="1dp" />
+
+                        <TextView
+                            android:background="@drawable/x_tab_account_term_bg"
+                            android:id="@+id/tv_item_tab_acount_loan_term"
+                            android:text="1/1"
+                            android:textColor="@color/black_2"
+                            android:textSize="9sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp">
+
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/tv_shape_tab_account_no_reply"
+                android:background="#595d64"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="部分"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="已还"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/tv_shape_tab_account_reply"
+                android:background="#ff5240"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="设为"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="已还"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.beihui.market.view.CustomSwipeMenuLayout>
+
+</LinearLayout>

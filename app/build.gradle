@@ -85,11 +85,11 @@ android {
             //测试使用的魔蝎appkey
             buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
             //测试一
-//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
             //开发环境
-            buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
+//            buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
 
             //后台本地
 //            buildConfigField("String", "DOMAIN", "\"http://192.168.1.179:8082\"")

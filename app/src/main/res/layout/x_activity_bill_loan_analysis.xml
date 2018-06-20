@@ -27,7 +27,7 @@
                 android:background="@drawable/help_feed_left"
                 android:gravity="center"
                 android:text="周"
-                android:textColor="@color/black_1" />
+                android:textColor="@drawable/x_account_flow_tab_selector" />
 
             <TextView
                 android:id="@+id/tv_ac_bill_loan_analysis_month"
@@ -36,7 +36,7 @@
                 android:background="@drawable/help_feed_right"
                 android:gravity="center"
                 android:text="月"
-                android:textColor="@color/black_1" />
+                android:textColor="@drawable/x_account_flow_tab_selector" />
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>

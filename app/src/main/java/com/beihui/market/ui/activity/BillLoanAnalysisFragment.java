@@ -2,8 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,22 +13,15 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
-import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
-import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
-import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.BillLoanAnalysisRvAdapter;
-import com.beihui.market.ui.adapter.BillLoanRvAdapter;
-import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramChildData;
-import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramGroupData;
-import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,10 +29,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,7 +42,7 @@ import io.reactivex.functions.Consumer;
  * 网贷分析
  */
 
-public class BillLoanAnalysisActivity extends BaseComponentActivity {
+public class BillLoanAnalysisFragment extends BaseComponentFragment {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -70,9 +60,14 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
 
     //适配器
     public BillLoanAnalysisRvAdapter mAdapter;
+    private FragmentActivity activity;
+
+    public static BillLoanAnalysisFragment newInstance() {
+        return new BillLoanAnalysisFragment();
+    }
 
     @Override
-    public int getLayoutId() {
+    public int getLayoutResId() {
         return R.layout.x_activity_bill_loan_analysis;
     }
 
@@ -103,16 +98,14 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        SlidePanelHelper.attach(this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
+        activity = getActivity();
         //初始化适配器
-        mAdapter = new BillLoanAnalysisRvAdapter(this);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        mAdapter = new BillLoanAnalysisRvAdapter(activity);
+        LinearLayoutManager manager = new LinearLayoutManager(activity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
@@ -126,7 +119,6 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
      */
     @OnClick({R.id.tv_ac_bill_loan_analysis_week, R.id.tv_ac_bill_loan_analysis_month})
     public void onViewClicked(View view) {
-
         switch (view.getId()) {
             case R.id.tv_ac_bill_loan_analysis_week:
                 type = 2;
@@ -175,18 +167,18 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
                 @Override
                 public void onItemclick(BillLoanAnalysisBean.ListBean listBean) {
                     if (listBean.getType() == 1) {
-                        Intent intent = new Intent(BillLoanAnalysisActivity.this, LoanDebtDetailActivity.class);
+                        Intent intent = new Intent(activity, LoanDebtDetailActivity.class);
                         intent.putExtra("debt_id", listBean.getRecordId());
                         intent.putExtra("bill_id", listBean.getBillId());
                         startActivity(intent);
                     } else if (listBean.getType() == 3) {
                         //快速记账详情
-                        Intent intent = new Intent(BillLoanAnalysisActivity.this, FastDebtDetailActivity.class);
+                        Intent intent = new Intent(activity, FastDebtDetailActivity.class);
                         intent.putExtra("debt_id", listBean.getRecordId());
                         intent.putExtra("bill_id", listBean.getBillId());
                         startActivity(intent);
                     }else {
-                        Intent intent = new Intent(BillLoanAnalysisActivity.this, CreditCardDebtDetailActivity.class);
+                        Intent intent = new Intent(activity, CreditCardDebtDetailActivity.class);
                         intent.putExtra("debt_id", listBean.getRecordId());
                         intent.putExtra("bill_id", listBean.getBillId());
                         intent.putExtra("logo", "");
@@ -204,7 +196,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
      * 进入详情页 返回 需要刷新数据
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mAdapter.mShowFirstItemPosition = false;
         //柱状图数据
@@ -214,7 +206,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
 
 
         //底部数据
-        Api.getInstance().queryAnalysisOverview(UserHelper.getInstance(this).getProfile().getId())
+        Api.getInstance().queryAnalysisOverview(UserHelper.getInstance(activity).getProfile().getId())
                 .compose(RxUtil.<ResultEntity<AnalysisOverviewBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<AnalysisOverviewBean>>() {
                                @Override
@@ -235,8 +227,10 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
 
     }
 
+
+
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -275,7 +269,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
             end = endYear+"-"+endMonth;
         }
 
-        Api.getInstance().queryAnalysisOverviewChart(UserHelper.getInstance(this).getProfile().getId(), type, start, end)
+        Api.getInstance().queryAnalysisOverviewChart(UserHelper.getInstance(activity).getProfile().getId(), type, start, end)
                 .compose(RxUtil.<ResultEntity<List<AnalysisChartBean>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AnalysisChartBean>>>() {
                                @Override
@@ -325,7 +319,7 @@ public class BillLoanAnalysisActivity extends BaseComponentActivity {
         }
 
         //列表数据
-        Api.getInstance().queryAnalysisOverviewList(UserHelper.getInstance(this).getProfile().getId(), type, time)
+        Api.getInstance().queryAnalysisOverviewList(UserHelper.getInstance(activity).getProfile().getId(), type, time)
                 .compose(RxUtil.<ResultEntity<BillLoanAnalysisBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<BillLoanAnalysisBean>>() {
                                @Override

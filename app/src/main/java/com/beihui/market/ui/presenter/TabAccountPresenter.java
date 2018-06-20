@@ -9,6 +9,7 @@ import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.TabAccountBean;
+import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -37,11 +38,10 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     private TabAccountContract.View view;
     private UserHelper userHelper;
 
-    private List<TabAccountBean.OverdueListBean> debts = new ArrayList<>();
+    private List<TabAccountNewBean> debts = new ArrayList<>();
 
     //账单 头信息
     private DebtAbstract anAbstract;
-
 
     @Inject
     TabAccountPresenter(Context context, Api api, TabAccountContract.View view) {
@@ -67,15 +67,9 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             loadInDebtList();
         } else {
             //获取列表信息
-            List<TabAccountBean.OverdueListBean> list = new ArrayList<>();
+            List<TabAccountNewBean> list = new ArrayList<>();
             view.showInDebtList(list);
-
-
         }
-//        //获取头信息
-//        loadDebtAbstract();
-//        //获取列表信息
-//        loadInDebtList(0, true, 1, 10);
     }
 
 
@@ -87,7 +81,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             loadInDebtList();
         } else {
             //获取列表信息
-            List<TabAccountBean.OverdueListBean> list = new ArrayList<>();
+            List<TabAccountNewBean> list = new ArrayList<>();
             view.showInDebtList(list);
         }
     }
@@ -123,25 +117,48 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     }
 
     /**
-     * 获取列表信息
+     * 获取待还以及已还第一页数据列表信息
      */
     @Override
     public void loadInDebtList() {
+        Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId(), 1)
+                .compose(RxUtil.<ResultEntity<List<TabAccountNewBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<TabAccountNewBean>>>() {
+                               @Override
+                               public void accept(ResultEntity<List<TabAccountNewBean>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                        view.showInDebtList(result.getData());
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                logError(TabAccountPresenter.this, throwable);
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+
+    }
+
+    /**
+     * 获取列表信息
+     */
+    @Override
+    public void loadInDebtList(int collectType, int pageNo) {
         if (userHelper.getProfile() == null) {
             view.showNoUserLoginBlock();
         } else{
-            Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId())
-                    .compose(RxUtil.<ResultEntity<TabAccountBean>>io2main())
-                    .subscribe(new Consumer<ResultEntity<TabAccountBean>>() {
+           Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId(), 1, pageNo, 10)
+                .compose(RxUtil.<ResultEntity<List<TabAccountNewBean>>>io2main())
+                    .subscribe(new Consumer<ResultEntity<List<TabAccountNewBean>>>() {
                                    @Override
-                                   public void accept(ResultEntity<TabAccountBean> result) throws Exception {
+                                   public void accept(ResultEntity<List<TabAccountNewBean>> result) throws Exception {
                                        if (result.isSuccess()) {
-                                           debts.clear();
-                                           if (result.getData() != null) {
-                                               debts.addAll(result.getData().getOverdueList());
-                                               debts.addAll(result.getData().getUnpayList());
-                                           }
-                                           view.showInDebtList(debts);
+                                           view.showPayedInDebtList(result.getData());
                                        } else {
                                            view.showErrorMsg(result.getMsg());
                                        }
@@ -163,83 +180,10 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
 
     @Override
     public void clickDebtSetStatus(int index) {
-//        AccountBill bill = debts.get(index);
-//        if (bill.getBillType() == 1) {
-//            //网贷账单
-//            Disposable dis = api.updateDebtStatus(userHelper.getProfile().getId(), bill.getBillId(), 2)
-//                    .compose(RxUtil.<ResultEntity>io2main())
-//                    .subscribe(new Consumer<ResultEntity>() {
-//                                   @Override
-//                                   public void accept(ResultEntity result) throws Exception {
-//                                       if (result.isSuccess()) {
-//                                           //状态更新成功后，重新拉取数据
-//                                           loadDebtAbstract();
-//                                           loadInDebtList();
-//                                       } else {
-//                                           view.showErrorMsg(result.getMsg());
-//                                       }
-//                                   }
-//                               },
-//                            new Consumer<Throwable>() {
-//                                @Override
-//                                public void accept(Throwable throwable) throws Exception {
-//                                    logError(TabAccountPresenter.this, throwable);
-//                                    view.showErrorMsg(generateErrorMsg(throwable));
-//                                }
-//                            });
-//            addDisposable(dis);
-//        } else {
-//            //信用卡账单
-//            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), bill.getRecordId(), bill.getBillId(), 2)
-//                    .compose(RxUtil.<ResultEntity>io2main())
-//                    .subscribe(new Consumer<ResultEntity>() {
-//                                   @Override
-//                                   public void accept(ResultEntity result) throws Exception {
-//                                       if (result.isSuccess()) {
-//                                           //状态更新成功后，重新拉取数据
-//                                           loadDebtAbstract();
-//                                           loadInDebtList();
-//                                       } else {
-//                                           view.showErrorMsg(result.getMsg());
-//                                       }
-//                                   }
-//                               },
-//                            new Consumer<Throwable>() {
-//                                @Override
-//                                public void accept(Throwable throwable) throws Exception {
-//                                    logError(TabAccountPresenter.this, throwable);
-//                                    view.showErrorMsg(generateErrorMsg(throwable));
-//                                }
-//                            });
-//            addDisposable(dis);
-//        }
     }
 
     @Override
     public void clickDebtHide(int index) {
-//        AccountBill bill = debts.get(index);
-//        Disposable dis = api.updateDebtVisibility(userHelper.getProfile().getId(), bill.getRecordId(), bill.getBillType(), 0)
-//                .compose(RxUtil.<ResultEntity>io2main())
-//                .subscribe(new Consumer<ResultEntity>() {
-//                               @Override
-//                               public void accept(ResultEntity result) throws Exception {
-//                                   if (result.isSuccess()) {
-//                                       //状态更新成功后，重新拉取数据
-//                                       loadDebtAbstract();
-//                                       loadInDebtList();
-//                                   } else {
-//                                       view.showErrorMsg(result.getMsg());
-//                                   }
-//                               }
-//                           },
-//                        new Consumer<Throwable>() {
-//                            @Override
-//                            public void accept(Throwable throwable) throws Exception {
-//                                logError(TabAccountPresenter.this, throwable);
-//                                view.showErrorMsg(generateErrorMsg(throwable));
-//                            }
-//                        });
-//        addDisposable(dis);
     }
 
     @Override
@@ -251,7 +195,6 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     public void refresh() {
         if (userHelper.getProfile() != null) {
             loadDebtAbstract();
-//            loadInDebtList(3, false, 1, 10);
         }
     }
 
@@ -303,12 +246,6 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
 
     @Override
     public void clickDebt(int index) {
-//        AccountBill bill = debts.get(index);
-//        if (bill.getBillType() == 1) {
-//            view.navigateLoanDebtDetail(bill);
-//        } else {
-//            view.navigateCreditCardDebtDetail(bill);
-//        }
     }
 
     @Override
