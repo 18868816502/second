@@ -1,6 +1,7 @@
 package com.beihui.market.ui.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +13,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
+import com.beihui.market.entity.GroupProductBean;
+import com.beihui.market.helper.UserHelper;
+import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.RxUtil;
 import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.multiChildHistogram.MultiGroupHistogramChildData;
@@ -38,6 +46,7 @@ import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by admin on 2018/5/22.
@@ -64,6 +73,8 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
     //柱形图数据源
     public List<AnalysisChartBean> mList = new ArrayList<>();
 
+    public List<List<GroupProductBean>> footerList = new ArrayList<>();
+
     //头布局
     public static final int VIEW_HEADER = R.layout.x_item_bill_loan_analysis_header;
     //头布局 未还已还逾期数据
@@ -71,7 +82,8 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
     //列表布局
     public static final int VIEW_NORMAL = R.layout.x_item_bill_loan_analysis_normal;
     //脚布局
-    public static final int VIEW_FOOTER = R.layout.x_item_bill_loan_analysis_footer;
+//    public static final int VIEW_FOOTER = R.layout.x_item_bill_loan_analysis_footer;
+    public static final int VIEW_FOOTER = R.layout.x_item_bill_loan_analysis_second_account;
 
     //没有数据的布局
     public static final int VIEW_NODATA = R.layout.x_item_bill_loan_analysis_nodata;
@@ -220,10 +232,86 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
          * 脚布局
          */
         if (holder.viewType == VIEW_FOOTER) {
-            holder.mFooterAll.setText(mFooterAll);
-            holder.mFooterPart.setText(mFooterPart);
-            holder.mFooterOverdue.setText(mFooterOverdue);
+            int i;
+            if (mListBean.getList().size() == 0) {
+                i = position - 3;
+            } else {
+                i = position - 2 - mListBean.getList().size();
+            }
+            final List<GroupProductBean> productBeans = footerList.get(i);
+            if (i == 0) {
+                holder.mSecondAccount.setVisibility(View.VISIBLE);
+            } else {
+                holder.mSecondAccount.setVisibility(View.GONE);
+            }
+            int size = productBeans.size();
+            if (size > 0) {
+                holder.mSecondAccountOne.setText(productBeans.get(0).getProductName());
+                Glide.with(mActivity).load(productBeans.get(0).getLogoUrl()).into(holder.mSecondAccountOneIcon);
+                holder.mSecondAccountOneRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        skipProduce(productBeans.get(0).getId());
+                    }
+                });
+            }
+            if (size > 1) {
+                holder.mSecondAccountTwo.setText(productBeans.get(1).getProductName());
+                Glide.with(mActivity).load(productBeans.get(1).getLogoUrl()).into(holder.mSecondAccountTwoIcon);
+                holder.mSecondAccountTwoRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        skipProduce(productBeans.get(1).getId());
+                    }
+                });
+            }
+            if (size > 2) {
+                holder.mSecondAccountThree.setText(productBeans.get(2).getProductName());
+                Glide.with(mActivity).load(productBeans.get(2).getLogoUrl()).into(holder.mSecondAccountThreeIcon);
+                holder.mSecondAccountThreeRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        skipProduce(productBeans.get(2).getId());
+                    }
+                });
+            }
+            if (size > 3) {
+                holder.mSecondAccountFour.setText(productBeans.get(3).getProductName());
+                Glide.with(mActivity).load(productBeans.get(3).getLogoUrl()).into(holder.mSecondAccountFourIcon);
+                holder.mSecondAccountFourRoot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        skipProduce(productBeans.get(3).getId());
+                    }
+                });
+            }
+
+
         }
+    }
+
+    private void skipProduce(String productId) {
+        //底部数据
+        Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(mActivity).getProfile().getId(), productId)
+                .compose(RxUtil.<ResultEntity<String>>io2main())
+                .subscribe(new Consumer<ResultEntity<String>>() {
+                               @Override
+                               public void accept(ResultEntity<String> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       Intent intent = new Intent(mActivity, WebViewActivity.class);
+                                       intent.putExtra("webViewUrl", result.getData());
+                                       mActivity.startActivity(intent);
+                                   } else {
+                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+                            }
+                        });
     }
 
     private int getPosition(int position) {
@@ -249,21 +337,19 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
     @Override
     public int getItemCount() {
-        return mListBean.getList().size() == 0 ? 4 : mListBean.getList().size() + 3;
+        return mListBean.getList().size() == 0 ? 3 + footerList.size() : mListBean.getList().size() + 2 + footerList.size();
     }
 
-    public String mFooterAll = " ";
-    public String mFooterPart = " ";
-    public String mFooterOverdue = " ";
 
     /**
      * 刷新脚部布局
      */
-    public void notifyBottomData(AnalysisOverviewBean data) {
-        mFooterAll = CommonUtils.keep2digitsWithoutZero(data.getRepayAmount());
-        mFooterPart = CommonUtils.keep2digitsWithoutZero(data.getUnpayAmount());
-        mFooterOverdue = CommonUtils.keep2digitsWithoutZero(data.getOverAmount());
-        notifyItemChanged(mListBean.getList().size() == 0 ? 3 :  mListBean.getList().size()+1);
+    public void notifyBottomData(List<List<GroupProductBean>> data) {
+        if (footerList.size() > 0) {
+            footerList.clear();
+        }
+        footerList.addAll(data);
+        notifyDataSetChanged();
     }
 
     /**
@@ -313,6 +399,16 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
         this.onItemClickListener = onItemClickListener;
     }
 
+    public interface OnGroupProductItemClickListener{
+        void onItemclick(GroupProductBean productBean);
+    }
+
+    public OnGroupProductItemClickListener onGroupProductItemClickListener;
+
+    public void setOnGroupProductItemClickListener(OnGroupProductItemClickListener onGroupProductItemClickListener) {
+        this.onGroupProductItemClickListener = onGroupProductItemClickListener;
+    }
+
     /**
      * 设置类型
      */
@@ -346,9 +442,21 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
 
 
         //脚布局
-        public TextView mFooterAll;
-        public TextView mFooterPart;
-        public TextView mFooterOverdue;
+        public TextView mSecondAccount;
+        public TextView mSecondAccountOne;
+        public ImageView mSecondAccountOneIcon;
+        public TextView mSecondAccountTwo;
+        public ImageView mSecondAccountTwoIcon;
+        public TextView mSecondAccountThree;
+        public ImageView mSecondAccountThreeIcon;
+        public TextView mSecondAccountFour;
+        public ImageView mSecondAccountFourIcon;
+
+
+        public LinearLayout mSecondAccountOneRoot;
+        public LinearLayout mSecondAccountTwoRoot;
+        public LinearLayout mSecondAccountThreeRoot;
+        public LinearLayout mSecondAccountFourRoot;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -374,9 +482,21 @@ public class BillLoanAnalysisRvAdapter extends RecyclerView.Adapter<BillLoanAnal
                 mStatus = (TextView)itemView.findViewById(R.id.tv_item_normal_loan_analysis_status);
             }
             if (viewType == VIEW_FOOTER) {
-                mFooterAll = (TextView)itemView.findViewById(R.id.tv_item_bill_loan_footer_all);
-                mFooterPart = (TextView)itemView.findViewById(R.id.tv_item_bill_loan_footer_part);
-                mFooterOverdue = (TextView)itemView.findViewById(R.id.tv_item_bill_loan_footer_overdue);
+                mSecondAccount = (TextView)itemView.findViewById(R.id.tv_footer_second_account);
+                mSecondAccountOne = (TextView)itemView.findViewById(R.id.tv_footer_second_account_one);
+                mSecondAccountOneIcon = (ImageView)itemView.findViewById(R.id.iv_footer_second_account_one_icon);
+                mSecondAccountTwo = (TextView)itemView.findViewById(R.id.tv_footer_second_account_two);
+                mSecondAccountTwoIcon = (ImageView)itemView.findViewById(R.id.iv_footer_second_account_two_icon);
+                mSecondAccountThree = (TextView)itemView.findViewById(R.id.tv_footer_second_account_three);
+                mSecondAccountThreeIcon = (ImageView)itemView.findViewById(R.id.iv_footer_second_account_three);
+                mSecondAccountFour = (TextView)itemView.findViewById(R.id.tv_footer_second_account_four);
+                mSecondAccountFourIcon = (ImageView)itemView.findViewById(R.id.iv_footer_second_account_four);
+
+
+                mSecondAccountOneRoot = (LinearLayout)itemView.findViewById(R.id.ll_footer_second_account_one_root);
+                mSecondAccountTwoRoot = (LinearLayout)itemView.findViewById(R.id.ll_footer_second_account_two_root);
+                mSecondAccountThreeRoot = (LinearLayout)itemView.findViewById(R.id.ll_footer_second_account_three_root);
+                mSecondAccountFourRoot = (LinearLayout)itemView.findViewById(R.id.ll_footer_second_account_four_root);
             }
         }
     }

@@ -6,161 +6,171 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!--借款金额-->
-    <LinearLayout
-        android:padding="15dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@drawable/x_account_flow_sample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/et_fg_accout_flow_loan"
-            android:layout_marginLeft="12dp"
-            android:hint="搜索/自定义借款平台"
-            android:textColorHint="#ffd3d4d5"
-            android:textColor="@color/black_1"
-            android:textSize="12sp"
-            android:background="@null"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_gravity="right"
-                android:text="每期金额"
-                android:textColor="@color/black_2"
-                android:textSize="10sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.beihui.market.view.AutoAdjustSizeEditText
-                android:id="@+id/auto_et_num"
-                android:gravity="right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12345336.00"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:inputType="number"
-                android:background="@null"
-                android:textSize="28sp"
-                android:textColor="@color/black_1"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:background="@color/common_bg"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"/>
-
-    <FrameLayout
+        android:background="@color/white"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_fg_account_flow_loan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.beihui.market.view.AlphabetIndexBar
-            android:id="@+id/alphabet_fg_account_flow_loan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="3dp" />
-
-    </FrameLayout>
-
-</LinearLayout>
-
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:id="@+id/ll_account_flow_bottom"
-        android:background="#fafafa"
-        android:paddingRight="15dp"
-        android:paddingLeft="15dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:orientation="horizontal"
-        android:gravity="top"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
-
-        <!--首次还款日-->
-        <TextView
-            android:id="@+id/tv_fg_first_pay_loan_date"
-            android:background="@drawable/xshape_account_flow_bg"
-            android:text="首次还款日"
-            android:textColor="@color/black_2"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <!--还款周期-->
-        <TextView
-            android:id="@+id/tv_fg_first_pay_loan_times"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/xshape_account_flow_bg"
-            android:text="还款周期"
-            android:textColor="@color/black_2"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_weight="1"/>
-
+        <!--借款金额-->
         <LinearLayout
-            android:id="@+id/ll_account_flow_remark"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:background="@drawable/xshape_account_flow_edit_mark_bg"
-            android:gravity="center"
+            android:padding="15dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:src="@drawable/x_account_flow_edit_mark"
+                android:src="@drawable/x_account_flow_sample"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="备注"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/black_2"
-                android:textSize="13sp"/>
+            <EditText
+                android:id="@+id/et_fg_accout_flow_loan"
+                android:layout_marginLeft="12dp"
+                android:hint="搜索/自定义借款平台"
+                android:textColorHint="#ffd3d4d5"
+                android:textColor="@color/black_1"
+                android:textSize="12sp"
+                android:background="@null"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="right"
+                    android:text="每期金额"
+                    android:textColor="@color/black_2"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.beihui.market.view.AutoAdjustSizeEditText
+                    android:id="@+id/auto_et_num"
+                    android:gravity="right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:background="@null"
+                    android:textSize="28sp"
+                    android:textColor="@color/black_1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <View
+            android:background="@color/common_bg"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_fg_account_flow_loan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.beihui.market.view.AlphabetIndexBar
+                android:id="@+id/alphabet_fg_account_flow_loan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="3dp" />
+
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:id="@+id/ll_account_flow_bottom"
+                android:background="#fafafa"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:orientation="horizontal"
+                android:gravity="top"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <!--首次还款日-->
+                <TextView
+                    android:id="@+id/tv_fg_first_pay_loan_date"
+                    android:background="@drawable/xshape_account_flow_bg"
+                    android:text="首次还款日"
+                    android:textColor="@color/black_2"
+                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <!--还款周期-->
+                <TextView
+                    android:id="@+id/tv_fg_first_pay_loan_times"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/xshape_account_flow_bg"
+                    android:text="还款周期"
+                    android:textColor="@color/black_2"
+                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="1"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_account_flow_remark"
+                    android:paddingRight="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:background="@drawable/xshape_account_flow_edit_mark_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@drawable/x_account_flow_edit_mark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/black_2"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/rv_fg_account_flow_loan_search"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
     </LinearLayout>
+
+
 
 </RelativeLayout>

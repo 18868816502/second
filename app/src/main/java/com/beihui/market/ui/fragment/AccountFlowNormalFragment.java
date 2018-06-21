@@ -9,7 +9,9 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,6 +45,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.dialog.XTabAccountDialog;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
 import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
@@ -65,8 +68,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -108,6 +113,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
     private List<AccountFlowIconBean> list = new ArrayList<>();
 
+    /**
+     * 创建账单的字段
+     */
+    public Map<String, Object> map = new HashMap<>();
 
     //自定义键盘管理
     public CustomKeyboardManager customKeyboardManager;
@@ -184,6 +193,33 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         boardHelper.onCreate();
         boardHelper.setOnKeyBoardStatusChangeListener(onKeyBoardStatusChangeListener);
 
+        etInputPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
+                    double amount = Double.parseDouble(s.toString());
+                    if (amount < 0D) {
+                        map.put("amount", null);
+                    } else if (amount == 0D) {
+                        map.put("amount", null);
+                    } else if (amount > 9999999999D) {
+                        map.put("amount", null);
+                    } else {
+                        map.put("amount", Double.parseDouble(s.toString())+"");
+                    }
+                }
+            }
+        });
 
         /**
          * 数字键盘
@@ -198,7 +234,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 String currentContent = etCurrent.getText().toString();
                 //为空不拦截操作
                 if (TextUtils.isEmpty(currentContent)) {
-                    etCurrent.setText("0.00");
+                    etCurrent.setText("0");
                     if (primaryCode == 48) {
                         return true;
                     }
@@ -211,9 +247,41 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         if (temp.length()<=0 && primaryCode == 48) {
                             return true;
                         }
+                        if ("0".equals(temp.toString()) && primaryCode == 48) {
+                            return true;
+                        }
+                        if (temp.toString().contains(".")) {
+                            int i = temp.toString().indexOf(".");
+                            int length = temp.toString().length();
+                            if (length - i >= 3) {
+                                return true;
+                            }
+                        }
+                        if (Double.parseDouble(temp.toString()+(primaryCode - 48)) > 999999999D) {
+                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            return true;
+                        }
                         temp.append(primaryCode - 48);
+                        return false;
+                    } else {
+                        if (etCurrent.getText().toString().contains(".")) {
+                            int i = etCurrent.getText().toString().indexOf(".");
+                            int length = etCurrent.getText().toString().length();
+                            if (length - i >= 3) {
+                                return true;
+                            }
+                        }
+                        if ("0".equals(etCurrent.getText().toString()) && primaryCode == 48) {
+                            return true;
+                        }
+                        String s = etCurrent.getText().toString() + (primaryCode - 48);
+                        if (Double.parseDouble(s) > 999999999D) {
+                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            return true;
+                        }
+                        etCurrent.setText(s);
+                        return true;
                     }
-                    return false;
                 }
 
                 //如果是算术运算符
@@ -232,15 +300,13 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         etCurrent.setText(currentContent+"0.");
                         temp.append("0.");
                         return true;
-                    }
-                    if (temp.length() > 0) {
+                    } else if (temp.length() > 0) {
                         if (!temp.toString().contains(".")) {
                             temp.append(".");
                             etCurrent.setText(currentContent+".");
                         }
                         return true;
-                    }
-                    if (sum.toString().length() > 0 && temp.toString().contains(".")) {
+                    } else if (sum != null && sum.toString().length() > 0 && temp.toString().contains(".")) {
                         return true;
                     }
                     return false;
@@ -251,7 +317,12 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     if (temp.toString().length() > 0 && (currentContent.substring(1).contains("+") || currentContent.substring(1).contains("-"))) {
                         temp.delete(temp.length() - 1, temp.length());
                     }
-                    etCurrent.setText(currentContent.substring(0, currentContent.length()-1));
+                    String substring = currentContent.substring(0, currentContent.length() - 1);
+                    if (substring.length() == 0) {
+                        etCurrent.setText("0");
+                    } else {
+                        etCurrent.setText(substring);
+                    }
                     return true;
                 }
 
@@ -310,6 +381,13 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 } else {
                     mTypeName.setText("");
                 }
+                //图标
+                map.put("iconId", bean.logo);
+                //图标标识
+                map.put("tallyId", bean.tallyId);
+                map.put("tallyType", Integer.valueOf(bean.isPrivate)+1+"");
+                //账单名称
+                map.put("projectName", bean.iconName);
             }
         });
 
@@ -319,6 +397,14 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
          */
         customKeyboardManager.attachTo(etInputPrice, priceKeyboard);
         customKeyboardManager.setShowUnderView(mBottom);
+        etInputPrice.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (getUserVisibleHint()) {
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                }
+            }
+        }, 100);
 
         /**
          * 请求通用类型列表
@@ -334,6 +420,23 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                            }
                                            list.addAll(result.getData());
                                            if (list.size() > 0) {
+                                               //图标
+                                               map.put("iconId", list.get(0).iconId);
+                                               //图标标识
+                                               map.put("tallyId", list.get(0).tallyId);
+                                               map.put("tallyType", Integer.valueOf(list.get(0).isPrivate)+1+"");
+                                               //账单名称
+                                               map.put("projectName", list.get(0).iconName);
+                                               //默认
+                                               map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
+                                               map.put("cycleType", "2");
+                                               map.put("cycle", "1");
+                                               map.put("term", "1");
+                                               /**
+                                            * 缺还款金额 以及备注 amount remark
+                                            */
+
+
                                                Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
                                                if (!TextUtils.isEmpty(list.get(0).iconName)) {
                                                    mTypeName.setText(list.get(0).iconName);
@@ -357,6 +460,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     }
 
 
+
     /**
      * 控件的点击事件
      */
@@ -373,6 +477,13 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     dialog.setTagList(remarks);
                 }
                 dialog.show(getFragmentManager(), "accountflowremark");
+
+                dialog.setOnTextChangeListener(new AccountFlowRemarkDialog.OnTextChangeListener() {
+                    @Override
+                    public void textChange(String text) {
+                        map.put("remark", text);
+                    }
+                });
                 break;
             case R.id.tv_fg_first_pay_loan_times:
                 showLoanTimes();
@@ -417,6 +528,24 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 String termLimit = " " + option2.get(options1).get(options2);
                 mFirstPayNormalTime.setText(monthLimit + termLimit);
                 mFirstPayNormalTime.setTag(monthLimit + termLimit);
+
+                if (options1 == 11) {
+                    map.put("cycleType", "2");
+                    map.put("cycle", options1+1+"");
+                } else {
+                    map.put("cycleType", "3");
+                    map.put("cycle", "1");
+                }
+                if (options2 == 0) {
+                    map.put("term", "-1");
+                } else if (options2 <= 36){
+                    map.put("term", options2+"");
+                } else {
+                    map.put("term", ((options2 - 36)*12+36)+"");
+                }
+
+
+
             }
         }).setCancelText("取消")
                 .setCancelColor(Color.parseColor("#808080"))
@@ -451,6 +580,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
             public void onTimeSelect(Date date, View v) {
                 mFirstPayNormalDate.setTag(date);
                 mFirstPayNormalDate.setText(dateFormat.format(date));
+
+                //首次还款日
+                map.put("firstRepaymentDate", saveDateFormat.format(date));
             }
         }).setType(new boolean[]{true, true, true, false, false, false})
                 .setCancelText("取消")

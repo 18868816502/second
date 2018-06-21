@@ -599,8 +599,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                    if (result.isSuccess()) {
                                                        Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
-                                                        * 重新回到首屏
-                                                        */
+                                                    * 重新回到首屏
+                                                    */
                                                        ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();

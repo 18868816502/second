@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -21,21 +22,22 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtChannelComponent;
 import com.beihui.market.injection.module.DebtChannelModule;
 import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
+import com.beihui.market.ui.adapter.AccountFlowLoanSearchAdapter;
 import com.beihui.market.ui.contract.DebtChannelContract;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
 import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanStickyHeaderItemDeco;
-import com.beihui.market.ui.rvdecoration.DebtChannelItemDeco;
-import com.beihui.market.ui.rvdecoration.DebtChannelStickyHeaderItemDeco;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AlphabetIndexBar;
 import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
@@ -74,6 +76,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     @BindView(R.id.auto_et_num)
     public AutoAdjustSizeEditText etInputPrice;
+    @BindView(R.id.rv_fg_account_flow_loan_search)
+    RecyclerView recyclerViewSearch;
     @BindView(R.id.rv_fg_account_flow_loan)
     RecyclerView recyclerView;
     @BindView(R.id.alphabet_fg_account_flow_loan)
@@ -87,6 +91,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     LinearLayout mBottom;
 
     private AccountFlowLoanRvAdapter adapter;
+    private AccountFlowLoanSearchAdapter adapterCustomeIcon;
 
     private FragmentActivity activity;
 
@@ -214,6 +219,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 String currentContent = etCurrent.getText().toString();
                 //为空不拦截操作
                 if (TextUtils.isEmpty(currentContent)) {
+                    etCurrent.setText("0");
                     if (primaryCode == 48) {
                         return true;
                     }
@@ -226,9 +232,41 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         if (temp.length()<=0 && primaryCode == 48) {
                             return true;
                         }
+                        if ("0".equals(temp.toString()) && primaryCode == 48) {
+                            return true;
+                        }
+                        if (temp.toString().contains(".")) {
+                            int i = temp.toString().indexOf(".");
+                            int length = temp.toString().length();
+                            if (length - i >= 3) {
+                                return true;
+                            }
+                        }
+                        if (Double.parseDouble(temp.toString()+(primaryCode - 48)) > 999999999D) {
+                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            return true;
+                        }
                         temp.append(primaryCode - 48);
+                        return false;
+                    } else {
+                        if (etCurrent.getText().toString().contains(".")) {
+                            int i = etCurrent.getText().toString().indexOf(".");
+                            int length = etCurrent.getText().toString().length();
+                            if (length - i >= 3) {
+                                return true;
+                            }
+                        }
+                        if ("0".equals(etCurrent.getText().toString()) && primaryCode == 48) {
+                            return true;
+                        }
+                        String s = etCurrent.getText().toString() + (primaryCode - 48);
+                        if (Double.parseDouble(s) > 999999999D) {
+                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            return true;
+                        }
+                        etCurrent.setText(s);
+                        return true;
                     }
-                    return false;
                 }
 
                 //如果是算术运算符
@@ -247,15 +285,13 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         etCurrent.setText(currentContent+"0.");
                         temp.append("0.");
                         return true;
-                    }
-                    if (temp.length() > 0) {
+                    } else if (temp.length() > 0) {
                         if (!temp.toString().contains(".")) {
                             temp.append(".");
                             etCurrent.setText(currentContent+".");
                         }
                         return true;
-                    }
-                    if (sum.toString().length() > 0 && temp.toString().contains(".")) {
+                    } else if (sum != null && sum.toString().length() > 0 && temp.toString().contains(".")) {
                         return true;
                     }
                     return false;
@@ -266,7 +302,12 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     if (temp.toString().length() > 0 && (currentContent.substring(1).contains("+") || currentContent.substring(1).contains("-"))) {
                         temp.delete(temp.length() - 1, temp.length());
                     }
-                    etCurrent.setText(currentContent.substring(0, currentContent.length()-1));
+                    String substring = currentContent.substring(0, currentContent.length() - 1);
+                    if (substring.length() == 0) {
+                        etCurrent.setText("0");
+                    } else {
+                        etCurrent.setText(substring);
+                    }
                     return true;
                 }
 
@@ -304,6 +345,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 if (marryList.size() > 0) {
                     marryList.clear();
                 }
+
                 if (list != null && list.size() > 0 && !TextUtils.isEmpty(etLoan.getText().toString())) {
                     for (int i = 0; i < list.size(); i++) {
                         if ((list.get(i).iconName).contains(etLoan.getText().toString())) {
@@ -312,7 +354,17 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     }
                     alphabetIndexBar.setVisibility(View.GONE);
                     adapter.notifyDebtChannelChanged(marryList);
+                    if (marryList.size() == 0) {
+                        showSearch();
+                    } else {
+                        recyclerViewSearch.setVisibility(View.INVISIBLE);
+                    }
                 } else {
+                    if (!TextUtils.isEmpty(etLoan.getText().toString())) {
+                        showSearch();
+                    } else {
+                        recyclerViewSearch.setVisibility(View.INVISIBLE);
+                    }
                     alphabetIndexBar.setVisibility(View.VISIBLE);
                     adapter.notifyDebtChannelChanged(list);
                 }
@@ -321,6 +373,36 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             @Override
             public void afterTextChanged(Editable s) {}
         });
+    }
+
+    private void showSearch() {
+        //搜索无记录
+        Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).getProfile().getId(), etLoan.getText().toString())
+                .compose(RxUtil.<ResultEntity<List<LoanAccountIconBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<LoanAccountIconBean>>>() {
+                               @Override
+                               public void accept(ResultEntity<List<LoanAccountIconBean>> result) throws Exception {
+                                   recyclerViewSearch.setVisibility(View.VISIBLE);
+                                   adapterCustomeIcon= new AccountFlowLoanSearchAdapter(activity);
+                                   final GridLayoutManager manager = new GridLayoutManager(activity, 5);
+                                   manager.setOrientation(GridLayoutManager.VERTICAL);
+                                   manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                                       @Override
+                                       public int getSpanSize(int position) {
+                                           return position == 0 ? manager.getSpanCount() : 1;
+                                       }
+                                   });
+                                   recyclerViewSearch.setLayoutManager(manager);
+                                   recyclerViewSearch.setAdapter(adapterCustomeIcon);
+                                   adapterCustomeIcon.setData(result.getData());
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("exception_custom", throwable.getMessage());
+                            }
+                        });
     }
 
     public List<AccountFlowIconBean> marryList = new ArrayList<>();
@@ -356,12 +438,21 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                             }
                         });
 
+        etInputPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    InputMethodUtil.closeSoftKeyboard(activity);
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                }
+            }
+        });
     }
 
     /**
      * 控件的点击事件
      */
-    @OnClick({R.id.tv_fg_first_pay_loan_date, R.id.ll_account_flow_remark, R.id.tv_fg_first_pay_loan_times, R.id.auto_et_num})
+    @OnClick({R.id.tv_fg_first_pay_loan_date, R.id.ll_account_flow_remark, R.id.tv_fg_first_pay_loan_times})
     public void ononItemClicked(View view){
         InputMethodUtil.closeSoftKeyboard(activity);
         switch (view.getId()) {
@@ -375,9 +466,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             case R.id.tv_fg_first_pay_loan_times:
                 showLoanTimes();
                 break;
-            case R.id.auto_et_num:
-                customKeyboardManager.showSoftKeyboard(etInputPrice);
-                break;
         }
 
     }
@@ -390,7 +478,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 .build()
                 .inject(this);
     }
-
 
 
     @Override

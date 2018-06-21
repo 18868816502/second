@@ -37,6 +37,7 @@ import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LastNoticeBean;
+import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.entity.LoanBill;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -88,6 +89,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+
+import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
 public class Api {
 
@@ -153,6 +157,22 @@ public class Api {
     /*************************************************新接口*****************************************/
 
     /**
+     * 获取网贷记账图标
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId, String searchContent) {
+        return service.queryLoanAccountIcon(userId, searchContent);
+    }
+
+    /**
+     * 创建通用账单
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity> createNormalAccount(Map<String, Object> params) {
+        return service.createNormalAccount(params);
+    }
+
+    /**
      * 获取通用记账图标列表
      * @version 4.0.0
      */
@@ -169,7 +189,7 @@ public class Api {
     }
 
     /**
-     * 获取通用记账图标列表
+     * 保存自定义图标
      * @version 4.0.0
      */
     public Observable<ResultEntity> saveCustomIcon(String userId, String iconName, String iconId, String type) {
@@ -203,11 +223,19 @@ public class Api {
     }
 
     /**
-     * 魔蝎银行列表
+     * 分组贷超产品列表
      * @version 4.0.0
      */
-    public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(String groupId) {
-        return service.queryGroupProductList(groupId);
+    public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList() {
+        return service.queryGroupProductList(SECOND_PRODUCT);
+    }
+
+    /**
+     * 进入贷超产品详情
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<String>> queryGroupProductSkip(String userId, String productId) {
+        return service.queryGroupProductSkip(userId, productId);
     }
 
     /*************************************************新接口*****************************************/

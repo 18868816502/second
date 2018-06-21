@@ -14,6 +14,13 @@ import java.util.List;
  */
 public class NetConstants {
 
+    /**
+     *	分组贷超产品列表 产品分组Id 秒批到账
+     */
+
+    public static final String SECOND_PRODUCT = "599c7594aaa7453c8d8b52c35b865adf";
+
+
     public static final String DOMAIN = BuildConfig.DOMAIN;
 
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;

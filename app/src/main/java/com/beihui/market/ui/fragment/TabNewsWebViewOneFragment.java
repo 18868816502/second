@@ -71,7 +71,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
 
     @BindView(R.id.bwv_news_web_view)
     BusinessWebView webView;
-    @BindView(R.id.swipe_container)
+    @BindView(R.id.swipe_container_one)
     SwipeRefreshLayout swipeRefreshLayout;
 
     /**

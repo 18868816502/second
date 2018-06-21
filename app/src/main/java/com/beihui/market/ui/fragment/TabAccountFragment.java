@@ -366,7 +366,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 //                    if (UserHelper.getInstance(mActivity).getProfile() != null) {
 //                        //pv，uv统计 快捷记账按钮
 //                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_BILL_LOAN_ANALYSIS);
-//                        startActivity(new Intent(mActivity, BillLoanAnalysisFragment.class));
+//                        startActivity(new Intent(mActivity, BillLoanAnalysisFragmentWeek.class));
 //                    } else {
 //                        showNoUserLoginBlock();
 //                    }

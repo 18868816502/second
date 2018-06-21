@@ -33,9 +33,11 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
             for (int i = 0; i < formBody.size(); i++) {
                 bodyBuilder.addEncoded(formBody.encodedName(i), formBody.encodedValue(i));
             }
+
             formBody = bodyBuilder
                     .addEncoded("packageId", App.sChannelId)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
+
                     .build();
             request = request.newBuilder().post(formBody).build();
 

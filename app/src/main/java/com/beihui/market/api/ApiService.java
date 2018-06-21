@@ -28,6 +28,7 @@ import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
 import com.beihui.market.entity.LastNoticeBean;
+import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.entity.LoanBill;
 import com.beihui.market.entity.LoanGroup;
 import com.beihui.market.entity.LoanProduct;
@@ -82,6 +83,22 @@ public interface ApiService {
     /*************************************************新接口*****************************************/
     /**
      * @author xhb
+     * 创建通用账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/getLnetLoan")
+    Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(@Field("userId") String userId, @Field("searchContent") String searchContent);
+
+    /**
+     * @author xhb
+     * 创建通用账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/save")
+    Observable<ResultEntity> createNormalAccount(@FieldMap Map<String, Object> params);
+
+    /**
+     * @author xhb
      * 获取通用记账图标列表
      */
     @FormUrlEncoded
@@ -132,8 +149,23 @@ public interface ApiService {
      * 获取首页账单列表
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/product/groupProduct/list")
+    @POST(PRODUCT_PATH + "/product/groupProduct/list")
     Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(@Field("groupId") String groupId);
+
+    /**
+     * @author xhb
+     * 进入贷超产品详情
+     */
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/skip")
+    Observable<ResultEntity<String>> queryGroupProductSkip(@Field("userId") String userId, @Field("productId") String productId);
+
+    /**
+     * 查询快捷账单还款详情
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/loadBill")
+    Observable<ResultEntity<FastDebtDetail>> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId);
 
     /*************************************************新接口*****************************************/
 
@@ -222,12 +254,7 @@ public interface ApiService {
     @POST(BASE_PATH + "/bookKeeping/updateStatus")
     Observable<ResultEntity> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId, @Field("status") int status, @Field("amount") double amount);
 
-    /**
-     * 查询快捷账单还款详情
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/bookKeeping/loadBill")
-    Observable<ResultEntity<FastDebtDetail>> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId);
+
 
     /**
      * 删除快捷记账账单

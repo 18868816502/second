@@ -10,6 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.beihui.market.R;
@@ -24,6 +29,9 @@ import com.beihui.market.view.flowlayout.FlowLayout;
 import com.beihui.market.view.flowlayout.TagAdapter;
 import com.beihui.market.view.flowlayout.TagFlowLayout;
 import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.HashMap;
+import java.util.Set;
 
 import butterknife.BindView;
 
@@ -81,7 +89,53 @@ public class AccountFlowRemarkDialog extends DialogFragment {
             }
         });
 
+
+        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                if (copyVals.containsKey(position+"")) {
+                    copyVals.remove(position+"");
+                    mEditText.setText(mVals[position]);
+                    mEditText.setSelection(mEditText.getText().length());
+                } else {
+                    copyVals.put(position+"", mVals[position]);
+                    mEditText.setText(mEditText.getText().toString().replace(mVals[position], ""));
+                    mEditText.setSelection(mEditText.getText().length());
+                }
+                return true;
+            }
+        });
+
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               if (onTextChangeListener!=null) {
+                   onTextChangeListener.textChange(s.toString());
+               }
+            }
+        });
+
         return mView;
+    }
+
+    public interface OnTextChangeListener{
+        void textChange(String text);
+    }
+
+    public OnTextChangeListener onTextChangeListener;
+
+    public void setOnTextChangeListener(OnTextChangeListener onTextChangeListener) {
+        this.onTextChangeListener = onTextChangeListener;
     }
 
     @Override
@@ -101,9 +155,14 @@ public class AccountFlowRemarkDialog extends DialogFragment {
 
     private String[] mVals = new String[]{};
 
+    public HashMap<String, String> copyVals = new HashMap<>();
+
     public void setTagList(String[] remarks) {
         if (remarks.length > 0) {
             mVals = remarks;
+        }
+        for(int i = 0; i < remarks.length; i++) {
+            copyVals.put(i+"", remarks[i]);
         }
     }
 }

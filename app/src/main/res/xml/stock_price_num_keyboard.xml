@@ -80,7 +80,6 @@
 
         <Key
             android:codes="-5"
-
             android:keyIcon="@drawable/x_custome_key_board_back" />
     </Row>
 

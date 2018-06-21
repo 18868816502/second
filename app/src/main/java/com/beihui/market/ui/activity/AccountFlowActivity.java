@@ -21,18 +21,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseComponentFragment;
+import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.fragment.AccountFlowCreditCardFragment;
 import com.beihui.market.ui.fragment.AccountFlowLoanFragment;
 import com.beihui.market.ui.fragment.AccountFlowNormalFragment;
 import com.beihui.market.ui.fragment.TabAccountFragment;
+import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
 import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
@@ -40,10 +48,15 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by admin on 2018/6/13.
@@ -160,7 +173,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
     }
 
 
-    @OnClick({R.id.tv_normal_account_flow, R.id.tv_loan_account_flow, R.id.tv_credit_card_flow})
+    @OnClick({R.id.tv_normal_account_flow, R.id.tv_loan_account_flow, R.id.tv_credit_card_flow, R.id.iv_ac_account_flow_confirm})
     public void onItemClicked(View view) {
         if (view.getId() != selectedFragmentId) {
             if (view.getId() == R.id.tv_normal_account_flow) {
@@ -173,9 +186,65 @@ public class AccountFlowActivity extends BaseComponentActivity {
                 mViewPager.setCurrentItem(2);
             }
         }
-        selectedFragmentId = view.getId();
+        if (view.getId() == R.id.iv_ac_account_flow_confirm) {
+            if (FastClickUtils.isFastClick()) {
+                return;
+            }
+            if (selectedFragmentId == R.id.tv_normal_account_flow) {
+                //通用记账
+                createAccount(mNormalFragment.map);
+            } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
+                //网贷记账
+
+            }
+        } else {
+            selectedFragmentId = view.getId();
+        }
     }
 
+
+    /**
+     * 创建通用 网贷账单
+     */
+    private void createAccount(Map<String, Object> map) {
+        if (map == null) {
+            return;
+        }
+        if (map.get("amount") == null) {
+            return;
+        }
+
+        double amount = Double.parseDouble(map.get("amount")+"");
+        if (amount < 0D) {
+            ToastUtils.showToast(this, "每期金额不能小于0");
+            return;
+        } else if (amount == 0D) {
+            ToastUtils.showToast(this, "每期金额不能为0");
+            return;
+        } else if (amount > 999999999D) {
+            ToastUtils.showToast(this, "输入的金额太大啦");
+            return;
+        }
+
+        map.put("userId", UserHelper.getInstance(this).getProfile().getId());
+
+        Api.getInstance().createNormalAccount(map)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   finish();
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("exception_custom", throwable.getMessage());
+                            }
+                        });
+
+    }
 
 
     class MyFragmentViewPgaerAdapter extends FragmentPagerAdapter {

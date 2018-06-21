@@ -24,6 +24,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
@@ -125,12 +126,10 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
 
     @Override
     public void configViews() {
-        ImmersionBar.with(this).statusBarDarkFont(true).init();;
-        setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+        setupToolbar(toolbar);
 
-        //wechatSurpriseView.setVisibility(SPUtils.getWechatSurpriseClicked(getContext()) ? View.GONE : View.VISIBLE);
+        SlidePanelHelper.attach(this);
     }
 
     @Override

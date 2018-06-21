@@ -45,6 +45,8 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
+import com.beihui.market.ui.fragment.BillLoanAnalysisFragment;
+import com.beihui.market.ui.fragment.BillLoanAnalysisFragmentWeek;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
@@ -271,7 +273,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-
+        selectTab(R.id.tab_account);
     }
 
     @Override
@@ -316,8 +318,12 @@ public class MainActivity extends BaseComponentActivity {
         mNoticeCross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRoot.setVisibility(View.GONE);
-                SPUtils.setValue(MainActivity.this, mNoticeId);
+                if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
+                    UserAuthorizationActivity.launch(MainActivity.this, null);
+                } else {
+                    mRoot.setVisibility(View.GONE);
+                    SPUtils.setValue(MainActivity.this, mNoticeId);
+                }
             }
         });
 
@@ -327,7 +333,11 @@ public class MainActivity extends BaseComponentActivity {
         mAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
+                UserAuthorizationActivity.launch(MainActivity.this, null);
+            } else {
                 startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
+            }
             }
         });
     }

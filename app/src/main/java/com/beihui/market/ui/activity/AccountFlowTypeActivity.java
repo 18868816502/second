@@ -135,6 +135,8 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
                                            list = result.getData();
                                            if (list.size() > 0) {
                                                Glide.with(AccountFlowTypeActivity.this).load(list.get(0).logo).into(mTypeIcon);
+                                               AccountFlowTypeActivity.this.bean = list.get(0);
+                                               mTypeIconId = list.get(0).iconId;
                                            }
                                            mAdapter.notifyDebtChannelChanged(list);
                                        }
@@ -172,7 +174,11 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                AccountFlowTypeActivity.this.bean.iconName = s.toString();
+                if (TextUtils.isEmpty(s)) {
+                    AccountFlowTypeActivity.this.bean.iconName = "";
+                } else {
+                    AccountFlowTypeActivity.this.bean.iconName = s.toString();
+                }
             }
         });
 

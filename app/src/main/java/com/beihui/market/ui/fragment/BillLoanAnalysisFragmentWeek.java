@@ -1,4 +1,4 @@
-package com.beihui.market.ui.activity;
+package com.beihui.market.ui.fragment;
 
 
 import android.content.Intent;
@@ -15,11 +15,14 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AnalysisChartBean;
-import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
+import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
+import com.beihui.market.ui.activity.FastDebtDetailActivity;
+import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.BillLoanAnalysisRvAdapter;
 import com.beihui.market.util.RxUtil;
 import com.gyf.barlibrary.ImmersionBar;
@@ -29,6 +32,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -42,28 +46,20 @@ import io.reactivex.functions.Consumer;
  * 网贷分析
  */
 
-public class BillLoanAnalysisFragment extends BaseComponentFragment {
+public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
 
-    @BindView(R.id.tool_bar)
-    Toolbar toolbar;
-    @BindView(R.id.tv_ac_bill_loan_analysis_week)
-    TextView mWeek;
-    @BindView(R.id.tv_ac_bill_loan_analysis_month)
-    TextView mMonth;
     @BindView(R.id.rv_ac_bill_loan_analysis)
     RecyclerView mRecyclerView;
 
     //	类型 1-日期, 2-周 3-月
-    public int type = 3;
-
-    public int selectId = R.id.tv_ac_bill_loan_analysis_month;
+    public int type = 2;
 
     //适配器
     public BillLoanAnalysisRvAdapter mAdapter;
     private FragmentActivity activity;
 
-    public static BillLoanAnalysisFragment newInstance() {
-        return new BillLoanAnalysisFragment();
+    public static BillLoanAnalysisFragmentWeek newInstance() {
+        return new BillLoanAnalysisFragmentWeek();
     }
 
     @Override
@@ -98,7 +94,6 @@ public class BillLoanAnalysisFragment extends BaseComponentFragment {
 
     @Override
     public void configViews() {
-        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -110,50 +105,6 @@ public class BillLoanAnalysisFragment extends BaseComponentFragment {
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
 
-        //默认选中月
-        mMonth.setSelected(true);
-    }
-
-    /**
-     * 切换月、周
-     */
-    @OnClick({R.id.tv_ac_bill_loan_analysis_week, R.id.tv_ac_bill_loan_analysis_month})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_ac_bill_loan_analysis_week:
-                type = 2;
-                if (mAdapter != null) {
-                    mAdapter.setType(2);
-                }
-                if (selectId != R.id.tv_ac_bill_loan_analysis_week) {
-                    mWeek.setSelected(true);
-                    mMonth.setSelected(false);
-                    mAdapter.mShowFirstItemPosition = false;
-                    //柱状图数据
-                    requestChartData(Calendar.getInstance());
-                    //请求列表数据
-                    requestListData(Calendar.getInstance());
-                }
-                selectId = view.getId();
-
-                break;
-            case R.id.tv_ac_bill_loan_analysis_month:
-                type = 3;
-                if (mAdapter != null) {
-                    mAdapter.setType(3);
-                }
-                if (selectId != R.id.tv_ac_bill_loan_analysis_month) {
-                    mWeek.setSelected(false);
-                    mMonth.setSelected(true);
-                    mAdapter.mShowFirstItemPosition = false;
-                    //柱状图数据
-                    requestChartData(Calendar.getInstance());
-                    //请求列表数据
-                    requestListData(Calendar.getInstance());
-                }
-                selectId = view.getId();
-                break;
-        }
     }
 
 
@@ -206,13 +157,24 @@ public class BillLoanAnalysisFragment extends BaseComponentFragment {
 
 
         //底部数据
-        Api.getInstance().queryAnalysisOverview(UserHelper.getInstance(activity).getProfile().getId())
-                .compose(RxUtil.<ResultEntity<AnalysisOverviewBean>>io2main())
-                .subscribe(new Consumer<ResultEntity<AnalysisOverviewBean>>() {
+        Api.getInstance().queryGroupProductList()
+                .compose(RxUtil.<ResultEntity<List<GroupProductBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<GroupProductBean>>>() {
                                @Override
-                               public void accept(ResultEntity<AnalysisOverviewBean> result) throws Exception {
+                               public void accept(ResultEntity<List<GroupProductBean>> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       mAdapter.notifyBottomData(result.getData());
+                                       List<List<GroupProductBean>> footerList = new ArrayList<>();
+                                       List<GroupProductBean> data = result.getData();
+                                       int size = data.size();
+                                       for (int i = 0; i < size; i+=4) {
+                                           List<GroupProductBean> temp = new ArrayList<>();
+                                           for (int j = i; j < size; j++) {
+                                               temp.add(data.get(j));
+                                           }
+                                           footerList.add(temp);
+                                       }
+                                       mAdapter.notifyBottomData(footerList);
+
                                    } else {
                                        showErrorMsg(result.getMsg());
                                    }

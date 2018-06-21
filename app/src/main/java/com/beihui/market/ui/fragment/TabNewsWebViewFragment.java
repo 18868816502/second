@@ -51,6 +51,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
 import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.GlideCircleTransform;
+import com.beihui.market.view.NoScrollViewPager;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -82,9 +83,9 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @BindView(R.id.iv_tab_fg_news_web_activity)
     TextView activityName;
     @BindView(R.id.iv_tab_fg_news_web_user)
-    CircleImageView mUserAvatar;
+    ImageView mUserAvatar;
     @BindView(R.id.fl_tab_news_web_container)
-    ViewPager viewPager;
+    NoScrollViewPager viewPager;
 
     /**
      * 拼接URL

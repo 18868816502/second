@@ -203,7 +203,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        setupToolbarBackNavigation(toolbar, R.drawable.x_normal_back);
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -226,7 +226,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       header.remarkContent.setText(remark);
+                                                       header.remarkContent.setText("备注  "+remark);
                                                        fastDebtDetail.setProjectName(remark);
                                                    } else {
                                                        Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
@@ -354,7 +354,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : fastDebtDetail.getProjectName());
+        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : "备注  "+fastDebtDetail.getProjectName());
 
         /**
          * 设置标题

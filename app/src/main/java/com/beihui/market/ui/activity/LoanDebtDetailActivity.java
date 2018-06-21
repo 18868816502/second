@@ -214,9 +214,9 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        setupToolbarBackNavigation(toolbar, R.drawable.x_normal_back);
         //设置状态栏文字为黑色字体
-        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
+        ImmersionBar.with(this).transparentBar().titleBar(toolbar).statusBarDarkFont(true).init();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //头布局 加载
         header = new Header(LayoutInflater.from(this)
@@ -240,7 +240,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                                    @Override
                                                    public void accept(ResultEntity result) throws Exception {
                                                        if (result.isSuccess()) {
-                                                           header.remarkContent.setText(remark);
+                                                           header.remarkContent.setText("备注  "+remark);
                                                        } else {
                                                            Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                        }
@@ -339,18 +339,18 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
          * 头卡片 背景颜色
          */
         //字体颜色
-        header.debtTermAmount.setTextColor(Color.parseColor("#ffffff"));
-        header.debtPayDay.setTextColor(Color.parseColor("#aaffffff"));
-        header.debtUnpaid.setTextColor(Color.parseColor("#aaffffff"));
-        header.debtTermAmountText.setTextColor(Color.parseColor("#88ffffff"));
-        header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
-        header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
+//        header.debtTermAmount.setTextColor(Color.parseColor("#ffffff"));
+//        header.debtPayDay.setTextColor(Color.parseColor("#aaffffff"));
+//        header.debtUnpaid.setTextColor(Color.parseColor("#aaffffff"));
+//        header.debtTermAmountText.setTextColor(Color.parseColor("#88ffffff"));
+//        header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
+//        header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
 
-        if (debtDetail.showBill.returnDay > 3 || debtDetail.showBill.status == 2) {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
-        } else {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
-        }
+//        if (debtDetail.showBill.returnDay > 3 || debtDetail.showBill.status == 2) {
+//            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
+//        } else {
+//            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
+//        }
 
         /**
          * 标题栏 右上角菜单栏 点击事件
@@ -386,7 +386,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : debtDetail.getRemark());
+        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : "备注  "+debtDetail.getRemark());
 
         /**
          * 设置标题
