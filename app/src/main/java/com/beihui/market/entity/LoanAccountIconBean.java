@@ -22,4 +22,6 @@ public class LoanAccountIconBean implements Serializable {
 
     public String isPrivate;
 
+    public String remark;
+
 }

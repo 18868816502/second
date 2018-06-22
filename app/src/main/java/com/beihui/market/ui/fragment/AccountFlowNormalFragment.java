@@ -30,6 +30,8 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
+import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.event.AccountFlowTypeActivityEvent;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -62,6 +64,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,6 +79,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * Created by admin on 2018/6/14.
@@ -121,6 +126,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     //自定义键盘管理
     public CustomKeyboardManager customKeyboardManager;
 
+    public boolean lockEtInput = false;
+
     //适配器
     public AccountFlowAdapter mAdapter;
     private FragmentActivity activity;
@@ -129,6 +136,11 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     private KeyBoardHelper boardHelper;
     private AccountFlowRemarkDialog dialog;
     private String[] remarks = null;
+
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    public FastDebtDetail debtNormalDetail;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(AccountFlowTypeActivityEvent event){
@@ -206,6 +218,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (lockEtInput) {
+                    return;
+                }
                 if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
                     double amount = Double.parseDouble(s.toString());
                     if (amount < 0D) {
@@ -246,6 +261,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     if (currentContent.substring(1).contains("+") || currentContent.substring(1).contains("-")) {
                         if (temp.length()<=0 && primaryCode == 48) {
                             return true;
+                        }
+                        if (temp.length()==1 && "0".equals(temp.toString())) {
+                            temp.delete(0, 1).append(primaryCode - 48 + "");
+                            return false;
                         }
                         if ("0".equals(temp.toString()) && primaryCode == 48) {
                             return true;
@@ -382,12 +401,16 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     mTypeName.setText("");
                 }
                 //图标
-                map.put("iconId", bean.logo);
+                map.put("iconId", bean.iconId);
                 //图标标识
                 map.put("tallyId", bean.tallyId);
                 map.put("tallyType", Integer.valueOf(bean.isPrivate)+1+"");
                 //账单名称
                 map.put("projectName", bean.iconName);
+
+                if (!TextUtils.isEmpty(bean.remark)) {
+                    remarks = bean.remark.split(",");
+                }
             }
         });
 
@@ -407,42 +430,95 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         }, 100);
 
         /**
+         * 判断是否是编辑账单
+         */
+        if (debtNormalDetail != null) {
+            //显示图标 账单名称 金额 首次还款日 还款周期 备注
+            Glide.with(activity).load(debtNormalDetail.logo).into(mTypeIcon);
+            mTypeName.setText(debtNormalDetail.getProjectName());
+            //金额
+            lockEtInput = true;
+            etInputPrice.setText(keep2digitsWithoutZero(debtNormalDetail.getTermPayableAmount()));
+            lockEtInput = false;
+
+            mFirstPayNormalDate.setText(debtNormalDetail.getFirstRepayDate());
+            //还款周期
+            if (1 == debtNormalDetail.cycleType) {
+                //日 一次性还款
+                mFirstPayNormalTime.setText("每月 1期");
+            }
+            if (2 == debtNormalDetail.cycleType) {
+                //月
+                mFirstPayNormalTime.setText((1 == debtNormalDetail.cycle? "每月" : "每"+debtNormalDetail.cycle+"月")+" "+(debtNormalDetail.getTerm() == -1 ? "循环": debtNormalDetail.getTerm()+"期"));
+            }
+            if (3 == debtNormalDetail.cycleType) {
+                //年
+                mFirstPayNormalTime.setText(("每年 "+(debtNormalDetail.getTerm() == -1 ? "循环": debtNormalDetail.getTerm()+"期")));
+            }
+            // 备注
+            if (!TextUtils.isEmpty(debtNormalDetail.getRemark())) {
+                remarks = debtNormalDetail.getRemark().split(",");
+            }
+        }
+
+        /**
          * 请求通用类型列表
          */
         Api.getInstance().queryIconList(UserHelper.getInstance(activity).getProfile().getId(), "LCommon").compose(RxUtil.<ResultEntity<List<AccountFlowIconBean>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AccountFlowIconBean>>>() {
                                @Override
-                               public void accept(ResultEntity<List<AccountFlowIconBean>> result) throws Exception {
+                               public void accept(ResultEntity<List<AccountFlowIconBean>> result)  {
                                    if (result.isSuccess()) {
                                        if (mAdapter != null) {
                                            if (list.size() > 0) {
                                                list.clear();
                                            }
                                            list.addAll(result.getData());
-                                           if (list.size() > 0) {
+                                           /**
+                                        * 判断是否是编辑账单
+                                        */
+                                           if (debtNormalDetail != null) {
                                                //图标
-                                               map.put("iconId", list.get(0).iconId);
+                                               map.put("iconId", debtNormalDetail.iconId);
                                                //图标标识
-                                               map.put("tallyId", list.get(0).tallyId);
-                                               map.put("tallyType", Integer.valueOf(list.get(0).isPrivate)+1+"");
+                                               map.put("tallyId", debtNormalDetail.tallyId);
+                                               map.put("tallyType", debtNormalDetail.tallyType);
                                                //账单名称
-                                               map.put("projectName", list.get(0).iconName);
+                                               map.put("projectName", debtNormalDetail.getProjectName());
                                                //默认
-                                               map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
-                                               map.put("cycleType", "2");
-                                               map.put("cycle", "1");
-                                               map.put("term", "1");
-                                               /**
-                                            * 缺还款金额 以及备注 amount remark
-                                            */
-
-
-                                               Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
-                                               if (!TextUtils.isEmpty(list.get(0).iconName)) {
-                                                   mTypeName.setText(list.get(0).iconName);
+                                               Date parse = null;
+                                               try {
+                                                   parse = dateFormat.parse(debtNormalDetail.getFirstRepayDate());
+                                               } catch (ParseException e) {
+                                                   e.printStackTrace();
                                                }
+                                               map.put("firstRepaymentDate", saveDateFormat.format(parse));
+                                               map.put("cycleType", debtNormalDetail.cycleType);
+                                               map.put("cycle", debtNormalDetail.cycle);
+                                               map.put("term", debtNormalDetail.getTerm());
+                                           } else {
+                                               if (list.size() > 0) {
+                                                   //图标
+                                                   map.put("iconId", list.get(0).iconId);
+                                                   //图标标识
+                                                   map.put("tallyId", list.get(0).tallyId);
+                                                   map.put("tallyType", Integer.valueOf(list.get(0).isPrivate) + 1 + "");
+                                                   //账单名称
+                                                   map.put("projectName", list.get(0).iconName);
+                                                   //默认
+                                                   map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
+                                                   map.put("cycleType", "2");
+                                                   map.put("cycle", "1");
+                                                   map.put("term", "1");
 
-                                               remarks = list.get(0).remark.split(",");
+                                                   Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
+                                                   if (!TextUtils.isEmpty(list.get(0).iconName)) {
+                                                       mTypeName.setText(list.get(0).iconName);
+                                                   }
+                                                   if (!TextUtils.isEmpty(list.get(0).remark)) {
+                                                       remarks = list.get(0).remark.split(",");
+                                                   }
+                                               }
                                            }
                                            mAdapter.notifyDebtChannelChanged(list);
                                        }
@@ -569,10 +645,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
      * 首次还款日弹框
      */
     private void showFirstPayLoanDateDialog() {
-        Date date = new Date();
-        mFirstPayNormalDate.setTag(date);
 
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        Date date = new Date();
+        mFirstPayNormalDate.setTag(date);
         calendar.setTime((Date) mFirstPayNormalDate.getTag());
 
         TimePickerView pickerView = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {

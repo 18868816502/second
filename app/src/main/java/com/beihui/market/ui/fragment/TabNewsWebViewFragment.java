@@ -46,6 +46,8 @@ import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.TabMineActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
+import com.beihui.market.ui.busevents.UserLoginEvent;
+import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
@@ -65,6 +67,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.xiaoneng.uiapi.Ntalker;
 
 /**
  * @date 20180419
@@ -102,6 +105,27 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     public List<BaseComponentFragment> fragmentList = new ArrayList<>();
 
     private int selectedFragmentId = R.id.iv_tab_fg_news_web_title;
+
+
+    @Subscribe
+    public void onLogin(UserLoginEvent event) {
+        if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
+            Glide.with(mActivity).load(UserHelper.getInstance(mActivity).getProfile().getHeadPortrait()).bitmapTransform(new GlideCircleTransform(mActivity)).placeholder(R.mipmap.mine_head).into(mUserAvatar);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEvent(UserLogoutEvent event){
+        Glide.with(mActivity).load(R.mipmap.mine_head).into(mUserAvatar);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 
     /**
      * 标题
@@ -144,6 +168,9 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
         //设置状态栏文字为黑色字体
         if (TextUtils.isEmpty(mTitleName)) {
             mTitleName = getActivity().getResources().getString(R.string.tab_news);
+        }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 

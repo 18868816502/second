@@ -2,6 +2,7 @@ package com.beihui.market.api;
 
 
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
@@ -160,6 +161,22 @@ public class Api {
      * 获取网贷记账图标
      * @version 4.0.0
      */
+    public Observable<ResultEntity> createLoanAccount(Map<String, Object> params) {
+        return service.createLoanAccount(params);
+    }
+
+    /**
+     * 获取网贷记账图标
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId) {
+        return service.queryLoanAccountIcon(userId);
+    }
+
+    /**
+     * 获取网贷记账图标
+     * @version 4.0.0
+     */
     public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId, String searchContent) {
         return service.queryLoanAccountIcon(userId, searchContent);
     }
@@ -236,6 +253,54 @@ public class Api {
      */
     public Observable<ResultEntity<String>> queryGroupProductSkip(String userId, String productId) {
         return service.queryGroupProductSkip(userId, productId);
+    }
+
+    /**
+     * 绑定手机号
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity> updateBindPhone(String account, String phone, String verifyCode) {
+        return service.updateBindPhone(account, phone, verifyCode, "7");
+    }
+
+    /**
+     * 绑定微信号
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity> bindWXChat(String userId, String unionId) {
+        return service.bindWXChat(userId, unionId);
+    }
+
+    /**
+     * 解绑微信号
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity> unBindWXChat(String userId) {
+        return service.unBindWXChat(userId);
+    }
+
+    /**
+     * @version 4.0.0
+     * 修改网贷备注
+     */
+    public Observable<ResultEntity> updateLoanDebtBillRemark(String userId, String recordId, String remark) {
+        return service.updateLoanDebtBillRemark(userId, recordId, remark);
+    }
+
+    /**
+     * @version 4.0.0
+     * 修改通用备注
+     */
+    public Observable<ResultEntity> updateFastDebtBillRemark(String userId, String recordId, String remark) {
+        return service.updateFastDebtBillRemark(userId, recordId, remark);
+    }
+
+    /**
+     * @version 4.0.0
+     * 修改信用卡备注
+     */
+    public Observable<ResultEntity> updateCreditCardBillRemark(String userId, String recordId, String remark) {
+        return service.updateCreditCardBillRemark(userId, recordId, remark);
     }
 
     /*************************************************新接口*****************************************/
@@ -944,12 +1009,16 @@ public class Api {
      * @param userId  用户id
      * @param content 反馈内容
      */
-    public Observable<ResultEntity> submitFeedback(String userId, String content, byte[] image, String imageName) {
+    public Observable<ResultEntity> submitFeedback(String userId, String content, String contactWay, byte[] image, String imageName) {
         String imageBase64 = null;
         if (image != null && image.length > 0) {
             imageBase64 = Base64.encodeToString(image, Base64.DEFAULT);
         }
-        return service.submitFeedback(userId, content, imageBase64, imageName);
+        if (TextUtils.isEmpty(contactWay)) {
+            return service.submitFeedback(userId, content, imageBase64, imageName);
+        } else {
+            return service.submitFeedback(userId, content, contactWay, imageBase64, imageName);
+        }
     }
 
     /**

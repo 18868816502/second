@@ -17,15 +17,12 @@
             android:id="@+id/ll_debt_info_header_card_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:orientation="vertical"
             android:paddingBottom="15dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -77,7 +74,6 @@
             </LinearLayout>
 
             <View
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
@@ -88,8 +84,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
+                    android:layout_gravity="left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -101,15 +96,16 @@
                         android:layout_marginTop="16dp"
                         android:text="全部待还(元)"
                         android:textColor="@color/black_2"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
 
                     <TextView
+                        android:textStyle="bold"
                         android:id="@+id/debt_detail_term_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:textColor="@color/black_1"
-                        android:textSize="25sp"
+                        android:textSize="30sp"
                         tools:text="3600.66" />
                 </LinearLayout>
 
@@ -132,14 +128,45 @@
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal">
 
+                <!--还款周期-->
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:layout_gravity="center"
-                        android:gravity="center"
+                        android:layout_gravity="left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/debt_detail_pay_term"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_1"
+                            android:textSize="15sp"
+                            tools:text="" />
+
+                        <TextView
+                            android:id="@+id/debt_detail_pay_term_text"
+                            android:layout_marginTop="9dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="还款周期"
+                            android:textColor="@color/black_2"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_gravity="left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -170,10 +197,9 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="left"
                         android:orientation="vertical">
 
                         <TextView

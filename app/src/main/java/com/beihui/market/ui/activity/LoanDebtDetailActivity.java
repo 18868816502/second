@@ -105,10 +105,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
     class Header {
         View itemView;
-//        @BindView(R.id.logo)
-//        CircleImageView logo;
-//        @BindView(R.id.channel_name)
-//        TextView channelName;
+        @BindView(R.id.logo)
+        CircleImageView logo;
+        @BindView(R.id.channel_name)
+        TextView channelName;
 //        @BindView(R.id.project_name_container)
 //        View projectNameContainer;
 //        @BindView(R.id.project_name)
@@ -127,6 +127,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         TextView debtTermAmount;
         @BindView(R.id.debt_detail_term_amount_text)
         TextView debtTermAmountText;
+
+        //还款周期
+        @BindView(R.id.debt_detail_pay_term)
+        TextView debtPayTerm;
+
         /**
          * 还款期数 当前期/总期数
          */
@@ -234,7 +239,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                         if (TextUtils.isEmpty(remark) || remark.length() > 50) {
                             Toast.makeText(LoanDebtDetailActivity.this, "备注不能为空或者字数过多", Toast.LENGTH_SHORT).show();
                         } else {
-                            Api.getInstance().updateLoanOrCreditCardRemark(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), remark, debtId, 1)
+                            Api.getInstance().updateLoanDebtBillRemark(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtId, remark)
                                     .compose(RxUtil.<ResultEntity>io2main())
                                     .subscribe(new Consumer<ResultEntity>() {
                                                    @Override
@@ -374,6 +379,20 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             //还款期数 当前期/总期数
             header.debtPayDay.setText(debtDetail.returnedTerm + "/" + debtDetail.getTerm());
         }
+        //还款周期
+        if (1 == debtDetail.getTermType()) {
+            //日 一次性还款
+            header.debtPayTerm.setText("每月 1期");
+        }
+        if (2 == debtDetail.getTermType()) {
+            //月
+            header.debtPayTerm.setText( -1 == debtDetail.cycle? "循环" : "每"+debtDetail.cycle+"月");
+        }
+        if (3 == debtDetail.getTermType()) {
+            //年
+            header.debtPayTerm.setText( -1 == debtDetail.cycle? "循环" : "每"+debtDetail.cycle+"年");
+        }
+
 
         //当期还款日
         header.debtUnpaid.setText(debtDetail.showBill.termRepayDate.replace("-","."));
@@ -391,8 +410,8 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         /**
          * 设置标题
          */
-        String titleName = debtDetail.getChannelName() + (isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
-        title.setText(titleName);
+//        String titleName = debtDetail.getChannelName() + (isEmpty(debtDetail.getProjectName()) ? "" : " - " + debtDetail.getProjectName());
+        title.setText("账单详情");
 
         /**
          * 当前期是否已还状态
@@ -441,16 +460,16 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
 
         //渠道logo
-//        if (!isEmpty(debtDetail.getLogo())) {
-//            Glide.with(this)
-//                    .load(debtDetail.getLogo())
-//                    .asBitmap()
-//                    .centerCrop()
-//                    .placeholder(R.drawable.image_place_holder)
-//                    .into(header.logo);
-//        } else {
-//            header.logo.setImageResource(R.drawable.image_place_holder);
-//        }
+        if (!isEmpty(debtDetail.getLogo())) {
+            Glide.with(this)
+                    .load(debtDetail.getLogo())
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.image_place_holder)
+                    .into(header.logo);
+        } else {
+            header.logo.setImageResource(R.drawable.image_place_holder);
+        }
 //        //账单状态
 //        if (debtDetail.getStatus() != 2) {
 //            header.setStatus.setVisibility(View.VISIBLE);
@@ -458,8 +477,8 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 //        } else {
 //            header.setStatus.setVisibility(View.GONE);
 //        }
-//        //渠道名
-//        header.channelName.setText(debtDetail.getChannelName());
+        //渠道名
+        header.channelName.setText(debtDetail.getChannelName());
 //        if (!isEmpty(debtDetail.getProjectName())) {
 //            header.projectNameContainer.setVisibility(View.VISIBLE);
 //            header.projectName.setText(debtDetail.getProjectName());
@@ -734,8 +753,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @Override
     public void navigateAddDebt(DebtDetail debtDetail) {
         //一次性还款付息，等额本息跳转到新版本界面
-        Intent intent = new Intent(this, DebtNewActivity.class);
+//        Intent intent = new Intent(this, DebtNewActivity.class);
+        Intent intent = new Intent(this, AccountFlowActivity.class);
         intent.putExtra("debt_detail", debtDetail);
+        intent.putExtra("debt_type", "1");
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 

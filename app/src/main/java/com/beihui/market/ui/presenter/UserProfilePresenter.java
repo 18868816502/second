@@ -90,7 +90,7 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
                                            appUpdate = result.getData();
                                            String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
                                            if (version.compareTo(appUpdate.getVersion()) < 0) {
-                                               mView.showLatestVersion("有更新");
+                                               mView.showLatestVersion("最新版本"+appUpdate.getVersion());
                                            } else {
                                                mView.showLatestVersion("已是最新版");
                                            }

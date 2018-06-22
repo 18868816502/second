@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -29,6 +30,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
+import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
@@ -67,6 +69,10 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.tv_ac_account_flow_title)
+    TextView mTitleName;
+    @BindView(R.id.ll_ac_account_flow_tab_root)
+    LinearLayout mTabRoot;
     @BindView(R.id.ll_account_flow_root)
     LinearLayout mRoot;
     @BindView(R.id.tv_normal_account_flow)
@@ -91,6 +97,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
     public List<BaseComponentFragment> fragmentList = new ArrayList<>();
 
+
     @Override
     public int getLayoutId() {
         return R.layout.x_activity_account_flow;
@@ -106,6 +113,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
         fragmentList.add(mCreditCardFragment);
 
         SlidePanelHelper.attach(this);
+
     }
 
 
@@ -113,10 +121,45 @@ public class AccountFlowActivity extends BaseComponentActivity {
     public void initDatas() {
         MyFragmentViewPgaerAdapter adapter = new MyFragmentViewPgaerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(0);
 
-        mAccountFlowNormal.setSelected(true);
+        /**
+         * 是否编辑
+         */
+        Intent intent = getIntent();
+        String debtType = intent.getStringExtra("debt_type");
+        if (!TextUtils.isEmpty(debtType)) {
+            //隐藏Tab
+            mTitleName.setVisibility(View.VISIBLE);
+            mTabRoot.setVisibility(View.GONE);
+            if ("0".equals(debtType)) {
+                //通用类型
+                mViewPager.setCurrentItem(0);
+                mAccountFlowNormal.setSelected(true);
+                mNormalFragment.debtNormalDetail = intent.getParcelableExtra("debt_detail");
+            }
+            if ("1".equals(debtType)) {
+                //网贷类型
+                mViewPager.setCurrentItem(1);
+                mAccountFlowLoan.setSelected(true);
+                mLoanFragment.debtNormalDetail = intent.getParcelableExtra("debt_detail");
+            }
+            if ("2".equals(debtType)) {
+                //信用卡类型
+                mViewPager.setCurrentItem(2);
+                mAccountFlowCreditCard.setSelected(true);
+            }
+        } else {
+            mTitleName.setVisibility(View.GONE);
+            mTabRoot.setVisibility(View.VISIBLE);
 
+            mViewPager.setCurrentItem(0);
+            mAccountFlowNormal.setSelected(true);
+        }
+
+
+        /**
+         * 监听器tab
+         */
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -191,11 +234,21 @@ public class AccountFlowActivity extends BaseComponentActivity {
                 return;
             }
             if (selectedFragmentId == R.id.tv_normal_account_flow) {
-                //通用记账
-                createAccount(mNormalFragment.map);
-            } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
-                //网贷记账
+                if (mNormalFragment.debtNormalDetail == null) {
+                    //通用记账
+                    createAccount(mNormalFragment.map, 0);
+                } else {
+                    //先删除账单 在创建账单
 
+                }
+            } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
+                if (mLoanFragment.debtNormalDetail == null) {
+                    //网贷记账
+                    createAccount(mLoanFragment.map, 1);
+                } else {
+                    //先删除账单 在创建账单
+
+                }
             }
         } else {
             selectedFragmentId = view.getId();
@@ -206,7 +259,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
     /**
      * 创建通用 网贷账单
      */
-    private void createAccount(Map<String, Object> map) {
+    private void createAccount(Map<String, Object> map, int type) {
         if (map == null) {
             return;
         }
@@ -225,6 +278,16 @@ public class AccountFlowActivity extends BaseComponentActivity {
             ToastUtils.showToast(this, "输入的金额太大啦");
             return;
         }
+
+        if (map.get("projectName") == null && type == 0) {
+            ToastUtils.showToast(this, "账单名称不能为空");
+            return;
+        }
+        if (map.get("channelName") == null && type == 1) {
+            ToastUtils.showToast(this, "账单名称不能为空");
+            return;
+        }
+
 
         map.put("userId", UserHelper.getInstance(this).getProfile().getId());
 

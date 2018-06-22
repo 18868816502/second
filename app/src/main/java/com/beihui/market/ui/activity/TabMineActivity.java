@@ -56,6 +56,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -90,6 +91,7 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
     TabMinePresenter presenter;
 
     private String pendingPhone;
+
 
 
     @Override

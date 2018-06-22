@@ -30,6 +30,7 @@ public class InputNewMobileActivity extends BaseComponentActivity {
     ClearEditText phoneNumber;
     @BindView(R.id.tv_new_phone_update)
     TextView next;
+    private String bingNewMobile;
 
 
     @Override
@@ -41,6 +42,8 @@ public class InputNewMobileActivity extends BaseComponentActivity {
     public void configViews() {
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
+
+        bingNewMobile = getIntent().getStringExtra("bingNewMobile");
     }
 
     @Override
@@ -65,7 +68,11 @@ public class InputNewMobileActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(phoneNumber.getText().toString())) {
-                    UserCertificationCodeActivity.launch(InputNewMobileActivity.this, phoneNumber.getText().toString());
+                    if (TextUtils.isEmpty(bingNewMobile)) {
+                        UserCertificationCodeActivity.launch(InputNewMobileActivity.this, phoneNumber.getText().toString());
+                    } else {
+                        UserCertificationCodeActivity.launchBindNewMobile(InputNewMobileActivity.this, phoneNumber.getText().toString());
+                    }
                 }
             }
         });

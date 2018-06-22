@@ -20,9 +20,9 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:src="@drawable/x_account_flow_sample"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/iv_fg_account_flow_loan_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
 
             <EditText
                 android:id="@+id/et_fg_accout_flow_loan"
@@ -92,6 +92,13 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="3dp" />
 
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/rv_fg_account_flow_loan_search"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <LinearLayout
                 android:layout_alignParentBottom="true"
                 android:id="@+id/ll_account_flow_bottom"
@@ -160,17 +167,9 @@
 
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:visibility="gone"
-                android:id="@+id/rv_fg_account_flow_loan_search"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
         </RelativeLayout>
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
+import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.LoanAccountIconBean;
 import com.bumptech.glide.Glide;
 
@@ -26,7 +27,7 @@ public class AccountFlowLoanSearchAdapter extends RecyclerView.Adapter<AccountFl
     public Activity mActivity;
 
     //数据源
-    public List<LoanAccountIconBean> list = new ArrayList<>();
+    public List<AccountFlowIconBean> list = new ArrayList<>();
 
     public AccountFlowLoanSearchAdapter(Activity mActivity) {
         this.mActivity = mActivity;
@@ -43,7 +44,27 @@ public class AccountFlowLoanSearchAdapter extends RecyclerView.Adapter<AccountFl
         if (holder.viewType == VIEW_IMAGE_VIEW) {
             position = position - 1;
             Glide.with(mActivity).load(list.get(position).logo).into(holder.imageView);
+
+            final int finalPosition = position;
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(list.get(finalPosition));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(AccountFlowIconBean bean);
+    }
+
+    public OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -60,7 +81,7 @@ public class AccountFlowLoanSearchAdapter extends RecyclerView.Adapter<AccountFl
         }
     }
 
-    public void setData(List<LoanAccountIconBean> data) {
+    public void setData(List<AccountFlowIconBean> data) {
         if (list.size() > 0) {
             list.clear();
         }

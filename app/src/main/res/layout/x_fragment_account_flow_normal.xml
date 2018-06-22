@@ -20,7 +20,6 @@
 
             <ImageView
                 android:id="@+id/iv_fg_account_flow_normal_icon"
-                android:src="@drawable/x_account_flow_sample"
                 android:scaleType="centerCrop"
                 android:layout_width="40dp"
                 android:layout_height="40dp" />

@@ -52,6 +52,11 @@ public class UserHelper {
             profile.setAccount(param.getAccount());
             profile.setProfession(param.getProfession());
 
+
+            profile.setBingPhone(param.getBingPhone());
+            profile.setWxUnionId(param.getWxUnionId());
+            profile.setVersion(param.getVersion());
+
             saveUserToSp(context.getApplicationContext());
         }
     }
@@ -65,6 +70,7 @@ public class UserHelper {
             profile.setHeadPortrait(param.getHeadPortrait());
             profile.setMsgIsRead(param.getMsgIsRead());
             profile.setUserName(param.getUserName());
+
             profile.setAccount(account);
 
             saveUserToSp(context.getApplicationContext());
@@ -95,6 +101,14 @@ public class UserHelper {
         }
     }
 
+    public void updateBindPhone(String pendingPhone, Context context) {
+        if (pendingPhone != null) {
+            profile.setBingPhone(pendingPhone);
+
+            saveUserToSp(context.getApplicationContext());
+        }
+    }
+
     public void clearUser(Context context) {
         profile = null;
         saveUserToSp(context);
@@ -116,6 +130,8 @@ public class UserHelper {
         return sp.getString("profile", null);
     }
 
+
+
     public static class Profile {
         String id;
         String account;
@@ -123,6 +139,37 @@ public class UserHelper {
         String headPortrait;
         String profession;
         String msgIsRead;
+
+        //绑定手机号 为空表示未绑定
+        public String bingPhone;
+        //绑定微信号 为空表示未绑定
+        public String wxUnionId;
+        //版本号
+        public String version;
+
+        public String getBingPhone() {
+            return bingPhone;
+        }
+
+        public void setBingPhone(String bingPhone) {
+            this.bingPhone = bingPhone;
+        }
+
+        public String getWxUnionId() {
+            return wxUnionId;
+        }
+
+        public void setWxUnionId(String wxUnionId) {
+            this.wxUnionId = wxUnionId;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
 
         public String getId() {
             return id;

@@ -134,9 +134,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
          */
         @BindView(R.id.debt_amount)
         TextView tvDebtAmount;
-        //账单状态
-        @BindView(R.id.tv_credit_card_info_header_status)
-        TextView tvStatus;
+//        //账单状态
+//        @BindView(R.id.tv_credit_card_info_header_status)
+//        TextView tvStatus;
 //        @BindView(R.id.set_status)
 //        TextView tvSetStatus;
         //最低应还
@@ -233,7 +233,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         String logoUrl = getIntent().getStringExtra("logo");
 
         //沉浸式
-        setupToolbar(toolbar);
+        setupToolbarBackNavigation(toolbar, R.drawable.x_normal_back);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -438,32 +438,32 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             /**
              * 头卡片 背景颜色
              */
-            if (Integer.parseInt(debtDetail.showBill.getReturnDay()) > 3 || debtDetail.showBill.getStatus() == 2) {
-                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
-                header.tvStatus.setBackgroundColor(Color.parseColor("#4e4e5d"));
-            } else {
-                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
-                header.tvStatus.setBackgroundColor(Color.parseColor("#ff6757"));
-            }
+//            if (Integer.parseInt(debtDetail.showBill.getReturnDay()) > 3 || debtDetail.showBill.getStatus() == 2) {
+//                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
+//                header.tvStatus.setBackgroundColor(Color.parseColor("#4e4e5d"));
+//            } else {
+//                header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
+//                header.tvStatus.setBackgroundColor(Color.parseColor("#ff6757"));
+//            }
 
             //字体颜色
-            header.tvDebtDate.setTextColor(Color.parseColor("#aaffffff"));
-            header.tvDebtAmount.setTextColor(Color.parseColor("#ffffff"));
-            header.tvStatus.setTextColor(Color.parseColor("#aaffffff"));
-            header.tvMinPayment.setTextColor(Color.parseColor("#aaffffff"));
-            header.tvMinPaymentText.setTextColor(Color.parseColor("#aaffffff"));
-
-            header.tvDebtBillDay.setTextColor(Color.parseColor("#88ffffff"));
-            header.tvDebtBillDayText.setTextColor(Color.parseColor("#aaffffff"));
-
-            header.tvDebtDueDay.setTextColor(Color.parseColor("#88ffffff"));
-            header.tvDebtDueDayText.setTextColor(Color.parseColor("#aaffffff"));
+//            header.tvDebtDate.setTextColor(Color.parseColor("#aaffffff"));
+//            header.tvDebtAmount.setTextColor(Color.parseColor("#ffffff"));
+//            header.tvStatus.setTextColor(Color.parseColor("#aaffffff"));
+//            header.tvMinPayment.setTextColor(Color.parseColor("#aaffffff"));
+//            header.tvMinPaymentText.setTextColor(Color.parseColor("#aaffffff"));
+//
+//            header.tvDebtBillDay.setTextColor(Color.parseColor("#88ffffff"));
+//            header.tvDebtBillDayText.setTextColor(Color.parseColor("#aaffffff"));
+//
+//            header.tvDebtDueDay.setTextColor(Color.parseColor("#88ffffff"));
+//            header.tvDebtDueDayText.setTextColor(Color.parseColor("#aaffffff"));
 
             /**
              * 备注内容
              */
             if (!TextUtils.isEmpty(debtDetail.remark)) {
-                header.tvRemark.setText(debtDetail.remark);
+                header.tvRemark.setText(TextUtils.isEmpty(debtDetail.remark)? "备注" : "备注  "+debtDetail.remark);
             }
 
             if (showBill != null) {
@@ -531,13 +531,13 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                 if (TextUtils.isEmpty(remark) || remark.length() > 50) {
                                     Toast.makeText(CreditCardDebtDetailActivity.this, "备注不能为空或者字数过多", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Api.getInstance().updateLoanOrCreditCardRemark(UserHelper.getInstance(CreditCardDebtDetailActivity.this).getProfile().getId(), remark, debtId, 2)
+                                    Api.getInstance().updateCreditCardBillRemark(UserHelper.getInstance(CreditCardDebtDetailActivity.this).getProfile().getId(), debtId, remark)
                                             .compose(RxUtil.<ResultEntity>io2main())
                                             .subscribe(new Consumer<ResultEntity>() {
                                                            @Override
                                                            public void accept(ResultEntity result) throws Exception {
                                                                if (result.isSuccess()) {
-                                                                   header.tvRemark.setText(remark);
+                                                                   header.tvRemark.setText("备注  "+remark);
                                                                } else {
                                                                    Toast.makeText(CreditCardDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                                }
@@ -567,43 +567,43 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             case 1://待还
                 tvFootSetStatus.setVisibility(View.VISIBLE);
                 tvFootMiddleLine.setVisibility(View.VISIBLE);
-                header.tvStatus.setVisibility(View.VISIBLE);
+//                header.tvStatus.setVisibility(View.VISIBLE);
                 tvFootSetStatus.setEnabled(true);
                 tvFootSetStatus.setText("设为已还");
-                header.tvStatus.setText("待还款");
+//                header.tvStatus.setText("待还款");
                 break;
             case 2://已还
                 tvFootSetStatus.setVisibility(View.VISIBLE);
                 tvFootSetStatus.setText("已还");
                 tvFootSetStatus.setEnabled(false);
                 tvFootMiddleLine.setVisibility(View.VISIBLE);
-                header.tvStatus.setVisibility(View.VISIBLE);
-                header.tvStatus.setText("已还款");
+//                header.tvStatus.setVisibility(View.VISIBLE);
+//                header.tvStatus.setText("已还款");
                 break;
             case 3://逾期
                 tvFootSetStatus.setVisibility(View.VISIBLE);
                 tvFootSetStatus.setText("设为已还");
                 tvFootSetStatus.setEnabled(true);
                 tvFootMiddleLine.setVisibility(View.VISIBLE);
-                header.tvStatus.setVisibility(View.VISIBLE);
-                header.tvStatus.setText("已逾期");
+//                header.tvStatus.setVisibility(View.VISIBLE);
+//                header.tvStatus.setText("已逾期");
                 break;
             case 4://已出账
                 tvFootSetStatus.setVisibility(View.GONE);
                 tvFootMiddleLine.setVisibility(View.GONE);
-                header.tvStatus.setVisibility(View.VISIBLE);
-                header.tvStatus.setText("已出账");
+//                header.tvStatus.setVisibility(View.VISIBLE);
+//                header.tvStatus.setText("已出账");
                 break;
             case 5://未出账
                 tvFootSetStatus.setVisibility(View.GONE);
                 tvFootMiddleLine.setVisibility(View.GONE);
-                header.tvStatus.setVisibility(View.VISIBLE);
-                header.tvStatus.setText("未出账");
+//                header.tvStatus.setVisibility(View.VISIBLE);
+//                header.tvStatus.setText("未出账");
                 break;
             default:
                 tvFootSetStatus.setVisibility(View.GONE);
                 tvFootMiddleLine.setVisibility(View.GONE);
-                header.tvStatus.setVisibility(View.GONE);
+//                header.tvStatus.setVisibility(View.GONE);
                 break;
         }
     }

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -149,7 +150,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void initDatas() {
-
     }
 
     @Override

@@ -86,7 +86,6 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
-    private ProgressBar progressBar;
     private WebView webView;
 
     private EditText etFeedContent;
@@ -209,7 +208,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                     }
                                 }
                             }
-                            return Api.getInstance().submitFeedback(UserHelper.getInstance(context).getProfile().getId(), etFeedContent.getText().toString(),
+                            return Api.getInstance().submitFeedback(UserHelper.getInstance(context).getProfile().getId(), etFeedContent.getText().toString(), etFeedContact.getText().toString(),
                                     baos != null ? baos.toByteArray() : null, baos != null ? System.currentTimeMillis() + ".jpg" : null);
                         }
                     })
@@ -349,18 +348,8 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     private View generateHelpView(ViewGroup container) {
         View helpView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_help, container, false);
-        progressBar = helpView.findViewById(R.id.progress_bar);
         webView = helpView.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient());
-//        webView.setWebChromeClient(new WebChromeClient() {
-//            @Override
-//            public void onProgressChanged(WebView view, int newProgress) {
-//                progressBar.setProgress(newProgress);
-//                if (newProgress == 100) {
-//                    progressBar.setVisibility(View.GONE);
-//                }
-//            }
-//        });
         webView.loadUrl(NetConstants.H5_HELP);
         return helpView;
     }

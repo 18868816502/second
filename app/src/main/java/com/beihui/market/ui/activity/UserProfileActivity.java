@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.entity.UserProfile;
+import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.DataCleanManager;
 import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -43,20 +49,27 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -78,10 +91,10 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     TextView versionNameTv;
     @BindView(R.id.tv_clear_cache)
     TextView cacheSize;
-//    @BindView(R.id.phone)
-//    TextView phoneTv;
-//    @BindView(R.id.profession)
-//    TextView professionTv;
+    @BindView(R.id.tv_user_profile_mobile)
+    TextView userProfileMobile;
+    @BindView(R.id.tv_user_profile_wxchat)
+    TextView userProfileWxChat;
 
     @Inject
     UserProfilePresenter presenter;
@@ -165,7 +178,6 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         UserProfileActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-//    @OnClick({R.id.avatar,R.id.avatar_item, R.id.nick_name_item, R.id.profession_item})
     @OnClick({R.id.avatar,R.id.avatar_item, R.id.fl_navigate_nick_name, R.id.fl_navigate_revise_pwd, R.id.tv_user_profile_exit,
                 R.id.fl_version_code, R.id.fl_clear_cache, R.id.fl_about_us, R.id.fl_revise_mobile, R.id.fl_remove_wx_chat})
     void OnItemsClicked(View view) {
@@ -176,7 +188,12 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 break;
             //修改密码
             case R.id.fl_navigate_revise_pwd:
-//                UserCertificationCodeActivity.launch(this, UserHelper.getInstance(this).getProfile().getUserName());
+                if (UserHelper.getInstance(this).getProfile().getBingPhone() == null) {
+                    return;
+                }
+                Intent toResetPsd = new Intent(this, ResetPsdActivity.class);
+                toResetPsd.putExtra("tileName", "设置新密码");
+                startActivity(toResetPsd);
                 break;
             //安全退出
             case R.id.tv_user_profile_exit:
@@ -223,48 +240,104 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             //修改手机号
             case R.id.fl_revise_mobile:
                 Intent toNewMobile = new Intent(this, InputNewMobileActivity.class);
+                toNewMobile.putExtra("bingNewMobile", "bingNewMobile");
                 startActivity(toNewMobile);
                 break;
             //解除微信绑定
             case R.id.fl_remove_wx_chat:
-                new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信")
-                        .withPositiveBtn("取消", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .withNegativeBtn("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                if ("未绑定".equals(userProfileWxChat.getText().toString())) {
+                    bindWXChat();
+                } else {
+                    new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信")
+                            .withNegativeBtn("取消", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                }
+                            })
+                            .withNegativeBtn("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    unBindWXChat();
+                                }
+                            }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                }
                 break;
             //编辑头像
             case R.id.avatar:
             case R.id.avatar_item:
                 showAvatarSelector();
                 break;
-//            case R.id.nick_name_item:
-//                Intent toEditName = new Intent(this, EditNickNameActivity.class);
-//                startActivity(toEditName);
-
-//                new NicknameDialog().setNickNameChangedListener(new NicknameDialog.NickNameChangedListener() {
-//                    @Override
-//                    public void onNickNameChanged(String nickName) {
-//                        nickNameTv.setText(nickName);
-//                        presenter.updateUserName(nickName);
-//                    }
-//                }).setNickName(nickNameTv.getText().toString()).show(getSupportFragmentManager(), "nickName");
-
-//                break;
-//            case R.id.profession_item:
-//                Intent toEditJob = new Intent(this, EditJobGroupActivity.class);
-//                startActivity(toEditJob);
-//                break;
         }
     }
+
+    /**
+     * 绑定微信
+     */
+    private void bindWXChat() {
+        UMAuthListener listener = new UMAuthListener() {
+
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                String openid = map.get("openid");
+                String unionid = map.get("unionid");
+                Log.e("asdfdas", "openID---> " + openid);
+                Log.e("asdfdas", "unionid---> " + unionid);
+
+                Api.getInstance().bindWXChat(UserHelper.getInstance(UserProfileActivity.this).getProfile().getId(), openid)
+                        .compose(RxUtil.<ResultEntity>io2main())
+                        .subscribe(new Consumer<ResultEntity>() {
+                                       @Override
+                                       public void accept(@NonNull ResultEntity result) throws Exception {
+                                           showErrorMsg(result.getMsg());
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                                        showErrorMsg("网络错误");
+                                    }
+                                });
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                Log.e("xjb", "i __ " + i + "throwble -- " + throwable.getMessage());
+                ToastUtils.showShort(UserProfileActivity.this, "授权失败", null);
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+                ToastUtils.showShort(UserProfileActivity.this, "授权取消", null);
+            }
+        };
+        UMShareAPI.get(UserProfileActivity.this).getPlatformInfo((Activity)UserProfileActivity.this, SHARE_MEDIA.WEIXIN, listener);
+    }
+
+    /**
+     * 解绑微信
+     */
+    private void unBindWXChat() {
+        Api.getInstance().unBindWXChat(UserHelper.getInstance(UserProfileActivity.this).getProfile().getId())
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity result) throws Exception {
+                                   showErrorMsg(result.getMsg());
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                                showErrorMsg("网络错误");
+                            }
+                        });
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -389,12 +462,16 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         if (profile.getUserName() != null) {
             nickNameTv.setText(profile.getUserName());
         }
-//        if (profile.getAccount() != null) {
-//            phoneTv.setText(CommonUtils.phone2Username(profile.getAccount()));
-//        }
-//        if (profile.getProfession() != null) {
-//            professionTv.setText(profile.getProfession());
-//        }
+        if (profile.getBingPhone() != null) {
+            userProfileMobile.setText(CommonUtils.changeTel(profile.getBingPhone()));
+        } else {
+            userProfileMobile.setText("未绑定");
+        }
+        if (profile.getWxUnionId() != null) {
+            userProfileWxChat.setText(profile.getWxUnionId());
+        } else {
+            userProfileWxChat.setText("未绑定");
+        }
     }
 
 

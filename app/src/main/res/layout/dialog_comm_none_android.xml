@@ -66,7 +66,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="#909298"
+                android:textColor="@color/black_2"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -78,7 +78,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#007AFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone" />

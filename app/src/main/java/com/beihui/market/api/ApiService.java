@@ -83,7 +83,21 @@ public interface ApiService {
     /*************************************************新接口*****************************************/
     /**
      * @author xhb
-     * 创建通用账单
+     * 创建网贷账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/save")
+    Observable<ResultEntity> createLoanAccount(@FieldMap Map<String, Object> params);
+
+    /**
+     * @author xhb
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/getLnetLoan")
+    Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(@Field("userId") String userId);
+
+    /**
+     * @author xhb
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/channelsIcon/getLnetLoan")
@@ -167,6 +181,78 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/bookKeeping/loadBill")
     Observable<ResultEntity<FastDebtDetail>> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId);
 
+    /**
+     * 修改快捷账单备注
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/updateRemark")
+    Observable<ResultEntity> updateFastDebtBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
+
+
+    /**
+     * 获取网贷账单详情
+     * @param userId 用户ID
+     * @param liabilitiesId 	账单Id
+     * @param billId 网贷分期账单Id 每一期的ID
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/loadBill")
+    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("recordId") String liabilitiesId, @Field("billId") String billId);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/loadBill")
+    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("recordId") String liabilitiesId);
+
+
+    /**
+     * 修改网贷账单备注
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/updateRemark")
+    Observable<ResultEntity> updateLoanDebtBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
+
+    /**
+     * 修改网贷账单备注
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/creditcard/updateRemark")
+    Observable<ResultEntity> updateCreditCardBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
+
+    /**
+     * 删除借款
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/accounting/deleteLoan")
+    Observable<ResultEntity> deleteDebt(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+
+    /**
+     * 删除快捷记账账单
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/deleteBill")
+    Observable<ResultEntity> deleteFastDebt(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /**
+     * 绑定手机号
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/updateBindPhone")
+    Observable<ResultEntity> updateBindPhone(@Field("account") String account, @Field("phone") String phone, @Field("verifyCode") String verifyCode, @Field("type") String type);
+
+    /**
+     * 绑定微信
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/wx/bindWx")
+    Observable<ResultEntity> bindWXChat(@Field("userId") String userId, @Field("unionId") String unionId);
+
+    /**
+     * 解绑微信
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/wx/uniteWx")
+    Observable<ResultEntity> unBindWXChat(@Field("userId") String userId);
+
     /*************************************************新接口*****************************************/
 
 
@@ -214,19 +300,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
 
-    /**
-     * 获取网贷账单详情
-     * @param userId 用户ID
-     * @param liabilitiesId 	账单Id
-     * @param billId 网贷分期账单Id 每一期的ID
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/newQueryloan")
-    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId, @Field("billId") String billId);
-
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/newQueryloan")
-    Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
 
     /**
      * 获取信用卡账单详情
@@ -254,14 +327,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/bookKeeping/updateStatus")
     Observable<ResultEntity> updateFastDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("recordId") String recordId, @Field("status") int status, @Field("amount") double amount);
 
-
-
-    /**
-     * 删除快捷记账账单
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/bookKeeping/deleteBill")
-    Observable<ResultEntity> deleteFastDebt(@Field("userId") String userId, @Field("recordId") String recordId);
 
     /**
      * 修改快捷记账账单名称
@@ -676,7 +741,14 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/insertFeedback")
-    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content, @Field("image") String image, @Field("imageName") String imageName);
+    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content,@Field("image") String image, @Field("imageName") String imageName);
+
+    /**
+     * 用户反馈
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/clientUser/insertFeedback")
+    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content, @Field("contactWay") String contactWay, @Field("image") String image, @Field("imageName") String imageName);
 
     /*****************************************************记账*******************************************************/
     /**
@@ -806,13 +878,6 @@ public interface ApiService {
     Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("type") String type, @Field("recordId") String recordId, @Field("day") int day);
     // channelId 账单Id     cardId  信用卡Id
 //    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("recordId") String recordId, @Field("cardId") String cardId, @Field("day") int day);
-
-    /**
-     * 删除借款
-     */
-    @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/deleteLoan")
-    Observable<ResultEntity> deleteDebt(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
 
     /**
      * 获取首页账单信息

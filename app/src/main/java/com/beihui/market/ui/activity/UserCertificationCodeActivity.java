@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
 
     //手机号
     private String pendingPhone;
+    private Intent intent;
 
 
     @Override
@@ -80,9 +82,18 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                 .keyboardEnable(true)
                 .init();
 
-        pendingPhone = getIntent().getStringExtra("pendingPhone");
-        tvPhone.setText(LegalInputUtils.formatMobile(pendingPhone));
-        tvLogin.setClickable(false);
+        intent = getIntent();
+        if (TextUtils.isEmpty(intent.getStringExtra("bindPhone"))) {
+            pendingPhone = intent.getStringExtra("pendingPhone");
+            tvPhone.setText(LegalInputUtils.formatMobile(pendingPhone));
+            tvLogin.setText("登录");
+            tvLogin.setClickable(false);
+        } else {
+            pendingPhone = intent.getStringExtra("bindPhone");
+            tvPhone.setText(LegalInputUtils.formatMobile(pendingPhone));
+            tvLogin.setText("下一步");
+            tvLogin.setClickable(false);
+        }
         setupToolbar(toolbar);
         SlidePanelHelper.attach(this);
     }
@@ -143,39 +154,64 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                 break;
             //点击登录 验证验证码
             case R.id.tv_login:
-                Disposable dis = Api.getInstance().loginByCode(pendingPhone, verifyCode.getText().toString()).compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
-                        .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
-                                       @Override
-                                       public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
-                                           if (result.isSuccess()) {
-                                               //umeng统计
-                                               Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
+                if (TextUtils.isEmpty(intent.getStringExtra("bindPhone"))) {
+                    Api.getInstance().loginByCode(pendingPhone, verifyCode.getText().toString()).compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
+                            .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
+                                           @Override
+                                           public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
+                                               if (result.isSuccess()) {
+                                                   //umeng统计
+                                                   Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
 
-                                               //登录之后，将用户信息注册到本地
-                                               UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
-                                               //保存用户id,缓存
-                                               SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
-                                               /**
-                                            * 调用登录接口
-                                            */
-                                               loginNoPwd(result.getData());
-                                           } else {
-                                               //umeng统计
-                                               Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
-                                               showErrorMsg(result.getMsg());
+                                                   //登录之后，将用户信息注册到本地
+                                                   UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
+                                                   //保存用户id,缓存
+                                                   SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
+                                                   /**
+                                                    * 调用登录接口
+                                                    */
+                                                   loginNoPwd(result.getData());
+                                               } else {
+                                                   //umeng统计
+                                                   Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
+                                                   showErrorMsg(result.getMsg());
+                                               }
                                            }
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@NonNull Throwable throwable) throws Exception {
-                                        showErrorMsg("网络错误");
-                                    }
-                                });
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(@NonNull Throwable throwable) throws Exception {
+                                            showErrorMsg("网络错误");
+                                        }
+                                    });
+                } else {
+                    Api.getInstance().updateBindPhone(UserHelper.getInstance(this).getProfile().getAccount(), pendingPhone, verifyCode.getText().toString()).compose(RxUtil.<ResultEntity>io2main())
+                            .subscribe(new Consumer<ResultEntity>() {
+                                           @Override
+                                           public void accept(@NonNull ResultEntity result) throws Exception {
+                                               if (result.isSuccess()) {
+                                                   UserHelper.getInstance(UserCertificationCodeActivity.this).updateBindPhone(pendingPhone, UserCertificationCodeActivity.this);
+                                               } else {
+                                                   showErrorMsg(result.getMsg());
+                                               }
+                                               finish();
+                                           }
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(@NonNull Throwable throwable) throws Exception {
+                                            showErrorMsg("网络错误");
+                                        }
+                                    });
+                }
                 break;
         }
     }
 
+
+    /**
+     * 获取验证码
+     */
     private void clickGetCode() {
         fetchText.setEnabled(false);
 
@@ -245,6 +281,20 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
         i.putExtra("pendingPhone",pendingPhone);
         context.startActivity(i);
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
+    }
+
+    /**
+     * 绑定的手机号码
+     * 跳转输入验证码页面
+     * @param context
+     * @param bindPhone
+     */
+    public static void launchBindNewMobile(Activity context, String bindPhone){
+        Intent i = new Intent(context,UserCertificationCodeActivity.class);
+        i.putExtra("bindPhone",bindPhone);
+        context.startActivity(i);
+        context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
+        context.finish();
     }
 
 }

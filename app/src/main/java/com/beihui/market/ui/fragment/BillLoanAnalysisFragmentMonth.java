@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,8 @@ import io.reactivex.functions.Consumer;
 
 public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
 
+    @BindView(R.id.srl_tab_analysis_refresh_root)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rv_ac_bill_loan_analysis)
     RecyclerView mRecyclerView;
 
@@ -57,6 +60,7 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
     //适配器
     public BillLoanAnalysisRvAdapter mAdapter;
     private FragmentActivity activity;
+    private LinearLayoutManager manager;
 
     public static BillLoanAnalysisFragmentMonth newInstance() {
         return new BillLoanAnalysisFragmentMonth();
@@ -77,19 +81,10 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
         mAdapter.mShowFirstItemPosition = true;
 
         int position = event.position;
-        Log.e("adapter", "posistion-->" + position);
-        if (type == 2) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.WEEK_OF_YEAR, -11 + position);
-            //请求列表数据
-            requestListData(calendar);
-        }
-        if (type == 3) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MONTH, -5 + position);
-            //请求列表数据
-            requestListData(calendar);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -5 + position);
+        //请求列表数据
+        requestListData(calendar);
     }
 
     @Override
@@ -100,10 +95,36 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
         activity = getActivity();
         //初始化适配器
         mAdapter = new BillLoanAnalysisRvAdapter(activity);
-        LinearLayoutManager manager = new LinearLayoutManager(activity);
+        manager = new LinearLayoutManager(activity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int firstPosition = manager.findFirstVisibleItemPosition();
+                if (firstPosition == 0) {
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
+
+        /**
+         * 下拉刷新
+         */
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_one);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //柱状图数据
+                requestChartData(Calendar.getInstance());
+                //请求列表数据
+                requestListData(Calendar.getInstance());
+            }
+        });
     }
 
 
@@ -240,12 +261,17 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
                                    } else {
                                        showErrorMsg(result.getMsg());
                                    }
+                                   if (swipeRefreshLayout.isRefreshing()) {
+                                       swipeRefreshLayout.setRefreshing(false);
+                                   }
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-
+                                if (swipeRefreshLayout.isRefreshing()) {
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
                             }
                         });
     }
@@ -291,11 +317,17 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
                                    } else {
                                        showErrorMsg(result.getMsg());
                                    }
+                                   if (swipeRefreshLayout.isRefreshing()) {
+                                       swipeRefreshLayout.setRefreshing(false);
+                                   }
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
+                                if (swipeRefreshLayout.isRefreshing()) {
+                                    swipeRefreshLayout.setRefreshing(false);
+                                }
                                 Log.e("calendar" , "throwable.getMessage()---> " + throwable.getMessage());
                             }
                         });

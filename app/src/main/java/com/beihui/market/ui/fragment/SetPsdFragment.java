@@ -4,6 +4,7 @@ package com.beihui.market.ui.fragment;
 import android.app.Activity;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -59,6 +60,9 @@ import io.reactivex.schedulers.Schedulers;
  * 忘记密码设置密码的 片段
  */
 public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSetPwdContract.View {
+    @BindView(R.id.tv_set_pwd_title_name)
+    TextView titleName;
+
     @BindView(R.id.password)
     ClearEditText passwordEt;
     @BindView(R.id.confirm)
@@ -143,6 +147,12 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     @Override
     public void initDatas() {
         requestPhone = getArguments().getString("requestPhone");
+        String tileName = getActivity().getIntent().getStringExtra("tileName");
+        if (!TextUtils.isEmpty(tileName)) {
+            titleName.setText(tileName);
+        } else {
+            titleName.setText("忘记买吗");
+        }
     }
 
     @Override
@@ -219,10 +229,6 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
                                 showErrorMsg("网络错误");
                             }
                         });
-
-
-
-
 
     }
 

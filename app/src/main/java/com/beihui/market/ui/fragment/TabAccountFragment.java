@@ -50,6 +50,7 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
+import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -211,8 +212,16 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 } else {
                     mTitle.setTextColor(Color.argb(0, 255, 255, 255));
                 }
+
+                int firstPosition = manager.findFirstVisibleItemPosition();
+                if (firstPosition == 0) {
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    swipeRefreshLayout.setEnabled(false);
+                }
             }
         });
+
     }
 
 
@@ -309,7 +318,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void onPause() {
         super.onPause();
-
     }
 
     /**

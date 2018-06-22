@@ -193,11 +193,12 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_user_profile_mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginRight="20dp"
-                    android:text="176****9654"
+                    android:text=""
                     android:textColor="#ff909298"
                     android:textSize="13sp" />
 
@@ -233,11 +234,12 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_user_profile_wxchat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginRight="20dp"
-                    android:text="未绑定"
+                    android:text=""
                     android:textColor="#ff909298"
                     android:textSize="13sp" />
 

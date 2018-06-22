@@ -8,10 +8,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:progressDrawable="@drawable/horizontal_progress" />
 </FrameLayout>

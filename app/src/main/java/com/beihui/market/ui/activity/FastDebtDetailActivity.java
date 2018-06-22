@@ -47,6 +47,8 @@ import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.CircleImageView;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -98,6 +100,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
     class Header {
         View itemView;
+        @BindView(R.id.logo)
+        CircleImageView logo;
+        @BindView(R.id.channel_name)
+        TextView channelName;
         /**
          * 备注内容 或者 备注按钮
          */
@@ -130,6 +136,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         //卡片背景
         @BindView(R.id.ll_debt_info_header_card_bg)
         LinearLayout mHeaderCardBg;
+
+        //还款周期
+        @BindView(R.id.debt_detail_pay_term)
+        TextView debtPayTerm;
 
         Header(View itemView) {
             this.itemView = itemView;
@@ -181,7 +191,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * 获取账单详情
      */
     private void loadDebtDetail() {
-        Api.getInstance().queryFastDebtBillDetail(UserHelper.getInstance(this).getProfile().getId(),billId, debtId)
+        Api.getInstance().queryFastDebtBillDetail(UserHelper.getInstance(this).getProfile().getId(), billId, debtId)
                 .compose(RxUtil.<ResultEntity<FastDebtDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<FastDebtDetail>>() {
                                @Override
@@ -284,7 +294,6 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-
         SlidePanelHelper.attach(this);
     }
 
@@ -303,22 +312,6 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      */
     public void showDebtDetail(final FastDebtDetail fastDebtDetail) {
         this.fastDebtDetail = fastDebtDetail;
-        /**
-         * 头卡片 背景颜色
-         */
-        //字体颜色
-        header.debtTermAmount.setTextColor(Color.parseColor("#ffffff"));
-        header.debtPayDay.setTextColor(Color.parseColor("#aaffffff"));
-        header.debtUnpaid.setTextColor(Color.parseColor("#aaffffff"));
-        header.debtTermAmountText.setTextColor(Color.parseColor("#88ffffff"));
-        header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
-        header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
-
-        if (fastDebtDetail.showBill.returnDay > 3 || fastDebtDetail.showBill.status == 2) {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
-        } else {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
-        }
 
         /**
          * 标题栏 右上角菜单栏 点击事件
@@ -343,6 +336,19 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
         }
 
+        //还款周期
+        if (1 == fastDebtDetail.cycleType) {
+            //日 一次性还款
+            header.debtPayTerm.setText("每月 1期");
+        }
+        if (2 == fastDebtDetail.cycleType) {
+            //月
+            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : "每"+fastDebtDetail.cycle+"月");
+        }
+        if (3 == fastDebtDetail.cycleType) {
+            //年
+            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : "每"+fastDebtDetail.cycle+"年");
+        }
         //当期还款日
         header.debtUnpaid.setText(fastDebtDetail.showBill.termRepayDate.replace("-","."));
 
@@ -359,7 +365,22 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 设置标题
          */
-        title.setText("快捷记账");
+        title.setText("账单详情");
+
+        //渠道logo
+        if (!isEmpty(fastDebtDetail.logo)) {
+            Glide.with(this)
+                    .load(fastDebtDetail.logo)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.image_place_holder)
+                    .into(header.logo);
+        } else {
+            header.logo.setImageResource(R.drawable.image_place_holder);
+        }
+
+        //渠道名
+        header.channelName.setText(fastDebtDetail.getProjectName());
 
         /**
          * 当前期是否已还状态
@@ -677,8 +698,12 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      */
     public void navigateAddDebt() {
         //一次性还款付息，等额本息跳转到新版本界面
-        Intent intent = new Intent(this, FastAddDebtActivity.class);
-        intent.putExtra("fast_debt_detail", fastDebtDetail);
+//        Intent intent = new Intent(this, FastAddDebtActivity.class);
+//        intent.putExtra("fast_debt_detail", fastDebtDetail);
+//        startActivityForResult(intent, REQUEST_CODE_EDIT);
+        Intent intent = new Intent(this, AccountFlowActivity.class);
+        intent.putExtra("debt_detail", fastDebtDetail);
+        intent.putExtra("debt_type", "0");
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 

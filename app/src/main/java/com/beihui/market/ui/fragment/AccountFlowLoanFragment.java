@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,17 +23,15 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.DebtChannel;
+import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.injection.component.DaggerDebtChannelComponent;
-import com.beihui.market.injection.module.DebtChannelModule;
 import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
 import com.beihui.market.ui.adapter.AccountFlowLoanSearchAdapter;
 import com.beihui.market.ui.contract.DebtChannelContract;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
-import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanStickyHeaderItemDeco;
 import com.beihui.market.util.InputMethodUtil;
@@ -40,27 +39,32 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AlphabetIndexBar;
 import com.beihui.market.view.AutoAdjustSizeEditText;
+import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
 import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import javax.inject.Inject;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+
+import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * Created by admin on 2018/6/15.
@@ -74,6 +78,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     private final SimpleDateFormat saveDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
+    @BindView(R.id.iv_fg_account_flow_loan_icon)
+    ImageView ivCustomIcon;
     @BindView(R.id.auto_et_num)
     public AutoAdjustSizeEditText etInputPrice;
     @BindView(R.id.rv_fg_account_flow_loan_search)
@@ -89,6 +95,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     EditText etLoan;
     @BindView(R.id.ll_account_flow_bottom)
     LinearLayout mBottom;
+    @BindView(R.id.tv_fg_first_pay_loan_times)
+    TextView mFirstPayNormalTime;
 
     private AccountFlowLoanRvAdapter adapter;
     private AccountFlowLoanSearchAdapter adapterCustomeIcon;
@@ -102,10 +110,32 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     //自定义键盘管理
     public CustomKeyboardManager customKeyboardManager;
 
-    @Inject
-    DebtChannelPresenter presenter;
+//    @Inject
+//    DebtChannelPresenter presenter;
+
+    public boolean isLockEtLoan = false;
+
+    public boolean lockEtInput = false;
+
+    /**
+     * 该字段不为空，则为编辑账单模式
+     */
+    public DebtDetail debtNormalDetail;
+
+    /**
+     * 创建账单的字段
+     */
+    public Map<String, Object> map = new HashMap<>();
+
+    private String[] remarks = null;
+
+
     private LinearLayoutManager manager;
-    private List<AccountFlowIconBean> list = null;
+    private List<LoanAccountIconBean> list = null;
+    private List<AccountFlowIconBean> customReperty = new ArrayList<>();
+
+    //自定义图标
+    private List<LoanAccountIconBean> data = new ArrayList<>();
 
     @Override
     public int getLayoutResId() {
@@ -139,10 +169,47 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     @Override
     public void configViews() {
+        //限制emoji输入
+        EditTextUtils.addDisableEmojiInputFilter(etLoan);
+
         activity = getActivity();
         mBottom.setVisibility(View.GONE);
 
         adapter = new AccountFlowLoanRvAdapter(R.layout.list_item_debt_channel);
+
+        /**
+         * 判断是否是编辑账单
+         */
+        if (debtNormalDetail != null) {
+            //显示图标 账单名称 金额 首次还款日 还款周期 备注
+            Glide.with(activity).load(debtNormalDetail.getLogo()).into(ivCustomIcon);
+            isLockEtLoan = true;
+            etLoan.setText(debtNormalDetail.getChannelName());
+            isLockEtLoan = false;
+            //金额
+            lockEtInput = true;
+            etInputPrice.setText(keep2digitsWithoutZero(debtNormalDetail.getTermPayableAmount()));
+            lockEtInput = false;
+
+            mFirstPayLoanDate.setText(debtNormalDetail.getFirstRepayDate());
+            //还款周期
+            if (1 == debtNormalDetail.getTermType()) {
+                //日 一次性还款
+                mFirstPayNormalTime.setText("每月 1期");
+            }
+            if (2 == debtNormalDetail.getTermType()) {
+                //月
+                mFirstPayNormalTime.setText((1 == debtNormalDetail.cycle? "每月" : "每"+debtNormalDetail.cycle+"月")+" "+(debtNormalDetail.getTerm() == -1 ? "循环": debtNormalDetail.getTerm()+"期"));
+            }
+            if (3 == debtNormalDetail.getTermType()) {
+                //年
+                mFirstPayNormalTime.setText(("每年 "+(debtNormalDetail.getTerm() == -1 ? "循环": debtNormalDetail.getTerm()+"期")));
+            }
+            // 备注
+            if (!TextUtils.isEmpty(debtNormalDetail.getRemark())) {
+                remarks = debtNormalDetail.getRemark().split(",");
+            }
+        }
 
         /**
          * 点击显示的列表平台
@@ -150,9 +217,54 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                /**
+                 * 判断是否是编辑账单
+                 */
+                if (debtNormalDetail != null) {
+                    //图标
+                    map.put("iconId", debtNormalDetail.iconId);
+                    //图标标识
+                    map.put("tallyId", debtNormalDetail.channelId);
+                    map.put("tallyType", debtNormalDetail.tallyType);
+                    //账单名称
+                    map.put("projectName", debtNormalDetail.getChannelName());
+                    //默认
+                    Date parse = null;
+                    try {
+                        parse = dateFormat.parse(debtNormalDetail.getFirstRepayDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    map.put("firstRepaymentDate", saveDateFormat.format(parse));
+                    map.put("cycleType", debtNormalDetail.getTermType());
+                    map.put("cycle", debtNormalDetail.cycle);
+                    map.put("term", debtNormalDetail.getTerm());
+                } else {
+                    if (list != null && list.size() > 0) {
+                        LoanAccountIconBean accountFlowIconBean = list.get(position);
+                        //图标
+                        map.put("iconId", accountFlowIconBean.iconId);
+                        //图标标识
+                        map.put("channelId", accountFlowIconBean.tallyId);
+                        map.put("tallyType", Integer.valueOf(accountFlowIconBean.isPrivate) + 1 + "");
+                        //账单名称
+                        map.put("channelName", accountFlowIconBean.iconName);
 
+                        Glide.with(activity).load(accountFlowIconBean.logo).into(ivCustomIcon);
+                        isLockEtLoan = true;
+                        etLoan.setText(accountFlowIconBean.iconName);
+                        etLoan.setSelection(accountFlowIconBean.iconName.length());
+                        isLockEtLoan = false;
+
+
+                        if (!TextUtils.isEmpty(accountFlowIconBean.remark)) {
+                            remarks = accountFlowIconBean.remark.split(",");
+                        }
+                    }
+                }
             }
         });
+
         recyclerView.addItemDecoration(new AccountFlowLoanItemDeco());
         recyclerView.addItemDecoration(new AccountFlowLoanStickyHeaderItemDeco(activity) {
             @Override
@@ -342,6 +454,11 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isLockEtLoan) {
+                    return;
+                }
+
+
                 if (marryList.size() > 0) {
                     marryList.clear();
                 }
@@ -355,18 +472,18 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     alphabetIndexBar.setVisibility(View.GONE);
                     adapter.notifyDebtChannelChanged(marryList);
                     if (marryList.size() == 0) {
-                        showSearch();
+                        showCustomeReporty();
                     } else {
                         recyclerViewSearch.setVisibility(View.INVISIBLE);
                     }
                 } else {
                     if (!TextUtils.isEmpty(etLoan.getText().toString())) {
-                        showSearch();
+                        showCustomeReporty();
                     } else {
                         recyclerViewSearch.setVisibility(View.INVISIBLE);
+                        alphabetIndexBar.setVisibility(View.VISIBLE);
+                        adapter.notifyDebtChannelChanged(list);
                     }
-                    alphabetIndexBar.setVisibility(View.VISIBLE);
-                    adapter.notifyDebtChannelChanged(list);
                 }
             }
 
@@ -375,26 +492,37 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         });
     }
 
-    private void showSearch() {
-        //搜索无记录
-        Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).getProfile().getId(), etLoan.getText().toString())
-                .compose(RxUtil.<ResultEntity<List<LoanAccountIconBean>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<LoanAccountIconBean>>>() {
+    /**
+     * 获取自定义库
+     */
+    private void queryCustomeReporty() {
+        Api.getInstance().queryCustomIconList()
+                .compose(RxUtil.<ResultEntity<List<AccountFlowIconBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<AccountFlowIconBean>>>() {
                                @Override
-                               public void accept(ResultEntity<List<LoanAccountIconBean>> result) throws Exception {
-                                   recyclerViewSearch.setVisibility(View.VISIBLE);
-                                   adapterCustomeIcon= new AccountFlowLoanSearchAdapter(activity);
-                                   final GridLayoutManager manager = new GridLayoutManager(activity, 5);
-                                   manager.setOrientation(GridLayoutManager.VERTICAL);
-                                   manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                       @Override
-                                       public int getSpanSize(int position) {
-                                           return position == 0 ? manager.getSpanCount() : 1;
+                               public void accept(ResultEntity<List<AccountFlowIconBean>> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (result.getData().size() > 0) {
+                                           Glide.with(activity).load(result.getData().get(0).logo).into(ivCustomIcon);
+                                           //图标
+                                           map.put("iconId", result.getData().get(0).iconId);
+                                           //图标标识
+                                           map.put("channelId", result.getData().get(0).tallyId);
+                                           map.put("tallyType", "2");
+
+
+                                           if (!TextUtils.isEmpty(result.getData().get(0).remark)) {
+                                               remarks = result.getData().get(0).remark.split(",");
+                                           }
+
+                                           if (customReperty.size() > 0) {
+                                               customReperty.clear();
+                                           }
+                                           customReperty.addAll(result.getData());
                                        }
-                                   });
-                                   recyclerViewSearch.setLayoutManager(manager);
-                                   recyclerViewSearch.setAdapter(adapterCustomeIcon);
-                                   adapterCustomeIcon.setData(result.getData());
+                                   } else {
+                                       Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   }
                                }
                            },
                         new Consumer<Throwable>() {
@@ -405,22 +533,65 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         });
     }
 
-    public List<AccountFlowIconBean> marryList = new ArrayList<>();
+    private void showCustomeReporty() {
+        recyclerViewSearch.setVisibility(View.VISIBLE);
+        adapterCustomeIcon= new AccountFlowLoanSearchAdapter(activity);
+        final GridLayoutManager manager = new GridLayoutManager(activity, 5);
+        manager.setOrientation(GridLayoutManager.VERTICAL);
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return position == 0 ? manager.getSpanCount() : 1;
+            }
+        });
+        recyclerViewSearch.setLayoutManager(manager);
+        recyclerViewSearch.setAdapter(adapterCustomeIcon);
+        adapterCustomeIcon.setData(customReperty);
+
+        adapterCustomeIcon.setOnItemClickListener(new AccountFlowLoanSearchAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(AccountFlowIconBean bean) {
+                //图标
+                map.put("iconId", bean.iconId);
+                //图标标识
+                map.put("channelId", bean.tallyId);
+                map.put("tallyType", "2");
+                //账单名称
+                map.put("channelName", bean.iconName);
+
+                Glide.with(activity).load(bean.logo).into(ivCustomIcon);
+                isLockEtLoan = true;
+                etLoan.setText(bean.iconName);
+                etLoan.setSelection(bean.iconName.length());
+                isLockEtLoan = false;
+
+                remarks = null;
+                recyclerViewSearch.setVisibility(View.INVISIBLE);
+                alphabetIndexBar.setVisibility(View.VISIBLE);
+                adapter.notifyDebtChannelChanged(list);
+
+            }
+        });
+    }
+
+
+
+    public List<LoanAccountIconBean> marryList = new ArrayList<>();
 
     @Override
     public void initDatas() {
-//        presenter.onStart();
 
-        Api.getInstance().queryIconList(UserHelper.getInstance(activity).getProfile().getId(), "LNetLoan").compose(RxUtil.<ResultEntity<List<AccountFlowIconBean>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<AccountFlowIconBean>>>() {
+        Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).getProfile().getId())
+                .compose(RxUtil.<ResultEntity<List<LoanAccountIconBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<LoanAccountIconBean>>>() {
                                @Override
-                               public void accept(ResultEntity<List<AccountFlowIconBean>> result) throws Exception {
+                               public void accept(ResultEntity<List<LoanAccountIconBean>> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (adapter != null) {
                                            list = result.getData();
-                                           Collections.sort(list, new Comparator<AccountFlowIconBean>() {
+                                           Collections.sort(list, new Comparator<LoanAccountIconBean>() {
                                                @Override
-                                               public int compare(AccountFlowIconBean one, AccountFlowIconBean two) {
+                                               public int compare(LoanAccountIconBean one, LoanAccountIconBean two) {
                                                    return one.iconInitials.compareTo(two.iconInitials);
                                                }
                                            });
@@ -438,12 +609,45 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                             }
                         });
 
+        /**
+         * 查询自定义图标
+         */
+        queryCustomeReporty();
+
         etInputPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     InputMethodUtil.closeSoftKeyboard(activity);
                     customKeyboardManager.showSoftKeyboard(etInputPrice);
+                }
+            }
+        });
+
+        etInputPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
+                    double amount = Double.parseDouble(s.toString());
+                    if (amount < 0D) {
+                        map.put("amount", null);
+                    } else if (amount == 0D) {
+                        map.put("amount", null);
+                    } else if (amount > 9999999999D) {
+                        map.put("amount", null);
+                    } else {
+                        map.put("amount", Double.parseDouble(s.toString())+"");
+                    }
                 }
             }
         });
@@ -461,7 +665,17 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 break;
             case R.id.ll_account_flow_remark:
                 dialog = new AccountFlowRemarkDialog();
+                if (remarks != null) {
+                    dialog.setTagList(remarks);
+                }
                 dialog.show(getFragmentManager(), "accountflowremark");
+
+                dialog.setOnTextChangeListener(new AccountFlowRemarkDialog.OnTextChangeListener() {
+                    @Override
+                    public void textChange(String text) {
+                        map.put("remark", text);
+                    }
+                });
                 break;
             case R.id.tv_fg_first_pay_loan_times:
                 showLoanTimes();
@@ -472,11 +686,11 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-        DaggerDebtChannelComponent.builder()
-                .appComponent(appComponent)
-                .debtChannelModule(new DebtChannelModule(this))
-                .build()
-                .inject(this);
+//        DaggerDebtChannelComponent.builder()
+//                .appComponent(appComponent)
+//                .debtChannelModule(new DebtChannelModule(this))
+//                .build()
+//                .inject(this);
     }
 
 
@@ -519,31 +733,12 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
      * 还款周期
      */
     private void showLoanTimes() {
-        OptionsPickerView pickerView = new OptionsPickerView.Builder(getContext(), new OptionsPickerView.OnOptionsSelectListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                int monthLimit = options1 + 1;
-//                times.setText(monthLimit + "个月");
-//                times.setTag(monthLimit);
-            }
-        }).setCancelText("取消")
-                .setCancelColor(Color.parseColor("#808080"))
-                .setSubmitText("确认")
-                .setSubmitColor(Color.parseColor("#287BF7"))
-                .setTitleText("选择还款周期和期数")
-                .setTitleColor((Color.parseColor("#2E2E2E")))
-                .setTitleBgColor(Color.WHITE)
-                .setBgColor(Color.WHITE)
-                .build();
-
-
-        List<String> option1 = new ArrayList<>();
+        final List<String> option1 = new ArrayList<>();
         for (int i = 0; i < mRepaymentCycle.length; i++) {
             option1.add(mRepaymentCycle[i]);
         }
 
-        List<List<String>> option2 = new ArrayList<>();
+        final List<List<String>> option2 = new ArrayList<>();
         for (int i = 1; i <= 12; ++i) {
             List<String> list = new ArrayList<>();
             list.add("循环");
@@ -557,6 +752,41 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             }
             option2.add(list);
         }
+
+        OptionsPickerView pickerView = new OptionsPickerView.Builder(getContext(), new OptionsPickerView.OnOptionsSelectListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                String monthLimit = option1.get(options1);
+                String termLimit = " " + option2.get(options1).get(options2);
+                mFirstPayNormalTime.setText(monthLimit + termLimit);
+                mFirstPayNormalTime.setTag(monthLimit + termLimit);
+
+                if (options1 == 11) {
+                    map.put("termType", "2");
+                    map.put("cycle", options1+1+"");
+                } else {
+                    map.put("termType", "3");
+                    map.put("cycle", "1");
+                }
+                if (options2 == 0) {
+                    map.put("term", "-1");
+                } else if (options2 <= 36){
+                    map.put("term", options2+"");
+                } else {
+                    map.put("term", ((options2 - 36)*12+36)+"");
+                }
+            }
+        }).setCancelText("取消")
+                .setCancelColor(Color.parseColor("#808080"))
+                .setSubmitText("确认")
+                .setSubmitColor(Color.parseColor("#287BF7"))
+                .setTitleText("选择还款周期和期数")
+                .setTitleColor((Color.parseColor("#2E2E2E")))
+                .setTitleBgColor(Color.WHITE)
+                .setBgColor(Color.WHITE)
+                .build();
+
         pickerView.setPicker(option1, option2);
         pickerView.setSelectOptions(0, 1);
         pickerView.show();
@@ -578,6 +808,10 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             public void onTimeSelect(Date date, View v) {
                 mFirstPayLoanDate.setTag(date);
                 mFirstPayLoanDate.setText(dateFormat.format(date));
+
+                //首次还款日
+                map.put("firstRepaymentDate", saveDateFormat.format(date));
+
             }
         }).setType(new boolean[]{true, true, true, false, false, false})
                 .setCancelText("取消")
