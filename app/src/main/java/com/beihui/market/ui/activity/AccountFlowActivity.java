@@ -40,6 +40,7 @@ import com.beihui.market.ui.fragment.AccountFlowCreditCardFragment;
 import com.beihui.market.ui.fragment.AccountFlowLoanFragment;
 import com.beihui.market.ui.fragment.AccountFlowNormalFragment;
 import com.beihui.market.ui.fragment.TabAccountFragment;
+import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
@@ -136,17 +137,14 @@ public class AccountFlowActivity extends BaseComponentActivity {
                 mViewPager.setCurrentItem(0);
                 mAccountFlowNormal.setSelected(true);
                 mNormalFragment.debtNormalDetail = intent.getParcelableExtra("debt_detail");
+                selectedFragmentId = R.id.tv_normal_account_flow;
             }
             if ("1".equals(debtType)) {
                 //网贷类型
                 mViewPager.setCurrentItem(1);
                 mAccountFlowLoan.setSelected(true);
                 mLoanFragment.debtNormalDetail = intent.getParcelableExtra("debt_detail");
-            }
-            if ("2".equals(debtType)) {
-                //信用卡类型
-                mViewPager.setCurrentItem(2);
-                mAccountFlowCreditCard.setSelected(true);
+                selectedFragmentId = R.id.tv_loan_account_flow;
             }
         } else {
             mTitleName.setVisibility(View.GONE);
@@ -239,7 +237,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     createAccount(mNormalFragment.map, 0);
                 } else {
                     //先删除账单 在创建账单
-
+                    deleteFastDebt(mNormalFragment.debtNormalDetail.getId());
                 }
             } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
                 if (mLoanFragment.debtNormalDetail == null) {
@@ -247,12 +245,62 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     createAccount(mLoanFragment.map, 1);
                 } else {
                     //先删除账单 在创建账单
-
+                    deleteLoanDebt(mLoanFragment.debtNormalDetail.getId());
                 }
             }
         } else {
             selectedFragmentId = view.getId();
         }
+    }
+
+    /**
+     * 删除通用账单
+     */
+    private void deleteFastDebt(String debtId) {
+        Api.getInstance().deleteFastDebt(UserHelper.getInstance(this).getProfile().getId(), debtId)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       createAccount(mNormalFragment.map, 0);
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+
+                            }
+                        });
+
+    }
+
+
+    /**
+     * 删除账单
+     */
+    public void deleteLoanDebt(String debtId) {
+        Api.getInstance().deleteDebt(UserHelper.getInstance(this).getProfile().getId(), debtId)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       createAccount(mLoanFragment.map, 1);
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                            }
+                        });
     }
 
 
@@ -290,14 +338,30 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
 
         map.put("userId", UserHelper.getInstance(this).getProfile().getId());
+        if ( type == 0) {
+            createFastAccount(map);
+        } else {
+            createLoanAccount(map);
+        }
+    }
 
+    /**
+     * 创建快捷记账
+     */
+    public void createFastAccount(Map<String, Object> map) {
         Api.getInstance().createNormalAccount(map)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
                                public void accept(ResultEntity result) throws Exception {
                                    Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                   finish();
+                                   if (result.isSuccess()) {
+                                       Intent intent = new Intent(AccountFlowActivity.this, MainActivity.class);
+                                       intent.putExtra("account", true);
+                                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                       startActivity(intent);
+                                       finish();
+                                   }
                                }
                            },
                         new Consumer<Throwable>() {
@@ -306,7 +370,34 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });
+    }
 
+    /**
+     * 创建借贷记账
+     */
+    public void createLoanAccount(Map<String, Object> map) {
+        Api.getInstance().createLoanAccount(map)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result) throws Exception {
+                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+
+                                   if (result.isSuccess()) {
+                                       Intent intent = new Intent(AccountFlowActivity.this, MainActivity.class);
+                                       intent.putExtra("account", true);
+                                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                       startActivity(intent);
+                                       finish();
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("exception_custom", throwable.getMessage());
+                            }
+                        });
     }
 
 

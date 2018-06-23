@@ -161,14 +161,6 @@ public class Api {
      * 获取网贷记账图标
      * @version 4.0.0
      */
-    public Observable<ResultEntity> createLoanAccount(Map<String, Object> params) {
-        return service.createLoanAccount(params);
-    }
-
-    /**
-     * 获取网贷记账图标
-     * @version 4.0.0
-     */
     public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId) {
         return service.queryLoanAccountIcon(userId);
     }
@@ -187,6 +179,14 @@ public class Api {
      */
     public Observable<ResultEntity> createNormalAccount(Map<String, Object> params) {
         return service.createNormalAccount(params);
+    }
+
+    /**
+     * 创建通用账单
+     * @version 4.0.0
+     */
+    public Observable<ResultEntity> createLoanAccount(Map<String, Object> params) {
+        return service.createLoanAccount(params);
     }
 
     /**

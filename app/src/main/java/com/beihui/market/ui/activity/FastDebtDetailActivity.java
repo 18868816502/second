@@ -45,6 +45,7 @@ import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
@@ -63,6 +64,7 @@ import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 
 import static android.text.TextUtils.isEmpty;
+import static com.beihui.market.util.CommonUtils.getChaneseNum;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
@@ -333,7 +335,11 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             header.debtPayDay.setText("一次性还款");
         } else {
             //还款期数 当前期/总期数
-            header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
+            if (fastDebtDetail.getTerm() == -1) {
+                header.debtPayDay.setText("循环");
+            } else {
+                header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
+            }
         }
 
         //还款周期
@@ -343,11 +349,11 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         }
         if (2 == fastDebtDetail.cycleType) {
             //月
-            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : "每"+fastDebtDetail.cycle+"月");
+            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : CommonUtils.getChaneseNum(fastDebtDetail.cycle));
         }
         if (3 == fastDebtDetail.cycleType) {
             //年
-            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : "每"+fastDebtDetail.cycle+"年");
+            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : "每年");
         }
         //当期还款日
         header.debtUnpaid.setText(fastDebtDetail.showBill.termRepayDate.replace("-","."));

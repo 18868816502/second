@@ -590,12 +590,51 @@ public class CommonUtils {
         return str;
     }
 
+    public static String keepWithoutZero(double input) {
+        String str = decimalFormat.format(input);
+        if (str.contains(".0")) {
+            return str.substring(0, str.indexOf(".0"));
+        }
+        if (str.contains(".00")) {
+            return str.substring(0, str.indexOf(".00"));
+        }
+        return str;
+    }
+
     public static String convertInterestRate(double rate) {
         return rateDecimalFormat.format(rate);
     }
 
     public static String convertAmount(double amount) {
         return amountFormat.format(amount);
+    }
+
+    public static String getChaneseNum(int num) {
+        if (num == 1) {
+            return "每月";
+        } else if (num == 2) {
+            return "每二月";
+        } else if (num == 3) {
+            return "每三月";
+        } else if (num == 4) {
+            return "每四月";
+        } else if (num == 5) {
+            return "每五月";
+        } else if (num == 6) {
+            return "每六月";
+        } else if (num == 7) {
+            return "每七月";
+        } else if (num == 8) {
+            return "每八月";
+        } else if (num == 9) {
+            return "每九月";
+        } else if (num == 10) {
+            return "每十月";
+        } else if (num == 11) {
+            return "每十一月";
+        } else {
+            return "每年";
+        }
     }
 
 }

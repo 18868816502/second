@@ -104,7 +104,7 @@ public class TabAccountNewBean implements Serializable{
         public String billDate;
         public String logoUrl;
         public int month;
-        public int totalTerm;
+        public Integer totalTerm;
         public int term;
         public String remark;
 
@@ -236,11 +236,11 @@ public class TabAccountNewBean implements Serializable{
             this.month = month;
         }
 
-        public int getTotalTerm() {
+        public Integer getTotalTerm() {
             return totalTerm;
         }
 
-        public void setTotalTerm(int totalTerm) {
+        public void setTotalTerm(Integer totalTerm) {
             this.totalTerm = totalTerm;
         }
 

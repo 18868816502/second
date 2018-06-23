@@ -25,6 +25,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.beihui.market.R;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.flowlayout.FlowLayout;
 import com.beihui.market.view.flowlayout.TagAdapter;
 import com.beihui.market.view.flowlayout.TagFlowLayout;
@@ -45,11 +46,15 @@ public class AccountFlowRemarkDialog extends DialogFragment {
     //依附的Activity
     private Activity activity;
 
+    public String saveContent;
+
     //XML
     public View mView;
 
     public TagFlowLayout mFlowLayout;
     public EditText mEditText;
+    public TextView mNum;
+    public TextView mConfirm;
 
 
     @Override
@@ -68,6 +73,8 @@ public class AccountFlowRemarkDialog extends DialogFragment {
         mView= LayoutInflater.from(getActivity()).inflate(R.layout.x_dialog_account_flow_remark, null);
         mFlowLayout = (TagFlowLayout)mView.findViewById(R.id.id_flowlayout);
         mEditText = (EditText)mView.findViewById(R.id.et_dialog_account_remark);
+        mNum = (TextView)mView.findViewById(R.id.tv_content_num);
+        mConfirm = (TextView)mView.findViewById(R.id.tv_content_confirm);
         getDialog().getWindow().setBackgroundDrawable(
                 new ColorDrawable(ContextCompat.getColor(mView.getContext(), R.color.transparent_half)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -95,7 +102,11 @@ public class AccountFlowRemarkDialog extends DialogFragment {
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 if (copyVals.containsKey(position+"")) {
                     copyVals.remove(position+"");
-                    mEditText.setText(mVals[position]);
+                    if (!TextUtils.isEmpty(mEditText.getText().toString())) {
+                        mEditText.setText(mEditText.getText().toString() + mVals[position]);
+                    } else {
+                        mEditText.setText(mVals[position]);
+                    }
                     mEditText.setSelection(mEditText.getText().length());
                 } else {
                     copyVals.put(position+"", mVals[position]);
@@ -114,16 +125,38 @@ public class AccountFlowRemarkDialog extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                mNum.setText(s.length()+"/20");
+                if (TextUtils.isEmpty(s.toString())) {
+                    mConfirm.setEnabled(false);
+                    mConfirm.setBackground(activity.getResources().getDrawable(R.drawable.xshape_dialog_remark_black_bg));
+                } else {
+                    mConfirm.setEnabled(true);
+                    mConfirm.setBackground(activity.getResources().getDrawable(R.drawable.xshape_dialog_remark_red_bg));
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-               if (onTextChangeListener!=null) {
-                   onTextChangeListener.textChange(s.toString());
-               }
+
             }
         });
+
+        mConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onTextChangeListener!=null) {
+                    onTextChangeListener.textChange(mEditText.getText().toString());
+                    saveContent = mEditText.getText().toString();
+                }
+//                InputMethodUtil.closeSoftKeyboard(activity);
+                HideKeyboard(mEditText);
+            }
+        });
+
+        if (!TextUtils.isEmpty(saveContent)) {
+            mEditText.setText(saveContent);
+            mEditText.setSelection(saveContent.length());
+        }
 
         return mView;
     }
@@ -144,6 +177,13 @@ public class AccountFlowRemarkDialog extends DialogFragment {
         showKeyBoard(mEditText);
     }
 
+    public static void HideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService( Context.INPUT_METHOD_SERVICE );
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow( v.getApplicationWindowToken() , 0);
+        }
+    }
+
     /**
      * 显示软键盘
      */
@@ -152,6 +192,7 @@ public class AccountFlowRemarkDialog extends DialogFragment {
         InputMethodManager manager = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.showSoftInput(editText, 0);
     }
+
 
     private String[] mVals = new String[]{};
 

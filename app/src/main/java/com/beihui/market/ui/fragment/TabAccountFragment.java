@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -97,9 +98,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @BindView(R.id.rv_fg_tab_account_list)
     PulledTabAccountRecyclerView mRecyclerView;
 
-
-//    @BindView(R.id.fl_tab_account_header_bill_loan)
-//    FrameLayout billLoamAnalysis;
 
     //依附的Activity
     public Activity mActivity;
@@ -212,6 +210,15 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 } else {
                     mTitle.setTextColor(Color.argb(0, 255, 255, 255));
                 }
+                TextView textViewTitle = (TextView)manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
+                TextView textViewName = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_name);
+                TextView textViewNum = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_num);
+                TextView textViewPay = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay);
+
+//                textViewTitle.setScaleX(1 - max/2);
+//                textViewTitle.setScaleY(1 - max/2);
+//                showScaleAnim(textViewTitle, max/2);
+//                showScaleAnim(textViewPay, max/2);
 
                 int firstPosition = manager.findFirstVisibleItemPosition();
                 if (firstPosition == 0) {
@@ -222,6 +229,17 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             }
         });
 
+    }
+
+
+    /**
+     * 设置缩放
+     */
+    private void showScaleAnim(TextView textView, float max) {
+        textView.setPivotX(0);
+        textView.setPivotY(0);
+        textView.setScaleX(1 - max);
+        textView.setScaleY(1 - max);
     }
 
 
@@ -274,10 +292,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
             @Override
             public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                if (pageNo*10 < total && total != null && mAdapter.showAll()) {
+                if (total != null && pageNo*10 < total && mAdapter.showAll()) {
                     presenter.loadInDebtList(2, pageNo);
                 } else {
-                    mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
+                    mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
                     mPullToRefreshListener.onLoadMore(mPullContainer);
                 }
             }
@@ -295,7 +313,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                     presenter.onRefresh();
                 }else {
                     swipeRefreshLayout.setRefreshing(false);
-                    showInDebtList(new ArrayList<TabAccountNewBean>());
+                    showNoUserLoginBlock();
                 }
             }
         });
@@ -330,56 +348,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
-        }
-    }
-
-
-//    @OnClick({R.id.iv_tab_account_header_add, R.id.iv_tab_account_header_today_button, R.id.fl_tab_account_header_bill_loan})
-//    @OnClick({ R.id.iv_tab_account_header_today_button})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-//            //添加账单
-//            case R.id.iv_tab_account_header_add:
-//                if (UserHelper.getInstance(mActivity).getProfile() != null) {
-//                    //pv，uv统计
-//                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_ACCOUNT_HOME_NEW_BILL);
-//                    //点击音效
-//                    SoundUtils.getInstance().playAdd();
-//
-//                    XTabAccountDialog dialog = new XTabAccountDialog();
-//                    dialog.show(getChildFragmentManager(), ShareDialog.class.getSimpleName());
-//                } else {
-//                    showNoUserLoginBlock();
-//                }
-//                break;
-//            case R.id.iv_tab_account_header_today_button:
-////                Toast.makeText(mActivity, "已至今日应还账单处，别再点啦", Toast.LENGTH_SHORT).show();
-//                if (UserHelper.getInstance(mActivity).getProfile() != null) {
-//                    /**
-//                     * TODOD 点击今天的按钮事件
-//                     */
-////                    initStatus();
-//                    manager.scrollToPositionWithOffset(scrollToPosition, 0);
-//                } else {
-//                    showNoUserLoginBlock();
-//                }
-//                break;
-
-//            //进入网贷分析
-//            case R.id.fl_tab_account_header_bill_loan:
-//                /**
-//                 * 防止重复点击
-//                 */
-//                if (!FastClickUtils.isFastClick()) {
-//                    if (UserHelper.getInstance(mActivity).getProfile() != null) {
-//                        //pv，uv统计 快捷记账按钮
-//                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_NET_BILL_LOAN_ANALYSIS);
-//                        startActivity(new Intent(mActivity, BillLoanAnalysisFragmentWeek.class));
-//                    } else {
-//                        showNoUserLoginBlock();
-//                    }
-//                }
-//                break;
         }
     }
 
@@ -420,12 +388,16 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         swipeRefreshLayout.setRefreshing(false);
         if (list.size() == 0) {
             //TODO 没有数据 使用模拟数据 用户没有登录也是使用模拟数据
+            TabAccountNewBean bean = new TabAccountNewBean();
+
             TabAccountNewBean.TabAccountNewInfoBean analogLoan = new TabAccountNewBean.TabAccountNewInfoBean();
             analogLoan.isAnalog = true;
             analogLoan.setTitle("招商银行");
             analogLoan.setAmount(1000);
             analogLoan.setLastOverdue(true);
             analogLoan.setOverdueTotal(-1);
+            analogLoan.setStatus(1);
+            analogLoan.setReturnDay(0);
             analogLoan.setType(2);//账单类型 1-网贷 2-信用卡 3-快捷记账
 
             TabAccountNewBean.TabAccountNewInfoBean analogCard = new TabAccountNewBean.TabAccountNewInfoBean();
@@ -434,53 +406,22 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             analogCard.setAmount(2000);
             analogCard.setLastOverdue(false);
             analogCard.setOverdueTotal(0);
+            analogCard.setType(1);
+            analogLoan.setStatus(1);
+            analogCard.setReturnDay(7);
             ArrayList<TabAccountNewBean.TabAccountNewInfoBean> infoList = new ArrayList<>();
+
             infoList.add(analogLoan);
             infoList.add(analogCard);
-            analogLoan.setType(1);
-//
-//            mLastThirtyDayWaitPay.setText("赶紧先记上一笔");
-//            mLastThirtyDayWaitPayNum.setText("");
 
+            bean.list = infoList;
+            list.add(bean);
             total = null;
-            mAdapter.notifyPayChanged(list);
+            mAdapter.notifyUnPayChanged(list);
         } else {
             total = list.get(list.size() - 1).total;
             mAdapter.notifyUnPayChanged(list);
         }
-
-
-//        if (billType == 3) {
-//            if (list.size() < pageSize) {
-//                isNoRefreshData = true;
-//            } else {
-//                isNoRefreshData = false;
-//                overduePageNo++;
-//            }
-//            mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.SUCCEED;
-//            mPullToRefreshListener.onRefresh(mPullContainer);
-//            mAdapter.notifyDebtChangedRefresh(list);
-//        }
-//        if (billType == 1 || billType == 2) {
-//            if (list.size() < pageSize) {
-//                //说明上拉已经没有数据了 可以显示未还 已还数据了
-//                isNoMoreData = true;
-//                mFootViewMoney.setVisibility(View.VISIBLE);
-//                moreView.setVisibility(View.INVISIBLE);
-//                mPullContainer.changeState(PullToRefreshScrollLayout.DONE);
-//                mPullContainer.hide();
-//            } else {
-//                mFootViewMoney.setVisibility(View.GONE);
-//                moreView.setVisibility(View.VISIBLE);
-//                isNoMoreData = false;
-//                noOverduePageNo++;
-//
-//                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
-//                mPullToRefreshListener.onLoadMore(mPullContainer);
-//            }
-//
-//            mAdapter.notifyDebtChangedMore(list);
-//        }
     }
 
     /**

@@ -118,12 +118,12 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         @BindView(R.id.ll_credit_card_info_header_bg)
         LinearLayout mHeaderCardBg;
 
-//        @BindView(R.id.bank_logo)
-//        ImageView ivBankLogo;
-//        @BindView(R.id.bank_name)
-//        TextView tvBankName;
-//        @BindView(R.id.credit_card_number)
-//        TextView tvCreditCardNumber;
+        @BindView(R.id.bank_logo)
+        ImageView ivBankLogo;
+        @BindView(R.id.bank_name)
+        TextView tvBankName;
+        @BindView(R.id.credit_card_number)
+        TextView tvCreditCardNumber;
         /**
          * 几月账单
          */
@@ -234,7 +234,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 
         //沉浸式
         setupToolbarBackNavigation(toolbar, R.drawable.x_normal_back);
-        ImmersionBar.with(this).statusBarDarkFont(true).init();
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         header = new Header(LayoutInflater.from(this).inflate(R.layout.rv_item_credit_card_debt_header, recyclerView, false));
@@ -333,19 +333,19 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             }
         });
 
-        tvBankNameNum.setText(backName + " " + cardNum);
-//        header.tvBankName.setText(backName);
-//        header.tvCreditCardNumber.setText(cardNum);
-//        if (!isEmpty(logoUrl)) {
-//            Glide.with(this)
-//                    .load(logoUrl)
-//                    .asBitmap()
-//                    .centerCrop()
-//                    .placeholder(R.drawable.image_place_holder)
-//                    .into(header.ivBankLogo);
-//        } else {
-//            header.ivBankLogo.setImageResource(R.drawable.image_place_holder);
-//        }
+//        tvBankNameNum.setText(backName + " " + cardNum);
+        header.tvBankName.setText(backName);
+        header.tvCreditCardNumber.setText(cardNum);
+        if (!isEmpty(logoUrl)) {
+            Glide.with(this)
+                    .load(logoUrl)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.image_place_holder)
+                    .into(header.ivBankLogo);
+        } else {
+            header.ivBankLogo.setImageResource(R.drawable.image_place_holder);
+        }
 
         if (byHand) {
             tvDebtStatusOperation.setText("开始同步");

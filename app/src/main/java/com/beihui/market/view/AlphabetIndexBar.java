@@ -16,7 +16,7 @@ import android.view.View;
 
 public class AlphabetIndexBar extends View {
 
-    private static final String[] ALPHABET = {
+    private static String[] ALPHABET = {
             "#",
             "A", "B", "C", "D", "E", "F", "G",
             "H", "I", "J", "K", "L", "M", "N",
@@ -165,5 +165,10 @@ public class AlphabetIndexBar extends View {
             index = ALPHABET.length - 1;
         }
         return index;
+    }
+
+    public void setStringArray(String[] strings) {
+        ALPHABET = strings;
+        invalidate();
     }
 }

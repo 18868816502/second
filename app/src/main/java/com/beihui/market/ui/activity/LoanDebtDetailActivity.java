@@ -47,6 +47,7 @@ import com.beihui.market.ui.dialog.EditPayPlanDialog;
 import com.beihui.market.ui.dialog.NicknameDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
@@ -377,7 +378,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             header.debtPayDay.setText("一次性还款");
         } else {
             //还款期数 当前期/总期数
-            header.debtPayDay.setText(debtDetail.returnedTerm + "/" + debtDetail.getTerm());
+            if (debtDetail.getTerm() == -1) {
+                header.debtPayDay.setText("循环");
+            } else {
+                header.debtPayDay.setText(debtDetail.returnedTerm + "/" + debtDetail.getTerm());
+            }
         }
         //还款周期
         if (1 == debtDetail.getTermType()) {
@@ -386,11 +391,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         }
         if (2 == debtDetail.getTermType()) {
             //月
-            header.debtPayTerm.setText( -1 == debtDetail.cycle? "循环" : "每"+debtDetail.cycle+"月");
+            header.debtPayTerm.setText( -1 == debtDetail.cycle? "循环" : CommonUtils.getChaneseNum(debtDetail.cycle));
         }
         if (3 == debtDetail.getTermType()) {
             //年
-            header.debtPayTerm.setText( -1 == debtDetail.cycle? "循环" : "每"+debtDetail.cycle+"年");
+            header.debtPayTerm.setText( -1 == debtDetail.cycle? "循环" : "每年");
         }
 
 

@@ -63,6 +63,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	public static final int LOADING = 4;
 	// 操作完毕
 	public static final int DONE = 5;
+	public static final int LOAD_SUCCESS = 6;
 	// 当前状态
 	private int state = INIT;
 	// 刷新回调接口
@@ -308,6 +309,11 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			case LOAD_ALL:
 				loadStateImageView.setVisibility(View.INVISIBLE);
 				loadStateTextView.setText("加载更多");
+				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
+				break;
+			case LOAD_SUCCESS:
+				loadStateImageView.setVisibility(View.INVISIBLE);
+				loadStateTextView.setText("已加载全部");
 				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
 				break;
 			case FAIL:

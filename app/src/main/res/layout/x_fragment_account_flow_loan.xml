@@ -92,6 +92,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="3dp" />
 
+
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
                 android:id="@+id/rv_fg_account_flow_loan_search"

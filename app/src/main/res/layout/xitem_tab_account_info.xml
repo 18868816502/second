@@ -108,15 +108,16 @@
                     android:layout_centerVertical="true" />
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <!--网贷名称 或者 信用卡名称-->
@@ -130,10 +131,30 @@
                             android:textColor="@color/black_1"
                             android:textSize="12sp" />
 
+                        <!--网贷名称 或者 信用卡名称-->
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="1dp" />
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/tv_item_tab_acount_remark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textStyle="bold"
+                            android:textColor="@color/black_2"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="1dp" />
+
+                    <LinearLayout
+                        android:gravity="center_vertical|right"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
                         <!--网贷名称 或者 信用卡名称金额-->
                         <TextView
@@ -145,32 +166,9 @@
                             android:textColor="@color/black_1"
                             android:textSize="15sp" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <!--网贷名称 或者 信用卡名称-->
-                        <TextView
-                            android:id="@+id/tv_item_tab_acount_remark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:text=""
-                            android:textStyle="bold"
-                            android:textColor="@color/black_2"
-                            android:textSize="10sp" />
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="1dp" />
-
-                        <TextView
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/x_tab_account_term_bg"
                             android:id="@+id/tv_item_tab_acount_loan_term"
                             android:text="1/1"

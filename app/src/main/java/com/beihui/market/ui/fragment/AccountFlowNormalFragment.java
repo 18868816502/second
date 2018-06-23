@@ -80,7 +80,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * Created by admin on 2018/6/14.
@@ -283,6 +282,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         temp.append(primaryCode - 48);
                         return false;
                     } else {
+                        if (etCurrent.getText().toString().length()==1 && "0".equals(etCurrent.getText().toString())) {
+                            etCurrent.setText(primaryCode - 48 + "");
+                            return true;
+                        }
                         if (etCurrent.getText().toString().contains(".")) {
                             int i = etCurrent.getText().toString().indexOf(".");
                             int length = etCurrent.getText().toString().length();
@@ -438,7 +441,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
             mTypeName.setText(debtNormalDetail.getProjectName());
             //金额
             lockEtInput = true;
-            etInputPrice.setText(keep2digitsWithoutZero(debtNormalDetail.getTermPayableAmount()));
+            etInputPrice.setText(debtNormalDetail.getTermPayableAmount()+"");
             lockEtInput = false;
 
             mFirstPayNormalDate.setText(debtNormalDetail.getFirstRepayDate());
@@ -469,58 +472,60 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                @Override
                                public void accept(ResultEntity<List<AccountFlowIconBean>> result)  {
                                    if (result.isSuccess()) {
+                                       if (list.size() > 0) {
+                                           list.clear();
+                                       }
+                                       list.addAll(result.getData());
                                        if (mAdapter != null) {
-                                           if (list.size() > 0) {
-                                               list.clear();
-                                           }
-                                           list.addAll(result.getData());
-                                           /**
+                                           mAdapter.notifyDebtChannelChanged(list);
+                                       }
+
+                                       /**
                                         * 判断是否是编辑账单
                                         */
-                                           if (debtNormalDetail != null) {
+                                       if (debtNormalDetail != null) {
+                                           //图标
+                                           map.put("iconId", debtNormalDetail.iconId);
+                                           //图标标识
+                                           map.put("tallyId", debtNormalDetail.tallyId);
+                                           map.put("tallyType", debtNormalDetail.tallyType);
+                                           //账单名称
+                                           map.put("projectName", debtNormalDetail.getProjectName());
+                                           //默认
+                                           Date parse = null;
+                                           try {
+                                               parse = dateFormat.parse(debtNormalDetail.getFirstRepayDate());
+                                           } catch (ParseException e) {
+                                               e.printStackTrace();
+                                           }
+                                           map.put("firstRepaymentDate", saveDateFormat.format(parse));
+                                           map.put("cycleType", debtNormalDetail.cycleType);
+                                           map.put("cycle", debtNormalDetail.cycle);
+                                           map.put("term", debtNormalDetail.getTerm());
+                                           map.put("amount", debtNormalDetail.getTermPayableAmount() + "");
+                                       } else {
+                                           if (list.size() > 0) {
                                                //图标
-                                               map.put("iconId", debtNormalDetail.iconId);
+                                               map.put("iconId", list.get(0).iconId);
                                                //图标标识
-                                               map.put("tallyId", debtNormalDetail.tallyId);
-                                               map.put("tallyType", debtNormalDetail.tallyType);
+                                               map.put("tallyId", list.get(0).tallyId);
+                                               map.put("tallyType", Integer.valueOf(list.get(0).isPrivate) + 1 + "");
                                                //账单名称
-                                               map.put("projectName", debtNormalDetail.getProjectName());
+                                               map.put("projectName", list.get(0).iconName);
                                                //默认
-                                               Date parse = null;
-                                               try {
-                                                   parse = dateFormat.parse(debtNormalDetail.getFirstRepayDate());
-                                               } catch (ParseException e) {
-                                                   e.printStackTrace();
-                                               }
-                                               map.put("firstRepaymentDate", saveDateFormat.format(parse));
-                                               map.put("cycleType", debtNormalDetail.cycleType);
-                                               map.put("cycle", debtNormalDetail.cycle);
-                                               map.put("term", debtNormalDetail.getTerm());
-                                           } else {
-                                               if (list.size() > 0) {
-                                                   //图标
-                                                   map.put("iconId", list.get(0).iconId);
-                                                   //图标标识
-                                                   map.put("tallyId", list.get(0).tallyId);
-                                                   map.put("tallyType", Integer.valueOf(list.get(0).isPrivate) + 1 + "");
-                                                   //账单名称
-                                                   map.put("projectName", list.get(0).iconName);
-                                                   //默认
-                                                   map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
-                                                   map.put("cycleType", "2");
-                                                   map.put("cycle", "1");
-                                                   map.put("term", "1");
+                                               map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
+                                               map.put("cycleType", "2");
+                                               map.put("cycle", "1");
+                                               map.put("term", "1");
 
-                                                   Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
-                                                   if (!TextUtils.isEmpty(list.get(0).iconName)) {
-                                                       mTypeName.setText(list.get(0).iconName);
-                                                   }
-                                                   if (!TextUtils.isEmpty(list.get(0).remark)) {
-                                                       remarks = list.get(0).remark.split(",");
-                                                   }
+                                               Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
+                                               if (!TextUtils.isEmpty(list.get(0).iconName)) {
+                                                   mTypeName.setText(list.get(0).iconName);
+                                               }
+                                               if (!TextUtils.isEmpty(list.get(0).remark)) {
+                                                   remarks = list.get(0).remark.split(",");
                                                }
                                            }
-                                           mAdapter.notifyDebtChannelChanged(list);
                                        }
                                    } else {
                                        Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
@@ -548,7 +553,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 showFirstPayLoanDateDialog();
                 break;
             case R.id.ll_account_flow_remark:
-                dialog = new AccountFlowRemarkDialog();
+                if (dialog == null) {
+                    dialog = new AccountFlowRemarkDialog();
+                }
                 if (remarks != null) {
                     dialog.setTagList(remarks);
                 }
@@ -619,9 +626,6 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 } else {
                     map.put("term", ((options2 - 36)*12+36)+"");
                 }
-
-
-
             }
         }).setCancelText("取消")
                 .setCancelColor(Color.parseColor("#808080"))
