@@ -45,6 +45,7 @@ import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AutoAdjustSizeEditText;
+import com.beihui.market.view.NoScrollViewPager;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
 import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
 import com.gyf.barlibrary.ImmersionBar;
@@ -81,7 +82,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
     @BindView(R.id.tv_loan_account_flow)
     TextView mAccountFlowLoan;
     @BindView(R.id.fl_ac_account_flow_container)
-    ViewPager mViewPager;
+    NoScrollViewPager mViewPager;
     @BindView(R.id.tv_credit_card_flow)
     TextView mAccountFlowCreditCard;
     @BindView(R.id.iv_ac_account_flow_confirm)
@@ -132,6 +133,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
             //隐藏Tab
             mTitleName.setVisibility(View.VISIBLE);
             mTabRoot.setVisibility(View.GONE);
+            //关闭滑动
+            mViewPager.setNoScroll(true);
             if ("0".equals(debtType)) {
                 //通用类型
                 mViewPager.setCurrentItem(0);
@@ -149,7 +152,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
         } else {
             mTitleName.setVisibility(View.GONE);
             mTabRoot.setVisibility(View.VISIBLE);
-
+            //开启滑动
+            mViewPager.setNoScroll(false);
             mViewPager.setCurrentItem(0);
             mAccountFlowNormal.setSelected(true);
         }

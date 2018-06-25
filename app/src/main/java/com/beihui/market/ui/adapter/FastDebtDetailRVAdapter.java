@@ -107,6 +107,11 @@ public class FastDebtDetailRVAdapter extends BaseQuickAdapter<FastDebtDetail.Det
                         date.setText(record.transDate.substring(5, 10).replace("-", "/"));
                     }
                     money.setText(keep2digitsWithoutZero(record.amount));
+                    if (TextUtils.isEmpty(record.amount+"") || record.amount < 0D) {
+                        money.setTextColor(Color.parseColor("#4CC99E"));
+                    } else {
+                        money.setTextColor(Color.parseColor("#424251"));
+                    }
                 }
             }
         }

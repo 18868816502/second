@@ -468,7 +468,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             userProfileMobile.setText("未绑定");
         }
         if (profile.getWxUnionId() != null) {
-            userProfileWxChat.setText(profile.getWxUnionId());
+            userProfileWxChat.setText("已绑定");
         } else {
             userProfileWxChat.setText("未绑定");
         }

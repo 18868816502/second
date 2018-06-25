@@ -117,7 +117,8 @@
                     <LinearLayout
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content">
 
                         <!--网贷名称 或者 信用卡名称-->
@@ -138,6 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
+                            android:ellipsize="end"
                             android:text=""
                             android:textStyle="bold"
                             android:textColor="@color/black_2"
@@ -145,12 +147,9 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="1dp" />
 
                     <LinearLayout
+                        android:layout_marginLeft="5dp"
                         android:gravity="center_vertical|right"
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
@@ -236,6 +235,32 @@
 
                 <TextView
                     android:text="已还"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/tv_shape_tab_accoun_set_pay"
+                android:background="#ff5240"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="设为"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="未还"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:layout_width="wrap_content"

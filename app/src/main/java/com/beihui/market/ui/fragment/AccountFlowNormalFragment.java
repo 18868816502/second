@@ -375,6 +375,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
             }
 
             @Override
@@ -407,7 +408,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 map.put("iconId", bean.iconId);
                 //图标标识
                 map.put("tallyId", bean.tallyId);
-                map.put("tallyType", Integer.valueOf(bean.isPrivate)+1+"");
+                int isPrivate = bean.isPrivate == null ? 1 : Integer.valueOf(bean.isPrivate);
+                map.put("tallyType", isPrivate+1+"");
                 //账单名称
                 map.put("projectName", bean.iconName);
 

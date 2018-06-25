@@ -29,9 +29,10 @@
             android:layout_height="match_parent">
 
             <View
+                android:id="@+id/fg_tab_account_line"
                 android:layout_marginLeft="35.5dp"
                 android:background="@color/line"
-                android:layout_width="1dp"
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"/>
 
             <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout

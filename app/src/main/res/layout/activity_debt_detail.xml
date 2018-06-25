@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            tools:text="建设银行-分期通" />
+            android:text="账单详情" />
 
 
         <ImageView
@@ -50,6 +50,7 @@
     </FrameLayout>
 
     <View
+        android:id="@+id/ll_debt_info_foot_root_line"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:layout_width="match_parent"
@@ -57,8 +58,8 @@
         android:background="@color/line" />
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/ll_debt_info_foot_root"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">

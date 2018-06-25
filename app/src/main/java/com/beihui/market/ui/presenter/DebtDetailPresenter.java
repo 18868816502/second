@@ -102,7 +102,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
 
     @Override
     public void clickUpdateRemind() {
-        final int remind = debtDetail.getRedmineDay() == -1 ? 1 : -1;
+        final int remind = debtDetail.getRedmineDay() == -1 ? 3 : -1;
         Disposable dis = api.updateRemindStatus(userHelper.getProfile().getId(), "1", debtDetail.getId(), remind)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {

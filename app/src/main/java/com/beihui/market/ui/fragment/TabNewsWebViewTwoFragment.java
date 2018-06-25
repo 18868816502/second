@@ -195,7 +195,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
+        newsUrl = NetConstants.generateActivityWebViewUrl(userId, channelId, versionName);
 
         Log.e("newsUrl", "newsUrl--->     " + newsUrl);
         webView.loadUrl(newsUrl);

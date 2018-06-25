@@ -6,10 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -18,16 +15,15 @@ import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.GroupProductBean;
-import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
-import com.beihui.market.ui.adapter.BillLoanAnalysisRvAdapter;
+import com.beihui.market.ui.adapter.BillLoanAnalysisMonthRvAdapter;
+import com.beihui.market.ui.adapter.BillLoanAnalysisWeekRvAdapter;
 import com.beihui.market.util.RxUtil;
-import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,7 +35,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 
@@ -59,7 +54,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
     public int type = 2;
 
     //适配器
-    public BillLoanAnalysisRvAdapter mAdapter;
+    public BillLoanAnalysisWeekRvAdapter mAdapter;
     private FragmentActivity activity;
     private LinearLayoutManager manager;
 
@@ -95,7 +90,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
         }
         activity = getActivity();
         //初始化适配器
-        mAdapter = new BillLoanAnalysisRvAdapter(activity);
+        mAdapter = new BillLoanAnalysisWeekRvAdapter(activity);
         manager = new LinearLayoutManager(activity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
@@ -135,7 +130,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
     @Override
     public void initDatas() {
         if (mAdapter != null) {
-            mAdapter.setOnItemClickListener(new BillLoanAnalysisRvAdapter.OnItemClickListener() {
+            mAdapter.setOnItemClickListener(new BillLoanAnalysisWeekRvAdapter.OnItemClickListener() {
                 @Override
                 public void onItemclick(BillLoanAnalysisBean.ListBean listBean) {
                     if (listBean.getType() == 1) {
@@ -177,6 +172,9 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
         requestListData(Calendar.getInstance());
 
 
+        if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
+            return;
+        }
         //底部数据
         Api.getInstance().queryGroupProductList()
                 .compose(RxUtil.<ResultEntity<List<GroupProductBean>>>io2main())
@@ -223,7 +221,10 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
     /**
      * 柱状图数据
      */
-    private void requestChartData(Calendar calendar) {
+    public void requestChartData(Calendar calendar) {
+        if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
+            return;
+        }
         //获取时间区间
         String start;
         String end;
@@ -281,7 +282,10 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
     /**
      * 请求列表数据
      */
-    private void requestListData(Calendar calendar) {
+    public void requestListData(Calendar calendar) {
+        if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
+            return;
+        }
         //获取时间区间
         String time;
         final String timeTitleTop;

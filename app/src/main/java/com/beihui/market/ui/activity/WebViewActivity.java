@@ -12,6 +12,7 @@ import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.view.BusinessWebView;
@@ -37,6 +39,8 @@ public class WebViewActivity extends BaseComponentActivity {
 
     @BindView(R.id.tl_news_header_tool_bar)
     android.support.v7.widget.Toolbar toolbar;
+    @BindView(R.id.iv_tab_fg_news_web_back)
+    ImageView mReturn;
     @BindView(R.id.tv_web_view_title)
     TextView titleName;
     @BindView(R.id.bwv_news_web_view)
@@ -52,7 +56,6 @@ public class WebViewActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
         webViewUrl = getIntent().getStringExtra("webViewUrl");
 
         String mTitleName = "";
@@ -71,8 +74,15 @@ public class WebViewActivity extends BaseComponentActivity {
                 mTitleName = temp.replace("title=", "");
             }
             titleName.setText(URLDecoder.decode(mTitleName));
+        } else if (!TextUtils.isEmpty(getIntent().getStringExtra("webViewTitleName"))) {
+            titleName.setText(getIntent().getStringExtra("webViewTitleName"));
         }
+
+        SlidePanelHelper.attach(this);
     }
+
+
+
 
     @Override
     public void initDatas() {
@@ -86,23 +96,15 @@ public class WebViewActivity extends BaseComponentActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (webView.canGoBack()) {
-                        webView.goBack();
-                    } else {
-                        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 1) {
-
-                        } else{
-                            Toast.makeText(WebViewActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                return false;
-            }
-        });
+//        webView.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+//
+//                }
+//                return false;
+//            }
+//        });
 
 
         webView.setWebViewClient(new WebViewClient());
@@ -141,6 +143,26 @@ public class WebViewActivity extends BaseComponentActivity {
        if (!TextUtils.isEmpty(webViewUrl)) {
            webView.loadUrl(webViewUrl+"?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + versionName);
        }
+
+        mReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    finish();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            finish();
+        }
     }
 
     @Override

@@ -17,16 +17,16 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:paddingRight="10dp"
-            android:src="@mipmap/btn_back_normal_black"
-            android:visibility="invisible" />
+            android:src="@mipmap/btn_back_normal_black"/>
 
         <TextView
             android:layout_gravity="center"
             android:id="@+id/tv_web_view_title"
-            android:layout_width="75dp"
+            android:layout_width="wrap_content"
             android:layout_height="29dp"
             android:gravity="center"
             android:text="发现"
+            android:textSize="17sp"
             android:textColor="@color/black_1" />
 
     </android.support.v7.widget.Toolbar>
@@ -36,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white" />
-
 
 
 </LinearLayout>

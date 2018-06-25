@@ -6,10 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -24,9 +21,8 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
-import com.beihui.market.ui.adapter.BillLoanAnalysisRvAdapter;
+import com.beihui.market.ui.adapter.BillLoanAnalysisMonthRvAdapter;
 import com.beihui.market.util.RxUtil;
-import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,7 +34,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 
@@ -58,7 +53,7 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
     public int type = 3;
 
     //适配器
-    public BillLoanAnalysisRvAdapter mAdapter;
+    public BillLoanAnalysisMonthRvAdapter mAdapter;
     private FragmentActivity activity;
     private LinearLayoutManager manager;
 
@@ -94,7 +89,7 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
         }
         activity = getActivity();
         //初始化适配器
-        mAdapter = new BillLoanAnalysisRvAdapter(activity);
+        mAdapter = new BillLoanAnalysisMonthRvAdapter(activity);
         manager = new LinearLayoutManager(activity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
@@ -134,7 +129,7 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
     @Override
     public void initDatas() {
         if (mAdapter != null) {
-            mAdapter.setOnItemClickListener(new BillLoanAnalysisRvAdapter.OnItemClickListener() {
+            mAdapter.setOnItemClickListener(new BillLoanAnalysisMonthRvAdapter.OnItemClickListener() {
                 @Override
                 public void onItemclick(BillLoanAnalysisBean.ListBean listBean) {
                     if (listBean.getType() == 1) {
@@ -176,6 +171,9 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
         requestListData(Calendar.getInstance());
 
 
+        if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
+            return;
+        }
         //底部数据
         Api.getInstance().queryGroupProductList()
                 .compose(RxUtil.<ResultEntity<List<GroupProductBean>>>io2main())
@@ -223,6 +221,9 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
      * 柱状图数据
      */
     public void requestChartData(Calendar calendar) {
+        if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
+            return;
+        }
         //获取时间区间
         String start;
         String end;
@@ -281,6 +282,9 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
      * 请求列表数据
      */
     public void requestListData(Calendar calendar) {
+        if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
+            return;
+        }
         //获取时间区间
         String time;
         final String timeTitleTop;

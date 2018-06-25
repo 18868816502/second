@@ -112,13 +112,6 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_forms_text)
     TextView tabFormsText;
 
-    @BindView(R.id.tv_tab_account_notice)
-    MarqueeTextView mNotice;
-
-    @BindView(R.id.iv_ac_main_notice_cross)
-    ImageView mNoticeCross;
-    @BindView(R.id.ll_ac_main_notice_root)
-    LinearLayout mRoot;
 
     @BindView(R.id.iv_bill_add_buttom)
     ImageView mAddBill;
@@ -285,47 +278,6 @@ public class MainActivity extends BaseComponentActivity {
          */
         queryBottomImage();
 
-        /**
-         * 查询公告
-         */
-        Api.getInstance().getNewNotice().compose(RxUtil.<ResultEntity<LastNoticeBean>>io2main())
-                .subscribe(new Consumer<ResultEntity<LastNoticeBean>>() {
-                               @Override
-                               public void accept(ResultEntity<LastNoticeBean> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (!result.getData().getId().equals(SPUtils.getValue(MainActivity.this, result.getData().getId()))) {
-                                           mRoot.setVisibility(View.VISIBLE);
-                                           mNotice.setText(result.getData().getExplain());
-                                           mNoticeId = result.getData().getId();
-                                           mNotice.setFocusable(true);
-                                           mNotice.setFocusableInTouchMode(true);
-                                       }
-                                   } else {
-                                       Toast.makeText(MainActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(final Throwable throwable) throws Exception {
-
-                            }
-                        });
-
-        /**
-         * 关闭公告并记录最新公告ID
-         */
-        mNoticeCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                    UserAuthorizationActivity.launch(MainActivity.this, null);
-                } else {
-                    mRoot.setVisibility(View.GONE);
-                    SPUtils.setValue(MainActivity.this, mNoticeId);
-                }
-            }
-        });
 
         /**
          * 添加账单
@@ -407,6 +359,10 @@ public class MainActivity extends BaseComponentActivity {
         switch (id) {
             //报表
             case R.id.tab_forms_root:
+                if (UserHelper.getInstance(this).getProfile() == null || UserHelper.getInstance(this).getProfile().getId() == null) {
+                    UserAuthorizationActivity.launch(this, null);
+                    return;
+                }
                 if (tabForm == null) {
                     tabForm = BillLoanAnalysisFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabForm);

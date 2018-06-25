@@ -46,13 +46,27 @@
                 android:textColor="@drawable/x_account_flow_tab_selector" />
         </LinearLayout>
 
-        <ImageView
+        <RelativeLayout
             android:layout_gravity="right"
-            android:id="@+id/iv_tab_fg_news_web_user"
-            android:src="@mipmap/mine_head"
             android:layout_marginRight="15dp"
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp">
+
+            <ImageView
+                android:id="@+id/iv_tab_fg_news_web_user"
+                android:src="@mipmap/mine_head"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/iv_tab_news_red_dot"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/xshape_tab_account_red_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 

@@ -93,6 +93,8 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     //底部根布局  全部还  还部分
     @BindView(R.id.ll_debt_info_foot_root)
     LinearLayout mFootRoot;
+    @BindView(R.id.ll_debt_info_foot_root_line)
+    View mFootRootLine;
     //全部还
     @BindView(R.id.rv_debt_info_foot_set_pay)
     TextView footSetAllPay;
@@ -246,7 +248,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                                    @Override
                                                    public void accept(ResultEntity result) throws Exception {
                                                        if (result.isSuccess()) {
-                                                           header.remarkContent.setText("备注  "+remark);
+                                                           header.remarkContent.setText(remark);
                                                        } else {
                                                            Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                        }
@@ -379,7 +381,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         } else {
             //还款期数 当前期/总期数
             if (debtDetail.getTerm() == -1) {
-                header.debtPayDay.setText("循环");
+                header.debtPayDay.setText(debtDetail.returnedTerm + "/" + "循环");
             } else {
                 header.debtPayDay.setText(debtDetail.returnedTerm + "/" + debtDetail.getTerm());
             }
@@ -405,12 +407,16 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         /**
          * 设置当前期号 index
          */
-        showSetStatus(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1, debtDetail.getRepayPlan().get(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1).getStatus());
+        if (debtDetail.showBill == null || debtDetail.showBill.termNo == null || debtDetail.showBill.termNo > debtDetail.detailList.size()) {
+            showSetStatus(0, 0);
+        } else {
+            showSetStatus(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1, debtDetail.getRepayPlan().get(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1).getStatus());
+        }
 
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : "备注  "+debtDetail.getRemark());
+        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : debtDetail.getRemark());
 
         /**
          * 设置标题
@@ -425,6 +431,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         //先设置底部状态 1 "待还", 2 "已还", 3，"逾期"
         if (debtDetail.showBill.status == 1 || debtDetail.showBill.status == 3) {
             mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
@@ -433,6 +440,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             footSetAllPay.setEnabled(true);
         } else if (debtDetail.showBill.status == 2) {
             mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
@@ -440,6 +448,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             footSetAllPay.setEnabled(true);
         } else {
             mFootRoot.setVisibility(View.GONE);
+            mFootRootLine.setVisibility(View.GONE);
         }
         footSetAllPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -774,11 +783,12 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
          * 判断是一次性还款还是分期还款
          * termType 1 为一次性还款 2 分期还款
          */
-        if (debtDetail.getRepayType()== 1) {
-            finish();
-        } else {
-            presenter.loadDebtDetail(billId);
-        }
+//        if (debtDetail.getRepayType()== 1) {
+//            finish();
+//        } else {
+//            presenter.loadDebtDetail(billId);
+//        }
+        presenter.loadDebtDetail(billId);
     }
 
     @Override

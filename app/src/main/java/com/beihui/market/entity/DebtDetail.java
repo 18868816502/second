@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DebtDetail implements Parcelable {
@@ -105,7 +106,7 @@ public class DebtDetail implements Parcelable {
      */
     public int termNum;
 
-    private List<RepayPlanBean> detailList;
+    public List<RepayPlanBean> detailList = new ArrayList<>();
 
     public DebtDetialShowBillBean showBill;
 
@@ -480,7 +481,7 @@ public class DebtDetail implements Parcelable {
         // 	账单Id
         public String recordId;
         // 期号
-        public int termNo;
+        public Integer termNo;
         // 当期还款日
         public String termRepayDate;
         // 	当期应还

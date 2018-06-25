@@ -24,7 +24,7 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
     private List<LoanBill.Row> dataSet = new ArrayList<>();
 
     private int colorPaid = Color.parseColor("#424251");
-    private int colorUnpaid = Color.parseColor("#ff395e");
+    private int colorUnpaid = Color.parseColor("#909298");
 
     public MyLoanBillDebtAdapter(int layoutResId, int billType) {
         super(layoutResId);
@@ -112,16 +112,16 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         switch (item.getStatus()) {
             case 1://待还
                 helper.setTextColor(R.id.status, colorUnpaid);
-                helper.setText(R.id.status, "待还款");
+                helper.setText(R.id.status, "未还款");
                 break;
             case 2://已还
                 helper.setTextColor(R.id.status, colorPaid);
                 helper.setText(R.id.status, "已还清");
                 break;
-            case 3://逾期
-                helper.setTextColor(R.id.status, colorUnpaid);
-                helper.setText(R.id.status, "待还款");
-                break;
+//            case 3://逾期
+//                helper.setTextColor(R.id.status, colorUnpaid);
+//                helper.setText(R.id.status, "逾期");
+//                break;
             default:
                 helper.setText(R.id.status, "");
         }

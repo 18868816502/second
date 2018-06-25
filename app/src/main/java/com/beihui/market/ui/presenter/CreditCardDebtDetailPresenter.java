@@ -223,7 +223,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     @Override
     public void clickUpdateRemind() {
         if (debtDetail != null) {
-            final int day = debtDetail.getRemind() == -1 ? 1 : -1;
+            final int day = debtDetail.getRemind() == -1 ? 3 : -1;
             Disposable dis = api.updateRemindStatus(userHelper.getProfile().getId(), "2", debtId, day)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {

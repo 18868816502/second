@@ -54,13 +54,9 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     @Override
     public void onStart() {
         super.onStart();
-        if (userHelper.getProfile() != null) {
+        if (userHelper.getProfile() != null && userHelper.getProfile().getId() != null) {
             view.showUserLoginBlock();
 
-            if (debts.size() > 0) {
-                view.showDebtInfo(anAbstract);
-                view.showInDebtList(debts);
-            }
             //获取头信息
             loadDebtAbstract();
             //获取列表信息

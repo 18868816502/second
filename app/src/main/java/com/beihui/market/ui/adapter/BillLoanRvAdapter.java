@@ -88,9 +88,9 @@ public class BillLoanRvAdapter extends RecyclerView.Adapter<BillLoanRvAdapter.Vi
 //            }
         }
         int line;
-        if ((mType == 2 && position < 12) || (mType == 3 && position < 6)) {
+        if ((mType == 2 && position < 11) || (mType == 3 && position < 5)) {
             line = 0;
-        } else if ((mType == 2 && position == 12) || (mType == 3 && position == 6)) {
+        } else if ((mType == 2 && position == 11) || (mType == 3 && position == 5)) {
             line = 1;
         } else {
             line = 2;

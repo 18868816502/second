@@ -90,6 +90,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
     //底部根布局  全部还  还部分
     @BindView(R.id.ll_debt_info_foot_root)
     LinearLayout mFootRoot;
+    @BindView(R.id.ll_debt_info_foot_root_line)
+    View mFootRootLine;
     //全部还
     @BindView(R.id.rv_debt_info_foot_set_pay)
     TextView footSetAllPay;
@@ -232,13 +234,13 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
                     @Override
                     public void onNickNameChanged(final String remark) {
-                        Api.getInstance().updateFastDebtName(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtId, remark)
+                        Api.getInstance().updateFastDebtBillRemark(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtId, remark)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       header.remarkContent.setText("备注  "+remark);
+                                                       header.remarkContent.setText(remark);
                                                        fastDebtDetail.setProjectName(remark);
                                                    } else {
                                                        Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
@@ -336,7 +338,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         } else {
             //还款期数 当前期/总期数
             if (fastDebtDetail.getTerm() == -1) {
-                header.debtPayDay.setText("循环");
+                header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + "循环");
             } else {
                 header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
             }
@@ -361,12 +363,15 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 设置当前期号 index
          */
-        showSetStatus(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1, fastDebtDetail.getDetailList().get(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1).getStatus());
-
+        if (fastDebtDetail.showBill == null || fastDebtDetail.showBill.termNo == null || fastDebtDetail.showBill.termNo > fastDebtDetail.detailList.size()) {
+            showSetStatus(0, 0);
+        } else {
+            showSetStatus(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1, fastDebtDetail.getDetailList().get(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1).getStatus());
+        }
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : "备注  "+fastDebtDetail.getProjectName());
+        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : fastDebtDetail.getRemark());
 
         /**
          * 设置标题
@@ -394,6 +399,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
          */
         //先设置底部状态 1 "待还", 2 "已还", 3，"逾期"
         if (fastDebtDetail.showBill.status == 1 || fastDebtDetail.showBill.status == 3) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
@@ -401,6 +408,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             footSetPartPay.setText("还部分");
             footSetAllPay.setEnabled(true);
         } else if (fastDebtDetail.showBill.status == 2) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
@@ -408,6 +417,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             footSetAllPay.setEnabled(true);
         } else {
             mFootRoot.setVisibility(View.GONE);
+            mFootRootLine.setVisibility(View.GONE);
         }
 
         /**
@@ -454,7 +464,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         this.index = index;
 
         //先设置底部状态 1 "待还", 2 "已还",
+        if (newStatus == 0) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
+            mFootRoot.setVisibility(View.GONE);
+            mFootRootLine.setVisibility(View.GONE);
+        }
+
         if (newStatus == 1) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
@@ -462,6 +481,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             footSetAllPay.setEnabled(true);
         }
         if (newStatus == 2) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
@@ -469,6 +490,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         }
 
         if (newStatus == 3) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
@@ -625,7 +648,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * 更新还款提醒
      */
     private void clickUpdateRemind() {
-        final int remind = fastDebtDetail.getRemind() == -1 ? 1 : -1;
+        final int remind = fastDebtDetail.getRemind() == -1 ? 3 : -1;
         Api.getInstance().updateRemindStatus(UserHelper.getInstance(this).getProfile().getId(), "3", fastDebtDetail.getId(), remind)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
@@ -723,11 +746,12 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
          *
          * 如果是一次性还款则关闭页面 如果是分期付款则刷新数据
          */
-        if (fastDebtDetail.getRepayType()== 1) {
-            finish();
-        } else {
-            loadDebtDetail();
-        }
+//        if (fastDebtDetail.getRepayType()== 1) {
+//            finish();
+//        } else {
+//            loadDebtDetail();
+//        }
+        loadDebtDetail();
     }
 
     @Override

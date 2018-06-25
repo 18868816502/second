@@ -9,11 +9,13 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:src="@drawable/normal_none_pic"
+        android:id="@+id/iv_img"
+        android:src="@drawable/x_bill_no_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/iv_name"
         android:textSize="17sp"
         android:textColor="#424251"
         android:text="没有要还的账单哦"

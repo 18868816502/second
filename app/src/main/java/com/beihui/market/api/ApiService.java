@@ -212,6 +212,8 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/netLoan/updateRemark")
     Observable<ResultEntity> updateLoanDebtBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
 
+
+
     /**
      * 修改网贷账单备注
      */
@@ -263,7 +265,7 @@ public interface ApiService {
      * 获取账单信息摘要
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/unRepayBill")
+    @POST(BASE_PATH_S_FOUR + "/accounting/unRepayBill")
     Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(@Field("userId") String userId, @Field("billType") int billType);
 
     /**
@@ -277,11 +279,11 @@ public interface ApiService {
      * @param pageNo 页码
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/bill/index")
+    @POST(BASE_PATH_S_FOUR + "/accounting/bill/index")
     Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("billStatus") int billStatus, @Field("firstScreen") boolean firstScreen, @Field("billType") int billType, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/bill/index")
+    @POST(BASE_PATH_S_FOUR + "/accounting/bill/index")
     Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("firstScreen") boolean firstScreen, @Field("billType") int billType);
 
 
@@ -294,11 +296,11 @@ public interface ApiService {
      */
 
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/newUpdateRepayStatus")
+    @POST(BASE_PATH_S_FOUR + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("repayAmount") double repayAmount, @Field("status") int status);
 
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/newUpdateRepayStatus")
+    @POST(BASE_PATH_S_FOUR + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
 
 
@@ -341,7 +343,7 @@ public interface ApiService {
      * @desc 首页列表
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/index/v310")
+    @POST(BASE_PATH_S_FOUR + "/accounting/index/v310")
     Observable<ResultEntity<TabAccountBean>> queryTabAccountList(@Field("userId") String userId);
 
     /**
@@ -719,7 +721,7 @@ public interface ApiService {
      * /accounting/myBillList 换成 /accounting/newMyBillList
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/newMyBillList")
+    @POST(BASE_PATH_S_FOUR + "/accounting/newMyBillList")
     Observable<ResultEntity<LoanBill>> fetchLoanBill(@Field("userId") String userId, @Field("billType") int billType, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
@@ -763,7 +765,7 @@ public interface ApiService {
      * 获取账单信息摘要
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/queryBaseLoan")
+    @POST(BASE_PATH_S_FOUR + "/accounting/queryBaseLoan")
     Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(@Field("userId") String userId, @Field("billType") int billType);
 
 
@@ -771,34 +773,34 @@ public interface ApiService {
      * 查询全部记账信息
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/allLoan")
+    @POST(BASE_PATH_S_FOUR + "/accounting/allLoan")
     Observable<ResultEntity<AllDebt>> queryAllDebt(@Field("userId") String userId, @Field("status") int status, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
      * 查询借款记账渠道
      */
-    @POST(BASE_PATH + "/accounting/loanChannels")
+    @POST(BASE_PATH_S_FOUR + "/accounting/loanChannels")
     Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel();
 
     /**
      * 查询网贷平台渠道
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/channels/show")
+    @POST(BASE_PATH_S_FOUR + "/accounting/channels/show")
     Observable<ResultEntity<List<DebtChannel>>> fetchDebtSourceChannel(@Field("appShow") int appShow);
 
     /**
      * 确认记账，保存账单
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/sureRepayPlan")
+    @POST(BASE_PATH_S_FOUR + "/accounting/sureRepayPlan")
     Observable<ResultEntity<PayPlan>> saveDebt(@FieldMap Map<String, Object> params);
 
     /**
      * 确认记账，不返回还款计划，直接插入数据
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/netLoadBill")
+    @POST(BASE_PATH_S_FOUR + "/accounting/netLoadBill")
     Observable<ResultEntity> saveDebtImmediately(@FieldMap Map<String, Object> params);
 
     /**
@@ -810,7 +812,7 @@ public interface ApiService {
     /**
      * 获取银行列表
      */
-    @GET(BASE_PATH + "/accounting/bankList")
+    @GET(BASE_PATH_S_FOUR + "/accounting/bankList")
     Observable<ResultEntity<List<CreditCardBank>>> fetchCreditCardBankList();
 
     /**
@@ -875,7 +877,7 @@ public interface ApiService {
      * recordId 网贷账单Id/信用卡Id/手动账单Id
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/updateRedmine")
+    @POST(BASE_PATH_S_FOUR + "/accounting/updateRedmine")
     Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("type") String type, @Field("recordId") String recordId, @Field("day") int day);
     // channelId 账单Id     cardId  信用卡Id
 //    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("recordId") String recordId, @Field("cardId") String cardId, @Field("day") int day);
@@ -884,35 +886,35 @@ public interface ApiService {
      * 获取首页账单信息
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/indexBillList")
+    @POST(BASE_PATH_S_FOUR + "/accounting/indexBillList")
     Observable<ResultEntity<List<AccountBill>>> fetchAccountBills(@Field("userId") String userId);
 
     /**
      * 更新账单是否在首页显示
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/hide")
+    @POST(BASE_PATH_S_FOUR + "/accounting/hide")
     Observable<ResultEntity> updateDebtVisibility(@Field("userId") String userId, @Field("recordId") String recordId, @Field("type") int type, @Field("hide") int hide);
 
     /**
      * 查询日历模式账单记录月份摘要
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/calendar/tagging")
+    @POST(BASE_PATH_S_FOUR + "/accounting/calendar/tagging")
     Observable<ResultEntity<CalendarAbstract>> fetchCalendarAbstract(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
     /**
      * 查询日历模式账单记录月份趋势
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/calendar/trend")
+    @POST(BASE_PATH_S_FOUR + "/accounting/calendar/trend")
     Observable<ResultEntity<Map<String, Float>>> fetchCalendarTrend(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
     /**
      * 查询日历模式账单记录
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/repayment/billList")
+    @POST(BASE_PATH_S_FOUR + "/accounting/repayment/billList")
     Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
 
@@ -1049,7 +1051,7 @@ public interface ApiService {
      * 网贷账单/信用卡备注更新
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/accounting/updateRemark")
+    @POST(BASE_PATH_S_FOUR + "/accounting/updateRemark")
     Observable<ResultEntity> updateLoanOrCreditCardRemark(@Field("userId") String userId, @Field("remark") String remark, @Field("recordId") String recordId, @Field("type") String type);
 
 

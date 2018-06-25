@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -183,21 +184,38 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
          */
         webView.setWebViewClient(new WebViewClient() {
 
-            // 页面开始加载
+            // url拦截
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                Log.e("xhb", "url--->   " +url);
-                Log.e("xhb", "newsUrl--->   " +newsUrl);
-
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.equals(newsUrl)) {
                     swipeRefreshLayout.setEnabled(true);
+                    return super.shouldOverrideUrlLoading(view, url);
                 } else {
                     swipeRefreshLayout.setEnabled(false);
                     Intent intent = new Intent(mActivity, WebViewActivity.class);
                     intent.putExtra("webViewUrl", URLDecoder.decode(url));
                     mActivity.startActivity(intent);
+                    // 相应完成返回true
+                    return true;
                 }
+            }
+
+
+            // 页面开始加载
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+//                Log.e("xhb", "url--->   " +url);
+//                Log.e("xhb", "newsUrl--->   " +newsUrl);
+//
+//                if (url.equals(newsUrl)) {
+//                    swipeRefreshLayout.setEnabled(true);
+//                } else {
+//                    swipeRefreshLayout.setEnabled(false);
+//                    Intent intent = new Intent(mActivity, WebViewActivity.class);
+//                    intent.putExtra("webViewUrl", URLDecoder.decode(url));
+//                    mActivity.startActivity(intent);
+//                }
             }
 
             // 页面加载完成

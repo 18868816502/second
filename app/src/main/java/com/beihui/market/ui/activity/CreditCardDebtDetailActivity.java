@@ -463,7 +463,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
              * 备注内容
              */
             if (!TextUtils.isEmpty(debtDetail.remark)) {
-                header.tvRemark.setText(TextUtils.isEmpty(debtDetail.remark)? "备注" : "备注  "+debtDetail.remark);
+                header.tvRemark.setText(TextUtils.isEmpty(debtDetail.remark)? "备注" : debtDetail.remark);
             }
 
             if (showBill != null) {
@@ -537,7 +537,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                                            @Override
                                                            public void accept(ResultEntity result) throws Exception {
                                                                if (result.isSuccess()) {
-                                                                   header.tvRemark.setText("备注  "+remark);
+                                                                   header.tvRemark.setText(remark);
                                                                } else {
                                                                    Toast.makeText(CreditCardDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                                }

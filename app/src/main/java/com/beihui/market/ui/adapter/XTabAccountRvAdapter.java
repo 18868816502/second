@@ -33,6 +33,7 @@ import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.event.InsideViewPagerBus;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
@@ -48,10 +49,12 @@ import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
+import com.beihui.market.view.MarqueeTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -59,6 +62,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,12 +91,17 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
     //剔除已还的数据源
     private List<TabAccountNewBean.TabAccountNewInfoBean> unPayeset = new ArrayList<>();
 
-    public boolean showAll = true;
+    //公告内容
+    public String mNoticeContent = null;
+    public String mNoticeId = null;
+
+    public boolean showAll = false;
 
     private DebtAbstract debtAbstract = null;
 
     public static final int VIEW_NORMAL = R.layout.xitem_tab_account_info;
     public static final int VIEW_HEADER = R.layout.xlayout_fg_tab_account_head;
+    public static final int VIEW_NO_DATA = R.layout.xlayout_fg_tab_account_no_account;
 
     public Activity mActivity;
     public Fragment mFragment;
@@ -128,17 +138,44 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mHeaderAccountNum.setVisibility(View.VISIBLE);
                 holder.mHeaderAccountNum.setText("共"+ CommonUtils.keepWithoutZero(debtAbstract.last30DayStayStillCount)+"笔");
                 holder.mHeaderWaitPay.setText(CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()));
+
+                if (TextUtils.isEmpty(mNoticeContent)) {
+                    holder.mHeaderNoticeRoot.setVisibility(View.GONE);
+                } else {
+                    holder.mHeaderNoticeRoot.setVisibility(View.VISIBLE);
+                    holder.mHeaderNoticeContent.setText(mNoticeContent);
+                    holder.mHeaderNoticeContent.setFocusable(true);
+                    holder.mHeaderNoticeContent.setFocusableInTouchMode(true);
+                }
             } else {
-                holder.mHeaderAccountNum.setVisibility(View.GONE);
-                holder.mHeaderWaitPay.setText("赶紧先记上一笔");
+                holder.mHeaderNoticeRoot.setVisibility(View.GONE);
+                holder.mHeaderAccountNum.setVisibility(View.VISIBLE);
+                holder.mHeaderWaitPay.setText("暂无账单");
+                holder.mHeaderAccountNum.setText("共0笔");
             }
+
+           /**
+            * 关闭公告并记录最新公告ID
+            */
+           holder.mHeaderNoticeCross.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   if (UserHelper.getInstance(mActivity).getProfile() == null || UserHelper.getInstance(mActivity).getProfile().getId() == null) {
+                       UserAuthorizationActivity.launch(mActivity, null);
+                   } else {
+                       holder.mHeaderNoticeRoot.setVisibility(View.GONE);
+                       SPUtils.setValue(mActivity, mNoticeId);
+                   }
+               }
+           });
 
             //是否隐藏已还
             holder.mHeaderSort.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
+                    if (UserHelper.getInstance(mActivity).getProfile() == null || UserHelper.getInstance(mActivity).getProfile().getId() == null) {
                         UserAuthorizationActivity.launch(mActivity, null);
+                        return;
                     }
                     if ("全部".equals(holder.mHeaderSortType.getText().toString())) {
                         if (dataSet.size() > 0) {
@@ -158,6 +195,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     notifyDataSetChanged();
                 }
             });
+       } else if (holder.viewType == VIEW_NO_DATA) {
+
        } else {
            final int position = i - 1;
            final TabAccountNewBean.TabAccountNewInfoBean accountBill = dataSet.get(position);
@@ -212,11 +251,11 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
            } else {
                //非示例数据
 
-               if (accountBill.getStatus() == 5) {
-                   holder.swipeMenuLayout.setSwipeEnable(false);
-               } else {
-                   holder.swipeMenuLayout.setSwipeEnable(true);
-               }
+//               if (accountBill.getStatus() == 2) {
+//                   holder.swipeMenuLayout.setSwipeEnable(false);
+//               } else {
+//                   holder.swipeMenuLayout.setSwipeEnable(true);
+//               }
 
                int placeHolder;
                if (accountBill.getType() == 1) {
@@ -244,18 +283,18 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                //当期应还
                holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
                //还款周期
-               if (accountBill.getTotalTerm() == null || accountBill.getTotalTerm() == -1) {
-                   holder.mAccountTypeTerm.setVisibility(View.GONE);
+               StringBuilder builder = new StringBuilder();
+               if (accountBill.getType() == 2) {
+                   builder.append(accountBill.getMonth() + "月");
                } else {
-                   StringBuilder builder = new StringBuilder();
-                   if (accountBill.getType() == 2) {
-                       builder.append(accountBill.getMonth() + "月");
+                   if (accountBill.getTotalTerm() == null || accountBill.getTotalTerm() == -1) {
+                       builder.append("循环");
                    } else {
                        builder.append(accountBill.getTerm() + "/").append(accountBill.getTotalTerm() + "");
                    }
-                   holder.mAccountTypeTerm.setVisibility(View.VISIBLE);
-                   holder.mAccountTypeTerm.setText(builder.toString());
                }
+               holder.mAccountTypeTerm.setVisibility(View.VISIBLE);
+               holder.mAccountTypeTerm.setText(builder.toString());
 
                if (accountBill.headerStatus == null || (position > 0 && dataSet.get(position-1).getStatus() == 2)) {
                    holder.mTopRoot.setVisibility(View.GONE);
@@ -271,8 +310,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                        holder.mCountName.setVisibility(View.VISIBLE);
                        holder.mCount.setVisibility(View.VISIBLE);
                        holder.mCountRight.setVisibility(View.VISIBLE);
+                       holder.mCountRight.setText("笔");
                        holder.mCountName.setText("共");
-                       holder.mCount.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getTotalTerm()));
+                       holder.mCount.setText(accountBill.count+"");
                        holder.mCount.setTextColor(Color.parseColor("#909298"));
 
                        holder.mDateName.setText("已还清");
@@ -283,8 +323,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                        holder.mCount.setVisibility(View.VISIBLE);
                        holder.mCountRight.setVisibility(View.VISIBLE);
                        holder.mCountName.setText("逾期");
-                       holder.mCount.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getTotalTerm()));
+                       holder.mCount.setText(Math.abs(accountBill.returnDay)+"");
                        holder.mCount.setTextColor(Color.RED);
+                       holder.mCountRight.setText("天");;
 
                        /**
                         * 逾期时间
@@ -317,8 +358,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                        holder.mCountRight.setVisibility(View.GONE);
 
                        /**
-                        * 逾期时间
-                        */
+                       * 逾期时间
+                       */
                        getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay());
                    }
                }
@@ -329,19 +370,44 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 * 如果是信用卡 只有已还
                 * 账单类型 1-网贷 2-信用卡
                 */
-               if (accountBill.getType() == 1) {
-                   //显示还部分
-                   holder.payPart.setVisibility(View.VISIBLE);
-               }
-               if (accountBill.getType() == 2) {
+               holder.swipeMenuLayout.setSwipeEnable(true);
+               if (accountBill.getStatus() == 2) {
                    //隐藏还部分
+                   holder.setPay.setVisibility(View.VISIBLE);
                    holder.payPart.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.GONE);
+               } else if (accountBill.getStatus() == 5) {
+                   //隐藏还部分
+                   holder.setPay.setVisibility(View.GONE);
+                   holder.payPart.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.GONE);
+               }else {
+                   holder.setPay.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.VISIBLE);
+                   if (accountBill.getType() == 1 || accountBill.getType() == 3) {
+                       //显示还部分
+                       holder.payPart.setVisibility(View.VISIBLE);
+                   }
+                   if (accountBill.getType() == 2) {
+                       //隐藏还部分
+                       holder.payPart.setVisibility(View.GONE);
+                   }
                }
+
+               holder.setPay.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       //设置为未还
+                       showSetAllPayDialog(accountBill, 1);
+                       holder.swipeMenuLayout.smoothClose();
+                   }
+               });
 
                holder.payAll.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       showSetAllPayDialog(accountBill);
+                       showSetAllPayDialog(accountBill, 2);
+                       holder.swipeMenuLayout.smoothClose();
                    }
                });
 
@@ -437,6 +503,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                    }
                                });
                        dialog.show(((MainActivity) mActivity).getSupportFragmentManager(), "paypart");
+                       holder.swipeMenuLayout.smoothClose();
                    }
                });
 
@@ -480,40 +547,49 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
        }
     }
 
+
     private void getDeteName(TextView mDateName, String replyTime, int returnDay, int status, int outBillDay) {
-        if (status == 1 || status == 2 || status == 3) {
-            if (returnDay == 0) {
-                mDateName.setText("今天");
-                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            } else if (returnDay < 0) {
-                mDateName.setText("逾期" + Math.abs(returnDay) + "天");
-                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            } else if (returnDay <= 30) {
-                mDateName.setText(Math.abs(returnDay) + "天后还款");
-                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            } else if (returnDay > 30) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DAY_OF_MONTH, returnDay);
-                int month = calendar.get(Calendar.MONTH) + 1;
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                mDateName.setText(month + "月" + day + "日");
-                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            }
-        }
-        if (status == 4) {
-            mDateName.setText("已出账");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }
-        if (status == 5) {
-            mDateName.setText(outBillDay+"天后出账");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }
+//        if (status == 1 || status == 2 || status == 3) {
+//            if (returnDay == 0) {
+//                mDateName.setText("今天");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+//            } else if (returnDay < 0) {
+//                mDateName.setText("逾期" + Math.abs(returnDay) + "天");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//            } else if (returnDay <= 30) {
+//                mDateName.setText(Math.abs(returnDay) + "天后还款");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//            } else if (returnDay > 30) {
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.add(Calendar.DAY_OF_MONTH, returnDay);
+//                int month = calendar.get(Calendar.MONTH) + 1;
+//                int day = calendar.get(Calendar.DAY_OF_MONTH);
+//                mDateName.setText(month + "月" + day + "日");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//            }
+//        }
+//        if (status == 4) {
+//            mDateName.setText("已出账");
+//            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//        }
+//        if (status == 5) {
+//            mDateName.setText(outBillDay+"天后出账");
+//            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, returnDay);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        mDateName.setText(month + "月" + day + "日");
+        mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+        mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
     }
 
     /**
@@ -524,7 +600,11 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         if (position == 0) {
             return VIEW_HEADER;
         } else {
-            return VIEW_NORMAL;
+            if (dataSet.size() == 0) {
+                return VIEW_NO_DATA;
+            } else {
+                return VIEW_NORMAL;
+            }
         }
     }
 
@@ -537,6 +617,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
      */
     @Override
     public int getItemCount() {
+        if (dataSet.size() == 0) {
+            return 2;
+        }
         return dataSet.size()+1;
     }
 
@@ -545,7 +628,24 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
      */
     public void notifyHeaderData(DebtAbstract debtAbstract){
         this.debtAbstract = debtAbstract;
-        notifyItemChanged(0);
+        if (debtAbstract != null) {
+            notifyItemChanged(0);
+        } else {
+            notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 更新公告
+     */
+    public void notifyNoticeData(String content, String id){
+        mNoticeContent = content;
+        mNoticeId = id;
+        if (!TextUtils.isEmpty(mNoticeContent)) {
+            notifyItemChanged(0);
+        } else {
+            notifyDataSetChanged();
+        }
     }
 
     /**
@@ -568,6 +668,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         if (dataSet.size() > 0) {
             dataSet.clear();
         }
+        if (dataSetCopy.size() > 0) {
+            dataSetCopy.clear();
+        }
+        if (unPayeset.size() > 0) {
+            unPayeset.clear();
+        }
 
         ArrayList<TabAccountNewBean.TabAccountNewInfoBean> tempList = new ArrayList<>();
         ListIterator<TabAccountNewBean> iterator = list.listIterator();
@@ -589,7 +695,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             }
         }
         if (tempList.size() > 0) {
-            dataSet.addAll(0, tempList);
+            dataSet.addAll(0, unPayeset);
             dataSetCopy.addAll(0, tempList);
             notifyDataSetChanged();
         }
@@ -597,9 +703,11 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
 
     /**
+     * 设置为未还
      * 设为已还
+     * status	否	int	状态 1-待还 2-已还
      */
-    private void showSetAllPayDialog(final TabAccountNewBean.TabAccountNewInfoBean accountBill) {
+    private void showSetAllPayDialog(final TabAccountNewBean.TabAccountNewInfoBean accountBill, final int status) {
         final Dialog dialog = new Dialog(mActivity, 0);
         View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -611,7 +719,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
                     //1-网贷 2-信用卡
                     if (accountBill.getType() == 1) {
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), 2)
+                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), status)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
@@ -635,7 +743,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                         });
                     }
                     if (accountBill.getType() == 2) {
-                        Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), 2)
+                        Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), status)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
@@ -663,7 +771,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                      * 快捷账单
                      */
                     if (accountBill.getType() == 3) {
-                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), 2, null)
+                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), status, null)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
@@ -692,6 +800,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
         dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
         ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
+        ((TextView) dialogView.findViewById(R.id.content)).setVisibility(View.GONE);
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
@@ -720,12 +829,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         public LinearLayout mHeaderSort;
         public TextView mHeaderSortType;
 
-
+        public LinearLayout mHeaderNoticeRoot;
+        public MarqueeTextView mHeaderNoticeContent;
+        public ImageView mHeaderNoticeCross;
 
         public CustomSwipeMenuLayout swipeMenuLayout;
         public RelativeLayout mTopRoot;
         public LinearLayout payPart;
         public LinearLayout payAll;
+        public LinearLayout setPay;
 
         public ImageView mAvatar;
         public ImageView mDot;
@@ -750,12 +862,16 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 mHeaderWaitPay = (TextView) itemView.findViewById(R.id.tv_last_one_month_wait_pay);
                 mHeaderSort = (LinearLayout) itemView.findViewById(R.id.ll_tab_account_header_sort);
                 mHeaderSortType = (TextView) itemView.findViewById(R.id.tv_tab_account_header_sort);
+                mHeaderNoticeRoot = (LinearLayout) itemView.findViewById(R.id.ll_ac_main_notice_root);
+                mHeaderNoticeContent = (MarqueeTextView) itemView.findViewById(R.id.tv_tab_account_notice);
+                mHeaderNoticeCross = (ImageView) itemView.findViewById(R.id.iv_ac_main_notice_cross);
 
             } else {
                 swipeMenuLayout = (CustomSwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
                 mTopRoot = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_account_normal_top_root);
                 payPart = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_account_no_reply);
                 payAll = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_account_reply);
+                setPay = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_accoun_set_pay);
                 mAvatar = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_avatar);
                 mDot = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_dot);
                 mDateName = (TextView) itemView.findViewById(R.id.tv_item_tab_account_date_name);

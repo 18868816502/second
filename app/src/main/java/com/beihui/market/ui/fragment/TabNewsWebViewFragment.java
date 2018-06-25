@@ -34,7 +34,9 @@ import android.widget.Toast;
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
@@ -48,8 +50,10 @@ import com.beihui.market.ui.activity.TabMineActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
+import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.RxUtil;
 import com.beihui.market.view.BusinessWebView;
 import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.GlideCircleTransform;
@@ -68,6 +72,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.xiaoneng.uiapi.Ntalker;
+import io.reactivex.functions.Consumer;
 
 /**
  * @date 20180419
@@ -87,6 +92,8 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     TextView activityName;
     @BindView(R.id.iv_tab_fg_news_web_user)
     ImageView mUserAvatar;
+    @BindView(R.id.iv_tab_news_red_dot)
+    ImageView mRedDot;
     @BindView(R.id.fl_tab_news_web_container)
     NoScrollViewPager viewPager;
 
@@ -110,13 +117,14 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @Subscribe
     public void onLogin(UserLoginEvent event) {
         if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
-            Glide.with(mActivity).load(UserHelper.getInstance(mActivity).getProfile().getHeadPortrait()).bitmapTransform(new GlideCircleTransform(mActivity)).placeholder(R.mipmap.mine_head).into(mUserAvatar);
+            updateNum();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(UserLogoutEvent event){
         Glide.with(mActivity).load(R.mipmap.mine_head).into(mUserAvatar);
+        mRedDot.setVisibility(View.GONE);
     }
 
     @Override
@@ -140,11 +148,16 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             newsTitleName.setText(event.title);
             mTitleName = event.title;
         }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
             Glide.with(mActivity).load(UserHelper.getInstance(mActivity).getProfile().getHeadPortrait()).bitmapTransform(new GlideCircleTransform(mActivity)).placeholder(R.mipmap.mine_head).into(mUserAvatar);
         }
     }
-
 
     public static TabNewsWebViewFragment newInstance() {
         return new TabNewsWebViewFragment();
@@ -225,6 +238,41 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             }
         });
 
+       if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
+            updateNum();
+        }
+    }
+
+
+    /**
+     * 更新消息数量
+     */
+    private void updateNum() {
+        Api.getInstance().queryMessage(UserHelper.getInstance(mActivity).getProfile().getId())
+                .compose(RxUtil.<ResultEntity<String>>io2main())
+                .subscribe(new Consumer<ResultEntity<String>>() {
+                               @Override
+                               public void accept(ResultEntity<String> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                        String data = result.getData();
+                                       if (TextUtils.isEmpty(data)) {
+                                           mRedDot.setVisibility(View.GONE);
+                                       } else if (Integer.parseInt(data) > 0) {
+                                           mRedDot.setVisibility(View.VISIBLE);
+                                       } else if (Integer.parseInt(data) <= 0) {
+                                           mRedDot.setVisibility(View.GONE);
+                                       } else {
+                                           mRedDot.setVisibility(View.GONE);
+                                       }
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+                            }
+                        });
     }
 
     /**

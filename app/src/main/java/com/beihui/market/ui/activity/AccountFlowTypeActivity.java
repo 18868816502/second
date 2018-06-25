@@ -71,6 +71,7 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
     private List<AccountFlowIconBean> list = null;
 
     private String mTypeIconId = null;
+    private String mTallyType = null;
 
     public AccountFlowIconBean bean = null;
 
@@ -137,6 +138,7 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
                                                Glide.with(AccountFlowTypeActivity.this).load(list.get(0).logo).into(mTypeIcon);
                                                AccountFlowTypeActivity.this.bean = list.get(0);
                                                mTypeIconId = list.get(0).iconId;
+                                               mTallyType = list.get(0).tallyId;
                                            }
                                            mAdapter.notifyDebtChannelChanged(list);
                                        }
@@ -157,6 +159,7 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
             public void onItemClick(AccountFlowIconBean bean) {
                 AccountFlowTypeActivity.this.bean = bean;
                 mTypeIconId = bean.iconId;
+                mTallyType = bean.tallyId;
                 Glide.with(AccountFlowTypeActivity.this).load(bean.logo).into(mTypeIcon);
             }
         });

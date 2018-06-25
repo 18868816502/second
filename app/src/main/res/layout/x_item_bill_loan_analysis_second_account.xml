@@ -4,25 +4,31 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="#fff5f5f5"
-    android:paddingTop="10dp"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:paddingLeft="15dp"
-        android:id="@+id/tv_footer_second_account"
-        android:background="@color/white"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:textStyle="bold"
-        android:text="秒批到账"
-        android:textColor="@color/black_1"
-        android:textSize="15sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_footer_second_account_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:paddingLeft="15dp"
+            android:id="@+id/tv_footer_second_account"
+            android:background="@color/white"
+            android:paddingTop="15dp"
+            android:paddingBottom="30dp"
+            android:textStyle="bold"
+            android:text="秒批到账"
+            android:textColor="@color/black_1"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:paddingBottom="15dp"
-        android:paddingTop="15dp"
         android:background="@color/white"
         android:weightSum="4"
         android:orientation="horizontal"

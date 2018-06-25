@@ -4,7 +4,9 @@ package com.beihui.market.ui.adapter;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.BillDetail;
@@ -99,6 +101,11 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         //账单金额
         holder.setGone(R.id.debt_amount, true);
         holder.setText(R.id.debt_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(bill.getNewBalance()));
+        if (TextUtils.isEmpty(bill.getNewBalance()+"") || bill.getNewBalance() < 0D) {
+            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#4CC99E"));
+        } else {
+            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#424251"));
+        }
         //账单状态
         switch (bill.getStatus()) {
             case 1://待还

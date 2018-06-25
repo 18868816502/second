@@ -16,15 +16,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.event.XTabAccountDialogMoxieFinishEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
@@ -41,18 +45,24 @@ import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.DebtSourceActivity;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
+import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.XTabAccountRvAdapter;
+import com.beihui.market.ui.busevents.UserLoginEvent;
+import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,6 +75,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 import zhy.com.highlight.HighLight;
 
 
@@ -98,6 +109,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @BindView(R.id.rv_fg_tab_account_list)
     PulledTabAccountRecyclerView mRecyclerView;
 
+    @BindView(R.id.fg_tab_account_line)
+    View line;
+
 
     //依附的Activity
     public Activity mActivity;
@@ -122,6 +136,27 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     //上拉与下拉的刷新监听器
     public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
     private LinearLayoutManager manager;
+
+    @Subscribe
+    public void onLogin(UserLoginEvent event) {
+        presenter.onStart();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEvent(UserLogoutEvent event){
+        if (mAdapter != null) {
+            showDebtInfo(null);
+            showInDebtList(new ArrayList<TabAccountNewBean>());
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
 
     /**
      * 统计点击tab事件
@@ -190,45 +225,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             showGuide();
             SPUtils.setValue(mActivity, "showGuideButton1");
         }
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                initMeasure();
-                int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
-                int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
-                mScrollY += dy;
-                //隐藏显示布局的变化率
-                float max = Math.max(mScrollY / height, 0f);
-                if (max > 1) {
-                    max = 1;
-                }
-                //TitleBar背景色透明度
-                mTitle.setBackgroundColor(Color.argb((int) (max * 255), 20, 74, 158));
-                if (max > 0.2f) {
-                    mTitle.setTextColor(Color.argb((int) (max * 255), 255, 255, 255));
-                } else {
-                    mTitle.setTextColor(Color.argb(0, 255, 255, 255));
-                }
-                TextView textViewTitle = (TextView)manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
-                TextView textViewName = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_name);
-                TextView textViewNum = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_num);
-                TextView textViewPay = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay);
-
-//                textViewTitle.setScaleX(1 - max/2);
-//                textViewTitle.setScaleY(1 - max/2);
-//                showScaleAnim(textViewTitle, max/2);
-//                showScaleAnim(textViewPay, max/2);
-
-                int firstPosition = manager.findFirstVisibleItemPosition();
-                if (firstPosition == 0) {
-                    swipeRefreshLayout.setEnabled(true);
-                } else {
-                    swipeRefreshLayout.setEnabled(false);
-                }
-            }
-        });
-
     }
 
 
@@ -317,6 +313,46 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
             }
         });
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                initMeasure();
+                int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
+                int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
+                mScrollY += dy;
+                //隐藏显示布局的变化率
+                float max = Math.max(mScrollY / height, 0f);
+                if (max > 1) {
+                    max = 1;
+                }
+                //TitleBar背景色透明度
+                mTitle.setBackgroundColor(Color.argb((int) (max * 255), 20, 74, 158));
+                if (max > 0.2f) {
+                    mTitle.setTextColor(Color.argb((int) (max * 255), 255, 255, 255));
+                } else {
+                    mTitle.setTextColor(Color.argb(0, 255, 255, 255));
+                }
+                TextView textViewTitle = (TextView)manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
+                TextView textViewName = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_name);
+                TextView textViewNum = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_num);
+                TextView textViewPay = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay);
+
+//                textViewTitle.setScaleX(1 - max/2);
+//                textViewTitle.setScaleY(1 - max/2);
+//                showScaleAnim(textViewTitle, max/2);
+//                showScaleAnim(textViewPay, max/2);
+
+                int firstPosition = manager.findFirstVisibleItemPosition();
+                if (firstPosition == 0) {
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
+
+        queryNotice();
 
     }
 
@@ -415,12 +451,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             infoList.add(analogCard);
 
             bean.list = infoList;
-            list.add(bean);
+//            list.add(bean);
             total = null;
             mAdapter.notifyUnPayChanged(list);
+            line.setVisibility(View.INVISIBLE);
         } else {
             total = list.get(list.size() - 1).total;
             mAdapter.notifyUnPayChanged(list);
+            line.setVisibility(View.VISIBLE);
         }
     }
 
@@ -445,6 +483,34 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         if (mAdapter != null) {
             mAdapter.notifyHeaderData(debtAbstract);
         }
+    }
+
+    /**
+     * 查询公告
+     */
+    public void queryNotice(){
+        /**
+         * 查询公告
+         */
+        Api.getInstance().getNewNotice().compose(RxUtil.<ResultEntity<LastNoticeBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<LastNoticeBean>>() {
+                               @Override
+                               public void accept(ResultEntity<LastNoticeBean> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       if (!result.getData().getId().equals(SPUtils.getValue(mActivity, result.getData().getId()))) {
+                                           mAdapter.notifyNoticeData(result.getData().getExplain(), result.getData().getId());
+                                       }
+                                   } else {
+                                       Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(final Throwable throwable) throws Exception {
+
+                            }
+                        });
     }
 
     /**
@@ -540,6 +606,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 //                                }).show();
 //                    }
 //                });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

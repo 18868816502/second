@@ -195,6 +195,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             Glide.with(activity).load(debtNormalDetail.getLogo()).into(ivCustomIcon);
             isLockEtLoan = true;
             etLoan.setText(debtNormalDetail.getChannelName());
+            etLoan.setSelection(debtNormalDetail.getChannelName().length());
             isLockEtLoan = false;
             //金额
             lockEtInput = true;
@@ -235,9 +236,10 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 e.printStackTrace();
             }
             map.put("firstRepaymentDate", saveDateFormat.format(parse));
-            map.put("cycleType", debtNormalDetail.getTermType());
+            map.put("termType", debtNormalDetail.getTermType());
             map.put("cycle", debtNormalDetail.cycle);
             map.put("term", debtNormalDetail.getTerm());
+            map.put("amount", debtNormalDetail.getTermPayableAmount() + "");
         } else {
             //默认
             map.put("firstRepaymentDate", saveDateFormat.format(new Date()));

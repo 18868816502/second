@@ -113,9 +113,9 @@ public class BillLoanAnalysisFragment extends BaseComponentFragment {
                 mMonth.setSelected(false);
                 mMonthFragment.mAdapter.mShowFirstItemPosition = false;
                 //柱状图数据
-                mMonthFragment.requestChartData(Calendar.getInstance());
+                mWeedFragment.requestChartData(Calendar.getInstance());
                 //请求列表数据
-                mMonthFragment.requestListData(Calendar.getInstance());
+                mWeedFragment.requestListData(Calendar.getInstance());
             }
             if (view.getId() == R.id.tv_ac_bill_loan_analysis_month) {
                 viewPager.setCurrentItem(1);

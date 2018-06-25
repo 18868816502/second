@@ -76,7 +76,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.view.ViewPager
+    <com.beihui.market.view.NoScrollViewPager
         android:id="@+id/fl_ac_account_flow_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
