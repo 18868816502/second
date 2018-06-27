@@ -39,6 +39,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:paddingRight="10dp"
         android:background="@android:color/white">
 
         <com.beihui.market.view.ClearEditText
@@ -47,9 +48,8 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="center_vertical"
-            android:maxLength="20"
+            android:maxLength="16"
             android:paddingLeft="15dp" />
-
 
     </FrameLayout>
 

@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:background="@color/line"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"/>
+
+    <LinearLayout
+
     android:id="@+id/ll_item_normal_loan_analysis_root"
     android:background="@color/white"
     android:gravity="center_vertical"
@@ -29,7 +40,6 @@
         <TextView
             android:id="@+id/tv_item_normal_loan_analysis_name"
             android:text="51借呗"
-            android:textStyle="bold"
             android:maxWidth="200dp"
             android:textColor="@color/black_1"
             android:textSize="16sp"
@@ -75,9 +85,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-
     </LinearLayout>
 
-
+</LinearLayout>
 
 </LinearLayout>

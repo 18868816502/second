@@ -105,6 +105,12 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     @BindView(R.id.tv_fg_first_pay_loan_times)
     TextView mFirstPayNormalTime;
 
+
+    @BindView(R.id.iv_fg_account_flow_normal_remark)
+    ImageView remarkImg;
+    @BindView(R.id.tv_fg_account_flow_normal_remark)
+    TextView remarkContent;
+
     private AccountFlowLoanRvAdapter adapter;
     private AccountFlowLoanSearchAdapter adapterCustomeIcon;
 
@@ -183,7 +189,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         EditTextUtils.addDisableEmojiInputFilter(etLoan);
 
         activity = getActivity();
-        mBottom.setVisibility(View.GONE);
+        mBottom.setVisibility(View.VISIBLE);
 
         adapter = new AccountFlowLoanRvAdapter(R.layout.list_item_debt_channel);
 
@@ -199,7 +205,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             isLockEtLoan = false;
             //金额
             lockEtInput = true;
-            etInputPrice.setText(debtNormalDetail.getTermPayableAmount()+"");
+            BigDecimal bigDecimal = new BigDecimal(debtNormalDetail.getTermPayableAmount());
+            etInputPrice.setText(bigDecimal.toString());
             lockEtInput = false;
 
             mFirstPayLoanDate.setText(debtNormalDetail.getFirstRepayDate());
@@ -219,12 +226,22 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             // 备注
             if (!TextUtils.isEmpty(debtNormalDetail.getRemark())) {
                 remarks = debtNormalDetail.getRemark().split(",");
+                if (debtNormalDetail.getRemark().length() > 4) {
+                    remarkContent.setText(debtNormalDetail.getRemark().substring(0, 4)+"...");
+                } else {
+                    remarkContent.setText(debtNormalDetail.getRemark());
+                }
+                remarkImg.setVisibility(View.GONE);
+                map.put("remark", debtNormalDetail.getRemark());
+            } else {
+                remarkImg.setVisibility(View.VISIBLE);
+                remarkContent.setText("备注");
             }
 
             //图标
             map.put("iconId", debtNormalDetail.iconId);
             //图标标识
-            map.put("tallyId", debtNormalDetail.channelId);
+            map.put("channelId", debtNormalDetail.channelId);
             map.put("tallyType", debtNormalDetail.tallyType);
             //账单名称
             map.put("channelName", debtNormalDetail.getChannelName());
@@ -274,6 +291,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     if (!TextUtils.isEmpty(accountFlowIconBean.remark)) {
                         remarks = accountFlowIconBean.remark.split(",");
                     }
+
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
                 }
             }
         });
@@ -315,10 +334,10 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                    return;
                }
               if (dy > 0) {
+                  customKeyboardManager.hideSoftKeyboard(etInputPrice, 1);
+              } else {
                   //向上滚动  显示自定义键盘
                   customKeyboardManager.showSoftKeyboard(etInputPrice);
-              } else {
-                  customKeyboardManager.hideSoftKeyboard(etInputPrice, 1);
               }
            }
        });
@@ -404,7 +423,13 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
                 //如果是算术运算符
                 if ((primaryCode == 43 || primaryCode == 45) && currentContent.length() > 1) {
-                    if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
+                    if (currentContent.length() == 1) {
+                        if (currentContent.equals("+") ||currentContent.equals("-")) {
+                            return true;
+                        } else {
+                            sum = new BigDecimal(currentContent);
+                        }
+                    }else if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
                         sum = new BigDecimal(currentContent);
                     } else {
                         return true;
@@ -468,6 +493,15 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         customKeyboardManager.attachTo(etInputPrice, priceKeyboard);
         customKeyboardManager.setShowUnderView(mBottom);
 
+        etInputPrice.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (getUserVisibleHint()) {
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                }
+            }
+        }, 100);
+
 
         etLoan.addTextChangedListener(new TextWatcher() {
             @Override
@@ -527,16 +561,22 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                                public void accept(ResultEntity<List<AccountFlowIconBean>> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (result.getData().size() > 0) {
-                                           Glide.with(activity).load(result.getData().get(0).logo).into(ivCustomIcon);
-                                           //图标
-                                           map.put("iconId", result.getData().get(0).iconId);
-                                           //图标标识
-                                           map.put("channelId", result.getData().get(0).tallyId);
-                                           map.put("tallyType", "2");
+                                           /**
+                                        * 判断是否是编辑账单
+                                        */
+                                           if (debtNormalDetail == null) {
 
+                                               Glide.with(activity).load(result.getData().get(0).logo).into(ivCustomIcon);
+                                               //图标
+                                               map.put("iconId", result.getData().get(0).iconId);
+                                               //图标标识
+                                               map.put("channelId", result.getData().get(0).tallyId);
+                                               map.put("tallyType", "2");
 
-                                           if (!TextUtils.isEmpty(result.getData().get(0).remark)) {
-                                               remarks = result.getData().get(0).remark.split(",");
+                                               if (!TextUtils.isEmpty(result.getData().get(0).remark)) {
+                                                   remarks = result.getData().get(0).remark.split(",");
+                                                   map.put("remark", result.getData().get(0).remark);
+                                               }
                                            }
 
                                            if (customReperty.size() > 0) {
@@ -650,7 +690,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     InputMethodUtil.closeSoftKeyboard(activity);
-                    customKeyboardManager.showSoftKeyboard(etInputPrice);
                 }
             }
         });
@@ -706,7 +745,21 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 dialog.setOnTextChangeListener(new AccountFlowRemarkDialog.OnTextChangeListener() {
                     @Override
                     public void textChange(String text) {
+                        if (TextUtils.isEmpty(text)) {
+                            remarkImg.setVisibility(View.VISIBLE);
+                            remarkContent.setText("备注");
+                            if (map.containsKey("remark")) {
+                                map.remove("remark");
+                            }
+                            return;
+                        }
                         map.put("remark", text);
+                        if (text.length() > 4) {
+                            remarkContent.setText(text.substring(0, 4)+"...");
+                        } else {
+                            remarkContent.setText(text);
+                        }
+                        remarkImg.setVisibility(View.GONE);
                     }
                 });
                 break;
@@ -795,7 +848,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 mFirstPayNormalTime.setText(monthLimit + termLimit);
                 mFirstPayNormalTime.setTag(monthLimit + termLimit);
 
-                if (options1 == 11) {
+                if (options1 < 11) {
                     map.put("termType", "2");
                     map.put("cycle", options1+1+"");
                 } else {

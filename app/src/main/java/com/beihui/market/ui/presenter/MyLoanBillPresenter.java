@@ -44,7 +44,7 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
 
     @Override
     public void fetchLoanBill(final int billTyp) {
-        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, billTyp == 1 ? curPage : fastCurPage, PAGE_SIZE)
+        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, billTyp == 0 ? curPage : fastCurPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanBill>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanBill>>() {
                                @Override

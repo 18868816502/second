@@ -192,9 +192,10 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
         if (view.getId() == R.id.iv_ac_account_flow_type_confirm) {
             save();
         } else if (view.getId() == R.id.iv_ac_account_flow_type_back) {
-            TextViewDialog dialog = new TextViewDialog();
-            dialog.setName("退出本次编辑?");
-            dialog.show(getSupportFragmentManager(), "textViewDialog");
+//            TextViewDialog dialog = new TextViewDialog();
+//            dialog.setName("退出本次编辑?");
+//            dialog.show(getSupportFragmentManager(), "textViewDialog");
+            finish();
         }
     }
 
@@ -230,12 +231,7 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
                         });
     }
 
-    @Override
-    public void onBackPressed() {
-        TextViewDialog dialog = new TextViewDialog();
-        dialog.setName("退出本次编辑?");
-        dialog.show(getSupportFragmentManager(), "textViewDialog");
-    }
+
 
     @Override
     protected void configureComponent(AppComponent appComponent) {

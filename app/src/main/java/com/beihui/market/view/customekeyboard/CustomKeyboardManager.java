@@ -39,12 +39,12 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
     private Context mContext;
     private ViewGroup mRootView;
     private FrameLayout mKeyboardViewContainer;
-    private KeyboardView mKeyboardView;
+    public KeyboardView mKeyboardView;
     private int mKeyboardHeight;
     private FrameLayout.LayoutParams mKeyboardViewLayoutParams;
     private View mShowUnderView;
     private View etFocusScavenger;
-    private CustomBaseKeyboard.CustomKeyStyle defaultCustomKeyStyle = new CustomBaseKeyboard.SimpleCustomKeyStyle();
+    public CustomBaseKeyboard.CustomKeyStyle defaultCustomKeyStyle = new CustomBaseKeyboard.SimpleCustomKeyStyle();
 
     public CustomKeyboardManager(Activity activity) {
         mContext = activity;
@@ -198,9 +198,13 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
             mShowUnderView.setLayoutParams(layoutParams);
         }
         mRootView.removeView(mKeyboardViewContainer); //将键盘从根布局中移除.
-        if (type == 1) {
-            mShowUnderView.setVisibility(View.GONE);
-        }
+
+        /**
+         * 键盘上的布局显示 不区分通用记账和网贷记账
+         */
+//        if (type == 1) {
+//            mShowUnderView.setVisibility(View.GONE);
+//        }
         isShow = false;
 
         mKeyboardViewContainer.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.up_to_hide));

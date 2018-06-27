@@ -22,6 +22,7 @@ import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
+import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardBean;
@@ -177,7 +178,7 @@ public class Api {
      * 创建通用账单
      * @version 4.0.0
      */
-    public Observable<ResultEntity> createNormalAccount(Map<String, Object> params) {
+    public Observable<ResultEntity<CreateAccountReturnIDsBean>> createNormalAccount(Map<String, Object> params) {
         return service.createNormalAccount(params);
     }
 
@@ -185,7 +186,7 @@ public class Api {
      * 创建通用账单
      * @version 4.0.0
      */
-    public Observable<ResultEntity> createLoanAccount(Map<String, Object> params) {
+    public Observable<ResultEntity<CreateAccountReturnIDsBean>> createLoanAccount(Map<String, Object> params) {
         return service.createLoanAccount(params);
     }
 

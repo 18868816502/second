@@ -12,6 +12,7 @@ import com.beihui.market.R;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.ui.adapter.multipleentity.CreditCardDebtDetailMultiEntity;
+import com.beihui.market.util.FormatNumberUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -100,9 +101,10 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         }
         //账单金额
         holder.setGone(R.id.debt_amount, true);
-        holder.setText(R.id.debt_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(bill.getNewBalance()));
+        holder.setText(R.id.debt_amount, String.valueOf((char) 165) + FormatNumberUtils.FormatNumberFor2(bill.getNewBalance()));
         if (TextUtils.isEmpty(bill.getNewBalance()+"") || bill.getNewBalance() < 0D) {
-            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#4CC99E"));
+//            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#4CC99E"));
+            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#424251"));
         } else {
             ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#424251"));
         }
@@ -224,7 +226,12 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
             }
         }
         //金额
-        holder.setText(R.id.detail_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(detail.getAmountMoney()));
+        if (TextUtils.isEmpty(detail.getAmountMoney()+"") || detail.getAmountMoney() < 0D) {
+            ((TextView)holder.getView(R.id.detail_amount)).setTextColor(Color.parseColor("#4CC99E"));
+        } else {
+            ((TextView)holder.getView(R.id.detail_amount)).setTextColor(Color.parseColor("#424251"));
+        }
+        holder.setText(R.id.detail_amount, String.valueOf((char) 165) + FormatNumberUtils.FormatNumberFor2(detail.getAmountMoney()));
     }
 
     public void expandMonthBill(int index) {

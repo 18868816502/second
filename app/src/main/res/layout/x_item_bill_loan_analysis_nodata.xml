@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:gravity="center"
     android:paddingBottom="40dp"
     android:paddingTop="30dp"
@@ -10,7 +10,8 @@
 
     <ImageView
         android:id="@+id/iv_img"
-        android:src="@drawable/x_bill_no_data"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/bill_particulars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -18,7 +19,7 @@
         android:id="@+id/iv_name"
         android:textSize="17sp"
         android:textColor="#424251"
-        android:text="没有要还的账单哦"
+        android:text="暂无记录"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

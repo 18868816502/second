@@ -248,7 +248,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                                    @Override
                                                    public void accept(ResultEntity result) throws Exception {
                                                        if (result.isSuccess()) {
-                                                           header.remarkContent.setText(remark);
+                                                           header.remarkContent.setText("备注  "+remark);
                                                        } else {
                                                            Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                        }
@@ -407,16 +407,17 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         /**
          * 设置当前期号 index
          */
-        if (debtDetail.showBill == null || debtDetail.showBill.termNo == null || debtDetail.showBill.termNo > debtDetail.detailList.size()) {
-            showSetStatus(0, 0);
-        } else {
-            showSetStatus(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1, debtDetail.getRepayPlan().get(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1).getStatus());
-        }
+//        if (debtDetail.showBill == null || debtDetail.showBill.termNo == null || debtDetail.showBill.termNo > debtDetail.detailList.size()) {
+//            showSetStatus(0, 0);
+//        } else {
+//            showSetStatus(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1, debtDetail.getRepayPlan().get(debtDetail.showBill.termNo <= 0 ? 0 : debtDetail.showBill.termNo - 1).getStatus());
+//        }
+        showSetStatus(0, debtDetail.getRepayPlan().get(0).getStatus());
 
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : debtDetail.getRemark());
+        header.remarkContent.setText(TextUtils.isEmpty(debtDetail.getRemark())? "备注" : "备注  "+debtDetail.getRemark());
 
         /**
          * 设置标题
@@ -773,6 +774,42 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         intent.putExtra("debt_type", "1");
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EDIT && requestCode == 1 && data != null) {
+            debtId = data.getStringExtra("recordId");
+            billId = data.getStringExtra("billId");
+            loadDebtDetail(debtId, billId);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void loadDebtDetail(String debtId, String billId) {
+
+        Api.getInstance().fetchLoanDebtDetail(UserHelper.getInstance(this).getProfile().getId(), debtId, billId)
+                .compose(RxUtil.<ResultEntity<DebtDetail>>io2main())
+                .subscribe(new Consumer<ResultEntity<DebtDetail>>() {
+                               @Override
+                               public void accept(ResultEntity<DebtDetail> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       debtDetail = result.getData();
+                                       if (debtDetail != null) {
+                                           showDebtDetail(debtDetail);
+                                       }
+                                   } else {
+                                       showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
+                            }
+                        });
+    }
+
 
     /**
      * 设置已还 刷新数据

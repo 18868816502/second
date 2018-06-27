@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.view.multiChildHistogram.SingleChartView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -95,7 +96,7 @@ public class BillLoanRvAdapter extends RecyclerView.Adapter<BillLoanRvAdapter.Vi
         } else {
             line = 2;
         }
-        holder.singleChartView.notifyChartColor(chartHeidht, leftHeight, rightHeight,analysisChartBean.showAmount + "", mList.get(position).isSelect, line);
+        holder.singleChartView.notifyChartColor(chartHeidht, leftHeight, rightHeight, analysisChartBean.showAmount, mList.get(position).isSelect, line);
 
         //底部文字
         String[] split = analysisChartBean.getTime().split("-");

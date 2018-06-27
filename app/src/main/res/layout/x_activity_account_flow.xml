@@ -35,8 +35,12 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:id="@+id/ll_ac_account_flow_tab_root"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -57,8 +61,8 @@
                 android:layout_width="66dp"
                 android:layout_height="29dp"
                 android:background="@drawable/help_feed_middle"
-                android:layout_marginLeft="-1dp"
-                android:layout_marginRight="-1dp"
+                android:layout_marginLeft="-0.5dp"
+                android:layout_marginRight="-0.5dp"
                 android:gravity="center"
                 android:text="网贷"
                 android:textColor="@drawable/x_account_flow_tab_selector" />
@@ -75,6 +79,11 @@
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
+
+    <View
+        android:background="@color/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
 
     <com.beihui.market.view.NoScrollViewPager
         android:id="@+id/fl_ac_account_flow_container"

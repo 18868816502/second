@@ -240,8 +240,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       header.remarkContent.setText(remark);
-                                                       fastDebtDetail.setProjectName(remark);
+                                                       header.remarkContent.setText("备注  "+remark);
                                                    } else {
                                                        Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -363,15 +362,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         /**
          * 设置当前期号 index
          */
-        if (fastDebtDetail.showBill == null || fastDebtDetail.showBill.termNo == null || fastDebtDetail.showBill.termNo > fastDebtDetail.detailList.size()) {
-            showSetStatus(0, 0);
-        } else {
-            showSetStatus(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1, fastDebtDetail.getDetailList().get(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1).getStatus());
-        }
+//        if (fastDebtDetail.showBill == null || fastDebtDetail.showBill.termNo == null || fastDebtDetail.showBill.termNo > fastDebtDetail.detailList.size()) {
+//            showSetStatus(0, 0);
+//        } else {
+//            showSetStatus(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1, fastDebtDetail.getDetailList().get(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1).getStatus());
+//        }
+        showSetStatus(0, fastDebtDetail.getDetailList().get(0).getStatus());
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : fastDebtDetail.getRemark());
+        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : "备注  "+fastDebtDetail.getRemark());
 
         /**
          * 设置标题
@@ -734,6 +734,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         intent.putExtra("debt_detail", fastDebtDetail);
         intent.putExtra("debt_type", "0");
         startActivityForResult(intent, REQUEST_CODE_EDIT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EDIT && requestCode == 1 && data != null) {
+            debtId = data.getStringExtra("recordId");
+            billId = data.getStringExtra("billId");
+            loadDebtDetail();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**

@@ -55,7 +55,7 @@
 
             <TextView
                 android:id="@+id/rv_fg_tab_account_title"
-                android:background="#00144A9E"
+                android:background="@drawable/small_nav_bg"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:gravity="center"

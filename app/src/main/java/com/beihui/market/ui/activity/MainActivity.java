@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -20,7 +21,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +32,6 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
-import com.beihui.market.entity.LastNoticeBean;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.request.RequestConstants;
@@ -46,17 +45,16 @@ import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.BillLoanAnalysisFragment;
-import com.beihui.market.ui.fragment.BillLoanAnalysisFragmentWeek;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.view.BottomNavigationBar;
-import com.beihui.market.view.MarqueeTextView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -78,6 +76,11 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 public class MainActivity extends BaseComponentActivity {
 
@@ -136,6 +139,9 @@ public class MainActivity extends BaseComponentActivity {
      */
     private String mNoticeId ="";
 
+    //高亮
+    private HighLight infoHighLight;
+
     /**
      * 重新进入MainActivity切换的对应的Fragment
      */
@@ -183,6 +189,11 @@ public class MainActivity extends BaseComponentActivity {
                                 }
                             });
         }
+
+        /**
+         * 显示高亮
+         */
+        showGuide();
     }
 
     private void showAdDialog(final AdBanner ad) {
@@ -236,6 +247,42 @@ public class MainActivity extends BaseComponentActivity {
     }
 
 
+    /**
+     * 引导图
+     */
+    public void showGuide() {
+        infoHighLight = new HighLight(this)
+                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                    @Override
+                    public void onLayouted() {
+                        infoHighLight.autoRemove(false)
+                                .intercept(true)
+                                .enableNext()
+                                .addHighLight(R.id.tv_bill_add_buttom, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
+                                    @Override
+                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                        marginInfo.bottomMargin = rectF.height();
+                                        marginInfo.rightMargin = rectF.width() / 2;
+//                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 5);
+                                    }
+                                }, new CircleLightShape()).setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                            @Override
+                            public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                if (targetView.getId() == R.id.tv_bill_add_buttom) {
+
+                                    infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            infoHighLight.remove();
+                                        }
+                                    });
+                                }
+                            }
+                        }).show();
+                    }
+                });
+    }
 
     @Override
     protected void onDestroy() {

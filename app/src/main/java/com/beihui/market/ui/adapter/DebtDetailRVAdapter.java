@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.util.FormatNumberUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -59,10 +60,11 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     protected void convert(final BaseViewHolder helper, final DebtDetail.RepayPlanBean item) {
         helper.setText(R.id.th, item.getTermNo() + "期")      //设置期数
                 .setText(R.id.date, item.getTermRepayDate().replace("-", "."))    //设置日期
-                .setText(R.id.amount, "¥" + keep2digitsWithoutZero(item.getTermPayableAmount()))  //设置金额
+                .setText(R.id.amount, "¥" + FormatNumberUtils.FormatNumberFor2(item.getTermPayableAmount()))  //设置金额
                 .setText(R.id.status, status[item.getStatus()])
                 .setTextColor(R.id.status, colors[item.getStatus()])
                 .setTextColor(R.id.th, item.getTermNo() == currentIndex ? Color.RED : Color.parseColor("#424251"))
+                .setTextColor(R.id.amount, item.getTermNo() == currentIndex ? Color.RED : Color.parseColor("#424251"))
                 .addOnClickListener(R.id.ll_item_debt_detail_root);
 
         helper.getView(R.id.iv_item_debt_detail_pay_arrow).setRotation(item.isShow  ?  90 : 0);
@@ -103,7 +105,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
                     if (!TextUtils.isEmpty(record.transDate)) {
                         date.setText(record.transDate.substring(5, 10).replace("-", "/"));
                     }
-                    money.setText(keep2digitsWithoutZero(record.amount));
+                    money.setText(FormatNumberUtils.FormatNumberFor2(record.amount));
                     if (TextUtils.isEmpty(record.amount+"") || record.amount < 0D) {
                         money.setTextColor(Color.parseColor("#4CC99E"));
                     } else {

@@ -1,10 +1,10 @@
 package com.beihui.market.ui.fragment;
 
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,9 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +43,6 @@ import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.DebtSourceActivity;
 import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
-import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.XTabAccountRvAdapter;
 import com.beihui.market.ui.busevents.UserLoginEvent;
@@ -57,12 +54,9 @@ import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
-import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
-import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
-import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,6 +71,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 
 /**
@@ -229,17 +227,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
 
     /**
-     * 设置缩放
-     */
-    private void showScaleAnim(TextView textView, float max) {
-        textView.setPivotX(0);
-        textView.setPivotY(0);
-        textView.setScaleX(1 - max);
-        textView.setScaleY(1 - max);
-    }
-
-
-    /**
      * 测量控件高度
      */
     private void initMeasure() {
@@ -293,6 +280,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 } else {
                     mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
                     mPullToRefreshListener.onLoadMore(mPullContainer);
+                    com.beihui.market.util.ToastUtils.showToast(mActivity, "已显示全部账单");
                 }
             }
         });
@@ -326,22 +314,23 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 if (max > 1) {
                     max = 1;
                 }
+
+                TextView textViewTitle = (TextView)manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
                 //TitleBar背景色透明度
-                mTitle.setBackgroundColor(Color.argb((int) (max * 255), 20, 74, 158));
+//                mTitle.setBackgroundColor(Color.argb((int) (max * 255), 20, 74, 158));
+                mTitle.setAlpha(max);
                 if (max > 0.2f) {
                     mTitle.setTextColor(Color.argb((int) (max * 255), 255, 255, 255));
+                    if (textViewTitle != null) {
+                        textViewTitle.setVisibility(View.INVISIBLE);
+                    }
                 } else {
                     mTitle.setTextColor(Color.argb(0, 255, 255, 255));
+                    if (textViewTitle != null) {
+                        textViewTitle.setVisibility(View.VISIBLE);
+                    }
                 }
-                TextView textViewTitle = (TextView)manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
-                TextView textViewName = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_name);
-                TextView textViewNum = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay_num);
-                TextView textViewPay = (TextView)manager.getChildAt(0).findViewById(R.id.tv_last_one_month_wait_pay);
 
-//                textViewTitle.setScaleX(1 - max/2);
-//                textViewTitle.setScaleY(1 - max/2);
-//                showScaleAnim(textViewTitle, max/2);
-//                showScaleAnim(textViewPay, max/2);
 
                 int firstPosition = manager.findFirstVisibleItemPosition();
                 if (firstPosition == 0) {
@@ -353,7 +342,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         });
 
         queryNotice();
-
     }
 
     /**
@@ -369,10 +357,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         //
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
     /**
      * 销毁事件
@@ -402,7 +386,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void configViews() {
         //设置状态栏文字为黑色字体
-        ImmersionBar.with(this).transparentBar().init();
+//        ImmersionBar.with(this).transparentBar().statusBarDarkFont(true).init();
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         //设置toolbar的高度为状态栏相同高度
         mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);
@@ -557,7 +542,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 //                                .autoRemove(false)
 //                                .intercept(true)
 //                                .enableNext()
-//                                .addHighLight(R.id.iv_tab_account_header_add, R.layout.layout_tab_account_highlight_guide, new OnBaseCallback() {
+//                                .addHighLight(R.id.iv_tab_account_header_add, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
 //                                    @Override
 //                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 //                                        marginInfo.rightMargin = rectF.width() / 2;

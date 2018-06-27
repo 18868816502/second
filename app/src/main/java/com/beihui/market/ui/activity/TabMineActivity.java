@@ -76,6 +76,8 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
     CircleImageView avatarIv;
     @BindView(R.id.user_name)
     TextView userNameTv;
+    @BindView(R.id.tv_user_info)
+    TextView userInfo;
     @BindView(R.id.login)
     TextView loginTv;
     @BindView(R.id.mine_product_container)
@@ -132,6 +134,8 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
         setupToolbar(toolbar);
 
         SlidePanelHelper.attach(this);
+
+        userInfo.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -153,6 +157,8 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
         //登录小能客服
         UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
         Ntalker.getBaseInstance().login(profile.getId(), profile.getUserName());
+
+        userInfo.setVisibility(View.VISIBLE);
     }
 
     @Subscribe
@@ -179,6 +185,10 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
                 }
             }, 100);
         }
+
+        userInfo.setVisibility(View.GONE);
+        avatarIv.setImageDrawable(getResources().getDrawable(R.mipmap.mine_head));
+        userNameTv.setText("未登录");
     }
 
     @OnClick({R.id.contact_kefu, R.id.mine_msg,
@@ -186,6 +196,10 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
             R.id.my_collection, R.id.reward_points, R.id.invite_friend,
             R.id.helper_feedback, R.id.star_me, R.id.wechat_public})
     public void onViewClicked(View view) {
+        if (UserHelper.getInstance(this).getProfile() == null || UserHelper.getInstance(this).getProfile().getId() == null) {
+            UserAuthorizationActivity.launch(this, null);
+            return;
+        }
         switch (view.getId()) {
             //我的账单
             case R.id.mine_bill:
@@ -375,6 +389,7 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
     public void navigateUserProfile(String userId) {
         startActivity(new Intent(this, UserProfileActivity.class));
     }
+
 
     /**
      * 直接进入系统消息 抛弃公告的选择

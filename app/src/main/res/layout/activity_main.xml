@@ -13,15 +13,14 @@
 
 
     <RelativeLayout
-        android:layout_gravity="bottom"
         android:layout_width="wrap_content"
         android:layout_height="60dp">
 
         <FrameLayout
+            android:layout_marginTop="10dp"
             android:id="@+id/fl_bottom"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true">
+            android:layout_height="50dp">
 
             <ImageView
                 android:id="@+id/navigation_bar_bg"
@@ -41,16 +40,16 @@
                     android:id="@+id/tab_forms_root"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="3dp">
+                    android:paddingTop="6dp"
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/tab_forms_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@drawable/x_tap_analyze_icon" />
+                        android:src="@drawable/tab_bill_anasisly" />
 
                     <TextView
                         android:id="@+id/tab_forms_text"
@@ -58,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tab_forms_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="2dp"
                         android:text="报表"
                         android:textColor="@color/select_blue_grey"
                         android:textSize="12sp" />
@@ -70,12 +69,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="3dp">
+                    android:paddingTop="6dp">
 
                     <ImageView
                         android:id="@+id/tab_account_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
                         android:src="@drawable/tab_account" />
@@ -86,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tab_account_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="2dp"
                         android:text="@string/tab_account"
                         android:textColor="@color/select_blue_grey"
                         android:textSize="12sp" />
@@ -99,12 +98,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="3dp">
+                    android:paddingTop="6dp">
 
                     <ImageView
                         android:id="@+id/tab_news_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
                         android:src="@drawable/tab_news" />
@@ -115,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tab_news_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="2dp"
                         android:text="@string/tab_news"
                         android:textColor="@color/select_blue_grey"
                         android:textSize="12sp" />
@@ -123,7 +122,6 @@
                 </RelativeLayout>
 
             </com.beihui.market.view.BottomNavigationBar>
-
 
         </FrameLayout>
 
@@ -141,13 +139,25 @@
             android:layout_width="match_parent"
             android:layout_height="60dp">
 
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_bill_add_buttom"
+                android:layout_centerInParent="true"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+
             <ImageView
                 android:id="@+id/iv_bill_add_buttom"
                 android:background="@color/transparent"
                 android:src="@drawable/x_tab_bill_add_btn"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="60dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

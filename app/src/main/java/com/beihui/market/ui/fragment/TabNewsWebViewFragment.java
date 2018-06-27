@@ -95,7 +95,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @BindView(R.id.iv_tab_news_red_dot)
     ImageView mRedDot;
     @BindView(R.id.fl_tab_news_web_container)
-    NoScrollViewPager viewPager;
+    ViewPager viewPager;
 
     /**
      * 拼接URL
@@ -282,11 +282,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.iv_tab_fg_news_web_user:
-                if (UserHelper.getInstance(mActivity).getProfile() == null || UserHelper.getInstance(mActivity).getProfile().getId() == null) {
-                    UserAuthorizationActivity.launch(getActivity(), null);
-                } else {
-                    mActivity.startActivity(new Intent(mActivity, TabMineActivity.class));
-                }
+                mActivity.startActivity(new Intent(mActivity, TabMineActivity.class));
                 break;
             case R.id.iv_tab_fg_news_web_title:
                 if (selectedFragmentId != R.id.iv_tab_fg_news_web_title) {

@@ -1,15 +1,12 @@
 package com.beihui.market.ui.fragment;
 
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
@@ -35,7 +32,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -45,9 +41,9 @@ import butterknife.BindView;
  * @author xhb
  * 我的模块 我的账单 网贷列表
  */
-public class MyLoanDebtListFragment extends BaseComponentFragment implements MyLoanBillContract.View {
+public class MyFastDebtListFragment extends BaseComponentFragment implements MyLoanBillContract.View {
 
-    private final int billType = 1;
+    private final int FastbillType = 3;
 
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
@@ -76,7 +72,7 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
             if (size > 0) {
                 ((MyLoanBillPresenter) presenter).loanBillList.clear();
             }
-            presenter.fetchLoanBill(billType);
+            presenter.fetchLoanBill(FastbillType);
 
             Log.e("asdfa", "aaaaaaaaaaaaaaaaaaaa");
         }
@@ -110,11 +106,11 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
         stateLayout.setStateViewProvider(new DebtStateProvider());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyLoanBillDebtAdapter(R.layout.rv_item_loan_debt, billType);
+        adapter = new MyLoanBillDebtAdapter(R.layout.rv_item_loan_debt, FastbillType);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                presenter.fetchLoanBill(billType);
+                presenter.fetchLoanBill(FastbillType);
             }
         }, recyclerView);
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -142,7 +138,7 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void initDatas() {
-        presenter.fetchLoanBill(billType);
+        presenter.fetchLoanBill(FastbillType);
     }
 
 
@@ -195,10 +191,10 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
      */
     @Override
     public void navigateLoanDebtDetail(LoanBill.Row bill) {
-        Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
-        intent.putExtra("debt_id", bill.getRecordId());
-        intent.putExtra("bill_id", bill.getBillId());
-        startActivityForResult(intent, 1);
+//        Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
+//        intent.putExtra("debt_id", bill.getRecordId());
+//        intent.putExtra("bill_id", bill.getBillId());
+//        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -208,9 +204,9 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void navigateFastDebtDetail(LoanBill.Row loanBill) {
-//        Intent intent = new Intent(getContext(), FastDebtDetailActivity.class);
-//        intent.putExtra("debt_id", loanBill.getRecordId());
-//        intent.putExtra("bill_id", loanBill.getBillId());
-//        startActivityForResult(intent, 1);
+        Intent intent = new Intent(getContext(), FastDebtDetailActivity.class);
+        intent.putExtra("debt_id", loanBill.getRecordId());
+        intent.putExtra("bill_id", loanBill.getBillId());
+        startActivityForResult(intent, 1);
     }
 }

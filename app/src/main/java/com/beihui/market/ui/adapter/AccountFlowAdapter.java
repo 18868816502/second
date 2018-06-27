@@ -52,7 +52,6 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
             Glide.with(mActivity)
                     .load(item.logo)
                     .asBitmap()
-                    .placeholder(R.drawable.image_place_holder)
                     .into(holder.mIcon);
 
             if (!TextUtils.isEmpty(item.iconName) && addNum > 0) {

@@ -10,67 +10,83 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--借款金额-->
-        <LinearLayout
-            android:padding="15dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_fg_account_flow_normal_icon"
-                android:scaleType="centerCrop"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-
-            <TextView
-                android:id="@+id/tv_account_flow_normal_type_name"
-                android:layout_marginLeft="12dp"
-                android:hint="借款"
-                android:textColor="@color/black_1"
-                android:textSize="15sp"
-                android:background="@null"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+            
+            <!--借款金额-->
             <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:gravity="right"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:padding="15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
+    
+                <ImageView
+                    android:id="@+id/iv_fg_account_flow_normal_icon"
+                    android:scaleType="centerCrop"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+    
                 <TextView
-                    android:layout_gravity="right"
-                    android:text="每期金额"
-                    android:textColor="@color/black_2"
-                    android:textSize="10sp"
+                    android:id="@+id/tv_account_flow_normal_type_name"
+                    android:layout_marginLeft="12dp"
+                    android:hint="借款"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp"
+                    android:background="@null"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
-                <com.beihui.market.view.AutoAdjustSizeEditText
-                    android:id="@+id/auto_et_num"
+    
+                <LinearLayout
+                    android:layout_marginLeft="10dp"
                     android:gravity="right"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:inputType="text"
-                    android:background="@null"
-                    android:textSize="26sp"
-                    android:textColor="@color/black_1"/>
-
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+    
+                    <TextView
+                        android:layout_gravity="right"
+                        android:text="每期金额"
+                        android:textColor="@color/black_2"
+                        android:textSize="10sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+    
+                    <com.beihui.market.view.AutoAdjustSizeEditText
+                        android:id="@+id/auto_et_num"
+                        android:gravity="right"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:background="@null"
+                        android:textSize="26sp"
+                        android:textColor="@color/black_1"/>
+    
+                </LinearLayout>
+    
             </LinearLayout>
 
-        </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_amount_high_light"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="130dp"
+                android:layout_height="60dp" />
+            
+        </RelativeLayout>
+        
         <View
             android:background="@color/common_bg"
             android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
             android:layout_height="8dp"/>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_account_flow"
@@ -78,14 +94,14 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-    <!--android:layout_marginBottom="206dp"-->
+        <!--android:layout_marginBottom="206dp"-->
         <LinearLayout
             android:id="@+id/ll_account_flow_bottom"
             android:background="#fafafa"
             android:paddingRight="15dp"
             android:paddingLeft="15dp"
             android:paddingBottom="10dp"
-            android:paddingTop="10dp"
+            android:paddingTop="13dp"
             android:orientation="horizontal"
             android:gravity="top"
             android:layout_width="match_parent"
@@ -130,15 +146,18 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/iv_fg_account_flow_normal_remark"
                     android:src="@drawable/x_account_flow_edit_mark"
+                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/tv_fg_account_flow_normal_remark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="备注"
-                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
                     android:textColor="@color/black_2"
                     android:textSize="13sp"/>
 

@@ -196,4 +196,9 @@ public class CustomKeyboardView extends KeyboardView {
         }
         return label;
     }
+
+
+    public void refresh(){
+        invalidate();
+    }
 }

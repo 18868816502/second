@@ -16,7 +16,7 @@ public abstract class CustomBaseKeyboard extends Keyboard implements KeyboardVie
 
     protected EditText etCurrent;
     protected View nextFocusView;
-    protected CustomKeyStyle customKeyStyle;
+    public CustomKeyStyle customKeyStyle;
 
     public CustomBaseKeyboard(Context context, int xmlLayoutResId) {
         super(context, xmlLayoutResId);
@@ -74,6 +74,7 @@ public abstract class CustomBaseKeyboard extends Keyboard implements KeyboardVie
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
+
         if (null != etCurrent && etCurrent.hasFocus() && !handleSpecialKey(etCurrent, primaryCode)) {
             Editable editable = etCurrent.getText();
             int start = etCurrent.getSelectionStart();
@@ -149,6 +150,7 @@ public abstract class CustomBaseKeyboard extends Keyboard implements KeyboardVie
         Integer getKeyTextColor(Key key, EditText etCur);
 
         CharSequence getKeyLabel(Key key, EditText etCur);
+
     }
 
     public static class SimpleCustomKeyStyle implements CustomKeyStyle {
@@ -167,6 +169,7 @@ public abstract class CustomBaseKeyboard extends Keyboard implements KeyboardVie
         public Integer getKeyTextColor(Key key, EditText etCur) {
             return null;
         }
+
 
         @Override
         public CharSequence getKeyLabel(Key key, EditText etCur) {

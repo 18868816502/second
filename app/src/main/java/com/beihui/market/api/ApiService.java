@@ -12,6 +12,7 @@ import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
+import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardBean;
@@ -87,7 +88,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/netLoan/save")
-    Observable<ResultEntity> createLoanAccount(@FieldMap Map<String, Object> params);
+    Observable<ResultEntity<CreateAccountReturnIDsBean>> createLoanAccount(@FieldMap Map<String, Object> params);
 
     /**
      * @author xhb
@@ -109,7 +110,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/bookKeeping/save")
-    Observable<ResultEntity> createNormalAccount(@FieldMap Map<String, Object> params);
+    Observable<ResultEntity<CreateAccountReturnIDsBean>> createNormalAccount(@FieldMap Map<String, Object> params);
 
 
     /**

@@ -80,33 +80,33 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
             addDisposable(dis);
         }
 
-        Disposable disposable = mApi.queryUpdate()
-                .compose(RxUtil.<ResultEntity<AppUpdate>>io2main())
-                .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null) {
-                                           appUpdate = result.getData();
-                                           String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
-                                           if (version.compareTo(appUpdate.getVersion()) < 0) {
-                                               mView.showLatestVersion("最新版本"+appUpdate.getVersion());
-                                           } else {
-                                               mView.showLatestVersion("已是最新版");
-                                           }
-                                       } else {
-                                           mView.showLatestVersion("已是最新版");
-                                       }
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                logError(UserProfilePresenter.this, throwable);
-                            }
-                        });
-        addDisposable(disposable);
+//        Disposable disposable = mApi.queryUpdate()
+//                .compose(RxUtil.<ResultEntity<AppUpdate>>io2main())
+//                .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
+//                               @Override
+//                               public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
+//                                   if (result.isSuccess()) {
+//                                       if (result.getData() != null) {
+//                                           appUpdate = result.getData();
+//                                           String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+//                                           if (version.compareTo(appUpdate.getVersion()) < 0) {
+//                                               mView.showLatestVersion("最新版本"+appUpdate.getVersion());
+//                                           } else {
+//                                               mView.showLatestVersion("已是最新版");
+//                                           }
+//                                       } else {
+//                                           mView.showLatestVersion("已是最新版");
+//                                       }
+//                                   }
+//                               }
+//                           },
+//                        new Consumer<Throwable>() {
+//                            @Override
+//                            public void accept(@NonNull Throwable throwable) throws Exception {
+//                                logError(UserProfilePresenter.this, throwable);
+//                            }
+//                        });
+//        addDisposable(disposable);
 
     }
 

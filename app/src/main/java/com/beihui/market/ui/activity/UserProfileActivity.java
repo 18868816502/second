@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -134,7 +135,10 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     @Override
     public void initDatas() {
-
+        /**
+         * 显示版本号
+         */
+        versionNameTv.setText("v"+ BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -249,15 +253,16 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                     bindWXChat();
                 } else {
                     new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信")
-                            .withNegativeBtn("取消", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                }
-                            })
                             .withNegativeBtn("确定", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     unBindWXChat();
+                                }
+                            })
+                            .withPositiveBtn("退出", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
                                 }
                             }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                 }
@@ -287,12 +292,15 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 Log.e("asdfdas", "openID---> " + openid);
                 Log.e("asdfdas", "unionid---> " + unionid);
 
-                Api.getInstance().bindWXChat(UserHelper.getInstance(UserProfileActivity.this).getProfile().getId(), openid)
+                Api.getInstance().bindWXChat(UserHelper.getInstance(UserProfileActivity.this).getProfile().getId(), unionid)
                         .compose(RxUtil.<ResultEntity>io2main())
                         .subscribe(new Consumer<ResultEntity>() {
                                        @Override
                                        public void accept(@NonNull ResultEntity result) throws Exception {
                                            showErrorMsg(result.getMsg());
+                                           if (result.isSuccess()) {
+                                               userProfileWxChat.setText("已经绑定");
+                                           }
                                        }
                                    },
                                 new Consumer<Throwable>() {
@@ -328,6 +336,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                                @Override
                                public void accept(@NonNull ResultEntity result) throws Exception {
                                    showErrorMsg(result.getMsg());
+                                   userProfileWxChat.setText("未绑定");
                                }
                            },
                         new Consumer<Throwable>() {
@@ -467,7 +476,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         } else {
             userProfileMobile.setText("未绑定");
         }
-        if (profile.getWxUnionId() != null) {
+        if (!TextUtils.isEmpty(profile.getWxUnionId())) {
             userProfileWxChat.setText("已绑定");
         } else {
             userProfileWxChat.setText("未绑定");
@@ -494,10 +503,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
         //发送用户退出全局事件
         EventBus.getDefault().post(new UserLogoutEvent());
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -513,9 +519,9 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     @Override
     public void showLatestVersion(String version) {
-        if (version != null) {
-            versionNameTv.setText(version);
-        }
+//        if (version != null) {
+//            versionNameTv.setText(version);
+//        }
     }
 
     @Override

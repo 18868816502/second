@@ -25,6 +25,7 @@ import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
@@ -152,9 +153,9 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
                     holder.mDeatilDateThree.setText("月");
                 }
             }
-            holder.mUnPay.setText(CommonUtils.keep2digitsWithoutZero(mListBean.getUnpayAmount()));
-            holder.mAllPay.setText(CommonUtils.keep2digitsWithoutZero(mListBean.getReturnAmount()));
-            holder.mOverduepay.setText(CommonUtils.keep2digitsWithoutZero(mListBean.getOverAmount()));
+            holder.mUnPay.setText(FormatNumberUtils.FormatNumberFor2(mListBean.getUnpayAmount()));
+            holder.mAllPay.setText(FormatNumberUtils.FormatNumberFor2(mListBean.getReturnAmount()));
+            holder.mOverduepay.setText(FormatNumberUtils.FormatNumberFor2(mListBean.getOverAmount()));
         }
 
         /**
@@ -208,7 +209,7 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
                 holder.mStatus.setTextColor(Color.parseColor("#9F9FAC"));
             }
 
-            holder.mMoney.setText(CommonUtils.keep2digitsWithoutZero(listBean.getAmount()));
+            holder.mMoney.setText(FormatNumberUtils.FormatNumberFor2(listBean.getAmount()));
 
             holder.mListRoot.setOnClickListener(new View.OnClickListener() {
                 @Override

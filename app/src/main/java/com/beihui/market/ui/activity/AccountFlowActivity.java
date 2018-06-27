@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.RectF;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -30,6 +31,7 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
+import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -61,6 +63,12 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.shape.RectLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 /**
  * Created by admin on 2018/6/13.
@@ -81,10 +89,10 @@ public class AccountFlowActivity extends BaseComponentActivity {
     TextView mAccountFlowNormal;
     @BindView(R.id.tv_loan_account_flow)
     TextView mAccountFlowLoan;
-    @BindView(R.id.fl_ac_account_flow_container)
-    NoScrollViewPager mViewPager;
     @BindView(R.id.tv_credit_card_flow)
     TextView mAccountFlowCreditCard;
+    @BindView(R.id.fl_ac_account_flow_container)
+    NoScrollViewPager mViewPager;
     @BindView(R.id.iv_ac_account_flow_confirm)
     ImageView mConFirmOrRefrsh;
 
@@ -98,7 +106,6 @@ public class AccountFlowActivity extends BaseComponentActivity {
     public AccountFlowCreditCardFragment mCreditCardFragment = new AccountFlowCreditCardFragment();
 
     public List<BaseComponentFragment> fragmentList = new ArrayList<>();
-
 
     @Override
     public int getLayoutId() {
@@ -115,8 +122,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
         fragmentList.add(mCreditCardFragment);
 
         SlidePanelHelper.attach(this);
-
     }
+
 
 
     @Override
@@ -187,6 +194,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     mAccountFlowCreditCard.setSelected(false);
 
                     mNormalFragment.customKeyboardManager.hideSoftKeyboard(mNormalFragment.etInputPrice, 0);
+                    mLoanFragment.customKeyboardManager.showSoftKeyboard(mLoanFragment.etInputPrice);
                     selectedFragmentId = R.id.tv_loan_account_flow;
 
                     mConFirmOrRefrsh.setVisibility(View.VISIBLE);
@@ -209,6 +217,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
             }
         });
+
     }
 
 
@@ -354,16 +363,19 @@ public class AccountFlowActivity extends BaseComponentActivity {
      */
     public void createFastAccount(Map<String, Object> map) {
         Api.getInstance().createNormalAccount(map)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
+                .compose(RxUtil.<ResultEntity<CreateAccountReturnIDsBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
                                @Override
-                               public void accept(ResultEntity result) throws Exception {
+                               public void accept(ResultEntity<CreateAccountReturnIDsBean> result) throws Exception {
                                    Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                   /**
+                                * 返回详情页
+                                */
                                    if (result.isSuccess()) {
-                                       Intent intent = new Intent(AccountFlowActivity.this, MainActivity.class);
-                                       intent.putExtra("account", true);
-                                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                       startActivity(intent);
+                                       Intent intent = new Intent();
+                                       intent.putExtra("recordId", result.getData().recordId);
+                                       intent.putExtra("billId", result.getData().billId);
+                                       setResult(1, intent);
                                        finish();
                                    }
                                }
@@ -381,17 +393,20 @@ public class AccountFlowActivity extends BaseComponentActivity {
      */
     public void createLoanAccount(Map<String, Object> map) {
         Api.getInstance().createLoanAccount(map)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
+                .compose(RxUtil.<ResultEntity<CreateAccountReturnIDsBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
                                @Override
-                               public void accept(ResultEntity result) throws Exception {
+                               public void accept(ResultEntity<CreateAccountReturnIDsBean> result) throws Exception {
                                    Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
 
                                    if (result.isSuccess()) {
-                                       Intent intent = new Intent(AccountFlowActivity.this, MainActivity.class);
-                                       intent.putExtra("account", true);
-                                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                       startActivity(intent);
+                                       /**
+                                        * 返回详情页
+                                        */
+                                       Intent intent = new Intent();
+                                       intent.putExtra("recordId", result.getData().recordId);
+                                       intent.putExtra("billId", result.getData().billId);
+                                       setResult(1, intent);
                                        finish();
                                    }
                                }
