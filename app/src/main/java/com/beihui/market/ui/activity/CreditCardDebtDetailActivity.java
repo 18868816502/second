@@ -43,8 +43,10 @@ import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.DateFormatUtils;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.EditTextUtils;
@@ -227,6 +229,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     @SuppressLint("SetTextI18n")
     @Override
     public void configViews() {
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCD);
+
         byHand = getIntent().getBooleanExtra("by_hand", false);
         String backName = getIntent().getStringExtra("bank_name");
         String cardNum = getIntent().getStringExtra("card_num");
@@ -255,10 +260,17 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDLISTCLICK);
+
                 switch (view.getId()) {
                     case R.id.month_bill_container: {
+
                         Log.e("position", "position--> " + position);
-                        showStatus(((CreditCardDebtDetailPresenter)presenter).billList.get(position).getStatus());
+                        if (position < ((CreditCardDebtDetailPresenter)presenter).billList.size()) {
+                            ((CreditCardDebtDetailPresenter)presenter).bill = ((CreditCardDebtDetailPresenter)presenter).billList.get(position);
+                            showStatus(((CreditCardDebtDetailPresenter) presenter).billList.get(position).getStatus());
+                        }
 
                         CreditCardDebtDetailMultiEntity entity = (CreditCardDebtDetailMultiEntity) adapter.getItem(position);
                         if (entity != null) {
@@ -350,13 +362,17 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         if (byHand) {
             tvDebtStatusOperation.setText("开始同步");
         } else {
-            tvDebtStatusOperation.setText("更新账单");
+//            tvDebtStatusOperation.setText("更新账单");
+            tvDebtStatusOperation.setText("开始同步");
             tvDebtStatusTime.setVisibility(View.VISIBLE);
         }
 
         flDebtStatusOperationBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDSTARTSYNC);
 
                 /**
                  * @version 3.10
@@ -418,7 +434,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
      */
     @SuppressLint("SetTextI18n")
     @Override
-    public void showDebtDetailInfo(CreditCardDebtDetail debtDetail) {
+    public void showDebtDetailInfo(final CreditCardDebtDetail debtDetail) {
         this.debtDetail = debtDetail;
         if (debtDetail != null) {
             CreditCardDebtDetail.ShowBillBean showBill = debtDetail.getShowBill();
@@ -478,7 +494,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     }
                 }
                 //账单金额
-                header.tvDebtAmount.setText( keep2digitsWithoutZero(debtDetail.getShowBill().getNewBalance()));
+                header.tvDebtAmount.setText( FormatNumberUtils.FormatNumberFor2(debtDetail.getShowBill().getNewBalance()));
                 /**
                  * 账单状态
                  */
@@ -490,16 +506,37 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 tvFootSetStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new CommNoneAndroidDialog()
-                                .withMessage("确认设为已还？")
-                                .withNegativeBtn("取消", null)
-                                .withPositiveBtn("确认", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        presenter.clickSetStatus();
-                                    }
-                                })
-                                .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                        if ("已还".equals(tvFootSetStatus.getText().toString())) {
+                            //pv，uv统计
+                            DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDALREADYREPAY);
+
+//                            new CommNoneAndroidDialog()
+//                                    .withMessage("本期账单已还清")
+//                                    .withNegativeBtn("取消", null)
+//                                    .withPositiveBtn("确认", new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//
+//                                        }
+//                                    })
+//                                    .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+
+                            presenter.clickSetStatus(1);
+                        } else {
+                            //pv，uv统计
+                            DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDSETALREADYREPAY);
+
+                            new CommNoneAndroidDialog()
+                                    .withMessage("确认设为已还？")
+                                    .withNegativeBtn("取消", null)
+                                    .withPositiveBtn("确认", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            presenter.clickSetStatus(2);
+                                        }
+                                    })
+                                    .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                        }
                     }
                 });
 
@@ -508,7 +545,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     //手动账单没有最低应还
                     header.tvMinPayment.setText("----");
                 } else {
-                    header.tvMinPayment.setText(keep2digitsWithoutZero(showBill.getMinPayment()) + "元");
+                    header.tvMinPayment.setText(FormatNumberUtils.FormatNumberFor2(showBill.getMinPayment()) + "元");
                 }
                 //出账日
                 if (!isEmpty(showBill.getBillDate())) {
@@ -528,6 +565,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                         new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
                             @Override
                             public void onNickNameChanged(final String remark) {
+                                //pv，uv统计
+//                                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDREMARK);
+
                                 if (TextUtils.isEmpty(remark) || remark.length() > 50) {
                                     Toast.makeText(CreditCardDebtDetailActivity.this, "备注不能为空或者字数过多", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -575,7 +615,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             case 2://已还
                 tvFootSetStatus.setVisibility(View.VISIBLE);
                 tvFootSetStatus.setText("已还");
-                tvFootSetStatus.setEnabled(false);
+                tvFootSetStatus.setEnabled(true);
                 tvFootMiddleLine.setVisibility(View.VISIBLE);
 //                header.tvStatus.setVisibility(View.VISIBLE);
 //                header.tvStatus.setText("已还款");
@@ -638,6 +678,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 
     @Override
     public void showMenu(boolean remind) {
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDTOPRIGHTMORE);
+
         dialog = new CreditCardDebtDetailDialog();
         //dialog.attachEditable(byHand)
         /**
@@ -660,6 +703,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                                      .withPositiveBtn("确认", new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
+                                                             //pv，uv统计
+//                                                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDDELETE);
+
                                                              presenter.clickDelete();
                                                          }
                                                      })
@@ -671,6 +717,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                //pv，uv统计
+//                                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDREPAYREMINDERSWITCH);
+
                                 //更新还款提醒
                                 presenter.clickUpdateRemind();
                             }

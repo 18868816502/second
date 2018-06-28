@@ -26,7 +26,7 @@
             <TextView
                 android:text="账单空空如也"
                 android:textSize="17sp"
-                android:textColor="#B7B8BB"
+                android:textColor="@color/black_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

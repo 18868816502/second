@@ -21,6 +21,8 @@ public class CreditCardDebtBill {
     private String startTime;
     private String endTime;
 
+    public boolean lastBill = false;
+
     public String getId() {
         return id;
     }

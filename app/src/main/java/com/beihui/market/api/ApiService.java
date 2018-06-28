@@ -226,8 +226,8 @@ public interface ApiService {
      * 删除借款
      */
     @FormUrlEncoded
-    @POST(BASE_PATH_S_FOUR + "/accounting/deleteLoan")
-    Observable<ResultEntity> deleteDebt(@Field("userId") String userId, @Field("liabilitiesId") String liabilitiesId);
+    @POST(BASE_PATH_S_FOUR + "/netLoan/deleteBill")
+    Observable<ResultEntity> deleteDebt(@Field("userId") String userId, @Field("recordId") String liabilitiesId);
 
     /**
      * 删除快捷记账账单
@@ -854,15 +854,22 @@ public interface ApiService {
      * 更新月份账单金额
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/creditcard/updateBill")
+    @POST(BASE_PATH_S_FOUR + "/creditcard/updateBill")
     Observable<ResultEntity> updateMonthBillAmount(@Field("userId") String userId, @Field("cardId") String cardId, @Field("billId") String billId, @Field("amount") double amount);
 
     /**
      * 更新信用卡账单还款状态
      */
     @FormUrlEncoded
-    @POST(BASE_PATH + "/creditcard/updateBill")
+    @POST(BASE_PATH_S_FOUR + "/creditcard/updateBill")
     Observable<ResultEntity> updateCreditCardDebtBillStatus(@Field("userId") String userId, @Field("cardId") String cardId, @Field("billId") String billId, @Field("status") int status);
+
+    /**
+     * 更新信用卡账单还款状态
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/creditcard/updateBill")
+    Observable<ResultEntity> updateCreditCardDebtBillStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("status") int status);
 
     /**
      * 删除信用卡账单

@@ -49,6 +49,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
@@ -154,6 +155,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HP);
     }
 
     /**
@@ -280,7 +284,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 } else {
                     mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
                     mPullToRefreshListener.onLoadMore(mPullContainer);
-                    com.beihui.market.util.ToastUtils.showToast(mActivity, "已显示全部账单");
+//                    com.beihui.market.util.ToastUtils.showToast(mActivity, "已显示全部账单");
                 }
             }
         });
@@ -295,9 +299,10 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             public void onRefresh() {
                 if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
                     presenter.onRefresh();
-                }else {
+                } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    showNoUserLoginBlock();
+                    //无需进入登录页面
+//                    showNoUserLoginBlock();
                 }
             }
         });

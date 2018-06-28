@@ -153,6 +153,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
         } else {
             titleName.setText("忘记买吗");
         }
+        presenter.requestVerification(requestPhone);
     }
 
     @Override

@@ -6,7 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -106,14 +108,46 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+//                int length = 0;
+//                if (s.toString() != null) {
+//                    length = s.toString().getBytes().length;
+//                    Log.e("afs", "length---> " + length);
+//                }
+//                boolean isConfirm = length > 0 && length < 17;
+//
+//                if (isConfirm ||  length == 0) {
+//                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter((16))});
+//                } else {
+//                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter((s.toString().length()))});
+//                }
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                boolean isConfirm = editText.getText().toString().trim().length() > 0 && editText.getText().toString().trim().length() < 17;
+
+//                int length = 0;
+//                if (s.toString() != null) {
+//                    length = s.toString().getBytes().length;
+//                    Log.e("afs", "length---> " + length);
+//                }
+                byte[] bytes = new byte[0];
+                try {
+                    if (!TextUtils.isEmpty(s.toString())) {
+                        bytes = s.toString().getBytes("GBk");
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                boolean isConfirm = bytes.length > 0 && bytes.length < 17;
                 confirmBtn.setEnabled(isConfirm);
                 confirmBtn.setTextColor(isConfirm ? Color.parseColor("#ff5240") : black_2);
+
+
+                if (bytes.length > 16) {
+                    com.beihui.market.util.ToastUtils.showToast(EditNickNameActivity.this, "支持输入1~16个字符");
+                }
+
+                Log.e("xhxhxb", "bytes --> " + bytes.length);
             }
 
             @Override
@@ -124,6 +158,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
         SlidePanelHelper.attach(this);
     }
+
 
     @Override
     public void initDatas() {

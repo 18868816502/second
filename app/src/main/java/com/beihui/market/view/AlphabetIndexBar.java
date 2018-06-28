@@ -36,7 +36,7 @@ public class AlphabetIndexBar extends View {
     private int alphabetPadding;
     private int alphabetSize;
 
-    private int selectedIndex = -1;
+    public int selectedIndex = -1;
 
     private GestureDetector gestureDetector;
 

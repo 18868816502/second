@@ -2,6 +2,7 @@ package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.beihui.market.App;
@@ -28,6 +30,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
+import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
@@ -35,6 +38,8 @@ import com.beihui.market.view.BusinessWebView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 
@@ -122,8 +127,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     public void initDatas() {}
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         load();
 
@@ -150,11 +155,68 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        swipeRefreshLayout.setColorScheme(R.color.colorPrimary);
+        swipeRefreshLayout.setColorScheme(R.color.refresh_one);
         swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
             @Override
             public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
                 return !"0".equals(mScrollY);
+            }
+        });
+
+        /**
+         * 客户端监听器
+         */
+        webView.setWebViewClient(new WebViewClient() {
+
+            // url拦截
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.equals(newsUrl)) {
+                    swipeRefreshLayout.setEnabled(true);
+                    return super.shouldOverrideUrlLoading(view, url);
+                } else {
+                    swipeRefreshLayout.setEnabled(false);
+                    Intent intent = new Intent(mActivity, WebViewActivity.class);
+                    intent.putExtra("webViewUrl", URLDecoder.decode(url));
+                    mActivity.startActivity(intent);
+                    // 相应完成返回true
+                    return true;
+                }
+            }
+
+
+            // 页面开始加载
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+//                Log.e("xhb", "url--->   " +url);
+//                Log.e("xhb", "newsUrl--->   " +newsUrl);
+//
+//                if (url.equals(newsUrl)) {
+//                    swipeRefreshLayout.setEnabled(true);
+//                } else {
+//                    swipeRefreshLayout.setEnabled(false);
+//                    Intent intent = new Intent(mActivity, WebViewActivity.class);
+//                    intent.putExtra("webViewUrl", URLDecoder.decode(url));
+//                    mActivity.startActivity(intent);
+//                }
+            }
+
+            // 页面加载完成
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+
+            // WebView加载的所有资源url
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
             }
         });
 
@@ -219,6 +281,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
          */
         @JavascriptInterface
         public void getFindHtmlScrollY(String scrollY){
+
             mScrollY = scrollY;
         }
     }
@@ -233,5 +296,4 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     protected void configureComponent(AppComponent appComponent) {
 
     }
-
 }

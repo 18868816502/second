@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.beihui.market.event.InsideViewPagerBus;
+import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +34,8 @@ public class CustomSwipeMenuLayout extends SwipeMenuLayout {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 EventBus.getDefault().postSticky(new InsideViewPagerBus(true));
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPBILLLEFTSLIDE);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:

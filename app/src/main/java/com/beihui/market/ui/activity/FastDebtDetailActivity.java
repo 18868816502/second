@@ -31,6 +31,7 @@ import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.event.MyLoanDebtListFragmentEvent;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -45,7 +46,9 @@ import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
@@ -184,6 +187,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      */
     @Override
     public void initDatas() {
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTD);
+
         Intent intent = getIntent();
         debtId = intent.getStringExtra("debt_id");
         billId = intent.getStringExtra("bill_id");
@@ -234,6 +240,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
                     @Override
                     public void onNickNameChanged(final String remark) {
+
+                        //pv，uv统计
+//                        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDREMARK);
+
                         Api.getInstance().updateFastDebtBillRemark(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtId, remark)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
@@ -267,10 +277,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDLISTCLICK);
+
                 if (view.getId() == R.id.ll_item_debt_detail_root) {
                     ((TextView) view.findViewById(R.id.th)).setTextColor(Color.RED);
                     FastDebtDetailActivity.this.adapter.setThTextColor(position);
                     showSetStatus(position, fastDebtDetail.getDetailList().get(position).getStatus());
+
+                    money = FormatNumberUtils.FormatNumberFor2(fastDebtDetail.getDetailList().get(position).getTermPayableAmount());
 
                     /**
                      * 请求还款记录
@@ -326,7 +342,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             }
         });
         //全部待还金额
-        header.debtTermAmount.setText(keep2digitsWithoutZero(fastDebtDetail.payableAmount));
+        header.debtTermAmount.setText(FormatNumberUtils.FormatNumberFor2(fastDebtDetail.payableAmount));
         /**
          * 判断是一次性还款还是分期还款
          * termType 1 为一次性还款 2 分期还款
@@ -398,16 +414,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
          *  0-无效, 1-待还 2-已还
          */
         //先设置底部状态 1 "待还", 2 "已还", 3，"逾期"
-        if (fastDebtDetail.showBill.status == 1 || fastDebtDetail.showBill.status == 3) {
+        if (fastDebtDetail.detailList.get(0).getStatus() == 1 || fastDebtDetail.detailList.get(0).getStatus() == 3) {
             mFootRoot.setVisibility(View.VISIBLE);
             mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
-            money = keep2digitsWithoutZero(fastDebtDetail.showBill.getTermPayableAmount());
+            money = FormatNumberUtils.FormatNumberFor2(fastDebtDetail.showBill.getTermPayableAmount());
             footSetPartPay.setText("还部分");
             footSetAllPay.setEnabled(true);
-        } else if (fastDebtDetail.showBill.status == 2) {
+        } else if (fastDebtDetail.detailList.get(0).getStatus() == 2) {
             mFootRoot.setVisibility(View.VISIBLE);
             mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
@@ -427,9 +443,15 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 if ("已还".equals(footSetAllPay.getText().toString())) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDALREADYREPAY);
+
                     //设置为待还
                     showSetAllPayDialog(index, 1);
                 } else {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDSETALREADYREPAY);
+
                     //设置为已还
                     showSetAllPayDialog(index, 2);
                 }
@@ -442,6 +464,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         footSetPartPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDREPAYPORTION);
+
                 showSetPartPayDialog(index);
             }
         });
@@ -604,6 +629,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * @param remind   是否是提醒状态
      */
     public void showMenu(boolean editable, boolean remind) {
+
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDTOPRIGHTMORE);
+
         dialog = new CreditCardDebtDetailDialog();
         dialog.attachEditable(editable)
                 .attachListeners(new View.OnClickListener() {
@@ -611,6 +640,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                      public void onClick(View v) {
                                          dialog.dismiss();
                                          if (v.getId() == R.id.edit) {
+                                             //pv，uv统计
+//                                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDEDIT);
+
                                              /**
                                           * 跳转到快捷记账的编辑页面
                                           */
@@ -621,6 +653,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                      .withPositiveBtn("确认", new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
+                                                             //pv，uv统计
+//                                                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDDELETE);
+
                                                              /**
                                                         * 删除账单
                                                         */
@@ -634,6 +669,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                //pv，uv统计
+//                                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDREPAYREMINDERSWITCH);
+
                                 /**
                               * 更新还款提醒
                               */

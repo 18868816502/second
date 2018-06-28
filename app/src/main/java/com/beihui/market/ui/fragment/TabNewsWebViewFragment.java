@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
@@ -52,6 +53,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.view.BusinessWebView;
@@ -95,7 +97,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @BindView(R.id.iv_tab_news_red_dot)
     ImageView mRedDot;
     @BindView(R.id.fl_tab_news_web_container)
-    ViewPager viewPager;
+    public NoScrollViewPager viewPager;
 
     /**
      * 拼接URL
@@ -149,6 +151,8 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             mTitleName = event.title;
         }
 
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVER);
     }
 
     @Override
@@ -156,6 +160,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
         super.onResume();
         if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
             Glide.with(mActivity).load(UserHelper.getInstance(mActivity).getProfile().getHeadPortrait()).bitmapTransform(new GlideCircleTransform(mActivity)).placeholder(R.mipmap.mine_head).into(mUserAvatar);
+            updateNum();
         }
     }
 
@@ -234,14 +239,16 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                //state ==1的时辰默示正在滑动，
+
 
             }
         });
 
-       if (UserHelper.getInstance(mActivity).getProfile() != null && UserHelper.getInstance(mActivity).getProfile().getId() != null) {
-            updateNum();
-        }
+        viewPager.setNoScroll(true);
     }
+
+
 
 
     /**
@@ -282,14 +289,20 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     public void onItemClick(View view) {
         switch (view.getId()) {
             case R.id.iv_tab_fg_news_web_user:
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERHEADPORTRAIT);
                 mActivity.startActivity(new Intent(mActivity, TabMineActivity.class));
                 break;
             case R.id.iv_tab_fg_news_web_title:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERTAB1);
                 if (selectedFragmentId != R.id.iv_tab_fg_news_web_title) {
                     viewPager.setCurrentItem(0);
                 }
                 break;
             case R.id.iv_tab_fg_news_web_activity:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERTAB2);
                 if (selectedFragmentId != R.id.iv_tab_fg_news_web_activity) {
                     viewPager.setCurrentItem(1);
                 }

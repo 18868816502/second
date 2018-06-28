@@ -25,7 +25,9 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.beihui.market.R;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.flowlayout.FlowLayout;
 import com.beihui.market.view.flowlayout.TagAdapter;
 import com.beihui.market.view.flowlayout.TagFlowLayout;
@@ -158,6 +160,7 @@ public class AccountFlowRemarkDialog extends DialogFragment {
             mEditText.setSelection(saveContent.length());
         }
 
+        EditTextUtils.addDisableEmojiInputFilter(mEditText);
         return mView;
     }
 

@@ -48,7 +48,6 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="center_vertical"
-            android:maxLength="16"
             android:paddingLeft="15dp" />
 
     </FrameLayout>

@@ -48,6 +48,7 @@ import com.beihui.market.ui.fragment.BillLoanAnalysisFragment;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
@@ -251,6 +252,9 @@ public class MainActivity extends BaseComponentActivity {
      * 引导图
      */
     public void showGuide() {
+        if ("showGuideMainActivity".equals(SPUtils.getValue(MainActivity.this, "showGuideMainActivity"))) {
+            return;
+        }
         infoHighLight = new HighLight(this)
                 .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                     @Override
@@ -261,9 +265,8 @@ public class MainActivity extends BaseComponentActivity {
                                 .addHighLight(R.id.tv_bill_add_buttom, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.bottomMargin = rectF.height();
-                                        marginInfo.rightMargin = rectF.width() / 2;
-//                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 5);
+                                        marginInfo.bottomMargin = rectF.height()+  Px2DpUtils.dp2px(MainActivity.this, 10);
+                                        marginInfo.rightMargin = rectF.width() / 2 +  Px2DpUtils.dp2px(MainActivity.this, 15);
                                     }
                                 }, new CircleLightShape()).setOnNextCallback(new HighLightInterface.OnNextCallback() {
                             @Override
@@ -275,6 +278,7 @@ public class MainActivity extends BaseComponentActivity {
                                         @Override
                                         public void onClick(View v) {
                                             infoHighLight.remove();
+                                            SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
                                         }
                                     });
                                 }
@@ -306,6 +310,13 @@ public class MainActivity extends BaseComponentActivity {
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
+                if (selectedId == R.id.tab_forms_root) {
+                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
+                        UserAuthorizationActivity.launch(MainActivity.this, null);
+                        navigationBar.select(selectedFragmentId);
+                        return;
+                    }
+                }
                 //点击音效
                 SoundUtils.getInstance().playTab();
                 if (selectedId != selectedFragmentId ) {
@@ -333,10 +344,10 @@ public class MainActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                UserAuthorizationActivity.launch(MainActivity.this, null);
-            } else {
-                startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
-            }
+                    UserAuthorizationActivity.launch(MainActivity.this, null);
+                } else {
+                    startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
+                }
             }
         });
     }
@@ -406,16 +417,15 @@ public class MainActivity extends BaseComponentActivity {
         switch (id) {
             //报表
             case R.id.tab_forms_root:
-                if (UserHelper.getInstance(this).getProfile() == null || UserHelper.getInstance(this).getProfile().getId() == null) {
-                    UserAuthorizationActivity.launch(this, null);
-                    return;
-                }
                 if (tabForm == null) {
                     tabForm = BillLoanAnalysisFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabForm);
                 }
                 ft.show(tabForm);
                 mAddBill.setVisibility(View.GONE);
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
                 break;
             //账单
             case R.id.tab_account:
@@ -425,6 +435,10 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabHome);
                 mAddBill.setVisibility(View.VISIBLE);
+
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 break;
             //发现
             case R.id.tab_news:
@@ -434,6 +448,10 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabFind);
                 mAddBill.setVisibility(View.GONE);
+
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 break;
         }
         ft.commit();

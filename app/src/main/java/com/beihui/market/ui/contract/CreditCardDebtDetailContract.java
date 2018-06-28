@@ -41,7 +41,7 @@ public interface CreditCardDebtDetailContract {
         /**
          * 点击设为已还
          */
-        void clickSetStatus();
+        void clickSetStatus(int status);
 
         /**
          * 点击菜单

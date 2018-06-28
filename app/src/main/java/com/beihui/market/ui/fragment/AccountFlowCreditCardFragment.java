@@ -15,10 +15,12 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.CreditCardBean;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.adapter.AccountFlowCreditCardAdapter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.RxUtil;
 
 import java.util.List;
@@ -51,6 +53,9 @@ public class AccountFlowCreditCardFragment extends BaseComponentFragment {
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYCREDITCARD);
     }
 
     @Override

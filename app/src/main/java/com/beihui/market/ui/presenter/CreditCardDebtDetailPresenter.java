@@ -39,6 +39,8 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     private Map<CreditCardDebtBill, List<BillDetail>> bill2Detail = new HashMap<>();
     private int curPageNo = 1;
 
+    public CreditCardDebtBill bill = new CreditCardDebtBill();
+
     @Inject
     CreditCardDebtDetailPresenter(Context context, Api api, CreditCardDebtDetailContract.View view, String debtId) {
         this.api = api;
@@ -93,6 +95,8 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            billList.addAll(result.getData());
                                            size = result.getData().size();
+
+                                           bill = billList.get(0);
                                        }
                                        view.showDebtBillList(Collections.unmodifiableList(billList), size == PAGE_SIZE);
                                        if (billList.size() > 0) {
@@ -181,10 +185,11 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     }
 
     @Override
-    public void clickSetStatus() {
+    public void clickSetStatus(int status) {
         if (debtDetail != null) {
             //设为已还
-            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getId(), debtDetail.getShowBill().getId(), 2)
+//            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getId(), debtDetail.getShowBill().getId(), status)
+            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), bill.getId(), status)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {
                                    @Override

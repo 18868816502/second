@@ -3,6 +3,9 @@ package com.beihui.market.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,6 +36,7 @@ import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
@@ -43,6 +47,7 @@ import com.beihui.market.ui.fragment.AccountFlowLoanFragment;
 import com.beihui.market.ui.fragment.AccountFlowNormalFragment;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
@@ -124,7 +129,12 @@ public class AccountFlowActivity extends BaseComponentActivity {
         SlidePanelHelper.attach(this);
     }
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLY);
+    }
 
     @Override
     public void initDatas() {
@@ -187,6 +197,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     mLoanFragment.customKeyboardManager.hideSoftKeyboard(mLoanFragment.etInputPrice, 1);
                     mNormalFragment.customKeyboardManager.showSoftKeyboard(mNormalFragment.etInputPrice);
                     mConFirmOrRefrsh.setVisibility(View.VISIBLE);
+
                 }
                 if (position == 1) {
                     mAccountFlowNormal.setSelected(false);
@@ -244,6 +255,9 @@ public class AccountFlowActivity extends BaseComponentActivity {
             if (FastClickUtils.isFastClick()) {
                 return;
             }
+            //pv，uv统计
+            DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYTOPRIGHTCORNETHOOK);
+
             if (selectedFragmentId == R.id.tv_normal_account_flow) {
                 if (mNormalFragment.debtNormalDetail == null) {
                     //通用记账
@@ -327,6 +341,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
         if (map.get("amount") == null) {
             return;
         }
+
 
         double amount = Double.parseDouble(map.get("amount")+"");
         if (amount < 0D) {

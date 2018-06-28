@@ -31,7 +31,7 @@
             <View
                 android:id="@+id/fg_tab_account_line"
                 android:layout_marginLeft="35.5dp"
-                android:background="@color/line"
+                android:background="#edeff0"
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"/>
 

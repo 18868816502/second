@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,21 +37,26 @@ import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.event.AccountFlowTypeActivityEvent;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.AccountFlowTypeActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
+import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
 import com.beihui.market.ui.dialog.NicknameDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.dialog.XTabAccountDialog;
+import com.beihui.market.umeng.NewVersionEvents;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
@@ -132,6 +138,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     //高亮
     private HighLight infoHighLight;
 
+    float startY ;
+    float moveY;
 
     private List<AccountFlowIconBean> list = new ArrayList<>();
 
@@ -174,6 +182,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
     @Override
     public void configViews() {
+
+
         activity = getActivity();
         mBottom.setVisibility(View.VISIBLE);
 
@@ -186,18 +196,23 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYCOMMON);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        showGuide();
     }
 
     /**
      * 引导图
      */
     public void showGuide() {
+        if ("showGuideAccountFlow".equals(SPUtils.getValue(activity, "showGuideAccountFlow"))) {
+            return;
+        }
         infoHighLight = new HighLight(activity)
                 .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                     @Override
@@ -208,51 +223,51 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                 .addHighLight(R.id.ll_ac_account_flow_tab_root, R.layout.layout_highlight_guide_two, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-
-                                        marginInfo.rightMargin = rectF.width() / 2;
+                                        marginInfo.topMargin = rectF.height() + Px2DpUtils.dp2px(activity, 40);
+                                        marginInfo.leftMargin = Px2DpUtils.dp2px(activity, 16);
                                     }
                                 }, new RectLightShape(0, 0, 0, 100, 100))
                                 .addHighLight(R.id.rv_account_flow, R.layout.layout_highlight_guide_three, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 
-                                        marginInfo.rightMargin = rightMargin;
-                                        marginInfo.bottomMargin = bottomMargin;
+                                        marginInfo.bottomMargin = bottomMargin - rectF.height()*2/3 - Px2DpUtils.dp2px(activity, 6);
+                                        marginInfo.leftMargin = Px2DpUtils.dp2px(activity, 16);
                                     }
                                 }, new RectLightShape())
                                 .addHighLight(R.id.tv_amount_high_light, R.layout.layout_highlight_guide_four, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 
-                                        marginInfo.rightMargin = rightMargin;
-                                        marginInfo.bottomMargin = bottomMargin;
+                                        marginInfo.bottomMargin = bottomMargin - rectF.height()*2 - Px2DpUtils.dp2px(activity, 14);
+                                        marginInfo.rightMargin = rectF.width() - rectF.width()/2 ;
                                     }
-                                }, new RectLightShape())
+                                }, new RectLightShape(0, 0, 0, 100, 100))
                                 .addHighLight(R.id.tv_fg_first_pay_loan_date, R.layout.layout_highlight_guide_five, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 
-                                        marginInfo.rightMargin = rightMargin;
-                                        marginInfo.bottomMargin = bottomMargin;
+                                        marginInfo.bottomMargin = bottomMargin + rectF.height();
+                                        marginInfo.leftMargin = rectF.width();
                                     }
-                                }, new RectLightShape())
-//                                .addHighLight(R.id.tv_fg_first_pay_loan_times, R.layout.layout_highlight_guide_no_data, new OnBaseCallback() {
-//                                    @Override
-//                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-//
-//                                        marginInfo.rightMargin = rightMargin;
-//                                        marginInfo.bottomMargin = bottomMargin;
-//                                    }
-//                                }, new RectLightShape())
+                                }, new RectLightShape(0, 0, 0, 100, 100))
+                                .addHighLight(R.id.tv_fg_first_pay_loan_times, R.layout.layout_highlight_guide_six, new OnBaseCallback() {
+                                    @Override
+                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+
+                                        marginInfo.bottomMargin = bottomMargin + rectF.height() + Px2DpUtils.dp2px(activity, 4);
+                                        marginInfo.rightMargin = Px2DpUtils.dp2px(activity, 12);
+                                    }
+                                }, new RectLightShape(0, 0, 0, 100, 100))
                                 .setOnNextCallback(new HighLightInterface.OnNextCallback() {
                             @Override
                             public void onNext(HightLightView hightLightView, View targetView, View tipView) {
                                 // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
                                 if (targetView.getId() == R.id.ll_ac_account_flow_tab_root) {
-
                                     infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_two).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+
                                             infoHighLight.next();
                                         }
                                     });
@@ -282,11 +297,19 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                         @Override
                                         public void onClick(View v) {
                                             infoHighLight.next();
-
                                         }
                                     });
                                 }
+                                if (targetView.getId() == R.id.tv_fg_first_pay_loan_times) {
 
+                                    infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_six).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            infoHighLight.remove();
+                                            SPUtils.setValue(activity, "showGuideAccountFlow");
+                                        }
+                                    });
+                                }
                             }
                         }).show();
                     }
@@ -493,6 +516,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         temp.delete(0, temp.length());
                         etCurrent.setText(sum.toString());
                     }
+
+                    //pv，uv统计
+//                            DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYKEYBOARDCONFIRMBUTTON);
                     return true;
                 }
                 return false;
@@ -510,15 +536,41 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (Math.abs(dy) <= 2) {
-                    return;
+//                if (Math.abs(dy) <= 2) {
+//                    return;
+//                }
+//                if (dy > 0) {
+//                    customKeyboardManager.hideSoftKeyboard(etInputPrice, 0);
+//                } else {
+//                    //向上滚动  显示自定义键盘
+//                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+//                }
+            }
+        });
+
+
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        moveY = event.getY();
+                        Log.e("android_normal_account", "startY--> " + startY);
+                        Log.e("android_normal_account", "moveY--> " + moveY);
+                        if (moveY - startY > 1) {
+                            customKeyboardManager.showSoftKeyboard(etInputPrice);
+                        }
+                        if (moveY - startY < -1) {
+                            customKeyboardManager.hideSoftKeyboard(etInputPrice, 0);
+                        }
+                    case MotionEvent.ACTION_UP:
+                        return false;
                 }
-                if (dy > 0) {
-                    customKeyboardManager.hideSoftKeyboard(etInputPrice, 0);
-                } else {
-                    //向上滚动  显示自定义键盘
-                    customKeyboardManager.showSoftKeyboard(etInputPrice);
-                }
+                return true;
             }
         });
 
@@ -560,6 +612,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
             public void run() {
                 if (getUserVisibleHint()) {
                     customKeyboardManager.showSoftKeyboard(etInputPrice);
+                    showGuide();
                 }
             }
         }, 100);
@@ -574,15 +627,14 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
             mTypeName.setText(debtNormalDetail.getProjectName());
             //金额
             lockEtInput = true;
-            BigDecimal bigDecimal = new BigDecimal(debtNormalDetail.getTermPayableAmount());
-            etInputPrice.setText(bigDecimal.toString());
+            etInputPrice.setText(FormatNumberUtils.FormatNumberForTabDouble(debtNormalDetail.getTermPayableAmount())+"");
             lockEtInput = false;
 
             mFirstPayNormalDate.setText(debtNormalDetail.getFirstRepayDate());
             //还款周期
             if (1 == debtNormalDetail.cycleType) {
                 //日 一次性还款
-                mFirstPayNormalTime.setText("每月 1期");
+                mFirstPayNormalTime.setText("每月");
             }
             if (2 == debtNormalDetail.cycleType) {
                 //月
@@ -663,7 +715,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                                map.put("cycleType", "2");
                                                map.put("cycle", "1");
                                                map.put("term", "1");
-
+                                               map.put("amount", "0");
                                                Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
                                                if (!TextUtils.isEmpty(list.get(0).iconName)) {
                                                    mTypeName.setText(list.get(0).iconName);
@@ -696,9 +748,16 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         InputMethodUtil.closeSoftKeyboard(activity);
         switch (view.getId()) {
             case R.id.tv_fg_first_pay_loan_date:
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYFIRSTPAYMENTDATE);
+
                 showFirstPayLoanDateDialog();
                 break;
             case R.id.ll_account_flow_remark:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYREMARK);
+
                 if (dialog == null) {
                     dialog = new AccountFlowRemarkDialog();
                 }
@@ -729,6 +788,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 });
                 break;
             case R.id.tv_fg_first_pay_loan_times:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYPAYMENTCYCLE);
                 showLoanTimes();
                 break;
             case R.id.auto_et_num:

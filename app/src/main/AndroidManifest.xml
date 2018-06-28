@@ -64,6 +64,7 @@
 
         <activity
             android:name=".ui.activity.UserProfileActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.EditNickNameActivity"
@@ -76,12 +77,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MessageCenterActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SysMsgActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.NoticeActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ComWebViewActivity"
@@ -261,6 +265,7 @@
             android:screenOrientation="portrait"/>
         <!--个人中心 账单类型选择-->
         <activity android:name=".ui.activity.TabMineActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--WebViewActivity-->
         <activity android:name=".ui.activity.WebViewActivity"

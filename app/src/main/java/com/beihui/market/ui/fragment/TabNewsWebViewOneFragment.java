@@ -144,8 +144,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
     public void initDatas() {}
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         load();
 
@@ -171,7 +171,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        swipeRefreshLayout.setColorScheme(R.color.colorPrimary);
+        swipeRefreshLayout.setColorScheme(R.color.refresh_one);
         swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
             @Override
             public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
@@ -298,6 +298,16 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         public void getFindHtmlScrollY(String scrollY){
             mScrollY = scrollY;
         }
+
+        /**
+         * Banner滑动
+         */
+        @JavascriptInterface
+        public void getFindHtmlBannerStatus(boolean isFly){
+            mIsFly = isFly;
+            Log.e("mIsFly", "mIsFly---> " + mIsFly);
+//            ((TabNewsWebViewFragment)getParentFragment()).viewPager.setNoScroll(true);
+        }
     }
 
     /**
@@ -305,6 +315,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
      */
     public String mScrollY = "0";
 
+    public boolean mIsFly = false;
 
     @Override
     protected void configureComponent(AppComponent appComponent) {

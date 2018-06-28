@@ -27,55 +27,36 @@ import android.widget.Toast;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
-import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
-import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
-import com.beihui.market.entity.UserProfile;
-import com.beihui.market.entity.request.XAccountInfo;
-import com.beihui.market.event.InsideViewPagerBus;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
-import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
-import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.FormatNumberUtils;
+import com.beihui.market.util.NumAnimUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
-import com.beihui.market.view.CircleImageView;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.MarqueeTextView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
 import io.reactivex.functions.Consumer;
-
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb
@@ -97,6 +78,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
     public String mNoticeId = null;
 
     public boolean showAll = false;
+
+    public Double headerAmout = null;
 
     private DebtAbstract debtAbstract = null;
 
@@ -140,6 +123,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mHeaderAccountNum.setText("共"+ CommonUtils.keepWithoutZero(debtAbstract.last30DayStayStillCount)+"笔");
 //                holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()) : "暂无账单");
                 holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? FormatNumberUtils.FormatNumberFor2(debtAbstract.getLast30DayStayStill()) : "暂无账单");
+                if (dataSet.size() > 0 && (headerAmout == null || headerAmout != debtAbstract.getLast30DayStayStill())) {
+                    headerAmout = debtAbstract.getLast30DayStayStill();
+                    NumAnimUtils.startAnim( holder.mHeaderWaitPay, FormatNumberUtils.FormatNumberForTabFloat(debtAbstract.getLast30DayStayStill()), 1000);
+                }
             } else {
                 holder.mHeaderNoticeRoot.setVisibility(View.GONE);
                 holder.mHeaderAccountNum.setVisibility(View.VISIBLE);
@@ -194,6 +181,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         }
                         dataSet.addAll(dataSetCopy);
                         holder.mHeaderSortType.setText("全部");
+                        ToastUtils.showToast(mActivity, "已显示全部账单");
                         showAll = true;
                     }
                     notifyDataSetChanged();
@@ -386,7 +374,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                    //隐藏还部分
                    holder.setPay.setVisibility(View.GONE);
                    holder.payPart.setVisibility(View.GONE);
-                   holder.payAll.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.VISIBLE);
                }else {
                    holder.setPay.setVisibility(View.GONE);
                    holder.payAll.setVisibility(View.VISIBLE);
@@ -404,7 +392,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                    @Override
                    public void onClick(View v) {
                        //设置为未还
-                       showSetAllPayDialog(accountBill, 1);
+                       showSetAllPayDialog(accountBill, 1, null);
                        holder.swipeMenuLayout.smoothClose();
                    }
                });
@@ -412,7 +400,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                holder.payAll.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       showSetAllPayDialog(accountBill, 2);
+                       //pv，uv统计
+                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPSETALREADYREPAY);
+
+                       if (accountBill.getStatus() == 5) {
+                           Toast.makeText(mActivity, "本月还未出账", Toast.LENGTH_SHORT).show();
+                           holder.swipeMenuLayout.smoothClose();
+                           return;
+                       }
+                       showSetAllPayDialog(accountBill, 2, FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
                        holder.swipeMenuLayout.smoothClose();
                    }
                });
@@ -425,6 +421,9 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         */
                        //pv，uv统计
                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_PART_PAY);
+
+                       //pv，uv统计
+                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPREPAYPORTION);
 
 
                        BillEditAmountDialog dialog = new BillEditAmountDialog()
@@ -526,6 +525,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                        if (FastClickUtils.isFastClick()) {
                            return;
                        }
+
+                       //pv，uv统计
+//                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPBILLCLICK);
+
                        if (accountBill.getType() == 1) {
                            Intent intent = new Intent(mActivity, LoanDebtDetailActivity.class);
                            intent.putExtra("debt_id", accountBill.getRecordId());
@@ -639,6 +642,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         } else {
             notifyDataSetChanged();
         }
+        headerAmout = null;
     }
 
     /**
@@ -705,6 +709,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             dataSetCopy.addAll(0, tempList);
         }
         notifyDataSetChanged();
+        headerAmout = null;
     }
 
 
@@ -713,7 +718,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
      * 设为已还
      * status	否	int	状态 1-待还 2-已还
      */
-    private void showSetAllPayDialog(final TabAccountNewBean.TabAccountNewInfoBean accountBill, final int status) {
+    private void showSetAllPayDialog(final TabAccountNewBean.TabAccountNewInfoBean accountBill, final int status, String money) {
         final Dialog dialog = new Dialog(mActivity, 0);
         View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -757,8 +762,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                    if (result.isSuccess()) {
                                                        Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
-                                                        * 重新回到首屏
-                                                        */
+                                                    * 重新回到首屏
+                                                    */
                                                        ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
@@ -805,8 +810,17 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         };
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
         dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
-        ((TextView) dialogView.findViewById(R.id.content)).setVisibility(View.GONE);
+        /**
+         * 1 设置为待还
+         * 2 设置为已还
+         */
+        if (status == 1) {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为未还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定本期账单设为未还？");
+        } else {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为已还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定还款"+money+"元");
+        }
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();

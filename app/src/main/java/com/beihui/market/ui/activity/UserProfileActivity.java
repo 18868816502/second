@@ -33,6 +33,7 @@ import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.DataCleanManager;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
@@ -46,6 +47,7 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.NicknameDialog;
 import com.beihui.market.ui.presenter.UserProfilePresenter;
 import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ImageUtils;
@@ -104,6 +106,9 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     private String avatarFilePath;
 
+    //清楚缓存的大小
+    private String mCacheSize;
+
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
 
     @Override
@@ -131,6 +136,9 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         setupToolbar(toolbar);
 
         SlidePanelHelper.attach(this);
+
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PI);
     }
 
     @Override
@@ -139,6 +147,15 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
          * 显示版本号
          */
         versionNameTv.setText("v"+ BuildConfig.VERSION_NAME);
+
+        try {
+            mCacheSize = DataCleanManager.getFormatSize(DataCleanManager.getInternalCacheSize()
+                    + DataCleanManager.getExternalCacheSize());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        cacheSize.setText(mCacheSize);
     }
 
     @Override
@@ -188,10 +205,17 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         switch (view.getId()) {
             //编辑昵称
             case R.id.fl_navigate_nick_name:
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PINICKNAME);
+
                 startActivityForResult(new Intent(this, EditNickNameActivity.class), REQUEST_EDIT_NICK_NAME_ACTIVITY);
                 break;
             //修改密码
             case R.id.fl_navigate_revise_pwd:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PICHANGEPWD);
+
                 if (UserHelper.getInstance(this).getProfile().getBingPhone() == null) {
                     return;
                 }
@@ -223,10 +247,16 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 break;
             //版本号
             case R.id.fl_version_code:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIVERSIONNUMBER);
+
                 presenter.checkVersion();
                 break;
             //清除缓存
             case R.id.fl_clear_cache:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PICLEARCACHE);
+
                 boolean a = DataCleanManager.cleanInternalCache();
                 boolean b = DataCleanManager.cleanExternalCache();
                 if (a && b) {
@@ -238,21 +268,31 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 break;
             //关于我们
             case R.id.fl_about_us:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIABOUTUS);
+
                 Intent toAboutUs = new Intent(this, AboutUsActivity.class);
                 startActivity(toAboutUs);
                 break;
             //修改手机号
             case R.id.fl_revise_mobile:
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIPHONE);
+
                 Intent toNewMobile = new Intent(this, InputNewMobileActivity.class);
                 toNewMobile.putExtra("bingNewMobile", "bingNewMobile");
                 startActivity(toNewMobile);
                 break;
             //解除微信绑定
             case R.id.fl_remove_wx_chat:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIWECHAT);
+
                 if ("未绑定".equals(userProfileWxChat.getText().toString())) {
                     bindWXChat();
                 } else {
-                    new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信")
+                    new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信？")
                             .withNegativeBtn("确定", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -271,6 +311,9 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             case R.id.avatar:
             case R.id.avatar_item:
                 showAvatarSelector();
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIHEADPORTRAIT);
                 break;
         }
     }
@@ -299,7 +342,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                                        public void accept(@NonNull ResultEntity result) throws Exception {
                                            showErrorMsg(result.getMsg());
                                            if (result.isSuccess()) {
-                                               userProfileWxChat.setText("已经绑定");
+                                               userProfileWxChat.setText("已绑定");
                                            }
                                        }
                                    },

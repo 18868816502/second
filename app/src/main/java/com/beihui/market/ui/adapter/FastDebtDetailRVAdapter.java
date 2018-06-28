@@ -41,7 +41,7 @@ public class FastDebtDetailRVAdapter extends BaseQuickAdapter<FastDebtDetail.Det
 
     private List<DebeDetailRecord> mDebeDetailRecordList = new ArrayList<>();
 
-    public int currentIndex;
+    public int currentIndex = 0;
 
     public Integer clickCurrentIndex = null;
 
@@ -120,7 +120,10 @@ public class FastDebtDetailRVAdapter extends BaseQuickAdapter<FastDebtDetail.Det
     }
 
     public void notifyPayPlanChanged(List<FastDebtDetail.DetailListBean> list, int currentTerm) {
-        currentIndex = currentTerm;
+//        currentIndex = currentTerm;
+        if (list.size() > 0) {
+            currentIndex = list.get(0).getTermNo();
+        }
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);

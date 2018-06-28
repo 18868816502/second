@@ -16,12 +16,14 @@ import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.BillLoanAnalysisMonthRvAdapter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.RxUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -84,6 +86,9 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
 
     @Override
     public void configViews() {
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTTOPBARMONTH);
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -118,6 +123,8 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
                 requestChartData(Calendar.getInstance());
                 //请求列表数据
                 requestListData(Calendar.getInstance());
+
+                questBottomList();
             }
         });
     }
@@ -132,6 +139,10 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
             mAdapter.setOnItemClickListener(new BillLoanAnalysisMonthRvAdapter.OnItemClickListener() {
                 @Override
                 public void onItemclick(BillLoanAnalysisBean.ListBean listBean) {
+
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBILLCLICK);
+
                     if (listBean.getType() == 1) {
                         Intent intent = new Intent(activity, LoanDebtDetailActivity.class);
                         intent.putExtra("debt_id", listBean.getRecordId());
@@ -174,6 +185,12 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
         if (UserHelper.getInstance(activity).getProfile() == null || UserHelper.getInstance(activity).getProfile().getId() == null) {
             return;
         }
+        questBottomList();
+
+
+    }
+
+    private void questBottomList() {
         //底部数据
         Api.getInstance().queryGroupProductList()
                 .compose(RxUtil.<ResultEntity<List<GroupProductBean>>>io2main())
@@ -204,9 +221,7 @@ public class BillLoanAnalysisFragmentMonth extends BaseComponentFragment {
 
                             }
                         });
-
     }
-
 
 
     @Override

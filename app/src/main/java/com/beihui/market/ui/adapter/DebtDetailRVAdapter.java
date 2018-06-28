@@ -40,7 +40,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     private List<DebtDetail.RepayPlanBean> dataSet = new ArrayList<>();
     private List<DebeDetailRecord> mDebeDetailRecordList = new ArrayList<>();
 
-    public int currentIndex;
+    public int currentIndex = 0;
     public Integer clickCurrentIndex = null;
 
     private int[] colors = {Color.WHITE, Color.parseColor("#424251"), Color.parseColor("#909298"), Color.parseColor("#ff395e")};
@@ -117,7 +117,10 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     }
 
     public void notifyPayPlanChanged(List<DebtDetail.RepayPlanBean> list, int currentTerm) {
-        currentIndex = currentTerm;
+//        currentIndex = currentTerm;
+        if (list.size() > 0) {
+            currentIndex = list.get(0).getTermNo();
+        }
         dataSet.clear();
         if (list != null && list.size() > 0) {
             dataSet.addAll(list);

@@ -11,6 +11,7 @@ import android.view.View;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.SysMsg;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSysMsgComponent;
@@ -19,6 +20,7 @@ import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
 import com.beihui.market.ui.presenter.SysMsgPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.MessageStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -62,6 +64,9 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void configViews() {
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYMESSAGE);
+
         setupToolbar(toolbar);
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();

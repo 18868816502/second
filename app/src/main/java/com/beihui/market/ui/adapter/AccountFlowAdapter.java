@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.AccountFlowIconBean;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.ui.activity.AccountFlowTypeActivity;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -70,6 +72,8 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
             @Override
             public void onClick(View v) {
                 if ("手动添加".equals(holder.mName.getText().toString())) {
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYMANUALLYADD);
                     mActivity.startActivity(new Intent(mActivity, AccountFlowTypeActivity.class));
                 }
                 if (onItemClickListener != null && (position < dataSet.size())) {

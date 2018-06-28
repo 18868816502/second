@@ -1208,7 +1208,18 @@ public class Api {
      * @param status 还款状态，1-待还，2-已还
      */
     public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String cardId, String billId, int status) {
-        return service.updateCreditCardDebtBillStatus(userId, cardId, billId, status);
+        return service.updateCreditCardDebtBillStatus(userId, billId, status);
+    }
+
+    /**
+     * 更新信用卡账单还款状态
+     *
+     * @param userId 用户id
+     * @param billId 账单id
+     * @param status 还款状态，1-待还，2-已还
+     */
+    public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String billId, int status) {
+        return service.updateCreditCardDebtBillStatus(userId, billId, status);
     }
 
     /**

@@ -48,6 +48,28 @@ public class FormatNumberUtils {
         format.setRoundingMode(RoundingMode.DOWN);
         return format.format(number);
     }
+
+    /**
+     * 特殊
+     * 如 12,123,456.66
+     */
+    public static Float FormatNumberForTabFloat(Double number) {
+        DecimalFormat format = new DecimalFormat("#######0.00");
+        format.setRoundingMode(RoundingMode.DOWN);
+        return Float.valueOf(format.format(number));
+    }
+
+    /**
+     * 特殊
+     * 如 12,123,456.66
+     */
+    public static String FormatNumberForTabDouble(Double number) {
+        DecimalFormat format = new DecimalFormat("#######0.00");
+        format.setRoundingMode(RoundingMode.DOWN);
+        return format.format(number);
+    }
+
+
     /**
      * 货币化数字 保留两位小数 不四舍五入 截取小数
      * 如 12,123,456.66

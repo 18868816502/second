@@ -45,6 +45,7 @@ import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.dialog.WeChatPublicDialog;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
@@ -203,14 +204,25 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
         switch (view.getId()) {
             //我的账单
             case R.id.mine_bill:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MY);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickMineBill();
                 }
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYBILL);
                 break;
             case R.id.contact_kefu:
+
+
                 if (!FastClickUtils.isFastClick()) {
                     //umeng统计
                     Statistic.onEvent(Events.CLICK_CONTACT_KEFU);
+
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYCUSTOMERSERVICE);
 
                     presenter.clickContactKefu();
                 }
@@ -260,6 +272,9 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
 
 
             case R.id.invite_friend:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYINVITEFRIEND);
+
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
 
@@ -269,8 +284,14 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
                 break;
 
             case R.id.helper_feedback:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYHELPFEEDBACK);
+
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HELPFEEDBACKQUESTION);
 
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickHelpAndFeedback();
@@ -284,6 +305,10 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_WECHAT);
 
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYFOCUSWECHAT);
+
+
                 new WeChatPublicDialog().show(getSupportFragmentManager(), WeChatPublicDialog.class.getSimpleName());
 //                if (wechatSurpriseView.getVisibility() != View.GONE) {
 //                    wechatSurpriseView.setVisibility(View.GONE);
@@ -295,6 +320,9 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
              * 鼓励一下
              */
             case R.id.star_me:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYENCOURAGEMENT);
+
 //               String model=android.os.Build.MODEL;
                 //品牌
                 String brand=android.os.Build.BRAND;

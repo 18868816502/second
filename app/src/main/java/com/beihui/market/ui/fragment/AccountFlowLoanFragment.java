@@ -26,6 +26,7 @@ import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.LoanAccountIconBean;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -36,6 +37,8 @@ import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
 import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanStickyHeaderItemDeco;
+import com.beihui.market.umeng.NewVersionEvents;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
@@ -185,6 +188,11 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     @Override
     public void configViews() {
+
+
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYNETLOAN);
+
         //限制emoji输入
         EditTextUtils.addDisableEmojiInputFilter(etLoan);
 
@@ -205,15 +213,14 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             isLockEtLoan = false;
             //金额
             lockEtInput = true;
-            BigDecimal bigDecimal = new BigDecimal(debtNormalDetail.getTermPayableAmount());
-            etInputPrice.setText(bigDecimal.toString());
+            etInputPrice.setText(FormatNumberUtils.FormatNumberForTabDouble(debtNormalDetail.getTermPayableAmount())+"");
             lockEtInput = false;
 
             mFirstPayLoanDate.setText(debtNormalDetail.getFirstRepayDate());
             //还款周期
             if (1 == debtNormalDetail.getTermType()) {
                 //日 一次性还款
-                mFirstPayNormalTime.setText("每月 1期");
+                mFirstPayNormalTime.setText("每月");
             }
             if (2 == debtNormalDetail.getTermType()) {
                 //月
@@ -263,6 +270,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             map.put("termType", "2");
             map.put("cycle", "1");
             map.put("term", "1");
+            map.put("amount", "0");
         }
 
         /**
@@ -330,6 +338,18 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
            @Override
            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+               int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+
+               String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
+               Log.e("xvcs",  iconInitials);
+               for (int i = 0; i < alphabetCountList.length; i++) {
+                   if (iconInitials.equals(alphabetCountList[i])) {
+                       alphabetIndexBar.selectedIndex = i;
+                       alphabetIndexBar.invalidate();
+                   }
+               }
+
+
                if (Math.abs(dy) <= 2) {
                    return;
                }
@@ -341,6 +361,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
               }
            }
        });
+
+
 
 
         customKeyboardManager = new CustomKeyboardManager(activity);
@@ -484,6 +506,9 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         temp.delete(0, temp.length());
                         etCurrent.setText(sum.toString());
                     }
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYKEYBOARDCONFIRMBUTTON);
+
                     return true;
                 }
                 return false;
@@ -732,8 +757,14 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         switch (view.getId()) {
             case R.id.tv_fg_first_pay_loan_date:
                 showFirstPayLoanDateDialog();
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYFIRSTPAYMENTDATE);
                 break;
             case R.id.ll_account_flow_remark:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYREMARK);
+
                 if (dialog == null) {
                     dialog = new AccountFlowRemarkDialog();
                 }
@@ -764,6 +795,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 });
                 break;
             case R.id.tv_fg_first_pay_loan_times:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYPAYMENTCYCLE);
                 showLoanTimes();
                 break;
         }

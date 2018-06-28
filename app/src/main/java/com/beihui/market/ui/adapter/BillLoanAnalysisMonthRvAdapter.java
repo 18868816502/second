@@ -242,6 +242,7 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
             }
             int size = productBeans.size();
             if (size > 0) {
+                holder.mSecondAccountOneRoot.setVisibility(View.VISIBLE);
                 holder.mSecondAccountOne.setText(productBeans.get(0).getProductName());
                 Glide.with(mActivity).load(productBeans.get(0).getLogoUrl()).into(holder.mSecondAccountOneIcon);
                 holder.mSecondAccountOneRoot.setOnClickListener(new View.OnClickListener() {
@@ -250,8 +251,11 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
                         skipProduce(productBeans.get(0).getId(), productBeans.get(0).getProductName());
                     }
                 });
+            } else {
+                holder.mSecondAccountOneRoot.setVisibility(View.GONE);
             }
             if (size > 1) {
+                holder.mSecondAccountTwoRoot.setVisibility(View.VISIBLE);
                 holder.mSecondAccountTwo.setText(productBeans.get(1).getProductName());
                 Glide.with(mActivity).load(productBeans.get(1).getLogoUrl()).into(holder.mSecondAccountTwoIcon);
                 holder.mSecondAccountTwoRoot.setOnClickListener(new View.OnClickListener() {
@@ -260,8 +264,11 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
                         skipProduce(productBeans.get(1).getId(), productBeans.get(1).getProductName());
                     }
                 });
+            }else {
+                holder.mSecondAccountTwoRoot.setVisibility(View.GONE);
             }
             if (size > 2) {
+                holder.mSecondAccountThreeRoot.setVisibility(View.VISIBLE);
                 holder.mSecondAccountThree.setText(productBeans.get(2).getProductName());
                 Glide.with(mActivity).load(productBeans.get(2).getLogoUrl()).into(holder.mSecondAccountThreeIcon);
                 holder.mSecondAccountThreeRoot.setOnClickListener(new View.OnClickListener() {
@@ -270,8 +277,11 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
                         skipProduce(productBeans.get(2).getId(), productBeans.get(2).getProductName());
                     }
                 });
+            }else {
+                holder.mSecondAccountThreeRoot.setVisibility(View.GONE);
             }
             if (size > 3) {
+                holder.mSecondAccountFourRoot.setVisibility(View.VISIBLE);
                 holder.mSecondAccountFour.setText(productBeans.get(3).getProductName());
                 Glide.with(mActivity).load(productBeans.get(3).getLogoUrl()).into(holder.mSecondAccountFourIcon);
                 holder.mSecondAccountFourRoot.setOnClickListener(new View.OnClickListener() {
@@ -280,6 +290,8 @@ public class BillLoanAnalysisMonthRvAdapter extends RecyclerView.Adapter<BillLoa
                         skipProduce(productBeans.get(3).getId(), productBeans.get(3).getProductName());
                     }
                 });
+            }else {
+                holder.mSecondAccountFourRoot.setVisibility(View.GONE);
             }
 
 

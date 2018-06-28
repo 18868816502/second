@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.AccountFlowActivity;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
@@ -61,6 +63,8 @@ public class BillLoanAnalysisFragment extends BaseComponentFragment {
         fragmentList.add(mWeedFragment);
         fragmentList.add(mMonthFragment);
 
+        //pv，uv统计
+        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORT);
     }
 
     @Override
@@ -85,12 +89,18 @@ public class BillLoanAnalysisFragment extends BaseComponentFragment {
                     mMonth.setSelected(false);
 
                     selectedFragmentId = R.id.tv_ac_bill_loan_analysis_week;
+
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTWEEKICONCLICK);
                 }
                 if (position == 1) {
                     mWeek.setSelected(false);
                     mMonth.setSelected(true);
 
                     selectedFragmentId = R.id.tv_ac_bill_loan_analysis_month;
+
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTMONTHICONCLICK);
                 }
 
             }
