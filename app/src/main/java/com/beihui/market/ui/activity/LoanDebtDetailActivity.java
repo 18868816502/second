@@ -51,6 +51,7 @@ import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -356,6 +357,17 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @SuppressLint("SetTextI18n")
     @Override
     public void showDebtDetail(final DebtDetail debtDetail) {
+        if (!debtDetail.getId().equals(SPUtils.getValue(this, debtDetail.getId()))) {
+            if (debtDetail.getTerm() > 12) {
+                com.beihui.market.util.ToastUtils.showToast(this, "账单分期大于12期，只显示最近6期");
+                SPUtils.setValue(this, debtDetail.getId());
+            } else if (debtDetail.getTerm() == -1) {
+                com.beihui.market.util.ToastUtils.showToast(this, "循环账单只显示最近2期");
+                SPUtils.setValue(this, debtDetail.getId());
+            }
+        }
+
+
         this.debtDetail = debtDetail;
         /**
          * 头卡片 背景颜色
@@ -401,9 +413,9 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
             }
         }
         //还款周期
-        if (1 == debtDetail.getTermType()) {
+        if (1 == debtDetail.getTermType() || 0 == debtDetail.getTermType()) {
             //日 一次性还款
-            header.debtPayTerm.setText("每月 1期");
+            header.debtPayTerm.setText("每月");
         }
         if (2 == debtDetail.getTermType()) {
             //月
@@ -629,7 +641,8 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                 .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
                     @Override
                     public void onEditAmountConfirm(double amount) {
-                        if (amount > debtDetail.showBill.termPayableAmount) {
+                        Double copyTermPayableAmount = index == -1 ? debtDetail.showBill.termPayableAmount : debtDetail.getRepayPlan().get(index).getTermPayableAmount();
+                        if (amount > copyTermPayableAmount) {
                             Toast.makeText(LoanDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
                         } else {
                             Api.getInstance().updateDebtStatus(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), amount, 2)
@@ -638,7 +651,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                                    @Override
                                                    public void accept(ResultEntity result) throws Exception {
                                                        if (result.isSuccess()) {
-                                                           Toast.makeText(LoanDebtDetailActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                           Toast.makeText(LoanDebtDetailActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
                                                             /*
                                                       * 刷新数据
                                                       * xhb
@@ -791,6 +804,8 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                 finish();
             }
         }, 100);
+
+        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
     }
 
     /**
@@ -825,6 +840,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                @Override
                                public void accept(ResultEntity<DebtDetail> result) throws Exception {
                                    if (result.isSuccess()) {
+
                                        debtDetail = result.getData();
                                        if (debtDetail != null) {
                                            showDebtDetail(debtDetail);
@@ -863,7 +879,6 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent());
     }
 
 }

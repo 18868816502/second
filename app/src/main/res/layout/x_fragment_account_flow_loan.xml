@@ -24,17 +24,20 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp" />
 
+
             <EditText
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/et_fg_accout_flow_loan"
-                android:layout_marginLeft="12dp"
-                android:hint="搜索/自定义借款平台"
-                android:textColorHint="#ffd3d4d5"
-                android:textColor="@color/black_1"
-                android:textSize="12sp"
-                android:background="@null"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:background="@null"
+                android:hint="搜索/自定义借款平台"
+                android:textColor="@color/black_1"
+                android:textColorHint="#ffd3d4d5"
+                android:textSize="12sp" />
 
 
             <LinearLayout
@@ -50,6 +53,7 @@
                     android:textSize="10sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
 
                 <com.beihui.market.view.AutoAdjustSizeEditText
                     android:id="@+id/auto_et_num"

@@ -5,4 +5,11 @@ package com.beihui.market.event;
  */
 
 public class MyLoanDebtListFragmentEvent {
+
+    //0 为通用 1 为 网贷 2为信用卡
+    public int type;
+
+    public MyLoanDebtListFragmentEvent(int type) {
+        this.type = type;
+    }
 }

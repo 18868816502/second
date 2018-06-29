@@ -423,6 +423,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabForm);
                 mAddBill.setVisibility(View.GONE);
+                tabAccountText.setVisibility(View.VISIBLE);
 
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
@@ -435,7 +436,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabHome);
                 mAddBill.setVisibility(View.VISIBLE);
-
+                tabAccountText.setVisibility(View.GONE);
 
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
@@ -448,7 +449,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabFind);
                 mAddBill.setVisibility(View.GONE);
-
+                tabAccountText.setVisibility(View.VISIBLE);
 
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
@@ -505,7 +506,7 @@ public class MainActivity extends BaseComponentActivity {
                                          * 审核 1-资讯页，2-借贷页
                                          */
                                            if (result.getData().audit == 1) {
-                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information.html";
+                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
 
                                            } else if (result.getData().audit == 2) {

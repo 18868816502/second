@@ -69,9 +69,11 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMainEvent(MyLoanDebtListFragmentEvent event){
-        if ((mPosition == 1  && ((MyLoanBillPresenter)presenter).curPage > 1) ||( mPosition == 2 && ((MyLoanBillPresenter)presenter).fastCurPage > 1)) {
-            ((MyLoanBillPresenter) presenter).curPage = 1;
-            ((MyLoanBillPresenter) presenter).fastCurPage = 1;
+        if (event.type != 1) {
+            return;
+        }
+        if (((MyLoanBillPresenter)presenter).loanCurPage > 1 ) {
+            ((MyLoanBillPresenter) presenter).loanCurPage = 1;
             int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
             if (size > 0) {
                 ((MyLoanBillPresenter) presenter).loanBillList.clear();
@@ -142,6 +144,11 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void initDatas() {
+        ((MyLoanBillPresenter) presenter).loanCurPage = 1;
+        int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
+        if (size > 0) {
+            ((MyLoanBillPresenter) presenter).loanBillList.clear();
+        }
         presenter.fetchLoanBill(billType);
     }
 

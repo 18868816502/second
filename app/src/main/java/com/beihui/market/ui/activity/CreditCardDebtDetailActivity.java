@@ -175,6 +175,8 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         }
     }
 
+    public int position = 0;
+
     @Inject
     CreditCardDebtDetailPresenter presenter;
 
@@ -262,7 +264,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 //pv，uv统计
 //                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDLISTCLICK);
-
+                CreditCardDebtDetailActivity.this.position = position;
                 switch (view.getId()) {
                     case R.id.month_bill_container: {
 
@@ -401,6 +403,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     @Override
     public void initDatas() {
         debtId = getIntent().getStringExtra("debt_id");
+        presenter.isShow = true;
         presenter.fetchDebtDetail(getIntent().getStringExtra("bill_id"));
         presenter.fetchDebtMonthBill();
 
@@ -533,6 +536,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                         @Override
                                         public void onClick(View v) {
                                             presenter.clickSetStatus(2);
+
                                         }
                                     })
                                     .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());

@@ -50,6 +50,7 @@ import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -330,6 +331,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * @param fastDebtDetail 借款详情
      */
     public void showDebtDetail(final FastDebtDetail fastDebtDetail) {
+        if (!fastDebtDetail.getId().equals(SPUtils.getValue(this, fastDebtDetail.getId()))) {
+            if (fastDebtDetail.getTerm() > 12) {
+                com.beihui.market.util.ToastUtils.showToast(this, "账单分期大于12期，只显示最近6期");
+                SPUtils.setValue(this, fastDebtDetail.getId());
+            } else if (fastDebtDetail.getTerm() == -1) {
+                com.beihui.market.util.ToastUtils.showToast(this, "循环账单只显示最近2期");
+                SPUtils.setValue(this, fastDebtDetail.getId());
+            }
+        }
+
         this.fastDebtDetail = fastDebtDetail;
 
         /**
@@ -360,9 +371,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         }
 
         //还款周期
-        if (1 == fastDebtDetail.cycleType) {
+        if (1 == fastDebtDetail.cycleType || 0 == fastDebtDetail.cycleType) {
             //日 一次性还款
-            header.debtPayTerm.setText("每月 1期");
+            header.debtPayTerm.setText("每月");
         }
         if (2 == fastDebtDetail.cycleType) {
             //月
@@ -533,6 +544,12 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
                     @Override
                     public void onEditAmountConfirm(final double amount) {
+                        Double copyTermPayableAmount = index == -1 ? fastDebtDetail.showBill.termPayableAmount : fastDebtDetail.getDetailList().get(pos).getTermPayableAmount();
+                        if (amount > copyTermPayableAmount) {
+                            Toast.makeText(FastDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         final String billId = index == -1 ? fastDebtDetail.showBill.getId() : fastDebtDetail.getDetailList().get(pos).getId();
                         Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(),  billId, debtId, 2,  amount)
                                 .compose(RxUtil.<ResultEntity>io2main())
@@ -758,6 +775,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 finish();
             }
         }, 100);
+
+        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
     }
 
     /**
@@ -805,6 +824,6 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent());
+
     }
 }

@@ -102,7 +102,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     @BindView(R.id.tv_fg_first_pay_loan_date)
     TextView mFirstPayLoanDate;
     @BindView(R.id.et_fg_accout_flow_loan)
-    EditText etLoan;
+    public EditText etLoan;
     @BindView(R.id.ll_account_flow_bottom)
     LinearLayout mBottom;
     @BindView(R.id.tv_fg_first_pay_loan_times)
@@ -189,7 +189,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
     @Override
     public void configViews() {
 
-
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYNETLOAN);
 
@@ -218,7 +217,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
             mFirstPayLoanDate.setText(debtNormalDetail.getFirstRepayDate());
             //还款周期
-            if (1 == debtNormalDetail.getTermType()) {
+            if (1 == debtNormalDetail.getTermType() || 0 == debtNormalDetail.getTermType()) {
                 //日 一次性还款
                 mFirstPayNormalTime.setText("每月");
             }
@@ -338,16 +337,18 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
            @Override
            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-               int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
-
-               String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
-               Log.e("xvcs",  iconInitials);
-               for (int i = 0; i < alphabetCountList.length; i++) {
-                   if (iconInitials.equals(alphabetCountList[i])) {
-                       alphabetIndexBar.selectedIndex = i;
-                       alphabetIndexBar.invalidate();
-                   }
-               }
+//               int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+//
+//               String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
+//               Log.e("xvcs",  iconInitials);
+//               if (recyclerViewSearch.getVisibility() == View.INVISIBLE) {
+//                   for (int i = 0; i < alphabetCountList.length; i++) {
+//                       if (iconInitials.equals(alphabetCountList[i])) {
+//                           alphabetIndexBar.selectedIndex = i;
+//                           alphabetIndexBar.invalidate();
+//                       }
+//                   }
+//               }
 
 
                if (Math.abs(dy) <= 2) {
@@ -361,8 +362,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
               }
            }
        });
-
-
 
 
         customKeyboardManager = new CustomKeyboardManager(activity);
@@ -518,14 +517,22 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         customKeyboardManager.attachTo(etInputPrice, priceKeyboard);
         customKeyboardManager.setShowUnderView(mBottom);
 
-        etInputPrice.postDelayed(new Runnable() {
+
+        etLoan.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (getUserVisibleHint()) {
-                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                    InputMethodUtil.openSoftKeyboard(activity, etLoan);
                 }
             }
-        }, 100);
+        }, 500);
+
+//        etInputPrice.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                boardHelper.showKeyBoard(etInputPrice);
+//            }
+//        }, 100);
 
 
         etLoan.addTextChangedListener(new TextWatcher() {
@@ -732,17 +739,35 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
-                    double amount = Double.parseDouble(s.toString());
-                    if (amount < 0D) {
-                        map.put("amount", null);
-                    } else if (amount == 0D) {
-                        map.put("amount", null);
-                    } else if (amount > 9999999999D) {
-                        map.put("amount", null);
-                    } else {
-                        map.put("amount", Double.parseDouble(s.toString())+"");
-                    }
+                if (lockEtInput) {
+                    return;
+                }
+                if (!TextUtils.isEmpty(s)) {
+                    map.put("amount", s.toString());
+                } else {
+                    map.put("amount", "");
+                }
+//                if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
+//                    double amount = Double.parseDouble(s.toString());
+//                    if (amount < 0D) {
+//                        map.put("amount", null);
+//                    } else if (amount == 0D) {
+//                        map.put("amount", null);
+//                    } else if (amount > 9999999999D) {
+//                        map.put("amount", null);
+//                    } else {
+//                        map.put("amount", Double.parseDouble(s.toString())+"");
+//                    }
+//                }
+            }
+        });
+
+        etInputPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                    InputMethodUtil.closeSoftKeyboard(activity);
                 }
             }
         });

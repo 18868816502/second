@@ -243,11 +243,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
            } else {
                //非示例数据
 
-//               if (accountBill.getStatus() == 2) {
+               if (accountBill.getStatus() == 2) {
 //                   holder.swipeMenuLayout.setSwipeEnable(false);
-//               } else {
+                   holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
+                   holder.mAccountTypeMoney.setTextColor(Color.parseColor("#909298"));
+               } else {
 //                   holder.swipeMenuLayout.setSwipeEnable(true);
-//               }
+                   holder.mAccountTypeName.setTextColor(Color.parseColor("#424251"));
+                   holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
+               }
 
                int placeHolder;
                if (accountBill.getType() == 1) {

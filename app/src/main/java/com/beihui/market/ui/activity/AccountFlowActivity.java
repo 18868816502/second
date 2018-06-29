@@ -36,6 +36,7 @@ import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.event.MyLoanDebtListFragmentEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -49,6 +50,7 @@ import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AutoAdjustSizeEditText;
@@ -56,6 +58,8 @@ import com.beihui.market.view.NoScrollViewPager;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
 import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -205,7 +209,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     mAccountFlowCreditCard.setSelected(false);
 
                     mNormalFragment.customKeyboardManager.hideSoftKeyboard(mNormalFragment.etInputPrice, 0);
-                    mLoanFragment.customKeyboardManager.showSoftKeyboard(mLoanFragment.etInputPrice);
+                    mLoanFragment.customKeyboardManager.hideSoftKeyboard(mLoanFragment.etInputPrice, 1);
+                    InputMethodUtil.openSoftKeyboard(AccountFlowActivity.this, mLoanFragment.etLoan);
                     selectedFragmentId = R.id.tv_loan_account_flow;
 
                     mConFirmOrRefrsh.setVisibility(View.VISIBLE);
@@ -259,6 +264,11 @@ public class AccountFlowActivity extends BaseComponentActivity {
             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYTOPRIGHTCORNETHOOK);
 
             if (selectedFragmentId == R.id.tv_normal_account_flow) {
+                //判断参数问题是否正确
+                if (isCommit(mNormalFragment.map, 0)) {
+                    return;
+                }
+
                 if (mNormalFragment.debtNormalDetail == null) {
                     //通用记账
                     createAccount(mNormalFragment.map, 0);
@@ -267,6 +277,11 @@ public class AccountFlowActivity extends BaseComponentActivity {
                     deleteFastDebt(mNormalFragment.debtNormalDetail.getId());
                 }
             } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
+                //判断参数问题是否正确
+                if (isCommit(mLoanFragment.map, 1)) {
+                    return;
+                }
+
                 if (mLoanFragment.debtNormalDetail == null) {
                     //网贷记账
                     createAccount(mLoanFragment.map, 1);
@@ -335,35 +350,6 @@ public class AccountFlowActivity extends BaseComponentActivity {
      * 创建通用 网贷账单
      */
     private void createAccount(Map<String, Object> map, int type) {
-        if (map == null) {
-            return;
-        }
-        if (map.get("amount") == null) {
-            return;
-        }
-
-
-        double amount = Double.parseDouble(map.get("amount")+"");
-        if (amount < 0D) {
-            ToastUtils.showToast(this, "每期金额不能小于0");
-            return;
-        } else if (amount == 0D) {
-            ToastUtils.showToast(this, "每期金额不能为0");
-            return;
-        } else if (amount > 999999999D) {
-            ToastUtils.showToast(this, "输入的金额太大啦");
-            return;
-        }
-
-        if (map.get("projectName") == null && type == 0) {
-            ToastUtils.showToast(this, "账单名称不能为空");
-            return;
-        }
-        if (map.get("channelName") == null && type == 1) {
-            ToastUtils.showToast(this, "账单名称不能为空");
-            return;
-        }
-
 
         map.put("userId", UserHelper.getInstance(this).getProfile().getId());
         if ( type == 0) {
@@ -371,6 +357,41 @@ public class AccountFlowActivity extends BaseComponentActivity {
         } else {
             createLoanAccount(map);
         }
+    }
+
+    private boolean isCommit(Map<String, Object> map, int type) {
+        if (map == null) {
+            return true;
+        }
+        if (map.get("amount") == null) {
+            return true;
+        }
+        if (!TextUtils.isEmpty((String)map.get("amount")) && (((String)map.get("amount")).substring(1).contains("+") || ((String)map.get("amount")).substring(1).contains("-"))) {
+            ToastUtils.showToast(this, "请输入正确的金额");
+            return true;
+        }
+
+        double amount = Double.parseDouble(map.get("amount")+"");
+        if (amount < 0D) {
+            ToastUtils.showToast(this, "每期金额不能小于0");
+            return true;
+        } else if (amount == 0D) {
+            ToastUtils.showToast(this, "每期金额不能为0");
+            return true;
+        } else if (amount > 999999999D) {
+            ToastUtils.showToast(this, "输入的金额太大啦");
+            return true;
+        }
+
+        if (map.get("projectName") == null && type == 0) {
+            ToastUtils.showToast(this, "账单名称不能为空");
+            return true;
+        }
+        if (map.get("channelName") == null && type == 1) {
+            ToastUtils.showToast(this, "账单名称不能为空");
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -382,11 +403,18 @@ public class AccountFlowActivity extends BaseComponentActivity {
                 .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
                                @Override
                                public void accept(ResultEntity<CreateAccountReturnIDsBean> result) throws Exception {
-                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+//                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+
                                    /**
                                 * 返回详情页
                                 */
                                    if (result.isSuccess()) {
+                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
+
+                                       if (mNormalFragment.debtNormalDetail != null) {
+                                           ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
+                                       }
+
                                        Intent intent = new Intent();
                                        intent.putExtra("recordId", result.getData().recordId);
                                        intent.putExtra("billId", result.getData().billId);
@@ -412,9 +440,15 @@ public class AccountFlowActivity extends BaseComponentActivity {
                 .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
                                @Override
                                public void accept(ResultEntity<CreateAccountReturnIDsBean> result) throws Exception {
-                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+//                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
 
                                    if (result.isSuccess()) {
+                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
+
+                                       if (mLoanFragment.debtNormalDetail != null) {
+                                           ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
+                                       }
+
                                        /**
                                         * 返回详情页
                                         */

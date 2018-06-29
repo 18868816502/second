@@ -32,8 +32,9 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
     public List<LoanBill.Row> loanBillList = new ArrayList<>();
 
     private boolean canLoadMore;
-    public int curPage = 1;
+    public int loanCurPage = 1;
     public int fastCurPage = 1;
+    public int creditCardCurPage = 1;
 
     @Inject
     MyLoanBillPresenter(Context context, Api api, MyLoanBillContract.View view) {
@@ -44,16 +45,28 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
 
     @Override
     public void fetchLoanBill(final int billTyp) {
-        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, billTyp == 0 ? curPage : fastCurPage, PAGE_SIZE)
+        int page;
+        if (billTyp == 3) {
+            //快捷记账
+            page = fastCurPage;
+        } else if (billTyp == 1) {
+            //网贷记账
+            page = loanCurPage;
+        } else {
+            page = creditCardCurPage;
+        }
+        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, page, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanBill>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanBill>>() {
                                @Override
                                public void accept(ResultEntity<LoanBill> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (billTyp == 1) {
-                                            curPage++;
-                                       } else {
+                                           loanCurPage++;
+                                       } else if (billTyp == 3){
                                            fastCurPage++;
+                                       } else {
+                                           creditCardCurPage++;
                                        }
                                        int size = 0;
                                        if (result.getData() != null) {

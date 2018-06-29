@@ -23,6 +23,7 @@ import com.beihui.market.ui.presenter.EditUserNamePresenter;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
+import com.beihui.market.view.EditTextUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.io.UnsupportedEncodingException;
@@ -104,6 +105,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
             System.arraycopy(temp, 0, filters, 0, temp.length);
             filters[temp.length] = filter;
         }
+        EditTextUtils.addDisableEmojiInputFilter(editText);
         editText.setFilters(filters);
         editText.addTextChangedListener(new TextWatcher() {
             @Override

@@ -610,28 +610,30 @@ public class CommonUtils {
     }
 
     public static String getChaneseNum(int num) {
-        if (num == 1) {
+        if (num == 0) {
+            return "每月";
+        }  else if (num == 1) {
             return "每月";
         } else if (num == 2) {
-            return "每二月";
+            return "每2月";
         } else if (num == 3) {
-            return "每三月";
+            return "每3月";
         } else if (num == 4) {
-            return "每四月";
+            return "每4月";
         } else if (num == 5) {
-            return "每五月";
+            return "每5月";
         } else if (num == 6) {
-            return "每六月";
+            return "每6月";
         } else if (num == 7) {
-            return "每七月";
+            return "每7月";
         } else if (num == 8) {
-            return "每八月";
+            return "每8月";
         } else if (num == 9) {
-            return "每九月";
+            return "每9月";
         } else if (num == 10) {
-            return "每十月";
+            return "每10月";
         } else if (num == 11) {
-            return "每十一月";
+            return "每11月";
         } else {
             return "每年";
         }

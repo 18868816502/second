@@ -201,6 +201,12 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
+        if (NetConstants.H5_FIND_WEVVIEW_DETAIL.equals(BuildConfig.H5_DOMAIN + "/information-v2.html")) {
+            newsTitleName.setText("发现");
+        } else {
+            newsTitleName.setText("借贷");
+        }
+
         comeBack.setVisibility(View.GONE);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
 

@@ -115,10 +115,17 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
         boardHelper = new KeyBoardHelper(this);
         boardHelper.onCreate();
         boardHelper.setOnKeyBoardStatusChangeListener(onKeyBoardStatusChangeListener);
+        mTypeName.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boardHelper.showKeyBoard(mTypeName);
+            }
+        }, 500);
     }
 
     @Override
     public void initDatas() {
+
         mAdapter = new AccountFlowAdapter(this, 0);
         GridLayoutManager manager = new GridLayoutManager(this, 5);
         manager.setOrientation(GridLayoutManager.VERTICAL);

@@ -11,6 +11,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtils;
 
 import javax.inject.Inject;
 
@@ -85,9 +86,9 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
     public void updateDebtStatus(int index, int status) {
         if (debtDetail.getRepayPlan() != null && debtDetail.getRepayPlan().size() > 0) {
             DebtDetail.RepayPlanBean bean = debtDetail.getRepayPlan().get(index);
-            if (bean.getStatus() != status) {
+//            if (bean.getStatus() != status) {
                 updateStatus(bean.getId(), status);
-            }
+//            }
         }
     }
 

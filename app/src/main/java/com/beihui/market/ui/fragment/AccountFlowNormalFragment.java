@@ -367,18 +367,23 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 if (lockEtInput) {
                     return;
                 }
-                if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
-                    double amount = Double.parseDouble(s.toString());
-                    if (amount < 0D) {
-                        map.put("amount", null);
-                    } else if (amount == 0D) {
-                        map.put("amount", null);
-                    } else if (amount > 9999999999D) {
-                        map.put("amount", null);
-                    } else {
-                        map.put("amount", Double.parseDouble(s.toString())+"");
-                    }
+                if (!TextUtils.isEmpty(s)) {
+                    map.put("amount", s.toString());
+                } else {
+                    map.put("amount", "");
                 }
+//                if (!TextUtils.isEmpty(s) && !s.toString().contains("+") && !s.toString().contains("-")) {
+//                    double amount = Double.parseDouble(s.toString());
+//                    if (amount < 0D) {
+//                        map.put("amount", null);
+//                    } else if (amount == 0D) {
+//                        map.put("amount", null);
+//                    } else if (amount > 9999999999D) {
+//                        map.put("amount", null);
+//                    } else {
+//                        map.put("amount", Double.parseDouble(s.toString())+"");
+//                    }
+//                }
             }
         });
 
@@ -632,7 +637,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
             mFirstPayNormalDate.setText(debtNormalDetail.getFirstRepayDate());
             //还款周期
-            if (1 == debtNormalDetail.cycleType) {
+            if (1 == debtNormalDetail.cycleType || 0 == debtNormalDetail.cycleType) {
                 //日 一次性还款
                 mFirstPayNormalTime.setText("每月");
             }

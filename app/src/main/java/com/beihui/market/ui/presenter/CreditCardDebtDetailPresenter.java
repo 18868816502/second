@@ -41,6 +41,8 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
 
     public CreditCardDebtBill bill = new CreditCardDebtBill();
 
+
+
     @Inject
     CreditCardDebtDetailPresenter(Context context, Api api, CreditCardDebtDetailContract.View view, String debtId) {
         this.api = api;
@@ -99,7 +101,7 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                            bill = billList.get(0);
                                        }
                                        view.showDebtBillList(Collections.unmodifiableList(billList), size == PAGE_SIZE);
-                                       if (billList.size() > 0) {
+                                       if (billList.size() > 0 && isShow) {
                                            view.showStatus(billList.get(0).getStatus());
                                        }
                                    } else {
@@ -184,8 +186,14 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
         }
     }
 
+    /**
+     * 禁止初始化状态
+     * @param status
+     */
+    public boolean isShow = true;
+
     @Override
-    public void clickSetStatus(int status) {
+    public void clickSetStatus(final int status) {
         if (debtDetail != null) {
             //设为已还
 //            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getId(), debtDetail.getShowBill().getId(), status)
@@ -200,8 +208,11 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                            billList.clear();
                                            bill2Detail.clear();
                                            curPageNo = 1;
+                                           isShow = false;
                                            fetchDebtDetail(billId);
                                            fetchDebtMonthBill();
+
+                                           view.showStatus(status);
                                        } else {
                                            view.showErrorMsg(result.getMsg());
                                        }

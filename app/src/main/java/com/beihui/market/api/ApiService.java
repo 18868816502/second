@@ -220,7 +220,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/creditcard/updateRemark")
-    Observable<ResultEntity> updateCreditCardBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
+    Observable<ResultEntity> updateCreditCardBillRemark(@Field("userId") String userId, @Field("cardId") String recordId, @Field("remark") String remark);
 
     /**
      * 删除借款

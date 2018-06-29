@@ -31,6 +31,8 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
+import com.beihui.market.ui.busevents.UserLoginEvent;
+import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.view.BusinessWebView;
@@ -64,6 +66,16 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     //依赖的activity
     public FragmentActivity mActivity;
 
+
+    @Subscribe
+    public void onLogin(UserLoginEvent event) {
+        load();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEvent(UserLogoutEvent event){
+        load();
+    }
 
     /**
      * 判断审核的状态

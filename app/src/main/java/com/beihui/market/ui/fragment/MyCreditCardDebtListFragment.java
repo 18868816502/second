@@ -100,6 +100,11 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void initDatas() {
+        ((MyLoanBillPresenter) presenter).creditCardCurPage = 1;
+        int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
+        if (size > 0) {
+            ((MyLoanBillPresenter) presenter).loanBillList.clear();
+        }
         presenter.fetchLoanBill(billType);
     }
 

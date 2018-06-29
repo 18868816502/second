@@ -65,17 +65,19 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMainEvent(MyLoanDebtListFragmentEvent event){
-        if ((mPosition == 1  && ((MyLoanBillPresenter)presenter).curPage > 1) ||( mPosition == 2 && ((MyLoanBillPresenter)presenter).fastCurPage > 1)) {
-            ((MyLoanBillPresenter) presenter).curPage = 1;
+        if (event.type != 0) {
+            return;
+        }
+        if (((MyLoanBillPresenter)presenter).fastCurPage > 1 ) {
             ((MyLoanBillPresenter) presenter).fastCurPage = 1;
             int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
             if (size > 0) {
                 ((MyLoanBillPresenter) presenter).loanBillList.clear();
             }
-            presenter.fetchLoanBill(FastbillType);
-
             Log.e("asdfa", "aaaaaaaaaaaaaaaaaaaa");
         }
+
+        presenter.fetchLoanBill(FastbillType);
     }
 
     @Override
@@ -138,6 +140,11 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void initDatas() {
+        ((MyLoanBillPresenter) presenter).fastCurPage = 1;
+        int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
+        if (size > 0) {
+            ((MyLoanBillPresenter) presenter).loanBillList.clear();
+        }
         presenter.fetchLoanBill(FastbillType);
     }
 
