@@ -515,7 +515,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             nickNameTv.setText(profile.getUserName());
         }
         if (profile.getBingPhone() != null) {
-            userProfileMobile.setText(CommonUtils.changeTel(profile.getBingPhone()));
+            userProfileMobile.setText(CommonUtils.formatTel(profile.getBingPhone()));
         } else {
             userProfileMobile.setText("未绑定");
         }

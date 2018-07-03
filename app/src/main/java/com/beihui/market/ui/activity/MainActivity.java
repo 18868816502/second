@@ -422,6 +422,8 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabForm);
                 }
                 ft.show(tabForm);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+
                 mAddBill.setVisibility(View.GONE);
                 tabAccountText.setVisibility(View.VISIBLE);
 
@@ -435,6 +437,8 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
+                ImmersionBar.with(this).statusBarDarkFont(false).init();
+
                 mAddBill.setVisibility(View.VISIBLE);
                 tabAccountText.setVisibility(View.GONE);
 
@@ -448,6 +452,8 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabFind);
                 }
                 ft.show(tabFind);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+
                 mAddBill.setVisibility(View.GONE);
                 tabAccountText.setVisibility(View.VISIBLE);
 
@@ -586,9 +592,6 @@ public class MainActivity extends BaseComponentActivity {
                     navigationBar.select(R.id.tab_news);
                     isShowTabAccount = false;
                 }
-            }
-            if (tabImage.getPosition() == 3) {
-                EventBus.getDefault().postSticky(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
             }
 
             final int index = tabImage.getPosition() - 1;

@@ -252,6 +252,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
                                                        header.remarkContent.setText("备注  "+remark);
+                                                       fastDebtDetail.remark = remark;
                                                    } else {
                                                        Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }

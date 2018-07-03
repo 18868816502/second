@@ -64,6 +64,7 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
         editText.setTag(R.id.edittext_bind_keyboard, keyboard);
         if (null == keyboard.getCustomKeyStyle()) keyboard.setCustomKeyStyle(defaultCustomKeyStyle);
         editText.setOnFocusChangeListener(this);
+
     }
 
     private CustomBaseKeyboard getKeyboard(View view) {

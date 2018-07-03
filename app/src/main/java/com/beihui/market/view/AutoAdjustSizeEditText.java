@@ -30,14 +30,14 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
         super(context);
         mContext = context;
         maxSize = Px2DpUtils.sp2px(mContext, 27);
-        minSize = Px2DpUtils.sp2px(mContext, 15);
+        minSize = Px2DpUtils.sp2px(mContext, 10);
     }
 
     public AutoAdjustSizeEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         maxSize = Px2DpUtils.sp2px(mContext, 27);
-        minSize = Px2DpUtils.sp2px(mContext, 15);
+        minSize = Px2DpUtils.sp2px(mContext, 10);
     }
 
     /**
@@ -56,12 +56,12 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
         Rect boundsRect = new Rect();
         Rect boundsCharsRect = new Rect();
         mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
-        mTextPaint.getTextBounds("0", 0, 1, boundsCharsRect);
+        mTextPaint.getTextBounds("1", 0, 1, boundsCharsRect);
         int textWidth = boundsRect.width();
         int charWidth = boundsCharsRect.width();
         mTextSize = getTextSize();
 
-        while (Math.abs(textWidth - availableTextViewWidth) > charWidth) {
+        while (Math.abs(textWidth - availableTextViewWidth) > charWidth*2) {
             Log.e("adfas", "textWidth ---> " + textWidth);
             Log.e("adfas", "availableTextViewWidth ---> " + availableTextViewWidth);
             Log.e("adfas", "textWidth - availableTextViewWidth ---> " + (textWidth - availableTextViewWidth));

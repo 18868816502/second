@@ -57,6 +57,7 @@ public class AccountFlowRemarkDialog extends DialogFragment {
     public EditText mEditText;
     public TextView mNum;
     public TextView mConfirm;
+    private String content = null;
 
 
     @Override
@@ -75,8 +76,23 @@ public class AccountFlowRemarkDialog extends DialogFragment {
         mView= LayoutInflater.from(getActivity()).inflate(R.layout.x_dialog_account_flow_remark, null);
         mFlowLayout = (TagFlowLayout)mView.findViewById(R.id.id_flowlayout);
         mEditText = (EditText)mView.findViewById(R.id.et_dialog_account_remark);
-        mNum = (TextView)mView.findViewById(R.id.tv_content_num);
         mConfirm = (TextView)mView.findViewById(R.id.tv_content_confirm);
+        mNum = (TextView)mView.findViewById(R.id.tv_content_num);
+
+        if (content == null) {
+            mEditText.setText("");
+            mConfirm.setEnabled(false);
+            mConfirm.setBackground(activity.getResources().getDrawable(R.drawable.xshape_dialog_remark_black_bg));
+            mNum.setText("0/20");
+        } else {
+            mEditText.setText(content);
+            mEditText.setSelection(content.length());
+            mConfirm.setEnabled(true);
+            mConfirm.setBackground(activity.getResources().getDrawable(R.drawable.xshape_dialog_remark_red_bg));
+            mNum.setText(content.length()+"/20");
+        }
+
+
         getDialog().getWindow().setBackgroundDrawable(
                 new ColorDrawable(ContextCompat.getColor(mView.getContext(), R.color.transparent_half)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -162,6 +178,10 @@ public class AccountFlowRemarkDialog extends DialogFragment {
 
         EditTextUtils.addDisableEmojiInputFilter(mEditText);
         return mView;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public interface OnTextChangeListener{

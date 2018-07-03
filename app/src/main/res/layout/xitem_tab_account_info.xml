@@ -84,6 +84,7 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/rl_item_tab_account_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

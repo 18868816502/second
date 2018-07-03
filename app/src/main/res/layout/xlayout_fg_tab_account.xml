@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
-
-
     </android.support.v7.widget.Toolbar>
 
     <!--&lt;!&ndash;头部布局&ndash;&gt;-->
@@ -57,7 +55,8 @@
                 android:id="@+id/rv_fg_tab_account_title"
                 android:background="@drawable/small_nav_bg"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:paddingTop="10dp"
+                android:layout_height="65dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:text="@string/app_name"

@@ -262,36 +262,39 @@ public class AccountFlowActivity extends BaseComponentActivity {
             }
             //pv，uv统计
             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYTOPRIGHTCORNETHOOK);
-
-            if (selectedFragmentId == R.id.tv_normal_account_flow) {
-                //判断参数问题是否正确
-                if (isCommit(mNormalFragment.map, 0)) {
-                    return;
-                }
-
-                if (mNormalFragment.debtNormalDetail == null) {
-                    //通用记账
-                    createAccount(mNormalFragment.map, 0);
-                } else {
-                    //先删除账单 在创建账单
-                    deleteFastDebt(mNormalFragment.debtNormalDetail.getId());
-                }
-            } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
-                //判断参数问题是否正确
-                if (isCommit(mLoanFragment.map, 1)) {
-                    return;
-                }
-
-                if (mLoanFragment.debtNormalDetail == null) {
-                    //网贷记账
-                    createAccount(mLoanFragment.map, 1);
-                } else {
-                    //先删除账单 在创建账单
-                    deleteLoanDebt(mLoanFragment.debtNormalDetail.getId());
-                }
-            }
+            createAccount();
         } else {
             selectedFragmentId = view.getId();
+        }
+    }
+
+    public void createAccount() {
+        if (selectedFragmentId == R.id.tv_normal_account_flow) {
+            //判断参数问题是否正确
+            if (isCommit(mNormalFragment.map, 0)) {
+                return;
+            }
+
+            if (mNormalFragment.debtNormalDetail == null) {
+                //通用记账
+                createAccount(mNormalFragment.map, 0);
+            } else {
+                //先删除账单 在创建账单
+                deleteFastDebt(mNormalFragment.debtNormalDetail.getId());
+            }
+        } else if (selectedFragmentId == R.id.tv_loan_account_flow) {
+            //判断参数问题是否正确
+            if (isCommit(mLoanFragment.map, 1)) {
+                return;
+            }
+
+            if (mLoanFragment.debtNormalDetail == null) {
+                //网贷记账
+                createAccount(mLoanFragment.map, 1);
+            } else {
+                //先删除账单 在创建账单
+                deleteLoanDebt(mLoanFragment.debtNormalDetail.getId());
+            }
         }
     }
 

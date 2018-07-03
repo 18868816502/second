@@ -71,7 +71,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -84,10 +84,11 @@
                 android:textSize="11sp" />
 
 
-            <TextView
+            <com.beihui.market.view.AutoFitTextView
                 android:id="@+id/tv_item_loan_analysis_unpay"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_height="match_parent"
                 android:layout_marginTop="6dp"
                 android:text="2596.00"
                 android:textColor="#424251"
@@ -97,7 +98,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -110,10 +111,11 @@
                 android:textSize="11sp" />
 
 
-            <TextView
+            <com.beihui.market.view.AutoFitTextView
                 android:id="@+id/tv_item_loan_analysis_all_pay"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_height="match_parent"
                 android:layout_marginTop="6dp"
                 android:text="2596.00"
                 android:textColor="#424251"
@@ -123,7 +125,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -136,10 +138,11 @@
                 android:textSize="11sp" />
 
 
-            <TextView
+            <com.beihui.market.view.AutoFitTextView
                 android:id="@+id/tv_item_loan_analysis_overdue_pay"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_height="match_parent"
                 android:layout_marginTop="6dp"
                 android:text="2596.00"
                 android:textColor="@color/c_ff5240"

@@ -1,6 +1,9 @@
 package com.beihui.market.ui.adapter;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -18,12 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -174,6 +180,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         }
                         dataSet.addAll(unPayeset);
                         holder.mHeaderSortType.setText("待还");
+                        ToastUtils.showToast(mActivity, "已显示待还账单");
                         showAll = false;
                     } else {
                         if (dataSet.size() > 0) {
@@ -190,6 +197,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
        } else if (holder.viewType == VIEW_NO_DATA) {
 
        } else {
+           holder.cardRoot.scrollTo(0, 0);
+
            final int position = i - 1;
            final TabAccountNewBean.TabAccountNewInfoBean accountBill = dataSet.get(position);
            //示例数据
@@ -396,7 +405,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                    @Override
                    public void onClick(View v) {
                        //设置为未还
-                       showSetAllPayDialog(accountBill, 1, null);
+                       showSetAllPayDialog(holder, position, accountBill, 1, null);
                        holder.swipeMenuLayout.smoothClose();
                    }
                });
@@ -412,7 +421,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                            holder.swipeMenuLayout.smoothClose();
                            return;
                        }
-                       showSetAllPayDialog(accountBill, 2, FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
+                       showSetAllPayDialog(holder, position, accountBill, 2, FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
                        holder.swipeMenuLayout.smoothClose();
                    }
                });
@@ -722,7 +731,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
      * 设为已还
      * status	否	int	状态 1-待还 2-已还
      */
-    private void showSetAllPayDialog(final TabAccountNewBean.TabAccountNewInfoBean accountBill, final int status, String money) {
+    private void showSetAllPayDialog(final ViewHolder holder, final int position, final TabAccountNewBean.TabAccountNewInfoBean accountBill, final int status, String money) {
         final Dialog dialog = new Dialog(mActivity, 0);
         View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -744,7 +753,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                        /**
                                                     * 重新回到首屏
                                                     */
-                                                       ((TabAccountFragment) mFragment).refreshData();
+                                                       if (status == 2) {
+                                                           dataSet.remove(position);
+                                                           dataSetCopy.remove(position);
+                                                           notifyItemRemoved(holder.getAdapterPosition());
+                                                       }
+//                                                     ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -794,9 +808,14 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                    if (result.isSuccess()) {
                                                        Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
-                                                        * 重新回到首屏
-                                                        */
-                                                       ((TabAccountFragment) mFragment).refreshData();
+                                                    * 重新回到首屏
+                                                    */
+                                                       if (status == 2) {
+                                                           dataSet.remove(position);
+                                                           dataSetCopy.remove(position);
+                                                           notifyItemRemoved(holder.getAdapterPosition());
+                                                       }
+//                                                     ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -858,6 +877,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         public ImageView mHeaderNoticeCross;
 
         public CustomSwipeMenuLayout swipeMenuLayout;
+        public RelativeLayout cardRoot;
         public RelativeLayout mTopRoot;
         public LinearLayout payPart;
         public LinearLayout payAll;
@@ -892,6 +912,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
 
             } else {
                 swipeMenuLayout = (CustomSwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
+                cardRoot = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_account_card);
                 mTopRoot = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_account_normal_top_root);
                 payPart = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_account_no_reply);
                 payAll = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_account_reply);

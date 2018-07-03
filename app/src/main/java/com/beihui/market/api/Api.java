@@ -138,9 +138,9 @@ public class Api {
                 .addInterceptor(new AccessHeadInterceptor());
 
         //设置拦截日志
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             builder.addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY));
-//        }
+        }
 
         return builder.build();
     }

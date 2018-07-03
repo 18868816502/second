@@ -209,6 +209,28 @@ public class CommonUtils {
         return pNumber;
     }
 
+    /**
+     * 讲电话号码中间变成*
+     *
+     * @param pNumber
+     * @return
+     */
+    public static String formatTel(String pNumber) {
+        if (!TextUtils.isEmpty(pNumber) && pNumber.length() > 6) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < pNumber.length(); i++) {
+                char c = pNumber.charAt(i);
+                if (i == 3 || i == 7) {
+                    sb.append(" ").append(c);
+                } else {
+                    sb.append(c);
+                }
+            }
+            return sb.toString();
+        }
+        return pNumber;
+    }
+
     public static boolean matchPhone(String text) {
         if (Pattern.compile("^1(3|4|5|7|8)\\d{9}$").matcher(text).matches()) {
             return true;

@@ -230,7 +230,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     public void configViews() {
         setupToolbarBackNavigation(toolbar, R.drawable.x_normal_back);
         //设置状态栏文字为黑色字体
-        ImmersionBar.with(this).transparentBar().titleBar(toolbar).statusBarDarkFont(true).init();
+        ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //头布局 加载
         header = new Header(LayoutInflater.from(this)
@@ -258,6 +258,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                                    public void accept(ResultEntity result) throws Exception {
                                                        if (result.isSuccess()) {
                                                            header.remarkContent.setText("备注  "+remark);
+                                                           debtDetail.setRemark(remark);
                                                        } else {
                                                            Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                        }

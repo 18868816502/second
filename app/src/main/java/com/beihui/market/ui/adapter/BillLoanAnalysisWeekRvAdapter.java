@@ -27,6 +27,8 @@ import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.view.AutoFitTextView;
+import com.beihui.market.view.AutoTextView;
 import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.bumptech.glide.Glide;
@@ -438,9 +440,9 @@ public class BillLoanAnalysisWeekRvAdapter extends RecyclerView.Adapter<BillLoan
         public TextView mYear;
         public TextView mDeatilDateTwo;
         public TextView mDeatilDateThree;
-        public TextView mUnPay;
-        public TextView mAllPay;
-        public TextView mOverduepay;
+        public AutoFitTextView mUnPay;
+        public AutoFitTextView mAllPay;
+        public AutoFitTextView mOverduepay;
 
         //列表布局
         public LinearLayout mListRoot;
@@ -481,9 +483,9 @@ public class BillLoanAnalysisWeekRvAdapter extends RecyclerView.Adapter<BillLoan
                 mDeatilDateTwo = (TextView)itemView.findViewById(R.id.tv_item_date_type_two);
                 mDeatilDateThree = (TextView)itemView.findViewById(R.id.tv_item_date_type_three);
 
-                mUnPay = (TextView)itemView.findViewById(R.id.tv_item_loan_analysis_unpay);
-                mAllPay = (TextView)itemView.findViewById(R.id.tv_item_loan_analysis_all_pay);
-                mOverduepay = (TextView)itemView.findViewById(R.id.tv_item_loan_analysis_overdue_pay);
+                mUnPay = (AutoFitTextView)itemView.findViewById(R.id.tv_item_loan_analysis_unpay);
+                mAllPay = (AutoFitTextView)itemView.findViewById(R.id.tv_item_loan_analysis_all_pay);
+                mOverduepay = (AutoFitTextView)itemView.findViewById(R.id.tv_item_loan_analysis_overdue_pay);
             }
             if (viewType == VIEW_NORMAL) {
                 mListRoot = (LinearLayout)itemView.findViewById(R.id.ll_item_normal_loan_analysis_root);

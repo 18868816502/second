@@ -77,15 +77,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
         load();
     }
 
-    /**
-     * 判断审核的状态
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUrlEvent(TabNewsWebViewFragmentUrlEvent event) {
-        load();
-    }
-
 
     public static TabNewsWebViewTwoFragment newInstance() {
         return new TabNewsWebViewTwoFragment();

@@ -8,6 +8,7 @@ import com.beihui.market.R;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.LoanAccountIconBean;
+import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -25,15 +26,12 @@ public class AccountFlowLoanRvAdapter extends BaseQuickAdapter<LoanAccountIconBe
 
     @Override
     protected void convert(BaseViewHolder helper, LoanAccountIconBean item) {
-        if (!TextUtils.isEmpty(item.logo)) {
-            Glide.with(helper.itemView.getContext())
-                    .load(item.logo)
-                    .asBitmap()
-                    .placeholder(R.drawable.image_place_holder)
-                    .into(helper.<ImageView>getView(R.id.debt_channel_image));
-        } else {
-            helper.<ImageView>getView(R.id.debt_channel_image).setImageResource(R.drawable.image_place_holder);
-        }
+        Glide.with(helper.itemView.getContext())
+                .load(item.logo)
+                .asBitmap()
+                .placeholder(R.drawable.image_place_holder)
+                .transform(new GlideCircleTransform(helper.itemView.getContext()))
+                .into(helper.<ImageView>getView(R.id.debt_channel_image));
         helper.setText(R.id.debt_channel_name, item.iconName);
     }
 

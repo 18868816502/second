@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.anim.SlideInLeftAnimator;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseTabFragment;
@@ -263,6 +264,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
 
+        mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
+
         //PullToRefreshLayout设置监听
         mPullContainer.setOnRefreshListener(mPullToRefreshListener);
         /**
@@ -392,7 +395,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public void configViews() {
         //设置状态栏文字为黑色字体
 //        ImmersionBar.with(this).transparentBar().statusBarDarkFont(true).init();
-        ImmersionBar.with(this).statusBarDarkFont(true).init();
+//        ImmersionBar.with(this).statusBarDarkFont(true).init();
         int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         //设置toolbar的高度为状态栏相同高度
         mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);

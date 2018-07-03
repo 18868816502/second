@@ -1,9 +1,12 @@
 package com.beihui.market;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.ActivityTracker;
@@ -24,6 +27,11 @@ public class App extends Application {
 
     private static App sInstance;
     private AppComponent appComponent;
+
+    //窗口
+    public static WindowManager mWindowManager;
+    //屏幕宽度（像素）
+    public static int mWidthPixels;
 
     /**
      * 渠道
@@ -82,6 +90,14 @@ public class App extends Application {
         } else {
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
         }
+
+        //获取WindowManager
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        //分辨率
+        DisplayMetrics metric = new DisplayMetrics();
+        mWindowManager.getDefaultDisplay().getMetrics(metric);
+        //屏幕宽度（像素）
+        mWidthPixels = metric.widthPixels;
     }
 
 

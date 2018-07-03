@@ -211,6 +211,11 @@ public class SingleChartView extends View {
         this.leftHeight = leftHeight;
         this.rightHeight = rightHeight;
         this.number = number;
+        if (number != null && number.length() > 7) {
+            textTopPaint.setTextSize(Px2DpUtils.dp2px(mContext, 10));
+        } else {
+            textTopPaint.setTextSize(Px2DpUtils.dp2px(mContext, 12));
+        }
         this.isSelect = isSelect;
         canvasColor = redColor;
 

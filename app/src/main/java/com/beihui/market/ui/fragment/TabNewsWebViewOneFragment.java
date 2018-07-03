@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,11 +15,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -96,14 +100,14 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
     }
 
 
-    /**
-     * 判断审核的状态
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUrlEvent(TabNewsWebViewFragmentUrlEvent event) {
-        load();
-    }
+//    /**
+//     * 判断审核的状态
+//     * @param event
+//     */
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onUrlEvent(TabNewsWebViewFragmentUrlEvent event) {
+//        load();
+//    }
 
     public static TabNewsWebViewOneFragment newInstance() {
         return new TabNewsWebViewOneFragment();
@@ -179,7 +183,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             @Override
             public void onRefresh() {
                 if (webView != null && newsUrl != null) {
-                    webView.loadUrl(newsUrl);
+//                    webView.loadUrl(newsUrl);
+                    webView.loadUrl("file:///android_asset/youxiaochen/index.html");
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -212,41 +217,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
                     return true;
                 }
             }
-
-
-            // 页面开始加载
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-//                Log.e("xhb", "url--->   " +url);
-//                Log.e("xhb", "newsUrl--->   " +newsUrl);
-//
-//                if (url.equals(newsUrl)) {
-//                    swipeRefreshLayout.setEnabled(true);
-//                } else {
-//                    swipeRefreshLayout.setEnabled(false);
-//                    Intent intent = new Intent(mActivity, WebViewActivity.class);
-//                    intent.putExtra("webViewUrl", URLDecoder.decode(url));
-//                    mActivity.startActivity(intent);
-//                }
-            }
-
-            // 页面加载完成
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            // WebView加载的所有资源url
-            @Override
-            public void onLoadResource(WebView view, String url) {
-                super.onLoadResource(view, url);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-            }
         });
 
         webView.setDownloadListener(new DownloadListener() {
@@ -259,7 +229,10 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         });
 
 
-        webView.addJavascriptInterface(new mobileJsMethod(), "android");
+//        webView.addJavascriptInterface(new mobileJsMethod(), "android");
+
+        JsCallBack.initWebView(webView, null);
+
     }
 
 
@@ -288,7 +261,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
 
         Log.e("newsUrl", "newsUrl--->     " + newsUrl);
-        webView.loadUrl(newsUrl);
+//        webView.loadUrl(newsUrl);
+        webView.loadUrl("file:///android_asset/youxiaochen/index.html");
     }
 
 
@@ -319,7 +293,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         public void getFindHtmlBannerStatus(boolean isFly){
             mIsFly = isFly;
             Log.e("mIsFly", "mIsFly---> " + mIsFly);
-//            ((TabNewsWebViewFragment)getParentFragment()).viewPager.setNoScroll(true);
         }
     }
 

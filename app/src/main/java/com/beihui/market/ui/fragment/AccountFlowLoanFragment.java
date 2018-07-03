@@ -30,6 +30,7 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
 import com.beihui.market.ui.adapter.AccountFlowLoanSearchAdapter;
 import com.beihui.market.ui.contract.DebtChannelContract;
@@ -337,18 +338,17 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
            @Override
            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//               int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
-//
-//               String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
-//               Log.e("xvcs",  iconInitials);
-//               if (recyclerViewSearch.getVisibility() == View.INVISIBLE) {
-//                   for (int i = 0; i < alphabetCountList.length; i++) {
-//                       if (iconInitials.equals(alphabetCountList[i])) {
-//                           alphabetIndexBar.selectedIndex = i;
-//                           alphabetIndexBar.invalidate();
-//                       }
-//                   }
-//               }
+               int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+
+               if (recyclerViewSearch.getVisibility() == View.INVISIBLE) {
+                   String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
+                   for (int i = 0; i < alphabetCountList.length; i++) {
+                       if (iconInitials.equals(alphabetCountList[i])) {
+                           alphabetIndexBar.selectedIndex = i;
+                           alphabetIndexBar.invalidate();
+                       }
+                   }
+               }
 
 
                if (Math.abs(dy) <= 2) {
@@ -455,6 +455,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     } else {
                         return true;
                     }
+                    getKeys().get(11).label = "=";
+                    customKeyboardManager.mKeyboardView.invalidateAllKeys();
                     return false;
                 }
 
@@ -492,6 +494,10 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
                 //求和
                 if (primaryCode == 61) {
+                    if ("确定".equals( getKeys().get(11).label)) {
+                        ((AccountFlowActivity)activity).createAccount();
+                        return true;
+                    }
                     if (temp.length() > 0) {
                         if (temp.equals("0.")) {
                             temp.append("0");
@@ -508,6 +514,9 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     //pv，uv统计
 //                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYKEYBOARDCONFIRMBUTTON);
 
+                    List<Key> keys = getKeys();
+                    keys.get(11).label = "确定";
+                    customKeyboardManager.mKeyboardView.invalidateAllKeys();
                     return true;
                 }
                 return false;
@@ -544,7 +553,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 if (isLockEtLoan) {
                     return;
                 }
-
 
                 if (marryList.size() > 0) {
                     marryList.clear();
@@ -795,6 +803,9 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 }
                 if (remarks != null) {
                     dialog.setTagList(remarks);
+                }
+                if (debtNormalDetail != null && !TextUtils.isEmpty(debtNormalDetail.getRemark())) {
+                    dialog.setContent(debtNormalDetail.getRemark());
                 }
                 dialog.show(getFragmentManager(), "accountflowremark");
 

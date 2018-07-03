@@ -29,6 +29,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,21 +89,17 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     Toolbar toolbar;
     @BindView(R.id.iv_tab_fg_news_web_back)
     ImageView comeBack;
-    @BindView(R.id.iv_tab_fg_news_web_title)
-    TextView newsTitleName;
-    @BindView(R.id.iv_tab_fg_news_web_activity)
-    TextView activityName;
     @BindView(R.id.iv_tab_fg_news_web_user)
     ImageView mUserAvatar;
     @BindView(R.id.iv_tab_news_red_dot)
     ImageView mRedDot;
     @BindView(R.id.fl_tab_news_web_container)
-    public NoScrollViewPager viewPager;
+    public ViewPager viewPager;
 
-    /**
-     * 拼接URL
-     */
-    public static String newsUrl = null;
+    public TextView mTvTitleName;
+    public LinearLayout mTabRoot;
+    public TextView newsTitleName;
+    public TextView activityName;
 
     //依赖的activity
     public FragmentActivity mActivity;
@@ -201,14 +198,26 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
-        if (NetConstants.H5_FIND_WEVVIEW_DETAIL.equals(BuildConfig.H5_DOMAIN + "/information-v2.html")) {
-            newsTitleName.setText("发现");
+        mTvTitleName = (TextView)getActivity().findViewById(R.id.tv_tab_fg_web_title);
+        mTabRoot = (LinearLayout) getActivity().findViewById(R.id.ll_tab_fg_web_root);
+        newsTitleName = (TextView)getActivity().findViewById(R.id.iv_tab_fg_news_web_title);
+        activityName = (TextView) getActivity().findViewById(R.id.iv_tab_fg_news_web_activity);
+
+        /**
+         * 审核状态
+         */
+        if (NetConstants.H5_FIND_WEVVIEW_DETAIL.equals(NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY)) {
+            //借贷
+            mTabRoot.setVisibility(View.VISIBLE);
+            mTvTitleName.setVisibility(View.GONE);
         } else {
-            newsTitleName.setText("借贷");
+            //资讯
+            mTabRoot.setVisibility(View.GONE);
+            mTvTitleName.setVisibility(View.VISIBLE);
         }
 
         comeBack.setVisibility(View.GONE);
-        ImmersionBar.with(this).statusBarDarkFont(true).init();
+//        ImmersionBar.with(this).statusBarDarkFont(true).init();
 
         fragmentList.add(mFindFragment);
         fragmentList.add(mActivityFragment);
@@ -251,7 +260,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             }
         });
 
-        viewPager.setNoScroll(true);
     }
 
 

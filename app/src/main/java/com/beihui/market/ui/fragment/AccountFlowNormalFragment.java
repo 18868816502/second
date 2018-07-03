@@ -42,6 +42,7 @@ import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.activity.AccountFlowTypeActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
@@ -471,6 +472,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     } else {
                         return true;
                     }
+                    getKeys().get(11).label = "=";
+                    customKeyboardManager.mKeyboardView.invalidateAllKeys();
                     return false;
                 }
 
@@ -508,6 +511,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
                 //求和
                 if (primaryCode == 61) {
+                    if ("确定".equals( getKeys().get(11).label)) {
+                        ((AccountFlowActivity)activity).createAccount();
+                        return true;
+                    }
                     if (temp.length() > 0) {
                         if (temp.equals("0.")) {
                             temp.append("0");
@@ -524,6 +531,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
                     //pv，uv统计
 //                            DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYKEYBOARDCONFIRMBUTTON);
+
+                    List<Key> keys = getKeys();
+                    keys.get(11).label = "确定";
+                    customKeyboardManager.mKeyboardView.invalidateAllKeys();
                     return true;
                 }
                 return false;
@@ -768,6 +779,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 }
                 if (remarks != null) {
                     dialog.setTagList(remarks);
+                }
+                if (debtNormalDetail != null && !TextUtils.isEmpty(debtNormalDetail.getRemark())) {
+                    dialog.setContent(debtNormalDetail.getRemark());
                 }
                 dialog.show(getFragmentManager(), "accountflowremark");
 

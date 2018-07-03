@@ -3,6 +3,7 @@ package com.beihui.market.view.customekeyboard;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -165,6 +166,14 @@ public class CustomKeyboardView extends KeyboardView {
                 // Draw a drop shadow for the text
                 paint.setShadowLayer(rShadowRadius, 0, 0, rShadowColor);
                 // Draw the text
+                if ("确定".equals(label)) {
+                    paint.setColor(Color.parseColor("#FF5240"));
+                    paint.setTextSize(60);
+                } else {
+                    paint.setColor(rKeyTextColor);
+                    paint.setTextSize(rKeyTextSize);
+                }
+
                 canvas.drawText(label,
                         (key.width - padding.left - padding.right) / 2
                                 + padding.left,

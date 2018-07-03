@@ -54,7 +54,7 @@
 
         <Key
             android:codes="61"
-            android:keyLabel="="
+            android:keyLabel="确定"
             android:keyHeight="126dp"/>
 
         <!--<Key-->
