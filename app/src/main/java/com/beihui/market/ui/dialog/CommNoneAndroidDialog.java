@@ -131,6 +131,12 @@ public class CommNoneAndroidDialog extends DialogFragment {
         return this;
     }
 
+    public CommNoneAndroidDialog withMessage(String message, int color) {
+        this.message = message;
+        message_color = color;
+        return this;
+    }
+
     public CommNoneAndroidDialog withMessageByGray(String message) {
         this.message = message;
         message_color = Color.parseColor("#909298");

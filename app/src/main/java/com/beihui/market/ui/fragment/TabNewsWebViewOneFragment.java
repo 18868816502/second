@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.DownloadListener;
@@ -99,16 +100,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         load();
     }
 
-
-//    /**
-//     * 判断审核的状态
-//     * @param event
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onUrlEvent(TabNewsWebViewFragmentUrlEvent event) {
-//        load();
-//    }
-
     public static TabNewsWebViewOneFragment newInstance() {
         return new TabNewsWebViewOneFragment();
     }
@@ -166,25 +157,13 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
 
         load();
 
-        /**
-         * 在fragment里面 webView监听返回键事件
-         */
-        webView.setFocusable(true);
-        webView.setFocusableInTouchMode(true);
-        webView.requestFocus();
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-
-
-        webView.setWebViewClient(new WebViewClient());
-
+        initWebView();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (webView != null && newsUrl != null) {
-//                    webView.loadUrl(newsUrl);
-                    webView.loadUrl("file:///android_asset/youxiaochen/index.html");
+                    webView.loadUrl(newsUrl);
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -197,11 +176,41 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             }
         });
 
+        webView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                ((MainActivity)mActivity).startActivityWithoutOverride(intent);
+            }
+        });
+
+        webView.addJavascriptInterface(new mobileJsMethod(), "android");
+    }
+
+    private void initWebView() {
+        /**
+         * 在fragment里面 webView监听返回键事件
+         */
+        webView.setFocusable(true);
+        webView.setFocusableInTouchMode(true);
+        webView.requestFocus();
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.getSettings().setSavePassword(false);
+
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+
+        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAppCacheEnabled(true);
         /**
          * 客户端监听器
          */
         webView.setWebViewClient(new WebViewClient() {
-
             // url拦截
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -217,22 +226,19 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
                     return true;
                 }
             }
-        });
 
-        webView.setDownloadListener(new DownloadListener() {
             @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                ((MainActivity)mActivity).startActivityWithoutOverride(intent);
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                int touchSlop = ViewConfiguration.get(webView.getContext()).getScaledTouchSlop();
+                StringBuilder jsSb = new StringBuilder("javascript:initTouchSlop('").append(touchSlop).append("')");
+                webView.loadUrl(jsSb.toString());
+
             }
         });
-
-
-//        webView.addJavascriptInterface(new mobileJsMethod(), "android");
-
-        JsCallBack.initWebView(webView, null);
-
+        webView.clearCache(true);
+        webView.clearHistory();
+        webView.setHapticFeedbackEnabled(false);
     }
 
 
@@ -261,8 +267,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
 
         Log.e("newsUrl", "newsUrl--->     " + newsUrl);
-//        webView.loadUrl(newsUrl);
-        webView.loadUrl("file:///android_asset/youxiaochen/index.html");
+        webView.loadUrl(newsUrl);
     }
 
 
@@ -284,6 +289,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         @JavascriptInterface
         public void getFindHtmlScrollY(String scrollY){
             mScrollY = scrollY;
+            Log.e("ScrollY", "ScrollY-----> " + mScrollY);
         }
 
         /**
@@ -291,8 +297,10 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
          */
         @JavascriptInterface
         public void getFindHtmlBannerStatus(boolean isFly){
-            mIsFly = isFly;
-            Log.e("mIsFly", "mIsFly---> " + mIsFly);
+            if (webView == null) {
+                return;
+            }
+            webView.requestDisallowInterceptTouchEvent(isFly);
         }
     }
 
@@ -301,7 +309,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
      */
     public String mScrollY = "0";
 
-    public boolean mIsFly = false;
 
     @Override
     protected void configureComponent(AppComponent appComponent) {

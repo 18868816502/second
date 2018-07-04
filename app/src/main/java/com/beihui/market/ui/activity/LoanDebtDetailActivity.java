@@ -107,6 +107,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     //还部分
     @BindView(R.id.rv_debt_info_foot_pay_part)
     TextView footSetPartPay;
+
     private DebtDetail debtDetail;
 
     class Header {
@@ -644,7 +645,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                     public void onEditAmountConfirm(double amount) {
                         Double copyTermPayableAmount = index == -1 ? debtDetail.showBill.termPayableAmount : debtDetail.getRepayPlan().get(index).getTermPayableAmount();
                         if (amount > copyTermPayableAmount) {
-                            Toast.makeText(LoanDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoanDebtDetailActivity.this, "还款金额不能大于待还金额", Toast.LENGTH_SHORT).show();
                         } else {
                             Api.getInstance().updateDebtStatus(UserHelper.getInstance(LoanDebtDetailActivity.this).getProfile().getId(), debtDetail.getRepayPlan().get(index).getId(), amount, 2)
                                     .compose(RxUtil.<ResultEntity>io2main())
@@ -818,7 +819,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         //一次性还款付息，等额本息跳转到新版本界面
 //        Intent intent = new Intent(this, DebtNewActivity.class);
         Intent intent = new Intent(this, AccountFlowActivity.class);
-        intent.putExtra("debt_detail", debtDetail);
+        intent.putExtra("debt_detail", this.debtDetail);
         intent.putExtra("debt_type", "1");
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
@@ -828,35 +829,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
         if (requestCode == REQUEST_CODE_EDIT && requestCode == 1 && data != null) {
             debtId = data.getStringExtra("recordId");
             billId = data.getStringExtra("billId");
-            loadDebtDetail(debtId, billId);
+
+            presenter.debtId = debtId;
+            presenter.loadDebtDetail(billId);
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void loadDebtDetail(String debtId, String billId) {
-
-        Api.getInstance().fetchLoanDebtDetail(UserHelper.getInstance(this).getProfile().getId(), debtId, billId)
-                .compose(RxUtil.<ResultEntity<DebtDetail>>io2main())
-                .subscribe(new Consumer<ResultEntity<DebtDetail>>() {
-                               @Override
-                               public void accept(ResultEntity<DebtDetail> result) throws Exception {
-                                   if (result.isSuccess()) {
-
-                                       debtDetail = result.getData();
-                                       if (debtDetail != null) {
-                                           showDebtDetail(debtDetail);
-                                       }
-                                   } else {
-                                       showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-
-                            }
-                        });
     }
 
 

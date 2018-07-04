@@ -24,7 +24,7 @@ public class JsCallBack {
     }
 
     @JavascriptInterface
-    public void requestEvent(boolean request) {
+    public void getFindHtmlBannerStatus(boolean request) {
         Log.i("you", "requestDisallowInterceptTouchEvent " + request);
         mWebView.requestDisallowInterceptTouchEvent(request);
     }

@@ -207,20 +207,30 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
          * 审核状态
          */
         if (NetConstants.H5_FIND_WEVVIEW_DETAIL.equals(NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY)) {
-            //借贷
+            //借款
             mTabRoot.setVisibility(View.VISIBLE);
             mTvTitleName.setVisibility(View.GONE);
+
+            if (fragmentList.size() > 0) {
+                fragmentList.clear();
+            }
+            fragmentList.add(mFindFragment);
+            fragmentList.add(mActivityFragment);
         } else {
             //资讯
             mTabRoot.setVisibility(View.GONE);
             mTvTitleName.setVisibility(View.VISIBLE);
+
+            if (fragmentList.size() > 0) {
+                fragmentList.clear();
+            }
+            fragmentList.add(mFindFragment);
         }
 
         comeBack.setVisibility(View.GONE);
 //        ImmersionBar.with(this).statusBarDarkFont(true).init();
 
-        fragmentList.add(mFindFragment);
-        fragmentList.add(mActivityFragment);
+
 
         MyFragmentViewPgaerAdapter adapter = new MyFragmentViewPgaerAdapter(mActivity.getSupportFragmentManager());
         viewPager.setAdapter(adapter);

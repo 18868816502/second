@@ -42,7 +42,7 @@
                 android:layout_height="29dp"
                 android:background="@drawable/help_feed_left"
                 android:gravity="center"
-                android:text="发现"
+                android:text="借贷"
                 android:textColor="@drawable/x_account_flow_tab_selector" />
 
             <TextView

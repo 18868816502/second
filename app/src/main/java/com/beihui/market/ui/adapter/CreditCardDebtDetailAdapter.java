@@ -6,6 +6,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -46,6 +47,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
      * 是否是手动记账的账单
      */
     private boolean hand;
+    private String billMonth = null;
 
     public CreditCardDebtDetailAdapter(boolean hand) {
         super(null);
@@ -94,6 +96,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
             try {
                 calendar.setTime(dateFormat.parse(bill.getBillDate()));
                 holder.setText(R.id.debt_month, (calendar.get(Calendar.MONTH) + 1) + "月");
+                holder.setTextColor(R.id.debt_month, bill.getBillMonth().equals(billMonth) ? Color.parseColor("#ff5240") : Color.parseColor("#424251"));
                 holder.setText(R.id.debt_year, calendar.get(Calendar.YEAR) + "年");
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -108,6 +111,8 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         } else {
             ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#424251"));
         }
+
+        holder.setTextColor(R.id.debt_amount, bill.getBillMonth().equals(billMonth) ? Color.parseColor("#ff5240") : Color.parseColor("#424251"));
         //账单状态
         switch (bill.getStatus()) {
             case 1://待还
@@ -292,5 +297,9 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
 
     public int indexOf(CreditCardDebtDetailMultiEntity entity) {
         return pureDataSet.indexOf(entity);
+    }
+
+    public void setShowbillMonth(String billMonth) {
+        this.billMonth = billMonth;
     }
 }

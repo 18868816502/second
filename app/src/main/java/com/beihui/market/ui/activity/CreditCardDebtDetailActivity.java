@@ -50,6 +50,7 @@ import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.EditTextUtils;
+import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -175,6 +176,12 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         }
     }
 
+    /**
+     * 记录show的billID
+     */
+    public String setShowbillMonth;
+
+
     public int position = 0;
 
     @Inject
@@ -186,6 +193,8 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
     private CreditCardDebtDetailAdapter detailAdapter;
     //详情bean 除去列表数据
     private CreditCardDebtDetail debtDetail;
+
+    public CreditCardDebtBill mSelectBill = null;
 
     //是否手写账单
     private boolean byHand;
@@ -272,6 +281,12 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                         if (position < ((CreditCardDebtDetailPresenter)presenter).billList.size()) {
                             ((CreditCardDebtDetailPresenter)presenter).bill = ((CreditCardDebtDetailPresenter)presenter).billList.get(position);
                             showStatus(((CreditCardDebtDetailPresenter) presenter).billList.get(position).getStatus());
+                            detailAdapter.setShowbillMonth(((CreditCardDebtDetailPresenter) presenter).billList.get(position).getBillMonth());
+                            detailAdapter.notifyDataSetChanged();
+                        }
+
+                        if (((CreditCardDebtDetailPresenter)presenter).billList.size() > 0) {
+                            mSelectBill = ((CreditCardDebtDetailPresenter) presenter).billList.get(position);
                         }
 
                         CreditCardDebtDetailMultiEntity entity = (CreditCardDebtDetailMultiEntity) adapter.getItem(position);
@@ -356,6 +371,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                     .asBitmap()
                     .centerCrop()
                     .placeholder(R.drawable.image_place_holder)
+                    .transform(new GlideCircleTransform(this))
                     .into(header.ivBankLogo);
         } else {
             header.ivBankLogo.setImageResource(R.drawable.image_place_holder);
@@ -513,18 +529,23 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                             //pv，uv统计
                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDALREADYREPAY);
 
-//                            new CommNoneAndroidDialog()
-//                                    .withMessage("本期账单已还清")
-//                                    .withNegativeBtn("取消", null)
-//                                    .withPositiveBtn("确认", new View.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View v) {
-//
-//                                        }
-//                                    })
-//                                    .show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                            if (mSelectBill.lastBill) {
+                                new CommNoneAndroidDialog()
+                                        .withTitle("设为未还")
+                                        .withMessage("确定本期账单设为未还？", Color.parseColor("#909298"))
+                                        .withNegativeBtn("取消", null)
+                                        .withPositiveBtn("确认", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                presenter.clickSetStatus(1);
+                                            }
+                                        }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                            } else {
+                                com.beihui.market.util.ToastUtils.showToast(CreditCardDebtDetailActivity.this, "本期账单已还清");
+                            }
 
-                            presenter.clickSetStatus(1);
+
+
                         } else {
                             //pv，uv统计
                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CCDSETALREADYREPAY);
@@ -662,8 +683,15 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
         if (detailAdapter.isLoading()) {
             detailAdapter.loadMoreComplete();
         }
+        if (list.size() > 0) {
+            setShowbillMonth = list.get(0).getBillMonth();
+            mSelectBill = list.get(0);
+        }
+        detailAdapter.setShowbillMonth(setShowbillMonth);
         detailAdapter.setEnableLoadMore(canLoadMore);
         detailAdapter.notifyDebtListChanged(list);
+
+        showStatus(list.get(0).getStatus());
     }
 
     @Override

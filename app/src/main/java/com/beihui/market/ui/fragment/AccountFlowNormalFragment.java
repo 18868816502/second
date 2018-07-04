@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -401,7 +402,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 String currentContent = etCurrent.getText().toString();
                 //为空不拦截操作
                 if (TextUtils.isEmpty(currentContent)) {
-                    etCurrent.setText("0");
+                    etCurrent.setText("0.00");
                     if (primaryCode == 48) {
                         return true;
                     }
@@ -435,6 +436,10 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         temp.append(primaryCode - 48);
                         return false;
                     } else {
+                        if ("0.00".equals(etCurrent.getText().toString())) {
+                            etCurrent.setText(primaryCode - 48 + "");
+                            return true;
+                        }
                         if (etCurrent.getText().toString().length()==1 && "0".equals(etCurrent.getText().toString())) {
                             etCurrent.setText(primaryCode - 48 + "");
                             return true;
@@ -502,7 +507,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     }
                     String substring = currentContent.substring(0, currentContent.length() - 1);
                     if (substring.length() == 0) {
-                        etCurrent.setText("0");
+                        etCurrent.setText("0.00");
                     } else {
                         etCurrent.setText(substring);
                     }
@@ -573,17 +578,17 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                     case MotionEvent.ACTION_DOWN:
                         startY = event.getY();
                         break;
-                    case MotionEvent.ACTION_MOVE:
+                    case MotionEvent.ACTION_UP:
                         moveY = event.getY();
                         Log.e("android_normal_account", "startY--> " + startY);
                         Log.e("android_normal_account", "moveY--> " + moveY);
+                        Log.e("android_normal_account", "isShow--> " + customKeyboardManager.isShow);
                         if (moveY - startY > 1) {
                             customKeyboardManager.showSoftKeyboard(etInputPrice);
                         }
                         if (moveY - startY < -1) {
                             customKeyboardManager.hideSoftKeyboard(etInputPrice, 0);
                         }
-                    case MotionEvent.ACTION_UP:
                         return false;
                 }
                 return true;
@@ -645,6 +650,12 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
             lockEtInput = true;
             etInputPrice.setText(FormatNumberUtils.FormatNumberForTabDouble(debtNormalDetail.getTermPayableAmount())+"");
             lockEtInput = false;
+
+            if (debtNormalDetail.getTermPayableAmount() > 1000000D) {
+                etInputPrice.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            } else {
+                etInputPrice.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
+            }
 
             mFirstPayNormalDate.setText(debtNormalDetail.getFirstRepayDate());
             //还款周期
@@ -879,7 +890,33 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
 
 
         pickerView.setPicker(option1, option2);
-        pickerView.setSelectOptions(0, 1);
+        /**
+         * 判断是否是编辑账单
+         */
+        if (debtNormalDetail != null) {
+            //还款周期
+            if (1 == debtNormalDetail.cycleType || 0 == debtNormalDetail.cycleType) {
+                //日 一次性还款
+                pickerView.setSelectOptions(0, 1);
+            }
+            if (2 == debtNormalDetail.cycleType) {
+                //月
+                int term = debtNormalDetail.getTerm();
+                if (term == -1) {
+                    pickerView.setSelectOptions(debtNormalDetail.cycle-1, 0);
+                } else if (term <= 36) {
+                    pickerView.setSelectOptions(debtNormalDetail.cycle-1, term);
+                } else {
+                    pickerView.setSelectOptions(debtNormalDetail.cycle-1, 36+(term-36)/12);
+                }
+            }
+            if (3 == debtNormalDetail.cycleType) {
+                //年
+                pickerView.setSelectOptions(11, debtNormalDetail.getTerm() == -1 ? 0 : debtNormalDetail.getTerm());
+            }
+        } else {
+            pickerView.setSelectOptions(0, 1);
+        }
         pickerView.show();
     }
 
@@ -890,10 +927,22 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
     private void showFirstPayLoanDateDialog() {
 
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
-        Date date = new Date();
-        mFirstPayNormalDate.setTag(date);
-        calendar.setTime((Date) mFirstPayNormalDate.getTag());
 
+        /**
+         * 判断是否是编辑账单
+         */
+        if (debtNormalDetail != null) {
+            try {
+                mFirstPayNormalDate.setTag(dateFormat.parse(debtNormalDetail.getFirstRepayDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Date date = new Date();
+            mFirstPayNormalDate.setTag(date);
+        }
+
+        calendar.setTime((Date) mFirstPayNormalDate.getTag());
         TimePickerView pickerView = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {

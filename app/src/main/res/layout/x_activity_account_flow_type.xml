@@ -67,6 +67,7 @@
             android:textColorHint="@color/black_2"
             android:textSize="15sp"
             android:background="@null"
+            android:maxLength="6"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"

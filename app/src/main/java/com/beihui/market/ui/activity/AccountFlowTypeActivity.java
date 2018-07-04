@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.dialog.TextViewDialog;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -121,6 +123,16 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
                 boardHelper.showKeyBoard(mTypeName);
             }
         }, 500);
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE ) {
+                    InputMethodUtil.closeSoftKeyboard(AccountFlowTypeActivity.this);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -170,28 +182,6 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
                 Glide.with(AccountFlowTypeActivity.this).load(bean.logo).into(mTypeIcon);
             }
         });
-
-        mTypeName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s)) {
-                    AccountFlowTypeActivity.this.bean.iconName = "";
-                } else {
-                    AccountFlowTypeActivity.this.bean.iconName = s.toString();
-                }
-            }
-        });
-
     }
 
     @OnClick({R.id.iv_ac_account_flow_type_confirm, R.id.iv_ac_account_flow_type_back })
@@ -223,6 +213,7 @@ public class AccountFlowTypeActivity extends BaseComponentActivity {
                                @Override
                                public void accept(ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       AccountFlowTypeActivity.this.bean.iconName = mTypeName.getText().toString();
                                        EventBus.getDefault().post(new AccountFlowTypeActivityEvent(AccountFlowTypeActivity.this.bean));
                                        AccountFlowTypeActivity.this.finish();
                                    } else {

@@ -60,7 +60,7 @@
             android:showDividers="middle">
 
             <TextView
-                android:id="@+id/positive_btn"
+                android:id="@+id/negative_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -72,7 +72,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/negative_btn"
+                android:id="@+id/positive_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

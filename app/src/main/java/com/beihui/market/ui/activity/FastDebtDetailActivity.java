@@ -547,7 +547,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                     public void onEditAmountConfirm(final double amount) {
                         Double copyTermPayableAmount = index == -1 ? fastDebtDetail.showBill.termPayableAmount : fastDebtDetail.getDetailList().get(pos).getTermPayableAmount();
                         if (amount > copyTermPayableAmount) {
-                            Toast.makeText(FastDebtDetailActivity.this, "只能还部分", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FastDebtDetailActivity.this, "还款金额不能大于待还金额", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -600,6 +600,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                if (result.isSuccess()) {
                                                    //更新成功后刷新数据
                                                    updateLoanDetail(billId);
+                                                   EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
                                                } else {
                                                    showErrorMsg(result.getMsg());
                                                }

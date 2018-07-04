@@ -423,6 +423,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        intent.putExtra("billId", result.getData().billId);
                                        setResult(1, intent);
                                        finish();
+                                   } else {
+                                       ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
                                    }
                                }
                            },
@@ -453,13 +455,15 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        }
 
                                        /**
-                                        * 返回详情页
-                                        */
+                                    * 返回详情页
+                                    */
                                        Intent intent = new Intent();
                                        intent.putExtra("recordId", result.getData().recordId);
                                        intent.putExtra("billId", result.getData().billId);
                                        setResult(1, intent);
                                        finish();
+                                   } else {
+                                       ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
                                    }
                                }
                            },

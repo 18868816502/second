@@ -50,6 +50,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     private MyLoanBillDebtAdapter adapter;
 
+
+
     @Override
     public void onDestroyView() {
         presenter.onDestroy();

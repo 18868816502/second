@@ -59,7 +59,7 @@
                         android:gravity="right"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="0.00"
                         android:textStyle="bold"
                         android:maxLines="1"
                         android:inputType="text"
@@ -83,7 +83,6 @@
         <View
             android:background="@color/common_bg"
             android:layout_width="match_parent"
-            android:layout_marginBottom="15dp"
             android:layout_height="8dp"/>
 
         <android.support.v7.widget.RecyclerView

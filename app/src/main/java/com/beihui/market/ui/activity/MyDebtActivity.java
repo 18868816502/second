@@ -77,7 +77,6 @@ public class MyDebtActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        viewPager.setCurrentItem(0);
         mAccountFlowNormal.setSelected(true);
     }
 

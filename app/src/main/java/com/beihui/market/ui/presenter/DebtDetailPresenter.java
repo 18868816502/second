@@ -7,11 +7,14 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.event.MyLoanDebtListFragmentEvent;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -24,11 +27,11 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
     private DebtDetailContract.View view;
     private UserHelper userHelper;
 
-    private String debtId;
-    private String billId;
+    public String debtId;
+    public String billId;
 
     //在查询单个借款项目查看 就保存了该bean
-    private DebtDetail debtDetail;
+    public DebtDetail debtDetail;
 
     @Inject
     DebtDetailPresenter(Context context, String debtId,  Api api, DebtDetailContract.View view) {
@@ -166,6 +169,7 @@ public class DebtDetailPresenter extends BaseRxPresenter implements DebtDetailCo
                                        view.showUpdateStatusSuccess("更新成功");
                                        //更新成功后刷新数据
                                        view.updateLoanDetail(billId);
+                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

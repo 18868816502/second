@@ -56,12 +56,13 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
         Rect boundsRect = new Rect();
         Rect boundsCharsRect = new Rect();
         mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
-        mTextPaint.getTextBounds("1", 0, 1, boundsCharsRect);
+        mTextPaint.getTextBounds("0", 0, 1, boundsCharsRect);
         int textWidth = boundsRect.width();
         int charWidth = boundsCharsRect.width();
         mTextSize = getTextSize();
 
-        while (Math.abs(textWidth - availableTextViewWidth) > charWidth*2) {
+
+        while (Math.abs(textWidth - availableTextViewWidth) > 1) {
             Log.e("adfas", "textWidth ---> " + textWidth);
             Log.e("adfas", "availableTextViewWidth ---> " + availableTextViewWidth);
             Log.e("adfas", "textWidth - availableTextViewWidth ---> " + (textWidth - availableTextViewWidth));
@@ -73,19 +74,30 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
             if (textWidth > availableTextViewWidth) {
                 if (mTextSize > minSize) {
                     mTextSize -= 1;
+
+                    mTextPaint.setTextSize(mTextSize);
+                    mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
+                    textWidth = boundsRect.width();
                 } else {
+                    break;
+                }
+                if (availableTextViewWidth > textWidth) {
                     break;
                 }
             } else {
                 if (mTextSize < maxSize) {
                     mTextSize += 1;
+
+                    mTextPaint.setTextSize(mTextSize);
+                    mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
+                    textWidth = boundsRect.width();
                 } else {
                     break;
                 }
+                if (textWidth > availableTextViewWidth) {
+                    break;
+                }
             }
-            mTextPaint.setTextSize(mTextSize);
-            mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
-            textWidth = boundsRect.width();
         }
         this.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
     }
