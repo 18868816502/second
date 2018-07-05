@@ -53,4 +53,6 @@ public class SlideInLeftAnimator extends BaseItemAnimator {
         .setStartDelay(getAddDelay(holder))
         .start();
   }
+
+
 }

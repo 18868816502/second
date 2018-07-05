@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -57,6 +59,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     BusinessWebView webView;
     @BindView(R.id.swipe_container_one)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.nsv_scroll_view)
+    NestedScrollView scrollView;
 
     /**
      * 拼接URL
@@ -159,12 +163,23 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             }
         });
         swipeRefreshLayout.setColorScheme(R.color.refresh_one);
-        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-            @Override
-            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
-                return !"0".equals(mScrollY);
-            }
-        });
+//        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+//            @Override
+//            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
+//                return !"0".equals(mScrollY);
+//            }
+//        });
+
+        if (scrollView != null) {
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    if (swipeRefreshLayout != null) {
+                        swipeRefreshLayout.setEnabled(scrollView.getScrollY() == 0);
+                    }
+                }
+            });
+        }
 
         /**
          * 客户端监听器

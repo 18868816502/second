@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
@@ -266,6 +268,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
 
+        mRecyclerView.setCanPullUp(false);
+
         //PullToRefreshLayout设置监听
         mPullContainer.setOnRefreshListener(mPullToRefreshListener);
         /**
@@ -292,6 +296,17 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             }
         });
 
+        mAdapter.setHeaderViewStatusChange(new XTabAccountRvAdapter.HeaderViewStatusChange() {
+            @Override
+            public void statusChange(boolean isShowAll) {
+                if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+                    mRecyclerView.setCanPullUp(true);
+                } else {
+                    mRecyclerView.setCanPullUp(false);
+                }
+//                mRecyclerView.setCanPullUp(!isShowAll);
+            }
+        });
 
         /**
          * 下拉刷新
@@ -340,12 +355,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 }
 
 
-                int firstPosition = manager.findFirstVisibleItemPosition();
-                if (firstPosition == 0) {
-                    swipeRefreshLayout.setEnabled(true);
-                } else {
-                    swipeRefreshLayout.setEnabled(false);
-                }
+//                int firstPosition = manager.findFirstVisibleItemPosition();
+//                if (firstPosition == 0) {
+//                    swipeRefreshLayout.setEnabled(true);
+//                } else {
+//                    swipeRefreshLayout.setEnabled(false);
+//                }
             }
         });
 
@@ -453,6 +468,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             mAdapter.notifyUnPayChanged(list);
             line.setVisibility(View.VISIBLE);
         }
+
+        if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+            mRecyclerView.setCanPullUp(true);
+        } else {
+            mRecyclerView.setCanPullUp(false);
+        }
     }
 
     /**
@@ -465,6 +486,12 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         pageNo++;
         mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
         mPullToRefreshListener.onLoadMore(mPullContainer);
+
+        if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+            mRecyclerView.setCanPullUp(true);
+        } else {
+            mRecyclerView.setCanPullUp(false);
+        }
     }
 
 
@@ -651,6 +678,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @Override
     public void navigateLoanDebtDetail(AccountBill accountBill) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", accountBill.getRecordId());
         intent.putExtra("bill_id", accountBill.getBillId());
@@ -659,6 +689,9 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     @Override
     public void navigateCreditCardDebtDetail(AccountBill accountBill) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         intent.putExtra("debt_id", accountBill.getRecordId());
         intent.putExtra("bill_id", accountBill.getBillId());

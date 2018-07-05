@@ -31,7 +31,9 @@
                 android:id="@+id/et_fg_accout_flow_loan"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:maxLength="6"
                 android:layout_height="wrap_content"
+                android:maxHeight="40dp"
                 android:layout_marginLeft="12dp"
                 android:background="@null"
                 android:hint="搜索/自定义借款平台"
@@ -53,7 +55,6 @@
                     android:textSize="10sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
 
                 <com.beihui.market.view.AutoAdjustSizeEditText
                     android:id="@+id/auto_et_num"

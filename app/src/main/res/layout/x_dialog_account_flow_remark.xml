@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/ll_dialog_acount_remark_root"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="bottom"

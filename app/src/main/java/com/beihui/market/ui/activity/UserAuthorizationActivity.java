@@ -67,7 +67,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             intent.putExtra("phone", phone);
         }
         context.startActivity(intent);
-        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
+//        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
     }
 
     public static void launchWithPending(Activity context, AdBanner adBanner) {
@@ -76,7 +76,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             intent.putExtra("pendingAd", adBanner);
         }
         context.startActivity(intent);
-        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
+//        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
     }
 
     @Override
@@ -124,28 +124,28 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.content_container, fragment, LoginMainFragment.class.getSimpleName())
                 .commit();
-        decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    decoContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    decoContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
-                decoContainer.setTranslationY(decoContainer.getMeasuredHeight());
-                decoContainer.animate()
-                        .translationY(0)
-                        .setDuration(1000)
-                        .setInterpolator(new Interpolator() {
-                            @Override
-                            public float getInterpolation(float input) {
-                                float factor = 0.88F;
-                                return (float) (Math.pow(2, -10 * input) * Math.sin((input - factor / 4) * (2 * Math.PI) / factor) + 1);
-                            }
-                        })
-                        .start();
-            }
-        });
+//        decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    decoContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//                } else {
+//                    decoContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                }
+//                decoContainer.setTranslationY(decoContainer.getMeasuredHeight());
+//                decoContainer.animate()
+//                        .translationY(0)
+//                        .setDuration(1000)
+//                        .setInterpolator(new Interpolator() {
+//                            @Override
+//                            public float getInterpolation(float input) {
+//                                float factor = 0.88F;
+//                                return (float) (Math.pow(2, -10 * input) * Math.sin((input - factor / 4) * (2 * Math.PI) / factor) + 1);
+//                            }
+//                        })
+//                        .start();
+//            }
+//        });
     }
 
     @Override
@@ -205,7 +205,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_PSD) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
+//            ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
 
             Fragment mainLoginTag = fm.findFragmentByTag(LoginMainFragment.class.getSimpleName());
             ft.detach(mainLoginTag);
@@ -220,7 +220,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         } else if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_FAST) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
+//            ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
 
             Fragment loginPsdTag = fm.findFragmentByTag(UserLoginFragment.class.getSimpleName());
             ft.detach(loginPsdTag);
@@ -278,7 +278,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.finish();
-        overridePendingTransition(0, R.anim.slide_to_bottom);
+//        overridePendingTransition(0, R.anim.slide_to_bottom);
     }
 
     @Override
@@ -287,5 +287,4 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 
     }
-
 }

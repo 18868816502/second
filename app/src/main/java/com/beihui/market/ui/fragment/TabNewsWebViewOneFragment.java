@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
@@ -81,6 +83,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
     BusinessWebView webView;
     @BindView(R.id.swipe_container_one)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.nsv_scroll_view)
+    NestedScrollView scrollView;
 
     /**
      * 拼接URL
@@ -169,14 +173,28 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             }
         });
         swipeRefreshLayout.setColorScheme(R.color.refresh_one);
-        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-            @Override
-            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
-                return !"0".equals(mScrollY);
-            }
-        });
+//        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
+//            @Override
+//            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
+//                Log.e("canChildScrollUp", "ScrollY-----> " + mScrollY);
+//                return !"0".equals(mScrollY);
+//            }
+//        });
 
-        webView.setDownloadListener(new DownloadListener() {
+
+        if (scrollView != null) {
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    if (swipeRefreshLayout != null) {
+                        swipeRefreshLayout.setEnabled(scrollView.getScrollY() == 0);
+                    }
+                    mScrollY = scrollView.getScrollY()+"";
+                }
+            });
+        }
+
+            webView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
                 Uri uri = Uri.parse(url);
@@ -186,6 +204,14 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         });
 
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ("0".equals(mScrollY)) {
+            swipeRefreshLayout.setEnabled(true);
+        }
     }
 
     private void initWebView() {
@@ -288,7 +314,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
          */
         @JavascriptInterface
         public void getFindHtmlScrollY(String scrollY){
-            mScrollY = scrollY;
+//            mScrollY = scrollY;
             Log.e("ScrollY", "ScrollY-----> " + mScrollY);
         }
 

@@ -334,14 +334,14 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 					changeState(DONE);
 					hide();
 				}
-			}.sendEmptyMessageDelayed(0, 100);
+			}.sendEmptyMessageDelayed(0, 0);
 		} else {
 			changeState(DONE);
 			hide();
 		}
 	}
 
-	public  void changeState(int to) {
+	public void changeState(int to) {
 		state = to;
 		switch (state) {
 		case INIT:
@@ -570,7 +570,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			}
 			requestLayout();
 		}
-
 	}
 
 	/**
@@ -674,7 +673,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			public void run() {
 				handler.obtainMessage().sendToTarget();
 			}
-
 		}
 	}
 

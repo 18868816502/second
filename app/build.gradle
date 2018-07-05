@@ -114,7 +114,7 @@ android {
             ]
 
             buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
             buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
 
             signingConfig signingConfigs.loanmarket
@@ -144,7 +144,7 @@ android {
 //            ]
 //
 //            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-//            buildConfigField("String", "PATH_ABOUT_US", "\"/knowaixin.html\"")
+//            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
 //            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
 //
 //            signingConfig signingConfigs.loanmarkettest

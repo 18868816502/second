@@ -1,6 +1,7 @@
 package com.beihui.market.ui.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.entity.CreditCardBean;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
+import com.beihui.market.ui.activity.CreditCardDebtNewActivity;
+import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -195,6 +198,10 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
                             return true;
                     }
                 }
+                Intent intent = new Intent(mActivity, MainActivity.class);
+                intent.putExtra("account", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mActivity.startActivity(intent);
                 return false;
             }
 

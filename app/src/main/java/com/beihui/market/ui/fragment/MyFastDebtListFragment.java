@@ -22,6 +22,7 @@ import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.DebtStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -62,21 +63,21 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
 
     public int mPosition = 0;
 
+    boolean isThreadModeRequest = false;
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onMainEvent(MyLoanDebtListFragmentEvent event){
         if (event.type != 0) {
             return;
         }
+        isThreadModeRequest = true;
         if (((MyLoanBillPresenter)presenter).fastCurPage > 1 ) {
             ((MyLoanBillPresenter) presenter).fastCurPage = 1;
             int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
             if (size > 0) {
                 ((MyLoanBillPresenter) presenter).loanBillList.clear();
             }
-            Log.e("asdfa", "aaaaaaaaaaaaaaaaaaaa");
         }
-
         presenter.fetchLoanBill(FastbillType);
     }
 
@@ -135,7 +136,6 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
     }
 
     @Override
@@ -145,7 +145,9 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
         if (size > 0) {
             ((MyLoanBillPresenter) presenter).loanBillList.clear();
         }
-        presenter.fetchLoanBill(FastbillType);
+        if (!isThreadModeRequest) {
+            presenter.fetchLoanBill(FastbillType);
+        }
     }
 
 
@@ -178,9 +180,15 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void showLoanBill(List<LoanBill.Row> list, boolean canLoadMore) {
+        isThreadModeRequest = false;
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
         }
+//        if (((MyLoanBillPresenter) presenter).fastCurPage == 2) {
+//            if (adapter != null && adapter.dataSet.size() > 0) {
+//                adapter.dataSet.clear();
+//            }
+//        }
         if (list.size() > 0) {
             mRoot.setVisibility(View.VISIBLE);
 
@@ -211,6 +219,9 @@ public class MyFastDebtListFragment extends BaseComponentFragment implements MyL
 
     @Override
     public void navigateFastDebtDetail(LoanBill.Row loanBill) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), FastDebtDetailActivity.class);
         intent.putExtra("debt_id", loanBill.getRecordId());
         intent.putExtra("bill_id", loanBill.getBillId());

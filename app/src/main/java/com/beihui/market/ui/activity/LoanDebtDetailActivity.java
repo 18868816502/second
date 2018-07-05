@@ -656,9 +656,10 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 //                                                           Toast.makeText(LoanDebtDetailActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
                                                             /*
                                                       * 刷新数据
-                                                      * xhb
                                                       */
                                                            presenter.loadDebtDetail(billId);
+
+                                                           EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
                                                        } else {
                                                            Toast.makeText(LoanDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                        }

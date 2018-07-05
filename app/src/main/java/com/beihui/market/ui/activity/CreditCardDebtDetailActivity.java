@@ -725,6 +725,9 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                          dialog.dismiss();
                                          if (v.getId() == R.id.edit) {
                                              if (debtDetail != null) {
+                                                 if (FastClickUtils.isFastClick()) {
+                                                     return;
+                                                 }
                                                  Intent intent = new Intent(CreditCardDebtDetailActivity.this, CreditCardDebtNewActivity.class);
                                                  intent.putExtra("credit_card_debt_detail", debtDetail);
                                                  startActivity(intent);

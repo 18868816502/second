@@ -348,13 +348,13 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     // recover prev translation state after ending animation
     ViewCompat.setTranslationX(oldHolder.itemView, prevTranslationX);
     ViewCompat.setTranslationY(oldHolder.itemView, prevTranslationY);
-    ViewCompat.setAlpha(oldHolder.itemView, prevAlpha);
+//    ViewCompat.setAlpha(oldHolder.itemView, prevAlpha);
     if (newHolder != null && newHolder.itemView != null) {
       // carry over translation values
       endAnimation(newHolder);
       ViewCompat.setTranslationX(newHolder.itemView, -deltaX);
       ViewCompat.setTranslationY(newHolder.itemView, -deltaY);
-      ViewCompat.setAlpha(newHolder.itemView, 0);
+//      ViewCompat.setAlpha(newHolder.itemView, 0);
     }
     mPendingChanges.add(new ChangeInfo(oldHolder, newHolder, fromX, fromY, toX, toY));
     return true;
@@ -371,14 +371,14 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
           ViewCompat.animate(view).setDuration(getChangeDuration());
       oldViewAnim.translationX(changeInfo.toX - changeInfo.fromX);
       oldViewAnim.translationY(changeInfo.toY - changeInfo.fromY);
-      oldViewAnim.alpha(0).setListener(new VpaListenerAdapter() {
+      oldViewAnim.setListener(new VpaListenerAdapter() {
         @Override public void onAnimationStart(View view) {
           dispatchChangeStarting(changeInfo.oldHolder, true);
         }
 
         @Override public void onAnimationEnd(View view) {
           oldViewAnim.setListener(null);
-          ViewCompat.setAlpha(view, 1);
+//          ViewCompat.setAlpha(view, 1);
           ViewCompat.setTranslationX(view, 0);
           ViewCompat.setTranslationY(view, 0);
           dispatchChangeFinished(changeInfo.oldHolder, true);
@@ -391,14 +391,14 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
       mChangeAnimations.add(changeInfo.newHolder);
       final ViewPropertyAnimatorCompat newViewAnimation = ViewCompat.animate(newView);
       newViewAnimation.translationX(0).translationY(0).setDuration(getChangeDuration()).
-          alpha(1).setListener(new VpaListenerAdapter() {
+          setListener(new VpaListenerAdapter() {
         @Override public void onAnimationStart(View view) {
           dispatchChangeStarting(changeInfo.newHolder, false);
         }
 
         @Override public void onAnimationEnd(View view) {
           newViewAnimation.setListener(null);
-          ViewCompat.setAlpha(newView, 1);
+//          ViewCompat.setAlpha(newView, 1);
           ViewCompat.setTranslationX(newView, 0);
           ViewCompat.setTranslationY(newView, 0);
           dispatchChangeFinished(changeInfo.newHolder, false);
@@ -439,7 +439,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     } else {
       return false;
     }
-    ViewCompat.setAlpha(item.itemView, 1);
+//    ViewCompat.setAlpha(item.itemView, 1);
     ViewCompat.setTranslationX(item.itemView, 0);
     ViewCompat.setTranslationY(item.itemView, 0);
     dispatchChangeFinished(item, oldItem);
@@ -608,7 +608,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
       for (int j = count - 1; j >= 0; j--) {
         ViewHolder item = additions.get(j);
         View view = item.itemView;
-        ViewCompat.setAlpha(view, 1);
+//        ViewCompat.setAlpha(view, 1);
         dispatchAddFinished(item);
         //this check prevent exception when removal already happened during finishing animation
         if (j < additions.size()) {

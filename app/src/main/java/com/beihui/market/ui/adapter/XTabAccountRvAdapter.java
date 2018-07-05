@@ -137,7 +137,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mHeaderAccountNum.setText("共"+ CommonUtils.keepWithoutZero(debtAbstract.last30DayStayStillCount)+"笔");
 //                holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()) : "暂无账单");
                 holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? FormatNumberUtils.FormatNumberFor2(debtAbstract.getLast30DayStayStill()) : "暂无账单");
-                if (dataSet.size() > 0 && (headerAmout == null || headerAmout != debtAbstract.getLast30DayStayStill())) {
+                if (dataSet.size() > 0 && (headerAmout == null || headerAmout != debtAbstract.getLast30DayStayStill()) && debtAbstract.getLast30DayStayStill() > 1D) {
                     headerAmout = debtAbstract.getLast30DayStayStill();
                     NumAnimUtils.startAnim( holder.mHeaderWaitPay, FormatNumberUtils.FormatNumberForTabFloat(debtAbstract.getLast30DayStayStill()), 1000);
                 }
@@ -199,6 +199,11 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         ToastUtils.showToast(mActivity, "已显示全部账单");
                         showAll = true;
                     }
+
+                    if (headerViewStatusChange != null) {
+                        headerViewStatusChange.statusChange(!"全部".equals(holder.mHeaderSortType.getText().toString()));
+                    }
+
                     notifyDataSetChanged();
                 }
             });
@@ -240,7 +245,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                //账单名称 网贷账单 信用卡账单
                holder.mAccountTypeName.setText(accountBill.getTitle());
                //当期应还
-               holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
+               holder.mAccountTypeMoney.setText(FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
 
 
                holder.mCardBg.setOnClickListener(new View.OnClickListener() {
@@ -489,8 +494,8 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                            }
 
                                            /**
-                                            * 是快捷记账
-                                            */
+                                        * 是快捷记账
+                                        */
                                            if (accountBill.getType() == 3) {
                                                Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), accountBill.getRecordId(), 2, amount)
                                                        .compose(RxUtil.<ResultEntity>io2main())
@@ -882,6 +887,15 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         dialog.show();
     }
 
+    public interface HeaderViewStatusChange{
+        void statusChange(boolean isShowAll);
+    }
+
+    public HeaderViewStatusChange headerViewStatusChange;
+
+    public void setHeaderViewStatusChange(HeaderViewStatusChange headerViewStatusChange) {
+        this.headerViewStatusChange = headerViewStatusChange;
+    }
 
     /**
      * ViewHolder

@@ -20,6 +20,7 @@ import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.DebtStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -156,6 +157,9 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void navigateBillDebtDetail(LoanBill.Row bill) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         CreditCardDebtDetailActivity.putExtra(intent, bill.getRecordId(), bill.getBillId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
         startActivityForResult(intent, 1);

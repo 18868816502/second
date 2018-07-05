@@ -2,6 +2,7 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -45,10 +46,11 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
 
     @Override
     public void fetchLoanBill(final int billTyp) {
-        int page;
+        final int page;
         if (billTyp == 3) {
             //快捷记账
             page = fastCurPage;
+
         } else if (billTyp == 1) {
             //网贷记账
             page = loanCurPage;
@@ -78,7 +80,7 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
                                            }
                                        }
                                        canLoadMore = size == PAGE_SIZE;
-                                       view.showLoanBill(Collections.unmodifiableList(loanBillList), canLoadMore);
+                                       view.showLoanBill(loanBillList, canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

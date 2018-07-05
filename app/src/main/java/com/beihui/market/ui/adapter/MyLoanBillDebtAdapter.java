@@ -21,7 +21,7 @@ import static android.text.TextUtils.isEmpty;
 public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseViewHolder> {
 
     private int billType;
-    private List<LoanBill.Row> dataSet = new ArrayList<>();
+    public List<LoanBill.Row> dataSet = new ArrayList<>();
 
     private int colorPaid = Color.parseColor("#424251");
     private int colorUnpaid = Color.parseColor("#909298");
@@ -182,4 +182,5 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         setNewData(dataSet);
         disableLoadMoreIfNotFullPage();
     }
+
 }

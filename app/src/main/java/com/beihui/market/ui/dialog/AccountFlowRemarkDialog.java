@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -42,8 +43,7 @@ import butterknife.BindView;
  * Created by admin on 2018/6/14.
  */
 
-public class AccountFlowRemarkDialog extends DialogFragment {
-
+public class AccountFlowRemarkDialog extends DialogFragment implements View.OnClickListener {
 
     //依附的Activity
     private Activity activity;
@@ -54,6 +54,7 @@ public class AccountFlowRemarkDialog extends DialogFragment {
     public View mView;
 
     public TagFlowLayout mFlowLayout;
+    public LinearLayout mRoot;
     public EditText mEditText;
     public TextView mNum;
     public TextView mConfirm;
@@ -74,6 +75,7 @@ public class AccountFlowRemarkDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //XML
         mView= LayoutInflater.from(getActivity()).inflate(R.layout.x_dialog_account_flow_remark, null);
+        mRoot = (LinearLayout)mView.findViewById(R.id.ll_dialog_acount_remark_root);
         mFlowLayout = (TagFlowLayout)mView.findViewById(R.id.id_flowlayout);
         mEditText = (EditText)mView.findViewById(R.id.et_dialog_account_remark);
         mConfirm = (TextView)mView.findViewById(R.id.tv_content_confirm);
@@ -159,17 +161,8 @@ public class AccountFlowRemarkDialog extends DialogFragment {
             }
         });
 
-        mConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onTextChangeListener!=null) {
-                    onTextChangeListener.textChange(mEditText.getText().toString());
-                    saveContent = mEditText.getText().toString();
-                }
-//                InputMethodUtil.closeSoftKeyboard(activity);
-                HideKeyboard(mEditText);
-            }
-        });
+        mConfirm.setOnClickListener(this);
+
 
         if (!TextUtils.isEmpty(saveContent)) {
             mEditText.setText(saveContent);
@@ -182,6 +175,17 @@ public class AccountFlowRemarkDialog extends DialogFragment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.tv_content_confirm) {
+            if (onTextChangeListener!=null) {
+                onTextChangeListener.textChange(mEditText.getText().toString());
+                saveContent = mEditText.getText().toString();
+            }
+            HideKeyboard(mEditText);
+        }
     }
 
     public interface OnTextChangeListener{

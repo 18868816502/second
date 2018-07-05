@@ -564,6 +564,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                             //更新成功后刷新数据
                                                            updateLoanDetail(billId);
                                                        }
+                                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
                                                    } else {
                                                        showErrorMsg(result.getMsg());
                                                    }

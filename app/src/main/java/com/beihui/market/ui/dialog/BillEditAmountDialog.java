@@ -65,7 +65,9 @@ public class BillEditAmountDialog extends DialogFragment {
 
                     if (TextUtils.isEmpty(amount)) {
                         ToastUtils.showShort(getContext(), "请输入金额", null);
-                    }else if (amount.length() > 0) {
+                    } else if (Double.parseDouble(amount) <= 0D) {
+                        ToastUtils.showShort(getContext(), "金额必须大于零", null);
+                    } else if (amount.length() > 0) {
                         InputMethodUtil.closeSoftKeyboard(getContext(), billAmount);
                         billAmount.postDelayed(new Runnable() {
                             @Override
@@ -76,8 +78,6 @@ public class BillEditAmountDialog extends DialogFragment {
                                 }
                             }
                         }, 100);
-                    } else if (Double.parseDouble(amount) <= 0) {
-                        ToastUtils.showShort(getContext(), "金额必须大于零", null);
                     } else {
                         ToastUtils.showShort(getContext(), "请输入金额", null);
                     }

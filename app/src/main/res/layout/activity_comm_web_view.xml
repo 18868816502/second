@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/title"
-            android:textColor="@color/black_2"
+            android:textColor="@color/black_1"
             android:textSize="17sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

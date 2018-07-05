@@ -25,6 +25,7 @@ import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.DebtStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -79,8 +80,6 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
                 ((MyLoanBillPresenter) presenter).loanBillList.clear();
             }
             presenter.fetchLoanBill(billType);
-
-            Log.e("asdfa", "aaaaaaaaaaaaaaaaaaaa");
         }
     }
 
@@ -202,6 +201,9 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
      */
     @Override
     public void navigateLoanDebtDetail(LoanBill.Row bill) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", bill.getRecordId());
         intent.putExtra("bill_id", bill.getBillId());

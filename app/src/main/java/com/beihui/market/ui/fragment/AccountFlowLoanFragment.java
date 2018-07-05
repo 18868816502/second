@@ -204,6 +204,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
         adapter = new AccountFlowLoanRvAdapter(R.layout.list_item_debt_channel);
 
+
         /**
          * 判断是否是编辑账单
          */
@@ -322,6 +323,9 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 }
 
                 InputMethodUtil.openSoftKeyboard(activity, etLoan);
+                etLoan.setFocusable(true);
+                etLoan.setFocusableInTouchMode(true);
+                etLoan.requestFocus();
                 }
         });
 
@@ -557,6 +561,9 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             public void run() {
                 if (getUserVisibleHint()) {
                     InputMethodUtil.openSoftKeyboard(activity, etLoan);
+                    etLoan.setFocusable(true);
+                    etLoan.setFocusableInTouchMode(true);
+                    etLoan.requestFocus();
                 }
             }
         }, 500);
@@ -703,6 +710,14 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     @Override
     public void initDatas() {
+        etLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etLoan.setFocusable(true);
+                etLoan.setFocusableInTouchMode(true);
+                etLoan.requestFocus();
+            }
+        });
 
         Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).getProfile().getId())
                 .compose(RxUtil.<ResultEntity<List<LoanAccountIconBean>>>io2main())
@@ -913,6 +928,11 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
      * 还款周期
      */
     private void showLoanTimes() {
+        etLoan.clearFocus();
+        etLoan.setFocusable(false);
+        etInputPrice.setFocusable(true);
+        etInputPrice.requestFocus();
+
         final List<String> option1 = new ArrayList<>();
         for (int i = 0; i < mRepaymentCycle.length; i++) {
             option1.add(mRepaymentCycle[i]);
@@ -1007,6 +1027,11 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
      * 首次还款日弹框
      */
     private void showFirstPayLoanDateDialog() {
+        etLoan.clearFocus();
+        etLoan.setFocusable(false);
+        etInputPrice.setFocusable(true);
+        etInputPrice.requestFocus();
+
         /**
          * 判断是否是编辑账单
          */

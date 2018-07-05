@@ -25,6 +25,7 @@ import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.adapter.BillLoanAnalysisMonthRvAdapter;
 import com.beihui.market.ui.adapter.BillLoanAnalysisWeekRvAdapter;
 import com.beihui.market.umeng.NewVersionEvents;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -141,7 +142,9 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
                 public void onItemclick(BillLoanAnalysisBean.ListBean listBean) {
                     //pv，uv统计
 //                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBILLCLICK);
-
+                    if (FastClickUtils.isFastClick()) {
+                        return;
+                    }
                     if (listBean.getType() == 1) {
                         Intent intent = new Intent(activity, LoanDebtDetailActivity.class);
                         intent.putExtra("debt_id", listBean.getRecordId());

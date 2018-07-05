@@ -52,6 +52,10 @@ public class PulledTabAccountRecyclerView extends RecyclerView implements Pulled
 
     @Override
     public boolean canPullUp() {
+        if (!canPullUp) {
+            return false;
+        }
+
         if (getLayoutManager().getChildCount() == 0) {
             // 没有item的时候也可以上拉加载
             return true;
@@ -63,6 +67,12 @@ public class PulledTabAccountRecyclerView extends RecyclerView implements Pulled
         }
 
         return false;
+    }
+
+    public boolean canPullUp = true;
+
+    public void setCanPullUp(boolean canPullUp) {
+        this.canPullUp = canPullUp;
     }
 
     @Override

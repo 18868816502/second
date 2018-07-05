@@ -220,7 +220,11 @@ public class CommonUtils {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < pNumber.length(); i++) {
                 char c = pNumber.charAt(i);
-                if (i == 3 || i == 7) {
+                if (i >= 3 && i <= 6) {
+                    sb.append('*');
+                } else if (i == 2 ) {
+                    sb.append(c).append(" ");
+                }else if (i == 7) {
                     sb.append(" ").append(c);
                 } else {
                     sb.append(c);

@@ -43,6 +43,7 @@
                 <com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView
                     android:id="@+id/rv_fg_tab_account_list"
                     android:background="@color/transparent"
+                    android:splitMotionEvents="false"
                     android:overScrollMode="never"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
