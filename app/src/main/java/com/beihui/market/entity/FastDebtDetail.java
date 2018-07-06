@@ -476,7 +476,7 @@ public class FastDebtDetail implements Parcelable {
         private String userId;
         private String recordId;
         private int termNo;
-        private String termRepayDate;
+        public String termRepayDate;
         private double termPayableAmount;
         private int status;
         private String gmtCreate;

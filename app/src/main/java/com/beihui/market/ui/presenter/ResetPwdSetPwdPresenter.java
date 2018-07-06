@@ -47,7 +47,7 @@ public class ResetPwdSetPwdPresenter extends BaseRxPresenter implements ResetPwd
                                        //umeng统计
                                        Statistic.onEvent(Events.CHANGE_PASSWORD_SUCCESS);
 
-                                       mUserHelper.clearUser(mContext);
+
                                        mView.showRestPwdSuccess(result.getMsg());
                                    } else {
                                        mView.showErrorMsg(result.getMsg());

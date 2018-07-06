@@ -141,7 +141,11 @@ public class WebViewActivity extends BaseComponentActivity {
             e.printStackTrace();
         }
        if (!TextUtils.isEmpty(webViewUrl)) {
-           webView.loadUrl(webViewUrl+"?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + versionName);
+            if (webViewUrl.contains("?")) {
+                webView.loadUrl(webViewUrl + "&isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + versionName);
+            } else {
+                webView.loadUrl(webViewUrl + "?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + versionName);
+            }
        }
 
         mReturn.setOnClickListener(new View.OnClickListener() {

@@ -64,6 +64,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,16 +148,13 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         return R.layout.fragment_tab_news_web_view_one;
     }
 
-    @Override
-    public void configViews() {
 
-    }
 
     @Override
     public void initDatas() {}
 
     @Override
-    public void onStart() {
+    public void configViews() {
         super.onStart();
 
         load();
@@ -240,13 +238,19 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             // url拦截
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                Log.e("urlurlurl", "url--->" + url);
                 if (url.equals(newsUrl)) {
                     swipeRefreshLayout.setEnabled(true);
                     return super.shouldOverrideUrlLoading(view, url);
                 } else {
                     swipeRefreshLayout.setEnabled(false);
                     Intent intent = new Intent(mActivity, WebViewActivity.class);
-                    intent.putExtra("webViewUrl", URLDecoder.decode(url));
+                    try {
+                        intent.putExtra("webViewUrl", URLDecoder.decode(url, "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     mActivity.startActivity(intent);
                     // 相应完成返回true
                     return true;
@@ -254,8 +258,16 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             }
 
             @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Log.e("xhb", "url--->" + url);
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
+
                 int touchSlop = ViewConfiguration.get(webView.getContext()).getScaledTouchSlop();
                 StringBuilder jsSb = new StringBuilder("javascript:initTouchSlop('").append(touchSlop).append("')");
                 webView.loadUrl(jsSb.toString());

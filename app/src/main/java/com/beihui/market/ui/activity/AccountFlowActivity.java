@@ -257,18 +257,21 @@ public class AccountFlowActivity extends BaseComponentActivity {
             }
         }
         if (view.getId() == R.id.iv_ac_account_flow_confirm) {
+            createAccount();
             if (FastClickUtils.isFastClick()) {
                 return;
             }
             //pv，uv统计
             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYTOPRIGHTCORNETHOOK);
-            createAccount();
         } else {
             selectedFragmentId = view.getId();
         }
     }
 
     public void createAccount() {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         if (selectedFragmentId == R.id.tv_normal_account_flow) {
             //判断参数问题是否正确
             if (isCommit(mNormalFragment.map, 0)) {

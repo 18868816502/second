@@ -291,7 +291,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
 
                 if (view.getId() == R.id.ll_item_debt_detail_root) {
                     ((TextView) view.findViewById(R.id.th)).setTextColor(Color.RED);
-                    LoanDebtDetailActivity.this.adapter.setThTextColor(position);
+                    LoanDebtDetailActivity.this.adapter.setThTextColor(debtDetail.detailList.get(position).termRepayDate);
                     presenter.clickSetStatus(position);
 
                     money = FormatNumberUtils.FormatNumberFor2(debtDetail.detailList.get(position).getTermPayableAmount());

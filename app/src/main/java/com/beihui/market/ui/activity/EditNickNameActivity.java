@@ -132,6 +132,11 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 //                    length = s.toString().getBytes().length;
 //                    Log.e("afs", "length---> " + length);
 //                }
+                if (TextUtils.isEmpty(s.toString().trim())) {
+                    confirmBtn.setEnabled(false);
+                    confirmBtn.setTextColor(black_2);
+                    return;
+                }
                 byte[] bytes = new byte[0];
                 try {
                     if (!TextUtils.isEmpty(s.toString())) {

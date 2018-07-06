@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -322,10 +324,17 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     remarks = accountFlowIconBean.remark.split(",");
                 }
 
-                InputMethodUtil.openSoftKeyboard(activity, etLoan);
-                etLoan.setFocusable(true);
-                etLoan.setFocusableInTouchMode(true);
-                etLoan.requestFocus();
+//                InputMethodUtil.openSoftKeyboard(activity, etLoan);
+//                etLoan.setFocusable(true);
+//                etLoan.setFocusableInTouchMode(true);
+//                etLoan.requestFocus();
+
+                    etLoan.clearFocus();
+                    etLoan.setFocusable(false);
+                    etInputPrice.setFocusable(true);
+                    etInputPrice.requestFocus();
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                    InputMethodUtil.closeSoftKeyboard(activity);
                 }
         });
 
@@ -700,6 +709,12 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 alphabetIndexBar.setVisibility(View.VISIBLE);
                 adapter.notifyDebtChannelChanged(list);
 
+                etLoan.clearFocus();
+                etLoan.setFocusable(false);
+                etInputPrice.setFocusable(true);
+                etInputPrice.requestFocus();
+                customKeyboardManager.showSoftKeyboard(etInputPrice);
+                InputMethodUtil.closeSoftKeyboard(activity);
             }
         });
     }
@@ -819,7 +834,28 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 }
             }
         });
+
+        etInputPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customKeyboardManager.showSoftKeyboard(etInputPrice);
+                InputMethodUtil.closeSoftKeyboard(activity);
+            }
+        });
+
+        etLoan.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.showSoftInput(etLoan, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
+        });
+
     }
+
 
     /**
      * 控件的点击事件

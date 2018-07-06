@@ -285,7 +285,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
                 if (view.getId() == R.id.ll_item_debt_detail_root) {
                     ((TextView) view.findViewById(R.id.th)).setTextColor(Color.RED);
-                    FastDebtDetailActivity.this.adapter.setThTextColor(position);
+                    FastDebtDetailActivity.this.adapter.setThTextColor(fastDebtDetail.getDetailList().get(position).termRepayDate);
                     showSetStatus(position, fastDebtDetail.getDetailList().get(position).getStatus());
 
                     money = FormatNumberUtils.FormatNumberFor2(fastDebtDetail.getDetailList().get(position).getTermPayableAmount());

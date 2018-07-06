@@ -167,7 +167,8 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
                          * */
                         case MxParam.ResultCode.IMPORT_UNSTART:
                             Log.e("customMoxie", "任务未开始");
-                            break;
+                            moxieContext.finish();
+                            return true;
                         case MxParam.ResultCode.THIRD_PARTY_SERVER_ERROR:
 //                            Toast.makeText(getContext(), "导入失败(平台方服务问题)", Toast.LENGTH_SHORT).show();
                             break;
@@ -200,6 +201,7 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
                 }
                 Intent intent = new Intent(mActivity, MainActivity.class);
                 intent.putExtra("account", true);
+                intent.putExtra("moxieMsg", "3秒后刷新页面信用卡就会显示啦");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mActivity.startActivity(intent);
                 return false;

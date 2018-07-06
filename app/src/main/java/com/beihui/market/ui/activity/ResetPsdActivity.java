@@ -63,7 +63,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
                     .beginTransaction()
                     .add(R.id.content_container, setPsd, SetPsdFragment.class.getSimpleName());
             Bundle bundle = new Bundle();
-            bundle.putString("requestPhone", UserHelper.getInstance(this).getProfile().getBingPhone());
+            bundle.putString("requestPhone", UserHelper.getInstance(this).getProfile().getAccount());
             setPsd.setArguments(bundle);
             ft.commit();
         }

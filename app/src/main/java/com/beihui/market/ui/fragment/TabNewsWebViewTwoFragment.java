@@ -126,17 +126,13 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
         return R.layout.fragment_tab_news_web_view_one;
     }
 
-    @Override
-    public void configViews() {
-    }
 
     @Override
     public void initDatas() {}
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
+    @Override
+    public void configViews() {
         load();
 
         /**

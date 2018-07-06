@@ -216,7 +216,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 //pv，uv统计
 //                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PICHANGEPWD);
 
-                if (UserHelper.getInstance(this).getProfile().getBingPhone() == null) {
+                if (UserHelper.getInstance(this).getProfile() == null || UserHelper.getInstance(this).getProfile().getAccount() == null) {
                     return;
                 }
                 Intent toResetPsd = new Intent(this, ResetPsdActivity.class);

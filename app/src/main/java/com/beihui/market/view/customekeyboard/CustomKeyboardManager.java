@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.beihui.market.R;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 

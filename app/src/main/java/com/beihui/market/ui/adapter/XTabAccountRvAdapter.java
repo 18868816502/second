@@ -348,6 +348,17 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         * 逾期时间
                         */
                        getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
+                   }  else if (accountBill.getStatus() == 5) {
+//                       holder.mDot.setImageDrawable(mRedDot);
+                       holder.mDot.setImageDrawable(mGrayDot);
+                       holder.mCountName.setVisibility(View.GONE);
+                       holder.mCount.setVisibility(View.GONE);
+                       holder.mCountRight.setVisibility(View.GONE);
+
+                       /**
+                        * 逾期时间
+                        */
+                       getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
                    } else if (accountBill.getReturnDay() == 0) {
                        holder.mCountName.setVisibility(View.GONE);
                        holder.mCount.setVisibility(View.GONE);
@@ -768,7 +779,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
                                                     * 重新回到首屏
                                                     */
@@ -803,7 +814,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
                                                     * 重新回到首屏
                                                     */
@@ -831,7 +842,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
                                                     * 重新回到首屏
                                                     */

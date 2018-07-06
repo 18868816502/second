@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 12
-        versionName "4.0.0"
+        versionCode 13
+        versionName "4.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         renderscriptTargetApi target_sdk_version
@@ -75,18 +75,18 @@ android {
 
 
             //新的生产环境
-//            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
             //正式环境魔蝎appkey
-//            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
 
 
 
             //测试使用的魔蝎appkey
-            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
+//            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
             //测试一
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
             //前端本地联调地址
 //            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.63:100\"")
@@ -152,22 +152,22 @@ android {
 //        }
 
         baidu { dimension "channel" }
-//        market360 { dimension "channel" }
-//        xiaomi { dimension "channel" }
-//        huawei { dimension "channel" }
-//        VIVO { dimension "channel" }
-//        OPPO { dimension "channel" }
-//        meizu { dimension "channel" }
-//        chuizi { dimension "channel" }
-//        wandoujia { dimension "channel" }
-//        samsung { dimension "channel" }
-//        mumayi { dimension "channel" }
-//        anzhi { dimension "channel" }
-//        sougou { dimension "channel" }
-//        jifeng  { dimension "channel" }
-//        h5 { dimension "channel" }
-//        yingyongbao { dimension "channel" }
-//        yingyongbaocpd { dimension "channel" }
+        market360 { dimension "channel" }
+        xiaomi { dimension "channel" }
+        huawei { dimension "channel" }
+        VIVO { dimension "channel" }
+        OPPO { dimension "channel" }
+        meizu { dimension "channel" }
+        chuizi { dimension "channel" }
+        wandoujia { dimension "channel" }
+        samsung { dimension "channel" }
+        mumayi { dimension "channel" }
+        anzhi { dimension "channel" }
+        sougou { dimension "channel" }
+        jifeng  { dimension "channel" }
+        h5 { dimension "channel" }
+        yingyongbao { dimension "channel" }
+        yingyongbaocpd { dimension "channel" }
 
 //        暂时不打包的渠道
 //        anbei { dimension "channel" }

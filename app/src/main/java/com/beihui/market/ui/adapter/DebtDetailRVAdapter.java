@@ -40,8 +40,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     private List<DebtDetail.RepayPlanBean> dataSet = new ArrayList<>();
     private List<DebeDetailRecord> mDebeDetailRecordList = new ArrayList<>();
 
-    public int currentIndex = 0;
-    public Integer clickCurrentIndex = null;
+    public String mSelectTermRepayDate = null;
 
     private int[] colors = {Color.WHITE, Color.parseColor("#424251"), Color.parseColor("#909298"), Color.parseColor("#ff395e")};
     private String[] status = {"", "待还", "已还", "逾期"};
@@ -63,8 +62,8 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
                 .setText(R.id.amount, "¥" + FormatNumberUtils.FormatNumberFor2(item.getTermPayableAmount()))  //设置金额
                 .setText(R.id.status, status[item.getStatus()])
                 .setTextColor(R.id.status, colors[item.getStatus()])
-                .setTextColor(R.id.th, item.getTermNo() == currentIndex ? Color.RED : Color.parseColor("#424251"))
-                .setTextColor(R.id.amount, item.getTermNo() == currentIndex ? Color.RED : Color.parseColor("#424251"))
+                .setTextColor(R.id.th, item.termRepayDate.equals(mSelectTermRepayDate) ? Color.RED : Color.parseColor("#424251"))
+                .setTextColor(R.id.amount, item.termRepayDate.equals(mSelectTermRepayDate) ? Color.RED : Color.parseColor("#424251"))
                 .addOnClickListener(R.id.ll_item_debt_detail_root);
 
         helper.getView(R.id.iv_item_debt_detail_pay_arrow).setRotation(item.isShow  ?  90 : 0);
@@ -119,7 +118,7 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     public void notifyPayPlanChanged(List<DebtDetail.RepayPlanBean> list, int currentTerm) {
 //        currentIndex = currentTerm;
         if (list.size() > 0) {
-            currentIndex = list.get(0).getTermNo();
+            mSelectTermRepayDate = list.get(0).termRepayDate;
         }
         dataSet.clear();
         if (list != null && list.size() > 0) {
@@ -129,8 +128,8 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
     }
 
 
-    public void setThTextColor(int position) {
-        currentIndex = position + 1;
+    public void setThTextColor(String termRepayDate) {
+        mSelectTermRepayDate = termRepayDate;
         notifyDataSetChanged();
     }
 
@@ -140,7 +139,6 @@ public class DebtDetailRVAdapter extends BaseQuickAdapter<DebtDetail.RepayPlanBe
             mDebeDetailRecordList.clear();
         }
         mDebeDetailRecordList.addAll(debeDetailRecordList);
-        clickCurrentIndex = position + 1;
         if (this.showOldPosition == null || this.showOldPosition == position) {
             dataSet.get(position).isShow = !dataSet.get(position).isShow ;
         } else {

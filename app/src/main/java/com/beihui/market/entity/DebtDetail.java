@@ -305,7 +305,7 @@ public class DebtDetail implements Parcelable {
     public static class RepayPlanBean implements Parcelable {
         private String id;
         private int termNo;
-        private String termRepayDate;
+        public String termRepayDate;
         private double termPayableAmount;
         private int status;
 

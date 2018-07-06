@@ -55,6 +55,7 @@ import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -153,6 +154,9 @@ public class MainActivity extends BaseComponentActivity {
         if (extras != null) {
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_account);
+                if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
+                    ToastUtils.showToast(MainActivity.this, extras.getString("moxieMsg"));
+                }
             }
         }
     }
@@ -312,7 +316,10 @@ public class MainActivity extends BaseComponentActivity {
             public void onSelected(int selectedId) {
                 if (selectedId == R.id.tab_forms_root) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                        UserAuthorizationActivity.launch(MainActivity.this, null);
+//                        UserAuthorizationActivity.launch(MainActivity.this, null);
+
+                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
+                        startActivity(intent);
                         navigationBar.select(selectedFragmentId);
                         return;
                     }
@@ -343,10 +350,19 @@ public class MainActivity extends BaseComponentActivity {
         mAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                    UserAuthorizationActivity.launch(MainActivity.this, null);
-                } else {
-                    startActivity(new Intent(MainActivity.this, AccountFlowActivity.class));
+                Log.e("dafsd", "22222222222222222222222222222222");
+
+                if (!FastClickUtils.isFastClick()) {
+                    Log.e("dafsd", "333333333333333333333333333333");
+                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
+//                    UserAuthorizationActivity.launch(MainActivity.this, null);
+                        Log.e("dafsd", "44444444444444444444444444444444444444");
+                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, AccountFlowActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });

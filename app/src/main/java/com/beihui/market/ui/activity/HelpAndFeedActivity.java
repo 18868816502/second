@@ -44,6 +44,7 @@ import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
@@ -159,6 +160,9 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                     }
                 }
                 if ("提交".equals(feedbackTv.getText().toString())) {
+                    if (FastClickUtils.isFastClick()) {
+                        return;
+                    }
                     summit();
                 }
             }

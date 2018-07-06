@@ -15,6 +15,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.beihui.market.util.Px2DpUtils;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class CustomKeyboardView extends KeyboardView {
     private Drawable rKeyBackground;
     private int rLabelTextSize;
     private int rKeyTextSize;
+    private int rMaxKeyTextSize;
     private int rKeyTextColor;
     private float rShadowRadius;
     private int rShadowColor;
@@ -54,6 +57,7 @@ public class CustomKeyboardView extends KeyboardView {
         rKeyBackground = (Drawable) ReflectionUtils.getFieldValue(this, "mKeyBackground");
         rLabelTextSize = (int) ReflectionUtils.getFieldValue(this, "mLabelTextSize");
         rKeyTextSize = (int) ReflectionUtils.getFieldValue(this, "mKeyTextSize");
+        rMaxKeyTextSize = Px2DpUtils.sp2px(context, 20);
         rKeyTextColor = (int) ReflectionUtils.getFieldValue(this, "mKeyTextColor");
         rShadowColor = (int) ReflectionUtils.getFieldValue(this, "mShadowColor");
         rShadowRadius = (float) ReflectionUtils.getFieldValue(this, "mShadowRadius");
@@ -168,7 +172,7 @@ public class CustomKeyboardView extends KeyboardView {
                 // Draw the text
                 if ("确定".equals(label)) {
                     paint.setColor(Color.parseColor("#FF5240"));
-                    paint.setTextSize(60);
+                    paint.setTextSize(rMaxKeyTextSize);
                 } else {
                     paint.setColor(rKeyTextColor);
                     paint.setTextSize(rKeyTextSize);
