@@ -350,13 +350,10 @@ public class MainActivity extends BaseComponentActivity {
         mAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("dafsd", "22222222222222222222222222222222");
 
                 if (!FastClickUtils.isFastClick()) {
-                    Log.e("dafsd", "333333333333333333333333333333");
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
 //                    UserAuthorizationActivity.launch(MainActivity.this, null);
-                        Log.e("dafsd", "44444444444444444444444444444444444444");
                         Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
                         startActivity(intent);
                     } else {
