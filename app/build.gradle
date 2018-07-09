@@ -152,22 +152,22 @@ android {
 //        }
 
         baidu { dimension "channel" }
-        market360 { dimension "channel" }
-        xiaomi { dimension "channel" }
-        huawei { dimension "channel" }
-        VIVO { dimension "channel" }
-        OPPO { dimension "channel" }
-        meizu { dimension "channel" }
-        chuizi { dimension "channel" }
-        wandoujia { dimension "channel" }
-        samsung { dimension "channel" }
-        mumayi { dimension "channel" }
-        anzhi { dimension "channel" }
-        sougou { dimension "channel" }
-        jifeng  { dimension "channel" }
-        h5 { dimension "channel" }
-        yingyongbao { dimension "channel" }
-        yingyongbaocpd { dimension "channel" }
+//        market360 { dimension "channel" }
+//        xiaomi { dimension "channel" }
+//        huawei { dimension "channel" }
+//        VIVO { dimension "channel" }
+//        OPPO { dimension "channel" }
+//        meizu { dimension "channel" }
+//        chuizi { dimension "channel" }
+//        wandoujia { dimension "channel" }
+//        samsung { dimension "channel" }
+//        mumayi { dimension "channel" }
+//        anzhi { dimension "channel" }
+//        sougou { dimension "channel" }
+//        jifeng  { dimension "channel" }
+//        h5 { dimension "channel" }
+//        yingyongbao { dimension "channel" }
+//        yingyongbaocpd { dimension "channel" }
 
 //        暂时不打包的渠道
 //        anbei { dimension "channel" }
