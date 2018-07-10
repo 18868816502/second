@@ -199,6 +199,14 @@ public class Api {
     }
 
     /**
+     * 删除通用记账图标
+     * @version 4.1.0
+     */
+    public Observable<ResultEntity> deleteLoanAccountIcon(String tallyId) {
+        return service.deleteLoanAccountIcon(tallyId);
+    }
+
+    /**
      * 获取通用记账图标列表
      * @version 4.0.0
      */

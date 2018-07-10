@@ -7,12 +7,15 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.anim.ShakeAnimation;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.ui.activity.AccountFlowTypeActivity;
@@ -31,6 +34,8 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
     public Activity mActivity;
 
     public int addNum = 0;
+
+    public boolean isShakeAnim = false;
 
     private List<AccountFlowIconBean> dataSet = new ArrayList<>();
 
@@ -68,6 +73,14 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
         }
 
 
+        if (isShakeAnim) {
+            //开启抖动动画
+//            ShakeAnimation.getInstance().shakeAnimation(holder.mRoot);
+            holder.mRoot.startAnimation(AnimationUtils.loadAnimation(mActivity, R.anim.shake));
+        } else {
+
+        }
+
         holder.mRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +92,22 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
                 if (onItemClickListener != null && (position < dataSet.size())) {
                     onItemClickListener.onItemClick(dataSet.get(position));
                 }
+            }
+        });
+
+        holder.mRoot.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                isShakeAnim = true;
+                notifyDataSetChanged();
+                return true;
+            }
+        });
+
+        holder.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isShakeAnim = false;
             }
         });
     }
@@ -109,15 +138,18 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout mRoot;
+        public RelativeLayout mIconRoot;
         public ImageView mIcon;
+        public ImageView mDelete;
         public TextView mName;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mRoot = (LinearLayout)itemView.findViewById(R.id.ll_item_account_flow_root);
+            mIconRoot = (RelativeLayout)itemView.findViewById(R.id.rl_item_account_flow_icon);
             mIcon = (ImageView)itemView.findViewById(R.id.iv_item_account_flow_icon);
+            mDelete = (ImageView)itemView.findViewById(R.id.iv_item_account_flow_icon_delete);
             mName = (TextView)itemView.findViewById(R.id.tv_item_account_flow_name);
         }
     }
-
 }

@@ -101,6 +101,13 @@ public interface ApiService {
      * @author xhb
      */
     @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/delCustomIcon")
+    Observable<ResultEntity> deleteLoanAccountIcon(@Field("tallyId") String tallyId);
+
+    /**
+     * @author xhb
+     */
+    @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/channelsIcon/getLnetLoan")
     Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(@Field("userId") String userId, @Field("searchContent") String searchContent);
 

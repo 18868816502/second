@@ -9,12 +9,27 @@
     android:paddingBottom="5dp"
     android:layout_height="wrap_content">
 
-
-    <ImageView
-        android:id="@+id/iv_item_account_flow_icon"
+    <RelativeLayout
+        android:id="@+id/rl_item_account_flow_icon"
         android:layout_marginBottom="8dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_item_account_flow_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <ImageView
+            android:id="@+id/iv_item_account_flow_icon_delete"
+            android:src="@drawable/delete_icon"
+            android:paddingRight="3dp"
+            android:paddingBottom="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_item_account_flow_name"
