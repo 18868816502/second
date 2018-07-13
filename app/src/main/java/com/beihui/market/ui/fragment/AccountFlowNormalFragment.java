@@ -467,14 +467,29 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 //如果是算术运算符
                 if ((primaryCode == 43 || primaryCode == 45)) {
                     if (currentContent.length() == 1) {
-                        if (currentContent.equals("+") ||currentContent.equals("-")) {
+                        if (currentContent.equals("+") || currentContent.equals("-")) {
                             return true;
                         } else {
                             sum = new BigDecimal(currentContent);
                         }
-                    }else if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
+                    } else if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
                         sum = new BigDecimal(currentContent);
                     } else {
+
+
+                        if (temp.equals("0.")) {
+                            temp.append("0");
+                        }
+                        if (currentContent.substring(1).contains("+")) {
+                            sum = sum.add(new BigDecimal(temp.toString()));
+                        }
+                        if (currentContent.substring(1).contains("-")) {
+                            sum = sum.subtract(new BigDecimal(temp.toString()));
+                        }
+                        temp.delete(0, temp.length());
+                        etCurrent.setText(sum.toString());
+
+
                         return true;
                     }
                     getKeys().get(11).label = "=";

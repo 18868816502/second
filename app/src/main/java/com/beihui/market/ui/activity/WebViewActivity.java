@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.BusinessWebView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -192,6 +194,26 @@ public class WebViewActivity extends BaseComponentActivity {
         @JavascriptInterface
         public void getFindHtmlScrollY(String scrollY){
             mScrollY = scrollY;
+        }
+
+        /**
+         * 唤醒微信
+         */
+        @JavascriptInterface
+        public void openWeChat(){
+            try {
+                Intent intent = new Intent();
+                ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                intent.setAction(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setComponent(cmp);
+                startActivityForResult(intent, 0);
+
+            } catch (Exception e) {
+                //若无法正常跳转，在此进行错误处理
+                ToastUtils.showShort(WebViewActivity.this, "无法跳转到微信，请检查您是否安装了微信！", null);
+            }
         }
     }
 
