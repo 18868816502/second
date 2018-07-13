@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,6 +44,7 @@ import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
@@ -75,6 +78,8 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.iv_debt_help_and_feed_back)
+    ImageView mReturn;
     @BindView(R.id.help)
     TextView helpTv;
     @BindView(R.id.feedback)
@@ -82,10 +87,10 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
-    private ProgressBar progressBar;
     private WebView webView;
 
     private EditText etFeedContent;
+    private EditText etFeedContact;
     private TextView tvContentNum;
     private ImageView ivFeedImage;
 
@@ -95,7 +100,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     /**
      * 当前选中的tab
      */
-    private View selected;
+    private int selectedId = R.id.help;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -136,23 +141,116 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         viewPager.setAdapter(new HelpFeedAdapter());
 
-        View.OnClickListener clickListener = new View.OnClickListener() {
+        feedbackTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v != selected) {
-                    select(v);
+                if ("反馈".equals(feedbackTv.getText().toString())) {
+                    helpTv.setText("反馈");
+                    feedbackTv.setText("提交");
+                    viewPager.setCurrentItem(1);
+                    if (TextUtils.isEmpty(etFeedContact.getText().toString())) {
+                        feedbackTv.setTextColor(Color.parseColor("#909298"));
+                        feedbackTv.setEnabled(false);
+                    } else {
+                        feedbackTv.setTextColor(Color.parseColor("#FF5240"));
+                        feedbackTv.setEnabled(true);
+                    }
+                }
+                if ("提交".equals(feedbackTv.getText().toString())) {
+                    if (FastClickUtils.isFastClick()) {
+                        return;
+                    }
+                    summit();
                 }
             }
-        };
-        helpTv.setOnClickListener(clickListener);
-        feedbackTv.setOnClickListener(clickListener);
-        this.select(helpTv);
+        });
+
+        mReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ("反馈".equals(feedbackTv.getText().toString())) {
+                    finish();
+                }
+                if ("提交".equals(feedbackTv.getText().toString())) {
+                    viewPager.setCurrentItem(0);
+                    helpTv.setText("帮助");
+                    feedbackTv.setText("反馈");
+                    feedbackTv.setTextColor(Color.parseColor("#424251"));
+                    feedbackTv.setEnabled(true);
+                }
+            }
+        });
 
         SlidePanelHelper.attach(this);
+    }
+
+    private void summit() {
+        final Context context = HelpAndFeedActivity.this;
+        if (etFeedContent.getText().length() > 0) {
+            Disposable dis = Observable.just(1)
+                    .observeOn(Schedulers.io())
+                    .flatMap(new Function<Integer, ObservableSource<ResultEntity>>() {
+                        @Override
+                        public ObservableSource<ResultEntity> apply(Integer source) throws Exception {
+                            ByteArrayOutputStream baos = null;
+                            if (image != null) {
+                                baos = new ByteArrayOutputStream();
+                                int quality = 100;
+                                image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                                while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
+                                    quality -= 5;
+                                    if (quality <= 0) {
+                                        quality = 0;
+                                    }
+                                    baos.reset();
+                                    image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                                    if (quality == 0) {
+                                        break;
+                                    }
+                                }
+                            }
+                            return Api.getInstance().submitFeedback(UserHelper.getInstance(context).getProfile().getId(), etFeedContent.getText().toString(), etFeedContact.getText().toString(),
+                                    baos != null ? baos.toByteArray() : null, baos != null ? System.currentTimeMillis() + ".jpg" : null);
+                        }
+                    })
+                    .compose(RxUtil.<ResultEntity>io2main())
+                    .subscribe(new Consumer<ResultEntity>() {
+                                   @Override
+                                   public void accept(ResultEntity result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           ToastUtils.showShort(context, "提交成功", null);
+                                           finish();
+                                       } else {
+                                           ToastUtils.showShort(context, result.getMsg(), null);
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(Throwable throwable) throws Exception {
+                                    Log.e("HelpAndFeedActivity", throwable.toString());
+                                }
+                            });
+        } else {
+            ToastUtils.showShort(context, "请输入您的意见", null);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if ("反馈".equals(feedbackTv.getText().toString())) {
+            finish();
+        }
+        if ("提交".equals(feedbackTv.getText().toString())) {
+            viewPager.setCurrentItem(0);
+            helpTv.setText("帮助");
+            feedbackTv.setText("反馈");
+            feedbackTv.setTextColor(Color.parseColor("#424251"));
+            feedbackTv.setEnabled(true);
+        }
     }
 
     @Override
@@ -250,38 +348,12 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         dialog.show();
     }
 
-    /**
-     * 选中tab
-     *
-     * @param view tab view
-     */
-    private void select(View view) {
-        if (selected != null) {
-            selected.setSelected(false);
-        }
-        selected = view;
-        if (selected != null) {
-            selected.setSelected(true);
-        }
-
-        viewPager.setCurrentItem(selected == helpTv ? 0 : 1);
-    }
 
     private View generateHelpView(ViewGroup container) {
         View helpView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_help, container, false);
-        progressBar = helpView.findViewById(R.id.progress_bar);
         webView = helpView.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                progressBar.setProgress(newProgress);
-                if (newProgress == 100) {
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
         webView.loadUrl(NetConstants.H5_HELP);
         return helpView;
     }
@@ -290,6 +362,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         View feedView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_feed, container, false);
         etFeedContent = feedView.findViewById(R.id.feed_content);
+        etFeedContact = feedView.findViewById(R.id.et_pager_item_debt_feed_contact);
         tvContentNum = feedView.findViewById(R.id.content_num);
         ivFeedImage = feedView.findViewById(R.id.feed_image);
 
@@ -320,7 +393,15 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if ("提交".equals(feedbackTv.getText().toString())) {
+                    if (TextUtils.isEmpty(s.toString())) {
+                        feedbackTv.setTextColor(Color.parseColor("#909298"));
+                        feedbackTv.setEnabled(false);
+                    } else {
+                        feedbackTv.setTextColor(Color.parseColor("#FF5240"));
+                        feedbackTv.setEnabled(true);
+                    }
+                }
             }
         });
         ivFeedImage.setOnClickListener(new View.OnClickListener() {
@@ -330,60 +411,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
             }
         });
 
-        feedView.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Context context = HelpAndFeedActivity.this;
-                if (etFeedContent.getText().length() > 0) {
-                    Disposable dis = Observable.just(1)
-                            .observeOn(Schedulers.io())
-                            .flatMap(new Function<Integer, ObservableSource<ResultEntity>>() {
-                                @Override
-                                public ObservableSource<ResultEntity> apply(Integer source) throws Exception {
-                                    ByteArrayOutputStream baos = null;
-                                    if (image != null) {
-                                        baos = new ByteArrayOutputStream();
-                                        int quality = 100;
-                                        image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-                                        while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
-                                            quality -= 5;
-                                            if (quality <= 0) {
-                                                quality = 0;
-                                            }
-                                            baos.reset();
-                                            image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
-                                            if (quality == 0) {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    return Api.getInstance().submitFeedback(UserHelper.getInstance(context).getProfile().getId(), etFeedContent.getText().toString(),
-                                            baos != null ? baos.toByteArray() : null, baos != null ? System.currentTimeMillis() + ".jpg" : null);
-                                }
-                            })
-                            .compose(RxUtil.<ResultEntity>io2main())
-                            .subscribe(new Consumer<ResultEntity>() {
-                                           @Override
-                                           public void accept(ResultEntity result) throws Exception {
-                                               if (result.isSuccess()) {
-                                                   ToastUtils.showShort(context, "提交成功", null);
-                                                   finish();
-                                               } else {
-                                                   ToastUtils.showShort(context, result.getMsg(), null);
-                                               }
-                                           }
-                                       },
-                                    new Consumer<Throwable>() {
-                                        @Override
-                                        public void accept(Throwable throwable) throws Exception {
-                                            Log.e("HelpAndFeedActivity", throwable.toString());
-                                        }
-                                    });
-                } else {
-                    ToastUtils.showShort(context, "请输入您的意见", null);
-                }
-            }
-        });
+
         return feedView;
     }
 

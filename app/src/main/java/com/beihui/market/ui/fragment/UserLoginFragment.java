@@ -8,9 +8,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -149,7 +151,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void initDatas() {
-
     }
 
     @Override
@@ -214,7 +215,9 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
                 wechatInfo = map;
-                presenter.loginWithWeChat(wechatInfo.get("openid"));
+                Log.e("wechatInfo", "wechatInfo.get(openid)" + wechatInfo.get("openid"));
+                Log.e("wechatInfo", "wechatInfo.get(unionid) -- > " + wechatInfo.get("unionid"));
+                presenter.loginWithWeChat(wechatInfo.get("unionid"));
             }
 
             @Override

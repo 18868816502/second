@@ -1,6 +1,9 @@
 package com.beihui.market.ui.adapter;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -10,50 +13,61 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
-import com.beihui.market.entity.AccountBill;
-import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
-import com.beihui.market.ui.activity.DebtAnalyzeActivity;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.presenter.CreditCardDebtDetailPresenter;
-import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.FormatNumberUtils;
+import com.beihui.market.util.NumAnimUtils;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.SPUtils;
+import com.beihui.market.util.ToastUtils;
+import com.beihui.market.view.CustomSwipeMenuLayout;
+import com.beihui.market.view.GlideCircleTransform;
+import com.beihui.market.view.MarqueeTextView;
+import com.bumptech.glide.Glide;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import io.reactivex.functions.Consumer;
-
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb
@@ -61,383 +75,693 @@ import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
  */
 public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdapter.ViewHolder> {
 
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+    private final SimpleDateFormat showFormat = new SimpleDateFormat("M月d日", Locale.CHINA);
+
     //数据源
-    private List<XAccountInfo> dataSet = new ArrayList<>();
+    private List<TabAccountNewBean.TabAccountNewInfoBean> dataSet = new ArrayList<>();
+
+    //数据源
+    private List<TabAccountNewBean.TabAccountNewInfoBean> dataSetCopy = new ArrayList<>();
+
+    //剔除已还的数据源
+    private List<TabAccountNewBean.TabAccountNewInfoBean> unPayeset = new ArrayList<>();
+
+    //公告内容
+    public String mNoticeContent = null;
+    public String mNoticeId = null;
+
+    public boolean showAll = false;
+
+    public Double headerAmout = null;
+
+    private DebtAbstract debtAbstract = null;
 
     public static final int VIEW_NORMAL = R.layout.xitem_tab_account_info;
+    public static final int VIEW_HEADER = R.layout.xlayout_fg_tab_account_head;
+    public static final int VIEW_NO_DATA = R.layout.xlayout_fg_tab_account_no_account;
 
     public Activity mActivity;
     public Fragment mFragment;
 
-    public Drawable mUpArrow;
-    public Drawable mDownArrow;
 
     public Drawable mRedDot;
     public Drawable mGrayDot;
+    public Drawable mUnPayDot;
+    public Drawable mToDayDot;
+    public Drawable mPayedDot;
 
-    public Drawable mCardRedBg;
-    public Drawable mCardPinkBg;
-    public Drawable mCardBlackBg;
-    public Drawable mCardGraygBg;
 
     public XTabAccountRvAdapter(Activity mActivity, Fragment fragment) {
         this.mActivity = mActivity;
         mFragment = fragment;
-        mUpArrow = mActivity.getResources().getDrawable(R.drawable.xbill_up_arrow);
-        mDownArrow = mActivity.getResources().getDrawable(R.drawable.xbill_down_arrow);
 
         mRedDot = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_red_circle);
         mGrayDot = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_black_circle);
-
-        mCardRedBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg);
-        mCardPinkBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_pink_bg);
-        mCardBlackBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg);
-        mCardGraygBg = mActivity.getResources().getDrawable(R.drawable.xshape_tab_account_card_gray_bg);
-
+        mUnPayDot = mActivity.getResources().getDrawable(R.drawable.overdue_icon);
+        mToDayDot = mActivity.getResources().getDrawable(R.drawable.today_icon);
+        mPayedDot = mActivity.getResources().getDrawable(R.drawable.finish_icon);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(mActivity).inflate(VIEW_NORMAL, parent, false));
+        ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(mActivity).inflate(viewType, parent, false), viewType);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final XAccountInfo accountBill = dataSet.get(position);
-        if (accountBill.isAnalog) {
-            //实例图标显示
-            holder.mSampleIcon.setVisibility(View.VISIBLE);
-            holder.mSetBg.setVisibility(View.GONE);
-            holder.mArrow.setImageDrawable(mDownArrow);
-            holder.mArrow.setEnabled(false);
-            //闹钟的显示
-            if (position == 0) {
-                holder.mClock.setVisibility(View.GONE);
-                holder.mOverdueTotal.setVisibility(View.GONE);
-
-                holder.mDot.setImageDrawable(mRedDot);
-                holder.mCardBg.setBackground(mCardRedBg);
-                holder.mSetBg.setBackground(mCardPinkBg);
-
-                holder.mDateName.setText("今天");
-                holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-                holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+    public void onBindViewHolder(final ViewHolder holder, final int i) {
+       if (holder.viewType == VIEW_HEADER) {
+            if (debtAbstract != null) {
+                holder.mHeaderAccountNum.setVisibility(View.VISIBLE);
+                holder.mHeaderAccountNum.setText("共"+ CommonUtils.keepWithoutZero(debtAbstract.last30DayStayStillCount)+"笔");
+//                holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()) : "暂无账单");
+                holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? FormatNumberUtils.FormatNumberFor2(debtAbstract.getLast30DayStayStill()) : "暂无账单");
+                if (dataSet.size() > 0 && (headerAmout == null || headerAmout != debtAbstract.getLast30DayStayStill()) && debtAbstract.getLast30DayStayStill() > 1D) {
+                    headerAmout = debtAbstract.getLast30DayStayStill();
+                    NumAnimUtils.startAnim( holder.mHeaderWaitPay, FormatNumberUtils.FormatNumberForTabFloat(debtAbstract.getLast30DayStayStill()), 1000);
+                }
             } else {
-                holder.mClock.setVisibility(View.GONE);
-                holder.mOverdueTotal.setVisibility(View.GONE);
-                holder.mDot.setImageDrawable(mGrayDot);
-                holder.mCardBg.setBackground(mCardBlackBg);
-                holder.mSetBg.setBackground(mCardGraygBg);
-
-                holder.mDateName.setText("7天后");
-                holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-                holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                holder.mHeaderNoticeRoot.setVisibility(View.GONE);
+                holder.mHeaderAccountNum.setVisibility(View.VISIBLE);
+                holder.mHeaderWaitPay.setText("暂无账单");
+                holder.mHeaderAccountNum.setText("共0笔");
             }
 
-            //账单名称 网贷账单 信用卡账单
-            holder.mAccountTypeName.setText(accountBill.getTitle());
-            //当期应还
-            holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
+           if (TextUtils.isEmpty(mNoticeContent) || mNoticeId.equals(SPUtils.getValue(mActivity, mNoticeId))) {
+               holder.mHeaderNoticeRoot.setVisibility(View.GONE);
+           } else {
+               holder.mHeaderNoticeRoot.setVisibility(View.VISIBLE);
+               holder.mHeaderNoticeContent.setText(mNoticeContent);
+               holder.mHeaderNoticeContent.setFocusable(true);
+               holder.mHeaderNoticeContent.setFocusableInTouchMode(true);
+           }
 
-            holder.mCardBg.setOnClickListener(new View.OnClickListener() {
+           /**
+            * 关闭公告并记录最新公告ID
+            */
+           holder.mHeaderNoticeCross.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   holder.mHeaderNoticeRoot.setVisibility(View.GONE);
+                   SPUtils.setValue(mActivity, mNoticeId);
+               }
+           });
+
+           if (showAll) {
+               holder.mHeaderSortType.setText("全部");
+           } else {
+               holder.mHeaderSortType.setText("待还");
+           }
+
+            //是否隐藏已还
+            holder.mHeaderSort.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (UserHelper.getInstance(mActivity).getProfile() == null) {
-                        //跳转到登陆页面
+                    if (UserHelper.getInstance(mActivity).getProfile() == null || UserHelper.getInstance(mActivity).getProfile().getId() == null) {
                         UserAuthorizationActivity.launch(mActivity, null);
-                    } else {
-                        Toast.makeText(mActivity, "这是示例卡，请先添加真实账单", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                }
-            });
-
-        } else {
-
-            //实例图标隐藏
-            holder.mSampleIcon.setVisibility(View.GONE);
-            holder.mArrow.setEnabled(true);
-            //闹钟的显示
-            if (position == 0) {
-                holder.mClock.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setVisibility(View.VISIBLE);
-            } else {
-                holder.mClock.setVisibility(View.GONE);
-                holder.mOverdueTotal.setVisibility(View.GONE);
-            }
-
-            //账单名称 网贷账单 信用卡账单
-            holder.mAccountTypeName.setText(accountBill.getTitle());
-            //当期应还
-            holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
-
-            if (accountBill.isShow) {
-                holder.mArrow.setImageDrawable(mUpArrow);
-                holder.mSetBg.setVisibility(View.VISIBLE);
-            } else {
-                holder.mArrow.setImageDrawable(mDownArrow);
-                holder.mSetBg.setVisibility(View.GONE);
-            }
-
-            /**
-             * 逾期或者最近三天还款日 显示小红点 背景颜色
-             */
-            if (accountBill.getReturnDay() <= 3) {
-                holder.mDot.setImageDrawable(mRedDot);
-                holder.mCardBg.setBackground(mCardRedBg);
-                holder.mSetBg.setBackground(mCardPinkBg);
-            } else {
-                holder.mDot.setImageDrawable(mGrayDot);
-                holder.mCardBg.setBackground(mCardBlackBg);
-                holder.mSetBg.setBackground(mCardGraygBg);
-            }
-
-            /**
-             * 逾期时间
-             */
-            getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay());
-
-            //是否是最近的逾期
-            if (accountBill.isLastOverdue()) {
-                holder.mClock.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setVisibility(View.VISIBLE);
-                holder.mOverdueTotal.setText("逾期总数为" + accountBill.getOverdueTotal() + "笔");
-            } else {
-                holder.mClock.setVisibility(View.GONE);
-                holder.mOverdueTotal.setVisibility(View.GONE);
-            }
-
-            /**
-             * 如果是网贷 有还部分 和 已还
-             * 如果是信用卡 只有已还
-             * 账单类型 1-网贷 2-信用卡
-             */
-            if (accountBill.getType() == 1) {
-                //显示还部分
-                holder.mSetPartPay.setVisibility(View.VISIBLE);
-            }
-            if (accountBill.getType() == 2) {
-                //隐藏还部分
-                holder.mSetPartPay.setVisibility(View.GONE);
-            }
-
-            holder.mSetAllPay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showSetAllPayDialog(accountBill);
-                }
-            });
-
-            holder.mSetPartPay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /**
-                     * 埋点 	卡片还部分点击
-                     */
-                    //pv，uv统计
-                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_PART_PAY);
-
-
-                    BillEditAmountDialog dialog = new BillEditAmountDialog()
-                            .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
-                                @Override
-                                public void onEditAmountConfirm(final double amount) {
-                                    if (amount > accountBill.getAmount()) {
-                                        Toast.makeText(mActivity, "只能还部分", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        /**
-                                      * 是网贷
-                                      */
-                                        if (accountBill.getType() == 1) {
-                                            Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), amount, 2)
-                                                    .compose(RxUtil.<ResultEntity>io2main())
-                                                    .subscribe(new Consumer<ResultEntity>() {
-                                                                   @Override
-                                                                   public void accept(ResultEntity result) throws Exception {
-                                                                       if (result.isSuccess()) {
-                                                                           //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                                           /**
-                                                                            * 如果还部分金额与待还金额相同 则需要回到首屏
-                                                                            */
-                                                                           if (accountBill.getAmount() - amount < 0.01) {
-                                                                               ((TabAccountFragment) mFragment).initStatus();
-                                                                           } else {
-                                                                               accountBill.setAmount(accountBill.getAmount() - amount);
-                                                                               notifyItemChanged(position);
-                                                                           }
-
-                                                                           //获取头信息
-                                                                           ((TabAccountFragment) mFragment).initHeaderData();
-                                                                       } else {
-                                                                           Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                                                       }
-                                                                   }
-                                                               },
-                                                            new Consumer<Throwable>() {
-                                                                @Override
-                                                                public void accept(Throwable throwable) throws Exception {
-                                                                    Log.e("exception_custom", throwable.getMessage());
-                                                                }
-                                                            });
-                                        }
-
-                                        /**
-                                      * 是快捷记账
-                                      */
-                                        if (accountBill.getType() == 3) {
-                                            Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), 2, amount)
-                                                    .compose(RxUtil.<ResultEntity>io2main())
-                                                    .subscribe(new Consumer<ResultEntity>() {
-                                                                   @Override
-                                                                   public void accept(ResultEntity result) throws Exception {
-                                                                       if (result.isSuccess()) {
-                                                                           //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                                           /**
-                                                                    * 如果还部分金额与待还金额相同 则需要回到首屏
-                                                                    */
-                                                                           if (accountBill.getAmount() - amount < 0.01) {
-                                                                               ((TabAccountFragment) mFragment).initStatus();
-                                                                           } else {
-                                                                               accountBill.setAmount(accountBill.getAmount() - amount);
-                                                                               notifyItemChanged(position);
-                                                                           }
-
-                                                                           //获取头信息
-                                                                           ((TabAccountFragment) mFragment).initHeaderData();
-                                                                       } else {
-                                                                           Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                                                       }
-                                                                   }
-                                                               },
-                                                            new Consumer<Throwable>() {
-                                                                @Override
-                                                                public void accept(Throwable throwable) throws Exception {
-                                                                    Log.e("exception_custom", throwable.getMessage());
-                                                                }
-                                                            });
-                                        }
-                                    }
-                                }
-                            });
-                    dialog.show(((MainActivity) mActivity).getSupportFragmentManager(), "paypart");
-                }
-            });
-
-            /**
-             * 箭头的点击事件
-             */
-            holder.mArrow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (accountBill.isShow) {
-                        holder.mArrow.setImageDrawable(mDownArrow);
-                        holder.mSetBg.setVisibility(View.GONE);
+                    if ("全部".equals(holder.mHeaderSortType.getText().toString())) {
+                        if (dataSet.size() > 0) {
+                            dataSet.clear();
+                        }
+                        dataSet.addAll(unPayeset);
+                        holder.mHeaderSortType.setText("待还");
+                        ToastUtils.showToast(mActivity, "已显示待还账单");
+                        showAll = false;
                     } else {
-                        /**
-                        * 埋点 	卡片下拉按钮点击数据
+                        if (dataSet.size() > 0) {
+                            dataSet.clear();
+                        }
+                        dataSet.addAll(dataSetCopy);
+                        holder.mHeaderSortType.setText("全部");
+                        ToastUtils.showToast(mActivity, "已显示全部账单");
+                        showAll = true;
+                    }
+
+                    if (headerViewStatusChange != null) {
+                        headerViewStatusChange.statusChange(!"全部".equals(holder.mHeaderSortType.getText().toString()));
+                    }
+
+                    notifyDataSetChanged();
+                }
+            });
+       } else if (holder.viewType == VIEW_NO_DATA) {
+
+       } else {
+           final int position = i - 1;
+           final TabAccountNewBean.TabAccountNewInfoBean accountBill = dataSet.get(position);
+           //示例数据
+           if (accountBill.isAnalog) {
+               holder.swipeMenuLayout.setSwipeEnable(false);
+
+               if (position == 0) {
+                   holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_zsyh_icon));
+
+                   holder.mDateName.setText("今天");
+                   holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                   holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                   holder.mAccountTypeTerm.setText("6月");
+
+                   holder.mCountName.setVisibility(View.GONE);
+                   holder.mCount.setVisibility(View.GONE);
+                   holder.mCountRight.setVisibility(View.GONE);
+                   holder.mDot.setImageDrawable(mToDayDot);
+               } else {
+                   holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_fql_icon));
+                   holder.mDateName.setText("7天后");
+                   holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                   holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+
+                   holder.mAccountTypeTerm.setText("1/1");
+
+                   holder.mCountName.setVisibility(View.GONE);
+                   holder.mCount.setVisibility(View.GONE);
+                   holder.mCountRight.setVisibility(View.GONE);
+                   holder.mDot.setImageDrawable(mGrayDot);
+               }
+
+               //账单名称 网贷账单 信用卡账单
+               holder.mAccountTypeName.setText(accountBill.getTitle());
+               //当期应还
+               holder.mAccountTypeMoney.setText(FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
+
+
+               holder.mCardBg.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       if (UserHelper.getInstance(mActivity).getProfile() == null) {
+                           //跳转到登陆页面
+                           UserAuthorizationActivity.launch(mActivity, null);
+                       } else {
+                           Toast.makeText(mActivity, "这是示例卡，请先添加真实账单", Toast.LENGTH_SHORT).show();
+                       }
+                   }
+               });
+
+           } else {
+               //非示例数据
+
+               if (accountBill.getStatus() == 2) {
+//                   holder.swipeMenuLayout.setSwipeEnable(false);
+                   holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
+                   holder.mAccountTypeMoney.setTextColor(Color.parseColor("#909298"));
+               } else {
+//                   holder.swipeMenuLayout.setSwipeEnable(true);
+                   holder.mAccountTypeName.setTextColor(Color.parseColor("#424251"));
+                   holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
+               }
+
+               int placeHolder;
+               if (accountBill.getType() == 1) {
+                   //网贷账单
+                   placeHolder = R.drawable.bill_internetbank_icon;
+               } else if (accountBill.getType() == 3){
+                   //快捷记账
+                   placeHolder = R.drawable.mine_mail_icon;
+               } else {
+                   //信用卡账单
+                   placeHolder = R.drawable.mine_bank_default_icon;
+               }
+               Glide.with(mActivity).load(accountBill.getLogoUrl()).centerCrop().transform(new GlideCircleTransform(mActivity)).placeholder(placeHolder).into(holder.mAvatar);
+
+               //备注
+               if (!TextUtils.isEmpty(accountBill.remark)) {
+                   holder.mRemark.setVisibility(View.VISIBLE);
+                   holder.mRemark.setText(accountBill.remark);
+               } else {
+                   holder.mRemark.setVisibility(View.GONE);
+               }
+
+               //账单名称 网贷账单 信用卡账单
+               holder.mAccountTypeName.setText(accountBill.getTitle());
+               //当期应还
+//               holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
+               holder.mAccountTypeMoney.setText(FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
+               //还款周期
+               StringBuilder builder = new StringBuilder();
+               if (accountBill.getType() == 2) {
+                   builder.append(accountBill.getMonth() + "月");
+               } else {
+                   if (accountBill.getTotalTerm() == null || accountBill.getTotalTerm() == -1) {
+                       builder.append("循环");
+                   } else {
+                       builder.append(accountBill.getTerm() + "/").append(accountBill.getTotalTerm() + "");
+                   }
+               }
+               holder.mAccountTypeTerm.setVisibility(View.VISIBLE);
+               holder.mAccountTypeTerm.setText(builder.toString());
+
+               if (accountBill.headerStatus == null || (position > 0 && dataSet.get(position-1).getStatus() == 2)) {
+                   holder.mTopRoot.setVisibility(View.GONE);
+               } else {
+                   holder.mTopRoot.setVisibility(View.VISIBLE);
+
+                   /**
+                    * 逾期或者最近三天还款日 显示小红点 背景颜色
+                    */
+                   if (accountBill.getStatus() == 2) {
+                       //已还清
+                       holder.mDot.setImageDrawable(mPayedDot);
+                       holder.mCountName.setVisibility(View.VISIBLE);
+                       holder.mCount.setVisibility(View.VISIBLE);
+                       holder.mCountRight.setVisibility(View.VISIBLE);
+                       holder.mCountRight.setText("笔");
+                       holder.mCountName.setText("共");
+                       holder.mCount.setText(accountBill.count+"");
+                       holder.mCount.setTextColor(Color.parseColor("#909298"));
+
+                       holder.mDateName.setText("已还清");
+                   } else if (accountBill.getStatus() == 3) {
+                       //逾期
+                       holder.mDot.setImageDrawable(mUnPayDot);
+                       holder.mCountName.setVisibility(View.VISIBLE);
+                       holder.mCount.setVisibility(View.VISIBLE);
+                       holder.mCountRight.setVisibility(View.VISIBLE);
+                       holder.mCountName.setText("逾期");
+                       holder.mCount.setText(Math.abs(accountBill.returnDay)+"");
+                       holder.mCount.setTextColor(Color.RED);
+                       holder.mCountRight.setText("天");;
+
+                       /**
+                        * 逾期时间
                         */
-                        //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_ARROW);
+                       getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
+                   }  else if (accountBill.getStatus() == 5) {
+//                       holder.mDot.setImageDrawable(mRedDot);
+                       holder.mDot.setImageDrawable(mGrayDot);
+                       holder.mCountName.setVisibility(View.GONE);
+                       holder.mCount.setVisibility(View.GONE);
+                       holder.mCountRight.setVisibility(View.GONE);
+
+                       /**
+                        * 逾期时间
+                        */
+                       getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
+                   } else if (accountBill.getReturnDay() == 0) {
+                       holder.mCountName.setVisibility(View.GONE);
+                       holder.mCount.setVisibility(View.GONE);
+                       holder.mCountRight.setVisibility(View.GONE);
+                       holder.mDot.setImageDrawable(mToDayDot);
+
+                       /**
+                        * 逾期时间
+                        */
+                       getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
+                   } else if (accountBill.getReturnDay() <= 3) {
+//                       holder.mDot.setImageDrawable(mRedDot);
+                       holder.mDot.setImageDrawable(mGrayDot);
+                       holder.mCountName.setVisibility(View.GONE);
+                       holder.mCount.setVisibility(View.GONE);
+                       holder.mCountRight.setVisibility(View.GONE);
+
+                       /**
+                      * 逾期时间
+                      */
+                       getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
+                   } else {
+                       holder.mDot.setImageDrawable(mGrayDot);
+                       holder.mCountName.setVisibility(View.GONE);
+                       holder.mCount.setVisibility(View.GONE);
+                       holder.mCountRight.setVisibility(View.GONE);
+
+                       /**
+                      * 逾期时间
+                      */
+                       getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
+                   }
+               }
 
 
-                        holder.mArrow.setImageDrawable(mUpArrow);
-                        holder.mSetBg.setVisibility(View.VISIBLE);
-                    }
-                    accountBill.isShow = !accountBill.isShow;
-                }
-            });
+               /**
+                * 如果是网贷 有还部分 和 已还
+                * 如果是信用卡 只有已还
+                * 账单类型 1-网贷 2-信用卡
+                */
+               holder.swipeMenuLayout.setSwipeEnable(true);
+               if (accountBill.getStatus() == 2) {
+                   //隐藏
+                   holder.setPay.setVisibility(View.GONE);
+                   holder.payPart.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.GONE);
+               } else if (accountBill.getStatus() == 5) {
+                   //隐藏还部分
+                   holder.setPay.setVisibility(View.GONE);
+                   holder.payPart.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.VISIBLE);
+               }else {
+                   holder.setPay.setVisibility(View.GONE);
+                   holder.payAll.setVisibility(View.VISIBLE);
+                   if (accountBill.getType() == 1 || accountBill.getType() == 3) {
+                       //显示还部分
+                       holder.payPart.setVisibility(View.VISIBLE);
+                   }
+                   if (accountBill.getType() == 2) {
+                       //隐藏还部分
+                       holder.payPart.setVisibility(View.GONE);
+                   }
+               }
 
-            /**
-             * 账单类型 1-网贷 2-信用卡
-             */
-            holder.mCardBg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (accountBill.getType() == 1) {
-                        Intent intent = new Intent(mActivity, LoanDebtDetailActivity.class);
-                        intent.putExtra("debt_id", accountBill.getRecordId());
-                        intent.putExtra("bill_id", accountBill.getBillId());
-                        mActivity.startActivity(intent);
-                    } else if (accountBill.getType() == 3) {
-                        //快速记账详情
-                        Intent intent = new Intent(mActivity, FastDebtDetailActivity.class);
-                        intent.putExtra("debt_id", accountBill.getRecordId());
-                        intent.putExtra("bill_id", accountBill.getBillId());
-                        mActivity.startActivity(intent);
-                    }else {
-                        Intent intent = new Intent(mActivity, CreditCardDebtDetailActivity.class);
-                        intent.putExtra("debt_id", accountBill.getRecordId());
-                        intent.putExtra("bill_id", accountBill.getBillId());
-                        intent.putExtra("logo", "");
-                        intent.putExtra("bank_name", accountBill.getTitle());
-                        intent.putExtra("card_num", "");
-                        intent.putExtra("by_hand", false);//是否是手动记账
-                        mActivity.startActivity(intent);
-                    }
-                }
-            });
-        }
+               holder.setPay.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       //设置为未还
+                       showSetAllPayDialog(holder, position, accountBill, 1, null);
+                       holder.swipeMenuLayout.smoothClose();
+                   }
+               });
+
+               holder.payAll.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       //pv，uv统计
+                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPSETALREADYREPAY);
+
+                       if (accountBill.getStatus() == 5) {
+                           Toast.makeText(mActivity, "本月还未出账", Toast.LENGTH_SHORT).show();
+                           holder.swipeMenuLayout.smoothClose();
+                           return;
+                       }
+                       showSetAllPayDialog(holder, position, accountBill, 2, FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
+                       holder.swipeMenuLayout.smoothClose();
+                   }
+               });
+
+               holder.payPart.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       /**
+                        * 埋点 	卡片还部分点击
+                        */
+                       //pv，uv统计
+                       DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_PART_PAY);
+
+                       //pv，uv统计
+                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPREPAYPORTION);
+
+
+                       BillEditAmountDialog dialog = new BillEditAmountDialog()
+                               .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
+                                   @Override
+                                   public void onEditAmountConfirm(final double amount) {
+                                       if (amount > accountBill.getAmount()) {
+                                           Toast.makeText(mActivity, "还款金额不能大于待还金额", Toast.LENGTH_SHORT).show();
+                                       } else {
+                                           /**
+                                         * 是网贷
+                                         */
+                                           if (accountBill.getType() == 1) {
+                                               Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), amount, 2)
+                                                       .compose(RxUtil.<ResultEntity>io2main())
+                                                       .subscribe(new Consumer<ResultEntity>() {
+                                                                      @Override
+                                                                      public void accept(ResultEntity result) throws Exception {
+                                                                          if (result.isSuccess()) {
+                                                                              //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                                              /**
+                                                                       * 如果还部分金额与待还金额相同 则需要回到首屏
+                                                                       */
+                                                                              if (accountBill.getAmount() - amount < 0.01) {
+                                                                                  ((TabAccountFragment) mFragment).refreshData();
+                                                                              } else {
+                                                                                  accountBill.setAmount(accountBill.getAmount() - amount);
+                                                                                  notifyItemChanged(position+1);
+                                                                              }
+
+                                                                              //获取头信息
+                                                                              ((TabAccountFragment) mFragment).initHeaderData();
+                                                                          } else {
+                                                                              Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                                          }
+                                                                      }
+                                                                  },
+                                                               new Consumer<Throwable>() {
+                                                                   @Override
+                                                                   public void accept(Throwable throwable) throws Exception {
+                                                                       Log.e("exception_custom", throwable.getMessage());
+                                                                   }
+                                                               });
+                                           }
+
+                                           /**
+                                        * 是快捷记账
+                                        */
+                                           if (accountBill.getType() == 3) {
+                                               Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), accountBill.getRecordId(), 2, amount)
+                                                       .compose(RxUtil.<ResultEntity>io2main())
+                                                       .subscribe(new Consumer<ResultEntity>() {
+                                                                      @Override
+                                                                      public void accept(ResultEntity result) throws Exception {
+                                                                          if (result.isSuccess()) {
+                                                                              //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+                                                                              /**
+                                                                               * 如果还部分金额与待还金额相同 则需要回到首屏
+                                                                               */
+                                                                              if (accountBill.getAmount() - amount < 0.01) {
+                                                                                  ((TabAccountFragment) mFragment).refreshData();
+                                                                              } else {
+                                                                                  accountBill.setAmount(accountBill.getAmount() - amount);
+                                                                                  notifyItemChanged(position+1);
+                                                                              }
+
+                                                                              //获取头信息
+                                                                              ((TabAccountFragment) mFragment).initHeaderData();
+                                                                          } else {
+                                                                              Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                                                          }
+                                                                      }
+                                                                  },
+                                                               new Consumer<Throwable>() {
+                                                                   @Override
+                                                                   public void accept(Throwable throwable) throws Exception {
+                                                                       Log.e("exception_custom", throwable.getMessage());
+                                                                   }
+                                                               });
+                                           }
+                                       }
+                                   }
+                               });
+                       dialog.show(((MainActivity) mActivity).getSupportFragmentManager(), "paypart");
+                       holder.swipeMenuLayout.smoothClose();
+                   }
+               });
+
+
+               /**
+                * 账单类型 1-网贷 2-信用卡
+                */
+               holder.mCardBg.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       /**
+                        * 防止重复点击
+                        */
+                       if (FastClickUtils.isFastClick()) {
+                           return;
+                       }
+
+                       //pv，uv统计
+//                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPBILLCLICK);
+
+                       if (accountBill.getType() == 1) {
+                           Intent intent = new Intent(mActivity, LoanDebtDetailActivity.class);
+                           intent.putExtra("debt_id", accountBill.getRecordId());
+                           intent.putExtra("bill_id", accountBill.getBillId());
+                           mActivity.startActivity(intent);
+                       } else if (accountBill.getType() == 3) {
+                           //快速记账详情
+                           Intent intent = new Intent(mActivity, FastDebtDetailActivity.class);
+                           intent.putExtra("debt_id", accountBill.getRecordId());
+                           intent.putExtra("bill_id", accountBill.getBillId());
+                           mActivity.startActivity(intent);
+                       } else {
+                           Intent intent = new Intent(mActivity, CreditCardDebtDetailActivity.class);
+                           intent.putExtra("debt_id", accountBill.getRecordId());
+                           intent.putExtra("bill_id", accountBill.getBillId());
+                           intent.putExtra("logo", accountBill.logoUrl);
+                           intent.putExtra("bank_name", accountBill.getTitle());
+                           intent.putExtra("card_num", "");
+                           intent.putExtra("by_hand", false);//是否是手动记账
+                           mActivity.startActivity(intent);
+                       }
+                   }
+               });
+           }
+       }
     }
 
-    private void getDeteName(TextView mDateName, String replyTime, int returnDay) {
-        if (returnDay == 0) {
-            mDateName.setText("今天");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        }else if (returnDay < 0) {
-            mDateName.setText("逾期" + Math.abs(returnDay) + "天");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }else if (returnDay <= 30) {
-            mDateName.setText(Math.abs(returnDay) + "天后还款");
-            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        }else if (returnDay > 30) {
+
+    private void getDeteName(TextView mDateName, String replyTime, int returnDay, int status, int outBillDay, String time) {
+//        if (status == 1 || status == 2 || status == 3) {
+//            if (returnDay == 0) {
+//                mDateName.setText("今天");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+//            } else if (returnDay < 0) {
+//                mDateName.setText("逾期" + Math.abs(returnDay) + "天");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//            } else if (returnDay <= 30) {
+//                mDateName.setText(Math.abs(returnDay) + "天后还款");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//            } else if (returnDay > 30) {
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.add(Calendar.DAY_OF_MONTH, returnDay);
+//                int month = calendar.get(Calendar.MONTH) + 1;
+//                int day = calendar.get(Calendar.DAY_OF_MONTH);
+//                mDateName.setText(month + "月" + day + "日");
+//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//            }
+//        }
+//        if (status == 4) {
+//            mDateName.setText("已出账");
+//            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//        }
+//        if (status == 5) {
+//            mDateName.setText(outBillDay+"天后出账");
+//            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+//            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//        }
+        if (!TextUtils.isEmpty(time)) {
+            try {
+                Date parse = dateFormat.parse(time);
+                mDateName.setText(showFormat.format(parse));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH, returnDay);
             int month = calendar.get(Calendar.MONTH) + 1;
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            mDateName.setText(month+"月"+day+"日");
+            mDateName.setText(month + "月" + day + "日");
             mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
             mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
         }
     }
 
+    /**
+     * 布局类型
+     */
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return VIEW_HEADER;
+        } else {
+            if (dataSet.size() == 0) {
+                return VIEW_NO_DATA;
+            } else {
+                return VIEW_NORMAL;
+            }
+        }
+    }
+
+    public boolean showAll(){
+        return showAll;
+    }
+
+    /**
+     * 列表条数
+     */
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        if (dataSet.size() == 0) {
+            return 2;
+        }
+        return dataSet.size()+1;
     }
 
-    public void notifyDebtChanged(List<XAccountInfo> list) {
-        dataSet.clear();
-        if (list != null && list.size() > 0) {
-            dataSet.addAll(list);
+    /**
+     * 更新头布局
+     */
+    public void notifyHeaderData(DebtAbstract debtAbstract){
+        this.debtAbstract = debtAbstract;
+        if (debtAbstract != null) {
+            notifyItemChanged(0);
+        } else {
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
+        headerAmout = null;
     }
 
-    public void notifyDebtChangedRefresh(List<XAccountInfo> list) {
-        int size = list.size();
-        if (dataSet.get(0).isLastOverdue() && size > 0) {
-            list.remove(0);
+    /**
+     * 更新公告
+     */
+    public void notifyNoticeData(String content, String id){
+        mNoticeContent = content;
+        mNoticeId = id;
+        if (!TextUtils.isEmpty(mNoticeContent)) {
+            notifyItemChanged(0);
+        } else {
+            notifyDataSetChanged();
         }
-        ListIterator<XAccountInfo> iterator = list.listIterator();
+    }
+
+    /**
+     * 已还账单（已还清做了分页)
+     */
+    public void notifyPayChanged(List<TabAccountNewBean> list) {
+        ListIterator<TabAccountNewBean> iterator = list.listIterator();
         while (iterator.hasNext()) {
-            dataSet.add(0, iterator.next());
+            TabAccountNewBean next = iterator.next();
+            dataSet.addAll(next.list);
+            dataSetCopy.addAll(next.list);
         }
         notifyDataSetChanged();
     }
 
-    public void notifyDebtChangedMore(List<XAccountInfo> list) {
-        dataSet.addAll(list);
+    /**
+     * 未还账单以及第一页已还账单
+     */
+    public void notifyUnPayChanged(List<TabAccountNewBean> list) {
+        if (dataSet.size() > 0) {
+            dataSet.clear();
+        }
+        if (dataSetCopy.size() > 0) {
+            dataSetCopy.clear();
+        }
+        if (unPayeset.size() > 0) {
+            unPayeset.clear();
+        }
+
+        ArrayList<TabAccountNewBean.TabAccountNewInfoBean> tempList = new ArrayList<>();
+        ListIterator<TabAccountNewBean> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            TabAccountNewBean next = iterator.next();
+            ListIterator<TabAccountNewBean.TabAccountNewInfoBean> infoIterator = next.list.listIterator();
+            while (infoIterator.hasNext()) {
+                TabAccountNewBean.TabAccountNewInfoBean info = infoIterator.next();
+                info.headerTime = next.time;
+                info.headerStatus = next.status;
+                info.headerReturnDay = next.returnDay;
+                info.count = next.total;
+                break;
+            }
+            tempList.addAll(next.list);
+            //	状态 1-待还 2-已还 3-逾期
+            if (next.getStatus() == 1 || next.status == 3) {
+                unPayeset.addAll(next.list);
+            }
+        }
+        if (tempList.size() > 0) {
+            dataSet.addAll(0, showAll ? tempList : unPayeset);
+            dataSetCopy.addAll(0, tempList);
+        }
         notifyDataSetChanged();
+        headerAmout = null;
     }
 
 
     /**
+     * 设置为未还
      * 设为已还
+     * status	否	int	状态 1-待还 2-已还
      */
-    private void showSetAllPayDialog(final XAccountInfo accountBill) {
+    private void showSetAllPayDialog(final ViewHolder holder, final int position, final TabAccountNewBean.TabAccountNewInfoBean accountBill, final int status, String money) {
         final Dialog dialog = new Dialog(mActivity, 0);
         View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -449,17 +773,28 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
                     //1-网贷 2-信用卡
                     if (accountBill.getType() == 1) {
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), 2)
+                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), status)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
-                                                        * 重新回到首屏
-                                                        */
-                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                    * 重新回到首屏
+                                                    */
+                                                       if (status == 2) {
+                                                           dataSet.remove(position);
+                                                           dataSetCopy.remove(position);
+                                                           notifyItemRemoved(holder.getAdapterPosition());
+                                                           holder.mTopRoot.postDelayed(new Runnable() {
+                                                               @Override
+                                                               public void run() {
+                                                                   ((TabAccountFragment) mFragment).refreshData();
+                                                               }
+                                                           }, 300);
+                                                       }
+//                                                     ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -473,17 +808,17 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                         });
                     }
                     if (accountBill.getType() == 2) {
-                        Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), 2)
+                        Api.getInstance().updateCreditCardBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getRecordId(), accountBill.getBillId(), status)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
-                                                        * 重新回到首屏
-                                                        */
-                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                    * 重新回到首屏
+                                                    */
+                                                       ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -501,17 +836,28 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                      * 快捷账单
                      */
                     if (accountBill.getType() == 3) {
-                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), 2, null)
+                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(),  accountBill.getBillId(), accountBill.getRecordId(), status, null)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
+//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
-                                                        * 重新回到首屏
-                                                        */
-                                                       ((TabAccountFragment) mFragment).initStatus();
+                                                    * 重新回到首屏
+                                                    */
+                                                       if (status == 2) {
+                                                           dataSet.remove(position);
+                                                           dataSetCopy.remove(position);
+                                                           notifyItemRemoved(holder.getAdapterPosition());
+                                                           holder.mTopRoot.postDelayed(new Runnable() {
+                                                               @Override
+                                                               public void run() {
+                                                                   ((TabAccountFragment) mFragment).refreshData();
+                                                               }
+                                                           }, 300);
+                                                       }
+//                                                     ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -529,7 +875,17 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         };
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
         dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
+        /**
+         * 1 设置为待还
+         * 2 设置为已还
+         */
+        if (status == 1) {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为未还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定本期账单设为未还？");
+        } else {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为已还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定还款"+money+"元");
+        }
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
@@ -542,39 +898,89 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         dialog.show();
     }
 
+    public interface HeaderViewStatusChange{
+        void statusChange(boolean isShowAll);
+    }
+
+    public HeaderViewStatusChange headerViewStatusChange;
+
+    public void setHeaderViewStatusChange(HeaderViewStatusChange headerViewStatusChange) {
+        this.headerViewStatusChange = headerViewStatusChange;
+    }
+
+    /**
+     * ViewHolder
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView mClock;
-        public ImageView mArrow;
-        public ImageView mSampleIcon;
+        public int viewType;
+
+        //头布局
+        public TextView mHeaderTitleName;
+        public TextView mHeaderAccountName;
+        public TextView mHeaderAccountNum;
+        public TextView mHeaderWaitPay;
+        public LinearLayout mHeaderSort;
+        public TextView mHeaderSortType;
+
+        public LinearLayout mHeaderNoticeRoot;
+        public MarqueeTextView mHeaderNoticeContent;
+        public ImageView mHeaderNoticeCross;
+
+        public CustomSwipeMenuLayout swipeMenuLayout;
+        public RelativeLayout cardRoot;
+        public RelativeLayout mTopRoot;
+        public LinearLayout payPart;
+        public LinearLayout payAll;
+        public LinearLayout setPay;
+
+        public ImageView mAvatar;
         public ImageView mDot;
         public TextView mDateName;
+        public TextView mCount;
+        public TextView mCountName;
+        public TextView mCountRight;
         public TextView mAccountTypeName;
+        public TextView mRemark;
         public TextView mAccountTypeMoney;
-        public TextView mSetAllPay;
-        public TextView mSetPartPay;
-        //逾期总数
-        public TextView mOverdueTotal;
-
+        public TextView mAccountTypeTerm;
 
         public LinearLayout mCardBg;
-        public LinearLayout mSetBg;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, int viewType) {
             super(itemView);
-            mClock = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_clock);
-            mArrow = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_arrow);
-            mDot = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_dot);
-            mSampleIcon = (ImageView) itemView.findViewById(R.id.iv_item_tab_acount_sample_icon);
-            mDateName = (TextView) itemView.findViewById(R.id.tv_item_tab_account_date_name);
-            mAccountTypeName = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_name_type);
-            mAccountTypeMoney = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_money);
-            mSetAllPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_all_pay);
-            mSetPartPay = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_part_pay);
-            mOverdueTotal = (TextView) itemView.findViewById(R.id.iv_item_tab_account_overdue_total);
+            this.viewType = viewType;
+            if (viewType == VIEW_HEADER) {
+                mHeaderTitleName = (TextView) itemView.findViewById(R.id.tv_fg_tab_head_title);
+                mHeaderAccountName = (TextView) itemView.findViewById(R.id.tv_last_one_month_wait_pay_name);
+                mHeaderAccountNum = (TextView) itemView.findViewById(R.id.tv_last_one_month_wait_pay_num);
+                mHeaderWaitPay = (TextView) itemView.findViewById(R.id.tv_last_one_month_wait_pay);
+                mHeaderSort = (LinearLayout) itemView.findViewById(R.id.ll_tab_account_header_sort);
+                mHeaderSortType = (TextView) itemView.findViewById(R.id.tv_tab_account_header_sort);
+                mHeaderNoticeRoot = (LinearLayout) itemView.findViewById(R.id.ll_ac_main_notice_root);
+                mHeaderNoticeContent = (MarqueeTextView) itemView.findViewById(R.id.tv_tab_account_notice);
+                mHeaderNoticeCross = (ImageView) itemView.findViewById(R.id.iv_ac_main_notice_cross);
 
-            mCardBg = (LinearLayout) itemView.findViewById(R.id.ll_item_tab_account_card);
-            mSetBg= (LinearLayout) itemView.findViewById(R.id.ll_item_tab_acount_set_pay_bg);
+            } else {
+                swipeMenuLayout = (CustomSwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
+                cardRoot = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_account_card);
+                mTopRoot = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_account_normal_top_root);
+                payPart = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_account_no_reply);
+                payAll = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_account_reply);
+                setPay = (LinearLayout) itemView.findViewById(R.id.tv_shape_tab_accoun_set_pay);
+                mAvatar = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_avatar);
+                mDot = (ImageView) itemView.findViewById(R.id.iv_item_tab_account_dot);
+                mDateName = (TextView) itemView.findViewById(R.id.tv_item_tab_account_date_name);
+                mCountName = (TextView) itemView.findViewById(R.id.tv_item_tab_account_count_name);
+                mCount = (TextView) itemView.findViewById(R.id.tv_item_tab_account_count);
+                mCountRight = (TextView) itemView.findViewById(R.id.tv_item_tab_account_count_right);
+                mAccountTypeName = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_name_type);
+                mRemark = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_remark);
+                mAccountTypeMoney = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_money);
+                mAccountTypeTerm = (TextView) itemView.findViewById(R.id.tv_item_tab_acount_loan_term);
+
+                mCardBg = (LinearLayout) itemView.findViewById(R.id.ll_item_tab_account_card);
+            }
         }
     }
 }

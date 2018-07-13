@@ -5,9 +5,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -24,12 +24,8 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.SettingPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.bean.StatusCode;
-import com.umeng.socialize.handler.UMWXHandler;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -126,11 +122,21 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 startActivity(toChangePsd);
                 break;
             case R.id.star_me:
-                try {
-                    Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName));
-                    startActivityWithoutOverride(toMarket);
-                } catch (ActivityNotFoundException e) {
-                    e.printStackTrace();
+                String model=android.os.Build.MODEL;
+                //品牌
+                String brand=android.os.Build.BRAND;
+                //制造商
+                String manufacturer=android.os.Build.MANUFACTURER;
+                Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
+                if ("samsung".equals(manufacturer)) {
+                    goToSamsungappsMarket();
+                } else {
+                    try {
+                        Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName));
+                        startActivityWithoutOverride(toMarket);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case R.id.about_us:
@@ -162,6 +168,22 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
             case R.id.version_container:
                 presenter.checkVersion();
                 break;
+        }
+    }
+
+
+    /**
+     * https://www.cnblogs.com/qwangxiao/p/8030389.html
+     */
+    public void goToSamsungappsMarket(){
+        Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" + getApplicationInfo().packageName);
+        Intent goToMarket = new Intent();
+        goToMarket.setClassName("com.sec.android.app.samsungapps", "com.sec.android.app.samsungapps.Main");
+        goToMarket.setData(uri);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

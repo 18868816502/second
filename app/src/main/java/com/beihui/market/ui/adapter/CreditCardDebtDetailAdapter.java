@@ -4,12 +4,16 @@ package com.beihui.market.ui.adapter;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.CreditCardDebtBill;
 import com.beihui.market.ui.adapter.multipleentity.CreditCardDebtDetailMultiEntity;
+import com.beihui.market.util.FormatNumberUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -43,6 +47,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
      * 是否是手动记账的账单
      */
     private boolean hand;
+    private String billMonth = null;
 
     public CreditCardDebtDetailAdapter(boolean hand) {
         super(null);
@@ -91,6 +96,7 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
             try {
                 calendar.setTime(dateFormat.parse(bill.getBillDate()));
                 holder.setText(R.id.debt_month, (calendar.get(Calendar.MONTH) + 1) + "月");
+                holder.setTextColor(R.id.debt_month, bill.getBillMonth().equals(billMonth) ? Color.parseColor("#ff5240") : Color.parseColor("#424251"));
                 holder.setText(R.id.debt_year, calendar.get(Calendar.YEAR) + "年");
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -98,19 +104,29 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
         }
         //账单金额
         holder.setGone(R.id.debt_amount, true);
-        holder.setText(R.id.debt_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(bill.getNewBalance()));
+        holder.setText(R.id.debt_amount, String.valueOf((char) 165) + FormatNumberUtils.FormatNumberFor2(bill.getNewBalance()));
+        if (TextUtils.isEmpty(bill.getNewBalance()+"") || bill.getNewBalance() < 0D) {
+//            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#4CC99E"));
+            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#424251"));
+        } else {
+            ((TextView)holder.getView(R.id.debt_amount)).setTextColor(Color.parseColor("#424251"));
+        }
+
+        holder.setTextColor(R.id.debt_amount, bill.getBillMonth().equals(billMonth) ? Color.parseColor("#ff5240") : Color.parseColor("#424251"));
         //账单状态
         switch (bill.getStatus()) {
             case 1://待还
                 holder.setText(R.id.debt_status, bill.getReturnDay() == 0 ? "今天还款" : String.format(Locale.CHINA, "距离还款日%d天", bill.getReturnDay()));
                 break;
             case 2://已还
-                if (bill.getNewBalance() > 0) {
-                    holder.setText(R.id.debt_status, "已还清");
-                } else {
-                    //已还清的无金额账单显示无账单
-                    holder.setText(R.id.debt_status, "无账单");
-                }
+                //version3.1.0 修改
+                holder.setText(R.id.debt_status, "已还清");
+//                if (bill.getNewBalance() > 0) {
+//                    holder.setText(R.id.debt_status, "已还清");
+//                } else {
+//                    //已还清的无金额账单显示无账单
+//                    holder.setText(R.id.debt_status, "无账单");
+//                }
                 break;
             case 3://逾期
                 SpannableString ss = new SpannableString("逾期" + Math.abs(bill.getReturnDay()) + "天");
@@ -215,7 +231,12 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
             }
         }
         //金额
-        holder.setText(R.id.detail_amount, String.valueOf((char) 165) + keep2digitsWithoutZero(detail.getAmountMoney()));
+        if (TextUtils.isEmpty(detail.getAmountMoney()+"") || detail.getAmountMoney() < 0D) {
+            ((TextView)holder.getView(R.id.detail_amount)).setTextColor(Color.parseColor("#4CC99E"));
+        } else {
+            ((TextView)holder.getView(R.id.detail_amount)).setTextColor(Color.parseColor("#424251"));
+        }
+        holder.setText(R.id.detail_amount, String.valueOf((char) 165) + FormatNumberUtils.FormatNumberFor2(detail.getAmountMoney()));
     }
 
     public void expandMonthBill(int index) {
@@ -276,5 +297,9 @@ public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<Credi
 
     public int indexOf(CreditCardDebtDetailMultiEntity entity) {
         return pureDataSet.indexOf(entity);
+    }
+
+    public void setShowbillMonth(String billMonth) {
+        this.billMonth = billMonth;
     }
 }

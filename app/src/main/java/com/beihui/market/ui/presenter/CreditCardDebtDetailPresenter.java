@@ -34,10 +34,14 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     private String billId;
     private UserHelper userHelper;
 
-    private CreditCardDebtDetail debtDetail;
-    private List<CreditCardDebtBill> billList = new ArrayList<>();
+    public CreditCardDebtDetail debtDetail;
+    public List<CreditCardDebtBill> billList = new ArrayList<>();
     private Map<CreditCardDebtBill, List<BillDetail>> bill2Detail = new HashMap<>();
     private int curPageNo = 1;
+
+    public CreditCardDebtBill bill = new CreditCardDebtBill();
+
+
 
     @Inject
     CreditCardDebtDetailPresenter(Context context, Api api, CreditCardDebtDetailContract.View view, String debtId) {
@@ -93,8 +97,13 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            billList.addAll(result.getData());
                                            size = result.getData().size();
+
+                                           bill = billList.get(0);
                                        }
                                        view.showDebtBillList(Collections.unmodifiableList(billList), size == PAGE_SIZE);
+                                       if (billList.size() > 0 && isShow) {
+                                           view.showStatus(billList.get(0).getStatus());
+                                       }
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -177,11 +186,18 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
         }
     }
 
+    /**
+     * 禁止初始化状态
+     * @param status
+     */
+    public boolean isShow = true;
+
     @Override
-    public void clickSetStatus() {
+    public void clickSetStatus(final int status) {
         if (debtDetail != null) {
             //设为已还
-            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getId(), debtDetail.getShowBill().getId(), 2)
+//            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), debtDetail.getId(), debtDetail.getShowBill().getId(), status)
+            Disposable dis = api.updateCreditCardBillStatus(userHelper.getProfile().getId(), bill.getId(), status)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {
                                    @Override
@@ -192,8 +208,11 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
                                            billList.clear();
                                            bill2Detail.clear();
                                            curPageNo = 1;
+                                           isShow = false;
                                            fetchDebtDetail(billId);
                                            fetchDebtMonthBill();
+
+                                           view.showStatus(status);
                                        } else {
                                            view.showErrorMsg(result.getMsg());
                                        }
@@ -220,8 +239,8 @@ public class CreditCardDebtDetailPresenter extends BaseRxPresenter implements Cr
     @Override
     public void clickUpdateRemind() {
         if (debtDetail != null) {
-            final int day = debtDetail.getRemind() == -1 ? 1 : -1;
-            Disposable dis = api.updateRemindStatus(userHelper.getProfile().getId(), null, debtId, day)
+            final int day = debtDetail.getRemind() == -1 ? 3 : -1;
+            Disposable dis = api.updateRemindStatus(userHelper.getProfile().getId(), "2", debtId, day)
                     .compose(RxUtil.<ResultEntity>io2main())
                     .subscribe(new Consumer<ResultEntity>() {
                                    @Override

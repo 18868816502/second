@@ -24,6 +24,19 @@ public class LegalInputUtils {
         return str.matches(regex);
     }
 
+    /**
+     * 手机号码的显示规范
+     * 如： 133 3333 3333
+     */
+    public static String formatMobile(String mobile) {
+        if (mobile.length() == 11) {
+            StringBuilder builder = new StringBuilder(mobile);
+            StringBuilder temp = new StringBuilder(" ");
+            builder.replace(3, 7, temp.append(builder.substring(3, 7)).append(" ").toString());
+            return builder.toString();
+        }
+        return mobile;
+    }
 
     /**
      * 验证手机号

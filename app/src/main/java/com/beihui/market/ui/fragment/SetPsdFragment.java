@@ -4,6 +4,7 @@ package com.beihui.market.ui.fragment;
 import android.app.Activity;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -24,10 +25,13 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSetPwdComponent;
 import com.beihui.market.injection.module.SetPwdModule;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserCertificationCodeActivity;
+import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.ResetPwdSetPwdContract;
 import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.ui.presenter.ResetPwdSetPwdPresenter;
+import com.beihui.market.ui.presenter.UserProfilePresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
@@ -38,6 +42,8 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -59,6 +65,9 @@ import io.reactivex.schedulers.Schedulers;
  * 忘记密码设置密码的 片段
  */
 public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSetPwdContract.View {
+    @BindView(R.id.tv_set_pwd_title_name)
+    TextView titleName;
+
     @BindView(R.id.password)
     ClearEditText passwordEt;
     @BindView(R.id.confirm)
@@ -143,6 +152,13 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     @Override
     public void initDatas() {
         requestPhone = getArguments().getString("requestPhone");
+        String tileName = getActivity().getIntent().getStringExtra("tileName");
+        if (!TextUtils.isEmpty(tileName)) {
+            titleName.setText(tileName);
+        } else {
+            titleName.setText("忘记密码");
+        }
+        presenter.requestVerification(requestPhone);
     }
 
     @Override
@@ -186,29 +202,27 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
          * 用户密码登录
          */
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
-
-
-        Api.getInstance().login(requestPhone, passwordEt.getText().toString())
-                .compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
-                .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
+        com.beihui.market.util.ToastUtils.showToast(getActivity(), msg);
+//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+        if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
+            mActivity.finish();
+            return;
+        }
+        Api.getInstance().logout(UserHelper.getInstance(getActivity()).getProfile().getId())
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
                                @Override
-                               public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
+                               public void accept(@NonNull ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
+                                       UserHelper.getInstance(getActivity()).clearUser(getContext());
+                                       //发送用户退出全局事件
+                                       EventBus.getDefault().post(new UserLogoutEvent());
+                                       UserHelper.getInstance(getActivity()).clearUser(getActivity());
+                                       UserAuthorizationActivity.launch(getActivity(), null);
+
                                        //umeng统计
-                                       Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
-
-                                       //登录之后，将用户信息注册到本地
-                                       UserHelper.getInstance(mActivity).update(result.getData(), requestPhone, mActivity);
-                                       //保存用户id,缓存
-                                       SPUtils.setCacheUserId(mActivity, result.getData().getId());
-
-
-                                       mActivity.finish();
-
+                                       Statistic.logout();
                                    } else {
-                                       //umeng统计
-                                       Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
                                        showErrorMsg(result.getMsg());
                                    }
                                }
@@ -216,13 +230,40 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                showErrorMsg("网络错误");
+
                             }
                         });
 
-
-
-
+//        Api.getInstance().login(requestPhone, passwordEt.getText().toString())
+//                .compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
+//                .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
+//                               @Override
+//                               public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
+//                                   if (result.isSuccess()) {
+//                                       //umeng统计
+//                                       Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
+//
+//                                       //登录之后，将用户信息注册到本地
+//                                       UserHelper.getInstance(mActivity).update(result.getData(), requestPhone, mActivity);
+//                                       //保存用户id,缓存
+//                                       SPUtils.setCacheUserId(mActivity, result.getData().getId());
+//
+//
+//                                       mActivity.finish();
+//
+//                                   } else {
+//                                       //umeng统计
+//                                       Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
+//                                       showErrorMsg(result.getMsg());
+//                                   }
+//                               }
+//                           },
+//                        new Consumer<Throwable>() {
+//                            @Override
+//                            public void accept(@NonNull Throwable throwable) throws Exception {
+//                                showErrorMsg("网络错误");
+//                            }
+//                        });
 
     }
 

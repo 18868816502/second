@@ -6,6 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
+    <style name="XiaoNengAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#37a1f2</item>
+        <item name="colorPrimaryDark">#37a1f2</item>
+        <item name="colorAccent">#37a1f2</item>
         <item name="android:windowBackground">@android:color/transparent</item>
 
         <item name="android:windowIsTranslucent">true</item>

@@ -20,6 +20,7 @@ import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;
 import com.beihui.market.ui.presenter.MyLoanBillPresenter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.DebtStateProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -49,6 +50,8 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
     MyLoanBillPresenter presenter;
 
     private MyLoanBillDebtAdapter adapter;
+
+
 
     @Override
     public void onDestroyView() {
@@ -100,8 +103,15 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void initDatas() {
+        ((MyLoanBillPresenter) presenter).creditCardCurPage = 1;
+        int size = ((MyLoanBillPresenter) presenter).loanBillList.size();
+        if (size > 0) {
+            ((MyLoanBillPresenter) presenter).loanBillList.clear();
+        }
         presenter.fetchLoanBill(billType);
     }
+
+
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
@@ -147,6 +157,9 @@ public class MyCreditCardDebtListFragment extends BaseComponentFragment implemen
 
     @Override
     public void navigateBillDebtDetail(LoanBill.Row bill) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         CreditCardDebtDetailActivity.putExtra(intent, bill.getRecordId(), bill.getBillId(), bill.getCardSource() == 3, bill.getBankName(), bill.getCardNums(), bill.getLogo());
         startActivityForResult(intent, 1);

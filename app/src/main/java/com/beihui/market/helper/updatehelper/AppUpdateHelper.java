@@ -17,8 +17,10 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.helper.FileProviderHelper;

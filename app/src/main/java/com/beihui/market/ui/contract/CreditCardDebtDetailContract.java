@@ -41,7 +41,7 @@ public interface CreditCardDebtDetailContract {
         /**
          * 点击设为已还
          */
-        void clickSetStatus();
+        void clickSetStatus(int status);
 
         /**
          * 点击菜单
@@ -74,6 +74,12 @@ public interface CreditCardDebtDetailContract {
          * @param debtDetail 账单详情
          */
         void showDebtDetailInfo(CreditCardDebtDetail debtDetail);
+
+        /**
+         * 显示账单详情信息
+         *
+         */
+        void showStatus(int status);
 
         /**
          * 显示月份账单列表

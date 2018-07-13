@@ -135,7 +135,7 @@ public class SPUtils {
 
     public static String getValue(Context context, String key) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        return sp.getString(key, null);
+        return sp.getString(key, "");
     }
 
     public static void setShowMainAddBanner(Context context, boolean isShow) {

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--流式布局-->
+    <declare-styleable name="TagFlowLayout">
+        <attr name="max_select" format="integer"></attr>
+        <attr name="tag_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
+
     <!--PagerTab 标签 —— xhb -->
     <declare-styleable name="PagerSlidingTab">
         <attr name="indicatorColor" format="color" />
@@ -13,6 +23,30 @@
         <attr name="tabBackground1" format="reference" />
         <attr name="shouldExpand" format="boolean" />
         <attr name="pst_textAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <!--LinChartView 柱形图的属性-->
+    <declare-styleable name="MultiGroupHistogramView">
+        <attr name="coordinateAxisWidth" format="dimension" />
+        <attr name="coordinateAxisColor" format="color" />
+        <attr name="groupNameTextColor" format="color" />
+        <attr name="groupNameTextSize" format="dimension" />
+        <attr name="groupInterval" format="dimension" />
+        <attr name="histogramInterval" format="dimension" />
+        <attr name="histogramValueTextColor" format="color" />
+        <attr name="histogramValueTextSize" format="dimension" />
+        <attr name="histogramHistogramWidth" format="dimension" />
+        <attr name="histogramPaddingStart" format="dimension" />
+        <attr name="histogramPaddingEnd" format="dimension" />
+        <attr name="chartPaddingTop" format="dimension" />
+        <attr name="distanceFormGroupNameToAxis" format="dimension" />
+        <attr name="distanceFromValueToHistogram" format="dimension" />
+        <!--图表数值小数点位数-->
+        <attr name="histogramValueDecimalCount">
+            <enum name="ZERO" value="0" />
+            <enum name="ONE" value="1" />
+            <enum name="TWO" value="2" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="CircularProgressBar">

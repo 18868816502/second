@@ -1,24 +1,30 @@
-package com.beihui.market.ui.fragment;
+package com.beihui.market.ui.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseTabFragment;
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
@@ -30,6 +36,7 @@ import com.beihui.market.ui.activity.MessageCenterActivity;
 import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
+import com.beihui.market.ui.activity.SysMsgActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
@@ -38,6 +45,7 @@ import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.dialog.WeChatPublicDialog;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
@@ -49,6 +57,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -60,7 +69,7 @@ import cn.xiaoneng.uiapi.Ntalker;
  * @author xhb
  * 我的 模块 Fragment
  */
-public class TabMineFragment extends BaseTabFragment implements TabMineContract.View {
+public class TabMineActivity extends BaseComponentActivity implements TabMineContract.View {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -68,6 +77,8 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     CircleImageView avatarIv;
     @BindView(R.id.user_name)
     TextView userNameTv;
+    @BindView(R.id.tv_user_info)
+    TextView userInfo;
     @BindView(R.id.login)
     TextView loginTv;
     @BindView(R.id.mine_product_container)
@@ -84,25 +95,18 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
     private String pendingPhone;
 
-    public static TabMineFragment newInstance() {
-        return new TabMineFragment();
-    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //umeng统计
         Statistic.onEvent(Events.ENTER_MINE_PAGE);
-
-        EventBus.getDefault().register(this);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
+
 
     @Override
     public void onResume() {
@@ -110,27 +114,29 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         presenter.onStart();
     }
 
+
     @Override
-    public void onDestroyView() {
+    public void onDestroy() {
         presenter.onDestroy();
-        EventBus.getDefault().unregister(this);
-        super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        super.onDestroy();
     }
 
     @Override
-    public int getLayoutResId() {
+    public int getLayoutId() {
         return R.layout.fragment_tab_mine;
     }
 
     @Override
     public void configViews() {
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.white).statusBarDarkFont(true).init();;
-        activity.setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+        setupToolbar(toolbar);
 
-        wechatSurpriseView.setVisibility(SPUtils.getWechatSurpriseClicked(getContext()) ? View.GONE : View.VISIBLE);
+        SlidePanelHelper.attach(this);
+
+        userInfo.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -150,8 +156,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Subscribe
     public void onLogin(UserLoginEvent event) {
         //登录小能客服
-        UserHelper.Profile profile = UserHelper.getInstance(getContext()).getProfile();
+        UserHelper.Profile profile = UserHelper.getInstance(this).getProfile();
         Ntalker.getBaseInstance().login(profile.getId(), profile.getUserName());
+
+        userInfo.setVisibility(View.VISIBLE);
     }
 
     @Subscribe
@@ -170,32 +178,51 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
         pendingPhone = event.pendingPhone;
         if (event.pendingAction != null && event.pendingAction.equals(UserLogoutEvent.ACTION_START_LOGIN)
-                && getView() != null) {
-            getView().postDelayed(new Runnable() {
+                && toolbar != null) {
+            toolbar.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     navigateLogin();
                 }
             }, 100);
         }
+
+        userInfo.setVisibility(View.GONE);
+        avatarIv.setImageDrawable(getResources().getDrawable(R.mipmap.mine_head));
+        userNameTv.setText("未登录");
     }
 
     @OnClick({R.id.contact_kefu, R.id.mine_msg,
-            R.id.mine_bill, R.id.login, R.id.avatar, R.id.user_name,
+            R.id.mine_bill, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
             R.id.my_collection, R.id.reward_points, R.id.invite_friend,
-            R.id.helper_feedback, R.id.settings, R.id.wechat_public})
+            R.id.helper_feedback, R.id.star_me, R.id.wechat_public})
     public void onViewClicked(View view) {
+        if (UserHelper.getInstance(this).getProfile() == null || UserHelper.getInstance(this).getProfile().getId() == null) {
+            UserAuthorizationActivity.launch(this, null);
+            return;
+        }
         switch (view.getId()) {
             //我的账单
             case R.id.mine_bill:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MY);
+
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickMineBill();
                 }
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYBILL);
                 break;
             case R.id.contact_kefu:
+
+
                 if (!FastClickUtils.isFastClick()) {
                     //umeng统计
                     Statistic.onEvent(Events.CLICK_CONTACT_KEFU);
+
+                    //pv，uv统计
+//                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYCUSTOMERSERVICE);
 
                     presenter.clickContactKefu();
                 }
@@ -222,7 +249,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 }
                 break;
 
-            case R.id.user_name:
+            case R.id.ll_navigate_user_profile:
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickUserProfile();
                 }
@@ -245,6 +272,9 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
 
 
             case R.id.invite_friend:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYINVITEFRIEND);
+
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
 
@@ -254,8 +284,14 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 break;
 
             case R.id.helper_feedback:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYHELPFEEDBACK);
+
                 //umeng统计
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HELPFEEDBACKQUESTION);
 
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickHelpAndFeedback();
@@ -269,27 +305,59 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_WECHAT);
 
-                new WeChatPublicDialog().show(getChildFragmentManager(), WeChatPublicDialog.class.getSimpleName());
-                if (wechatSurpriseView.getVisibility() != View.GONE) {
-                    wechatSurpriseView.setVisibility(View.GONE);
-                    SPUtils.setWechatSurpriseClicked(getContext(), true);
-                }
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYFOCUSWECHAT);
+
+
+                new WeChatPublicDialog().show(getSupportFragmentManager(), WeChatPublicDialog.class.getSimpleName());
+//                if (wechatSurpriseView.getVisibility() != View.GONE) {
+//                    wechatSurpriseView.setVisibility(View.GONE);
+//                    SPUtils.setWechatSurpriseClicked(getContext(), true);
+//                }
                 break;
 
             /**
-             * 进入设置页面
+             * 鼓励一下
              */
-            case R.id.settings:
-                //umeng统计
-                Statistic.onEvent(Events.MINE_CLICK_SETTING);
+            case R.id.star_me:
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYENCOURAGEMENT);
 
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickSetting();
+//               String model=android.os.Build.MODEL;
+                //品牌
+                String brand=android.os.Build.BRAND;
+                //制造商
+                String manufacturer=android.os.Build.MANUFACTURER;
+                Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
+                if ("samsung".equals(manufacturer)) {
+                    goToSamsungappsMarket();
+                } else {
+                    try {
+                        Intent toMarket = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationInfo().packageName));
+                        startActivity(toMarket);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
 
             default:
                 break;
+        }
+    }
+
+    /**
+     * https://www.cnblogs.com/qwangxiao/p/8030389.html
+     */
+    public void goToSamsungappsMarket(){
+        Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" +getApplicationInfo().packageName);
+        Intent goToMarket = new Intent();
+        goToMarket.setClassName("com.sec.android.app.samsungapps", "com.sec.android.app.samsungapps.Main");
+        goToMarket.setData(uri);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -303,7 +371,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
         loginTv.setVisibility(View.GONE);
         userNameTv.setVisibility(View.VISIBLE);
         if (profile.getHeadPortrait() != null) {
-            Glide.with(getContext())
+            Glide.with(this)
                     .load(profile.getHeadPortrait())
                     .asBitmap()
                     .into(avatarIv);
@@ -334,10 +402,10 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
     @Override
     public void navigateLogin() {
         if (pendingPhone != null) {
-            UserAuthorizationActivity.launch(getActivity(), pendingPhone);
+            UserAuthorizationActivity.launch(this, pendingPhone);
             pendingPhone = null;
         } else {
-            UserAuthorizationActivity.launch(getActivity(), null);
+            UserAuthorizationActivity.launch(this, null);
         }
     }
 
@@ -347,12 +415,19 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      */
     @Override
     public void navigateUserProfile(String userId) {
-        startActivity(new Intent(getActivity(), UserProfileActivity.class));
+        startActivity(new Intent(this, UserProfileActivity.class));
     }
 
+
+    /**
+     * 直接进入系统消息 抛弃公告的选择
+     * @param userId 用户id
+     */
     @Override
     public void navigateMessage(String userId) {
-        startActivity( new Intent(getActivity(), MessageCenterActivity.class));
+//        startActivity( new Intent(getActivity(), MessageCenterActivity.class));
+        Intent intent = new Intent(this, SysMsgActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -361,33 +436,33 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      */
     @Override
     public void navigateMineBill(String userId) {
-        startActivity(new Intent(getActivity(), MyDebtActivity.class));
+        startActivity(new Intent(this, MyDebtActivity.class));
     }
 
     @Override
     public void navigateCollection(String userId) {
-        startActivity(new Intent(getActivity(), CollectionActivity.class));
+        startActivity(new Intent(this, CollectionActivity.class));
     }
 
     @Override
     public void navigateRewardPoints() {
-        startActivity(new Intent(getActivity(), RewardPointActivity.class));
+        startActivity(new Intent(this, RewardPointActivity.class));
     }
 
     @Override
     public void navigateInvitation(String userId) {
-        startActivity(new Intent(getActivity(), InvitationActivity.class));
+        startActivity(new Intent(this, InvitationActivity.class));
     }
 
     @Override
     public void navigateContactKefu(String userId, String userName) {
         //调起聊天窗口
-        Ntalker.getBaseInstance().startChat(getContext(), Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
+        Ntalker.getBaseInstance().startChat(this, Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
     }
 
     @Override
     public void navigateHelpAndFeedback(String userId) {
-        startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
+        startActivity(new Intent(this, HelpAndFeedActivity.class));
     }
 
     /**
@@ -396,7 +471,7 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
      */
     @Override
     public void navigateSetting(String userId) {
-        startActivity(new Intent(getActivity(), SettingsActivity.class));
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     /**
@@ -427,4 +502,6 @@ public class TabMineFragment extends BaseTabFragment implements TabMineContract.
             tvMessageNum.setText(data);
         }
     }
+
+
 }

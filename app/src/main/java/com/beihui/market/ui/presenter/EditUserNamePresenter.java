@@ -49,7 +49,7 @@ public class EditUserNamePresenter extends BaseRxPresenter implements EditUserNa
                                public void accept(@NonNull ResultEntity result) throws Exception {
                                    if (result.isSuccess()) {
                                        mUserHelper.updateUsername(name, mContext);
-                                       mView.showUpdateNameSuccess(result.getMsg());
+                                       mView.showUpdateNameSuccess(result.getMsg(), name);
                                    } else {
                                        mView.showErrorMsg(result.getMsg());
                                    }

@@ -40,6 +40,7 @@ public class FastDebtDetail implements Parcelable {
 
     public String id;
     public String userId;
+    public String logo;
     public String projectName;
     public int repayType;
     public double payableAmount;
@@ -51,6 +52,14 @@ public class FastDebtDetail implements Parcelable {
     public String gmtModify;
     public int remind;
     public int returnedTerm;
+
+    public int cycle;
+    public int cycleType;
+    public String iconId;
+    //图标标识
+    public String tallyId;
+    public int tallyType;
+
     //	到期应还
     public double stayReturnedAmount;
     //到期还款日
@@ -64,14 +73,20 @@ public class FastDebtDetail implements Parcelable {
         id = in.readString();
         userId = in.readString();
         projectName = in.readString();
+        logo = in.readString();
         repayType = in.readInt();
         payableAmount = in.readDouble();
         startDate = in.readString();
+        cycle = in.readInt();
         term = in.readInt();
+        cycleType = in.readInt();
+        tallyType = in.readInt();
         remark = in.readString();
         status = in.readInt();
         gmtCreate = in.readString();
         gmtModify = in.readString();
+        iconId = in.readString();
+        tallyId = in.readString();
         remind = in.readInt();
         returnedTerm = in.readInt();
         stayReturnedAmount = in.readDouble();
@@ -104,14 +119,20 @@ public class FastDebtDetail implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.userId);
         dest.writeString(this.projectName);
+        dest.writeString(this.logo);
         dest.writeInt(this.repayType);
         dest.writeDouble(this.payableAmount);
         dest.writeString(this.startDate);
+        dest.writeInt(this.cycle);
         dest.writeInt(this.term);
+        dest.writeInt(this.cycleType);
+        dest.writeInt(this.tallyType);
         dest.writeString(this.remark);
         dest.writeInt(this.status);
         dest.writeString(this.gmtCreate);
         dest.writeString(this.gmtModify);
+        dest.writeString(this.iconId);
+        dest.writeString(this.tallyId);
         dest.writeInt(this.remind);
         dest.writeInt(this.returnedTerm);
         dest.writeDouble(this.stayReturnedAmount);
@@ -293,7 +314,7 @@ public class FastDebtDetail implements Parcelable {
         public String id;
         public String userId;
         public String recordId;
-        public int termNo;
+        public Integer termNo;
         public String termRepayDate;
         public double termPayableAmount;
         public int status;
@@ -455,13 +476,18 @@ public class FastDebtDetail implements Parcelable {
         private String userId;
         private String recordId;
         private int termNo;
-        private String termRepayDate;
+        public String termRepayDate;
         private double termPayableAmount;
         private int status;
         private String gmtCreate;
         private String gmtModify;
         private double repayedAmount;
         private int returnDay;
+
+        /**
+         * 是否展示还款记录
+         */
+        public boolean isShow = false;
 
         protected DetailListBean(Parcel in) {
             id = in.readString();

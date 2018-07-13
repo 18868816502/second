@@ -209,6 +209,32 @@ public class CommonUtils {
         return pNumber;
     }
 
+    /**
+     * 讲电话号码中间变成*
+     *
+     * @param pNumber
+     * @return
+     */
+    public static String formatTel(String pNumber) {
+        if (!TextUtils.isEmpty(pNumber) && pNumber.length() > 6) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < pNumber.length(); i++) {
+                char c = pNumber.charAt(i);
+                if (i >= 3 && i <= 6) {
+                    sb.append('*');
+                } else if (i == 2 ) {
+                    sb.append(c).append(" ");
+                }else if (i == 7) {
+                    sb.append(" ").append(c);
+                } else {
+                    sb.append(c);
+                }
+            }
+            return sb.toString();
+        }
+        return pNumber;
+    }
+
     public static boolean matchPhone(String text) {
         if (Pattern.compile("^1(3|4|5|7|8)\\d{9}$").matcher(text).matches()) {
             return true;
@@ -590,12 +616,53 @@ public class CommonUtils {
         return str;
     }
 
+    public static String keepWithoutZero(double input) {
+        String str = decimalFormat.format(input);
+        if (str.contains(".0")) {
+            return str.substring(0, str.indexOf(".0"));
+        }
+        if (str.contains(".00")) {
+            return str.substring(0, str.indexOf(".00"));
+        }
+        return str;
+    }
+
     public static String convertInterestRate(double rate) {
         return rateDecimalFormat.format(rate);
     }
 
     public static String convertAmount(double amount) {
         return amountFormat.format(amount);
+    }
+
+    public static String getChaneseNum(int num) {
+        if (num == 0) {
+            return "每月";
+        }  else if (num == 1) {
+            return "每月";
+        } else if (num == 2) {
+            return "每2月";
+        } else if (num == 3) {
+            return "每3月";
+        } else if (num == 4) {
+            return "每4月";
+        } else if (num == 5) {
+            return "每5月";
+        } else if (num == 6) {
+            return "每6月";
+        } else if (num == 7) {
+            return "每7月";
+        } else if (num == 8) {
+            return "每8月";
+        } else if (num == 9) {
+            return "每9月";
+        } else if (num == 10) {
+            return "每10月";
+        } else if (num == 11) {
+            return "每11月";
+        } else {
+            return "每年";
+        }
     }
 
 }

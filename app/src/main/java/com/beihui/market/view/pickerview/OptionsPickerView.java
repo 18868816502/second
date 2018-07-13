@@ -31,6 +31,7 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     private Button btnSubmit, btnCancel; //确定、取消按钮
     private TextView tvTitle;
     private RelativeLayout rv_top_bar;
+    private LinearLayout tabSecord;
 
     private static final String TAG_SUBMIT = "submit";
     private static final String TAG_CANCEL = "cancel";
@@ -423,6 +424,7 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
             //顶部标题
             tvTitle = (TextView) findViewById(R.id.tvTitle);
             rv_top_bar = (RelativeLayout) findViewById(R.id.rv_topbar);
+            tabSecord = (LinearLayout) findViewById(R.id.ll_tab_secord);
 
             //确定和取消按钮
             btnSubmit = (Button) findViewById(R.id.btnSubmit);
@@ -511,10 +513,16 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     }
 
     public void setPicker(List<T> optionsItems) {
+        if (tabSecord != null) {
+            tabSecord.setVisibility(View.GONE);
+        }
         this.setPicker(optionsItems, null, null);
     }
 
     public void setPicker(List<T> options1Items, List<List<T>> options2Items) {
+        if (tabSecord != null) {
+            tabSecord.setVisibility(View.VISIBLE);
+        }
         this.setPicker(options1Items, options2Items, null);
     }
 

@@ -55,11 +55,6 @@
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/x_load_state_tv_more_view" />
 
-            <!--账单未还总额  账单已还总额-->
-            <include
-                android:visibility="gone"
-                android:id="@+id/include_tab_account_foot_view"
-                layout="@layout/xlayout_tab_account_foot_view"/>
 
         </RelativeLayout>
 

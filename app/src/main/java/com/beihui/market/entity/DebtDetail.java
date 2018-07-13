@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DebtDetail implements Parcelable {
@@ -18,7 +19,7 @@ public class DebtDetail implements Parcelable {
     private int repayType;
     private double capital;
     private double interest;
-    private String channelId;
+
     private String channelName;
     private String projectName;
     private String termId;
@@ -26,12 +27,70 @@ public class DebtDetail implements Parcelable {
     private int termType;
     private double rate;
     private String startDate;
-    private String remark;
+
     private String logo;
     private int status;
     private int termStatus;
     private int redmineDay;
     private String firstRepayDate;
+
+    public String iconId;
+    public int cycle;
+    public int tallyType;
+    //图标标识
+    public String channelId;
+
+    private String remark;
+
+    public String getIconId() {
+        return iconId;
+    }
+
+    public void setIconId(String iconId) {
+        this.iconId = iconId;
+    }
+
+    public int getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(int cycle) {
+        this.cycle = cycle;
+    }
+
+    public int getTallyType() {
+        return tallyType;
+    }
+
+    public void setTallyType(int tallyType) {
+        this.tallyType = tallyType;
+    }
+
+
+
+    public int getReturnedTerm() {
+        return returnedTerm;
+    }
+
+    public void setReturnedTerm(int returnedTerm) {
+        this.returnedTerm = returnedTerm;
+    }
+
+    public int getReturnDay() {
+        return returnDay;
+    }
+
+    public void setReturnDay(int returnDay) {
+        this.returnDay = returnDay;
+    }
+
+    public int getTermNum() {
+        return termNum;
+    }
+
+    public void setTermNum(int termNum) {
+        this.termNum = termNum;
+    }
 
     /**
      * 已还期数
@@ -47,7 +106,7 @@ public class DebtDetail implements Parcelable {
      */
     public int termNum;
 
-    private List<RepayPlanBean> repayPlan;
+    public List<RepayPlanBean> detailList = new ArrayList<>();
 
     public DebtDetialShowBillBean showBill;
 
@@ -236,19 +295,25 @@ public class DebtDetail implements Parcelable {
     }
 
     public List<RepayPlanBean> getRepayPlan() {
-        return repayPlan;
+        return detailList;
     }
 
     public void setRepayPlan(List<RepayPlanBean> repayPlan) {
-        this.repayPlan = repayPlan;
+        this.detailList = repayPlan;
     }
 
     public static class RepayPlanBean implements Parcelable {
         private String id;
         private int termNo;
-        private String termRepayDate;
+        public String termRepayDate;
         private double termPayableAmount;
         private int status;
+
+        /**
+         * 是否展示还款记录
+         */
+        public boolean isShow = false;
+
 
         public String getId() {
             return id;
@@ -360,9 +425,12 @@ public class DebtDetail implements Parcelable {
         dest.writeString(this.logo);
         dest.writeInt(this.status);
         dest.writeInt(this.termStatus);
+        dest.writeInt(this.cycle);
+        dest.writeInt(this.tallyType);
         dest.writeInt(this.redmineDay);
         dest.writeString(this.firstRepayDate);
-        dest.writeTypedList(this.repayPlan);
+        dest.writeString(this.iconId);
+        dest.writeTypedList(this.detailList);
     }
 
     protected DebtDetail(Parcel in) {
@@ -387,9 +455,12 @@ public class DebtDetail implements Parcelable {
         this.logo = in.readString();
         this.status = in.readInt();
         this.termStatus = in.readInt();
+        this.cycle = in.readInt();
+        this.tallyType = in.readInt();
         this.redmineDay = in.readInt();
         this.firstRepayDate = in.readString();
-        this.repayPlan = in.createTypedArrayList(RepayPlanBean.CREATOR);
+        this.iconId = in.readString();
+        this.detailList = in.createTypedArrayList(RepayPlanBean.CREATOR);
     }
 
     public static final Creator<DebtDetail> CREATOR = new Creator<DebtDetail>() {
@@ -410,7 +481,7 @@ public class DebtDetail implements Parcelable {
         // 	账单Id
         public String recordId;
         // 期号
-        public int termNo;
+        public Integer termNo;
         // 当期还款日
         public String termRepayDate;
         // 	当期应还

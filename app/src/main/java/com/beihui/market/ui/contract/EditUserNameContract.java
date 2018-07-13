@@ -16,7 +16,7 @@ public interface EditUserNameContract {
 
         void showUserName(String name);
 
-        void showUpdateNameSuccess(String msg);
+        void showUpdateNameSuccess(String msg, String nickName);
     }
 
 }

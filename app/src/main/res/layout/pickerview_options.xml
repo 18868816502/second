@@ -11,6 +11,37 @@
         android:layout_height="@dimen/pickerview_topbar_height" />
 
     <LinearLayout
+        android:id="@+id/ll_tab_secord"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:paddingBottom="14dp"
+            android:paddingTop="14dp"
+            android:gravity="center"
+            android:text="还款周期"
+            android:textColor="#ff808080"
+            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:paddingBottom="14dp"
+            android:paddingTop="14dp"
+            android:gravity="center"
+            android:text="还款期数"
+            android:textColor="#ff808080"
+            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/optionspicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

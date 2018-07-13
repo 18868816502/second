@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -24,14 +25,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
+import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
+import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
@@ -39,15 +44,18 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
+import com.beihui.market.ui.fragment.BillLoanAnalysisFragment;
 import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.fragment.TabMineFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.BottomNavigationBar;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -70,6 +78,11 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 public class MainActivity extends BaseComponentActivity {
 
@@ -81,13 +94,16 @@ public class MainActivity extends BaseComponentActivity {
     BottomNavigationBar navigationBar;
 
     //账单图标
+    @BindView(R.id.tab_account)
+    RelativeLayout tabAccountRoot;
+    //账单图标
     @BindView(R.id.tab_account_icon)
     ImageView tabAccountIcon;
     //账单
     @BindView(R.id.tab_account_text)
     TextView tabAccountText;
 
-
+    //发现
     @BindView(R.id.tab_news)
     RelativeLayout tabNewsRoot;
     @BindView(R.id.tab_news_icon)
@@ -95,10 +111,16 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_news_text)
     TextView tabNewsText;
 
-    @BindView(R.id.tab_mine_icon)
-    ImageView tabMineIcon;
-    @BindView(R.id.tab_mine_text)
-    TextView tabMineText;
+    //报表
+    @BindView(R.id.tab_forms_icon)
+    ImageView tabFomrsIcon;
+    @BindView(R.id.tab_forms_text)
+    TextView tabFormsText;
+
+
+    @BindView(R.id.iv_bill_add_buttom)
+    ImageView mAddBill;
+
 
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
@@ -115,6 +137,14 @@ public class MainActivity extends BaseComponentActivity {
     };
 
     /**
+     * 最新公告ID
+     */
+    private String mNoticeId ="";
+
+    //高亮
+    private HighLight infoHighLight;
+
+    /**
      * 重新进入MainActivity切换的对应的Fragment
      */
     @Override
@@ -123,19 +153,12 @@ public class MainActivity extends BaseComponentActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.getBoolean("account")) {
-//                navigationBar.select(R.id.tab_account);
-
                 navigationBar.select(R.id.tab_account);
-            }
-
-            if (extras.getBoolean("mine")) {
-//                navigationBar.select(R.id.tab_mine);
-                navigationBar.select(R.id.tab_mine);
+                if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
+                    ToastUtils.showToast(MainActivity.this, extras.getString("moxieMsg"));
+                }
             }
         }
-//        if (getIntent().getBooleanExtra("home", false)) {
-//            navigationBar.select(R.id.tab_home);
-//        }
     }
 
     /**
@@ -144,7 +167,6 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         if (SPUtils.getShowMainAddBanner(this)) {
             SPUtils.setShowMainAddBanner(this, false);
 
@@ -172,6 +194,11 @@ public class MainActivity extends BaseComponentActivity {
                                 }
                             });
         }
+
+        /**
+         * 显示高亮
+         */
+        showGuide();
     }
 
     private void showAdDialog(final AdBanner ad) {
@@ -225,6 +252,45 @@ public class MainActivity extends BaseComponentActivity {
     }
 
 
+    /**
+     * 引导图
+     */
+    public void showGuide() {
+        if ("showGuideMainActivity".equals(SPUtils.getValue(MainActivity.this, "showGuideMainActivity"))) {
+            return;
+        }
+        infoHighLight = new HighLight(this)
+                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                    @Override
+                    public void onLayouted() {
+                        infoHighLight.autoRemove(false)
+                                .intercept(true)
+                                .enableNext()
+                                .addHighLight(R.id.tv_bill_add_buttom, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
+                                    @Override
+                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                        marginInfo.bottomMargin = rectF.height()+  Px2DpUtils.dp2px(MainActivity.this, 10);
+                                        marginInfo.rightMargin = rectF.width() / 2 +  Px2DpUtils.dp2px(MainActivity.this, 15);
+                                    }
+                                }, new CircleLightShape()).setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                            @Override
+                            public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                if (targetView.getId() == R.id.tv_bill_add_buttom) {
+
+                                    infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            infoHighLight.remove();
+                                            SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
+                                        }
+                                    });
+                                }
+                            }
+                        }).show();
+                    }
+                });
+    }
 
     @Override
     protected void onDestroy() {
@@ -240,42 +306,73 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabAccountIcon, tabNewsIcon, tabMineIcon};
-        textView = new TextView[]{ tabAccountText, tabNewsText, tabMineText};
+        iconView = new ImageView[]{tabFomrsIcon, tabAccountIcon, tabNewsIcon};
+        textView = new TextView[]{ tabFormsText, tabAccountText, tabNewsText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
+                if (selectedId == R.id.tab_forms_root) {
+                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
+//                        UserAuthorizationActivity.launch(MainActivity.this, null);
+
+                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
+                        startActivity(intent);
+                        navigationBar.select(selectedFragmentId);
+                        return;
+                    }
+                }
                 //点击音效
                 SoundUtils.getInstance().playTab();
                 if (selectedId != selectedFragmentId ) {
                     selectTab(selectedId);
                 }
             }
-
         });
-
-        navigationBar.select(R.id.tab_account);
         selectTab(R.id.tab_account);
-
-        /**
-         * 请求底部导航栏图标 文字 字体颜色
-         */
-        queryBottomImage();
     }
 
     @Override
     public void initDatas() {
         checkPermission();
         updateHelper.checkUpdate(this);
+        /**
+         * 请求底部导航栏图标 文字 字体颜色
+         */
+        queryBottomImage();
+
+
+        /**
+         * 添加账单
+         */
+        mAddBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!FastClickUtils.isFastClick()) {
+                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
+//                    UserAuthorizationActivity.launch(MainActivity.this, null);
+                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, AccountFlowActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     //空事件
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -314,30 +411,38 @@ public class MainActivity extends BaseComponentActivity {
      * 三大模块
      */
     public Fragment tabHome;
+    public Fragment tabForm;
     public Fragment tabFind;
-    public Fragment tabMine;
 
     private void selectTab(int id) {
         selectedFragmentId = id;
-
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (tabHome == null) {
-            tabHome = TabAccountFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabHome);
+        if (tabForm != null) {
+            ft.hide(tabForm);
         }
-        ft.hide(tabHome);
-        if (tabFind == null) {
-            tabFind = TabNewsWebViewFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabFind);
+        if (tabHome != null) {
+            ft.hide(tabHome);
         }
-        ft.hide(tabFind);
-        if (tabMine == null) {
-            tabMine = TabMineFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabMine);
+        if (tabFind != null) {
+            ft.hide(tabFind);
         }
-        ft.hide(tabMine);
         switch (id) {
+            //报表
+            case R.id.tab_forms_root:
+                if (tabForm == null) {
+                    tabForm = BillLoanAnalysisFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabForm);
+                }
+                ft.show(tabForm);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+
+                mAddBill.setVisibility(View.GONE);
+                tabAccountText.setVisibility(View.VISIBLE);
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
+                break;
             //账单
             case R.id.tab_account:
                 if (tabHome == null) {
@@ -345,6 +450,13 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
+                ImmersionBar.with(this).statusBarDarkFont(false).init();
+
+                mAddBill.setVisibility(View.VISIBLE);
+                tabAccountText.setVisibility(View.GONE);
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 break;
             //发现
             case R.id.tab_news:
@@ -353,14 +465,13 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabFind);
                 }
                 ft.show(tabFind);
-                break;
-            //我的
-            case R.id.tab_mine:
-                if (tabMine == null) {
-                    tabMine = TabMineFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabMine);
-                }
-                ft.show(tabMine);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+
+                mAddBill.setVisibility(View.GONE);
+                tabAccountText.setVisibility(View.VISIBLE);
+
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 break;
         }
         ft.commit();
@@ -404,13 +515,30 @@ public class MainActivity extends BaseComponentActivity {
 
     private void queryBottomImage() {
         Api.getInstance().queryBottomImage()
-                .compose(RxUtil.<ResultEntity<List<TabImage>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<TabImage>>>() {
+                .compose(RxUtil.<ResultEntity<TabImageBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<TabImageBean>>() {
                                @Override
-                               public void accept(ResultEntity<List<TabImage>> result) throws Exception {
+                               public void accept(ResultEntity<TabImageBean> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           updateBottomSelector(result.getData());
+                                       if (result.getData() != null) {
+                                           /**
+                                         * 审核 1-资讯页，2-借贷页
+                                         */
+                                           if (result.getData().audit == 1) {
+                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
+                                               EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
+
+                                           } else if (result.getData().audit == 2) {
+                                               NetConstants.H5_FIND_WEVVIEW_DETAIL  = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
+                                               EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
+                                           }
+                                           if (result.getData().bottomList.size() > 0) {
+                                               updateBottomSelector(result.getData().bottomList);
+                                           } else {
+                                               navigationBar.select(R.id.tab_account);
+                                           }
+                                       } else {
+                                           navigationBar.select(R.id.tab_account);
                                        }
                                    }
                                }
@@ -422,6 +550,8 @@ public class MainActivity extends BaseComponentActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        navigationBar.select(R.id.tab_account);
+
                                         try {
                                             throw throwable;
                                         } catch (Throwable throwable1) {
@@ -457,6 +587,7 @@ public class MainActivity extends BaseComponentActivity {
         }
 
         final OkHttpClient client = new OkHttpClient();
+        boolean isShowTabAccount = true;
         for (int i = 0; i < list.size(); ++i) {
             TabImage tabImage = list.get(i);
             /**
@@ -465,15 +596,15 @@ public class MainActivity extends BaseComponentActivity {
              */
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
                 if (tabImage.getPosition() == 1) {
-                    navigationBar.select(R.id.tab_account);
+                    navigationBar.select(R.id.tab_forms_root);
+                    isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 2) {
-                    navigationBar.select(R.id.tab_news);
+                    navigationBar.select(R.id.tab_account);
+                    isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 3) {
-                    navigationBar.select(R.id.tab_mine);
+                    navigationBar.select(R.id.tab_news);
+                    isShowTabAccount = false;
                 }
-            }
-            if (tabImage.getPosition() == 2) {
-                EventBus.getDefault().post(new TabNewsWebViewFragmentTitleEvent(tabImage.getName()));
             }
 
             final int index = tabImage.getPosition() - 1;
@@ -544,6 +675,13 @@ public class MainActivity extends BaseComponentActivity {
                                     }
                                 });
             }
+        }
+        /**
+         * @author xhb
+         * @desc 都没有选择那就选择首页
+         */
+        if (isShowTabAccount) {
+            navigationBar.select(R.id.tab_account);
         }
     }
 

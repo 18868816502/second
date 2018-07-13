@@ -20,6 +20,7 @@ import com.beihui.market.ui.contract.AllDebtContract;
 import com.beihui.market.ui.presenter.AllDebtPresenter;
 import com.beihui.market.ui.rvdecoration.AllDebtItemDeco;
 import com.beihui.market.ui.rvdecoration.AllDebtStickyHeaderItemDeco;
+import com.beihui.market.util.FastClickUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
@@ -168,6 +169,9 @@ public class AllDebtFragment extends BaseComponentFragment implements AllDebtCon
      */
     @Override
     public void navigateDebtDetail(AllDebt.Row debt) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", debt.getId());
         startActivityForResult(intent, 1);

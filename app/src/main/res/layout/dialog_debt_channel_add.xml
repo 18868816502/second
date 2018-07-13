@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="取消"
-            android:textColor="#007aff"
+            android:textColor="@color/black_2"
             android:textSize="17sp" />
 
         <View

@@ -21,10 +21,10 @@ import static android.text.TextUtils.isEmpty;
 public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseViewHolder> {
 
     private int billType;
-    private List<LoanBill.Row> dataSet = new ArrayList<>();
+    public List<LoanBill.Row> dataSet = new ArrayList<>();
 
     private int colorPaid = Color.parseColor("#424251");
-    private int colorUnpaid = Color.parseColor("#ff395e");
+    private int colorUnpaid = Color.parseColor("#909298");
 
     public MyLoanBillDebtAdapter(int layoutResId, int billType) {
         super(layoutResId);
@@ -55,16 +55,43 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
 
     private void bindLoanDebt(BaseViewHolder helper, LoanBill.Row item) {
         //渠道logo
-        if (!isEmpty(item.getLogo())) {
+        //账单类型 1-网贷 2-信用卡 3-快捷记账
+        if (billType == 1) {
+            //网贷账单
+            Glide.with(helper.itemView.getContext())
+                    .load(item.getLogo())
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.bill_internetbank_icon)
+                    .into((ImageView) helper.getView(R.id.channel_logo));
+        } else if (billType == 3){
+            //快捷记账
+            Glide.with(helper.itemView.getContext())
+                    .load(item.getLogo())
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.mine_mail_icon)
+                    .into((ImageView) helper.getView(R.id.channel_logo));
+        } else {
+            //信用卡账单
             Glide.with(helper.itemView.getContext())
                     .load(item.getLogo())
                     .asBitmap()
                     .centerCrop()
                     .placeholder(R.drawable.mine_bank_default_icon)
                     .into((ImageView) helper.getView(R.id.channel_logo));
-        } else {
-            ((ImageView) helper.getView(R.id.channel_logo)).setImageResource(R.drawable.mine_bank_default_icon);
         }
+
+//        if (!isEmpty(item.getLogo())) {
+//            Glide.with(helper.itemView.getContext())
+//                    .load(item.getLogo())
+//                    .asBitmap()
+//                    .centerCrop()
+//                    .placeholder(R.drawable.mine_mail_icon)
+//                    .into((ImageView) helper.getView(R.id.channel_logo));
+//        } else {
+//            ((ImageView) helper.getView(R.id.channel_logo)).setImageResource(R.drawable.mine_bank_default_icon);
+//        }
         //渠道名称 如果是快捷记账则为账单名称
         if (billType == 1) {
             if (!isEmpty(item.getChannelName())) {
@@ -85,16 +112,16 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         switch (item.getStatus()) {
             case 1://待还
                 helper.setTextColor(R.id.status, colorUnpaid);
-                helper.setText(R.id.status, "待还款");
+                helper.setText(R.id.status, "未还款");
                 break;
             case 2://已还
                 helper.setTextColor(R.id.status, colorPaid);
                 helper.setText(R.id.status, "已还清");
                 break;
-            case 3://逾期
-                helper.setTextColor(R.id.status, colorUnpaid);
-                helper.setText(R.id.status, "待还款");
-                break;
+//            case 3://逾期
+//                helper.setTextColor(R.id.status, colorUnpaid);
+//                helper.setText(R.id.status, "逾期");
+//                break;
             default:
                 helper.setText(R.id.status, "");
         }
@@ -155,4 +182,5 @@ public class MyLoanBillDebtAdapter extends BaseQuickAdapter<LoanBill.Row, BaseVi
         setNewData(dataSet);
         disableLoadMoreIfNotFullPage();
     }
+
 }

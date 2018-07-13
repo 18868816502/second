@@ -4,9 +4,9 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/confirm"
+        android:id="@+id/iv_bill_guide_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:src="@drawable/bill_guide_confirm" />
+        android:src="@drawable/bill_guide2_icon" />
+
 </FrameLayout>

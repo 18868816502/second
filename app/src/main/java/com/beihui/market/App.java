@@ -1,9 +1,12 @@
 package com.beihui.market;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.beihui.market.base.Constant;
 import com.beihui.market.helper.ActivityTracker;
@@ -15,6 +18,7 @@ import com.beihui.market.injection.module.ApiModule;
 import com.beihui.market.injection.module.AppModule;
 import com.beihui.market.umeng.Umeng;
 import com.beihui.market.util.SPUtils;
+import com.moxie.client.manager.MoxieSDK;
 import com.umeng.analytics.AnalyticsConfig;
 
 import cn.xiaoneng.uiapi.Ntalker;
@@ -23,6 +27,11 @@ public class App extends Application {
 
     private static App sInstance;
     private AppComponent appComponent;
+
+    //窗口
+    public static WindowManager mWindowManager;
+    //屏幕宽度（像素）
+    public static int mWidthPixels;
 
     /**
      * 渠道
@@ -45,6 +54,9 @@ public class App extends Application {
         initComponent();
 
         Umeng.install(this);
+
+        //初始化魔蝎
+        MoxieSDK.init(this);
 
         Ntalker.getBaseInstance().initSDK(this, Constant.XN_SITE_ID, Constant.XN_SITE_KEY);
         //如果用户已登录，则登录小能客服
@@ -78,6 +90,14 @@ public class App extends Application {
         } else {
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
         }
+
+        //获取WindowManager
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        //分辨率
+        DisplayMetrics metric = new DisplayMetrics();
+        mWindowManager.getDefaultDisplay().getMetrics(metric);
+        //屏幕宽度（像素）
+        mWidthPixels = metric.widthPixels;
     }
 
 

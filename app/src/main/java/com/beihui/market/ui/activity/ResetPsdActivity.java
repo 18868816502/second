@@ -5,10 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.ResetPsdNavigationEvent;
 import com.beihui.market.ui.fragment.RequireVerifyCodeFragment;
@@ -27,6 +30,7 @@ import butterknife.BindView;
 public class ResetPsdActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    private String tileName;
 
     @Override
     protected void onDestroy() {
@@ -48,10 +52,21 @@ public class ResetPsdActivity extends BaseComponentActivity {
                 .init();
 
         setupToolbar(toolbar);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.content_container, new RequireVerifyCodeFragment(), RequireVerifyCodeFragment.class.getSimpleName())
-                .commit();
+        if (TextUtils.isEmpty(getIntent().getStringExtra("tileName"))) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.content_container, new RequireVerifyCodeFragment(), RequireVerifyCodeFragment.class.getSimpleName())
+                    .commit();
+        } else {
+            Fragment setPsd = new SetPsdFragment();
+            FragmentTransaction ft = getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.content_container, setPsd, SetPsdFragment.class.getSimpleName());
+            Bundle bundle = new Bundle();
+            bundle.putString("requestPhone", UserHelper.getInstance(this).getProfile().getAccount());
+            setPsd.setArguments(bundle);
+            ft.commit();
+        }
 
         SlidePanelHelper.attach(this);
     }

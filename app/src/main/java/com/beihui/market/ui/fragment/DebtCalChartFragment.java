@@ -21,6 +21,7 @@ import com.beihui.market.ui.contract.DebtCalendarContract;
 import com.beihui.market.ui.presenter.DebtCalendarPresenter;
 import com.beihui.market.ui.rvdecoration.CalendarDebtItemDeco;
 import com.beihui.market.ui.rvdecoration.CalendarDebtStickyHeaderItemDeco;
+import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.view.chart.DebtDataRender;
 import com.beihui.market.view.pickerview.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -334,6 +335,9 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
 
     @Override
     public void navigateLoanDebtDetail(String id) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), LoanDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
         startActivityForResult(intent, 1);
@@ -341,6 +345,9 @@ public class DebtCalChartFragment extends BaseComponentFragment implements DebtC
 
     @Override
     public void navigateCreditCardDebtDetail(String id, String billId, String logo, String bankName, String cardNum, boolean byHand) {
+        if (FastClickUtils.isFastClick()) {
+            return;
+        }
         Intent intent = new Intent(getContext(), CreditCardDebtDetailActivity.class);
         intent.putExtra("debt_id", id);
         intent.putExtra("bill_id", billId);

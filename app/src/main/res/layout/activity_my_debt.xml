@@ -12,39 +12,54 @@
         android:layout_height="@dimen/tool_bar_height"
         android:background="@android:color/white">
 
-        <TextView
-            android:layout_gravity="center"
-            android:text="我的账单"
-            android:textSize="16sp"
-            android:textColor="@color/black_2"
+        <LinearLayout
+            android:id="@+id/ll_ac_my_debt_tab_root"
+            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/help_feed_bg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_normal_account_flow"
+                android:layout_width="66dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_left"
+                android:gravity="center"
+                android:text="通用"
+                android:textColor="@drawable/x_account_flow_tab_selector" />
+
+            <TextView
+                android:id="@+id/tv_loan_account_flow"
+                android:layout_width="66dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_middle"
+                android:layout_marginLeft="-1dp"
+                android:layout_marginRight="-1dp"
+                android:gravity="center"
+                android:text="网贷"
+                android:textColor="@drawable/x_account_flow_tab_selector" />
+
+            <TextView
+                android:id="@+id/tv_credit_card_flow"
+                android:layout_width="66dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_right"
+                android:gravity="center"
+                android:text="信用卡"
+                android:textColor="@drawable/x_account_flow_tab_selector" />
+
+        </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="7"
+    
+    <View
+        android:background="@color/line"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height">
+        android:layout_height="8dp"/>
 
-
-        <com.beihui.market.view.PagerSlidingTab
-            android:id="@+id/copy_tab_layout"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="50dp"
-            android:background="@color/white" />
-
-        <TextView
-            android:background="@color/white"
-            android:layout_weight="2"
-            android:layout_width="0dp"
-            android:layout_height="50dp"/>
-
-    </LinearLayout>
-
-    <com.beihui.market.view.StillViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

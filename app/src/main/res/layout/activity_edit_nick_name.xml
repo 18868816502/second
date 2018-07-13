@@ -7,42 +7,58 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-        style="@style/ToolBarStyle"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height">
 
         <TextView
-            style="@style/ToolBarTitleTextAppearance.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/edit_nick_name" />
+            android:text="@string/edit_nick_name"
+            android:textColor="@color/black_1"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:text="保存"
+            android:textColor="@color/black_2"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#f8f8f8" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:paddingRight="10dp"
         android:background="@android:color/white">
 
-        <EditText
+        <com.beihui.market.view.ClearEditText
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="center_vertical"
-            android:maxLength="20"
             android:paddingLeft="15dp" />
+
     </FrameLayout>
 
     <TextView
-        android:id="@+id/confirm"
-        style="@style/TextButtonStyle"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/round_sunglow_gray_state_enable"
-        android:enabled="false"
-        android:text="@string/comfirm_change"
-        android:textColor="@color/color_white_brown_state_enable" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="支持输入1~16个字符"
+        android:textColor="@color/black_2"
+        android:textSize="12sp"/>
+
 </LinearLayout>

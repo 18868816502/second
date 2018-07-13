@@ -2,16 +2,19 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
+import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.UserProfileContract;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.RxUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -32,6 +35,8 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
     private UserProfileContract.View mView;
     private Context mContext;
     private UserHelper mUserHelper;
+
+    private AppUpdate appUpdate;
 
     @Inject
     UserProfilePresenter(Api api, UserProfileContract.View view, Context context) {
@@ -75,6 +80,91 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
             addDisposable(dis);
         }
 
+//        Disposable disposable = mApi.queryUpdate()
+//                .compose(RxUtil.<ResultEntity<AppUpdate>>io2main())
+//                .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
+//                               @Override
+//                               public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
+//                                   if (result.isSuccess()) {
+//                                       if (result.getData() != null) {
+//                                           appUpdate = result.getData();
+//                                           String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+//                                           if (version.compareTo(appUpdate.getVersion()) < 0) {
+//                                               mView.showLatestVersion("最新版本"+appUpdate.getVersion());
+//                                           } else {
+//                                               mView.showLatestVersion("已是最新版");
+//                                           }
+//                                       } else {
+//                                           mView.showLatestVersion("已是最新版");
+//                                       }
+//                                   }
+//                               }
+//                           },
+//                        new Consumer<Throwable>() {
+//                            @Override
+//                            public void accept(@NonNull Throwable throwable) throws Exception {
+//                                logError(UserProfilePresenter.this, throwable);
+//                            }
+//                        });
+//        addDisposable(disposable);
+
+    }
+
+    @Override
+    public void logout() {
+        Disposable dis = mApi.logout(mUserHelper.getProfile().getId())
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       mUserHelper.clearUser(mContext);
+                                       mView.showLogoutSuccess();
+
+                                       //umeng统计
+                                       Statistic.logout();
+                                   } else {
+                                       mView.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(UserProfilePresenter.this, throwable);
+                                mView.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void checkVersion() {
+        if (appUpdate != null) {
+            handleAppUpdate(appUpdate);
+        } else {
+            Disposable disposable = mApi.queryUpdate()
+                    .compose(RxUtil.<ResultEntity<AppUpdate>>io2main())
+                    .subscribe(new Consumer<ResultEntity<AppUpdate>>() {
+                                   @Override
+                                   public void accept(@NonNull ResultEntity<AppUpdate> result) throws Exception {
+                                       if (result.isSuccess()) {
+                                           appUpdate = result.getData();
+                                           handleAppUpdate(appUpdate);
+                                       } else {
+                                           mView.showErrorMsg(result.getMsg());
+                                       }
+                                   }
+                               },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    logError(UserProfilePresenter.this, throwable);
+                                    mView.showErrorMsg(generateErrorMsg(throwable));
+                                }
+                            });
+            addDisposable(disposable);
+        }
     }
 
     @Override
@@ -157,5 +247,22 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
                             }
                         });
         addDisposable(dis);
+    }
+
+    private void handleAppUpdate(AppUpdate update) {
+        if (update != null) {
+            try {
+                String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+                if (version.compareTo(update.getVersion()) < 0) {
+                    mView.showUpdate(appUpdate);
+                } else {
+                    mView.showHasBeenLatest("已经是最新版本了");
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mView.showHasBeenLatest("已经是最新版了");
+        }
     }
 }

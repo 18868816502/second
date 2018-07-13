@@ -23,7 +23,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/debt_channel_add_edit_bg"
-        android:hint="请输入账单金额"
+        android:hint="请输入还款金额"
         android:inputType="numberDecimal"
         android:minHeight="30dp"
         android:paddingLeft="5dp"
@@ -46,7 +46,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="取消"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/black_2"
             android:textSize="15sp" />
 
         <View
@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="确认"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#007AFF"
             android:textSize="15sp" />
 
     </LinearLayout>

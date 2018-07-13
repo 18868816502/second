@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/sys_msg" />
+            android:text="消息" />
     </android.support.v7.widget.Toolbar>
 
     <com.beihui.market.view.StateLayout

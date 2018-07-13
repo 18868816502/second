@@ -1,8 +1,11 @@
 package com.beihui.market.ui.adapter;
 
 
+import android.widget.TextView;
+
 import com.beihui.market.R;
 import com.beihui.market.entity.SysMsg;
+import com.beihui.market.util.OnGlobalLayoutListenerByEllipSize;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -26,9 +29,11 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
             helper.setText(R.id.title, item.getTitle());
         }
         if (item.getExplain() != null) {
+//            helper.getView(R.id.content).getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListenerByEllipSize((TextView) helper.getView(R.id.content),2));
             helper.setText(R.id.content, item.getExplain());
         }
         helper.setText(R.id.date, dateFormat.format(new Date(item.getGmtCreate())));
+        helper.setGone(R.id.iv_system_message_dot, item.getIsRead() == 0); //是否已读，0未读，1已读
     }
 
     public void notifySysMsgChanged(List<SysMsg.Row> list) {

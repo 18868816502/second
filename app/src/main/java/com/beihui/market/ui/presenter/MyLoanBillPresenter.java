@@ -2,6 +2,7 @@ package com.beihui.market.ui.presenter;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -29,11 +30,12 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
     private UserHelper userHelper;
 
     private int loanBillCount;
-    private List<LoanBill.Row> loanBillList = new ArrayList<>();
+    public List<LoanBill.Row> loanBillList = new ArrayList<>();
 
     private boolean canLoadMore;
-    private int curPage = 1;
-    private int fastCurPage = 1;
+    public int loanCurPage = 1;
+    public int fastCurPage = 1;
+    public int creditCardCurPage = 1;
 
     @Inject
     MyLoanBillPresenter(Context context, Api api, MyLoanBillContract.View view) {
@@ -44,16 +46,29 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
 
     @Override
     public void fetchLoanBill(final int billTyp) {
-        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, billTyp == 1 ? curPage : fastCurPage, PAGE_SIZE)
+        final int page;
+        if (billTyp == 3) {
+            //快捷记账
+            page = fastCurPage;
+
+        } else if (billTyp == 1) {
+            //网贷记账
+            page = loanCurPage;
+        } else {
+            page = creditCardCurPage;
+        }
+        Disposable dis = api.fetchMyLoanBill(userHelper.getProfile().getId(), billTyp, page, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<LoanBill>>io2main())
                 .subscribe(new Consumer<ResultEntity<LoanBill>>() {
                                @Override
                                public void accept(ResultEntity<LoanBill> result) throws Exception {
                                    if (result.isSuccess()) {
                                        if (billTyp == 1) {
-                                            curPage++;
-                                       } else {
+                                           loanCurPage++;
+                                       } else if (billTyp == 3){
                                            fastCurPage++;
+                                       } else {
+                                           creditCardCurPage++;
                                        }
                                        int size = 0;
                                        if (result.getData() != null) {
@@ -65,7 +80,7 @@ public class MyLoanBillPresenter extends BaseRxPresenter implements MyLoanBillCo
                                            }
                                        }
                                        canLoadMore = size == PAGE_SIZE;
-                                       view.showLoanBill(Collections.unmodifiableList(loanBillList), canLoadMore);
+                                       view.showLoanBill(loanBillList, canLoadMore);
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }

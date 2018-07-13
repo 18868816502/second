@@ -21,6 +21,9 @@ public class CreditCardDebtBill {
     private String startTime;
     private String endTime;
 
+    //最近的账单 false代表已还清 true有权限设置未还
+    public boolean lastBill = false;
+
     public String getId() {
         return id;
     }

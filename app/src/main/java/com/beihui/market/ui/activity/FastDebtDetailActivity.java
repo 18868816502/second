@@ -27,8 +27,11 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
+import com.beihui.market.event.MyLoanDebtListFragmentEvent;
+import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -43,10 +46,20 @@ import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
+import com.beihui.market.umeng.NewVersionEvents;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.CircleImageView;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,6 +68,7 @@ import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 
 import static android.text.TextUtils.isEmpty;
+import static com.beihui.market.util.CommonUtils.getChaneseNum;
 import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
@@ -80,6 +94,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
     //底部根布局  全部还  还部分
     @BindView(R.id.ll_debt_info_foot_root)
     LinearLayout mFootRoot;
+    @BindView(R.id.ll_debt_info_foot_root_line)
+    View mFootRootLine;
     //全部还
     @BindView(R.id.rv_debt_info_foot_set_pay)
     TextView footSetAllPay;
@@ -92,6 +108,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
     class Header {
         View itemView;
+        @BindView(R.id.logo)
+        CircleImageView logo;
+        @BindView(R.id.channel_name)
+        TextView channelName;
         /**
          * 备注内容 或者 备注按钮
          */
@@ -125,6 +145,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         @BindView(R.id.ll_debt_info_header_card_bg)
         LinearLayout mHeaderCardBg;
 
+        //还款周期
+        @BindView(R.id.debt_detail_pay_term)
+        TextView debtPayTerm;
+
         Header(View itemView) {
             this.itemView = itemView;
             ButterKnife.bind(this, itemView);
@@ -149,6 +173,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      */
     private CreditCardDebtDetailDialog dialog;
 
+    /**
+     * 还款金额
+     */
+    public String money;
 
     @Override
     public int getLayoutId() {
@@ -160,6 +188,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      */
     @Override
     public void initDatas() {
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTD);
+
         Intent intent = getIntent();
         debtId = intent.getStringExtra("debt_id");
         billId = intent.getStringExtra("bill_id");
@@ -171,7 +202,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * 获取账单详情
      */
     private void loadDebtDetail() {
-        Api.getInstance().queryFastDebtBillDetail(UserHelper.getInstance(this).getProfile().getId(),billId, debtId)
+        Api.getInstance().queryFastDebtBillDetail(UserHelper.getInstance(this).getProfile().getId(), billId, debtId)
                 .compose(RxUtil.<ResultEntity<FastDebtDetail>>io2main())
                 .subscribe(new Consumer<ResultEntity<FastDebtDetail>>() {
                                @Override
@@ -193,7 +224,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        setupToolbarBackNavigation(toolbar, R.drawable.x_normal_back);
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -210,14 +241,18 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 new RemarkDialog().setNickNameChangedListener(new RemarkDialog.NickNameChangedListener() {
                     @Override
                     public void onNickNameChanged(final String remark) {
-                        Api.getInstance().updateFastDebtName(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtId, remark)
+
+                        //pv，uv统计
+//                        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDREMARK);
+
+                        Api.getInstance().updateFastDebtBillRemark(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), debtId, remark)
                                 .compose(RxUtil.<ResultEntity>io2main())
                                 .subscribe(new Consumer<ResultEntity>() {
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-                                                       header.remarkContent.setText(remark);
-                                                       fastDebtDetail.setProjectName(remark);
+                                                       header.remarkContent.setText("备注  "+remark);
+                                                       fastDebtDetail.remark = remark;
                                                    } else {
                                                        Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -235,22 +270,51 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         });
 
         //创建适配器
-        adapter = new FastDebtDetailRVAdapter();
+        adapter = new FastDebtDetailRVAdapter(this);
         //添加头布局
         adapter.setHeaderView(header.itemView);
         /**
          * Item的点击事件
          */
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ((TextView)view.findViewById(R.id.th)).setTextColor(Color.RED);
-                FastDebtDetailActivity.this.adapter.setThTextColor(position);
-                showSetStatus(position,  fastDebtDetail.getDetailList().get(position).getStatus());
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
+
+                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDLISTCLICK);
+
+                if (view.getId() == R.id.ll_item_debt_detail_root) {
+                    ((TextView) view.findViewById(R.id.th)).setTextColor(Color.RED);
+                    FastDebtDetailActivity.this.adapter.setThTextColor(fastDebtDetail.getDetailList().get(position).termRepayDate);
+                    showSetStatus(position, fastDebtDetail.getDetailList().get(position).getStatus());
+
+                    money = FormatNumberUtils.FormatNumberFor2(fastDebtDetail.getDetailList().get(position).getTermPayableAmount());
+
+                    /**
+                     * 请求还款记录
+                     */
+                    Api.getInstance().getFastDetailRecord(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(), fastDebtDetail.getDetailList().get(index).getId())
+                            .compose(RxUtil.<ResultEntity<List<DebeDetailRecord>>>io2main())
+                            .subscribe(new Consumer<ResultEntity<List<DebeDetailRecord>>>() {
+                                           @Override
+                                           public void accept(ResultEntity<List<DebeDetailRecord>> result) throws Exception {
+                                               if (result.isSuccess()) {
+                                                   FastDebtDetailActivity.this.adapter.showDebtDetailRecord(position, result.getData());
+                                               } else {
+                                                   Toast.makeText(FastDebtDetailActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                               }
+                                           }
+                                       },
+                                    new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(Throwable throwable) throws Exception {
+                                            Log.e("exception_custom", throwable.getMessage());
+                                        }
+                                    });
+                }
             }
         });
         recyclerView.setAdapter(adapter);
-
         SlidePanelHelper.attach(this);
     }
 
@@ -268,23 +332,17 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * @param fastDebtDetail 借款详情
      */
     public void showDebtDetail(final FastDebtDetail fastDebtDetail) {
-        this.fastDebtDetail = fastDebtDetail;
-        /**
-         * 头卡片 背景颜色
-         */
-        //字体颜色
-        header.debtTermAmount.setTextColor(Color.parseColor("#ffffff"));
-        header.debtPayDay.setTextColor(Color.parseColor("#aaffffff"));
-        header.debtUnpaid.setTextColor(Color.parseColor("#aaffffff"));
-        header.debtTermAmountText.setTextColor(Color.parseColor("#88ffffff"));
-        header.debtPayDayUpText.setTextColor(Color.parseColor("#88ffffff"));
-        header.debtUnpaidText.setTextColor(Color.parseColor("#88ffffff"));
-
-        if (fastDebtDetail.showBill.returnDay > 3 || fastDebtDetail.showBill.status == 2) {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_black_bg));
-        } else {
-            header.mHeaderCardBg.setBackground(getResources().getDrawable(R.drawable.xshape_tab_account_card_red_bg));
+        if (!fastDebtDetail.getId().equals(SPUtils.getValue(this, fastDebtDetail.getId()))) {
+            if (fastDebtDetail.getTerm() > 12) {
+                com.beihui.market.util.ToastUtils.showToast(this, "账单分期大于12期，只显示最近6期");
+                SPUtils.setValue(this, fastDebtDetail.getId());
+            } else if (fastDebtDetail.getTerm() == -1) {
+                com.beihui.market.util.ToastUtils.showToast(this, "循环账单只显示最近2期");
+                SPUtils.setValue(this, fastDebtDetail.getId());
+            }
         }
+
+        this.fastDebtDetail = fastDebtDetail;
 
         /**
          * 标题栏 右上角菜单栏 点击事件
@@ -296,7 +354,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             }
         });
         //全部待还金额
-        header.debtTermAmount.setText(keep2digitsWithoutZero(fastDebtDetail.payableAmount));
+        header.debtTermAmount.setText(FormatNumberUtils.FormatNumberFor2(fastDebtDetail.payableAmount));
         /**
          * 判断是一次性还款还是分期还款
          * termType 1 为一次性还款 2 分期还款
@@ -306,45 +364,88 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             header.debtPayDay.setText("一次性还款");
         } else {
             //还款期数 当前期/总期数
-            header.debtPayDay.setText(fastDebtDetail.showBill.termNo + "/" + fastDebtDetail.getTerm());
+            if (fastDebtDetail.getTerm() == -1) {
+                header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + "循环");
+            } else {
+                header.debtPayDay.setText(fastDebtDetail.returnedTerm + "/" + fastDebtDetail.getTerm());
+            }
         }
 
+        //还款周期
+        if (1 == fastDebtDetail.cycleType || 0 == fastDebtDetail.cycleType) {
+            //日 一次性还款
+            header.debtPayTerm.setText("每月");
+        }
+        if (2 == fastDebtDetail.cycleType) {
+            //月
+            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : CommonUtils.getChaneseNum(fastDebtDetail.cycle));
+        }
+        if (3 == fastDebtDetail.cycleType) {
+            //年
+            header.debtPayTerm.setText( -1 == fastDebtDetail.cycle? "循环" : "每年");
+        }
         //当期还款日
         header.debtUnpaid.setText(fastDebtDetail.showBill.termRepayDate.replace("-","."));
 
         /**
          * 设置当前期号 index
          */
-        showSetStatus(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1, fastDebtDetail.getDetailList().get(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1).getStatus());
-
+//        if (fastDebtDetail.showBill == null || fastDebtDetail.showBill.termNo == null || fastDebtDetail.showBill.termNo > fastDebtDetail.detailList.size()) {
+//            showSetStatus(0, 0);
+//        } else {
+//            showSetStatus(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1, fastDebtDetail.getDetailList().get(fastDebtDetail.showBill.termNo <= 0 ? 0 : fastDebtDetail.showBill.termNo - 1).getStatus());
+//        }
+        showSetStatus(0, fastDebtDetail.getDetailList().get(0).getStatus());
         /**
          * 设置备注
          */
-        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : fastDebtDetail.getProjectName());
+        header.remarkContent.setText(TextUtils.isEmpty(fastDebtDetail.getProjectName())? "备注" : "备注  "+fastDebtDetail.getRemark());
 
         /**
          * 设置标题
          */
-        title.setText("快捷记账");
+        title.setText("账单详情");
+
+        //渠道logo
+        if (!isEmpty(fastDebtDetail.logo)) {
+            Glide.with(this)
+                    .load(fastDebtDetail.logo)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.image_place_holder)
+                    .into(header.logo);
+        } else {
+            header.logo.setImageResource(R.drawable.image_place_holder);
+        }
+
+        //渠道名
+        header.channelName.setText(fastDebtDetail.getProjectName());
 
         /**
          * 当前期是否已还状态
          *  0-无效, 1-待还 2-已还
          */
         //先设置底部状态 1 "待还", 2 "已还", 3，"逾期"
-        if (fastDebtDetail.showBill.status == 1 || fastDebtDetail.showBill.status == 3) {
+        if (fastDebtDetail.detailList.get(0).getStatus() == 1 || fastDebtDetail.detailList.get(0).getStatus() == 3) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
+            money = FormatNumberUtils.FormatNumberFor2(fastDebtDetail.showBill.getTermPayableAmount());
             footSetPartPay.setText("还部分");
             footSetAllPay.setEnabled(true);
-        } else if (fastDebtDetail.showBill.status == 2) {
+        } else if (fastDebtDetail.detailList.get(0).getStatus() == 2) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
-            footSetAllPay.setEnabled(false);
+//            footSetAllPay.setEnabled(false);
+            footSetAllPay.setEnabled(true);
         } else {
             mFootRoot.setVisibility(View.GONE);
+            mFootRootLine.setVisibility(View.GONE);
         }
 
         /**
@@ -353,7 +454,19 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         footSetAllPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSetAllPayDialog(index);
+                if ("已还".equals(footSetAllPay.getText().toString())) {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDALREADYREPAY);
+
+                    //设置为待还
+                    showSetAllPayDialog(index, 1);
+                } else {
+                    //pv，uv统计
+                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDSETALREADYREPAY);
+
+                    //设置为已还
+                    showSetAllPayDialog(index, 2);
+                }
             }
         });
 
@@ -363,6 +476,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         footSetPartPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDREPAYPORTION);
+
                 showSetPartPayDialog(index);
             }
         });
@@ -385,7 +501,16 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         this.index = index;
 
         //先设置底部状态 1 "待还", 2 "已还",
+        if (newStatus == 0) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
+            mFootRoot.setVisibility(View.GONE);
+            mFootRootLine.setVisibility(View.GONE);
+        }
+
         if (newStatus == 1) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
@@ -393,13 +518,17 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             footSetAllPay.setEnabled(true);
         }
         if (newStatus == 2) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.GONE);
             footSetPartPay.setVisibility(View.GONE);
             footSetAllPay.setText("已还");
-            footSetAllPay.setEnabled(false);
+            footSetAllPay.setEnabled(true);
         }
 
         if (newStatus == 3) {
+            mFootRoot.setVisibility(View.VISIBLE);
+            mFootRootLine.setVisibility(View.VISIBLE);
             footSetMiddleLine.setVisibility(View.VISIBLE);
             footSetPartPay.setVisibility(View.VISIBLE);
             footSetAllPay.setText("设为已还");
@@ -416,6 +545,12 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 .attachConfirmListener(new BillEditAmountDialog.EditAmountConfirmListener() {
                     @Override
                     public void onEditAmountConfirm(final double amount) {
+                        Double copyTermPayableAmount = index == -1 ? fastDebtDetail.showBill.termPayableAmount : fastDebtDetail.getDetailList().get(pos).getTermPayableAmount();
+                        if (amount > copyTermPayableAmount) {
+                            Toast.makeText(FastDebtDetailActivity.this, "还款金额不能大于待还金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         final String billId = index == -1 ? fastDebtDetail.showBill.getId() : fastDebtDetail.getDetailList().get(pos).getId();
                         Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(),  billId, debtId, 2,  amount)
                                 .compose(RxUtil.<ResultEntity>io2main())
@@ -429,6 +564,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                             //更新成功后刷新数据
                                                            updateLoanDetail(billId);
                                                        }
+                                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
                                                    } else {
                                                        showErrorMsg(result.getMsg());
                                                    }
@@ -449,7 +585,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * 设为已还
      * @param pos
      */
-    private void showSetAllPayDialog(final int pos) {
+    private void showSetAllPayDialog(final int pos, final int status) {
         final Dialog dialog = new Dialog(FastDebtDetailActivity.this, 0);
         View dialogView = LayoutInflater.from(FastDebtDetailActivity.this).inflate(R.layout.dialog_debt_detail_set_status, null);
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -457,7 +593,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.confirm) {
                     final String billId = index == -1 ? fastDebtDetail.showBill.getId() : fastDebtDetail.getDetailList().get(pos).getId();
-                    Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(),  billId, debtId, 2, null)
+                    Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(FastDebtDetailActivity.this).getProfile().getId(),  billId, debtId, status, null)
                             .compose(RxUtil.<ResultEntity>io2main())
                             .subscribe(new Consumer<ResultEntity>() {
                                            @Override
@@ -465,6 +601,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                if (result.isSuccess()) {
                                                    //更新成功后刷新数据
                                                    updateLoanDetail(billId);
+                                                   EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
                                                } else {
                                                    showErrorMsg(result.getMsg());
                                                }
@@ -482,7 +619,17 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
         };
         dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
         dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        ((TextView) dialogView.findViewById(R.id.title)).setText("修改分期状态为已还");
+        /**
+         * 1 设置为待还
+         * 2 设置为已还
+         */
+        if (status == 1) {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为未还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定本期账单设为未还？");
+        } else {
+            ((TextView) dialogView.findViewById(R.id.title)).setText("设为已还");
+            ((TextView) dialogView.findViewById(R.id.content)).setText("确定还款"+money+"元");
+        }
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
@@ -502,6 +649,10 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * @param remind   是否是提醒状态
      */
     public void showMenu(boolean editable, boolean remind) {
+
+        //pv，uv统计
+//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDTOPRIGHTMORE);
+
         dialog = new CreditCardDebtDetailDialog();
         dialog.attachEditable(editable)
                 .attachListeners(new View.OnClickListener() {
@@ -509,6 +660,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                      public void onClick(View v) {
                                          dialog.dismiss();
                                          if (v.getId() == R.id.edit) {
+                                             //pv，uv统计
+//                                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDEDIT);
+
                                              /**
                                           * 跳转到快捷记账的编辑页面
                                           */
@@ -519,6 +673,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                                      .withPositiveBtn("确认", new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
+                                                             //pv，uv统计
+//                                                             DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDDELETE);
+
                                                              /**
                                                         * 删除账单
                                                         */
@@ -532,6 +689,9 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                //pv，uv统计
+//                                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.CNTDREPAYREMINDERSWITCH);
+
                                 /**
                               * 更新还款提醒
                               */
@@ -546,8 +706,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      * 更新还款提醒
      */
     private void clickUpdateRemind() {
-        final int remind = fastDebtDetail.getRemind() == -1 ? 1 : -1;
-        Api.getInstance().updateRemindStatus(UserHelper.getInstance(this).getProfile().getId(), fastDebtDetail.getId(), null, remind)
+        final int remind = fastDebtDetail.getRemind() == -1 ? 3 : -1;
+        Api.getInstance().updateRemindStatus(UserHelper.getInstance(this).getProfile().getId(), "3", fastDebtDetail.getId(), remind)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
@@ -618,6 +778,8 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                 finish();
             }
         }, 100);
+
+        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
     }
 
     /**
@@ -625,9 +787,23 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
      */
     public void navigateAddDebt() {
         //一次性还款付息，等额本息跳转到新版本界面
-        Intent intent = new Intent(this, FastAddDebtActivity.class);
-        intent.putExtra("fast_debt_detail", fastDebtDetail);
+//        Intent intent = new Intent(this, FastAddDebtActivity.class);
+//        intent.putExtra("fast_debt_detail", fastDebtDetail);
+//        startActivityForResult(intent, REQUEST_CODE_EDIT);
+        Intent intent = new Intent(this, AccountFlowActivity.class);
+        intent.putExtra("debt_detail", fastDebtDetail);
+        intent.putExtra("debt_type", "0");
         startActivityForResult(intent, REQUEST_CODE_EDIT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EDIT && requestCode == 1 && data != null) {
+            debtId = data.getStringExtra("recordId");
+            billId = data.getStringExtra("billId");
+            loadDebtDetail();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -640,10 +816,17 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
          *
          * 如果是一次性还款则关闭页面 如果是分期付款则刷新数据
          */
-        if (fastDebtDetail.getRepayType()== 1) {
-            finish();
-        } else {
-            loadDebtDetail();
-        }
+//        if (fastDebtDetail.getRepayType()== 1) {
+//            finish();
+//        } else {
+//            loadDebtDetail();
+//        }
+        loadDebtDetail();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

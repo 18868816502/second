@@ -18,6 +18,11 @@ import android.widget.TextView;
 
 
 import com.beihui.market.R;
+import com.beihui.market.event.InsideViewPagerBus;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,6 +63,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	public static final int LOADING = 4;
 	// 操作完毕
 	public static final int DONE = 5;
+	public static final int LOAD_SUCCESS = 6;
 	// 当前状态
 	private int state = INIT;
 	// 刷新回调接口
@@ -127,6 +133,16 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	private boolean canPullUp = true;
 
 	private Context mContext;
+
+	@Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+	public void onMainEvent(InsideViewPagerBus bus) {
+		this.isRequestInterceptTouchEvent = bus.isRequestInterceptTouchEvent;
+	}
+
+	/**
+	 * xhb修改代码 为了首页卡片不冲突 viewPager
+	 */
+	public boolean isRequestInterceptTouchEvent = false;
 
 	/**
 	 * 执行自动回滚的handler
@@ -215,6 +231,11 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	 * 初始化布局
      */
 	private void initView(Context context) {
+		if (!EventBus.getDefault().isRegistered(this)) {
+			EventBus.getDefault().register(this);
+		}
+
+
 		mContext = context;
 		timer = new MyTimer(updateHandler);
 		rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation(
@@ -264,7 +285,7 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 					changeState(DONE);
 					hide();
 				}
-			}.sendEmptyMessageDelayed(0, 1000);
+			}.sendEmptyMessageDelayed(0, 0);
 		} else {
 			changeState(DONE);
 			hide();
@@ -290,6 +311,11 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 				loadStateTextView.setText("加载更多");
 				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
 				break;
+			case LOAD_SUCCESS:
+				loadStateImageView.setVisibility(View.INVISIBLE);
+				loadStateTextView.setText("已加载全部");
+				loadStateImageView.setBackgroundResource(R.drawable.x_pull_to_refresh_load_succeed);
+				break;
 			case FAIL:
 			default:
 				// 加载失败
@@ -308,14 +334,14 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 					changeState(DONE);
 					hide();
 				}
-			}.sendEmptyMessageDelayed(0, 1000);
+			}.sendEmptyMessageDelayed(0, 0);
 		} else {
 			changeState(DONE);
 			hide();
 		}
 	}
 
-	public  void changeState(int to) {
+	public void changeState(int to) {
 		state = to;
 		switch (state) {
 		case INIT:
@@ -372,11 +398,28 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	}
 
 	/**
+	 * 不限制上拉或下拉
+	 */
+	public void limitPull() {
+		canPullDown = false;
+		canPullUp = false;
+	}
+
+	/**
 	 * 非 Javadoc 由父控件决定是否分发事件，防止事件冲突
 	 * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)
 	 */
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
+		/**
+		 * xhb修改代码 为了首页卡片不冲突 viewPager
+		 */
+		if (isRequestInterceptTouchEvent) {
+			// 事件分发交给父类
+			super.dispatchTouchEvent(ev);
+			return true;
+		}
+
 		switch (ev.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:
 			downY = ev.getY();
@@ -527,7 +570,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			}
 			requestLayout();
 		}
-
 	}
 
 	/**
@@ -631,7 +673,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 			public void run() {
 				handler.obtainMessage().sendToTarget();
 			}
-
 		}
 	}
 

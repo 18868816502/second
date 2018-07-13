@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/comm_none_android_dialog_bg"
+    android:paddingTop="15dp"
     android:orientation="vertical">
 
     <FrameLayout
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="25dp"
+        android:paddingTop="10dp"
         android:visibility="gone">
 
         <TextView
@@ -28,11 +29,11 @@
     <FrameLayout
         android:id="@+id/message_container"
         android:layout_width="match_parent"
+        android:paddingTop="10dp"
         android:layout_height="wrap_content"
         android:paddingBottom="25dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="25dp"
         android:visibility="gone">
 
         <TextView
@@ -59,25 +60,25 @@
             android:showDividers="middle">
 
             <TextView
-                android:id="@+id/positive_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/negative_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black_2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/positive_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#007AFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone" />

@@ -11,19 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp" >
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
 
         <RelativeLayout
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:layout_width="wrap_content"
-            android:layout_height="40dp">
+            android:layout_height="30dp">
 
             <ImageView
                 android:visibility="invisible"
                 android:id="@+id/iv_dynamic_unit_refresh_water"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:src="@drawable/x_pull_to_refresh_loading"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
@@ -70,6 +70,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/state_tv_head_view"
                 android:visibility="gone" />
+
         </RelativeLayout>
 
     </RelativeLayout>

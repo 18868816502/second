@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_account_flow_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height">
+
+
+        <ImageView
+            android:id="@+id/iv_ac_account_flow_confirm"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/x_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_ac_account_flow_title"
+            android:gravity="center"
+            android:text="编辑账单"
+            android:textColor="@color/black_1"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/ll_ac_account_flow_tab_root"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/help_feed_bg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_normal_account_flow"
+                android:layout_width="66dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_left"
+                android:gravity="center"
+                android:text="通用"
+                android:textColor="@drawable/x_account_flow_tab_selector" />
+
+            <TextView
+                android:id="@+id/tv_loan_account_flow"
+                android:layout_width="66dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_middle"
+                android:layout_marginLeft="-0.5dp"
+                android:layout_marginRight="-0.5dp"
+                android:gravity="center"
+                android:text="网贷"
+                android:textColor="@drawable/x_account_flow_tab_selector" />
+
+            <TextView
+                android:id="@+id/tv_credit_card_flow"
+                android:layout_width="66dp"
+                android:layout_height="29dp"
+                android:background="@drawable/help_feed_right"
+                android:gravity="center"
+                android:text="信用卡"
+                android:textColor="@drawable/x_account_flow_tab_selector" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:background="@color/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <com.beihui.market.view.NoScrollViewPager
+        android:id="@+id/fl_ac_account_flow_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+
+

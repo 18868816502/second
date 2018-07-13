@@ -6,6 +6,6 @@
 
     <stroke
         android:width="0.5dp"
-        android:color="@color/add_edit_bg" />
+        android:color="@color/black_2" />
 
 </shape>

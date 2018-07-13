@@ -31,7 +31,9 @@ public class PullToRefreshListener implements PullToRefreshScrollLayout.OnRefres
     // 刷新失败
     public static final int FAIL = 1;
     // 已经加载全部
-    public static final int LOAD_ALL = 2;
+    public static final int LOAD_SUCCESS = 2;
+    // 已经加载全部
+    public static final int LOAD_ALL = 3;
 
     public Handler mHandler = new Handler();
 
@@ -74,6 +76,10 @@ public class PullToRefreshListener implements PullToRefreshScrollLayout.OnRefres
                     case FAIL:
                         // 千万别忘了告诉控件加载完毕了哦！
                         pullToRefreshScrollLayout.loadMoreFinish(PullToRefreshScrollLayout.FAIL);
+                        break;
+                    case LOAD_SUCCESS:
+                        // 千万别忘了告诉控件加载完毕了哦！
+                        pullToRefreshScrollLayout.loadMoreFinish(PullToRefreshScrollLayout.LOAD_SUCCESS);
                         break;
                     case LOAD_ALL:
                         // 千万别忘了告诉控件加载完毕了哦！

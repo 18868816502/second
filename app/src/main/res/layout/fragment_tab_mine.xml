@@ -26,7 +26,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tool_bar_height">
 
-
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,22 +55,44 @@
                 </android.support.v7.widget.Toolbar>
 
                 <LinearLayout
+                    android:id="@+id/ll_navigate_user_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
+                    android:paddingBottom="20dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
 
                     <FrameLayout
-                        android:layout_width="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@mipmap/mine_head_shadow_icon" />
+
+                        <com.beihui.market.view.CircleImageView
+                            android:id="@+id/avatar"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/mine_head" />
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
+                            android:textStyle="bold"
                             android:id="@+id/user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -80,35 +101,30 @@
                             android:visibility="gone" />
 
                         <TextView
+                            android:textStyle="bold"
                             android:id="@+id/login"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/login_now"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp"
                             android:textColor="@color/black_1"
                             android:textSize="25sp" />
-                    </FrameLayout>
 
-                    <FrameLayout
+                        <TextView
+                            android:id="@+id/tv_user_info"
+                            android:layout_marginTop="5dp"
+                            android:text="查看并编辑个人资料"
+                            android:textSize="12sp"
+                            android:textColor="@color/black_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_marginRight="12dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp">
-
-                        <View
-                            android:layout_width="57dp"
-                            android:layout_height="57dp"
-                            android:background="@mipmap/mine_head_shadow_icon" />
-
-                        <com.beihui.market.view.CircleImageView
-                            android:id="@+id/avatar"
-                            android:layout_width="52dp"
-                            android:layout_height="52dp"
-                            android:layout_gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@mipmap/mine_head" />
-
-                    </FrameLayout>
+                        android:src="@mipmap/right_icon"/>
 
                 </LinearLayout>
 
@@ -116,11 +132,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/line" />
+                android:layout_height="8dp"
+                android:layout_marginBottom="15dp"
+                android:background="#f8f8f8" />
 
             <LinearLayout
                 android:id="@+id/mine_product_container"
@@ -128,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp">
@@ -137,9 +151,10 @@
                 <FrameLayout
                     android:id="@+id/mine_bill"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp">
+                    android:layout_height="30dp">
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -153,28 +168,29 @@
 
                 </FrameLayout>
 
-                <View
-                    android:layout_marginTop="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line" />
-
             </LinearLayout>
 
+            <View
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/line" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:orientation="vertical">
 
                 <!--我的收藏隐藏-->
                 <FrameLayout
                     android:id="@+id/my_collection"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
+                    android:layout_height="30dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
                     android:visibility="gone">
 
                     <TextView
@@ -195,10 +211,13 @@
                 <FrameLayout
                     android:id="@+id/invite_friend"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:layout_height="54dp">
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_height="30dp">
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -212,32 +231,56 @@
 
                 </FrameLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/line" />
+
 
                 <FrameLayout
-                    android:id="@+id/settings"
+                    android:id="@+id/star_me"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp">
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_height="30dp">
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:drawableLeft="@drawable/mine_list_setting_icon"
+                        android:drawableLeft="@drawable/mine_encourage_icon"
                         android:drawablePadding="10dp"
                         android:drawableRight="@mipmap/right_icon"
                         android:gravity="center_vertical"
-                        android:text="@string/settings"
+                        android:text="鼓励一下"
                         android:textColor="@color/black_1"
                         android:textSize="14sp" />
 
                 </FrameLayout>
 
+                <View
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/line" />
+
                 <FrameLayout
                     android:id="@+id/helper_feedback"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp">
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_height="30dp">
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -251,10 +294,19 @@
 
                 </FrameLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="#f8f8f8" />
+
                 <FrameLayout
                     android:id="@+id/reward_points"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
                     android:visibility="gone">
 
                     <TextView
@@ -280,13 +332,47 @@
 
                 </FrameLayout>
 
+                <FrameLayout
+                    android:id="@+id/contact_kefu"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/mine_service_icon"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@mipmap/right_icon"
+                        android:gravity="center_vertical"
+                        android:text="@string/my_kefu"
+                        android:textColor="@color/black_1"
+                        android:textSize="15sp" />
+
+                </FrameLayout>
+
+                <View
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/line" />
 
                 <FrameLayout
                     android:id="@+id/wechat_public"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp">
+                    android:layout_marginBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_height="30dp">
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -309,10 +395,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="这里能借好多好多钱"
+                            android:text="关注领取更多福利"
                             android:textColor="@color/black_2"
-                            android:textSize="12sp"
-                            android:visibility="gone" />
+                            android:textSize="12sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -321,34 +406,12 @@
                             android:adjustViewBounds="true"
                             android:visibility="gone"
                             android:src="@drawable/mine_wechat_light" />
+
                     </LinearLayout>
 
                 </FrameLayout>
 
-ss
-                <FrameLayout
-                    android:id="@+id/contact_kefu"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:drawableLeft="@drawable/mine_service_icon"
-                        android:drawablePadding="10dp"
-                        android:drawableRight="@mipmap/right_icon"
-                        android:gravity="center_vertical"
-                        android:text="@string/my_kefu"
-                        android:textColor="@color/black_1"
-                        android:textSize="15sp" />
-
-
-                </FrameLayout>
-
-
             </LinearLayout>
-
 
         </LinearLayout>
 

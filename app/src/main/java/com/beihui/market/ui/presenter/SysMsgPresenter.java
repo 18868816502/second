@@ -49,7 +49,7 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
                                @Override
                                public void accept(@NonNull ResultEntity<SysMsg> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().getTotal() > 0) {
+                                       if (result.getData() != null && result.getData().getRows().size() > 0) {
                                            if (sysMsgList == null) {
                                                sysMsgList = new ArrayList<>();
                                            }
@@ -57,7 +57,7 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
                                            sysMsgList.addAll(result.getData().getRows());
                                            mView.showSysMsg(Collections.unmodifiableList(sysMsgList));
                                            //返回数据少于请求个数
-                                           if (result.getData().getTotal() < PAGE_SIZE) {
+                                           if (result.getData().getRows().size() < PAGE_SIZE) {
                                                mView.showNoMoreSysMsg();
                                            }
                                        } else {
@@ -87,11 +87,11 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
                                @Override
                                public void accept(@NonNull ResultEntity<SysMsg> result) throws Exception {
                                    if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().getTotal() > 0) {
+                                       if (result.getData() != null && result.getData().getRows().size() > 0) {
                                            sysMsgList.addAll(result.getData().getRows());
                                            mView.showSysMsg(Collections.unmodifiableList(sysMsgList));
                                            //返回的数据少于请求的个数
-                                           if (result.getData().getTotal() < PAGE_SIZE) {
+                                           if (result.getData().getRows().size() < PAGE_SIZE) {
                                                mView.showNoMoreSysMsg();
                                            }
                                        } else {

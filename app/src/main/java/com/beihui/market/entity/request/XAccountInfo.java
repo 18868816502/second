@@ -25,7 +25,7 @@ public class XAccountInfo implements Serializable {
      * lastOverdue : false
      */
 
-    public boolean isShow = false;
+
 
     //主键
     private long id;
@@ -57,6 +57,8 @@ public class XAccountInfo implements Serializable {
 
     //距离出账单日
     public int outBillDay;
+
+    public boolean isShow = false;
 
     public boolean isAnalog = false;
 

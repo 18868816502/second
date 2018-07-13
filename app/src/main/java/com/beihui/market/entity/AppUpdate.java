@@ -14,6 +14,12 @@ public class AppUpdate {
     private long gmtCreate;
     private long gmtModify;
 
+    /**
+     * @version 3.1.0
+     * 审核 1-资讯页，2-借贷页
+     */
+    public int audit;
+
     public String getId() {
         return id;
     }

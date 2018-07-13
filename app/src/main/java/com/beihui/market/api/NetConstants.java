@@ -14,11 +14,19 @@ import java.util.List;
  */
 public class NetConstants {
 
+    /**
+     *	分组贷超产品列表 产品分组Id 秒批到账
+     */
+
+    public static final String SECOND_PRODUCT = "599c7594aaa7453c8d8b52c35b865adf";
+
+
     public static final String DOMAIN = BuildConfig.DOMAIN;
 
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
 
     public static final String BASE_PATH = "/s1";
+    public static final String BASE_PATH_S_FOUR = "/s4";
 
     public static final String PRODUCT_PATH = "/s3";
 
@@ -43,7 +51,15 @@ public class NetConstants {
      */
 //    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5.html";
 //    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "http://192.168.1.40:100/findH5-av301.html";
-    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-av301.html";
+//    public static String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-av301.html";
+    public static String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-v4.html";
+    public static final String H5_FIND_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/findH5-v4.html";
+
+    /**
+     * @version 4.0.0
+     * 活动的URL
+     */
+    public static final String H5_ACTIVITY_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/activity-h5.html";
 
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 
@@ -66,7 +82,12 @@ public class NetConstants {
     /**
      * 用户协议H5
      */
-    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+
+    /**
+     * 魔蝎协议
+     */
+    public static final String H5_USER_MOXIE_PROTOCOL = H5_DOMAIN + "/majiabao/moxie-protocol.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
 
     /**
@@ -80,7 +101,8 @@ public class NetConstants {
     /**
      * 账单导入帮助页面
      */
-    public static final String H5_HELP = H5_DOMAIN + "/export/help.html";
+//    public static final String H5_HELP = H5_DOMAIN + "/export/help.html";
+    public static final String H5_HELP = H5_DOMAIN + "/help-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     /**
      * 办卡进度查询
      */
@@ -107,6 +129,13 @@ public class NetConstants {
      */
     public static String generateNewsWebViewUrl(String userId, String channelId, String version) {
         return H5_FIND_WEVVIEW_DETAIL + "?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + version;
+    }
+
+    /**
+     * 创建活动的URL
+     */
+    public static String generateActivityWebViewUrl(String userId, String channelId, String version) {
+        return H5_ACTIVITY_WEVVIEW_DETAIL_COPY + "?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + version;
     }
 
     public static String generateProductUrl(String id) {
