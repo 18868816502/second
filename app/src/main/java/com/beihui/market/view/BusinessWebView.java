@@ -34,16 +34,16 @@ public class BusinessWebView extends WebView {
     @SuppressLint("SetJavaScriptEnabled")
     private void init() {
 
-        WebSettings settings = getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+//        WebSettings settings = getSettings();
+//        settings.setJavaScriptEnabled(true);
+//        settings.setDomStorageEnabled(true);
+//        settings.setSupportZoom(true);
+//        settings.setBuiltInZoomControls(true);
+//        settings.setDisplayZoomControls(false);
+//        settings.setUseWideViewPort(true);
+//        settings.setLoadWithOverviewMode(true);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        }
     }
 }

@@ -280,12 +280,9 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     public void navigateWechatBindAccount() {
         dismissProgress();
         Intent intent = new Intent(getContext(), WeChatBindPhoneActivity.class);
-        intent.putExtra("openId", wechatInfo.get("openid"));
+        intent.putExtra("openId", wechatInfo.get("unionid"));
         intent.putExtra("name", wechatInfo.get("name"));
         intent.putExtra("profile_image_url", wechatInfo.get("profile_image_url"));
         startActivityForResult(intent, REQUEST_CODE_BIND_PHONE);
     }
-
-
-
 }

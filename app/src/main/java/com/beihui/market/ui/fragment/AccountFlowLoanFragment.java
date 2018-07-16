@@ -491,6 +491,21 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                     }else if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
                         sum = new BigDecimal(currentContent);
                     } else {
+
+
+                        if (temp.equals("0.")) {
+                            temp.append("0");
+                        }
+                        if (currentContent.substring(1).contains("+")) {
+                            sum = sum.add(new BigDecimal(temp.toString()));
+                        }
+                        if (currentContent.substring(1).contains("-")) {
+                            sum = sum.subtract(new BigDecimal(temp.toString()));
+                        }
+                        temp.delete(0, temp.length());
+                        etCurrent.setText(sum.toString());
+
+
                         return true;
                     }
                     getKeys().get(11).label = "=";

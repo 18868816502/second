@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -24,11 +26,14 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.ui.presenter.InvitationPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.Px2DpUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,10 +47,13 @@ import butterknife.BindView;
 public class InvitationActivity extends BaseComponentActivity implements InvitationContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.invitation_code)
-    TextView invitationCodeTv;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+//    @BindView(R.id.invitation_code)
+//    TextView invitationCodeTv;
+//    @BindView(R.id.recycler_view)
+//    RecyclerView recyclerView;
+
+    @BindView(R.id.ll_root)
+    LinearLayout mRoot;
     @BindView(R.id.invite)
     TextView inviteBtn;
 
@@ -80,9 +88,9 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
 
-        adapter = new InvitationAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+//        adapter = new InvitationAdapter();
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(adapter);
 
         inviteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,11 +133,22 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
 
     @Override
     public void showInvitationCode(String code) {
-        invitationCodeTv.setText(code);
+//        invitationCodeTv.setText(code);
     }
 
     @Override
     public void showInvitations(List<Invitation.Row> list) {
-        adapter.notifyInvitationChanged(list);
+        if (list.size() > 0) {
+            for (Invitation.Row row : list) {
+                View view = View.inflate(this, R.layout.rv_item_invitation, null);
+                TextView mPhone = (TextView) view.findViewById(R.id.phone);
+                TextView mStatus = (TextView) view.findViewById(R.id.status);
+                mPhone.setText(CommonUtils.changeTel(row.getPhone()));
+                mStatus.setText(row.getStatus());
+                mRoot.addView(view);
+            }
+        }
+
+//        adapter.notifyInvitationChanged(list);
     }
 }

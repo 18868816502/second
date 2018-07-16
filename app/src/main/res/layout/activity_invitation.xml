@@ -32,59 +32,85 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="215dp"
+                android:layout_height="215dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/invitation_title" />
 
-            <ImageView
+            <TextView
+                android:textStyle="bold"
+                android:text="邀请好友"
+                android:textSize="23sp"
+                android:textColor="@color/black_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="13dp"
-                android:src="@mipmap/invitation_code_title" />
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/invitation_code"
-                android:layout_width="233dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="11dp"
-                android:background="#eef4ff"
+                android:layout_marginTop="12dp"
                 android:gravity="center"
+                android:text="体验考拉记账 增运气提升下款概率"
                 android:textColor="#424251"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/invite"
-                style="@style/TextButtonStyle"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="275dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="27dp"
                 android:background="@drawable/round_sunglow_gray_state_enable_red"
-                android:text="@string/invite_friend"
+                android:text="立即邀请"
+                android:textSize="17sp"
                 android:textColor="@color/white" />
 
-            <TextView
-                android:textColor="#909298"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:text="@string/invitation_list" />
+            <LinearLayout
+                android:gravity="center"
+                android:layout_marginTop="36dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            
+                <View
+                    android:background="@color/line"
+                    android:layout_width="91dp"
+                    android:layout_height="0.5dp"/>
+                
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="#909298"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/invitation_list" />
+
+                <View
+                    android:background="@color/line"
+                    android:layout_width="91dp"
+                    android:layout_height="0.5dp"/>
+
+            </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/x_invitation_card_background"
                 android:layout_width="280dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="17dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:background="#ff82828f"
                     android:orientation="horizontal">
 
                     <TextView
@@ -92,28 +118,41 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:textColor="@color/white"
+                        android:textColor="#82828F"
+                        android:textSize="12sp"
                         android:text="@string/friends" />
 
                     <TextView
+                        android:textSize="12sp"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:textColor="@color/white"
+                        android:textColor="#82828F"
                         android:text="@string/status" />
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <!--<android.support.v7.widget.RecyclerView-->
+                    <!--android:id="@+id/recycler_view"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="140dp" />-->
+
+                <LinearLayout
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/ll_root"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp" />
+                    android:minHeight="140dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

@@ -75,7 +75,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:textColor="#ff424251"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:paddingTop="31dp" />
         </LinearLayout>
 

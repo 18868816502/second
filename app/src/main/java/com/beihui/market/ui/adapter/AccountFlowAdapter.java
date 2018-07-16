@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.anim.ShakeAnimation;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.helper.DataStatisticsHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.AccountFlowTypeActivity;
 import com.beihui.market.umeng.NewVersionEvents;
+import com.beihui.market.util.RxUtil;
 import com.bumptech.glide.Glide;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by admin on 2018/6/13.
@@ -55,7 +65,7 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (position < dataSet.size()) {
-            AccountFlowIconBean item = dataSet.get(position);
+            final AccountFlowIconBean item = dataSet.get(position);
             Glide.with(mActivity)
                     .load(item.logo)
                     .asBitmap()
@@ -67,19 +77,44 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
             } else {
                 holder.mName.setVisibility(View.GONE);
             }
+
+            if (isShakeAnim) {
+                //开启抖动动画
+//            ShakeAnimation.getInstance().shakeAnimation(holder.mRoot);
+                holder.mRoot.startAnimation(AnimationUtils.loadAnimation(mActivity, R.anim.shake));
+            } else {
+                holder.mRoot.clearAnimation();
+            }
+
+            if (!"1".equals(item.isPrivate) || !isShakeAnim) {
+                holder.mDelete.setVisibility(View.INVISIBLE);
+            } else {
+                holder.mDelete.setVisibility(View.VISIBLE);
+            }
+
+
+            holder.mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteCustomIcon(item);
+                }
+            });
+
         } else {
             holder.mIcon.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.x_add_account_flow_more_type));
             holder.mName.setText("手动添加");
-        }
 
-
-        if (isShakeAnim) {
-            //开启抖动动画
+            if (isShakeAnim) {
+                //开启抖动动画
 //            ShakeAnimation.getInstance().shakeAnimation(holder.mRoot);
-            holder.mRoot.startAnimation(AnimationUtils.loadAnimation(mActivity, R.anim.shake));
-        } else {
+                holder.mRoot.startAnimation(AnimationUtils.loadAnimation(mActivity, R.anim.shake));
+            } else {
+                holder.mRoot.clearAnimation();
+            }
 
+            holder.mDelete.setVisibility(View.INVISIBLE);
         }
+
 
         holder.mRoot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,12 +139,36 @@ public class AccountFlowAdapter extends RecyclerView.Adapter<AccountFlowAdapter.
             }
         });
 
-        holder.mDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isShakeAnim = false;
-            }
-        });
+
+    }
+
+    /**
+     * 删除自定义图标
+     * @param item
+     */
+    private void deleteCustomIcon(final AccountFlowIconBean item) {
+        /**
+         * 请求通用类型列表
+         */
+        Api.getInstance().deleteLoanAccountIcon(item.tallyId)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result)  {
+                                   if (result.isSuccess()) {
+                                       dataSet.remove(item);
+                                   }
+                                   isShakeAnim = false;
+                                   notifyDataSetChanged();
+                                   Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("exception_custom", throwable.getMessage());
+                            }
+                        });
     }
 
     public void notifyDebtChannelChanged(List<AccountFlowIconBean> list) {

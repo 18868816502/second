@@ -1,6 +1,7 @@
 package com.beihui.market.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -56,6 +57,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.BusinessWebView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -339,6 +341,27 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
                 return;
             }
             webView.requestDisallowInterceptTouchEvent(isFly);
+        }
+
+        /**
+         * 唤醒微信
+         */
+        @JavascriptInterface
+        public void openWeChat(){
+
+            try {
+                Intent intent = new Intent();
+                ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                intent.setAction(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setComponent(cmp);
+                startActivityForResult(intent, 0);
+
+            } catch (Exception e) {
+                //若无法正常跳转，在此进行错误处理
+                ToastUtils.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
+            }
         }
     }
 
