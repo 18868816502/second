@@ -569,7 +569,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
      */
     @Override
     public void showGuide() {
-<<<<<<< HEAD
         /*infoHighLight = new HighLight(getActivity())
                 .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                     @Override
@@ -627,65 +626,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                                 }).show();
                     }
                 });*/
-=======
-//        infoHighLight = new HighLight(getActivity())
-//                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-//                    @Override
-//                    public void onLayouted() {
-//                        infoHighLight
-//                                .autoRemove(false)
-//                                .intercept(true)
-//                                .enableNext()
-//                                .addHighLight(R.id.iv_tab_account_header_add, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
-//                                    @Override
-//                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-//                                        marginInfo.rightMargin = rectF.width() / 2;
-//                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + Px2DpUtils.dp2px(mActivity, 5);
-//                                    }
-//                                }, new CircleLightShape())
-//                                .addHighLight(R.id.iv_tab_account_header_bill_loan, R.layout.layout_highlight_confirm, new OnBaseCallback() {
-//                                    @Override
-//                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-//                                        marginInfo.leftMargin = Px2DpUtils.dp2px(mActivity, 6);
-//                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - Px2DpUtils.dp2px(mActivity, 2);
-//                                    }
-//                                }, new CircleLightShape())
-//                                .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {
-//                                    @Override
-//                                    public void onRemove() {
-//                                        //监听移除回调
-//                                    }
-//                                })
-//                                .setOnShowCallback(new HighLightInterface.OnShowCallback() {
-//                                    @Override
-//                                    public void onShow(HightLightView hightLightView) {
-//                                        //监听显示回调
-//                                    }
-//                                }).setOnNextCallback(new HighLightInterface.OnNextCallback() {
-//                                    @Override
-//                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-//                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-//                                        if (targetView.getId() == R.id.iv_tab_account_header_add) {
-//
-//                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(View v) {
-//                                                        infoHighLight.next();
-//                                                    }
-//                                                });
-//                                        } else {
-//                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_two).setOnClickListener(new View.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(View v) {
-//                                                    infoHighLight.remove();
-//                                                }
-//                                            });
-//                                        }
-//                                    }
-//                                }).show();
-//                    }
-//                });
->>>>>>> 4e7d81b6af411ca3ff5c3896d3e50705fd6e86e5
     }
 
     @Override
