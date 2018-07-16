@@ -569,7 +569,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
      */
     @Override
     public void showGuide() {
-        infoHighLight = new HighLight(getActivity())
+        /*infoHighLight = new HighLight(getActivity())
                 .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                     @Override
                     public void onLayouted() {
@@ -625,7 +625,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                                     }
                                 }).show();
                     }
-                });
+                });*/
     }
 
     @Override

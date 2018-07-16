@@ -1,13 +1,20 @@
 package com.beihui.market.api.interceptor;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
+import com.beihui.market.util.SoundUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -26,7 +33,49 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        if (canInjectIntoBody(request)) {
+        if ("GET".equals(request.method())) {
+            HttpUrl httpUrl = request.url();
+            Set<String> ps = httpUrl.queryParameterNames();
+            Map<String, Object> params = new HashMap<>();
+            if (ps != null) {
+                for (String key : ps) {
+                    Iterator<String> iterator = ps.iterator();
+                    while (iterator.hasNext())
+                        params.put(key, iterator.next());
+                }
+            }
+            String url = httpUrl.toString();
+            url = url + "?" + "packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME;
+            StringBuilder sb = new StringBuilder();
+            if (params.size() > 0) {
+                Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, Object> next = iterator.next();
+                    sb.append("&" + next.getKey()).append("=").append(next.getValue());
+                }
+            }
+            System.out.println("GET URL=" + url);
+            request = request.newBuilder().url(url).build();
+        } else if ("POST".equals(request.method())) {
+            RequestBody body = request.body();
+            FormBody.Builder bodyBuilder = new FormBody.Builder();
+            if (body != null && body instanceof FormBody) {
+                FormBody fb = (FormBody) body;
+                for (int i = 0; i < fb.size(); i++)
+                    bodyBuilder.addEncoded(fb.encodedName(i), fb.encodedValue(i));
+            }
+            FormBody formBody = bodyBuilder
+                    .addEncoded("packageId", App.sChannelId)
+                    .addEncoded("version", BuildConfig.VERSION_NAME)
+                    .build();
+            for (int i = 0; i < formBody.size(); i++) {
+                System.out.println("==post==" + formBody.encodedName(i));
+                System.out.println("==post==" + formBody.encodedValue(i));
+            }
+            request = request.newBuilder().post(formBody).build();
+        }
+
+        /*if (canInjectIntoBody(request)) {
             FormBody.Builder bodyBuilder = new FormBody.Builder();
             FormBody formBody = (FormBody) request.body();
 
@@ -37,14 +86,11 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
             formBody = bodyBuilder
                     .addEncoded("packageId", App.sChannelId)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
-
                     .build();
             request = request.newBuilder().post(formBody).build();
+        }*/
 
-        }
         return chain.proceed(request);
-
-
 
 
 //         Request request = chain.request();
@@ -62,7 +108,7 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
 //        request=requestBuilder.build();
     }
 
-    private boolean canInjectIntoBody(Request request) {
+    /*private boolean canInjectIntoBody(Request request) {
         if (request == null) {
             return false;
         }
@@ -81,7 +127,8 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
             return false;
         }
         return true;
-    }
+    }*/
+
     private String bodyToString(final RequestBody request) {
         try {
             final RequestBody copy = request;

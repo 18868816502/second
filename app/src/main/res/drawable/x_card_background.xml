@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 一个层叠效果,通过阴影表现出立体效果 -->
     <item
         android:bottom="0.1dp"
         android:left="0.1dp"
         android:right="0.1dp"
         android:top="0.1dp"><!-- 阴影效果 -->
-        <shape android:shape="rectangle" >
+        <shape android:shape="rectangle">
             <solid android:color="#cae7e5e5" /><!-- 阴影的颜色 -->
             <corners android:radius="4dp" /><!-- 圆角 -->
         </shape>
@@ -16,7 +16,7 @@
         android:left="0.2dp"
         android:right="0.2dp"
         android:top="0.2dp"><!-- 阴影效果 -->
-        <shape android:shape="rectangle" >
+        <shape android:shape="rectangle">
             <solid android:color="#cae7e3e3" /><!-- 阴影的颜色 -->
             <corners android:radius="3dp" /><!-- 圆角 -->
         </shape>
@@ -26,7 +26,7 @@
         android:left="0.3dp"
         android:right="0.3dp"
         android:top="0.3dp"><!-- 阴影效果 -->
-        <shape android:shape="rectangle" >
+        <shape android:shape="rectangle">
             <solid android:color="#cadadada" /><!-- 阴影的颜色 -->
             <corners android:radius="2dp" /><!-- 圆角 -->
         </shape>
@@ -36,7 +36,7 @@
         android:left="0.5dp"
         android:right="0.5dp"
         android:top="0.5dp"><!-- 距底部2dp，漏出上面那个item，使其可以显现出阴影 -->
-        <shape android:shape="rectangle" >
+        <shape android:shape="rectangle">
             <solid android:color="@android:color/white" /><!-- item颜色 -->
             <corners android:radius="2dp" />
         </shape>

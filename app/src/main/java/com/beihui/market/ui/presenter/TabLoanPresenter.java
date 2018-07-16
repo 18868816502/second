@@ -288,7 +288,6 @@ public class TabLoanPresenter extends BaseRxPresenter implements TabLoanContract
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
-
                                }
                            },
                         new Consumer<Throwable>() {
