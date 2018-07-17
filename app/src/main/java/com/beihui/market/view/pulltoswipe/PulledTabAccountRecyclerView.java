@@ -32,7 +32,6 @@ import android.util.AttributeSet;
 
 public class PulledTabAccountRecyclerView extends RecyclerView implements Pulled {
 
-
     public PulledTabAccountRecyclerView(Context context) {
         super(context);
     }
@@ -82,7 +81,6 @@ public class PulledTabAccountRecyclerView extends RecyclerView implements Pulled
             onItemScrollChanged.onScrollChanged();
         }
     }
-
 
     public OnItemScrollChanged onItemScrollChanged;
 

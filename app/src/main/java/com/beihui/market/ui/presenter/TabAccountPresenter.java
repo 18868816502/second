@@ -22,7 +22,7 @@ import io.reactivex.functions.Consumer;
 
 /**
  * @author xhb
- * 账单模块 首页
+ *         账单模块 首页
  */
 public class TabAccountPresenter extends BaseRxPresenter implements TabAccountContract.Presenter {
 
@@ -62,7 +62,7 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     }
 
 
-    public void onRefresh(){
+    public void onRefresh() {
         if (userHelper.getProfile() != null) {
             //获取头信息
             loadDebtAbstract();
@@ -110,13 +110,13 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
      */
     @Override
     public void loadInDebtList() {
-        Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId(), 1)
+        Disposable dis = api.queryTabAccountList(userHelper.getProfile().getId(), 1)
                 .compose(RxUtil.<ResultEntity<List<TabAccountNewBean>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<TabAccountNewBean>>>() {
                                @Override
                                public void accept(ResultEntity<List<TabAccountNewBean>> result) throws Exception {
                                    if (result.isSuccess()) {
-                                        view.showInDebtList(result.getData());
+                                       view.showInDebtList(result.getData());
                                    } else {
                                        view.showErrorMsg(result.getMsg());
                                    }
@@ -130,7 +130,6 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
                             }
                         });
         addDisposable(dis);
-
     }
 
     /**
@@ -140,9 +139,9 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
     public void loadInDebtList(int collectType, int pageNo) {
         if (userHelper.getProfile() == null) {
             view.showNoUserLoginBlock();
-        } else{
-           Disposable dis =  api.queryTabAccountList(userHelper.getProfile().getId(), 1, pageNo, 10)
-                .compose(RxUtil.<ResultEntity<List<TabAccountNewBean>>>io2main())
+        } else {
+            Disposable dis = api.queryTabAccountList(userHelper.getProfile().getId(), 1, pageNo, 10)
+                    .compose(RxUtil.<ResultEntity<List<TabAccountNewBean>>>io2main())
                     .subscribe(new Consumer<ResultEntity<List<TabAccountNewBean>>>() {
                                    @Override
                                    public void accept(ResultEntity<List<TabAccountNewBean>> result) throws Exception {
@@ -163,8 +162,6 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             addDisposable(dis);
         }
     }
-
-
 
 
     @Override
@@ -252,5 +249,4 @@ public class TabAccountPresenter extends BaseRxPresenter implements TabAccountCo
             }
         }
     }
-
 }

@@ -12,7 +12,6 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.gyf.barlibrary.ImmersionBar;
 

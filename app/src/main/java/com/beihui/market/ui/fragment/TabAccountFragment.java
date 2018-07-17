@@ -4,7 +4,6 @@ package com.beihui.market.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,14 +52,12 @@ import com.beihui.market.ui.presenter.TabAccountPresenter;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
-import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
-import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,10 +71,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBaseCallback;
-import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.view.HightLightView;
 
 
 /**

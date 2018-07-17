@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--@author xhb 账单模块头布局-->
+<?xml version="1.0" encoding="utf-8"?><!--@author xhb 账单模块头布局-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,48 +92,45 @@
                     android:text="待还"
                     android:textColor="@color/white"
                     android:textSize="11sp" />
-
             </LinearLayout>
-
         </LinearLayout>
-
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_ac_main_notice_root"
-        android:paddingLeft="15dp"
-        android:gravity="center_vertical"
-        android:background="@drawable/xshape_tab_account_bg"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/xshape_tab_account_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
 
 
         <com.beihui.market.view.MarqueeTextView
             android:id="@+id/tv_tab_account_notice"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:gravity="center_vertical"
-            android:textColor="#8C1003"
-            android:textSize="12sp"
             android:singleLine="true"
-            android:ellipsize="marquee"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp" />
+            android:textColor="#8C1003"
+            android:textSize="12sp" />
 
         <!--图标-->
         <ImageView
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="5dp"
             android:id="@+id/iv_ac_main_notice_cross"
-            android:src="@drawable/bill_close_icon"
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/bill_close_icon" />
 
     </LinearLayout>
 

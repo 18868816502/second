@@ -1,6 +1,5 @@
 package com.beihui.market.util;
 
-import android.util.Log;
 import android.widget.TextView;
 
 import java.util.LinkedList;
