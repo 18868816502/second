@@ -5,9 +5,7 @@ import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
-import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
-import com.beihui.market.entity.request.XAccountInfo;
 
 import java.util.List;
 

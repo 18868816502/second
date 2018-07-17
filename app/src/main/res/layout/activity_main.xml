@@ -14,15 +14,15 @@
 
 
     <RelativeLayout
-        android:layout_marginBottom="-10dp"
         android:layout_width="wrap_content"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:layout_marginBottom="-10dp">
 
         <FrameLayout
-            android:layout_marginTop="10dp"
             android:id="@+id/fl_bottom"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp">
 
             <ImageView
                 android:id="@+id/navigation_bar_bg"
@@ -42,8 +42,8 @@
                     android:id="@+id/tab_forms_root"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:paddingTop="6dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:paddingTop="6dp">
 
                     <ImageView
                         android:id="@+id/tab_forms_icon"
@@ -128,17 +128,17 @@
         </FrameLayout>
 
         <View
-            android:layout_alignBottom="@id/fl_bottom"
-            android:layout_marginBottom="50dp"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:layout_alignBottom="@id/fl_bottom"
+            android:layout_marginBottom="50dp"
             android:background="@color/line" />
 
         <LinearLayout
-            android:gravity="center"
-            android:weightSum="3"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:weightSum="3">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -157,9 +157,7 @@
                     android:layout_height="60dp"
                     android:background="@color/transparent"
                     android:src="@drawable/x_tab_bill_add_btn" />
-
             </RelativeLayout>
-
         </LinearLayout>
 
     </RelativeLayout>

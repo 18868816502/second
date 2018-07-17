@@ -6,24 +6,17 @@ import android.content.Context;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.DebtAbstract;
-import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
-import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.helper.UserHelper;
-import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.contract.TabAccountContract;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.SPUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 

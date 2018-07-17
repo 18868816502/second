@@ -21,7 +21,6 @@ android {
     }
 
     signingConfigs {
-
         loanmarkettest {
             storeFile file('../loanmarkettest.jks')
             storePassword "123456"
@@ -184,11 +183,9 @@ android {
             manifestPlaceholders.putAll([
                     UMENG_CHANNEL: name,
                     CHANNEL_ID   : name,
-
             ])
         }
     }
-
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->

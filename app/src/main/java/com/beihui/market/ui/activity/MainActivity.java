@@ -117,7 +117,6 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_forms_text)
     TextView tabFormsText;
 
-
     @BindView(R.id.iv_bill_add_buttom)
     ImageView mAddBill;
 
@@ -139,7 +138,7 @@ public class MainActivity extends BaseComponentActivity {
     /**
      * 最新公告ID
      */
-    private String mNoticeId ="";
+    private String mNoticeId = "";
 
     //高亮
     private HighLight infoHighLight;
@@ -269,8 +268,8 @@ public class MainActivity extends BaseComponentActivity {
                                 .addHighLight(R.id.tv_bill_add_buttom, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.bottomMargin = rectF.height()+  Px2DpUtils.dp2px(MainActivity.this, 10);
-                                        marginInfo.rightMargin = rectF.width() / 2 +  Px2DpUtils.dp2px(MainActivity.this, 15);
+                                        marginInfo.bottomMargin = rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 10);
+                                        marginInfo.rightMargin = rectF.width() / 2 + Px2DpUtils.dp2px(MainActivity.this, 15);
                                     }
                                 }, new CircleLightShape()).setOnNextCallback(new HighLightInterface.OnNextCallback() {
                             @Override
@@ -307,7 +306,7 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         iconView = new ImageView[]{tabFomrsIcon, tabAccountIcon, tabNewsIcon};
-        textView = new TextView[]{ tabFormsText, tabAccountText, tabNewsText};
+        textView = new TextView[]{tabFormsText, tabAccountText, tabNewsText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
@@ -326,7 +325,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 //点击音效
                 SoundUtils.getInstance().playTab();
-                if (selectedId != selectedFragmentId ) {
+                if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }
             }
@@ -522,14 +521,14 @@ public class MainActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        if (result.getData() != null) {
                                            /**
-                                         * 审核 1-资讯页，2-借贷页
-                                         */
+                                            * 审核 1-资讯页，2-借贷页
+                                            */
                                            if (result.getData().audit == 1) {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
 
                                            } else if (result.getData().audit == 2) {
-                                               NetConstants.H5_FIND_WEVVIEW_DETAIL  = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
+                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
                                            }
                                            if (result.getData().bottomList.size() > 0) {
@@ -684,5 +683,4 @@ public class MainActivity extends BaseComponentActivity {
             navigationBar.select(R.id.tab_account);
         }
     }
-
 }

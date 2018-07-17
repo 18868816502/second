@@ -5,11 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.beihui.market.util.Px2DpUtils;
 
@@ -106,7 +103,7 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
     protected void onSelectionChanged(int selStart, int selEnd) {
         super.onSelectionChanged(selStart, selEnd);
         //保证光标始终在最后面
-        if(selStart==selEnd){//防止不能多选
+        if (selStart == selEnd) {//防止不能多选
             setSelection(getText().length());
         }
     }
@@ -115,7 +112,6 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
     }
 
     @Override
@@ -123,5 +119,4 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
         super.onTextChanged(text, start, before, after);
         refitText(this.getText().toString(), this.getWidth());
     }
-
 }

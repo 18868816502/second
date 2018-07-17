@@ -148,7 +148,6 @@ public class SlidePanel extends FrameLayout {
             }
             invalidate();
         }
-
     }
 
     public interface SlideCallback {

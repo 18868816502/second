@@ -1,83 +1,52 @@
 package com.beihui.market.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
-import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.event.MyLoanDebtListFragmentEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
-import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.fragment.AccountFlowCreditCardFragment;
 import com.beihui.market.ui.fragment.AccountFlowLoanFragment;
 import com.beihui.market.ui.fragment.AccountFlowNormalFragment;
-import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
-import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.NoScrollViewPager;
-import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
-import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
-import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBaseCallback;
-import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.shape.RectLightShape;
-import zhy.com.highlight.view.HightLightView;
 
 /**
  * Created by admin on 2018/6/13.
@@ -123,7 +92,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbarBackNavigation(toolbar,R.drawable.x_delete);
+        setupToolbarBackNavigation(toolbar, R.drawable.x_delete);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
 
         fragmentList.add(mNormalFragment);
@@ -358,7 +327,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
     private void createAccount(Map<String, Object> map, int type) {
 
         map.put("userId", UserHelper.getInstance(this).getProfile().getId());
-        if ( type == 0) {
+        if (type == 0) {
             createFastAccount(map);
         } else {
             createLoanAccount(map);
@@ -372,12 +341,12 @@ public class AccountFlowActivity extends BaseComponentActivity {
         if (map.get("amount") == null) {
             return true;
         }
-        if (!TextUtils.isEmpty((String)map.get("amount")) && (((String)map.get("amount")).substring(1).contains("+") || ((String)map.get("amount")).substring(1).contains("-"))) {
+        if (!TextUtils.isEmpty((String) map.get("amount")) && (((String) map.get("amount")).substring(1).contains("+") || ((String) map.get("amount")).substring(1).contains("-"))) {
             ToastUtils.showToast(this, "请输入正确的金额");
             return true;
         }
 
-        double amount = Double.parseDouble(map.get("amount")+"");
+        double amount = Double.parseDouble(map.get("amount") + "");
         if (amount < 0D) {
             ToastUtils.showToast(this, "每期金额不能小于0");
             return true;
@@ -412,8 +381,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
 //                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
 
                                    /**
-                                * 返回详情页
-                                */
+                                    * 返回详情页
+                                    */
                                    if (result.isSuccess()) {
                                        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
 
@@ -458,8 +427,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        }
 
                                        /**
-                                    * 返回详情页
-                                    */
+                                        * 返回详情页
+                                        */
                                        Intent intent = new Intent();
                                        intent.putExtra("recordId", result.getData().recordId);
                                        intent.putExtra("billId", result.getData().billId);
