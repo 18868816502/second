@@ -60,7 +60,7 @@
                         android:layout_below="@+id/tab_forms_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
-                        android:text="报表"
+                        android:text="@string/tab_account"
                         android:textColor="@color/select_blue_grey"
                         android:textSize="12sp" />
 
@@ -88,11 +88,9 @@
                         android:layout_below="@+id/tab_account_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
-                        android:text="@string/tab_account"
+                        android:text="@string/tab_news"
                         android:textColor="@color/select_blue_grey"
                         android:textSize="12sp" />
-
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -117,16 +115,12 @@
                         android:layout_below="@+id/tab_news_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
-                        android:text="@string/tab_news"
+                        android:text="@string/tab_personal"
                         android:textColor="@color/select_blue_grey"
                         android:textSize="12sp" />
-
                 </RelativeLayout>
-
             </com.beihui.market.view.BottomNavigationBar>
-
         </FrameLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -134,7 +128,7 @@
             android:layout_marginBottom="50dp"
             android:background="@color/line" />
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
@@ -158,7 +152,7 @@
                     android:background="@color/transparent"
                     android:src="@drawable/x_tab_bill_add_btn" />
             </RelativeLayout>
-        </LinearLayout>
+        </LinearLayout>-->
 
     </RelativeLayout>
 

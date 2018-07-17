@@ -45,6 +45,9 @@ import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.BillLoanAnalysisFragment;
+import com.beihui.market.ui.fragment.DiscoverFragment;
+import com.beihui.market.ui.fragment.HomeFragment;
+import com.beihui.market.ui.fragment.PersonalFragment;
 import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
@@ -117,8 +120,8 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_forms_text)
     TextView tabFormsText;
 
-    @BindView(R.id.iv_bill_add_buttom)
-    ImageView mAddBill;
+    /*@BindView(R.id.iv_bill_add_buttom)
+    ImageView mAddBill;*/
 
 
     //保存正切换的底部模块 ID
@@ -265,7 +268,7 @@ public class MainActivity extends BaseComponentActivity {
                         infoHighLight.autoRemove(false)
                                 .intercept(true)
                                 .enableNext()
-                                .addHighLight(R.id.tv_bill_add_buttom, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
+                                .addHighLight(/*R.id.tv_bill_add_buttom*/R.id.tab_account_text, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.bottomMargin = rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 10);
@@ -275,8 +278,8 @@ public class MainActivity extends BaseComponentActivity {
                             @Override
                             public void onNext(HightLightView hightLightView, View targetView, View tipView) {
                                 // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                if (targetView.getId() == R.id.tv_bill_add_buttom) {
-
+                                //if (targetView.getId() == R.id.tv_bill_add_buttom) {
+                                if (targetView.getId() == R.id.tab_account_text) {
                                     infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -346,13 +349,13 @@ public class MainActivity extends BaseComponentActivity {
         /**
          * 添加账单
          */
-        mAddBill.setOnClickListener(new View.OnClickListener() {
+        /*mAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!FastClickUtils.isFastClick()) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-//                    UserAuthorizationActivity.launch(MainActivity.this, null);
+                    //UserAuthorizationActivity.launch(MainActivity.this, null);
                         Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
                         startActivity(intent);
                     } else {
@@ -361,7 +364,7 @@ public class MainActivity extends BaseComponentActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -430,14 +433,15 @@ public class MainActivity extends BaseComponentActivity {
             //报表
             case R.id.tab_forms_root:
                 if (tabForm == null) {
-                    tabForm = BillLoanAnalysisFragment.newInstance();
+                    //tabForm = BillLoanAnalysisFragment.newInstance();
+                    tabForm = HomeFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabForm);
                 }
                 ft.show(tabForm);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
 
-                mAddBill.setVisibility(View.GONE);
-                tabAccountText.setVisibility(View.VISIBLE);
+                /*mAddBill.setVisibility(View.GONE);
+                tabAccountText.setVisibility(View.VISIBLE);*/
 
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
@@ -445,14 +449,15 @@ public class MainActivity extends BaseComponentActivity {
             //账单
             case R.id.tab_account:
                 if (tabHome == null) {
-                    tabHome = TabAccountFragment.newInstance();
+                    //tabHome = TabAccountFragment.newInstance();
+                    tabHome = DiscoverFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
 
-                mAddBill.setVisibility(View.VISIBLE);
-                tabAccountText.setVisibility(View.GONE);
+                /*mAddBill.setVisibility(View.VISIBLE);
+                tabAccountText.setVisibility(View.GONE);*/
 
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
@@ -460,14 +465,15 @@ public class MainActivity extends BaseComponentActivity {
             //发现
             case R.id.tab_news:
                 if (tabFind == null) {
-                    tabFind = TabNewsWebViewFragment.newInstance();
+                    //tabFind = TabNewsWebViewFragment.newInstance();
+                    tabFind = PersonalFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabFind);
                 }
                 ft.show(tabFind);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
 
-                mAddBill.setVisibility(View.GONE);
-                tabAccountText.setVisibility(View.VISIBLE);
+                /*mAddBill.setVisibility(View.GONE);
+                tabAccountText.setVisibility(View.VISIBLE);*/
 
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
