@@ -118,9 +118,9 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     }
 
     @Override
-    public void clickMessage() {
+    public void clickRemind() {
         if (checkValidUser()) {
-            view.navigateMessage(userHelper.getProfile().getId());
+            view.navigateRemind(userHelper.getProfile().getId());
         }
     }
 
@@ -146,9 +146,9 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     }
 
     @Override
-    public void clickContactKefu() {
+    public void clickKaolaGroup() {
         if (checkValidUser()) {
-            view.navigateContactKefu(userHelper.getProfile().getId(), userHelper.getProfile().getUserName());
+            view.navigateKaolaGroup(userHelper.getProfile().getId(), userHelper.getProfile().getUserName());
         }
     }
 
@@ -164,6 +164,14 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
         if (checkValidUser()) {
             view.navigateSetting(null);
         }
+    }
+
+    @Override
+    public void clickMessage() {
+        if (checkValidUser()) {
+            view.navigateSetting(userHelper.getProfile().getId());
+        }
+
     }
 
     private boolean checkValidUser() {

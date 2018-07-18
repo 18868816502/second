@@ -3,6 +3,7 @@ package com.beihui.market.injection.component;
 
 import com.beihui.market.injection.module.TabMineModule;
 import com.beihui.market.ui.activity.TabMineActivity;
+import com.beihui.market.ui.fragment.PersonalFragment;
 
 import dagger.Component;
 
@@ -10,4 +11,5 @@ import dagger.Component;
 public interface TabMineComponent {
 
     void inject(TabMineActivity fragment);
+    void inject(PersonalFragment fragment);
 }

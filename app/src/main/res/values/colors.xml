@@ -8,6 +8,9 @@
     <!--键盘文字颜色-->
     <color name="text_color_gray_3">#ffffff</color>
 
+    <color name="colorHintTextColor">#e5e5e5</color>
+    <color name="colorBackground">#f7f7f7</color>
+
 
     <color name="custom_key_red">#f24957</color>
     <color name="custom_key_red_pressed">#d9414e</color>
