@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -24,6 +25,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -31,135 +33,57 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="48dp"
-                android:text="通用"
-                android:textColor="@color/black_1"
-                android:textSize="22sp" />
 
-            <TextView
-                android:id="@+id/change_psd"
+            <com.beihui.market.view.RelativeLayoutBar
+                android:id="@+id/about_kaola"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:drawableRight="@mipmap/right_icon"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/change_psd"
-                android:textColor="@color/black_1" />
+                android:layout_height="60dp"
+                app:left_image="@drawable/mine_encourage_icon"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_text="关于考拉记账"
+                app:left_textView_textSize="15sp"
+                app:view_Visible="true"
+                app:view_margin_right="15" />
+
+            <com.beihui.market.view.RelativeLayoutBar
+                android:id="@+id/star_me"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:left_image="@drawable/mine_encourage_icon"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_text="鼓励一下"
+                app:left_textView_textSize="15sp"
+                app:left_textView_style="true"
+                app:view_Visible="true"
+                app:view_margin_right="15" />
+
+            <com.beihui.market.view.RelativeLayoutBar
+                android:id="@+id/check_version"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:left_image="@drawable/mine_encourage_icon"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_text="版本更新"
+                app:left_textView_textSize="15sp" />
 
 
             <TextView
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="45dp"
-                android:text="其他"
-                android:textColor="@color/black_1"
-                android:textSize="22sp" />
-
-            <LinearLayout
+                android:id="@+id/exit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/clear_cache"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="清除缓存"
-                        android:textColor="@color/black_1" />
-
-                    <TextView
-                        android:id="@+id/clear_cache_size"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="8dp"
-                        android:gravity="right" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/version_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/version_name"
-                        android:textColor="@color/black_1" />
-
-                    <TextView
-                        android:id="@+id/version_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="8dp"
-                        android:gravity="right" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/star_me"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:drawableRight="@mipmap/right_icon"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@string/star_me"
-                    android:textColor="@color/black_1" />
-
-
-                <TextView
-                    android:id="@+id/about_us"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:drawableRight="@mipmap/right_icon"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@string/about_us"
-                    android:textColor="@color/black_1" />
-
-                <TextView
-                    android:id="@+id/exit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/xshape_tab_mine_safe_back_bg"
-                    android:textColor="#ff5200"
-                    android:gravity="center"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="35dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:text="@string/exit_safely"
-                    android:textSize="17sp" />
-            </LinearLayout>
-
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/xshape_tab_mine_safe_back_bg"
+                android:gravity="center"
+                android:paddingBottom="13dp"
+                android:paddingTop="13dp"
+                android:text="@string/exit_safely"
+                android:textColor="#ff5200"
+                android:textSize="17sp" />
         </LinearLayout>
 
 

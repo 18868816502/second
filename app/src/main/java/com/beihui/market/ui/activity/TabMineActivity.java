@@ -70,6 +70,15 @@ import cn.xiaoneng.uiapi.Ntalker;
  * 我的 模块 Fragment
  */
 public class TabMineActivity extends BaseComponentActivity implements TabMineContract.View {
+    @Override
+    public void navigateRemind(String userId) {
+
+    }
+
+    @Override
+    public void navigateKaolaGroup(String userId, String userName) {
+
+    }
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -224,7 +233,6 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
                     //pv，uv统计
 //                    DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYCUSTOMERSERVICE);
 
-                    presenter.clickContactKefu();
                 }
                 break;
 
@@ -452,12 +460,6 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
     @Override
     public void navigateInvitation(String userId) {
         startActivity(new Intent(this, InvitationActivity.class));
-    }
-
-    @Override
-    public void navigateContactKefu(String userId, String userName) {
-        //调起聊天窗口
-        Ntalker.getBaseInstance().startChat(this, Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
     }
 
     @Override

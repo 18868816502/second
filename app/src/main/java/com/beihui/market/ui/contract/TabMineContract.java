@@ -10,9 +10,14 @@ public interface TabMineContract {
     interface Presenter extends BasePresenter {
 
         /**
-         * 点击联系客服
+         * 点击考拉圈圈
          */
-        void clickContactKefu();
+        void clickKaolaGroup();
+
+        /**
+         * 点击消息
+         */
+        void clickRemind();
 
         /**
          * 点击消息
@@ -84,7 +89,14 @@ public interface TabMineContract {
         void navigateUserProfile(String userId);
 
         /**
-         * 导航至消息中心
+         * 导航至提醒界面
+         *
+         * @param userId 用户id
+         */
+        void navigateRemind(String userId);
+
+        /**
+         * 导航至提醒界面
          *
          * @param userId 用户id
          */
@@ -117,9 +129,9 @@ public interface TabMineContract {
         void navigateInvitation(String userId);
 
         /**
-         * 导航至联系客服
+         * 导航至考拉圈圈
          */
-        void navigateContactKefu(String userId, String userName);
+        void navigateKaolaGroup(String userId, String userName);
 
         /**
          * 导航至帮助与反馈
@@ -144,8 +156,10 @@ public interface TabMineContract {
 
         /**
          * 消息数量
+         *
          * @param data
          */
         void updateMessageNum(String data);
+
     }
 }

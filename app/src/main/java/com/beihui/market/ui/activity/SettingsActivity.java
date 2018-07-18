@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
@@ -41,16 +42,9 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.version_name)
-    TextView versionNameTv;
-    @BindView(R.id.clear_cache_size)
-    TextView cacheSize;
 
     @Inject
     SettingPresenter presenter;
-
-    //清楚缓存的大小
-    private String mCacheSize;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
 
@@ -78,16 +72,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Override
     public void initDatas() {
         presenter.onStart();
-        //计算清除缓存大小
-        try {
-            mCacheSize = DataCleanManager.getFormatSize(DataCleanManager.getInternalCacheSize()
-                    + DataCleanManager.getExternalCacheSize());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (mCacheSize != null) {
-            cacheSize.setText(mCacheSize);
-        }
     }
 
     @Override
@@ -99,34 +83,18 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 .inject(this);
     }
 
-    @OnClick({R.id.clear_cache,R.id.change_psd, R.id.star_me, R.id.about_us, R.id.exit, R.id.version_container})
+    @OnClick({R.id.about_kaola, R.id.star_me, R.id.check_version})
     void onViewClicked(View view) {
         switch (view.getId()) {
-            //清除缓存
-            case R.id.clear_cache:
-                boolean a = DataCleanManager.cleanInternalCache();
-                boolean b = DataCleanManager.cleanExternalCache();
-                if (a && b) {
-                    cacheSize.setText("0M");
-                } else {
-                    cacheSize.setText("清除失败");
-                }
-                break;
-            //修改登录密码
-            case R.id.change_psd:
-                //umeng统计
-                Statistic.onEvent(Events.SETTING_CHANGE_PASSWORD);
-
-
-                Intent toChangePsd = new Intent(this, ChangePsdActivity.class);
-                startActivity(toChangePsd);
+            case R.id.about_kaola:
+                Toast.makeText(this, "kaola", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.star_me:
-                String model=android.os.Build.MODEL;
+                String model = android.os.Build.MODEL;
                 //品牌
-                String brand=android.os.Build.BRAND;
+                String brand = android.os.Build.BRAND;
                 //制造商
-                String manufacturer=android.os.Build.MANUFACTURER;
+                String manufacturer = android.os.Build.MANUFACTURER;
                 Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
                 if ("samsung".equals(manufacturer)) {
                     goToSamsungappsMarket();
@@ -138,10 +106,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                         e.printStackTrace();
                     }
                 }
-                break;
-            case R.id.about_us:
-                Intent toAboutUs = new Intent(this, AboutUsActivity.class);
-                startActivity(toAboutUs);
                 break;
             case R.id.exit:
                 //umeng统计
@@ -165,7 +129,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                             }
                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                 break;
-            case R.id.version_container:
+            case R.id.check_version:
                 presenter.checkVersion();
                 break;
         }
@@ -175,7 +139,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     /**
      * https://www.cnblogs.com/qwangxiao/p/8030389.html
      */
-    public void goToSamsungappsMarket(){
+    public void goToSamsungappsMarket() {
         Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" + getApplicationInfo().packageName);
         Intent goToMarket = new Intent();
         goToMarket.setClassName("com.sec.android.app.samsungapps", "com.sec.android.app.samsungapps.Main");
@@ -195,13 +159,11 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Override
     public void showLatestVersion(String version) {
         if (version != null) {
-            versionNameTv.setText(version);
         }
     }
 
     @Override
     public void showLogoutSuccess() {
-
 
         //发送用户退出全局事件
         EventBus.getDefault().post(new UserLogoutEvent());
