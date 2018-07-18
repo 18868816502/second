@@ -1055,7 +1055,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/dataDictionary/message")
     Observable<ResultEntity> onPushClicked(@Field("userId") String userId, @Field("messageId") String message);
 
-
     /**
      * 查询消息数
      */

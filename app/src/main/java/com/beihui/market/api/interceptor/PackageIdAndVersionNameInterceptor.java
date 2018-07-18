@@ -54,7 +54,6 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
                     sb.append("&" + next.getKey()).append("=").append(next.getValue());
                 }
             }
-            System.out.println("GET URL=" + url);
             request = request.newBuilder().url(url).build();
         } else if ("POST".equals(request.method())) {
             RequestBody body = request.body();
@@ -68,10 +67,6 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
                     .addEncoded("packageId", App.sChannelId)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .build();
-            for (int i = 0; i < formBody.size(); i++) {
-                System.out.println("==post==" + formBody.encodedName(i));
-                System.out.println("==post==" + formBody.encodedValue(i));
-            }
             request = request.newBuilder().post(formBody).build();
         }
 

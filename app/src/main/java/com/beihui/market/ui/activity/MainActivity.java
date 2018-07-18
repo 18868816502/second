@@ -333,7 +333,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-        selectTab(R.id.tab_account);
+        selectTab(R.id.tab_forms_root);
     }
 
     @Override
@@ -438,7 +438,7 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabForm);
                 }
                 ft.show(tabForm);
-                ImmersionBar.with(this).statusBarDarkFont(true).init();
+                ImmersionBar.with(this).statusBarDarkFont(false).init();
 
                 /*mAddBill.setVisibility(View.GONE);
                 tabAccountText.setVisibility(View.VISIBLE);*/
@@ -454,7 +454,7 @@ public class MainActivity extends BaseComponentActivity {
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);
-                ImmersionBar.with(this).statusBarDarkFont(false).init();
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
 
                 /*mAddBill.setVisibility(View.VISIBLE);
                 tabAccountText.setVisibility(View.GONE);*/

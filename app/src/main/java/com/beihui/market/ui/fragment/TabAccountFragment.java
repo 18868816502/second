@@ -76,7 +76,7 @@ import zhy.com.highlight.HighLight;
 /**
  * 账单 模块 Fragment
  */
-public class TabAccountFragment extends BaseTabFragment implements TabAccountContract.View{
+public class TabAccountFragment extends BaseTabFragment implements TabAccountContract.View {
 
 
     @BindView(R.id.tb_tab_account_header_tool_bar)
@@ -137,7 +137,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainEvent(UserLogoutEvent event){
+    public void onMainEvent(UserLogoutEvent event) {
         if (mAdapter != null) {
             showDebtInfo(null);
             showInDebtList(new ArrayList<TabAccountNewBean>());
@@ -278,7 +278,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
             @Override
             public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+                if (total != null && pageNo * 10 < total && mAdapter.showAll()) {
                     presenter.loadInDebtList(2, pageNo);
                 } else {
                     mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
@@ -291,7 +291,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         mAdapter.setHeaderViewStatusChange(new XTabAccountRvAdapter.HeaderViewStatusChange() {
             @Override
             public void statusChange(boolean isShowAll) {
-                if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+                if (total != null && pageNo * 10 < total && mAdapter.showAll()) {
                     mRecyclerView.setCanPullUp(true);
                 } else {
                     mRecyclerView.setCanPullUp(false);
@@ -330,7 +330,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                     max = 1;
                 }
 
-                TextView textViewTitle = (TextView)manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
+                TextView textViewTitle = (TextView) manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
                 //TitleBar背景色透明度
 //                mTitle.setBackgroundColor(Color.argb((int) (max * 255), 20, 74, 158));
                 mTitle.setAlpha(max);
@@ -362,7 +362,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     /**
      * 刷新数据
      */
-    public void refreshData(){
+    public void refreshData() {
         presenter.onRefresh();
     }
 
@@ -417,6 +417,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     /**
      * 加载数据
+     *
      * @param list 账单列表
      */
     @Override
@@ -461,7 +462,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             line.setVisibility(View.VISIBLE);
         }
 
-        if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+        if (total != null && pageNo * 10 < total && mAdapter.showAll()) {
             mRecyclerView.setCanPullUp(true);
         } else {
             mRecyclerView.setCanPullUp(false);
@@ -470,6 +471,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
     /**
      * 加载数据
+     *
      * @param list 账单列表
      */
     @Override
@@ -479,7 +481,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
         mPullToRefreshListener.onLoadMore(mPullContainer);
 
-        if (total != null && pageNo*10 < total && mAdapter.showAll()) {
+        if (total != null && pageNo * 10 < total && mAdapter.showAll()) {
             mRecyclerView.setCanPullUp(true);
         } else {
             mRecyclerView.setCanPullUp(false);
@@ -500,7 +502,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     /**
      * 查询公告
      */
-    public void queryNotice(){
+    public void queryNotice() {
         /**
          * 查询公告
          */
