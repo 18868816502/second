@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 /**
  * @author xhb
- * 存储用户信息
+ *         存储用户信息
  */
 public class UserHelper {
 
@@ -114,6 +114,11 @@ public class UserHelper {
         saveUserToSp(context);
     }
 
+    /*判断用户是否登陆状态*/
+    public boolean isLogin() {
+        return sInstance.getProfile() != null && sInstance.getProfile().getId() != null;
+    }
+
     private void saveUserToSp(Context context) {
         String json = null;
         if (profile != null) {
@@ -129,8 +134,6 @@ public class UserHelper {
         SharedPreferences sp = context.getSharedPreferences("UserHelper", Context.MODE_PRIVATE);
         return sp.getString("profile", null);
     }
-
-
 
     public static class Profile {
         String id;

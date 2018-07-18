@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,13 +37,11 @@ import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
 import com.beihui.market.ui.adapter.AccountFlowLoanSearchAdapter;
 import com.beihui.market.ui.contract.DebtChannelContract;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
-import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanStickyHeaderItemDeco;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AlphabetIndexBar;
@@ -69,18 +66,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
-
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * Created by admin on 2018/6/15.
@@ -219,7 +211,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             isLockEtLoan = false;
             //金额
             lockEtInput = true;
-            etInputPrice.setText(FormatNumberUtils.FormatNumberForTabDouble(debtNormalDetail.getTermPayableAmount())+"");
+            etInputPrice.setText(FormatNumberUtils.FormatNumberForTabDouble(debtNormalDetail.getTermPayableAmount()) + "");
             lockEtInput = false;
 
             if (debtNormalDetail.getTermPayableAmount() > 1000000D) {
@@ -236,17 +228,17 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             }
             if (2 == debtNormalDetail.getTermType()) {
                 //月
-                mFirstPayNormalTime.setText((1 == debtNormalDetail.cycle? "每月" : "每"+debtNormalDetail.cycle+"月")+" "+(debtNormalDetail.getTerm() == -1 ? "循环": debtNormalDetail.getTerm()+"期"));
+                mFirstPayNormalTime.setText((1 == debtNormalDetail.cycle ? "每月" : "每" + debtNormalDetail.cycle + "月") + " " + (debtNormalDetail.getTerm() == -1 ? "循环" : debtNormalDetail.getTerm() + "期"));
             }
             if (3 == debtNormalDetail.getTermType()) {
                 //年
-                mFirstPayNormalTime.setText(("每年 "+(debtNormalDetail.getTerm() == -1 ? "循环": debtNormalDetail.getTerm()+"期")));
+                mFirstPayNormalTime.setText(("每年 " + (debtNormalDetail.getTerm() == -1 ? "循环" : debtNormalDetail.getTerm() + "期")));
             }
             // 备注
             if (!TextUtils.isEmpty(debtNormalDetail.getRemark())) {
                 remarks = debtNormalDetail.getRemark().split(",");
                 if (debtNormalDetail.getRemark().length() > 4) {
-                    remarkContent.setText(debtNormalDetail.getRemark().substring(0, 4)+"...");
+                    remarkContent.setText(debtNormalDetail.getRemark().substring(0, 4) + "...");
                 } else {
                     remarkContent.setText(debtNormalDetail.getRemark());
                 }
@@ -329,13 +321,13 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 //                etLoan.setFocusableInTouchMode(true);
 //                etLoan.requestFocus();
 
-                    etLoan.clearFocus();
-                    etLoan.setFocusable(false);
-                    etInputPrice.setFocusable(true);
-                    etInputPrice.requestFocus();
-                    customKeyboardManager.showSoftKeyboard(etInputPrice);
-                    InputMethodUtil.closeSoftKeyboard(activity);
-                }
+                etLoan.clearFocus();
+                etLoan.setFocusable(false);
+                etInputPrice.setFocusable(true);
+                etInputPrice.requestFocus();
+                customKeyboardManager.showSoftKeyboard(etInputPrice);
+                InputMethodUtil.closeSoftKeyboard(activity);
+            }
         });
 
         recyclerView.addItemDecoration(new AccountFlowLoanItemDeco());
@@ -364,38 +356,38 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         /**
          * 列表滑动驱动自定义键盘的显示隐藏问题
          */
-       recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-           @Override
-           public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-           }
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            }
 
-           @Override
-           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-               int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
 
-               if (recyclerViewSearch.getVisibility() == View.INVISIBLE) {
-                   String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
-                   for (int i = 0; i < alphabetCountList.length; i++) {
-                       if (iconInitials.equals(alphabetCountList[i])) {
-                           alphabetIndexBar.selectedIndex = i;
-                           alphabetIndexBar.invalidate();
-                       }
-                   }
-               }
+                if (recyclerViewSearch.getVisibility() == View.INVISIBLE) {
+                    String iconInitials = list.get(firstVisibleItemPosition).iconInitials;
+                    for (int i = 0; i < alphabetCountList.length; i++) {
+                        if (iconInitials.equals(alphabetCountList[i])) {
+                            alphabetIndexBar.selectedIndex = i;
+                            alphabetIndexBar.invalidate();
+                        }
+                    }
+                }
 
 
-               if (Math.abs(dy) <= 2) {
-                   return;
-               }
-              if (dy > 0) {
-                  customKeyboardManager.hideSoftKeyboard(etInputPrice, 1);
-                  InputMethodUtil.closeSoftKeyboard(activity);
-              } else {
-                  //向上滚动  显示自定义键盘
-                  customKeyboardManager.showSoftKeyboard(etInputPrice);
-              }
-           }
-       });
+                if (Math.abs(dy) <= 2) {
+                    return;
+                }
+                if (dy > 0) {
+                    customKeyboardManager.hideSoftKeyboard(etInputPrice, 1);
+                    InputMethodUtil.closeSoftKeyboard(activity);
+                } else {
+                    //向上滚动  显示自定义键盘
+                    customKeyboardManager.showSoftKeyboard(etInputPrice);
+                }
+            }
+        });
 
 
         customKeyboardManager = new CustomKeyboardManager(activity);
@@ -432,7 +424,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 //数字不拦截操作
                 if (primaryCode >= 48 && primaryCode <= 57) {
                     if (currentContent.substring(1).contains("+") || currentContent.substring(1).contains("-")) {
-                        if (temp.length()<=0 && primaryCode == 48) {
+                        if (temp.length() <= 0 && primaryCode == 48) {
                             return true;
                         }
                         if ("0".equals(temp.toString()) && primaryCode == 48) {
@@ -445,7 +437,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                                 return true;
                             }
                         }
-                        if (Double.parseDouble(temp.toString()+(primaryCode - 48)) > 999999999D) {
+                        if (Double.parseDouble(temp.toString() + (primaryCode - 48)) > 999999999D) {
                             ToastUtils.showToast(activity, "输入的金额太大啦");
                             return true;
                         }
@@ -456,7 +448,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                             etCurrent.setText(primaryCode - 48 + "");
                             return true;
                         }
-                        if (etCurrent.getText().toString().length()==1 && "0".equals(etCurrent.getText().toString())) {
+                        if (etCurrent.getText().toString().length() == 1 && "0".equals(etCurrent.getText().toString())) {
                             etCurrent.setText(primaryCode - 48 + "");
                             return true;
                         }
@@ -483,12 +475,12 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 //如果是算术运算符
                 if ((primaryCode == 43 || primaryCode == 45) && currentContent.length() > 1) {
                     if (currentContent.length() == 1) {
-                        if (currentContent.equals("+") ||currentContent.equals("-")) {
+                        if (currentContent.equals("+") || currentContent.equals("-")) {
                             return true;
                         } else {
                             sum = new BigDecimal(currentContent);
                         }
-                    }else if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
+                    } else if ((!currentContent.substring(1).contains("+") && !currentContent.substring(1).contains("-"))) {
                         sum = new BigDecimal(currentContent);
                     } else {
 
@@ -515,14 +507,14 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
                 //如果是小数点
                 if (primaryCode == 46) {
-                    if ("+-".contains(currentContent.substring(currentContent.length() - 1, currentContent.length()))){
-                        etCurrent.setText(currentContent+"0.");
+                    if ("+-".contains(currentContent.substring(currentContent.length() - 1, currentContent.length()))) {
+                        etCurrent.setText(currentContent + "0.");
                         temp.append("0.");
                         return true;
                     } else if (temp.length() > 0) {
                         if (!temp.toString().contains(".")) {
                             temp.append(".");
-                            etCurrent.setText(currentContent+".");
+                            etCurrent.setText(currentContent + ".");
                         }
                         return true;
                     } else if (sum != null && sum.toString().length() > 0 && temp.toString().contains(".")) {
@@ -548,7 +540,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 //求和
                 if (primaryCode == 61) {
                     if ("确定".equals(getKeys().get(11).label)) {
-                        ((AccountFlowActivity)activity).createAccount();
+                        ((AccountFlowActivity) activity).createAccount();
                         return true;
                     }
                     if (temp.length() > 0) {
@@ -602,7 +594,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
         etLoan.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -640,8 +633,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
             @Override
             public void afterTextChanged(Editable s) {
-                    //账单名称
-                    map.put("channelName", s.toString());
+                //账单名称
+                map.put("channelName", s.toString());
             }
         });
     }
@@ -658,8 +651,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                                    if (result.isSuccess()) {
                                        if (result.getData().size() > 0) {
                                            /**
-                                        * 判断是否是编辑账单
-                                        */
+                                            * 判断是否是编辑账单
+                                            */
                                            if (debtNormalDetail == null) {
 
                                                Glide.with(activity).load(result.getData().get(0).logo).transform(new GlideCircleTransform(activity)).into(ivCustomIcon);
@@ -695,7 +688,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
     private void showCustomeReporty() {
         recyclerViewSearch.setVisibility(View.VISIBLE);
-        adapterCustomeIcon= new AccountFlowLoanSearchAdapter(activity);
+        adapterCustomeIcon = new AccountFlowLoanSearchAdapter(activity);
         final GridLayoutManager manager = new GridLayoutManager(activity, 5);
         manager.setOrientation(GridLayoutManager.VERTICAL);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -733,7 +726,6 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             }
         });
     }
-
 
 
     public List<LoanAccountIconBean> marryList = new ArrayList<>();
@@ -876,7 +868,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
      * 控件的点击事件
      */
     @OnClick({R.id.tv_fg_first_pay_loan_date, R.id.ll_account_flow_remark, R.id.tv_fg_first_pay_loan_times})
-    public void ononItemClicked(View view){
+    public void ononItemClicked(View view) {
         InputMethodUtil.closeSoftKeyboard(activity);
         switch (view.getId()) {
             case R.id.tv_fg_first_pay_loan_date:
@@ -913,7 +905,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         }
                         map.put("remark", text);
                         if (text.length() > 4) {
-                            remarkContent.setText(text.substring(0, 4)+"...");
+                            remarkContent.setText(text.substring(0, 4) + "...");
                         } else {
                             remarkContent.setText(text);
                         }
@@ -997,8 +989,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 list.add(j + "期");
             }
             if (i == 1) {
-                for (int k = 48; k <= 360; k+=12) {
-                    list.add(k + "期("+k/12+"年)");
+                for (int k = 48; k <= 360; k += 12) {
+                    list.add(k + "期(" + k / 12 + "年)");
                 }
             }
             option2.add(list);
@@ -1015,17 +1007,17 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
 
                 if (options1 < 11) {
                     map.put("termType", "2");
-                    map.put("cycle", options1+1+"");
+                    map.put("cycle", options1 + 1 + "");
                 } else {
                     map.put("termType", "3");
                     map.put("cycle", "1");
                 }
                 if (options2 == 0) {
                     map.put("term", "-1");
-                } else if (options2 <= 36){
-                    map.put("term", options2+"");
+                } else if (options2 <= 36) {
+                    map.put("term", options2 + "");
                 } else {
-                    map.put("term", ((options2 - 36)*12+36)+"");
+                    map.put("term", ((options2 - 36) * 12 + 36) + "");
                 }
             }
         }).setCancelText("取消")
@@ -1056,11 +1048,11 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                 //月
                 int term = debtNormalDetail.getTerm();
                 if (term == -1) {
-                    pickerView.setSelectOptions(debtNormalDetail.cycle-1, 0);
+                    pickerView.setSelectOptions(debtNormalDetail.cycle - 1, 0);
                 } else if (term <= 36) {
-                    pickerView.setSelectOptions(debtNormalDetail.cycle-1, term);
+                    pickerView.setSelectOptions(debtNormalDetail.cycle - 1, term);
                 } else {
-                    pickerView.setSelectOptions(debtNormalDetail.cycle-1, 36+(term-36)/12);
+                    pickerView.setSelectOptions(debtNormalDetail.cycle - 1, 36 + (term - 36) / 12);
                 }
             }
             if (3 == debtNormalDetail.getTermType()) {

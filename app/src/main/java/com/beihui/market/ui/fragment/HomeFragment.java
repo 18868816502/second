@@ -1,5 +1,6 @@
 package com.beihui.market.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +21,7 @@ import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.activity.AddBillActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.umeng.NewVersionEvents;
@@ -105,18 +107,19 @@ public class HomeFragment extends BaseTabFragment {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-        UserHelper userHelper = UserHelper.getInstance(getActivity());
-        appComponent.getApi().queryTabAccountHeaderInfo(userHelper.getProfile().getId(), 6)
-                .compose(RxResponse.<DebtAbstract>compatT())
-                .subscribe(new ApiObserver<DebtAbstract>() {
-                    @Override
-                    public void onNext(@NonNull DebtAbstract data) {
-                        //账单头
-                        //x月应还
-                        mTvMonthNum.setText(String.format(getString(R.string.x_month_repay), "6"));
-                        mTvBillNum.setText(String.format("￥%.2f", data.unRepayAmount));
-                    }
-                });
+        UserHelper.Profile profile = UserHelper.getInstance(getActivity()).getProfile();
+        if (profile != null && profile.getId() != null) {
+            appComponent.getApi().queryTabAccountHeaderInfo(profile.getId(), 6)
+                    .compose(RxResponse.<DebtAbstract>compatT())
+                    .subscribe(new ApiObserver<DebtAbstract>() {
+                        @Override
+                        public void onNext(@NonNull DebtAbstract data) {
+                            //账单头
+                            //x月应还
+                            mTvMonthNum.setText(String.format(getString(R.string.x_month_repay), "6"));
+                            mTvBillNum.setText(String.format("￥%.2f", data.unRepayAmount));
+                        }
+                    });
         /*appComponent.getApi().queryTabAccountList(userHelper.getProfile().getId(), 1)
                 .compose(RxResponse.<List<TabAccountNewBean>>compatT())
                 .subscribe(new ApiObserver<List<TabAccountNewBean>>() {
@@ -125,14 +128,15 @@ public class HomeFragment extends BaseTabFragment {
                         //账单列表
                     }
                 });*/
-        appComponent.getApi().queryTabAccountList(userHelper.getProfile().getId(), 1, 1, 10)
-                .compose(RxResponse.<List<TabAccountNewBean>>compatT())
-                .subscribe(new ApiObserver<List<TabAccountNewBean>>() {
-                    @Override
-                    public void onNext(@NonNull List<TabAccountNewBean> data) {
-                        //
-                    }
-                });
+            appComponent.getApi().queryTabAccountList(profile.getId(), 1, 1, 10)
+                    .compose(RxResponse.<List<TabAccountNewBean>>compatT())
+                    .subscribe(new ApiObserver<List<TabAccountNewBean>>() {
+                        @Override
+                        public void onNext(@NonNull List<TabAccountNewBean> data) {
+                            //
+                        }
+                    });
+        }
     }
 
     @Override
@@ -160,7 +164,7 @@ public class HomeFragment extends BaseTabFragment {
                 break;
             //添加账单
             case R.id.tv_add_account_bill:
-                ToastUtils.showToast(getActivity(), "添加账单");
+                startActivity(new Intent(getActivity(), AddBillActivity.class));
                 break;
             //导入信用卡
             case R.id.tv_credit_in:
