@@ -222,9 +222,9 @@ public class CommonUtils {
                 char c = pNumber.charAt(i);
                 if (i >= 3 && i <= 6) {
                     sb.append('*');
-                } else if (i == 2 ) {
+                } else if (i == 2) {
                     sb.append(c).append(" ");
-                }else if (i == 7) {
+                } else if (i == 7) {
                     sb.append(" ").append(c);
                 } else {
                     sb.append(c);
@@ -638,7 +638,7 @@ public class CommonUtils {
     public static String getChaneseNum(int num) {
         if (num == 0) {
             return "每月";
-        }  else if (num == 1) {
+        } else if (num == 1) {
             return "每月";
         } else if (num == 2) {
             return "每2月";
@@ -662,6 +662,32 @@ public class CommonUtils {
             return "每11月";
         } else {
             return "每年";
+        }
+    }
+
+    public static String getDay(int num) {
+        if (num == 0) {
+            return "提前一天";
+        } else if (num == 1) {
+            return "提前二天";
+        } else if (num == 2) {
+            return "提前三天";
+        } else if (num == 3) {
+            return "提前四天";
+        } else if (num == 4) {
+            return "提前五天";
+        } else if (num == 5) {
+            return "提前六天";
+        } else if (num == 6) {
+            return "提前七天";
+        } else if (num == 7) {
+            return "提前八天";
+        } else if (num == 8) {
+            return "提前九天";
+        } else if (num == 9) {
+            return "提前十天";
+        } else {
+            return "";
         }
     }
 
