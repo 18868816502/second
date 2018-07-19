@@ -1,12 +1,9 @@
 package com.beihui.market.ui.adapter;
 
 
-import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.AccountFlowIconBean;
-import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;

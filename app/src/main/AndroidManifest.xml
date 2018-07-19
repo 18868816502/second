@@ -247,6 +247,14 @@
             android:name=".ui.activity.TabNewsWebViewSecordActivity"
             android:screenOrientation="portrait" />
 
+        <!--4.2.0添加账单-->
+        <activity
+            android:name=".tang.activity.AddBillActivity"
+            android:screenOrientation="portrait" />
+        <!--4.2.0贷款账单-->
+        <activity
+            android:name=".tang.activity.LoanBillActivity"
+            android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <activity
             android:name=".ui.activity.FastAddDebtActivity"
