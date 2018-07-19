@@ -307,4 +307,6 @@ dependencies {
     //Permission
     compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
     apt "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
+
+    compile 'com.just.agentweb:agentweb:4.0.2'
 }
