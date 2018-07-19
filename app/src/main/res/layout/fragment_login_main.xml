@@ -94,29 +94,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:text="你已阅读并同意《考拉记账用户协议》"
+                    android:text="我已阅读并同意《考拉记账用户协议》"
                     android:textColor="@color/black_2"
                     android:textSize="12sp" />
 
             </LinearLayout>
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:gravity="center"
-                android:text="一键登录"
-                android:textColor="@color/black_2"
-                android:textSize="11sp" />
-
             <ImageView
                 android:id="@+id/iv_login_wechat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="60dp"
                 android:src="@drawable/login_wechat_icon" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="一键登录"
+                android:textColor="@color/black_2"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>
