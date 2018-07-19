@@ -119,6 +119,11 @@ public class UserHelper {
         return sInstance.getProfile() != null && sInstance.getProfile().getId() != null;
     }
 
+    public String id() {
+        if (isLogin()) return sInstance.getProfile().getId();
+        else return "";
+    }
+
     private void saveUserToSp(Context context) {
         String json = null;
         if (profile != null) {

@@ -3,11 +3,9 @@ package com.beihui.market.tang.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.beihui.market.R;
-import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -18,11 +16,8 @@ import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.ui.rvdecoration.AccountFlowLoanStickyHeaderItemDeco;
-import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.AlphabetIndexBar;
-import com.beihui.market.view.GlideCircleTransform;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 

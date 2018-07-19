@@ -25,6 +25,7 @@ import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.GroupProductBean;
+import com.beihui.market.entity.HomeData;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -65,6 +66,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -77,7 +79,7 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
- * 请求接口
+ *         请求接口
  */
 public interface ApiService {
 
@@ -200,9 +202,10 @@ public interface ApiService {
 
     /**
      * 获取网贷账单详情
-     * @param userId 用户ID
-     * @param liabilitiesId 	账单Id
-     * @param billId 网贷分期账单Id 每一期的ID
+     *
+     * @param userId        用户ID
+     * @param liabilitiesId 账单Id
+     * @param billId        网贷分期账单Id 每一期的ID
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/netLoan/loadBill")
@@ -219,7 +222,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/netLoan/updateRemark")
     Observable<ResultEntity> updateLoanDebtBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
-
 
 
     /**
@@ -277,14 +279,14 @@ public interface ApiService {
     Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(@Field("userId") String userId, @Field("billType") int billType);
 
     /**
+     * @param userId      用户Id
+     * @param billStatus  账单状态 1-待还 2-已还 3-逾期
+     * @param firstScreen 是不是首屏 true:是 false：不是
+     * @param pageSize    一页记录数
+     * @param pageNo      页码
      * @author xhb
      * 获取头信息 以及未还总额 已还总额
      * 获取账单信息摘要
-     * @param userId 用户Id
-     * @param billStatus 账单状态 1-待还 2-已还 3-逾期
-     * @param firstScreen 是不是首屏 true:是 false：不是
-     * @param pageSize 一页记录数
-     * @param pageNo 页码
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/bill/index")
@@ -297,12 +299,12 @@ public interface ApiService {
 
     /**
      * 更新还款状态
-     * @param userId 用户ID
-     * @param liabilitiesDetailId 	网贷分期账单Id 每一期的ID
-     * @param repayAmount 还款金额 默认全额
-     * @param status 	状态 1-待还 2-已还
+     *
+     * @param userId              用户ID
+     * @param liabilitiesDetailId 网贷分期账单Id 每一期的ID
+     * @param repayAmount         还款金额 默认全额
+     * @param status              状态 1-待还 2-已还
      */
-
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("repayAmount") double repayAmount, @Field("status") int status);
@@ -310,7 +312,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
-
 
     /**
      * 获取信用卡账单详情
@@ -458,7 +459,7 @@ public interface ApiService {
     @POST(BASE_PATH + "/wx/newAuthVerify")
 //    Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
 //                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId, @Field("platform") String platform);
- Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
+    Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
                                                                        @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("platform") String platform);
 
     /**
@@ -522,7 +523,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/logout")
     Observable<ResultEntity> logout(@Field("userId") String id);
-
 
 
     /**
@@ -727,6 +727,7 @@ public interface ApiService {
 
     /**
      * 获取我的账单
+     *
      * @author xhb
      * /accounting/myBillList 换成 /accounting/newMyBillList
      */
@@ -754,7 +755,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/insertFeedback")
-    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content,@Field("image") String image, @Field("imageName") String imageName);
+    Observable<ResultEntity> submitFeedback(@Field("userId") String userId, @Field("content") String content, @Field("image") String image, @Field("imageName") String imageName);
 
     /**
      * 用户反馈
@@ -819,6 +820,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/bookKeeping/save")
     Observable<ResultEntity> saveFastDebt(@FieldMap Map<String, Object> params);
+
     /**
      * 获取银行列表
      */
@@ -840,9 +842,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/creditcard/updateCard")
     Observable<ResultEntity> updateCreditCardDebt(@Field("userId") String userId, @Field("cardId") String cardId,
                                                   @Field("billDay") int billDay, @Field("dueDay") int dueDay, @Field("amount") double amount);
-
-
-
 
 
     /**
@@ -1072,4 +1071,9 @@ public interface ApiService {
 
 
     /**********************************************************************************************************/
+
+    /*v4.2.0首页数据*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/accounting/index/v420")
+    Observable<ResultEntity<HomeData>> home(@Field("userId") String userId, @Field("pageNo") String pageNo);
 }

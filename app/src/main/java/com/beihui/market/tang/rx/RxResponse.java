@@ -53,13 +53,13 @@ public class RxResponse {
         };
     }
 
-    public static ObservableTransformer<ResultEntity<Object>, Object> compatO() {
-        return new ObservableTransformer<ResultEntity<Object>, Object>() {
+    public static ObservableTransformer<ResultEntity, Object> compatO() {
+        return new ObservableTransformer<ResultEntity, Object>() {
             @Override
-            public ObservableSource<Object> apply(@NonNull Observable<ResultEntity<Object>> upstream) {
-                return upstream.flatMap(new Function<ResultEntity<Object>, ObservableSource<Object>>() {
+            public ObservableSource<Object> apply(@NonNull Observable<ResultEntity> upstream) {
+                return upstream.flatMap(new Function<ResultEntity, ObservableSource<Object>>() {
                     @Override
-                    public ObservableSource<Object> apply(@NonNull final ResultEntity<Object> entity) throws Exception {
+                    public ObservableSource<Object> apply(@NonNull final ResultEntity entity) throws Exception {
                         if (entity.isSuccess()) {
                             return Observable.create(new ObservableOnSubscribe<Object>() {
                                 @Override

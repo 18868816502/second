@@ -1,34 +1,49 @@
 package com.beihui.market.ui.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.App;
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.entity.Bill;
 import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.HomeData;
 import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.injection.component.DaggerLoanDetailComponent;
 import com.beihui.market.tang.activity.AddBillActivity;
+import com.beihui.market.tang.adapter.HomeBillAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,6 +78,10 @@ public class HomeFragment extends BaseTabFragment {
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
 
+    private List<Bill> bills = null;
+    private HomeBillAdapter billAdapter;
+    private UserHelper userHelper;
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -95,48 +114,58 @@ public class HomeFragment extends BaseTabFragment {
             @Override
             public void onRefresh() {
                 mRefreshLayout.setRefreshing(false);
-                configureComponent(App.getInstance().getAppComponent());
+                request();
             }
         });
     }
 
     @Override
     public void initDatas() {
+        initRecyclerView();
+        request();
+    }
 
+    private void request() {
+        userHelper = UserHelper.getInstance(getActivity());
+        if (userHelper.isLogin()) {
+            //首页数据
+            Api.getInstance().home(userHelper.id(), "1")
+                    .compose(RxResponse.<HomeData>compatT())
+                    .subscribe(new ApiObserver<HomeData>() {
+                        @Override
+                        public void onNext(@NonNull HomeData data) {
+                            //账单头
+                            //x月应还
+                            mTvMonthNum.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));
+                            //应还金额
+                            mTvBillNum.setText(String.format("￥%.2f", data.getTotalAmount()));
+                            bills = data.getItem();
+                            billAdapter.setNewData(bills);
+                        }
+                    });
+        }
+    }
+
+    private void initRecyclerView() {
+        mRecycler.setItemAnimator(new DefaultItemAnimator());
+        mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        billAdapter = new HomeBillAdapter();
+        mRecycler.setAdapter(billAdapter);
+        billAdapter.setPayAllAndItemClickListener(new HomeBillAdapter.OnPayAllAndItemClickListener() {
+            @Override
+            public void payAllClick(int type, String billId, String recordId, double amount) {
+                showDialog(type, billId, recordId, amount);
+            }
+
+            @Override
+            public void itemClick(String recordId, String billId) {
+
+            }
+        });
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-        UserHelper.Profile profile = UserHelper.getInstance(getActivity()).getProfile();
-        if (profile != null && profile.getId() != null) {
-            appComponent.getApi().queryTabAccountHeaderInfo(profile.getId(), 6)
-                    .compose(RxResponse.<DebtAbstract>compatT())
-                    .subscribe(new ApiObserver<DebtAbstract>() {
-                        @Override
-                        public void onNext(@NonNull DebtAbstract data) {
-                            //账单头
-                            //x月应还
-                            mTvMonthNum.setText(String.format(getString(R.string.x_month_repay), "6"));
-                            mTvBillNum.setText(String.format("￥%.2f", data.unRepayAmount));
-                        }
-                    });
-        /*appComponent.getApi().queryTabAccountList(userHelper.getProfile().getId(), 1)
-                .compose(RxResponse.<List<TabAccountNewBean>>compatT())
-                .subscribe(new ApiObserver<List<TabAccountNewBean>>() {
-                    @Override
-                    public void onNext(@NonNull List<TabAccountNewBean> data) {
-                        //账单列表
-                    }
-                });*/
-            appComponent.getApi().queryTabAccountList(profile.getId(), 1, 1, 10)
-                    .compose(RxResponse.<List<TabAccountNewBean>>compatT())
-                    .subscribe(new ApiObserver<List<TabAccountNewBean>>() {
-                        @Override
-                        public void onNext(@NonNull List<TabAccountNewBean> data) {
-                            //
-                        }
-                    });
-        }
     }
 
     @Override
@@ -171,5 +200,67 @@ public class HomeFragment extends BaseTabFragment {
                 ToastUtils.showToast(getActivity(), "导入信用卡");
                 break;
         }
+    }
+
+    private void showDialog(final int type, final String billId, final String recordId, final double amount) {
+        final Dialog dialog = new Dialog(getActivity(), 0);
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dlg_pay_over_bill, null);
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.confirm:
+                        //pv，uv统计
+                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
+                        if (type == 2) {//信用卡记账
+                            Api.getInstance().updateCreditCardBillStatus(userHelper.id(), billId, 2)
+                                    .compose(RxResponse.compatO())
+                                    .subscribe(new ApiObserver<Object>() {
+                                        @Override
+                                        public void onNext(@NonNull Object data) {
+                                            request();
+                                        }
+                                    });
+                        } else if (type == 1) {//网贷记账
+                            Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
+                                    .compose(RxResponse.compatO())
+                                    .subscribe(new ApiObserver<Object>() {
+                                        @Override
+                                        public void onNext(@NonNull Object data) {
+                                            request();
+                                        }
+                                    });
+                        } else if (type == 3) {//快捷记账
+                            Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
+                                    .compose(RxResponse.compatO())
+                                    .subscribe(new ApiObserver<Object>() {
+                                        @Override
+                                        public void onNext(@NonNull Object data) {
+                                            request();
+                                        }
+                                    });
+                        }
+                        dialog.dismiss();
+                        break;
+                    case R.id.cancel:
+                        dialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
+        dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setAttributes(lp);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        dialog.show();
     }
 }

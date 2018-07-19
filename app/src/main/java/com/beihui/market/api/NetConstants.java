@@ -22,6 +22,7 @@ public class NetConstants {
 
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
+    public static final String ZHANG_DOMAIN = BuildConfig.ZHANG_DOMAIN;
 
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
 

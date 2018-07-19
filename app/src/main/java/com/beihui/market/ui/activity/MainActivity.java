@@ -449,7 +449,7 @@ public class MainActivity extends BaseComponentActivity {
             //账单
             case R.id.tab_account:
                 if (tabHome == null) {
-                    //tabHome = TabAccountFragment.newInstance();
+                    tabHome = TabAccountFragment.newInstance();
                     tabHome = DiscoverFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabHome);
                 }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.beihui.market.view.CustomSwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/csm_bill_wrap"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp">
+
+    <LinearLayout
+        android:id="@+id/ll_bill_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/x_card_background"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_home_bill_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/mine_bank_default_icon" />
+
+            <!--网贷名称 或者 信用卡名称-->
+            <TextView
+                android:id="@+id/tv_home_bill_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="招商银行"
+                android:textColor="@color/black_1"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <!--网贷名称 或者 信用卡名称-->
+            <TextView
+                android:id="@+id/tv_home_bill_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/x_tab_account_term_bg"
+                android:maxLines="1"
+                android:text="x月账单"
+                android:textColor="@color/black_2"
+                android:textSize="11dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_home_bill_synchronized"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="#e6eeff"
+                android:paddingBottom="1.5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="1.5dp"
+                android:text="同步"
+                android:textColor="#5f74a1"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_home_bill_time_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="65dp"
+                android:maxLines="1"
+                android:text="今天到期"
+                android:textColor="@color/black_1"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_home_bill_loan_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:maxLines="1"
+                android:text="1000.00"
+                android:textColor="@color/black_1"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_home_bill_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="5dp"
+            android:text="07.13"
+            android:textColor="#909298"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+    <!--卡信息-->
+    <FrameLayout
+        android:layout_width="90dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_home_bill_over"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_bill_over_red"
+            android:gravity="center"
+            android:lineSpacingExtra="1.5dp"
+            android:text="结清\n当期"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+    </FrameLayout>
+</com.beihui.market.view.CustomSwipeMenuLayout>

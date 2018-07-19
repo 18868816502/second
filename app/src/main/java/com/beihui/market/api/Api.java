@@ -35,6 +35,7 @@ import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.GroupProductBean;
+import com.beihui.market.entity.HomeData;
 import com.beihui.market.entity.HotLoanProduct;
 import com.beihui.market.entity.HotNews;
 import com.beihui.market.entity.Invitation;
@@ -116,11 +117,11 @@ public class Api {
     /**
      * 自定义拦截器 通过拦截器获取日志
      */
-    private static HttpLoggingInterceptor  interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+    private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
             //打印日志
-            Log.e("OkHttp--->message: ", message);
+            Log.w("OkHttp--->message: ", message);
         }
     });
 
@@ -139,7 +140,7 @@ public class Api {
 
         //设置拦截日志
 //        if (BuildConfig.DEBUG) {
-            builder.addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY));
+        builder.addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY));
 //        }
 
         return builder.build();
@@ -147,7 +148,8 @@ public class Api {
 
     private Api(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(NetConstants.DOMAIN)
+                //.baseUrl(NetConstants.DOMAIN)
+                .baseUrl(NetConstants.ZHANG_DOMAIN)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -160,6 +162,7 @@ public class Api {
 
     /**
      * 获取网贷记账图标
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId) {
@@ -168,6 +171,7 @@ public class Api {
 
     /**
      * 获取网贷记账图标
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId, String searchContent) {
@@ -176,6 +180,7 @@ public class Api {
 
     /**
      * 创建通用账单
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<CreateAccountReturnIDsBean>> createNormalAccount(Map<String, Object> params) {
@@ -184,6 +189,7 @@ public class Api {
 
     /**
      * 创建通用账单
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<CreateAccountReturnIDsBean>> createLoanAccount(Map<String, Object> params) {
@@ -192,6 +198,7 @@ public class Api {
 
     /**
      * 获取通用记账图标列表
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<List<AccountFlowIconBean>>> queryIconList(String userId, String type) {
@@ -200,6 +207,7 @@ public class Api {
 
     /**
      * 删除通用记账图标
+     *
      * @version 4.1.0
      */
     public Observable<ResultEntity> deleteLoanAccountIcon(String tallyId) {
@@ -208,22 +216,25 @@ public class Api {
 
     /**
      * 获取通用记账图标列表
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<List<AccountFlowIconBean>>> queryCustomIconList() {
-        return service.queryCustomIconList("1",  "LCustom");
+        return service.queryCustomIconList("1", "LCustom");
     }
 
     /**
      * 保存自定义图标
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity> saveCustomIcon(String userId, String iconName, String iconId, String type) {
-        return service.saveCustomIcon(userId,  iconName, iconId, type);
+        return service.saveCustomIcon(userId, iconName, iconId, type);
     }
 
     /**
      * 魔蝎银行列表
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<List<CreditCardBean>>> queryBankList() {
@@ -232,8 +243,9 @@ public class Api {
 
     /**
      * 魔蝎银行列表
+     *
      * @version 4.0.0
-     * @type  集合类型 1-待还 2-已还 3-全部
+     * @type 集合类型 1-待还 2-已还 3-全部
      */
     public Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(String userId, int collectType, int pageNo, int pageSize) {
         return service.queryTabAccountList(userId, collectType, pageNo, pageSize);
@@ -241,8 +253,9 @@ public class Api {
 
     /**
      * 魔蝎银行列表
+     *
      * @version 4.0.0
-     * @type  集合类型 1-待还 2-已还 3-全部
+     * @type 集合类型 1-待还 2-已还 3-全部
      */
     public Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(String userId, int collectType) {
         return service.queryTabAccountList(userId, collectType);
@@ -250,6 +263,7 @@ public class Api {
 
     /**
      * 分组贷超产品列表
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList() {
@@ -258,6 +272,7 @@ public class Api {
 
     /**
      * 进入贷超产品详情
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity<String>> queryGroupProductSkip(String userId, String productId) {
@@ -266,6 +281,7 @@ public class Api {
 
     /**
      * 绑定手机号
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity> updateBindPhone(String account, String phone, String verifyCode) {
@@ -274,6 +290,7 @@ public class Api {
 
     /**
      * 绑定微信号
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity> bindWXChat(String userId, String unionId) {
@@ -282,6 +299,7 @@ public class Api {
 
     /**
      * 解绑微信号
+     *
      * @version 4.0.0
      */
     public Observable<ResultEntity> unBindWXChat(String userId) {
@@ -317,8 +335,9 @@ public class Api {
 
     /**
      * 获取账单信息摘要
-     * @version 3.0.0
+     *
      * @param userId 用户id
+     * @version 3.0.0
      */
     public Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(String userId, int billType) {
         return service.queryTabAccountHeaderInfo(userId, billType);
@@ -326,18 +345,21 @@ public class Api {
 
     /**
      * 获取账单信息列表
-     * @version 3.0.0
-     * @param userId 用户Id
-     * @param billStatus 账单状态 1-待还 2-已还 3-逾期
+     *
+     * @param userId      用户Id
+     * @param billStatus  账单状态 1-待还 2-已还 3-逾期
      * @param firstScreen 是不是首屏 true:是 false：不是
-     * @param pageSize 一页记录数
-     * @param pageNo 页码
+     * @param pageSize    一页记录数
+     * @param pageNo      页码
+     * @version 3.0.0
      */
     public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, int billStatus, boolean firstScreen, int pageNo, int pageSize) {
         return service.queryTabAccountListInfo(userId, billStatus, firstScreen, 6, pageNo, pageSize);
     }
+
     /**
      * 获取账单信息列表
+     *
      * @version 3.0.0
      */
     public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, boolean firstScreen) {
@@ -369,6 +391,7 @@ public class Api {
     public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId, String billId) {
         return service.fetchCreditCardDebtDetail(userId, recordId, billId);
     }
+
     public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId) {
         return service.fetchCreditCardDebtDetail(userId, recordId);
     }
@@ -376,13 +399,14 @@ public class Api {
 
     /**
      * 网贷账单/信用卡备注更新
-     * @param userId 用户id
-     * @param remark 备注
+     *
+     * @param userId   用户id
+     * @param remark   备注
      * @param recordId 网贷账单Id/信用卡Id
-     * @param type 	类型 1-网贷 2-信用卡
+     * @param type     类型 1-网贷 2-信用卡
      */
     public Observable<ResultEntity> updateLoanOrCreditCardRemark(String userId, String remark, String recordId, int type) {
-        return service.updateLoanOrCreditCardRemark(userId, remark, recordId, type+"");
+        return service.updateLoanOrCreditCardRemark(userId, remark, recordId, type + "");
     }
 
     /**
@@ -395,7 +419,7 @@ public class Api {
     /**
      * 删除借款
      *
-     * @param userId        用户id
+     * @param userId   用户id
      * @param recordId 账单Id
      */
     public Observable<ResultEntity> deleteFastDebt(String userId, String recordId) {
@@ -405,8 +429,8 @@ public class Api {
     /**
      * 删除借款
      *
-     * @param userId        用户id
-     * @param recordId  账单Id
+     * @param userId   用户id
+     * @param recordId 账单Id
      * @param remark   账单名称（UI显示的是备注）
      */
     public Observable<ResultEntity> updateFastDebtName(String userId, String recordId, String remark) {
@@ -434,7 +458,7 @@ public class Api {
      * @desc 网贷分析 柱状图
      */
     public Observable<ResultEntity<List<AnalysisChartBean>>> queryAnalysisOverviewChart(String userId, int type, String startTime, String endTime) {
-        return service .queryAnalysisOverviewChart(userId, type, startTime, endTime);
+        return service.queryAnalysisOverviewChart(userId, type, startTime, endTime);
     }
 
     /**
@@ -471,9 +495,6 @@ public class Api {
     /****************************************************************************** 分割线 **************************************************************************************/
 
 
-
-
-
     /**
      * 密码登录
      *
@@ -483,7 +504,7 @@ public class Api {
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
         //注销channelID
 //        return service.login(account, generatePwd(pwd, account), getChannelId(), 1);
-        return service.login(account, generatePwd(pwd, account),  1);
+        return service.login(account, generatePwd(pwd, account), 1);
     }
 
     /**
@@ -1031,7 +1052,7 @@ public class Api {
     }
 
     /**
-     *  确认记账 快捷记账的api
+     * 确认记账 快捷记账的api
      */
     public Observable<ResultEntity> saveFastDebt(Map<String, Object> params) {
         return service.saveFastDebt(params);
@@ -1040,14 +1061,14 @@ public class Api {
     /**
      * 更新信用卡账单还款状态
      *
-     * @param userId 用户id
-     * @param billId	分期账单Id
+     * @param userId   用户id
+     * @param billId   分期账单Id
      * @param recordId 账单Id
-     * @param status 还款状态，状态 0-删除, 1-待还 2-已还
-     * @param amount 还款金额
+     * @param status   还款状态，状态 0-删除, 1-待还 2-已还
+     * @param amount   还款金额
      */
     public Observable<ResultEntity> updateFastDebtBillStatus(String userId, String billId, String recordId, int status, Double amount) {
-        if (amount == null ) {
+        if (amount == null) {
             return service.updateFastDebtBillStatus(userId, billId, recordId, status);
         } else {
             return service.updateFastDebtBillStatus(userId, billId, recordId, status, amount);
@@ -1058,8 +1079,8 @@ public class Api {
     /**
      * 更新信用卡账单还款状态
      *
-     * @param userId 用户id
-     * @param billId	分期账单Id
+     * @param userId   用户id
+     * @param billId   分期账单Id
      * @param recordId 账单Id
      */
     public Observable<ResultEntity<FastDebtDetail>> queryFastDebtBillDetail(String userId, String billId, String recordId) {
@@ -1172,7 +1193,6 @@ public class Api {
     }
 
 
-
     /**
      * 获取信用卡详情月份账单
      *
@@ -1233,8 +1253,8 @@ public class Api {
     /**
      * 更新账单提醒状态
      *
-     * @param userId    用户id
-     * @param day       -1-不提醒，1-提前1天，2-提前2天
+     * @param userId 用户id
+     * @param day    -1-不提醒，1-提前1天，2-提前2天
      */
     public Observable<ResultEntity> updateRemindStatus(String userId, String type, String recordId, int day) {
         return service.updateDebtRemindStatus(userId, type, recordId, day);
@@ -1315,9 +1335,6 @@ public class Api {
     }
 
 
-
-
-
     /**
      * 查询底部栏图标
      */
@@ -1326,7 +1343,7 @@ public class Api {
         String packageId = "";
         try {
             version = App.getInstance().getPackageManager().getPackageInfo(App.getInstance().getPackageName(), 0).versionName;
-            packageId =  App.getInstance().getPackageManager()
+            packageId = App.getInstance().getPackageManager()
                     .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -1334,7 +1351,7 @@ public class Api {
 
         //注销packageId
 //        return service.queryBottomImage(version, "1", packageId);
-        return service.queryBottomImage( "1");
+        return service.queryBottomImage("1");
     }
 
     /**
@@ -1483,6 +1500,11 @@ public class Api {
      */
     public Observable<ResultEntity> onCountUv(String id, String userId) {
         return service.onCountUv(id, userId);
+    }
+
+    /*v4.2.0首页数据*/
+    public Observable<ResultEntity<HomeData>> home(String userId, String pageNo) {
+        return service.home(userId, pageNo);
     }
 
     /**************+***************************************************+******************************************************/
