@@ -26,19 +26,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.base.Constant;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -51,6 +49,7 @@ import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.EditTextUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.just.agentweb.AgentWeb;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,6 +57,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import butterknife.BindView;
+import cn.xiaoneng.uiapi.Ntalker;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
@@ -82,12 +82,16 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     ImageView mReturn;
     @BindView(R.id.help)
     TextView helpTv;
-    @BindView(R.id.feedback)
+    @BindView(R.id.feeback_btn)
     TextView feedbackTv;
+    @BindView(R.id.kefu)
+    TextView kefuTv;
+    @BindView(R.id.help_commit)
+    TextView commitTv;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
-
-    private WebView webView;
+    @BindView(R.id.bottom_layout)
+    LinearLayout bottomLayout;
 
     private EditText etFeedContent;
     private EditText etFeedContact;
@@ -143,43 +147,46 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         viewPager.setAdapter(new HelpFeedAdapter());
+        kefuTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ntalker.getBaseInstance().startChat(HelpAndFeedActivity.this, Constant.XN_CUSTOMER, getResources().getString(R.string.app_name), null);
+            }
+        });
 
         feedbackTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("反馈".equals(feedbackTv.getText().toString())) {
-                    helpTv.setText("反馈");
-                    feedbackTv.setText("提交");
-                    viewPager.setCurrentItem(1);
-                    if (TextUtils.isEmpty(etFeedContact.getText().toString())) {
-                        feedbackTv.setTextColor(Color.parseColor("#909298"));
-                        feedbackTv.setEnabled(false);
-                    } else {
-                        feedbackTv.setTextColor(Color.parseColor("#FF5240"));
-                        feedbackTv.setEnabled(true);
-                    }
+                helpTv.setText("我要反馈");
+                commitTv.setVisibility(View.VISIBLE);
+                commitTv.setText("提交");
+                bottomLayout.setVisibility(View.GONE);
+                viewPager.setCurrentItem(1);
+            }
+
+        });
+
+        commitTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (FastClickUtils.isFastClick()) {
+                    return;
                 }
-                if ("提交".equals(feedbackTv.getText().toString())) {
-                    if (FastClickUtils.isFastClick()) {
-                        return;
-                    }
-                    summit();
-                }
+                summit();
             }
         });
 
         mReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("反馈".equals(feedbackTv.getText().toString())) {
+                if ("".equals(commitTv.getText().toString()))
                     finish();
-                }
-                if ("提交".equals(feedbackTv.getText().toString())) {
+
+                if ("提交".equals(commitTv.getText().toString())) {
                     viewPager.setCurrentItem(0);
-                    helpTv.setText("帮助");
-                    feedbackTv.setText("反馈");
-                    feedbackTv.setTextColor(Color.parseColor("#424251"));
-                    feedbackTv.setEnabled(true);
+                    helpTv.setText("帮助中心");
+                    commitTv.setText("");
+                    bottomLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -241,15 +248,15 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
 
     @Override
     public void onBackPressed() {
-        if ("反馈".equals(feedbackTv.getText().toString())) {
+        if ("".equals(commitTv.getText().toString())) {
             finish();
         }
-        if ("提交".equals(feedbackTv.getText().toString())) {
+        if ("提交".equals(commitTv.getText().toString())) {
             viewPager.setCurrentItem(0);
-            helpTv.setText("帮助");
-            feedbackTv.setText("反馈");
-            feedbackTv.setTextColor(Color.parseColor("#424251"));
-            feedbackTv.setEnabled(true);
+            helpTv.setText("帮助中心");
+            commitTv.setText("");
+            bottomLayout.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -352,9 +359,14 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     private View generateHelpView(ViewGroup container) {
         View helpView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_help, container, false);
-        webView = helpView.findViewById(R.id.web_view);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(NetConstants.H5_HELP);
+        RelativeLayout relativeLayout = helpView.findViewById(R.id.web_view);
+        AgentWeb.with(this)
+                .setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1)).
+                useDefaultIndicator(getResources().getColor(R.color.red), 2)
+                .createAgentWeb()//
+                .ready()
+                .go("http://www.baidu.com");
+
         return helpView;
     }
 
@@ -393,15 +405,15 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ("提交".equals(feedbackTv.getText().toString())) {
-                    if (TextUtils.isEmpty(s.toString())) {
-                        feedbackTv.setTextColor(Color.parseColor("#909298"));
-                        feedbackTv.setEnabled(false);
-                    } else {
-                        feedbackTv.setTextColor(Color.parseColor("#FF5240"));
-                        feedbackTv.setEnabled(true);
-                    }
-                }
+//                if ("提交".equals(feedbackTv.getText().toString())) {
+//                    if (TextUtils.isEmpty(s.toString())) {
+//                        feedbackTv.setTextColor(Color.parseColor("#909298"));
+//                        feedbackTv.setEnabled(false);
+//                    } else {
+//                        feedbackTv.setTextColor(Color.parseColor("#FF5240"));
+//                        feedbackTv.setEnabled(true);
+//                    }
+//                }
             }
         });
         ivFeedImage.setOnClickListener(new View.OnClickListener() {

@@ -3,11 +3,13 @@ package com.beihui.market.ui.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.LoanAccountIconBean;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
@@ -31,6 +33,11 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private BillSummaryAdapter adapter;
     @BindView(R.id.bill_summary_recycler)
     RecyclerView recyclerView;
+    private int pageNo = 1;
+    @BindView(R.id.totalliamount)
+    TextView totalTv;
+    @BindView(R.id.totalover_amount)
+    TextView overTv;
 
     @Override
     public int getLayoutId() {
@@ -47,17 +54,12 @@ public class BillSummaryActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        List<String> s = new ArrayList<>();
-        s.add("123");
-        s.add("123");
-        s.add("123");
-        s.add("123");
-        s.add("123");
-        s.add("123");
+        List<BillSummaryBean.PersonBillItemBean> list = new ArrayList<>();
         getBillSummaryData();
-        adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, s);
+        adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -67,11 +69,12 @@ public class BillSummaryActivity extends BaseComponentActivity {
 
     private void getBillSummaryData() {
         String userId = UserHelper.getInstance(this).getProfile().getId();
-        Api.getInstance().onBillSummary(userId).compose(RxResponse.<List<LoanAccountIconBean>>compatT()).subscribe(new ApiObserver<List<LoanAccountIconBean>>() {
+        Api.getInstance().onBillSummary(userId, pageNo + "").compose(RxResponse.<BillSummaryBean>compatT()).subscribe(new ApiObserver<BillSummaryBean>() {
             @Override
-            public void onNext(List<LoanAccountIconBean> data) {
-                System.out.println("12313");
-
+            public void onNext(BillSummaryBean data) {
+                adapter.setNewData(data.getPersonBillItem());
+                totalTv.setText(data.getTotalLiAmount() + "");
+                overTv.setText(data.getOverLiAmount() + "");
             }
         });
     }

@@ -151,7 +151,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @OnClick({R.id.kaola_group, R.id.bill_summary,
             R.id.remind, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
-            R.id.invite_friend, R.id.help_center, R.id.settings})
+            R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg})
     public void onViewClicked(View view) {
         if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
             UserAuthorizationActivity.launch(getActivity(), null);
@@ -217,6 +217,13 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickSetting();
+                }
+
+                break;
+            case R.id.mine_msg:
+                Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
+                if (!FastClickUtils.isFastClick()) {
+                    presenter.clickMessage();
                 }
 
                 break;

@@ -10,6 +10,7 @@ import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
+import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
@@ -80,7 +81,7 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
- *         请求接口
+ * 请求接口
  */
 public interface ApiService {
 
@@ -1079,7 +1080,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/index/personAmount")
-    Observable<ResultEntity<List<LoanAccountIconBean>>> onBillSummary(@Field("userId") String userId);
+    Observable<ResultEntity<BillSummaryBean>> onBillSummary(@Field("userId") String userId, @Field("pageNo") String pageNo);
 
     /**********************************************************************************************************/
 
