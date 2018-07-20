@@ -14,10 +14,10 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
+import com.beihui.market.ui.activity.BillSummaryActivity;
 import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
-import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.activity.RemindActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
@@ -268,7 +268,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
      */
     @Override
     public void navigateMineBill(String userId) {
-        startActivity(new Intent(getActivity(), MyDebtActivity.class));
+        startActivity(new Intent(getActivity(), BillSummaryActivity.class));
     }
 
     @Override

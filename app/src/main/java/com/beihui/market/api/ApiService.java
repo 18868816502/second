@@ -1069,6 +1069,16 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/accounting/updateRemark")
     Observable<ResultEntity> updateLoanOrCreditCardRemark(@Field("userId") String userId, @Field("remark") String remark, @Field("recordId") String recordId, @Field("type") String type);
 
+    /**
+     * create by: jiang
+     * create on:2018/7/20 11:54
+     * params:
+     * return:
+     * description: 账单汇总
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/accounting/index/personAmount")
+    Observable<ResultEntity<List<LoanAccountIconBean>>> onBillSummary(@Field("userId") String userId);
 
     /**********************************************************************************************************/
 
