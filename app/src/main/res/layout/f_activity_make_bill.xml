@@ -32,6 +32,7 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
+        android:id="@+id/fl_money_wrap"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -47,6 +48,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/et_input_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -62,6 +64,7 @@
         android:background="@color/c_999999" />
 
     <FrameLayout
+        android:id="@+id/fl_repay_date_wrap"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -77,6 +80,7 @@
             android:textSize="15dp" />
 
         <TextView
+            android:id="@+id/tv_repay_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -93,6 +97,7 @@
         android:background="@color/c_999999" />
 
     <FrameLayout
+        android:id="@+id/fl_repay_times_wrap"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -108,6 +113,7 @@
             android:textSize="15dp" />
 
         <TextView
+            android:id="@+id/tv_repay_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -127,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -144,10 +150,12 @@
                 android:textColor="@color/black_1"
                 android:textSize="15dp" />
 
-            <TextView
+            <EditText
+                android:id="@+id/et_remark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
+                android:background="@null"
                 android:ellipsize="end"
                 android:maxLength="20"
                 android:maxLines="1"
@@ -162,6 +170,7 @@
             android:background="@color/c_999999" />
 
         <FrameLayout
+            android:id="@+id/fl_notice_wrap"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
@@ -177,6 +186,7 @@
                 android:textSize="15dp" />
 
             <TextView
+                android:id="@+id/tv_notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
@@ -194,6 +204,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_expand_shrink"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white">

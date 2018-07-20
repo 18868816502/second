@@ -316,16 +316,14 @@ public class MainActivity extends BaseComponentActivity {
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
-                if (selectedId == R.id.tab_forms_root) {
+                /*if (selectedId == R.id.tab_forms_root) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-//                        UserAuthorizationActivity.launch(MainActivity.this, null);
-
                         Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
                         startActivity(intent);
                         navigationBar.select(selectedFragmentId);
                         return;
                     }
-                }
+                }*/
                 //点击音效
                 SoundUtils.getInstance().playTab();
                 if (selectedId != selectedFragmentId) {
@@ -333,7 +331,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-        selectTab(R.id.tab_forms_root);
+        selectTab(R.id.tab_account);
     }
 
     @Override
@@ -344,7 +342,6 @@ public class MainActivity extends BaseComponentActivity {
          * 请求底部导航栏图标 文字 字体颜色
          */
         queryBottomImage();
-
 
         /**
          * 添加账单
@@ -450,7 +447,7 @@ public class MainActivity extends BaseComponentActivity {
             case R.id.tab_account:
                 if (tabHome == null) {
                     //tabHome = TabAccountFragment.newInstance();
-                    tabHome = DiscoverFragment.newInstance();
+                    tabHome = TabNewsWebViewFragment.newInstance();
                     ft.add(R.id.tab_fragment, tabHome);
                 }
                 ft.show(tabHome);

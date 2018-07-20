@@ -1,55 +1,39 @@
 package com.beihui.market.ui.fragment;
 
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beihui.market.App;
-import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
+import com.beihui.market.anim.SlideInLeftAnimator;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.entity.Bill;
-import com.beihui.market.entity.DebtAbstract;
+import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.HomeData;
-import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.injection.component.DaggerLoanDetailComponent;
-import com.beihui.market.tang.activity.AddBillActivity;
-import com.beihui.market.tang.activity.CreditBillActivity;
-import com.beihui.market.tang.adapter.HomeBillAdapter;
+import com.beihui.market.tang.adapter.HomePageAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.ui.rvdecoration.AccountFlowLoanItemDeco;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
-import com.beihui.market.util.ToastUtils;
-import com.gyf.barlibrary.ImmersionBar;
-
-import java.math.BigInteger;
-import java.util.List;
+import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
+import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
+import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
 
 /**
@@ -65,24 +49,36 @@ import io.reactivex.annotations.NonNull;
 
 public class HomeFragment extends BaseTabFragment {
 
-    @BindView(R.id.refresh_layout)
-    SwipeRefreshLayout mRefreshLayout;
-    @BindView(R.id.toolbar)
+    @BindView(R.id.tb_tab_account_header_tool_bar)
     Toolbar mToolBar;
-    @BindView(R.id.tv_event_entry)
-    TextView mTvEvnentEntry;
-    @BindView(R.id.tv_month_num)
-    TextView mTvMonthNum;
-    @BindView(R.id.tv_bill_num)
-    TextView mTvBillNum;
-    @BindView(R.id.iv_bill_visible)
-    ImageView mIvBillVisible;
-    @BindView(R.id.recycler)
-    RecyclerView mRecycler;
+    @BindView(R.id.fl_top_wrap)
+    FrameLayout mTitle;
+    @BindView(R.id.srl_tab_account_refresh_root)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.x_load_state_tv_more_view)
+    View moreView;
 
-    private List<Bill> bills = null;
-    private HomeBillAdapter billAdapter;
+    @BindView(R.id.pull_up_to_head_view)
+    RelativeLayout mRefreshRoot;
+
+    @BindView(R.id.prl_fg_tab_account_list)
+    PullToRefreshScrollLayout mPullContainer;
+    @BindView(R.id.rv_fg_tab_account_list)
+    PulledTabAccountRecyclerView mRecyclerView;
+    @BindView(R.id.tv_top_loan_month)
+    TextView tv_top_loan_month;
+    @BindView(R.id.tv_top_loan_num)
+    TextView tv_top_loan_num;
+
+    private Activity mActivity;
     private UserHelper userHelper;
+    private HomePageAdapter pageAdapter;
+    //上拉与下拉的刷新监听器
+    public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
+    public Integer total = null;
+    public int pageNo = 2;
+    public int mMeasuredRecyclerViewHeaderHeight;
+    public float mScrollY = 0f;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -106,19 +102,13 @@ public class HomeFragment extends BaseTabFragment {
 
     @Override
     public void configViews() {
-        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+        mActivity = getActivity();
+        int statusHeight = CommonUtils.getStatusBarHeight(mActivity);
         //设置toolbar的高度为状态栏相同高度
         mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);
         ViewGroup.LayoutParams lp = mToolBar.getLayoutParams();
         lp.height = 0;
         mToolBar.setLayoutParams(lp);
-        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mRefreshLayout.setRefreshing(false);
-                request();
-            }
-        });
     }
 
     @Override
@@ -127,16 +117,16 @@ public class HomeFragment extends BaseTabFragment {
         request();
     }
 
-    private void request() {
+    public void request() {
         userHelper = UserHelper.getInstance(getActivity());
         if (userHelper.isLogin()) {
             //活动入口
             Api.getInstance().homeEvent("3", 1)
-                    .compose(RxResponse.compatO())
-                    .subscribe(new ApiObserver<Object>() {
+                    .compose(RxResponse.<EventBean>compatT())
+                    .subscribe(new ApiObserver<EventBean>() {
                         @Override
-                        public void onNext(@NonNull Object data) {
-
+                        public void onNext(@NonNull EventBean data) {
+                            pageAdapter.notifyEventEnter(data.getUrl());
                         }
                     });
             //首页数据
@@ -145,32 +135,78 @@ public class HomeFragment extends BaseTabFragment {
                     .subscribe(new ApiObserver<HomeData>() {
                         @Override
                         public void onNext(@NonNull HomeData data) {
+                            swipeRefreshLayout.setRefreshing(false);
+                            mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
+                            mPullToRefreshListener.onLoadMore(mPullContainer);
                             //账单头
-                            //x月应还
-                            mTvMonthNum.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));
-                            //应还金额
-                            mTvBillNum.setText(String.format("￥%.2f", data.getTotalAmount()));
-                            bills = data.getItem();
-                            billAdapter.setNewData(bills);
+                            tv_top_loan_month.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));//x月应还
+                            tv_top_loan_num.setText(String.format("￥%.2f", data.getTotalAmount()));//应还金额
+                            pageAdapter.notifyHead(data.getTotalAmount(), data.getXmonth());
+                            pageAdapter.notifyPayChanged(data.getItem());
                         }
                     });
         }
     }
 
     private void initRecyclerView() {
-        mRecycler.setItemAnimator(new DefaultItemAnimator());
-        mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        billAdapter = new HomeBillAdapter();
-        mRecycler.setAdapter(billAdapter);
-        billAdapter.setPayAllAndItemClickListener(new HomeBillAdapter.OnPayAllAndItemClickListener() {
+        pageAdapter = new HomePageAdapter(getActivity(), this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(pageAdapter);
+        mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
+        mRecyclerView.setCanPullUp(false);
+
+        //PullToRefreshLayout设置监听
+        mPullContainer.setOnRefreshListener(mPullToRefreshListener);
+        /**
+         * 下拉加载与加载更多的监听
+         * 请求分页数据
+         */
+        mPullContainer.setOnRefreshListener(new PullToRefreshScrollLayout.OnRefreshListener() {
+            //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
             @Override
-            public void payAllClick(int type, String billId, String recordId, double amount) {
-                showDialog(type, billId, recordId, amount);
+            public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
+                System.out.println(11111);
             }
 
+            //上拉加载更多 这里要将pageNo++，刷新下一页数据
             @Override
-            public void itemClick(String recordId, String billId) {
+            public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
+                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
+                mPullToRefreshListener.onLoadMore(mPullContainer);
+            }
+        });
 
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_one);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (userHelper.isLogin()) request();
+                else swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                final LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                manager.getChildAt(0).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        //移出视图树
+                        manager.getChildAt(0).getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        //列表头布局高度
+                        mMeasuredRecyclerViewHeaderHeight = mRecyclerView.getChildAt(0).getMeasuredHeight();
+                    }
+                });
+                int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
+                int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
+                mScrollY += dy;
+                //隐藏显示布局的变化率
+                float max = Math.max(mScrollY / height, 0f);
+                if (max > 1) {
+                    max = 1;
+                }
+                mTitle.setAlpha(max);
             }
         });
     }
@@ -189,91 +225,5 @@ public class HomeFragment extends BaseTabFragment {
         super.onCreate(savedInstanceState);
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HP);
-    }
-
-    @OnClick({R.id.tv_event_entry, R.id.iv_bill_visible, R.id.tv_add_account_bill, R.id.tv_credit_in})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            //记账分钱
-            case R.id.tv_event_entry:
-                ToastUtils.showToast(getActivity(), "event entry");
-                break;
-            //还款金额是否可见
-            case R.id.iv_bill_visible:
-                ToastUtils.showToast(getActivity(), "bill num visible");
-                break;
-            //添加账单
-            case R.id.tv_add_account_bill:
-                startActivity(new Intent(getActivity(), AddBillActivity.class));
-                break;
-            //导入信用卡
-            case R.id.tv_credit_in:
-                startActivity(new Intent(getActivity(), CreditBillActivity.class));
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void showDialog(final int type, final String billId, final String recordId, final double amount) {
-        final Dialog dialog = new Dialog(getActivity(), 0);
-        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dlg_pay_over_bill, null);
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.confirm:
-                        //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
-                        if (type == 2) {//信用卡记账
-                            Api.getInstance().updateCreditCardBillStatus(userHelper.id(), billId, 2)
-                                    .compose(RxResponse.compatO())
-                                    .subscribe(new ApiObserver<Object>() {
-                                        @Override
-                                        public void onNext(@NonNull Object data) {
-                                            request();
-                                        }
-                                    });
-                        } else if (type == 1) {//网贷记账
-                            Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
-                                    .compose(RxResponse.compatO())
-                                    .subscribe(new ApiObserver<Object>() {
-                                        @Override
-                                        public void onNext(@NonNull Object data) {
-                                            request();
-                                        }
-                                    });
-                        } else if (type == 3) {//快捷记账
-                            Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
-                                    .compose(RxResponse.compatO())
-                                    .subscribe(new ApiObserver<Object>() {
-                                        @Override
-                                        public void onNext(@NonNull Object data) {
-                                            request();
-                                        }
-                                    });
-                        }
-                        dialog.dismiss();
-                        break;
-                    case R.id.cancel:
-                        dialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-        dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
-        dialog.setContentView(dialogView);
-        dialog.setCanceledOnTouchOutside(true);
-        Window window = dialog.getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            window.setAttributes(lp);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        dialog.show();
     }
 }

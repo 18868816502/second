@@ -7,7 +7,6 @@ import java.io.Serializable;
  */
 
 public class LoanAccountIconBean implements Serializable {
-
     public String logo;
     public String iconName;
     public String type;

@@ -1,9 +1,6 @@
 package com.beihui.market.ui.adapter;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -17,20 +14,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -960,7 +953,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 mHeaderNoticeRoot = (LinearLayout) itemView.findViewById(R.id.ll_ac_main_notice_root);
                 mHeaderNoticeContent = (MarqueeTextView) itemView.findViewById(R.id.tv_tab_account_notice);
                 mHeaderNoticeCross = (ImageView) itemView.findViewById(R.id.iv_ac_main_notice_cross);
-
             } else {
                 swipeMenuLayout = (CustomSwipeMenuLayout) itemView.findViewById(R.id.swipe_menu_layout);
                 cardRoot = (RelativeLayout) itemView.findViewById(R.id.rl_item_tab_account_card);

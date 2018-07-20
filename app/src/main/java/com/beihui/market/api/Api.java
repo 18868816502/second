@@ -33,6 +33,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
+import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.entity.HomeData;
@@ -148,8 +149,8 @@ public class Api {
 
     private Api(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl(NetConstants.DOMAIN)
-                .baseUrl(NetConstants.ZHANG_DOMAIN)
+                .baseUrl(NetConstants.DOMAIN)
+//                .baseUrl(NetConstants.ZHANG_DOMAIN)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -1519,7 +1520,7 @@ public class Api {
     }
 
     /*v4.2.0活动入口*/
-    public Observable<ResultEntity> homeEvent(String location, int port) {
+    public Observable<ResultEntity<EventBean>> homeEvent(String location, int port) {
         return service.homeEvent(location, port);
     }
 

@@ -128,7 +128,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     public float mScrollY = 0f;
 
     //上拉与下拉的刷新监听器
-    public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
+    private PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
     private LinearLayoutManager manager;
 
     @Subscribe
@@ -269,7 +269,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
          * 请求分页数据
          */
         mPullContainer.setOnRefreshListener(new PullToRefreshScrollLayout.OnRefreshListener() {
-
             //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
             @Override
             public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
@@ -487,7 +486,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             mRecyclerView.setCanPullUp(false);
         }
     }
-
 
     /**
      * 显示头信息数据

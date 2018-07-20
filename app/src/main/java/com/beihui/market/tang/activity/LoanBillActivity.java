@@ -1,5 +1,6 @@
 package com.beihui.market.tang.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -88,8 +89,11 @@ public class LoanBillActivity extends BaseComponentActivity {
             @Override
             public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 LoanAccountIconBean iconBean = loanBillAdapter.getData().get(position);
-
-                ToastUtils.showToast(getApplicationContext(), "click item " + position);
+                Intent intent = new Intent(getApplicationContext(), MakeBillActivity.class);
+                intent.putExtra("title", iconBean.iconName);
+                intent.putExtra("iconId", iconBean.iconId);
+                intent.putExtra("tallyId", iconBean.tallyId);
+                startActivity(intent);
             }
         });
     }

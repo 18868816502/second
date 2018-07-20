@@ -214,9 +214,6 @@
             android:screenOrientation="portrait" />
 
         <!-- 4.2.0添加账单 -->
-        <activity
-            android:name=".tang.activity.AddBillActivity"
-            android:screenOrientation="portrait" />
         <!-- 4.2.0贷款账单 -->
         <activity
             android:name=".tang.activity.LoanBillActivity"
@@ -224,6 +221,10 @@
         <!--信用卡账单-->
         <activity
             android:name=".tang.activity.CreditBillActivity"
+            android:screenOrientation="portrait" />
+        <!--创建账单-->
+        <activity
+            android:name=".tang.activity.MakeBillActivity"
             android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->

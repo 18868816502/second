@@ -23,6 +23,7 @@ import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.EBank;
+import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.entity.HomeData;
@@ -1090,5 +1091,5 @@ public interface ApiService {
     /*v4.2.0活动入口*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/activeHomeController/isShowActive")
-    Observable<ResultEntity> homeEvent(@Field("location") String location, @Field("port") int port);
+    Observable<ResultEntity<EventBean>> homeEvent(@Field("location") String location, @Field("port") int port);
 }

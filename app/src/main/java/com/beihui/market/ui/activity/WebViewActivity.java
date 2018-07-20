@@ -84,8 +84,6 @@ public class WebViewActivity extends BaseComponentActivity {
     }
 
 
-
-
     @Override
     public void initDatas() {
 

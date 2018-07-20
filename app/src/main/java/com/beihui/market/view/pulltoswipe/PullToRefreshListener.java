@@ -63,7 +63,6 @@ public class PullToRefreshListener implements PullToRefreshScrollLayout.OnRefres
      */
     @Override
     public void onLoadMore(final PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-
         // 加载操作
         mHandler.postDelayed(new Runnable() {
             @Override

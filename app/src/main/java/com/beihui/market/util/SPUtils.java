@@ -149,4 +149,16 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         return sp.getBoolean("showMainAdBanner", false);
     }
+
+    public static boolean getNumVisible(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean("loanNumVisible", true);
+    }
+
+    public static void putNumVisible(Context context, boolean visible) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("loanNumVisible", visible);
+        editor.commit();
+    }
 }
