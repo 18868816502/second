@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -34,6 +35,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoanDetailComponent;
 import com.beihui.market.tang.activity.AddBillActivity;
+import com.beihui.market.tang.activity.CreditBillActivity;
 import com.beihui.market.tang.adapter.HomeBillAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -128,6 +130,15 @@ public class HomeFragment extends BaseTabFragment {
     private void request() {
         userHelper = UserHelper.getInstance(getActivity());
         if (userHelper.isLogin()) {
+            //活动入口
+            Api.getInstance().homeEvent("3", 1)
+                    .compose(RxResponse.compatO())
+                    .subscribe(new ApiObserver<Object>() {
+                        @Override
+                        public void onNext(@NonNull Object data) {
+
+                        }
+                    });
             //首页数据
             Api.getInstance().home(userHelper.id(), "1")
                     .compose(RxResponse.<HomeData>compatT())
@@ -197,7 +208,9 @@ public class HomeFragment extends BaseTabFragment {
                 break;
             //导入信用卡
             case R.id.tv_credit_in:
-                ToastUtils.showToast(getActivity(), "导入信用卡");
+                startActivity(new Intent(getActivity(), CreditBillActivity.class));
+                break;
+            default:
                 break;
         }
     }

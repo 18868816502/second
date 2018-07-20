@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white">
+        android:layout_height="50dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,6 +18,16 @@
             android:text="贷款账单"
             android:textColor="@color/black"
             android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/tv_custom_loan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:text="自定义"
+            android:textColor="@color/black_1"
+            android:textSize="14dp" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -25,70 +35,106 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="15dp">
 
-        <TextView
-            android:id="@+id/tv_house_loan"
+        <LinearLayout
+            android:id="@+id/ll_house_loan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:drawablePadding="5dp"
-            android:drawableTop="@mipmap/mine_head"
-            android:gravity="center_horizontal"
-            android:text="房贷"
-            android:textColor="@color/black"
-            android:textSize="13dp" />
+            android:background="@drawable/x_card_background"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
 
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/c_666666" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_car_loan"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="房贷"
+                    android:textColor="@color/black_1"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="管好每期房贷"
+                    android:textColor="@color/black_1_66"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="18dp"
+                android:src="@mipmap/ic_house_loan" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_car_loan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:drawablePadding="5dp"
-            android:drawableTop="@mipmap/mine_head"
-            android:gravity="center_horizontal"
-            android:text="车贷"
-            android:textColor="@color/black"
-            android:textSize="13dp" />
+            android:background="@drawable/x_card_background"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="车贷"
+                    android:textColor="@color/black_1"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="管好每期车贷"
+                    android:textColor="@color/black_1_66"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="18dp"
+                android:src="@mipmap/ic_car_loan" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_search_others"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="bottom"
-        android:paddingBottom="8dp"
+        android:layout_height="40dp"
+        android:background="#f5f5f5"
+        android:drawableRight="@mipmap/ic_search"
+        android:gravity="center_vertical"
         android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:text="其他贷款"
         android:textColor="@color/grey_a900"
         android:textSize="12dp" />
 
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_fg_account_flow_loan"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/white">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_fg_account_flow_loan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.beihui.market.view.AlphabetIndexBar
-            android:id="@+id/alphabet_fg_account_flow_loan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="3dp" />
-    </RelativeLayout>
+        android:background="@color/white" />
 </LinearLayout>

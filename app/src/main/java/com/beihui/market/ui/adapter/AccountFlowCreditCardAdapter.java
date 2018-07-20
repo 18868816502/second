@@ -234,5 +234,4 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
             mName = (TextView) itemView.findViewById(R.id.iv_item_credit_card_name);
         }
     }
-
 }

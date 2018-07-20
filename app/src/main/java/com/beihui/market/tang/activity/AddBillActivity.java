@@ -57,7 +57,7 @@ public class AddBillActivity extends BaseComponentActivity {
                 startActivity(new Intent(this, LoanBillActivity.class));
                 break;
             case R.id.rl_credit_wrap:
-                ToastUtils.showToast(this, "信用卡账单");
+                startActivity(new Intent(this, CreditBillActivity.class));
                 break;
             default:
                 break;

@@ -1507,6 +1507,11 @@ public class Api {
         return service.home(userId, pageNo);
     }
 
+    /*v4.2.0活动入口*/
+    public Observable<ResultEntity> homeEvent(String location, int port) {
+        return service.homeEvent(location, port);
+    }
+
     /**************+***************************************************+******************************************************/
 
     private String getChannelId() {

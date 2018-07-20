@@ -1076,4 +1076,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/index/v420")
     Observable<ResultEntity<HomeData>> home(@Field("userId") String userId, @Field("pageNo") String pageNo);
+
+    /*v4.2.0活动入口*/
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/activeHomeController/isShowActive")
+    Observable<ResultEntity> homeEvent(@Field("location") String location, @Field("port") int port);
 }

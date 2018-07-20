@@ -45,7 +45,7 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
                 }
             }
             String url = httpUrl.toString();
-            url = url + "?" + "packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME;
+            url = url + "?" + "packageId=" + /*App.sChannelId*/BuildConfig.APPLICATION_ID + "&version=" + BuildConfig.VERSION_NAME;
             StringBuilder sb = new StringBuilder();
             if (params.size() > 0) {
                 Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
@@ -64,7 +64,8 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
                     bodyBuilder.addEncoded(fb.encodedName(i), fb.encodedValue(i));
             }
             FormBody formBody = bodyBuilder
-                    .addEncoded("packageId", App.sChannelId)
+                    //.addEncoded("packageId", App.sChannelId)
+                    .addEncoded("packageId",BuildConfig.APPLICATION_ID)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .build();
             request = request.newBuilder().post(formBody).build();

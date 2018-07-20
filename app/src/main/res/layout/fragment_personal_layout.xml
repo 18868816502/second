@@ -123,94 +123,91 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="12dp"
-                        android:src="@mipmap/right_icon" />
-
                 </LinearLayout>
 
             </LinearLayout>
 
-            <com.beihui.market.view.RelativeLayoutBar
-                android:id="@+id/kaola_group"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:left_image="@drawable/mine_encourage_icon"
-                app:left_image_Visible="true"
-                app:left_textView_color="@color/color_primary_black"
-                app:left_textView_style="true"
-                app:left_textView_text="考拉圈圈"
-                app:left_textView_textSize="14sp"
-                app:view_Visible="true"
-                app:view_margin_right="15" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-            <com.beihui.market.view.RelativeLayoutBar
-                android:id="@+id/bill_summary"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                app:left_image="@drawable/mine_encourage_icon"
-                app:left_image_Visible="true"
-                app:left_textView_color="@color/color_primary_black"
-                app:left_textView_style="true"
-                app:left_textView_text="@string/bill_summary"
-                app:left_textView_textSize="14sp"
-                app:view_Visible="true"
-                app:view_margin_right="15" />
+                <com.beihui.market.view.RelativeLayoutBar
+                    android:id="@+id/kaola_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    app:left_image="@drawable/mine_encourage_icon"
+                    app:left_image_Visible="true"
+                    app:left_textView_color="@color/color_primary_black"
+                    app:left_textView_style="true"
+                    app:left_textView_text="考拉圈圈"
+                    app:left_textView_textSize="14sp" />
 
-            <com.beihui.market.view.RelativeLayoutBar
-                android:id="@+id/remind"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                app:left_image="@drawable/mine_list_help_icon"
-                app:left_image_Visible="true"
-                app:left_textView_color="@color/color_primary_black"
-                app:left_textView_style="true"
-                app:left_textView_text="@string/remind"
-                app:left_textView_textSize="14sp"
-                app:view_Visible="true"
-                app:view_margin_right="15" />
+                <com.beihui.market.view.RelativeLayoutBar
+                    android:id="@+id/bill_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    app:left_image="@drawable/mine_encourage_icon"
+                    app:left_image_Visible="true"
+                    app:left_textView_color="@color/color_primary_black"
+                    app:left_textView_style="true"
+                    app:left_textView_text="@string/bill_summary"
+                    app:left_textView_textSize="14sp" />
 
-            <com.beihui.market.view.RelativeLayoutBar
-                android:id="@+id/invite_friend"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                app:left_image="@drawable/mine_list_friend_icon"
-                app:left_image_Visible="true"
-                app:left_textView_color="@color/color_primary_black"
-                app:left_textView_style="true"
-                app:left_textView_text="@string/invite_friend"
-                app:left_textView_textSize="14sp" />
+                <com.beihui.market.view.RelativeLayoutBar
+                    android:id="@+id/remind"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    app:left_image="@drawable/mine_list_help_icon"
+                    app:left_image_Visible="true"
+                    app:left_textView_color="@color/color_primary_black"
+                    app:left_textView_style="true"
+                    app:left_textView_text="@string/remind"
+                    app:left_textView_textSize="14sp" />
 
-            <com.beihui.market.view.RelativeLayoutBar
-                android:id="@+id/help_center"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:left_image="@drawable/mine_list_friend_icon"
-                app:left_image_Visible="true"
-                app:left_textView_color="@color/color_primary_black"
-                app:left_textView_style="true"
-                app:left_textView_text="@string/help_center"
-                app:left_textView_textSize="14sp"
-                app:view_Visible="true"
-                app:view_margin_right="15" />
+                <com.beihui.market.view.RelativeLayoutBar
+                    android:id="@+id/invite_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    app:left_image="@drawable/mine_list_friend_icon"
+                    app:left_image_Visible="true"
+                    app:left_textView_color="@color/color_primary_black"
+                    app:left_textView_style="true"
+                    app:left_textView_text="@string/invite_friend"
+                    app:left_textView_textSize="14sp" />
 
-            <com.beihui.market.view.RelativeLayoutBar
-                android:id="@+id/settings"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="50dp"
-                app:left_image="@drawable/mine_list_friend_icon"
-                app:left_image_Visible="true"
-                app:left_textView_color="@color/color_primary_black"
-                app:left_textView_style="true"
-                app:left_textView_text="@string/settings"
-                app:left_textView_textSize="14sp" />
+                <com.beihui.market.view.RelativeLayoutBar
+                    android:id="@+id/help_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    app:left_image="@drawable/mine_list_friend_icon"
+                    app:left_image_Visible="true"
+                    app:left_textView_color="@color/color_primary_black"
+                    app:left_textView_style="true"
+                    app:left_textView_text="@string/help_center"
+                    app:left_textView_textSize="14sp" />
 
+                <com.beihui.market.view.RelativeLayoutBar
+                    android:id="@+id/settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="8dp"
+                    app:left_image="@drawable/mine_list_friend_icon"
+                    app:left_image_Visible="true"
+                    app:left_textView_color="@color/color_primary_black"
+                    app:left_textView_style="true"
+                    app:left_textView_text="@string/settings"
+                    app:left_textView_textSize="14sp" />
 
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

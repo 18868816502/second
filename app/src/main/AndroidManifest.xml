@@ -255,6 +255,10 @@
         <activity
             android:name=".tang.activity.LoanBillActivity"
             android:screenOrientation="portrait" />
+        <!--信用卡账单-->
+        <activity
+            android:name=".tang.activity.CreditBillActivity"
+            android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <activity
             android:name=".ui.activity.FastAddDebtActivity"
