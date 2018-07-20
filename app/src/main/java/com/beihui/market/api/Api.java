@@ -20,6 +20,7 @@ import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
+import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
@@ -1501,6 +1502,7 @@ public class Api {
     public Observable<ResultEntity> onCountUv(String id, String userId) {
         return service.onCountUv(id, userId);
     }
+
     /**
      * create by: jiang
      * create on:2018/7/20 11:53
@@ -1509,8 +1511,8 @@ public class Api {
      * description: 账单汇总
      */
 
-    public Observable<ResultEntity<List<LoanAccountIconBean>>> onBillSummary(String id){
-        return  service.onBillSummary(id);
+    public Observable<ResultEntity<BillSummaryBean>> onBillSummary(String id, String pageNo) {
+        return service.onBillSummary(id, pageNo);
     }
 
     /*v4.2.0首页数据*/

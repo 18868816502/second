@@ -142,9 +142,8 @@
                     app:left_image="@drawable/mine_encourage_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_style="true"
                     app:left_textView_text="考拉圈圈"
-                    app:left_textView_textSize="14sp" />
+                    app:left_textView_textSize="15sp" />
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/bill_summary"
@@ -154,9 +153,8 @@
                     app:left_image="@drawable/mine_encourage_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_style="true"
                     app:left_textView_text="@string/bill_summary"
-                    app:left_textView_textSize="14sp" />
+                    app:left_textView_textSize="15sp" />
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/remind"
@@ -166,9 +164,8 @@
                     app:left_image="@drawable/mine_list_help_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_style="true"
                     app:left_textView_text="@string/remind"
-                    app:left_textView_textSize="14sp" />
+                    app:left_textView_textSize="15sp" />
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/invite_friend"
@@ -178,9 +175,8 @@
                     app:left_image="@drawable/mine_list_friend_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_style="true"
                     app:left_textView_text="@string/invite_friend"
-                    app:left_textView_textSize="14sp" />
+                    app:left_textView_textSize="15sp" />
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/help_center"
@@ -190,9 +186,8 @@
                     app:left_image="@drawable/mine_list_friend_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_style="true"
                     app:left_textView_text="@string/help_center"
-                    app:left_textView_textSize="14sp" />
+                    app:left_textView_textSize="15sp" />
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/settings"
@@ -203,9 +198,8 @@
                     app:left_image="@drawable/mine_list_friend_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_style="true"
                     app:left_textView_text="@string/settings"
-                    app:left_textView_textSize="14sp" />
+                    app:left_textView_textSize="15sp" />
 
             </LinearLayout>
         </LinearLayout>

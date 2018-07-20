@@ -36,7 +36,7 @@
 
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ffffff</color>
-    <color name="colorAccent">#5591FF</color>
+    <color name="colorAccent">#FF5240</color>
 
     <color name="refresh_one">#ff5240</color>
     <color name="white">#ffffff</color>
@@ -104,5 +104,5 @@
     <color name="dlb_text_color">#2a84ff</color>
     <color name="pickerview_title">#424251</color>
     <color name="pickerview_cancle">#909298</color>
-    <color name="pickerview_submit">#2A84FF</color>
+    <color name="pickerview_submit">#FF5240</color>
 </resources>

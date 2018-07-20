@@ -30,9 +30,9 @@
     <string name="msg">消息</string>
     <string name="invite_friend">邀请好友</string>
     <string name="help_feedback">帮助与反馈</string>
-    <string name="remind">提醒</string>
+    <string name="remind">提醒设置</string>
     <string name="bill_summary">账单汇总</string>
-    <string name="settings">设置</string>
+    <string name="settings">我的设置</string>
     <string name="change_psd">修改登录密码</string>
     <string name="version_name">版本号</string>
     <string name="star_me">鼓励一下</string>
@@ -125,7 +125,6 @@
     <string name="x_home_bill_will_come">%d天后到期</string>
     <string name="x_home_bill_credit">%d月账单</string>
     <string name="x_home_bill_loan">%1$d/%2$d期</string>
-    <string name="x_month_repay">%s月应还</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

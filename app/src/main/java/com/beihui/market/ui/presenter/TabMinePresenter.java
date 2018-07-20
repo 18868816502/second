@@ -169,7 +169,7 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     @Override
     public void clickMessage() {
         if (checkValidUser()) {
-            view.navigateSetting(userHelper.getProfile().getId());
+            view.navigateMessage(userHelper.getProfile().getId());
         }
 
     }
