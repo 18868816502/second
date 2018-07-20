@@ -1484,6 +1484,17 @@ public class Api {
     public Observable<ResultEntity> onCountUv(String id, String userId) {
         return service.onCountUv(id, userId);
     }
+    /**
+     * create by: jiang
+     * create on:2018/7/20 11:53
+     * params:
+     * return:
+     * description: 账单汇总
+     */
+
+    public Observable<ResultEntity<List<LoanAccountIconBean>>> onBillSummary(String id){
+        return  service.onBillSummary(id);
+    }
 
     /**************+***************************************************+******************************************************/
 

@@ -33,11 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
@@ -62,7 +60,6 @@
         <activity
             android:name=".ui.activity.LoanDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.UserProfileActivity"
             android:launchMode="singleTask"
@@ -113,130 +110,99 @@
         <activity
             android:name=".ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.NoticeDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.SysMsgDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.CollectionActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.ChoiceProductActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.RecommendProductActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.MyProductActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.ThirdAuthorizationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.CreditCardWebActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.AllDebtActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.DebtChannelActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.LoanDebtDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.DebtCalendarActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.DebtAnalyzeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.RewardPointActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.LoanProductActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.DebtSourceActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.DebtNewActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.CreditCardDebtNewActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.CreditCardBankActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.HelpAndFeedActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.WeChatBindPhoneActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.WeChatSetPwdActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.CreditCardDebtDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.MyDebtActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.EBankActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.UsedEmailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.NutEmailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.EmailLoginActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.EmailLeadingInProgressActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.EmailLeadingInResultActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.UserCertificationCodeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.UserPsdEditActivity"
             android:screenOrientation="portrait" />
@@ -247,48 +213,47 @@
             android:name=".ui.activity.TabNewsWebViewSecordActivity"
             android:screenOrientation="portrait" />
 
-        <!--4.2.0添加账单-->
+        <!-- 4.2.0添加账单 -->
         <activity
             android:name=".tang.activity.AddBillActivity"
             android:screenOrientation="portrait" />
-        <!--4.2.0贷款账单-->
+        <!-- 4.2.0贷款账单 -->
         <activity
             android:name=".tang.activity.LoanBillActivity"
             android:screenOrientation="portrait" />
-        <!--快速记账页面-->
+        <!-- 快速记账页面 -->
         <activity
             android:name=".ui.activity.FastAddDebtActivity"
             android:screenOrientation="portrait" />
-        <!--快速记账详情页面-->
+        <!-- 快速记账详情页面 -->
         <activity
             android:name=".ui.activity.FastDebtDetailActivity"
             android:screenOrientation="portrait" />
-        <!--输入新手机号码-->
+        <!-- 输入新手机号码 -->
         <activity
             android:name=".ui.activity.InputNewMobileActivity"
             android:screenOrientation="portrait" />
-        <!--记账流程-->
+        <!-- 记账流程 -->
         <activity
             android:name=".ui.activity.AccountFlowActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
-        <!--记账流程 账单类型选择-->
+        <!-- 记账流程 账单类型选择 -->
         <activity
             android:name=".ui.activity.AccountFlowTypeActivity"
             android:screenOrientation="portrait" />
-        <!--个人中心 账单类型选择-->
+        <!-- 个人中心 账单类型选择 -->
         <activity
             android:name=".ui.activity.TabMineActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!--WebViewActivity-->
+        <!-- WebViewActivity -->
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
 
         <service android:name=".helper.updatehelper.DownloadService" />
 
@@ -300,7 +265,7 @@
             </intent-filter>
         </receiver>
 
-        <!--file provider, N feature-->
+        <!-- file provider, N feature -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${PACKAGE_NAME}.fileprovider"
@@ -311,7 +276,7 @@
                 android:resource="@xml/file_path" />
         </provider>
 
-        <!--getui setting-->
+        <!-- getui setting -->
         <service android:name=".getui.PushReceiveIntentService" />
         <service
             android:name=".getui.PushService"
@@ -319,22 +284,22 @@
             android:label="PushService"
             android:process=":pushservice" />
 
-        <!--share setting-->
+        <!-- share setting -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--share setting end-->
+        <!-- share setting end -->
 
-        <!--小能客服-->
+
+        <!-- 小能客服 -->
         <activity
             android:name="cn.xiaoneng.activity.ChatActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/XiaoNengAppTheme" />
-
         <activity
             android:name="cn.xiaoneng.activity.LeaveMsgActivity"
             android:launchMode="singleTask"
@@ -377,26 +342,24 @@
             android:name="cn.xiaoneng.video.XNVideoPlayer"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <!--小能客服-->
+        <!-- 小能客服 -->
 
-        <!--umeng setting-->
+
+        <!-- umeng setting -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="${UMENG_APP_KEY}" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL}" />
-        <!--umeng setting end-->
+        <!-- umeng setting end -->
 
         <meta-data
             android:name="CHANNEL_ID"
             android:value="${CHANNEL_ID}" />
 
-
-        <!--********************************************* 魔蝎信用 *******************************************-->
+        <!-- ********************************************* 魔蝎信用 ******************************************* -->
         <activity android:name="com.moxie.client.MainActivity" />
-
-
         <activity
             android:name="com.moxie.client.accessible.AccessibleCrawlerActivity"
             android:launchMode="singleTask"
@@ -418,6 +381,11 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessible_crawler_config" />
         </service>
+
+        <activity
+            android:name=".ui.activity.BillSummaryActivity"
+            android:label="@string/title_activity_bill_summary"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
