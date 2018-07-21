@@ -217,4 +217,32 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_bill_summary">BillSummaryActivity</string>
+    <string name="expand_more_setting">展开高级配置</string>
+    <string name="shrink_more_setting">收起高级配置</string>
+
+    <array name="repay_cycle_times">
+        <item>仅一次</item>
+        <item>每月一次</item>
+        <item>每2月一次</item>
+        <item>每3月一次</item>
+        <item>每半年一次</item>
+        <item>每年一次</item>
+    </array>
+    <array name="tip_before_date">
+        <item>提前1天</item>
+        <item>提前2天</item>
+        <item>提前3天</item>
+        <item>提前4天</item>
+        <item>提前5天</item>
+        <item>提前6天</item>
+        <item>提前7天</item>
+        <item>提前8天</item>
+        <item>提前9天</item>
+        <item>提前10天</item>
+    </array>
+
+    <string name="repay_cycle">还款周期</string>
+    <string name="repay_times">还款期数</string>
+    <string name="repay_tip">还款提醒</string>
+    <string name="select_first_repay_date">选择首次还款日</string>
 </resources>

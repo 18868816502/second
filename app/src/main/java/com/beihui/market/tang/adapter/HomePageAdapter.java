@@ -156,6 +156,8 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             if (item == null) {
                 holder.csm_bill_wrap.setVisibility(View.GONE);
                 return;
+            } else {
+                holder.csm_bill_wrap.setVisibility(View.VISIBLE);
             }
             //icon
             Glide.with(mActivity).load(item.getLogoUrl()).transform(new GlideCircleTransform(mActivity)).into(holder.iv_home_bill_icon);

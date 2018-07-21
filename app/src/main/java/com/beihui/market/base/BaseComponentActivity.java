@@ -134,7 +134,6 @@ public abstract class BaseComponentActivity extends BaseActivity {
         }
     }
 
-
     /**
      * hook BaseView.showErrorMsg(String).
      */

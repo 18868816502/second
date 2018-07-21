@@ -32,7 +32,6 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/fl_money_wrap"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -53,15 +52,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:background="@null"
-            android:text="0.00"
+            android:gravity="right"
+            android:hint="请输入每期金额"
+            android:inputType="numberDecimal"
             android:textColor="#d3d4d5"
+            android:textCursorDrawable="@null"
             android:textSize="15dp" />
     </FrameLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/c_999999" />
+        android:background="@color/line_color" />
 
     <FrameLayout
         android:id="@+id/fl_repay_date_wrap"
@@ -94,7 +96,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/c_999999" />
+        android:background="@color/line_color" />
 
     <FrameLayout
         android:id="@+id/fl_repay_times_wrap"
@@ -113,7 +115,7 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/tv_repay_times"
+            android:id="@+id/tv_repay_cycle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -123,6 +125,46 @@
             android:textColor="@color/black_1"
             android:textSize="15dp" />
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_cycle_times_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="还款期数"
+                android:textColor="@color/black_1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_repay_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:drawablePadding="5dp"
+                android:drawableRight="@mipmap/ic_orientation_right"
+                android:text="请选择"
+                android:textColor="@color/black_1"
+                android:textSize="15dp" />
+        </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -157,17 +199,20 @@
                 android:layout_gravity="right|center_vertical"
                 android:background="@null"
                 android:ellipsize="end"
+                android:gravity="right"
+                android:hint="不超过20个字"
+                android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:text="不超过20个字"
                 android:textColor="#d3d4d5"
+                android:textCursorDrawable="@null"
                 android:textSize="15dp" />
         </FrameLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/c_999999" />
+            android:background="@color/line_color" />
 
         <FrameLayout
             android:id="@+id/fl_notice_wrap"
@@ -181,6 +226,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:drawablePadding="8dp"
+                android:drawableRight="@mipmap/ic_bill_dout"
                 android:text="还款提醒"
                 android:textColor="@color/black_1"
                 android:textSize="15dp" />
@@ -192,7 +239,7 @@
                 android:layout_gravity="right|center_vertical"
                 android:drawablePadding="5dp"
                 android:drawableRight="@mipmap/ic_orientation_right"
-                android:text="提前3天"
+                android:text="提前1天"
                 android:textColor="@color/black_1"
                 android:textSize="15dp" />
         </FrameLayout>
@@ -200,7 +247,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/c_999999" />
+            android:background="@color/line_color" />
     </LinearLayout>
 
     <RelativeLayout
@@ -215,7 +262,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginRight="8dp"
-            android:text="展开高级配置"
+            android:text="@string/expand_more_setting"
             android:textColor="#b9bbbe"
             android:textSize="15dp" />
 

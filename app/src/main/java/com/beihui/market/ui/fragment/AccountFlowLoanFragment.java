@@ -1098,10 +1098,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
             public void onTimeSelect(Date date, View v) {
                 mFirstPayLoanDate.setTag(date);
                 mFirstPayLoanDate.setText(dateFormat.format(date));
-
                 //首次还款日
                 map.put("firstRepaymentDate", saveDateFormat.format(date));
-
             }
         }).setType(new boolean[]{true, true, true, false, false, false})
                 .setCancelText("取消")

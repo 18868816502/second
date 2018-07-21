@@ -2,6 +2,7 @@ package com.beihui.market.tang.rx;
 
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.tang.exception.ApiException;
+import com.igexin.sdk.aidl.IGexinMsgService;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

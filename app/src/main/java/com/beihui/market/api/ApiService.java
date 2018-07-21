@@ -81,7 +81,7 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
- * 请求接口
+ *         请求接口
  */
 public interface ApiService {
 

@@ -203,10 +203,9 @@ public class HomeFragment extends BaseTabFragment {
                 mScrollY += dy;
                 //隐藏显示布局的变化率
                 float max = Math.max(mScrollY / height, 0f);
-                if (max > 1) {
-                    max = 1;
-                }
-                mTitle.setAlpha(max);
+                if (max > 1) max = 1;
+                if (max > 0.55f) mTitle.setAlpha(max);
+                else mTitle.setAlpha(0);
             }
         });
     }

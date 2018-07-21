@@ -226,6 +226,10 @@
         <activity
             android:name=".tang.activity.MakeBillActivity"
             android:screenOrientation="portrait" />
+        <!--搜索-->
+        <activity
+            android:name=".tang.activity.SearchActivity"
+            android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->
         <activity

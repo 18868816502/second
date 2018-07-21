@@ -7,9 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.beihui.market.App;
-import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
-import com.beihui.market.api.interceptor.PackageIdAndVersionNameInterceptor;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.AdBanner;
@@ -63,7 +61,6 @@ import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
-import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
@@ -72,7 +69,6 @@ import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.entity.request.XAccountInfo;
-import com.beihui.market.util.LogUtils;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -86,15 +82,12 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -137,7 +130,7 @@ public class Api {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .cache(cache)
-                .addInterceptor(new PackageIdAndVersionNameInterceptor())
+                //.addInterceptor(new PackageIdAndVersionNameInterceptor())
                 .addInterceptor(new AccessHeadInterceptor());
 
         //设置拦截日志

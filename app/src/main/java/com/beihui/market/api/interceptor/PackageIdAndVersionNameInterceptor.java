@@ -45,7 +45,7 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
                 }
             }
             String url = httpUrl.toString();
-            url = url + "?" + "packageId=" + /*App.sChannelId*/BuildConfig.APPLICATION_ID + "&version=" + BuildConfig.VERSION_NAME;
+            url = url + "?" + "packageId=" + BuildConfig.APPLICATION_ID + "&version=" + BuildConfig.VERSION_NAME;
             StringBuilder sb = new StringBuilder();
             if (params.size() > 0) {
                 Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
@@ -65,46 +65,16 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
             }
             FormBody formBody = bodyBuilder
                     //.addEncoded("packageId", App.sChannelId)
-                    .addEncoded("packageId",BuildConfig.APPLICATION_ID)
+                    .addEncoded("packageId", BuildConfig.APPLICATION_ID)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .build();
             request = request.newBuilder().post(formBody).build();
         }
 
-        /*if (canInjectIntoBody(request)) {
-            FormBody.Builder bodyBuilder = new FormBody.Builder();
-            FormBody formBody = (FormBody) request.body();
-
-            for (int i = 0; i < formBody.size(); i++) {
-                bodyBuilder.addEncoded(formBody.encodedName(i), formBody.encodedValue(i));
-            }
-
-            formBody = bodyBuilder
-                    .addEncoded("packageId", App.sChannelId)
-                    .addEncoded("version", BuildConfig.VERSION_NAME)
-                    .build();
-            request = request.newBuilder().post(formBody).build();
-        }*/
-
         return chain.proceed(request);
-
-
-//         Request request = chain.request();
-//        Request.Builder requestBuilder = request.newBuilder();
-
-//        if (canInjectIntoBody(request)) {
-//            FormBody.Builder formBodyBuilder = new FormBody.Builder();
-//            formBodyBuilder.add("packageId", App.sChannelId);
-//            formBodyBuilder.add("version", BuildConfig.VERSION_NAME);
-//            RequestBody formBody = formBodyBuilder.build();
-//            String postBodyString = bodyToString(request.body());
-//            postBodyString += ((postBodyString.length() > 0) ? "&" : "") + bodyToString(formBody);
-//            requestBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), postBodyString));
-//        }
-//        request=requestBuilder.build();
     }
 
-    /*private boolean canInjectIntoBody(Request request) {
+    private boolean canInjectIntoBody(Request request) {
         if (request == null) {
             return false;
         }
@@ -123,7 +93,7 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
             return false;
         }
         return true;
-    }*/
+    }
 
     private String bodyToString(final RequestBody request) {
         try {

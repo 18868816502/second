@@ -27,7 +27,7 @@
     <color name="text_color_red">#f55754</color>
     <color name="text_color_blue">#007eff</color>
     <color name="text_color_yellow">#fffc01</color>
-<!--00000000000000000000000000000000000000000000000000000000000000000000-->
+    <!--00000000000000000000000000000000000000000000000000000000000000000000-->
 
 
     <!--<color name="colorPrimary">#5591FF</color>-->
@@ -54,6 +54,7 @@
     <color name="grey_a900">#44212121</color>
     <color name="line">#f8f8f8</color>
     <color name="c_f1eff2">#f1eff2</color>
+    <color name="line_color">#e8e8e8</color>
 
 
     <color name="c_222222">#222222</color>
