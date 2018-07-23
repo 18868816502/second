@@ -331,7 +331,7 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-        selectTab(R.id.tab_account);
+        selectTab(R.id.tab_forms_icon);
     }
 
     @Override
@@ -683,7 +683,7 @@ public class MainActivity extends BaseComponentActivity {
          * @desc 都没有选择那就选择首页
          */
         if (isShowTabAccount) {
-            navigationBar.select(R.id.tab_account);
+            navigationBar.select(R.id.tab_forms_root);
         }
     }
 }

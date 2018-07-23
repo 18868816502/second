@@ -1553,6 +1553,11 @@ public class Api {
         return service.homeEvent(location, port);
     }
 
+    /*获取网贷配置图标*/
+    public Observable<ResultEntity<List<LoanAccountIconBean>>> netIcon() {
+        return service.netIcon();
+    }
+
     /**************+***************************************************+******************************************************/
 
     private String getChannelId() {

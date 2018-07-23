@@ -1,5 +1,6 @@
 package com.beihui.market.tang.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
@@ -72,13 +74,11 @@ public class MakeBillActivity extends BaseComponentActivity {
     @BindView(R.id.fl_repay_date_wrap)
     FrameLayout flRepayDateWrap;
     @BindView(R.id.tv_repay_cycle)
-    TextView tvRepayCycle;
+    TextView tv_repay_cycle;
     @BindView(R.id.ll_cycle_times_wrap)
-    LinearLayout llCycleTimesWrap;
+    LinearLayout ll_cycle_times_wrap;
     @BindView(R.id.tv_repay_times)
     TextView tvRepayTimes;
-    @BindView(R.id.fl_repay_times_wrap)
-    FrameLayout flRepayTimesWrap;
     @BindView(R.id.et_remark)
     EditText etRemark;
     @BindView(R.id.tv_notice)
@@ -93,6 +93,12 @@ public class MakeBillActivity extends BaseComponentActivity {
     ImageView ivExpandShrink;
     @BindView(R.id.rl_expand_shrink)
     RelativeLayout rlExpandShrink;
+    @BindView(R.id.fl_custom_wrap)
+    FrameLayout flCustomWrap;
+    @BindView(R.id.et_custom_name)
+    EditText etCustomName;
+    @BindView(R.id.fl_repay_times_wrap)
+    FrameLayout repay_times_wrap;
 
     private int type;
     private String iconId;
@@ -106,9 +112,10 @@ public class MakeBillActivity extends BaseComponentActivity {
     private Map<String, Object> map = new HashMap<>();
     private String firstRepayDate = null;
     private int repayCycle = 1;
-    private int repayTimes = 0;
-    private int repayTip = 1;
+    private int repayTimes = 1;
+    private int repayTip = 0;
     private List<String> timeList = new ArrayList<>();
+    private List<String> houseYearList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -125,11 +132,23 @@ public class MakeBillActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         type = getIntent().getIntExtra("type", 0);
+
         String title = getIntent().getStringExtra("title");
-        if (type == TYPE_NET_LOAN) tvToolbarTitle.setText(title);
-        if (type == TYPE_HOUSE_LOAN) tvToolbarTitle.setText("房贷");
-        if (type == TYPE_CAR_LOAN) tvToolbarTitle.setText("车贷");
-        if (type == TYPE_USER_DIFINE) tvToolbarTitle.setText("自定义");
+        tvToolbarTitle.setText(title);
+        //if (type == TYPE_NET_LOAN) tvToolbarTitle.setText(title);
+        if (type == TYPE_HOUSE_LOAN) {
+            repay_times_wrap.setEnabled(false);
+            tv_repay_cycle.setText("每月一次");
+            ll_cycle_times_wrap.setVisibility(View.VISIBLE);
+        }
+        if (type == TYPE_CAR_LOAN) {
+            repay_times_wrap.setEnabled(false);
+            tv_repay_cycle.setText("每月一次");
+            ll_cycle_times_wrap.setVisibility(View.VISIBLE);
+        }
+        if (type == TYPE_USER_DIFINE) {
+            flCustomWrap.setVisibility(View.VISIBLE);
+        }
         iconId = getIntent().getStringExtra("iconId");
         tallyId = getIntent().getStringExtra("tallyId");
 
@@ -139,81 +158,56 @@ public class MakeBillActivity extends BaseComponentActivity {
         for (int i = 0; i < 36; i++) {
             timeList.add((i + 1) + "期");
         }
+        for (int i = 0; i < 6; i++) {
+            houseYearList.add((i + 1) * 5 + "年");
+        }
 
         map.put("userId", UserHelper.getInstance(this).id());
         map.put("iconId", iconId);
         map.put("channelId", tallyId);
         map.put("tallyType", 1);//图标类型 1-公共 2-个性(isPrivate=0时tallyType=1/isPrivate=1时tallyType=2)
         map.put("channelName", title);
-
-        map.put("termType", 2);//周期类型 1-日, 2-月, 3-年,都按月计算
+        map.put("termType", 2);//周期类型 1-日, 2-月, 3-年,全部按月计算
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.tv_save_bill, R.id.fl_repay_date_wrap, R.id.fl_repay_times_wrap,
+    @OnClick({R.id.tv_save_bill, R.id.fl_repay_date_wrap, R.id.fl_repay_times_wrap, R.id.tv_alert_dlg,
             R.id.fl_notice_wrap, R.id.rl_expand_shrink, R.id.ll_cycle_times_wrap})
     public void onViewClicked(View view) {
         InputMethodUtil.closeSoftKeyboard(this);//收起软键盘
         switch (view.getId()) {
             case R.id.tv_save_bill:
-                //金额
-                String numText = etInputMoney.getText().toString().trim();
-                if (numText == null || numText.isEmpty()) {
-                    ToastUtils.showToast(this, "请输入每期金额");
-                    return;
-                }
-                double num = 0;
-                if (numText != null && !numText.isEmpty()) {
-                    num = Double.valueOf(numText);
-                    if (num <= 0) {
-                        ToastUtils.showToast(this, "每期金额不可为0");
-                        return;
-                    }
-                }
-                map.put("amount", num);
-                //首期还款时间
-                if (firstRepayDate == null || firstRepayDate.isEmpty()) {
-                    ToastUtils.showToast(this, "请选择首期应还款日");
-                    return;
-                }
-                map.put("firstRepaymentDate", firstRepayDate);
-                //周期
-                map.put("cycle", repayCycle);
-                //高级配置
-                if (isExpand) {
-                    String remark = etRemark.getText().toString().trim();
-                    if (remark != null && !remark.isEmpty()) {
-                        map.put("remark", remark);
-                    } else map.put("remark", "loan");
-                    map.put("term", repayTimes);
-                } else {
-                    map.put("remark", "loan");
-                    map.put("term", repayTimes);
-                }
-
-                Api.getInstance().createLoanAccount(map)
-                        .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
-                        .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
+                createBill();
+                break;
+            case R.id.tv_alert_dlg:
+                DlgUtil.createDlg(this, R.layout.dlg_info_dout, new DlgUtil.OnDlgViewClickListener() {
+                    @Override
+                    public void onViewClick(final Dialog dialog, View dlgView) {
+                        dlgView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onNext(@NonNull CreateAccountReturnIDsBean data) {
-                                startActivity(new Intent(MakeBillActivity.this, MainActivity.class));
-                                finish();
+                            public void onClick(View v) {
+                                dialog.dismiss();
                             }
                         });
+                    }
+                });
                 break;
-            case R.id.fl_repay_date_wrap:
+            case R.id.fl_repay_date_wrap://首期应还款日
                 firstRepayDatePicker();
                 break;
-            case R.id.fl_repay_times_wrap:
+            case R.id.fl_repay_times_wrap://还款周期
                 repayPicker(opCycleTimes, getString(R.string.repay_cycle), 1);
                 break;
-            case R.id.ll_cycle_times_wrap:
-                repayPicker(timeList, getString(R.string.repay_times), 3);
+            case R.id.ll_cycle_times_wrap://还款期数
+                if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN)
+                    repayPicker(timeList, getString(R.string.repay_times), 3);
+                if (type == TYPE_HOUSE_LOAN)
+                    repayPicker(houseYearList, getString(R.string.repay_times), 3);
                 break;
-            case R.id.fl_notice_wrap:
+            case R.id.fl_notice_wrap://还款提醒
                 repayPicker(opBeforeDate, getString(R.string.repay_tip), 2);
                 break;
             case R.id.rl_expand_shrink:
@@ -233,13 +227,64 @@ public class MakeBillActivity extends BaseComponentActivity {
         }
     }
 
-    private void repayPicker(final List<String> op, String title, final int type) {
+    private void createBill() {
+        if (type == TYPE_USER_DIFINE) {
+            String customName = etCustomName.getText().toString().trim();
+            if (customName == null || customName.isEmpty()) {
+                ToastUtils.showToast(this, "账单名称不能为空");
+                return;
+            }
+            map.put("channelName", customName);
+        }
+        //金额
+        String numText = etInputMoney.getText().toString().trim();
+        if (numText == null || numText.isEmpty()) {
+            ToastUtils.showToast(this, "请输入每期金额");
+            return;
+        }
+        double num = 0;
+        if (numText != null && !numText.isEmpty()) {
+            num = Double.valueOf(numText);
+            if (num <= 0) {
+                ToastUtils.showToast(this, "每期金额不可为0");
+                return;
+            }
+        }
+        map.put("amount", num);
+        //首期还款时间
+        if (firstRepayDate == null || firstRepayDate.isEmpty()) {
+            ToastUtils.showToast(this, "请选择首期应还款日");
+            return;
+        }
+        map.put("firstRepaymentDate", firstRepayDate);
+        //周期
+        map.put("cycle", repayCycle);
+        //期数
+        map.put("term", repayTimes);
+        //高级配置
+        if (isExpand) {
+            String remark = etRemark.getText().toString().trim();
+            if (remark != null && !remark.isEmpty()) map.put("remark", remark);
+            if (repayTip != 0) map.put("remind", repayTip);
+        }
+
+        Api.getInstance().createLoanAccount(map)
+                .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
+                .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
+                    @Override
+                    public void onNext(@NonNull CreateAccountReturnIDsBean data) {
+                        startActivity(new Intent(MakeBillActivity.this, MainActivity.class));
+                        finish();
+                    }
+                });
+    }
+
+    private void repayPicker(final List<String> op, String title, final int item) {
         OptionsPickerView pickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                if (type == 1) {//还款周期
-                    tvRepayCycle.setText(op.get(options1));
-                    repayCycle = options1 + 1;
+                if (item == 1) {//还款周期
+                    tv_repay_cycle.setText(op.get(options1));
                     if (options1 == 0) repayCycle = 1;
                     if (options1 == 1) repayCycle = 1;
                     if (options1 == 2) repayCycle = 2;
@@ -247,18 +292,23 @@ public class MakeBillActivity extends BaseComponentActivity {
                     if (options1 == 4) repayCycle = 6;
                     if (options1 == 5) repayCycle = 12;
                     if (options1 == 0) {//仅一次时不显示还款期数
-                        llCycleTimesWrap.setVisibility(View.GONE);
+                        ll_cycle_times_wrap.setVisibility(View.GONE);
                     } else {
-                        llCycleTimesWrap.setVisibility(View.VISIBLE);
+                        ll_cycle_times_wrap.setVisibility(View.VISIBLE);
                     }
                 }
-                if (type == 2) {//还款提醒
+                if (item == 2) {//还款提醒
                     tvNotice.setText(op.get(options1));
                     repayTip = options1 + 1;
                 }
-                if (type == 3) {//还款期数
+                if (item == 3) {//还款期数
                     tvRepayTimes.setText(op.get(options1));
-                    repayTimes = options1 + 1;
+                    if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN) {
+                        repayTimes = options1 + 1;
+                    }
+                    if (type == TYPE_HOUSE_LOAN) {
+                        repayTimes = (options1 + 1) * 5 * 12;
+                    }
                 }
             }
         }).setCancelText(getString(R.string.cancel))

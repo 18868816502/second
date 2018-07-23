@@ -32,8 +32,44 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
+        android:id="@+id/fl_custom_wrap"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="账单名称"
+            android:textColor="@color/black_1"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/et_custom_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:background="@null"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:hint="不超过8个字"
+            android:inputType="text"
+            android:maxLength="8"
+            android:maxLines="1"
+            android:textColor="#d3d4d5"
+            android:textCursorDrawable="@null"
+            android:textSize="15dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -223,11 +259,13 @@
             android:paddingRight="15dp">
 
             <TextView
+                android:id="@+id/tv_alert_dlg"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:drawablePadding="8dp"
                 android:drawableRight="@mipmap/ic_bill_dout"
+                android:gravity="center"
                 android:text="还款提醒"
                 android:textColor="@color/black_1"
                 android:textSize="15dp" />

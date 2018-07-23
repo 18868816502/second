@@ -230,6 +230,11 @@
         <activity
             android:name=".tang.activity.SearchActivity"
             android:screenOrientation="portrait" />
+        <!--账单详情-->
+        <activity
+            android:name=".tang.activity.NetLoanDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--快速记账页面-->
         <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->
         <activity
@@ -310,6 +315,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/XiaoNengAppTheme" />
+
         <activity
             android:name="cn.xiaoneng.activity.LeaveMsgActivity"
             android:launchMode="singleTask"
@@ -395,8 +401,7 @@
         <activity
             android:name=".ui.activity.BillSummaryActivity"
             android:label="@string/title_activity_bill_summary"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ui.activity.AboutKaolaActivity"></activity>
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

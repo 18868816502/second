@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +17,9 @@ import com.beihui.market.api.Api;
 import com.beihui.market.entity.Bill;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.activity.CreditBillActivity;
+import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.LoanBillActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -53,14 +51,12 @@ import io.reactivex.annotations.NonNull;
 
 public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHolder> implements View.OnClickListener {
 
-    private List<Bill> dataSet = new ArrayList<>();//数据源
-    //private List<Bill> dataSetCopy = new ArrayList<>();//数据源
-    //private List<Bill> unPayeset = new ArrayList<>();//剔除已还的数据源
-
     public static final int VIEW_HEADER = R.layout.f_layout_home_head;
-    public static final int VIEW_NORMAL = R.layout.f_layout_home_bill_item;
 
+    public static final int VIEW_NORMAL = R.layout.f_layout_home_bill_item;
     private Activity mActivity;
+
+    private List<Bill> dataSet = new ArrayList<>();
     private HomeFragment homeFragment;
     private double totalAmount;
     private String xMonth;
@@ -79,16 +75,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     public void notifyHead(double totalAmount, String xMonth) {
         this.totalAmount = totalAmount;
         this.xMonth = xMonth;
-        if (totalAmount != 0) notifyItemChanged(0);
+        if (totalAmount >= 0) notifyItemChanged(0);
         else notifyDataSetChanged();
     }
 
     public void notifyPayChanged(List<Bill> list) {
-        //dataSet.clear();
         if (list != null) dataSet = list;
         else dataSet.clear();
-        //dataSet.addAll(list);
-        //dataSetCopy.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -112,7 +105,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             if (url == null || url.isEmpty()) {
                 holder.headEventEntry.setVisibility(View.GONE);
             } else holder.headEventEntry.setVisibility(View.VISIBLE);
-            if (!userHelper.isLogin() || totalAmount <= 0) {
+            if (!userHelper.isLogin() || totalAmount < 0) {
                 holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), currentMonth));
                 holder.headBillNum.setText("赶紧先记上一笔");
             } else {
@@ -128,7 +121,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             /*活动入口*/
             holder.headEventEntry.setOnClickListener(this);
             /*账单数目是否可见*/
-
             holder.headBillVisible.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -148,8 +140,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.headAddBillWrap.setOnClickListener(this);
             /*导入信用卡*/
             holder.headCreditIn.setOnClickListener(this);
-        }
-        if (holder.viewType == VIEW_NORMAL) {
+        } else if (holder.viewType == VIEW_NORMAL) {
             Bill bill = null;
             if (dataSet.size() > 0) bill = dataSet.get(position - 1);
             final Bill item = bill;
@@ -199,6 +190,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     //itemClick(item.getRecordId(), item.getBillId());
+                    Intent intent = new Intent(mActivity, NetLoanDetailActivity.class);
+                    intent.putExtra("recordId", item.getRecordId());
+                    intent.putExtra("billId", item.getBillId());
+                    mActivity.startActivity(intent);
                 }
             });
         }
@@ -240,65 +235,58 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     }
 
     private void showDialog(final int type, final String billId, final String recordId, final double amount) {
-        final Dialog dialog = new Dialog(mActivity, 0);
-        View dialogView = LayoutInflater.from(mActivity).inflate(R.layout.dlg_pay_over_bill, null);
-        View.OnClickListener clickListener = new View.OnClickListener() {
+        DlgUtil.createDlg(mActivity, R.layout.dlg_pay_over_bill, new DlgUtil.OnDlgViewClickListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.confirm:
-                        //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
-                        if (type == 2) {//信用卡记账
-                            Api.getInstance().updateCreditCardBillStatus(userHelper.id(), billId, 2)
-                                    .compose(RxResponse.compatO())
-                                    .subscribe(new ApiObserver<Object>() {
-                                        @Override
-                                        public void onNext(@NonNull Object data) {
-                                            homeFragment.request();
-                                        }
-                                    });
-                        } else if (type == 1) {//网贷记账
-                            Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
-                                    .compose(RxResponse.compatO())
-                                    .subscribe(new ApiObserver<Object>() {
-                                        @Override
-                                        public void onNext(@NonNull Object data) {
-                                            homeFragment.request();
-                                        }
-                                    });
-                        } else if (type == 3) {//快捷记账
-                            Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
-                                    .compose(RxResponse.compatO())
-                                    .subscribe(new ApiObserver<Object>() {
-                                        @Override
-                                        public void onNext(@NonNull Object data) {
-                                            homeFragment.request();
-                                        }
-                                    });
+            public void onViewClick(final Dialog dialog, View dlgView) {
+                View.OnClickListener clickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (v.getId()) {
+                            case R.id.confirm:
+                                //pv，uv统计
+                                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
+                                if (type == 2) {//信用卡记账
+                                    Api.getInstance().updateCreditCardBillStatus(userHelper.id(), billId, 2)
+                                            .compose(RxResponse.compatO())
+                                            .subscribe(new ApiObserver<Object>() {
+                                                @Override
+                                                public void onNext(@NonNull Object data) {
+                                                    homeFragment.request();
+                                                }
+                                            });
+                                } else if (type == 1) {//网贷记账
+                                    Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
+                                            .compose(RxResponse.compatO())
+                                            .subscribe(new ApiObserver<Object>() {
+                                                @Override
+                                                public void onNext(@NonNull Object data) {
+                                                    homeFragment.request();
+                                                }
+                                            });
+                                } else if (type == 3) {//快捷记账
+                                    Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
+                                            .compose(RxResponse.compatO())
+                                            .subscribe(new ApiObserver<Object>() {
+                                                @Override
+                                                public void onNext(@NonNull Object data) {
+                                                    homeFragment.request();
+                                                }
+                                            });
+                                }
+                                dialog.dismiss();
+                                break;
+                            case R.id.cancel:
+                                dialog.dismiss();
+                                break;
+                            default:
+                                break;
                         }
-                        dialog.dismiss();
-                        break;
-                    case R.id.cancel:
-                        dialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
+                    }
+                };
+                dlgView.findViewById(R.id.cancel).setOnClickListener(clickListener);
+                dlgView.findViewById(R.id.confirm).setOnClickListener(clickListener);
             }
-        };
-        dialogView.findViewById(R.id.cancel).setOnClickListener(clickListener);
-        dialogView.findViewById(R.id.confirm).setOnClickListener(clickListener);
-        dialog.setContentView(dialogView);
-        dialog.setCanceledOnTouchOutside(true);
-        Window window = dialog.getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            window.setAttributes(lp);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        dialog.show();
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

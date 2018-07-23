@@ -32,7 +32,7 @@
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -64,6 +64,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_house_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="房贷"
@@ -71,6 +72,7 @@
                             android:textSize="17dp" />
 
                         <TextView
+                            android:id="@+id/tv_house_remark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
@@ -80,6 +82,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/iv_house_icon"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="18dp"
@@ -104,6 +107,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_car_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="车贷"
@@ -111,6 +115,7 @@
                             android:textSize="17dp" />
 
                         <TextView
+                            android:id="@+id/tv_car_remark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
@@ -120,6 +125,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/iv_car_icon"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:layout_marginLeft="18dp"

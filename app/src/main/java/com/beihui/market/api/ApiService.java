@@ -1,5 +1,7 @@
 package com.beihui.market.api;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.AdBanner;
@@ -218,7 +220,6 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/netLoan/loadBill")
     Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(@Field("userId") String userId, @Field("recordId") String liabilitiesId);
 
-
     /**
      * 修改网贷账单备注
      */
@@ -326,7 +327,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/creditcard/bill")
     Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(@Field("userId") String userId, @Field("recordId") String recordId);
-
 
     /**
      * 更新快捷账单还款状态
@@ -1123,4 +1123,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/activeHomeController/isShowActive")
     Observable<ResultEntity<EventBean>> homeEvent(@Field("location") String location, @Field("port") int port);
+
+    /*获取网贷配置图标*/
+    @POST(BASE_PATH_S_FOUR + "/channelsIcon/getIconConfigure")
+    Observable<ResultEntity<List<LoanAccountIconBean>>> netIcon();
 }
