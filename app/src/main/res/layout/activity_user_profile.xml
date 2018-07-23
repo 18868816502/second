@@ -59,8 +59,7 @@
                         android:layout_height="wrap_content"
                         android:text="头像"
                         android:textColor="#ff424251"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -117,8 +116,7 @@
                     android:gravity="center_vertical"
                     android:text="昵称"
                     android:textColor="@color/black_1"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_navigate_nick_name"
@@ -138,7 +136,8 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/line" />
+                android:background="@color/line"
+                android:visibility="gone"/>
 
             <!--修改密码-->
             <FrameLayout
@@ -147,7 +146,8 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="15dp"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingRight="15dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -189,8 +189,7 @@
                     android:gravity="center_vertical"
                     android:text="手机号"
                     android:textColor="@color/black_1"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_user_profile_mobile"
@@ -230,8 +229,7 @@
                     android:gravity="center_vertical"
                     android:text="微信号"
                     android:textColor="@color/black_1"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_user_profile_wxchat"
@@ -251,7 +249,8 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/line" />
+                android:background="@color/line"
+                android:visibility="gone"/>
 
             <!--关于我们-->
             <FrameLayout
@@ -260,7 +259,8 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="15dp"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingRight="15dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -275,11 +275,19 @@
                     android:textStyle="bold" />
 
             </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/line"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:layout_marginBottom="15dp"
+                android:visibility="gone"
                 android:background="#f8f8f8" />
 
             <!--清除缓存-->
@@ -289,7 +297,8 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="15dp"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingRight="15dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -319,7 +328,8 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/line" />
+                android:background="@color/line"
+                android:visibility="gone"/>
 
             <!--版本号-->
             <FrameLayout
@@ -328,7 +338,8 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="15dp"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingRight="15dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -355,7 +366,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
-                android:background="#f8f8f8" />
+                android:background="#f8f8f8"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_user_profile_exit"
@@ -365,12 +377,9 @@
                 android:text="安全退出"
                 android:textColor="#ffff5240"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#f8f8f8" />
 
             <!--<RelativeLayout-->
             <!--android:background="#fffafafa"-->

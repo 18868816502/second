@@ -200,6 +200,9 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
         //发送用户退出全局事件
         EventBus.getDefault().post(new UserLogoutEvent());
+        Intent broadCast = new Intent();
+        broadCast.setAction("logout");
+        sendBroadcast(broadCast);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

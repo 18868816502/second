@@ -1,6 +1,9 @@
 package com.beihui.market.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -62,6 +65,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     TabMinePresenter presenter;
 
     private String pendingPhone;
+    MyRecevier myRecevier = new MyRecevier();
 
     public static PersonalFragment newInstance() {
         return new PersonalFragment();
@@ -89,6 +93,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         if (EventBus.getDefault().isRegistered(getActivity())) {
             EventBus.getDefault().unregister(getActivity());
         }
+        if (myRecevier != null) {
+            getActivity().unregisterReceiver(myRecevier);
+        }
         super.onDestroy();
     }
 
@@ -104,6 +111,11 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void initDatas() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("logout");
+        if (getActivity() != null) {
+            getActivity().registerReceiver(myRecevier, intentFilter);
+        }
 
     }
 
@@ -355,4 +367,20 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             tvMessageNum.setText(data);
         }
     }
+
+    class MyRecevier extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals("logout")) {
+                    userNameTv.setText("请登录");
+                    Glide.with(getActivity())
+                            .load(R.mipmap.mine_head)
+                            .asBitmap()
+                            .into(avatarIv);
+                }
+            }
+        }
+    }
+
 }
