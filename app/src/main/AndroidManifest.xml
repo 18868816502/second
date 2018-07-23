@@ -218,19 +218,19 @@
         <activity
             android:name=".tang.activity.LoanBillActivity"
             android:screenOrientation="portrait" />
-        <!--信用卡账单-->
+        <!-- 信用卡账单 -->
         <activity
             android:name=".tang.activity.CreditBillActivity"
             android:screenOrientation="portrait" />
-        <!--创建账单-->
+        <!-- 创建账单 -->
         <activity
             android:name=".tang.activity.MakeBillActivity"
             android:screenOrientation="portrait" />
-        <!--搜索-->
+        <!-- 搜索 -->
         <activity
             android:name=".tang.activity.SearchActivity"
             android:screenOrientation="portrait" />
-        <!--快速记账页面-->
+        <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->
         <activity
             android:name=".ui.activity.FastAddDebtActivity"
@@ -310,7 +310,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/XiaoNengAppTheme" />
-
         <activity
             android:name="cn.xiaoneng.activity.LeaveMsgActivity"
             android:launchMode="singleTask"
@@ -396,7 +395,8 @@
         <activity
             android:name=".ui.activity.BillSummaryActivity"
             android:label="@string/title_activity_bill_summary"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.activity.AboutKaolaActivity"></activity>
     </application>
 
 </manifest>

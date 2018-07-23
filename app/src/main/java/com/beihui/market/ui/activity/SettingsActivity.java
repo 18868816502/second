@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AppUpdate;
@@ -26,6 +28,7 @@ import com.beihui.market.ui.presenter.SettingPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.view.RelativeLayoutBar;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,6 +45,12 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.clear_cache)
+    RelativeLayoutBar clearCacheRel;
+    @BindView(R.id.check_version)
+    RelativeLayoutBar checkVersionRel;
+    //清楚缓存的大小
+    private String mCacheSize;
 
     @Inject
     SettingPresenter presenter;
@@ -72,6 +81,19 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Override
     public void initDatas() {
         presenter.onStart();
+        /**
+         * 显示版本号
+         */
+        checkVersionRel.setRightTextView1Text("v" + BuildConfig.VERSION_NAME);
+
+        try {
+            mCacheSize = DataCleanManager.getFormatSize(DataCleanManager.getInternalCacheSize()
+                    + DataCleanManager.getExternalCacheSize());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        clearCacheRel.setRightTextView1Text(mCacheSize);
     }
 
     @Override
@@ -83,11 +105,11 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 .inject(this);
     }
 
-    @OnClick({R.id.about_kaola, R.id.star_me, R.id.check_version})
+    @OnClick({R.id.about_kaola, R.id.star_me, R.id.check_version, R.id.exit, R.id.clear_cache})
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.about_kaola:
-                Toast.makeText(this, "kaola", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SettingsActivity.this, AboutKaolaActivity.class));
                 break;
             case R.id.star_me:
                 String model = android.os.Build.MODEL;
@@ -131,6 +153,17 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 break;
             case R.id.check_version:
                 presenter.checkVersion();
+                break;
+
+            case R.id.clear_cache:
+                boolean a = DataCleanManager.cleanInternalCache();
+                boolean b = DataCleanManager.cleanExternalCache();
+                if (a && b) {
+                    clearCacheRel.setRightTextView1Text("0M");
+                    Toast.makeText(this, "缓存已清除", Toast.LENGTH_SHORT).show();
+                } else {
+                    clearCacheRel.setRightTextView1Text("清除失败");
+                }
                 break;
         }
     }

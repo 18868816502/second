@@ -38,7 +38,7 @@
                 android:id="@+id/about_kaola"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                app:left_image="@drawable/mine_encourage_icon"
+                android:layout_marginTop="10dp"
                 app:left_image_Visible="true"
                 app:left_textView_color="@color/color_primary_black"
                 app:left_textView_text="关于考拉记账"
@@ -50,12 +50,25 @@
                 android:id="@+id/star_me"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                app:left_image="@drawable/mine_encourage_icon"
+                android:layout_marginTop="10dp"
                 app:left_image_Visible="true"
                 app:left_textView_color="@color/color_primary_black"
                 app:left_textView_text="鼓励一下"
                 app:left_textView_textSize="15sp"
-                app:left_textView_style="true"
+                app:view_Visible="true"
+                app:view_margin_right="15" />
+
+            <com.beihui.market.view.RelativeLayoutBar
+                android:id="@+id/clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_text="清除缓存"
+                app:left_textView_textSize="15sp"
+                app:right_textView1_Visible="true"
+                app:right_textView1_color="@color/black_2"
+                app:right_textView1_textSize="14sp"
                 app:view_Visible="true"
                 app:view_margin_right="15" />
 
@@ -63,21 +76,22 @@
                 android:id="@+id/check_version"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                app:left_image="@drawable/mine_encourage_icon"
                 app:left_image_Visible="true"
                 app:left_textView_color="@color/color_primary_black"
                 app:left_textView_text="版本更新"
-                app:left_textView_textSize="15sp" />
+                app:left_textView_textSize="15sp"
+                app:right_textView1_Visible="true"
+                app:right_textView1_color="@color/black_2"
+                app:right_textView1_text="0.5M"
+                app:right_textView1_textSize="14sp" />
 
 
             <TextView
                 android:id="@+id/exit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="35dp"
-                android:background="@drawable/xshape_tab_mine_safe_back_bg"
+                android:background="@drawable/relativebar_selector_bg"
                 android:gravity="center"
                 android:paddingBottom="13dp"
                 android:paddingTop="13dp"

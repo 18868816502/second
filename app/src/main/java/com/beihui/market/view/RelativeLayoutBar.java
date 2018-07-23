@@ -95,8 +95,7 @@ public class RelativeLayoutBar extends RelativeLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable
                 .RelativeLayoutBar);
 
-        left_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_left_image, R.mipmap
-                .ic_launcher_round);
+        left_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_left_image, R.color.transparent);
         right_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_right_image, R
                 .mipmap.right_icon);
 

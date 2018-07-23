@@ -42,6 +42,10 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
     @Override
     public void onStart() {
         super.onStart();
+        loadMeaasge();
+    }
+
+    public void loadMeaasge() {
         curPage = 1;
         Disposable dis = mApi.querySysMsgList(mUserHelper.getProfile().getId(), curPage, PAGE_SIZE)
                 .compose(RxUtil.<ResultEntity<SysMsg>>io2main())
@@ -76,6 +80,7 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
                             }
                         });
         addDisposable(dis);
+
     }
 
     @Override

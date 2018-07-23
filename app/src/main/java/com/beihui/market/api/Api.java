@@ -1509,6 +1509,25 @@ public class Api {
         return service.onBillSummary(id, pageNo);
     }
 
+    /**
+     * create by: jiang
+     * create on:2018/7/23 10:58
+     * params:
+     * return:
+     * description: 消息标记为已读
+     */
+    public Observable<ResultEntity> onReadAll(String id) {
+        return service.onReadAll(id);
+    }
+
+    /**
+     * 清空消息
+     */
+    public Observable<ResultEntity> onDeleteMessageAll(String id) {
+        return service.onDeleteMessageAll(id);
+    }
+
+
     /*v4.2.0首页数据*/
     public Observable<ResultEntity<HomeData>> home(String userId, String pageNo) {
         return service.home(userId, pageNo);

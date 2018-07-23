@@ -7,17 +7,27 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <TextView
-            android:textColor="@color/black_1"
-            android:textSize="17dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="消息" />
+            android:text="消息"
+            android:textColor="@color/black_1"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:id="@+id/message_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/message_more_icon" />
+
+
     </android.support.v7.widget.Toolbar>
 
     <com.beihui.market.view.StateLayout

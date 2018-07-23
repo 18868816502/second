@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -126,7 +127,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
             }
         }).setTitleText("还款提醒").setCancelColor(getResources().getColor(R.color.pickerview_cancle))
                 .setSubmitColor(getResources().getColor(R.color.pickerview_submit))
-                .setTitleColor(getResources().getColor(R.color.pickerview_title)).setLineSpacingMultiplier(2f)
+                .setTitleColor(getResources().getColor(R.color.pickerview_title)).setTitleBgColor(Color.WHITE).setLineSpacingMultiplier(2f)
                 .setSelectOptions(5)
                 .build();
 

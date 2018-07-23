@@ -81,7 +81,7 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
- *         请求接口
+ * 请求接口
  */
 public interface ApiService {
 
@@ -1081,6 +1081,21 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/index/personAmount")
     Observable<ResultEntity<BillSummaryBean>> onBillSummary(@Field("userId") String userId, @Field("pageNo") String pageNo);
+
+    /**
+     * 全部已读
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/message/readAll")
+    Observable<ResultEntity> onReadAll(@Field("userId") String userId);
+
+    /**
+     * 清空消息
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/message/clear")
+    Observable<ResultEntity> onDeleteMessageAll(@Field("userId") String userId);
+
 
     /**********************************************************************************************************/
 
