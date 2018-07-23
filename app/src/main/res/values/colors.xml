@@ -107,4 +107,7 @@
     <color name="pickerview_title">#424251</color>
     <color name="pickerview_cancle">#909298</color>
     <color name="pickerview_submit">#FF5240</color>
+
+    <color name="bill_detail_not_pay_color">#ff5644</color>
+    <color name="bill_detail_pay_color">#28b05e</color>
 </resources>

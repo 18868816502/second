@@ -52,10 +52,9 @@ import io.reactivex.annotations.NonNull;
 public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHolder> implements View.OnClickListener {
 
     public static final int VIEW_HEADER = R.layout.f_layout_home_head;
-
     public static final int VIEW_NORMAL = R.layout.f_layout_home_bill_item;
-    private Activity mActivity;
 
+    private Activity mActivity;
     private List<Bill> dataSet = new ArrayList<>();
     private HomeFragment homeFragment;
     private double totalAmount;
@@ -189,7 +188,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.ll_bill_wrap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //itemClick(item.getRecordId(), item.getBillId());
                     Intent intent = new Intent(mActivity, NetLoanDetailActivity.class);
                     intent.putExtra("recordId", item.getRecordId());
                     intent.putExtra("billId", item.getBillId());
@@ -207,7 +205,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        if (dataSet.size() == 0) return 2;
+        if (dataSet.size() == 0) return 1;
         return dataSet.size() + 1;
     }
 

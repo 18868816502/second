@@ -25,6 +25,8 @@ import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.DetailHead;
+import com.beihui.market.entity.DetailList;
 import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.FastDebtDetail;
@@ -225,7 +227,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/netLoan/updateRemark")
     Observable<ResultEntity> updateLoanDebtBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
-
 
     /**
      * 修改网贷账单备注
@@ -1097,4 +1098,19 @@ public interface ApiService {
     /*获取网贷配置图标*/
     @POST(BASE_PATH_S_FOUR + "/channelsIcon/getIconConfigure")
     Observable<ResultEntity<List<LoanAccountIconBean>>> netIcon();
+
+    /*账单详情头部*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/detailHead")
+    Observable<ResultEntity<DetailHead>> detailHead(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /*账单详情列表*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/detailList")
+    Observable<ResultEntity<DetailList>> detailList(@Field("userId") String userId, @Field("recordId") String recordId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /*结清全部*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/closeAll")
+    Observable<ResultEntity> closeAll(@Field("userId") String userId, @Field("recordId") String recordId);
 }

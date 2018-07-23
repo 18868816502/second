@@ -234,6 +234,10 @@
         <activity
             android:name=".tang.activity.NetLoanDetailActivity"
             android:screenOrientation="portrait" />
+        <!--添加备注-->
+        <activity
+            android:name=".tang.activity.RemarkActivity"
+            android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->
         <activity

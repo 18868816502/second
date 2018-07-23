@@ -33,6 +33,10 @@ import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 
@@ -95,9 +99,22 @@ public class HomeFragment extends BaseTabFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_ACCOUNT);
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /*账单详情改变数据时，刷新界面*/
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRecieve(String value) {
+        if ("1".equals(value)) request();
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
     }
 
     @Override
@@ -113,8 +130,8 @@ public class HomeFragment extends BaseTabFragment {
 
     @Override
     public void initDatas() {
-        initRecyclerView();
         request();
+        initRecyclerView();
     }
 
     public void request() {

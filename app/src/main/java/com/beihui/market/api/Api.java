@@ -31,6 +31,8 @@ import com.beihui.market.entity.DebeDetailRecord;
 import com.beihui.market.entity.DebtAbstract;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
+import com.beihui.market.entity.DetailHead;
+import com.beihui.market.entity.DetailList;
 import com.beihui.market.entity.EBank;
 import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.FastDebtDetail;
@@ -88,6 +90,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.Field;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -1522,6 +1525,21 @@ public class Api {
     /*获取网贷配置图标*/
     public Observable<ResultEntity<List<LoanAccountIconBean>>> netIcon() {
         return service.netIcon();
+    }
+
+    /*账单详情头部*/
+    public Observable<ResultEntity<DetailHead>> detailHead(String userId, String recordId) {
+        return service.detailHead(userId, recordId);
+    }
+
+    /*账单详情列表*/
+    public Observable<ResultEntity<DetailList>> detailList(String userId, String recordId, int pageNo, int pageSize) {
+        return service.detailList(userId, recordId, pageNo, pageSize);
+    }
+
+    /*结清全部*/
+    public Observable<ResultEntity> closeAll(String userId, String recordId) {
+        return service.closeAll(userId, recordId);
     }
 
     /**************+***************************************************+******************************************************/
