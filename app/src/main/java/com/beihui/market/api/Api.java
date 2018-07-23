@@ -55,6 +55,7 @@ import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.RemindBean;
 import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
@@ -1525,6 +1526,20 @@ public class Api {
      */
     public Observable<ResultEntity> onDeleteMessageAll(String id) {
         return service.onDeleteMessageAll(id);
+    }
+
+    /**
+     * 提醒查询
+     */
+    public Observable<ResultEntity<RemindBean>> onRemindInfo(String id) {
+        return service.onRemindInfo(id);
+    }
+
+    /**
+     * 提醒设置
+     */
+    public Observable<ResultEntity> onRemindSetting(String id, String geTui, String sms, String wechat, String day) {
+        return service.onRemindSetting(id, geTui, sms, wechat, day);
     }
 
 

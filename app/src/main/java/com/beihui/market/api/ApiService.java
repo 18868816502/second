@@ -47,6 +47,7 @@ import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.RemindBean;
 import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
@@ -1095,6 +1096,20 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/clear")
     Observable<ResultEntity> onDeleteMessageAll(@Field("userId") String userId);
+
+    /**
+     * 提醒查询
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/message/remind/load")
+    Observable<ResultEntity<RemindBean>> onRemindInfo(@Field("userId") String userId);
+
+    /**
+     * 提醒设置
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/message/remind")
+    Observable<ResultEntity> onRemindSetting(@Field("userId") String userId, @Field("geTui") String geTui, @Field("sms") String sms, @Field("wechat") String weChat, @Field("day") String day);
 
 
     /**********************************************************************************************************/

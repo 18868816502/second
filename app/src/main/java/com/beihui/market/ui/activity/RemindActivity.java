@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -9,15 +10,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.RemindBean;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerRemindComponent;
 import com.beihui.market.injection.module.RemindModule;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.contract.RemindContract;
 import com.beihui.market.ui.presenter.RemindPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -53,8 +62,9 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
     @Inject
     RemindPresenter presenter;
 
-    private int pushRemind;
-    private int messageRemind;
+    private int pushRemind = 0;
+    private int messageRemind = 1;
+    private int remindDay = 1;
 
     @Override
     public int getLayoutId() {
@@ -72,32 +82,63 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
     @Override
     public void initDatas() {
         presenter.onStart();
-        pushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        getRemindInfo();
+        pushSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                boolean checked = ((Switch) v).isChecked();
+                if (checked) {
                     pushRemind = 1;
-                    Toast.makeText(RemindActivity.this, "个推打开", Toast.LENGTH_SHORT).show();
                 } else {
                     pushRemind = 0;
                 }
-
+                remindSetting();
             }
         });
 
-        messageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        messageSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                boolean checked = ((Switch) v).isChecked();
+                if (checked) {
                     messageRemind = 1;
-                    Toast.makeText(RemindActivity.this, "信息推打开", Toast.LENGTH_SHORT).show();
                 } else {
                     messageRemind = 0;
                 }
+                remindSetting();
 
             }
         });
 
+    }
+
+
+    private void getRemindInfo() {
+        String userId = UserHelper.getInstance(this).getProfile().getId();
+        Api.getInstance().onRemindInfo(userId).compose(RxResponse.<RemindBean>compatT()).subscribe(new ApiObserver<RemindBean>() {
+            @Override
+            public void onNext(RemindBean data) {
+                if (data.getGeTui() == 1) {
+                    pushRemind = 1;
+                    pushSwitch.setChecked(true);
+                } else {
+                    pushSwitch.setChecked(false);
+                    pushRemind = 0;
+                }
+                if (data.getSms() == 1) {
+                    messageSwitch.setChecked(true);
+                    messageRemind = 1;
+                } else {
+                    messageSwitch.setChecked(false);
+                    messageRemind = 0;
+                }
+
+                selectTv.setText(CommonUtils.getDay(data.getDay() - 1));
+                remindDay = data.getDay();
+
+
+            }
+        });
     }
 
     @Override
@@ -123,18 +164,33 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 selectTv.setText(list.get(options1));
+                remindDay = options1 + 1;
+                remindSetting();
 
             }
         }).setTitleText("还款提醒").setCancelColor(getResources().getColor(R.color.pickerview_cancle))
                 .setSubmitColor(getResources().getColor(R.color.pickerview_submit))
                 .setTitleColor(getResources().getColor(R.color.pickerview_title)).setTitleBgColor(Color.WHITE).setLineSpacingMultiplier(2f)
-                .setSelectOptions(5)
+                .setSelectOptions(0)
                 .build();
 
         optionsPickerView.setPicker(list);
         optionsPickerView.show();
 
 
+    }
+
+    private void remindSetting() {
+        String userId = UserHelper.getInstance(this).getProfile().getId();
+        Api.getInstance().onRemindSetting(userId, pushRemind + "", messageRemind + "", null, remindDay + "")
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new ApiObserver<ResultEntity>() {
+                    @Override
+                    public void onNext(ResultEntity data) {
+                        ToastUtils.showToast(RemindActivity.this, "设置成功");
+
+                    }
+                });
     }
 
     @Override
