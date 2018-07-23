@@ -24,7 +24,7 @@
                 android:drawableLeft="@mipmap/ic_search"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:hint="搜索"
+                android:hint="请输入你要搜索的信息"
                 android:maxLength="8"
                 android:maxLines="1"
                 android:paddingLeft="8dp"

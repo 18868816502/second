@@ -244,5 +244,5 @@
     <string name="repay_cycle">还款周期</string>
     <string name="repay_times">还款期数</string>
     <string name="repay_tip">还款提醒</string>
-    <string name="select_first_repay_date">选择首次还款日</string>
+    <string name="select_first_repay_date">首期应还款日</string>
 </resources>

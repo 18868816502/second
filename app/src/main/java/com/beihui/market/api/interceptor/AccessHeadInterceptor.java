@@ -85,14 +85,6 @@ public class AccessHeadInterceptor implements Interceptor {
                 .addHeader("accessKey", NetConstants.ACCESS_KEY);
 
         StringBuilder sb = new StringBuilder(NetConstants.SECRET_KEY).append(reqTime);
-        /*if ("GET".equals(request.method())) {
-
-        } else if ("POST".equals(request.method())) {
-            if (request.body() instanceof FormBody) {
-                FormBody formBody = (FormBody) request.body();
-                sb.append()
-            }
-        }*/
         RequestBody requestBody = request.body();
         if (requestBody != null) {
             MediaType contentType = requestBody.contentType();
@@ -128,8 +120,6 @@ public class AccessHeadInterceptor implements Interceptor {
                     String[] keyvalue = pairs[i].split("=");
                     String keyDecode = URLDecoder.decode(keyvalue[0], "utf-8");
                     keys[i] = keyDecode;
-                    System.out.println("keyDecode=" + keyDecode);
-                    System.out.println("value=" + URLDecoder.decode(keyvalue[1], "utf-8"));
                     keyValue.put(keyDecode, URLDecoder.decode(keyvalue[1], "utf-8"));
                 }
                 Arrays.sort(keys, keyComparator);

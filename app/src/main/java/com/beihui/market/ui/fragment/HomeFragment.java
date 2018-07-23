@@ -165,7 +165,6 @@ public class HomeFragment extends BaseTabFragment {
             //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
             @Override
             public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                System.out.println(11111);
             }
 
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
@@ -206,6 +205,7 @@ public class HomeFragment extends BaseTabFragment {
                 if (max > 1) max = 1;
                 if (max > 0.55f) mTitle.setAlpha(max);
                 else mTitle.setAlpha(0);
+                if (!manager.canScrollVertically()) mTitle.setAlpha(0);
             }
         });
     }
