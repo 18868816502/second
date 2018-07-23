@@ -61,9 +61,9 @@ public class BillSummaryBean implements Serializable {
             private String title;
             private Object iconId;
             private String totalAmount;
-            private Object month;
+            private String month;
             private String totalTerm;
-            private Object logoUrl;
+            private String logoUrl;
             private String type;
 
             public String getRecordId() {
@@ -98,11 +98,11 @@ public class BillSummaryBean implements Serializable {
                 this.totalAmount = totalAmount;
             }
 
-            public Object getMonth() {
+            public String getMonth() {
                 return month;
             }
 
-            public void setMonth(Object month) {
+            public void setMonth(String month) {
                 this.month = month;
             }
 
@@ -114,11 +114,11 @@ public class BillSummaryBean implements Serializable {
                 this.totalTerm = totalTerm;
             }
 
-            public Object getLogoUrl() {
+            public String getLogoUrl() {
                 return logoUrl;
             }
 
-            public void setLogoUrl(Object logoUrl) {
+            public void setLogoUrl(String logoUrl) {
                 this.logoUrl = logoUrl;
             }
 
