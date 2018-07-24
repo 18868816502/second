@@ -33,7 +33,6 @@ public class ToastUtils {
      * 显示吐司
      */
     public static void showToast(final Context context, final String msg){
-
         ThreadUtils.runOnMainThread(new Runnable() {
             @Override
             public void run() {

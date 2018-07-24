@@ -273,7 +273,9 @@ public class MakeBillActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
                     @Override
                     public void onNext(@NonNull CreateAccountReturnIDsBean data) {
-                        startActivity(new Intent(MakeBillActivity.this, MainActivity.class));
+                        Intent intent = new Intent(MakeBillActivity.this, MainActivity.class);
+                        intent.putExtra("index", 0);
+                        startActivity(intent);
                         finish();
                     }
                 });

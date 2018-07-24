@@ -58,7 +58,6 @@ public class ToastUtils {
             view.findViewById(R.id.single_image).setVisibility(View.VISIBLE);
             ((ImageView) view.findViewById(R.id.image_single)).setImageDrawable(drawable);
         }
-
         return toast;
     }
 

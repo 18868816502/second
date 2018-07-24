@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:paddingRight="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -17,107 +19,53 @@
             android:text="账单详情"
             android:textColor="@color/black"
             android:textSize="17dp" />
-    </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/iv_home_bill_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/mine_bank_default_icon" />
-
-        <!--网贷名称 或者 信用卡名称-->
-        <TextView
-            android:id="@+id/tv_home_bill_name"
+            android:id="@+id/iv_more_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="招商银行"
-            android:textColor="@color/black_1"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="剩余负债（元）"
-        android:textColor="@color/black_2"
-        android:textSize="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="￥2465.37"
-        android:textColor="@color/black_1"
-        android:textSize="24dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已清偿"
-                android:textColor="@color/black_2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1154.31"
-                android:textColor="#28B088" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="还款期数"
-                android:textColor="@color/black_2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1/3"
-                android:textColor="@color/black_1" />
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_gravity="right"
+            android:padding="5dp"
+            android:src="@mipmap/ic_more_setting" />
+    </android.support.v7.widget.Toolbar>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:background="#e8e8e8" />
 
-    <EditText
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="好记性不如写备注~"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:background="@drawable/x_card_background"
-        android:textColor="#d3d4d5"
-        android:textColorHint="#d3d4d5"
-        android:textSize="12dp" />
+        android:layout_height="match_parent">
 
+        <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout
+            android:id="@+id/prl_fg_tab_account_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="35dp">
 
+            <include layout="@layout/x_pull_to_refresh_head" />
+
+            <com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:overScrollMode="never"
+                android:splitMotionEvents="false" />
+
+            <include layout="@layout/x_pull_to_refresh_load_more" />
+        </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
+
+        <TextView
+            android:id="@+id/tv_finish_all"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/x_shandow"
+            android:gravity="center"
+            android:text="结清全部"
+            android:textColor="@color/black_1"
+            android:textSize="15dp" />
+    </FrameLayout>
 </LinearLayout>

@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -171,7 +172,6 @@ public class MainActivity extends BaseComponentActivity {
         super.onStart();
         if (SPUtils.getShowMainAddBanner(this)) {
             SPUtils.setShowMainAddBanner(this, false);
-
             Api.getInstance().querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
                     .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                     .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
@@ -196,11 +196,7 @@ public class MainActivity extends BaseComponentActivity {
                                 }
                             });
         }
-
-        /**
-         * 显示高亮
-         */
-        showGuide();
+        showGuide();//显示高亮
     }
 
     private void showAdDialog(final AdBanner ad) {
@@ -338,14 +334,9 @@ public class MainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         updateHelper.checkUpdate(this);
-        /**
-         * 请求底部导航栏图标 文字 字体颜色
-         */
-        queryBottomImage();
+        queryBottomImage();//请求底部导航栏图标 文字 字体颜色
 
-        /**
-         * 添加账单
-         */
+        //添加账单
         /*mAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -362,11 +353,6 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });*/
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     //空事件
@@ -488,6 +474,23 @@ public class MainActivity extends BaseComponentActivity {
         }
     }
 
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                ToastUtils.showToast(this, "再按一次退出");
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Override
     public void finish() {
         override = false;
@@ -529,7 +532,6 @@ public class MainActivity extends BaseComponentActivity {
                                            if (result.getData().audit == 1) {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-
                                            } else if (result.getData().audit == 2) {
                                                NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
                                                EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
@@ -537,10 +539,10 @@ public class MainActivity extends BaseComponentActivity {
                                            if (result.getData().bottomList.size() > 0) {
                                                updateBottomSelector(result.getData().bottomList);
                                            } else {
-                                               navigationBar.select(R.id.tab_account);
+                                               navigationBar.select(R.id.tab_forms_root);
                                            }
                                        } else {
-                                           navigationBar.select(R.id.tab_account);
+                                           navigationBar.select(R.id.tab_forms_root);
                                        }
                                    }
                                }
@@ -552,8 +554,7 @@ public class MainActivity extends BaseComponentActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        navigationBar.select(R.id.tab_account);
-
+                                        navigationBar.select(R.id.tab_forms_root);
                                         try {
                                             throw throwable;
                                         } catch (Throwable throwable1) {
