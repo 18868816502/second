@@ -8,9 +8,9 @@
     <!--暂没调查viewpager头部一段高度的空白区域-->
     <android.support.v4.view.ViewPager
         android:id="@+id/fl_tab_news_web_container"
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
 
     </android.support.v4.view.ViewPager>
 
@@ -58,34 +58,36 @@
         </LinearLayout>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_tab_fg_web_title"
-            android:textSize="17sp"
-            android:textColor="@color/black_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="资讯"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/black_1"
+            android:textSize="17sp"
+            android:visibility="gone" />
 
         <RelativeLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_tab_fg_news_web_user"
-                android:src="@mipmap/mine_head"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@mipmap/mine_head"
+                android:visibility="gone" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_tab_news_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/xshape_tab_account_red_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:visibility="gone" />
 
         </RelativeLayout>
 

@@ -1,8 +1,10 @@
 package com.beihui.market.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.BillSummaryBean;
@@ -12,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -33,7 +33,10 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
 
     @Override
     protected void convert(BaseViewHolder helper, BillSummaryBean.PersonBillItemBean item) {
-        helper.setText(R.id.total_money_tv, CommonUtils.numToString(item.getTotalAmount()));
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/dinmedium.ttf");
+        TextView totalTv = helper.getView(R.id.total_money_tv);
+        totalTv.setTypeface(typeface);
+        totalTv.setText(CommonUtils.numToString(item.getTotalAmount()));
         helper.setText(R.id.bill_title_tv, item.getTitle());
         Glide.with(context).load(item.getLogoUrl()).asBitmap().into((CircleImageView) helper.getView(R.id.circleImg));
         if (item.getType() != null && item.getType().equals("2")) {
