@@ -22,6 +22,7 @@ import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
+import com.beihui.market.entity.CreditBill;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardBean;
@@ -1574,6 +1575,21 @@ public class Api {
     /*结清全部*/
     public Observable<ResultEntity> closeAll(String userId, String recordId) {
         return service.closeAll(userId, recordId);
+    }
+
+    /*账单列表*/
+    public Observable<ResultEntity<List<CreditBill>>> creditList(String userId, String recordId) {
+        return service.creditList(userId, recordId);
+    }
+
+    /*账单详情列表*/
+    public Observable<ResultEntity<List<BillDetail>>> billDetail(String userId, String billId) {
+        return service.billDetail(userId, billId);
+    }
+
+    /*更新信用卡状态 删除*/
+    public Observable<ResultEntity> deleteCredit(String userId, String recordId, int status) {
+        return service.deleteCredit(userId, recordId, status);
     }
 
     /**************+***************************************************+******************************************************/

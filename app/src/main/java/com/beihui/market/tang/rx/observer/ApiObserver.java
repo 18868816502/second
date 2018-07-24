@@ -5,6 +5,7 @@ import com.beihui.market.tang.rx.RxErrorHandler;
 import com.beihui.market.util.LogUtils;
 
 import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.Disposable;
 
 /**

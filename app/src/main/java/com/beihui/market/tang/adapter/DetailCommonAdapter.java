@@ -12,12 +12,10 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.DetailHead;
 import com.beihui.market.entity.DetailList;
-import com.beihui.market.entity.EventBean;
 import com.beihui.market.helper.UserHelper;
-import com.beihui.market.tang.DlgUtil;
+import com.beihui.market.tang.activity.CommonDetailActivity;
 import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.RemarkActivity;
 import com.beihui.market.tang.rx.RxResponse;
@@ -45,12 +43,12 @@ import io.reactivex.annotations.NonNull;
  * @date: 2018/7/23
  */
 
-public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.ViewHolder> {
+public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapter.ViewHolder> {
 
     public static final int VIEW_HEADER = R.layout.f_layout_detail_head;
     public static final int VIEW_NORMAL = R.layout.f_layout_detail_item;
 
-    private NetLoanDetailActivity mActivity;
+    private CommonDetailActivity mActivity;
     private List<DetailList.RowsBean> dataSet = new ArrayList<>();
     private DetailHead data = null;
     private int color1;
@@ -59,7 +57,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
     private Drawable drawable1;
     private Drawable drawable2;
 
-    public DetailItemAdapter(NetLoanDetailActivity activity) {
+    public DetailCommonAdapter(CommonDetailActivity activity) {
         this.mActivity = activity;
         color1 = ContextCompat.getColor(activity, R.color.refresh_one);
         color2 = ContextCompat.getColor(activity, R.color.black_1);
@@ -97,7 +95,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new DetailItemAdapter.ViewHolder(LayoutInflater.from(mActivity).inflate(viewType, parent, false), viewType);
+        return new DetailCommonAdapter.ViewHolder(LayoutInflater.from(mActivity).inflate(viewType, parent, false), viewType);
     }
 
     @Override

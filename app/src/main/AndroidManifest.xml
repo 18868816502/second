@@ -241,6 +241,14 @@
         <activity
             android:name=".tang.activity.RemarkActivity"
             android:screenOrientation="portrait" />
+        <!--信用卡详情-->
+        <activity
+            android:name=".tang.activity.CreditDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--通用账单-->
+        <activity
+            android:name=".tang.activity.CommonDetailActivity"
+            android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->

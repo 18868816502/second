@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_sub_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付宝-杭州科技有限公司"
+            android:textColor="@color/black_1"
+            android:textSize="13dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_sub_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1000.00"
+            android:textColor="@color/black_1"
+            android:textSize="13dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_sub_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="5dp"
+        android:text="4月1日"
+        android:textColor="@color/black_2"
+        android:textSize="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#e8e8e8" />
+</LinearLayout>

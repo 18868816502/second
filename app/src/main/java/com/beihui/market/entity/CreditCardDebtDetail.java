@@ -9,7 +9,6 @@ public class CreditCardDebtDetail implements Parcelable {
     private String id;
     private String userId;
     private int bankId;
-    private String bankName;
     private String cardNums;
     private String cardUserName;
     private int gender;
@@ -25,22 +24,19 @@ public class CreditCardDebtDetail implements Parcelable {
     private String lastCollectionDate;
     private int status;
 
+    public String bankName;
+    public String image;
+
     /**
      * @version 3.1.0
      */
     public String moxieCode;
-
     public ShowBillBean showBill;
-
     private int maxFreeInterestDay;
-
     //距离还款日
     public int returnDay;
     //备注
     public String remark;
-
-
-
 
     public String getId() {
         return id;
@@ -348,7 +344,6 @@ public class CreditCardDebtDetail implements Parcelable {
         public void setReturnDay(String returnDay) {
             this.returnDay = returnDay;
         }
-
 
         @Override
         public int describeContents() {

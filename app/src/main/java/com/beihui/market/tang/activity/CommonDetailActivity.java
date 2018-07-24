@@ -16,12 +16,12 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.DlgUtil;
+import com.beihui.market.tang.adapter.DetailCommonAdapter;
 import com.beihui.market.tang.adapter.DetailItemAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,7 +43,7 @@ import io.reactivex.annotations.NonNull;
  * @date: 2018/7/22
  */
 
-public class NetLoanDetailActivity extends BaseComponentActivity {
+public class CommonDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -52,10 +52,10 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     @BindView(R.id.tv_finish_all)
     TextView tv_finish_all;
 
-    private NetLoanDetailActivity activity;
+    private CommonDetailActivity activity;
     private String recordId;
     private String billId;
-    private DetailItemAdapter itemAdapter;
+    private DetailCommonAdapter itemAdapter;
 
     @Override
     public int getLayoutId() {
@@ -104,7 +104,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     }
 
     private void initRecyclerView() {
-        itemAdapter = new DetailItemAdapter(activity);
+        itemAdapter = new DetailCommonAdapter(activity);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setAdapter(itemAdapter);
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());

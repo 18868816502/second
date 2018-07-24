@@ -1,5 +1,6 @@
 package com.beihui.market.entity;
 
+import java.io.PipedReader;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ public class Bill implements Serializable {
      * month : 1
      * term : 1
      * totalTerm : 2
+     * moxieCode : CMB
      */
 
     private String userId;
@@ -44,6 +46,7 @@ public class Bill implements Serializable {
     private int month;
     private int term;
     private int totalTerm;
+    private String moxieCode;
 
     public String getUserId() {
         return userId;
@@ -147,5 +150,13 @@ public class Bill implements Serializable {
 
     public void setTotalTerm(int totalTerm) {
         this.totalTerm = totalTerm;
+    }
+
+    public String getMoxieCode() {
+        return moxieCode;
+    }
+
+    public void setMoxieCode(String moxieCode) {
+        this.moxieCode = moxieCode;
     }
 }

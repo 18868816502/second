@@ -11,6 +11,8 @@ public class BillDetail {
     private String transDate;
     private String postDate;
     private int type;
+    private String gmtCreate;
+    private String gmtModify;
 
     public String getId() {
         return id;
@@ -74,5 +76,21 @@ public class BillDetail {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(String gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public String getGmtModify() {
+        return gmtModify;
+    }
+
+    public void setGmtModify(String gmtModify) {
+        this.gmtModify = gmtModify;
     }
 }

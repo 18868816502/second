@@ -18,7 +18,10 @@ import com.beihui.market.entity.Bill;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.tang.DlgUtil;
+import com.beihui.market.tang.MoxieUtil;
+import com.beihui.market.tang.activity.CommonDetailActivity;
 import com.beihui.market.tang.activity.CreditBillActivity;
+import com.beihui.market.tang.activity.CreditDetailActivity;
 import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.LoanBillActivity;
 import com.beihui.market.tang.rx.RxResponse;
@@ -99,7 +102,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder.viewType == VIEW_HEADER) {
             if (url == null || url.isEmpty()) {
                 holder.headEventEntry.setVisibility(View.GONE);
@@ -124,7 +127,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (numVisible) {
-                        holder.headBillVisible.setImageResource(R.mipmap.icon_eye_close);
+                        holder.headBillVisible.setImageResource(R.mipmap.ic_eye_close);
                         holder.headBillNum.setText(hideNum);
                         SPUtils.putNumVisible(mActivity, false);
                     } else {
@@ -156,6 +159,12 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             //tag + 同步按钮
             if (item.getType() == 2) {//2-信用卡
                 holder.tv_home_bill_synchronized.setVisibility(View.VISIBLE);
+                holder.tv_home_bill_synchronized.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MoxieUtil.sychronized(item.getMoxieCode(), mActivity);
+                    }
+                });
                 holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_credit), item.getMonth()));
             } else {//1-网贷(3-快捷记账（删了）)
                 holder.tv_home_bill_synchronized.setVisibility(View.GONE);
@@ -182,16 +191,25 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.tv_home_bill_over.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDialog(item.getType(), item.getBillId(), item.getRecordId(), item.getAmount());
+                    showDialog(item, position);
                 }
             });
             holder.ll_bill_wrap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mActivity, NetLoanDetailActivity.class);
-                    intent.putExtra("recordId", item.getRecordId());
-                    intent.putExtra("billId", item.getBillId());
-                    mActivity.startActivity(intent);
+                    Intent intent = null;
+                    if (item.getType() == 1) {//网贷
+                        intent = new Intent(mActivity, NetLoanDetailActivity.class);
+                    } else if (item.getType() == 2) {//信用卡
+                        intent = new Intent(mActivity, CreditDetailActivity.class);
+                    } else if (item.getType() == 3) {//通用
+                        intent = new Intent(mActivity, CommonDetailActivity.class);
+                    }
+                    if (intent != null) {
+                        intent.putExtra("recordId", item.getRecordId());
+                        intent.putExtra("billId", item.getBillId());
+                        mActivity.startActivity(intent);
+                    }
                 }
             });
         }
@@ -232,10 +250,16 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         }
     }
 
-    private void showDialog(final int type, final String billId, final String recordId, final double amount) {
+    private void showDialog(Bill item, final int position) {
+        final int type = item.getType();
+        final String billId = item.getBillId();
+        final String recordId = item.getRecordId();
+        final double amount = item.getAmount();
+        final int term = item.getTerm();
+        final int totalTerm = item.getTotalTerm();
         DlgUtil.createDlg(mActivity, R.layout.dlg_pay_over_bill, new DlgUtil.OnDlgViewClickListener() {
             @Override
-            public void onViewClick(final Dialog dialog, View dlgView) {
+            public void onViewClick(final Dialog dialog, final View dlgView) {
                 View.OnClickListener clickListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -249,7 +273,17 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
-                                                    homeFragment.request();
+                                                    if (term == totalTerm) {
+                                                        notifyItemRemoved(position);
+                                                    } else {
+                                                        notifyItemRemoved(position);
+                                                        dlgView.postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                homeFragment.request();
+                                                            }
+                                                        }, 500);
+                                                    }
                                                 }
                                             });
                                 } else if (type == 1) {//网贷记账
@@ -258,7 +292,17 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
-                                                    homeFragment.request();
+                                                    if (term == totalTerm) {
+                                                        notifyItemRemoved(position);
+                                                    } else {
+                                                        notifyItemRemoved(position);
+                                                        dlgView.postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                homeFragment.request();
+                                                            }
+                                                        }, 500);
+                                                    }
                                                 }
                                             });
                                 } else if (type == 3) {//快捷记账
@@ -267,7 +311,17 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
-                                                    homeFragment.request();
+                                                    if (term == totalTerm) {
+                                                        notifyItemRemoved(position);
+                                                    } else {
+                                                        notifyItemRemoved(position);
+                                                        dlgView.postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                homeFragment.request();
+                                                            }
+                                                        }, 500);
+                                                    }
                                                 }
                                             });
                                 }

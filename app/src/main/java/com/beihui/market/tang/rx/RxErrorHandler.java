@@ -1,6 +1,7 @@
 package com.beihui.market.tang.rx;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 
@@ -56,7 +57,7 @@ public class RxErrorHandler {
     }
 
     public void showError(BaseException exception) {
-        if (!"未知错误".equals(exception.getMsg())) {
+        if (!TextUtils.isEmpty(exception.getMsg()) && !"未知错误".equals(exception.getMsg())) {
             Toast.makeText(context, exception.getMsg(), Toast.LENGTH_SHORT).show();
         }
     }

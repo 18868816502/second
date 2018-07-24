@@ -16,6 +16,7 @@ import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
+import com.beihui.market.entity.CreditBill;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.entity.CreditCardBank;
 import com.beihui.market.entity.CreditCardBean;
@@ -86,7 +87,7 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
- * 请求接口
+ *         请求接口
  */
 public interface ApiService {
 
@@ -300,7 +301,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/bill/index")
     Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(@Field("userId") String userId, @Field("firstScreen") boolean firstScreen, @Field("billType") int billType);
-
 
     /**
      * 更新还款状态
@@ -1143,4 +1143,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/netLoan/closeAll")
     Observable<ResultEntity> closeAll(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /*账单列表*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/creditcard/billList")
+    Observable<ResultEntity<List<CreditBill>>> creditList(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /*账单详情列表*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/creditcard/bill/detailList")
+    Observable<ResultEntity<List<BillDetail>>> billDetail(@Field("userId") String userId, @Field("billId") String billId);
+
+    /*更新信用卡状态 删除*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/creditcard/update")
+    Observable<ResultEntity> deleteCredit(@Field("userId") String userId, @Field("recordId") String recordId, @Field("status") int status);
 }

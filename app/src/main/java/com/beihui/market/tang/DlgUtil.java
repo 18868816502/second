@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -22,6 +23,10 @@ import android.view.WindowManager;
 
 public class DlgUtil {
     public static void createDlg(Context context, int layoutId, OnDlgViewClickListener clickListener) {
+        createDlg(context, layoutId, DlgLocation.CENTER, clickListener);
+    }
+
+    public static void createDlg(Context context, int layoutId, DlgLocation location, OnDlgViewClickListener clickListener) {
         Dialog dialog = new Dialog(context, 0);
         View dlgView = LayoutInflater.from(context).inflate(layoutId, null);
         if (clickListener != null) clickListener.onViewClick(dialog, dlgView);
@@ -30,6 +35,19 @@ public class DlgUtil {
         Window window = dialog.getWindow();
         if (window != null) {
             WindowManager.LayoutParams lp = window.getAttributes();
+            switch (location) {
+                case CENTER:
+                    window.setGravity(Gravity.CENTER);
+                    break;
+                case TOP:
+                    window.setGravity(Gravity.TOP);
+                    break;
+                case BOTTOM:
+                    window.setGravity(Gravity.BOTTOM);
+                    break;
+                default:
+                    break;
+            }
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
             window.setAttributes(lp);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -39,5 +57,11 @@ public class DlgUtil {
 
     public interface OnDlgViewClickListener {
         void onViewClick(Dialog dialog, View dlgView);
+    }
+
+    public enum DlgLocation {
+        TOP,
+        CENTER,
+        BOTTOM
     }
 }
