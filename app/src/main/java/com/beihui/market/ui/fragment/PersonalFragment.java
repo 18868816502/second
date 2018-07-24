@@ -138,6 +138,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     .load(profile.getHeadPortrait())
                     .asBitmap()
                     .into(avatarIv);
+            userInfo.setText("查看并编辑资料");
         }
         String username = profile.getUserName();
         if (username != null) {
@@ -374,8 +375,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             if (intent.getAction() != null) {
                 if (intent.getAction().equals("logout")) {
                     userNameTv.setText("请登录");
+                    userInfo.setText("查看并编辑资料");
                     Glide.with(getActivity())
-                            .load(R.mipmap.mine_head)
+                            .load(R.drawable.mine_icon_head)
                             .asBitmap()
                             .into(avatarIv);
                 }

@@ -198,6 +198,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     /**
      * EventBus事件
+     *
      * @param event
      */
     @Subscribe
@@ -246,6 +247,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Subscribe
     public void onLogin(UserLoginEvent event) {
+        EventBus.getDefault().post("1");
         //成功登录后，检查是否存在后续动作，有则完成该动作
         if (pendingAd != null) {
             EventBus.getDefault().post(new UserLoginWithPendingTaskEvent(pendingAd));
@@ -273,7 +275,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 //        }
 //        super.onBackPressed();
 //    }
-
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);

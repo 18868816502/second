@@ -146,7 +146,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     /**
      * 验证按钮是否可以点击
      */
-    private void validation(){
+    private void validation() {
         String phone = phoneNumber.getText().toString();
         if (LegalInputUtils.validatePhone(phone) && isCheckContract) {
             tvLogin.setClickable(true);
@@ -162,21 +162,21 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //下一步
-           case R.id.tv_login:
+            case R.id.tv_login:
                 if (!TextUtils.isEmpty(phoneNumber.getText().toString()) && isCheckContract) {
                     UserCertificationCodeActivity.launch(getActivity(), phoneNumber.getText().toString());
                 }
                 break;
             case R.id.iv_contract:
-                if (isCheckContract){
+                if (isCheckContract) {
                     isCheckContract = false;
-                }else{
+                } else {
                     isCheckContract = true;
                 }
 
-                if (isCheckContract){
+                if (isCheckContract) {
                     ivContract.setImageResource(R.drawable.btn_open_rb);
-                }else{
+                } else {
                     ivContract.setImageResource(R.drawable.btn_close_rb);
                 }
 
@@ -265,6 +265,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
         dismissProgress();
 //        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件,更新UI
+        EventBus.getDefault().post("1");
         EventBus.getDefault().post(new UserLoginEvent());
         if (getView() != null) {
             getView().postDelayed(new Runnable() {
