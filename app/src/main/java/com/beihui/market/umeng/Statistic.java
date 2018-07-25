@@ -17,7 +17,6 @@ public class Statistic {
         }
     }
 
-
     public static void onResume(Context context) {
         MobclickAgent.onResume(context);
     }
@@ -41,7 +40,6 @@ public class Statistic {
     public static void logout() {
         MobclickAgent.onProfileSignOff();
     }
-
 
     public static void onEvent(String eventId) {
         MobclickAgent.onEvent(sContext, eventId);

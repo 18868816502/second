@@ -124,7 +124,6 @@ public class MainActivity extends BaseComponentActivity {
     /*@BindView(R.id.iv_bill_add_buttom)
     ImageView mAddBill;*/
 
-
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
 

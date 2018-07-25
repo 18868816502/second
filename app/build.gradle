@@ -39,6 +39,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
+            zipAlignEnabled true
         }
     }
 
@@ -62,10 +64,8 @@ android {
     flavorDimensions("id", "channel")
 
     productFlavors {
-
         loanmarket {
             dimension "id"
-
             applicationId "com.beihui.market"
 
             //Version3.1.0前的生产环境
@@ -83,18 +83,17 @@ android {
             //测试一
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "ZHANG_DOMAIN", "\"http://192.168.1.61:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 
             //前端本地联调地址
-            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.63:100\"")
+            //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.63:100\"")
 
             //开发环境
-//            buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
+            //buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
 
             //后台本地
-//            buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
-
+            // buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")
+            //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
 
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
@@ -117,7 +116,6 @@ android {
 
 //        loanmarkettest {
 //            dimension "id"
-//
 //            applicationId "com.beihui.market.test"
 //
 //            //测试使用的魔蝎appkey

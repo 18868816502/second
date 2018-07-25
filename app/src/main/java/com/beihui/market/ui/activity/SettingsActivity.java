@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.BuildConfig;
@@ -132,7 +130,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
             case R.id.exit:
                 //umeng统计
                 Statistic.onEvent(Events.SETTING_EXIT);
-
                 new CommNoneAndroidDialog().withMessage("确认退出" + getString(R.string.app_name))
                         .withPositiveBtn("再看看", new View.OnClickListener() {
                             @Override
@@ -146,7 +143,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                             public void onClick(View v) {
                                 //umeng统计
                                 Statistic.onEvent(Events.EXIT_CONFIRM);
-
                                 presenter.logout();
                             }
                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
@@ -154,7 +150,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
             case R.id.check_version:
                 presenter.checkVersion();
                 break;
-
             case R.id.clear_cache:
                 boolean a = DataCleanManager.cleanInternalCache();
                 boolean b = DataCleanManager.cleanExternalCache();
@@ -167,7 +162,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 break;
         }
     }
-
 
     /**
      * https://www.cnblogs.com/qwangxiao/p/8030389.html
@@ -197,18 +191,18 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showLogoutSuccess() {
-
         //发送用户退出全局事件
         EventBus.getDefault().post(new UserLogoutEvent());
+        EventBus.getDefault().post("1");
         Intent broadCast = new Intent();
         broadCast.setAction("logout");
         sendBroadcast(broadCast);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        /*Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        startActivity(intent);*/
+        finish();
     }
-
 
     @Override
     public void showUpdate(AppUpdate update) {

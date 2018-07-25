@@ -54,7 +54,6 @@
                 android:gravity="center"
                 android:text="活动"
                 android:textColor="@drawable/x_account_flow_tab_selector" />
-
         </LinearLayout>
 
         <TextView
@@ -79,7 +78,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@mipmap/mine_head"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/iv_tab_news_red_dot"
@@ -87,10 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/xshape_tab_account_red_circle"
-                android:visibility="gone" />
-
+                android:visibility="visible" />
         </RelativeLayout>
-
     </android.support.v7.widget.Toolbar>
-
 </RelativeLayout>

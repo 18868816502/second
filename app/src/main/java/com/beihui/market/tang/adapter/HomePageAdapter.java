@@ -69,6 +69,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private final String hideNum = "****";
     private boolean numVisible;
 
+    public void notifyEmpty() {
+        System.out.println("notifyEmpty");
+        url = "";
+        totalAmount = -1;
+        dataSet.clear();
+        notifyDataSetChanged();
+    }
+
     public void notifyEventEnter(String url) {
         this.url = url;
         notifyItemChanged(0);
@@ -126,13 +134,18 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.headBillVisible.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*if (!userHelper.isLogin()) {
+                        mActivity.startActivity(new Intent(mActivity, UserAuthorizationActivity.class));
+                        return;
+                    }*/
                     if (numVisible) {
                         holder.headBillVisible.setImageResource(R.mipmap.ic_eye_close);
                         holder.headBillNum.setText(hideNum);
                         SPUtils.putNumVisible(mActivity, false);
                     } else {
                         holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);
-                        holder.headBillNum.setText(String.format("￥%.2f", totalAmount));
+                        String num = userHelper.isLogin() ? String.format("￥%.2f", totalAmount) : "赶紧先记上一笔";
+                        holder.headBillNum.setText(num);
                         SPUtils.putNumVisible(mActivity, true);
                     }
                     numVisible = !numVisible;
@@ -191,6 +204,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.tv_home_bill_over.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    holder.csm_bill_wrap.smoothClose();
                     showDialog(item, position);
                 }
             });
@@ -255,8 +269,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         final String billId = item.getBillId();
         final String recordId = item.getRecordId();
         final double amount = item.getAmount();
-        final int term = item.getTerm();
-        final int totalTerm = item.getTotalTerm();
         DlgUtil.createDlg(mActivity, R.layout.dlg_pay_over_bill, new DlgUtil.OnDlgViewClickListener() {
             @Override
             public void onViewClick(final Dialog dialog, final View dlgView) {
@@ -273,17 +285,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
-                                                    if (term == totalTerm) {
-                                                        notifyItemRemoved(position);
-                                                    } else {
-                                                        notifyItemRemoved(position);
-                                                        dlgView.postDelayed(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                homeFragment.request();
-                                                            }
-                                                        }, 500);
-                                                    }
+                                                    notifyItemRemoved(position);
+                                                    dataSet.remove(position - 1);
+                                                    dlgView.postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            homeFragment.request();
+                                                        }
+                                                    }, 500);
                                                 }
                                             });
                                 } else if (type == 1) {//网贷记账
@@ -292,17 +301,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
-                                                    if (term == totalTerm) {
-                                                        notifyItemRemoved(position);
-                                                    } else {
-                                                        notifyItemRemoved(position);
-                                                        dlgView.postDelayed(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                homeFragment.request();
-                                                            }
-                                                        }, 500);
-                                                    }
+                                                    notifyItemRemoved(position);
+                                                    dataSet.remove(position - 1);
+                                                    dlgView.postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            homeFragment.request();
+                                                        }
+                                                    }, 500);
                                                 }
                                             });
                                 } else if (type == 3) {//快捷记账
@@ -311,17 +317,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
-                                                    if (term == totalTerm) {
-                                                        notifyItemRemoved(position);
-                                                    } else {
-                                                        notifyItemRemoved(position);
-                                                        dlgView.postDelayed(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                homeFragment.request();
-                                                            }
-                                                        }, 500);
-                                                    }
+                                                    notifyItemRemoved(position);
+                                                    dataSet.remove(position - 1);
+                                                    dlgView.postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            homeFragment.request();
+                                                        }
+                                                    }, 500);
                                                 }
                                             });
                                 }
