@@ -133,7 +133,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
             case R.id.exit:
                 //umeng统计
                 Statistic.onEvent(Events.SETTING_EXIT);
-
                 new CommNoneAndroidDialog().withMessage("确认退出" + getString(R.string.app_name))
                         .withPositiveBtn("再看看", new View.OnClickListener() {
                             @Override
@@ -222,16 +221,17 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showLogoutSuccess() {
-
         //发送用户退出全局事件
         EventBus.getDefault().post(new UserLogoutEvent());
+        EventBus.getDefault().post("1");
         Intent broadCast = new Intent();
         broadCast.setAction("logout");
         sendBroadcast(broadCast);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        /*Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        startActivity(intent);*/
+        finish();
     }
 
 

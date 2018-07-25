@@ -15,11 +15,9 @@ import java.util.List;
 public class NetConstants {
 
     /**
-     *	分组贷超产品列表 产品分组Id 秒批到账
+     * 分组贷超产品列表 产品分组Id 秒批到账
      */
-
     public static final String SECOND_PRODUCT = "599c7594aaa7453c8d8b52c35b865adf";
-
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
     public static final String ZHANG_DOMAIN = BuildConfig.ZHANG_DOMAIN;
@@ -90,7 +88,6 @@ public class NetConstants {
      */
     public static final String H5_USER_MOXIE_PROTOCOL = H5_DOMAIN + "/majiabao/moxie-protocol.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
-
     /**
      * 账单导入成功
      */
@@ -109,11 +106,10 @@ public class NetConstants {
      */
     public static final String H5_CREDIT_CARD_PROGRESS = "http://www.huishuaka.com/5/coop/jinduchaxun.html?ichannelid=";
 
-
     /**
+     * @param userId 用户ID isAppId 区分web前端还是app (区分平台)
      * @author xhb
      * @date 20180420
-     * @param userId 用户ID isAppId 区分web前端还是app (区分平台)
      * @desc 资讯模块 详情页面
      */
     public static String generateNewsUrl(String id, String userId) {
@@ -121,11 +117,11 @@ public class NetConstants {
     }
 
     /**
+     * @param userId 用户ID isAppId 区分web前端还是app (区分平台)
      * @author xhb
      * @date 20180420
-     * @param userId 用户ID isAppId 区分web前端还是app (区分平台)
      * @desc 发现模块
-     *
+     * <p>
      * 生成发现页链接
      */
     public static String generateNewsWebViewUrl(String userId, String channelId, String version) {
@@ -164,11 +160,8 @@ public class NetConstants {
     }
 
     public static String generateDebtAnalyzeUrl(String id) {
-
-
         return H5_DEBT_ANALYZE + "?isApp=1&userId=" + id + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
-
 
     public static String generateOneKeyLoanUrl(List<String> ids, String userId) {
         StringBuilder sb = new StringBuilder();

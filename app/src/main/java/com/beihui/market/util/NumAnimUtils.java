@@ -25,7 +25,7 @@ public class NumAnimUtils {
             return;
         }
 
-        Float[] nums = splitnum(num, (int)((time/1000f)*COUNTPERS));
+        Float[] nums = splitnum(num, (int) ((time / 1000f) * COUNTPERS));
 
         Counter counter = new Counter(textV, nums, time);
 
@@ -40,10 +40,7 @@ public class NumAnimUtils {
         LinkedList<Float> nums = new LinkedList<Float>();
         nums.add(0f);
         while (true) {
-            float nextFloat = NumberFormatFloat(
-                    (random.nextFloat()*num*2f)/(float)count,
-                    2);
-            System.out.println("next:" + nextFloat);
+            float nextFloat = NumberFormatFloat((random.nextFloat() * num * 2f) / (float) count, 2);
             if (numtemp - nextFloat >= 0) {
                 sum = NumberFormatFloat(sum + nextFloat, 2);
                 nums.add(sum);
@@ -63,31 +60,31 @@ public class NumAnimUtils {
 
         private int i = 0;
 
-        Counter(TextView view,Float[] nums,long time) {
+        Counter(TextView view, Float[] nums, long time) {
             this.view = view;
             this.nums = nums;
-            this.pertime = time/nums.length;
+            this.pertime = time / nums.length;
         }
 
         @Override
         public void run() {
-            if (i>nums.length-1) {
+            if (i > nums.length - 1) {
                 view.removeCallbacks(Counter.this);
                 return;
             }
-            view.setText(FormatNumberUtils.FormatNumberFor2(Double.valueOf(NumberFormat(nums[i],2))));
+            view.setText(FormatNumberUtils.FormatNumberFor2(Double.valueOf(NumberFormat(nums[i], 2))));
             view.removeCallbacks(Counter.this);
             view.postDelayed(Counter.this, pertime);
             i++;
         }
     }
 
-    public static String NumberFormat(float f,int m){
-        return String.format("%."+m+"f",f);
+    public static String NumberFormat(float f, int m) {
+        return String.format("%." + m + "f", f);
     }
 
-    public static float NumberFormatFloat(float f,int m){
-        String strfloat = NumberFormat(f,m);
+    public static float NumberFormatFloat(float f, int m) {
+        String strfloat = NumberFormat(f, m);
         return Float.parseFloat(strfloat);
     }
 

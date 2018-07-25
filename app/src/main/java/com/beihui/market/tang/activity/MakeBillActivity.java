@@ -29,6 +29,8 @@ import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -202,7 +204,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 repayPicker(opCycleTimes, getString(R.string.repay_cycle), 1);
                 break;
             case R.id.ll_cycle_times_wrap://还款期数
-                if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN)
+                if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN || type == TYPE_USER_DIFINE)
                     repayPicker(timeList, getString(R.string.repay_times), 3);
                 if (type == TYPE_HOUSE_LOAN)
                     repayPicker(houseYearList, getString(R.string.repay_times), 3);
@@ -274,8 +276,9 @@ public class MakeBillActivity extends BaseComponentActivity {
                     @Override
                     public void onNext(@NonNull CreateAccountReturnIDsBean data) {
                         Intent intent = new Intent(MakeBillActivity.this, MainActivity.class);
-                        intent.putExtra("index", 0);
+                        //intent.putExtra("index", 0);
                         startActivity(intent);
+                        EventBus.getDefault().post("1");
                         finish();
                     }
                 });

@@ -78,12 +78,12 @@ import cn.xiaoneng.uiapi.Ntalker;
 import io.reactivex.functions.Consumer;
 
 /**
- * @date 20180419
- * @version 2.1.1
  * @author xhb
- * 发现 模块 使用WebView页面 (非资讯详情页)
+ *         发现 模块 使用WebView页面 (非资讯详情页)
+ * @version 2.1.1
+ * @date 20180419
  */
-public class TabNewsWebViewFragment extends BaseTabFragment{
+public class TabNewsWebViewFragment extends BaseTabFragment {
 
     @BindView(R.id.tl_news_header_tool_bar)
     Toolbar toolbar;
@@ -121,7 +121,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainEvent(UserLogoutEvent event){
+    public void onMainEvent(UserLogoutEvent event) {
         Glide.with(mActivity).load(R.mipmap.mine_head).into(mUserAvatar);
         mRedDot.setVisibility(View.GONE);
     }
@@ -147,7 +147,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             newsTitleName.setText(event.title);
             mTitleName = event.title;
         }
-
         //pv，uv统计
 //        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVER);
     }
@@ -173,7 +172,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
         //umeng统计
         Statistic.onEvent(Events.ENTER_NEWS_PAGE);
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -189,7 +187,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
         }
     }
 
-
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_tab_news_web_view;
@@ -198,9 +195,9 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
-        mTvTitleName = (TextView)getActivity().findViewById(R.id.tv_tab_fg_web_title);
+        mTvTitleName = (TextView) getActivity().findViewById(R.id.tv_tab_fg_web_title);
         mTabRoot = (LinearLayout) getActivity().findViewById(R.id.ll_tab_fg_web_root);
-        newsTitleName = (TextView)getActivity().findViewById(R.id.iv_tab_fg_news_web_title);
+        newsTitleName = (TextView) getActivity().findViewById(R.id.iv_tab_fg_news_web_title);
         activityName = (TextView) getActivity().findViewById(R.id.iv_tab_fg_news_web_activity);
 
         /**
@@ -226,38 +223,28 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             }
             fragmentList.add(mFindFragment);
         }
-
         comeBack.setVisibility(View.GONE);
-//        ImmersionBar.with(this).statusBarDarkFont(true).init();
-
-
 
         MyFragmentViewPgaerAdapter adapter = new MyFragmentViewPgaerAdapter(mActivity.getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-
         newsTitleName.setSelected(true);
-
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-
                 if (position == 0) {
                     newsTitleName.setSelected(true);
                     activityName.setSelected(false);
-
                     selectedFragmentId = R.id.iv_tab_fg_news_web_title;
                 }
                 if (position == 1) {
                     newsTitleName.setSelected(false);
                     activityName.setSelected(true);
-
                     selectedFragmentId = R.id.iv_tab_fg_news_web_activity;
                 }
             }
@@ -265,15 +252,9 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
             @Override
             public void onPageScrollStateChanged(int state) {
                 //state ==1的时辰默示正在滑动，
-
-
             }
         });
-
     }
-
-
-
 
     /**
      * 更新消息数量
@@ -285,7 +266,7 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
                                @Override
                                public void accept(ResultEntity<String> result) throws Exception {
                                    if (result.isSuccess()) {
-                                        String data = result.getData();
+                                       String data = result.getData();
                                        if (TextUtils.isEmpty(data)) {
                                            mRedDot.setVisibility(View.GONE);
                                        } else if (Integer.parseInt(data) > 0) {
@@ -301,7 +282,6 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-
                             }
                         });
     }
@@ -335,11 +315,11 @@ public class TabNewsWebViewFragment extends BaseTabFragment{
     }
 
     @Override
-    public void initDatas() {}
+    public void initDatas() {
+    }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     class MyFragmentViewPgaerAdapter extends FragmentPagerAdapter {

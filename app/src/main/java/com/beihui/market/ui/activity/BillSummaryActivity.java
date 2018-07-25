@@ -65,7 +65,6 @@ public class BillSummaryActivity extends BaseComponentActivity {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageNo = 1;
                 getBillSummaryData();
-
             }
         });
 
@@ -86,7 +85,6 @@ public class BillSummaryActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     private void getBillSummaryData() {

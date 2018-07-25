@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.beihui.market.R;
 import com.beihui.market.anim.SlideInLeftAnimator;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.entity.Bill;
 import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.HomeData;
 import com.beihui.market.helper.DataStatisticsHelper;
@@ -32,10 +34,13 @@ import com.beihui.market.util.CommonUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
+import com.tencent.mm.opensdk.modelmsg.GetMessageFromWX;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
@@ -73,6 +78,8 @@ public class HomeFragment extends BaseTabFragment {
     TextView tv_top_loan_month;
     @BindView(R.id.tv_top_loan_num)
     TextView tv_top_loan_num;
+    @BindView(R.id.ll_home_wrap)
+    View ll_home_wrap;
 
     private Activity mActivity;
     private UserHelper userHelper;
@@ -120,6 +127,7 @@ public class HomeFragment extends BaseTabFragment {
     @Override
     public void configViews() {
         mActivity = getActivity();
+        userHelper = UserHelper.getInstance(mActivity);
         int statusHeight = CommonUtils.getStatusBarHeight(mActivity);
         //设置toolbar的高度为状态栏相同高度
         mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);
@@ -130,12 +138,11 @@ public class HomeFragment extends BaseTabFragment {
 
     @Override
     public void initDatas() {
-        request();
         initRecyclerView();
+        request();
     }
 
     public void request() {
-        userHelper = UserHelper.getInstance(getActivity());
         if (userHelper.isLogin()) {
             //活动入口
             Api.getInstance().homeEvent("3", 1)
@@ -162,7 +169,11 @@ public class HomeFragment extends BaseTabFragment {
                             pageAdapter.notifyPayChanged(data.getItem());
                         }
                     });
+        } else {
+            pageAdapter.notifyEmpty();
+            swipeRefreshLayout.setRefreshing(false);
         }
+        mScrollY = 0;
     }
 
     private void initRecyclerView() {
@@ -196,8 +207,7 @@ public class HomeFragment extends BaseTabFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (userHelper.isLogin()) request();
-                else swipeRefreshLayout.setRefreshing(false);
+                request();
             }
         });
 
@@ -220,9 +230,8 @@ public class HomeFragment extends BaseTabFragment {
                 //隐藏显示布局的变化率
                 float max = Math.max(mScrollY / height, 0f);
                 if (max > 1) max = 1;
-                if (max > 0.55f) mTitle.setAlpha(max);
+                if (max > 0.55f) mTitle.setAlpha(1);
                 else mTitle.setAlpha(0);
-                if (!manager.canScrollVertically()) mTitle.setAlpha(0);
             }
         });
     }

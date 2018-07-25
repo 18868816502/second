@@ -6,7 +6,6 @@ import com.beihui.market.base.BaseView;
 import com.beihui.market.entity.AppUpdate;
 
 public interface SettingContract {
-
     interface Presenter extends BasePresenter {
         void checkVersion();
 

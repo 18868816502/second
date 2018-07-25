@@ -51,12 +51,12 @@ import java.net.URLDecoder;
 import butterknife.BindView;
 
 /**
- * @date 20180419
- * @version 2.1.1
  * @author xhb
- * 发现 模块 使用WebView页面 (非资讯详情页)
+ *         发现 模块 使用WebView页面 (非资讯详情页)
+ * @version 2.1.1
+ * @date 20180419
  */
-public class TabNewsWebViewOneFragment extends BaseTabFragment{
+public class TabNewsWebViewOneFragment extends BaseTabFragment {
 
     @BindView(R.id.bwv_news_web_view)
     BusinessWebView webView;
@@ -79,7 +79,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainEvent(UserLogoutEvent event){
+    public void onMainEvent(UserLogoutEvent event) {
         load();
     }
 
@@ -126,19 +126,15 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         return R.layout.fragment_tab_news_web_view_one;
     }
 
-
-
     @Override
-    public void initDatas() {}
+    public void initDatas() {
+    }
 
     @Override
     public void configViews() {
         super.onStart();
-
         load();
-
         initWebView();
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -149,14 +145,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             }
         });
         swipeRefreshLayout.setColorScheme(R.color.refresh_one);
-//        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-//            @Override
-//            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
-//                Log.e("canChildScrollUp", "ScrollY-----> " + mScrollY);
-//                return !"0".equals(mScrollY);
-//            }
-//        });
-
 
         if (scrollView != null) {
             scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -165,20 +153,19 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setEnabled(scrollView.getScrollY() == 0);
                     }
-                    mScrollY = scrollView.getScrollY()+"";
+                    mScrollY = scrollView.getScrollY() + "";
                 }
             });
         }
 
-            webView.setDownloadListener(new DownloadListener() {
+        webView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                ((MainActivity)mActivity).startActivityWithoutOverride(intent);
+                ((MainActivity) mActivity).startActivityWithoutOverride(intent);
             }
         });
-
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
     }
 
@@ -216,8 +203,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             // url拦截
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                Log.e("urlurlurl", "url--->" + url);
                 if (url.equals(newsUrl)) {
                     swipeRefreshLayout.setEnabled(true);
                     return super.shouldOverrideUrlLoading(view, url);
@@ -237,14 +222,12 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                Log.e("xhb", "url--->" + url);
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-
 
                 int touchSlop = ViewConfiguration.get(webView.getContext()).getScaledTouchSlop();
                 StringBuilder jsSb = new StringBuilder("javascript:initTouchSlop('").append(touchSlop).append("')");
@@ -256,7 +239,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
         webView.clearHistory();
         webView.setHapticFeedbackEnabled(false);
     }
-
 
     /**
      * webView 加载Url
@@ -281,21 +263,18 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
             e.printStackTrace();
         }
         newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
-
-        Log.e("newsUrl", "newsUrl--->     " + newsUrl);
         webView.loadUrl(newsUrl);
     }
-
 
     /**
      * 调用js
      */
-    class mobileJsMethod{
+    class mobileJsMethod {
         /**
          * 跳转到登陆页面
          */
         @JavascriptInterface
-        public void authorize(String nextUrl){
+        public void authorize(String nextUrl) {
             UserAuthorizationActivity.launch(getActivity(), null);
         }
 
@@ -303,16 +282,14 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
          * 获取HTML滑动的Y轴的值
          */
         @JavascriptInterface
-        public void getFindHtmlScrollY(String scrollY){
-//            mScrollY = scrollY;
-            Log.e("ScrollY", "ScrollY-----> " + mScrollY);
+        public void getFindHtmlScrollY(String scrollY) {
         }
 
         /**
          * Banner滑动
          */
         @JavascriptInterface
-        public void getFindHtmlBannerStatus(boolean isFly){
+        public void getFindHtmlBannerStatus(boolean isFly) {
             if (webView == null) {
                 return;
             }
@@ -323,8 +300,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
          * 唤醒微信
          */
         @JavascriptInterface
-        public void openWeChat(){
-
+        public void openWeChat() {
             try {
                 Intent intent = new Intent();
                 ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
@@ -333,7 +309,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setComponent(cmp);
                 startActivityForResult(intent, 0);
-
             } catch (Exception e) {
                 //若无法正常跳转，在此进行错误处理
                 ToastUtils.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
@@ -346,10 +321,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment{
      */
     public String mScrollY = "0";
 
-
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
-
 }

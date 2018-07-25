@@ -47,7 +47,7 @@
         android:textColor="@color/black_2"
         android:textSize="11dp" />
 
-    <TextView
+    <com.beihui.market.tang.widget.CustomNumTextView
         android:id="@+id/tv_still_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:textColor="@color/black_2"
                 android:textSize="11dp" />
 
-            <TextView
+            <com.beihui.market.tang.widget.CustomNumTextView
                 android:id="@+id/tv_min_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                 android:textColor="@color/black_2"
                 android:textSize="11dp" />
 
-            <TextView
+            <com.beihui.market.tang.widget.CustomNumTextView
                 android:id="@+id/tv_bill_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                 android:textColor="@color/black_2"
                 android:textSize="11dp" />
 
-            <TextView
+            <com.beihui.market.tang.widget.CustomNumTextView
                 android:id="@+id/tv_pay_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

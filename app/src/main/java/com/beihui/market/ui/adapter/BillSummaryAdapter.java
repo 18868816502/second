@@ -57,13 +57,6 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
         } else {
             helper.getView(R.id.label_card).setVisibility(View.GONE);
             helper.setText(R.id.term_tag_tv, item.getTotalTerm() + "期");
-
         }
-
     }
-
 }
-
-
-
-

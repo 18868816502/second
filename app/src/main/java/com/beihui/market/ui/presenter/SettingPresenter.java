@@ -107,7 +107,6 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                                    if (result.isSuccess()) {
                                        mUserHelper.clearUser(mContext);
                                        mView.showLogoutSuccess();
-
                                        //umeng统计
                                        Statistic.logout();
                                    } else {

@@ -70,7 +70,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     //依赖的activity
     public FragmentActivity mActivity;
 
-
     @Subscribe
     public void onLogin(UserLoginEvent event) {
         load();
@@ -81,7 +80,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
         load();
     }
 
-
     public static TabNewsWebViewTwoFragment newInstance() {
         return new TabNewsWebViewTwoFragment();
     }
@@ -89,14 +87,11 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mActivity = getActivity();
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
-
         //umeng统计
         Statistic.onEvent(Events.ENTER_NEWS_PAGE);
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -107,7 +102,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             EventBus.getDefault().register(this);
         }
     }
-
 
     @Override
     public void onDestroy() {
@@ -126,10 +120,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
         return R.layout.fragment_tab_news_web_view_one;
     }
 
-
     @Override
     public void initDatas() {}
-
 
     @Override
     public void configViews() {
@@ -144,10 +136,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-
-
         webView.setWebViewClient(new WebViewClient());
-
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -159,12 +148,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             }
         });
         swipeRefreshLayout.setColorScheme(R.color.refresh_one);
-//        swipeRefreshLayout.setOnChildScrollUpCallback(new SwipeRefreshLayout.OnChildScrollUpCallback() {
-//            @Override
-//            public boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child) {
-//                return !"0".equals(mScrollY);
-//            }
-//        });
 
         if (scrollView != null) {
             scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -181,7 +164,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
          * 客户端监听器
          */
         webView.setWebViewClient(new WebViewClient() {
-
             // url拦截
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -198,22 +180,10 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
                 }
             }
 
-
             // 页面开始加载
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-//                Log.e("xhb", "url--->   " +url);
-//                Log.e("xhb", "newsUrl--->   " +newsUrl);
-//
-//                if (url.equals(newsUrl)) {
-//                    swipeRefreshLayout.setEnabled(true);
-//                } else {
-//                    swipeRefreshLayout.setEnabled(false);
-//                    Intent intent = new Intent(mActivity, WebViewActivity.class);
-//                    intent.putExtra("webViewUrl", URLDecoder.decode(url));
-//                    mActivity.startActivity(intent);
-//                }
             }
 
             // 页面加载完成
@@ -234,7 +204,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             }
         });
 
-
         webView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
@@ -243,11 +212,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
                 ((MainActivity)mActivity).startActivityWithoutOverride(intent);
             }
         });
-
-
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
     }
-
 
     /**
      * webView 加载Url
@@ -272,11 +238,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             e.printStackTrace();
         }
         newsUrl = NetConstants.generateActivityWebViewUrl(userId, channelId, versionName);
-
-        Log.e("newsUrl", "newsUrl--->     " + newsUrl);
         webView.loadUrl(newsUrl);
     }
-
 
     /**
      * 调用js
@@ -295,7 +258,6 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
          */
         @JavascriptInterface
         public void getFindHtmlScrollY(String scrollY){
-
             mScrollY = scrollY;
         }
     }
@@ -305,9 +267,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
      */
     public String mScrollY = "0";
 
-
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 }

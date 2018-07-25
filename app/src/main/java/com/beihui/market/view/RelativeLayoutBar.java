@@ -17,7 +17,7 @@ import com.beihui.market.util.Px2DpUtils;
 
 /**
  * @author wubo on 2018/6/5 10:51
- * 类说明：选项栏
+ *         类说明：选项栏
  */
 public class RelativeLayoutBar extends RelativeLayout {
     /**
@@ -395,7 +395,6 @@ public class RelativeLayoutBar extends RelativeLayout {
         } else {
             rightTextView2.setVisibility(right_textView2_Visible ? View.VISIBLE : View.GONE);
         }
-
     }
 
     /**
@@ -418,8 +417,5 @@ public class RelativeLayoutBar extends RelativeLayout {
         layoutParams.setMargins(Px2DpUtils.dp2px(context, view_margin_right), 0, Px2DpUtils.dp2px(context, view_margin_right), 0);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         view.setLayoutParams(layoutParams);
-
     }
-
-
 }

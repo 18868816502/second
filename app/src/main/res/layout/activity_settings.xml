@@ -21,7 +21,6 @@
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
             <com.beihui.market.view.RelativeLayoutBar
                 android:id="@+id/about_kaola"
@@ -85,7 +83,6 @@
                 app:right_textView1_text="0.5M"
                 app:right_textView1_textSize="14sp" />
 
-
             <TextView
                 android:id="@+id/exit"
                 android:layout_width="match_parent"
@@ -99,8 +96,5 @@
                 android:textColor="#ff5200"
                 android:textSize="17sp" />
         </LinearLayout>
-
-
     </ScrollView>
-
 </LinearLayout>
