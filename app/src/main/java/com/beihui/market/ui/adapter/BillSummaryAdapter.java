@@ -2,6 +2,7 @@ package com.beihui.market.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.tang.MoxieUtil;
+import com.beihui.market.tang.activity.CommonDetailActivity;
+import com.beihui.market.tang.activity.CreditDetailActivity;
+import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -58,5 +62,26 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
             helper.getView(R.id.label_card).setVisibility(View.GONE);
             helper.setText(R.id.term_tag_tv, item.getTotalTerm() + "期");
         }
+
+        helper.getView(R.id.ll_bill_summary).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = null;
+                if (item.getType().equals("1")) {//网贷
+                    intent = new Intent(activity, NetLoanDetailActivity.class);
+                } else if (item.getType().equals("2")) {//信用卡
+                    intent = new Intent(activity, CreditDetailActivity.class);
+                } else if (item.getType().equals("3")) {//通用
+                    intent = new Intent(activity, CommonDetailActivity.class);
+                }
+                if (intent != null) {
+                    intent.putExtra("recordId", item.getRecordId());
+                    intent.putExtra("billId", item.getRecordId());
+                    activity.startActivity(intent);
+                }
+            }
+        });
+
+
     }
 }

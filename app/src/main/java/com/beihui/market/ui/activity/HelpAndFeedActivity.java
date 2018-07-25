@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.base.Constant;
@@ -66,6 +67,8 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 
 /**
  * 帮助与反馈
@@ -369,7 +372,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                 useDefaultIndicator(getResources().getColor(R.color.red), 2)
                 .createAgentWeb()//
                 .ready()
-                .go("http://www.baidu.com");
+                .go(NetConstants.DOMAIN + "/help-v2.html");
 
         return helpView;
     }

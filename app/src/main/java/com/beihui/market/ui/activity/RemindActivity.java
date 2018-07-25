@@ -221,9 +221,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 if (!FastClickUtils.isFastClick()) {
                     presenter.repaymentTime();
                 }
-
                 break;
-
         }
     }
 

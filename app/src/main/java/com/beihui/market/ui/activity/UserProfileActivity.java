@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +99,10 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     TextView userProfileMobile;
     @BindView(R.id.tv_user_profile_wxchat)
     TextView userProfileWxChat;
+    @BindView(R.id.fl_remove_wx_chat)
+    FrameLayout wxFrame;
+    @BindView(R.id.view_bottom)
+    View btomView;
 
     @Inject
     UserProfilePresenter presenter;
@@ -146,7 +151,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         /**
          * 显示版本号
          */
-        versionNameTv.setText("v"+ BuildConfig.VERSION_NAME);
+        versionNameTv.setText("v" + BuildConfig.VERSION_NAME);
 
         try {
             mCacheSize = DataCleanManager.getFormatSize(DataCleanManager.getInternalCacheSize()
@@ -199,8 +204,8 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         UserProfileActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @OnClick({R.id.avatar,R.id.avatar_item, R.id.fl_navigate_nick_name, R.id.fl_navigate_revise_pwd, R.id.tv_user_profile_exit,
-                R.id.fl_version_code, R.id.fl_clear_cache, R.id.fl_about_us, R.id.fl_revise_mobile, R.id.fl_remove_wx_chat})
+    @OnClick({R.id.avatar, R.id.avatar_item, R.id.fl_navigate_nick_name, R.id.fl_navigate_revise_pwd, R.id.tv_user_profile_exit,
+            R.id.fl_version_code, R.id.fl_clear_cache, R.id.fl_about_us})
     void OnItemsClicked(View view) {
         switch (view.getId()) {
             //编辑昵称
@@ -274,39 +279,39 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 Intent toAboutUs = new Intent(this, AboutUsActivity.class);
                 startActivity(toAboutUs);
                 break;
-            //修改手机号
-            case R.id.fl_revise_mobile:
-
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIPHONE);
-
-                Intent toNewMobile = new Intent(this, InputNewMobileActivity.class);
-                toNewMobile.putExtra("bingNewMobile", "bingNewMobile");
-                startActivity(toNewMobile);
-                break;
+//            //修改手机号
+//            case R.id.fl_revise_mobile:
+//
+//                //pv，uv统计
+////                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIPHONE);
+//
+//                Intent toNewMobile = new Intent(this, InputNewMobileActivity.class);
+//                toNewMobile.putExtra("bingNewMobile", "bingNewMobile");
+//                startActivity(toNewMobile);
+//                break;
             //解除微信绑定
-            case R.id.fl_remove_wx_chat:
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIWECHAT);
-
-                if ("未绑定".equals(userProfileWxChat.getText().toString())) {
-                    bindWXChat();
-                } else {
-                    new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信？")
-                            .withNegativeBtn("确定", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    unBindWXChat();
-                                }
-                            })
-                            .withPositiveBtn("退出", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
-                }
-                break;
+//            case R.id.fl_remove_wx_chat:
+//                //pv，uv统计
+////                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIWECHAT);
+//
+//                if ("未绑定".equals(userProfileWxChat.getText().toString())) {
+//                    bindWXChat();
+//                } else {
+//                    new CommNoneAndroidDialog().withTitle("解除绑定").withMessageByGray("确定要解绑微信？")
+//                            .withNegativeBtn("确定", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    unBindWXChat();
+//                                }
+//                            })
+//                            .withPositiveBtn("退出", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//
+//                                }
+//                            }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+//                }
+//                break;
             //编辑头像
             case R.id.avatar:
             case R.id.avatar_item:
@@ -366,7 +371,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 ToastUtils.showShort(UserProfileActivity.this, "授权取消", null);
             }
         };
-        UMShareAPI.get(UserProfileActivity.this).getPlatformInfo((Activity)UserProfileActivity.this, SHARE_MEDIA.WEIXIN, listener);
+        UMShareAPI.get(UserProfileActivity.this).getPlatformInfo((Activity) UserProfileActivity.this, SHARE_MEDIA.WEIXIN, listener);
     }
 
     /**
@@ -521,8 +526,12 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         }
         if (!TextUtils.isEmpty(profile.getWxUnionId())) {
             userProfileWxChat.setText("已绑定");
+            wxFrame.setVisibility(View.VISIBLE);
+            btomView.setVisibility(View.VISIBLE);
         } else {
-            userProfileWxChat.setText("未绑定");
+            //userProfileWxChat.setText("未绑定");
+            wxFrame.setVisibility(View.GONE);
+            btomView.setVisibility(View.GONE);
         }
     }
 

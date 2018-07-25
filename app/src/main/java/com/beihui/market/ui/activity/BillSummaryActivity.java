@@ -21,6 +21,7 @@ import com.beihui.market.util.CommonUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -37,10 +38,12 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private int pageNo = 1;
     @BindView(R.id.bill_refresh)
     SmartRefreshLayout refreshLayout;
-
+    List<BillSummaryBean.PersonBillItemBean> list = new ArrayList<>();
     private TextView toatlLiMoney;
     private TextView toatlOverMoney;
     private BillSummaryActivity activity;
+    private View view;
+    private boolean isRefresh;
 
     @Override
     public int getLayoutId() {
@@ -58,27 +61,31 @@ public class BillSummaryActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        List<BillSummaryBean.PersonBillItemBean> list = new ArrayList<>();
         getBillSummaryData();
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageNo = 1;
+                isRefresh = true;
                 getBillSummaryData();
             }
         });
 
-//        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                getBillSummaryData();
-//            }
-//        });
-        View view = View.inflate(this, R.layout.bill_summary_header, null);
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                pageNo++;
+                isRefresh = false;
+                getBillSummaryData();
+            }
+        });
+        view = View.inflate(this, R.layout.bill_summary_header, null);
+        View emptyView = View.inflate(this, R.layout.empty_bill_summary_layout, null);
         toatlLiMoney = view.findViewById(R.id.totalliamount);
         toatlOverMoney = view.findViewById(R.id.totalover_amount);
         adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this, activity);
         adapter.addHeaderView(view);
+        adapter.setEmptyView(emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
@@ -93,14 +100,28 @@ public class BillSummaryActivity extends BaseComponentActivity {
             @Override
             public void onNext(BillSummaryBean data) {
                 refreshLayout.finishRefresh();
-                pageNo++;
-                adapter.setNewData(data.getPersonBillItem());
-                toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
-                toatlOverMoney.setText("¥ " + CommonUtils.numToString(data.getOverLiAmount()));
+                refreshLayout.finishLoadMore();
+                if (data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
+                    list = data.getPersonBillItem();
+                    if (isRefresh) {
+                        adapter.replaceData(list);
+                    } else {
+                        adapter.addData(list);
+                    }
+                    adapter.setNewData(data.getPersonBillItem());
+                    if (data.getTotalLiAmount() != null) {
+                        toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
+                    }
+
+                    if (data.getOverLiAmount() != null) {
+                        toatlOverMoney.setText("¥ " + CommonUtils.numToString(data.getOverLiAmount()));
+                    }
+                }
             }
 
             @Override
             public void onError(Throwable t) {
+                refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
             }
         });

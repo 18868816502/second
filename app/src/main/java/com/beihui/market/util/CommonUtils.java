@@ -667,25 +667,25 @@ public class CommonUtils {
 
     public static String getDay(int num) {
         if (num == 0) {
-            return "提前一天";
+            return "提前1天";
         } else if (num == 1) {
-            return "提前二天";
+            return "提前2天";
         } else if (num == 2) {
-            return "提前三天";
+            return "提前3天";
         } else if (num == 3) {
-            return "提前四天";
+            return "提前4天";
         } else if (num == 4) {
-            return "提前五天";
+            return "提前5天";
         } else if (num == 5) {
-            return "提前六天";
+            return "提前6天";
         } else if (num == 6) {
-            return "提前七天";
+            return "提前7天";
         } else if (num == 7) {
-            return "提前八天";
+            return "提前8天";
         } else if (num == 8) {
-            return "提前九天";
+            return "提前9天";
         } else if (num == 9) {
-            return "提前十天";
+            return "提前10天";
         } else {
             return "";
         }
