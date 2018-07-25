@@ -229,7 +229,11 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                    public void accept(ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
                                            ToastUtils.showShort(context, "提交成功", null);
-                                           finish();
+                                           //finish();
+                                           viewPager.setCurrentItem(0);
+                                           helpTv.setText("帮助中心");
+                                           commitTv.setText("");
+                                           bottomLayout.setVisibility(View.VISIBLE);
                                        } else {
                                            ToastUtils.showShort(context, result.getMsg(), null);
                                        }
@@ -242,7 +246,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                 }
                             });
         } else {
-            ToastUtils.showShort(context, "请输入您的意见", null);
+            ToastUtils.showShort(context, "请先添加反馈内容哦~", null);
         }
     }
 

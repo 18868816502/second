@@ -110,4 +110,12 @@
 
     <color name="bill_detail_not_pay_color">#ff5644</color>
     <color name="bill_detail_pay_color">#28b05e</color>
+
+    <!-- dialog -->
+    <color name="realtime_normal_text_color">#40C371</color>
+    <color name="trans">#00000000</color>
+    <color name="alertdialog_line">#f6f6f6</color>
+    <color name="actionsheet_blue">#037BFF</color>
+    <color name="actionsheet_red">#FD4A2E</color>
+    <color name="actionsheet_gray">#8F8F8F</color>
 </resources>

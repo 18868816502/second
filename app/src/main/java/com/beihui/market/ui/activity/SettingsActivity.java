@@ -23,6 +23,7 @@ import com.beihui.market.injection.component.DaggerSettingComponent;
 import com.beihui.market.injection.module.SettingModule;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.SettingContract;
+import com.beihui.market.ui.dialog.AlertDialog;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.SettingPresenter;
 import com.beihui.market.umeng.Events;
@@ -156,16 +157,40 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 break;
 
             case R.id.clear_cache:
-                boolean a = DataCleanManager.cleanInternalCache();
-                boolean b = DataCleanManager.cleanExternalCache();
-                if (a && b) {
-                    clearCacheRel.setRightTextView1Text("0M");
-                    Toast.makeText(this, "缓存已清除", Toast.LENGTH_SHORT).show();
-                } else {
-                    clearCacheRel.setRightTextView1Text("清除失败");
-                }
+
+                showAlertDialog();
                 break;
         }
+    }
+
+    /**
+     * 弹窗
+     */
+    private void showAlertDialog() {
+        final AlertDialog dialog = new AlertDialog(this);
+        dialog.builder().setMsg("确定清空缓存？")
+                .setPositiveButton("确定", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        boolean a = DataCleanManager.cleanInternalCache();
+                        boolean b = DataCleanManager.cleanExternalCache();
+                        if (a && b) {
+                            clearCacheRel.setRightTextView1Text("0M");
+                            Toast.makeText(SettingsActivity.this, "缓存已清除", Toast.LENGTH_SHORT).show();
+                        } else {
+                            clearCacheRel.setRightTextView1Text("清除失败");
+                        }
+
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            }
+        }).show();
+
+
     }
 
 

@@ -132,13 +132,13 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                 if (version.compareTo(update.getVersion()) < 0) {
                     mView.showUpdate(appUpdate);
                 } else {
-                    mView.showHasBeenLatest("已经是最新版本了");
+                    mView.showHasBeenLatest("当前已是最新版本");
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         } else {
-            mView.showHasBeenLatest("已经是最新版了");
+            mView.showHasBeenLatest("当前已是最新版本");
         }
     }
 }

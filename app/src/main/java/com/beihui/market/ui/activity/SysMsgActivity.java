@@ -28,6 +28,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
+import com.beihui.market.ui.dialog.AlertDialog;
 import com.beihui.market.ui.presenter.SysMsgPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 import com.beihui.market.util.RxUtil;
@@ -83,9 +84,33 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                 readAllMessage();
                 break;
             case R.id.from_delete:
-                deleteMessage();
+                showAlertDialog();
                 break;
         }
+
+    }
+
+
+    /**
+     * 弹窗
+     */
+    private void showAlertDialog() {
+        final AlertDialog dialog = new AlertDialog(this);
+        dialog.builder().setMsg("确定清空消息？")
+                .setPositiveButton("确定", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        deleteMessage();
+
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            }
+        }).show();
+
 
     }
 

@@ -65,6 +65,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
     private int pushRemind = 0;
     private int messageRemind = 1;
     private int remindDay = 1;
+    private int type = 0;
 
     @Override
     public int getLayoutId() {
@@ -86,6 +87,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
         pushSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                type = 0;
                 boolean checked = ((Switch) v).isChecked();
                 if (checked) {
                     pushRemind = 1;
@@ -99,6 +101,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
         messageSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                type = 1;
                 boolean checked = ((Switch) v).isChecked();
                 if (checked) {
                     messageRemind = 1;
@@ -187,8 +190,11 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 .subscribe(new ApiObserver<ResultEntity>() {
                     @Override
                     public void onNext(ResultEntity data) {
-                        ToastUtils.showToast(RemindActivity.this, "设置成功");
-
+                        if (type == 0 && pushSwitch.isChecked()) {
+                            ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                        } else if (type == 1 && messageSwitch.isChecked()) {
+                            ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                        }
                     }
                 });
     }

@@ -16,14 +16,14 @@
         <EditText
             android:id="@+id/feed_content"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="150dp"
             android:layout_marginBottom="20dp"
             android:background="@null"
             android:gravity="left|top"
-            android:hint="请输入您的意见，我们将不断改进..."
+            android:hint="您的反馈，是我们进步的动力..."
             android:padding="15dp"
-            android:textColorHint="@color/black_2"
             android:textColor="@color/black_1"
+            android:textColorHint="@color/black_2"
             android:textSize="14sp" />
 
         <TextView
@@ -42,39 +42,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
-        android:text="请提供相关问题的截图和照片"
+        android:text="可以在此上传图片"
+        android:layout_marginLeft="12dp"
         android:textColor="@color/black_2"
         android:textSize="12sp" />
 
     <RelativeLayout
-        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/debt_feed_background">
+        android:background="@drawable/debt_feed_background"
+        android:padding="12dp">
 
         <ImageView
-            android:layout_alignParentLeft="true"
             android:id="@+id/feed_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:scaleType="centerCrop"
             android:src="@drawable/debt_feed_add_image_icon" />
     </RelativeLayout>
 
-   <EditText
-       android:id="@+id/et_pager_item_debt_feed_contact"
-       android:maxLength="30"
-       android:layout_marginTop="10dp"
-       android:paddingLeft="12dp"
-       android:paddingTop="10dp"
-       android:paddingBottom="10dp"
-       android:textSize="14sp"
-       android:textColor="@color/black_1"
-       android:textColorHint="@color/black_2"
-       android:hint="填写您的联系方式QQ或微信"
-       android:background="@color/white"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/et_pager_item_debt_feed_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:hint="填写您的联系方式QQ或微信"
+        android:maxLength="30"
+        android:paddingBottom="10dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/black_1"
+        android:textColorHint="@color/black_2"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
 </LinearLayout>
