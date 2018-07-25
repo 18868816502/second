@@ -74,7 +74,6 @@ public class BillSummaryActivity extends BaseComponentActivity {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                pageNo++;
                 isRefresh = false;
                 getBillSummaryData();
             }
@@ -99,16 +98,16 @@ public class BillSummaryActivity extends BaseComponentActivity {
         Api.getInstance().onBillSummary(userId, pageNo + "").compose(RxResponse.<BillSummaryBean>compatT()).subscribe(new ApiObserver<BillSummaryBean>() {
             @Override
             public void onNext(BillSummaryBean data) {
+                pageNo++;
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
                 if (data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
                     list = data.getPersonBillItem();
                     if (isRefresh) {
-                        adapter.replaceData(list);
+                        adapter.replaceData(data.getPersonBillItem());
                     } else {
                         adapter.addData(list);
                     }
-                    adapter.setNewData(data.getPersonBillItem());
                     if (data.getTotalLiAmount() != null) {
                         toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
                     }

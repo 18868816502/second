@@ -168,6 +168,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 selectTv.setText(list.get(options1));
                 remindDay = options1 + 1;
+                type = 2;
                 remindSetting();
 
             }
