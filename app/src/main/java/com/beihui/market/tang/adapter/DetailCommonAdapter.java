@@ -16,7 +16,6 @@ import com.beihui.market.entity.DetailHead;
 import com.beihui.market.entity.DetailList;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.tang.activity.CommonDetailActivity;
-import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.RemarkActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -124,6 +123,7 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
                             return;
                         }
                         Intent intent = new Intent(mActivity, RemarkActivity.class);
+                        intent.putExtra("type", 1);
                         intent.putExtra("recordId", data.getRecordId());
                         if (remark != null && !remark.isEmpty()) intent.putExtra("remark", remark);
                         mActivity.startActivity(intent);
@@ -171,7 +171,7 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
                 @Override
                 public void onClick(View v) {
                     if (billStatus == 1 || billStatus == 3) {//结清当期
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), 2)
+                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), bill.getRecordId(), 2, null)
                                 .compose(RxResponse.compatO())
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override
@@ -184,7 +184,7 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
                                 });
                     }
                     if (billStatus == 2) {//置为未还
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), 1)
+                        Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), bill.getRecordId(), 1, null)
                                 .compose(RxResponse.compatO())
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override

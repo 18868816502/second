@@ -126,6 +126,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
                             return;
                         }
                         Intent intent = new Intent(mActivity, RemarkActivity.class);
+                        intent.putExtra("type", 2);
                         intent.putExtra("recordId", data.getRecordId());
                         if (remark != null && !remark.isEmpty()) intent.putExtra("remark", remark);
                         mActivity.startActivity(intent);

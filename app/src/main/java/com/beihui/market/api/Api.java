@@ -1562,19 +1562,34 @@ public class Api {
         return service.netIcon();
     }
 
-    /*账单详情头部*/
+    /*账单详情头部----网贷*/
     public Observable<ResultEntity<DetailHead>> detailHead(String userId, String recordId) {
         return service.detailHead(userId, recordId);
     }
 
-    /*账单详情列表*/
+    /*账单详情头部----通用*/
+    public Observable<ResultEntity<DetailHead>> commonDetailHead(String userId, String recordId) {
+        return service.commonDetailHead(userId, recordId);
+    }
+
+    /*账单详情列表----网贷*/
     public Observable<ResultEntity<DetailList>> detailList(String userId, String recordId, int pageNo, int pageSize) {
         return service.detailList(userId, recordId, pageNo, pageSize);
     }
 
-    /*结清全部*/
+    /*账单详情列表----通用*/
+    public Observable<ResultEntity<DetailList>> commonDetailList(String userId, String recordId, int pageNo, int pageSize) {
+        return service.commonDetailList(userId, recordId, pageNo, pageSize);
+    }
+
+    /*结清全部----网贷*/
     public Observable<ResultEntity> closeAll(String userId, String recordId) {
         return service.closeAll(userId, recordId);
+    }
+
+    /*结清全部----通用*/
+    public Observable<ResultEntity> commonCloseAll(String userId, String recordId) {
+        return service.commonCloseAll(userId, recordId);
     }
 
     /*账单列表*/

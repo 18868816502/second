@@ -58,6 +58,9 @@ public class DetailList implements Serializable {
         private int status;
         private int returnDay;
         private boolean presentFlag;
+        private String id;
+        private String userId;
+        private String recordId;
 
         public String getBillId() {
             return billId;
@@ -113,6 +116,30 @@ public class DetailList implements Serializable {
 
         public void setPresentFlag(boolean presentFlag) {
             this.presentFlag = presentFlag;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getRecordId() {
+            return recordId;
+        }
+
+        public void setRecordId(String recordId) {
+            this.recordId = recordId;
         }
     }
 }

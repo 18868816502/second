@@ -38,7 +38,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="adjustPan">

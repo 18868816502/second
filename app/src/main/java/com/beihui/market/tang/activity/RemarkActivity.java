@@ -57,6 +57,7 @@ public class RemarkActivity extends BaseComponentActivity {
     private RemarkActivity activity;
     private String recordId = "";
     private String remark = "";
+    private int type;
 
     @Override
     public int getLayoutId() {
@@ -74,6 +75,7 @@ public class RemarkActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         try {
+            type = getIntent().getIntExtra("type", -1);
             recordId = getIntent().getStringExtra("recordId");
             remark = getIntent().getStringExtra("remark");
         } catch (Exception e) {
@@ -160,16 +162,28 @@ public class RemarkActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 InputMethodUtil.closeSoftKeyboard(activity);
-                Api.getInstance().updateLoanDebtBillRemark(UserHelper.getInstance(activity).id(), recordId, remark)
-                        .compose(RxResponse.compatO())
-                        .subscribe(new ApiObserver<Object>() {
-                            @Override
-                            public void onNext(@NonNull Object data) {
-                                ToastUtils.showToast(activity, "保存成功");
-                                EventBus.getDefault().post(remark);
-                                finish();
-                            }
-                        });
+                if (type == 1)//通用
+                    Api.getInstance().updateFastDebtBillRemark(UserHelper.getInstance(activity).id(), recordId, remark)
+                            .compose(RxResponse.compatO())
+                            .subscribe(new ApiObserver<Object>() {
+                                @Override
+                                public void onNext(@NonNull Object data) {
+                                    ToastUtils.showToast(activity, "保存成功");
+                                    EventBus.getDefault().post(remark);
+                                    finish();
+                                }
+                            });
+                if (type == 2)//网贷
+                    Api.getInstance().updateLoanDebtBillRemark(UserHelper.getInstance(activity).id(), recordId, remark)
+                            .compose(RxResponse.compatO())
+                            .subscribe(new ApiObserver<Object>() {
+                                @Override
+                                public void onNext(@NonNull Object data) {
+                                    ToastUtils.showToast(activity, "保存成功");
+                                    EventBus.getDefault().post(remark);
+                                    finish();
+                                }
+                            });
             }
         });
     }

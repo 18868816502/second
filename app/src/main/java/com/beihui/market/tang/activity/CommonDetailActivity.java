@@ -80,7 +80,8 @@ public class CommonDetailActivity extends BaseComponentActivity {
     }
 
     public void request() {
-        Api.getInstance().detailHead(UserHelper.getInstance(activity).id(), recordId)
+        //账单详情头
+        Api.getInstance().commonDetailHead(UserHelper.getInstance(activity).id(), recordId)
                 .compose(RxResponse.<DetailHead>compatT())
                 .subscribe(new ApiObserver<DetailHead>() {
                     @Override
@@ -93,7 +94,8 @@ public class CommonDetailActivity extends BaseComponentActivity {
                         }
                     }
                 });
-        Api.getInstance().detailList(UserHelper.getInstance(activity).id(), recordId, 1, 20)
+        //账单详情列表
+        Api.getInstance().commonDetailList(UserHelper.getInstance(activity).id(), recordId, 1, 20)
                 .compose(RxResponse.<DetailList>compatT())
                 .subscribe(new ApiObserver<DetailList>() {
                     @Override
@@ -151,7 +153,7 @@ public class CommonDetailActivity extends BaseComponentActivity {
                                                                 break;
                                                             case R.id.confirm:
                                                                 dlg.dismiss();
-                                                                Api.getInstance().deleteDebt(UserHelper.getInstance(activity).id(), recordId)
+                                                                Api.getInstance().deleteFastDebt(UserHelper.getInstance(activity).id(), recordId)
                                                                         .compose(RxResponse.compatO())
                                                                         .subscribe(new ApiObserver<Object>() {
                                                                             @Override
@@ -195,7 +197,7 @@ public class CommonDetailActivity extends BaseComponentActivity {
                                         break;
                                     case R.id.confirm:
                                         dialog.dismiss();
-                                        Api.getInstance().closeAll(UserHelper.getInstance(activity).id(), recordId)
+                                        Api.getInstance().commonCloseAll(UserHelper.getInstance(activity).id(), recordId)
                                                 .compose(RxResponse.compatO())
                                                 .subscribe(new ApiObserver<Object>() {
                                                     @Override

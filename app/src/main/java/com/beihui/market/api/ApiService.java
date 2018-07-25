@@ -207,7 +207,6 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/bookKeeping/updateRemark")
     Observable<ResultEntity> updateFastDebtBillRemark(@Field("userId") String userId, @Field("recordId") String recordId, @Field("remark") String remark);
 
-
     /**
      * 获取网贷账单详情
      *
@@ -1158,4 +1157,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/creditcard/update")
     Observable<ResultEntity> deleteCredit(@Field("userId") String userId, @Field("recordId") String recordId, @Field("status") int status);
+
+    /*账单详情头部--通用账单*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/detailHead")
+    Observable<ResultEntity<DetailHead>> commonDetailHead(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /*账单详情列表--通用账单*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/detailList")
+    Observable<ResultEntity<DetailList>> commonDetailList(@Field("userId") String userId, @Field("recordId") String recordId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /*结清全部*/
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/closeAll")
+    Observable<ResultEntity> commonCloseAll(@Field("userId") String userId, @Field("recordId") String recordId);
 }
