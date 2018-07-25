@@ -40,6 +40,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
 
     private TextView toatlLiMoney;
     private TextView toatlOverMoney;
+    private BillSummaryActivity activity;
 
     @Override
     public int getLayoutId() {
@@ -51,6 +52,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
         SlidePanelHelper.attach(this);
+        activity = this;
 
     }
 
@@ -76,7 +78,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
         View view = View.inflate(this, R.layout.bill_summary_header, null);
         toatlLiMoney = view.findViewById(R.id.totalliamount);
         toatlOverMoney = view.findViewById(R.id.totalover_amount);
-        adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this);
+        adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this, activity);
         adapter.addHeaderView(view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
