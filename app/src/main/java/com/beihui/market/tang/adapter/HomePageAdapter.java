@@ -56,6 +56,8 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
 
     public static final int VIEW_HEADER = R.layout.f_layout_home_head;
     public static final int VIEW_NORMAL = R.layout.f_layout_home_bill_item;
+    public static final int VIEW_EMPTY = R.layout.f_layout_home_bill_empty;
+    public static final int VIEW_EMPTY_NOT_LGOIN = R.layout.f_layout_home_bill_empty_not_login;
 
     private Activity mActivity;
     private List<Bill> dataSet = new ArrayList<>();
@@ -70,7 +72,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private boolean numVisible;
 
     public void notifyEmpty() {
-        System.out.println("notifyEmpty");
         url = "";
         totalAmount = -1;
         dataSet.clear();
@@ -134,10 +135,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.headBillVisible.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*if (!userHelper.isLogin()) {
-                        mActivity.startActivity(new Intent(mActivity, UserAuthorizationActivity.class));
-                        return;
-                    }*/
                     if (numVisible) {
                         holder.headBillVisible.setImageResource(R.mipmap.ic_eye_close);
                         holder.headBillNum.setText(hideNum);
@@ -155,16 +152,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.headAddBillWrap.setOnClickListener(this);
             /*导入信用卡*/
             holder.headCreditIn.setOnClickListener(this);
+        } else if (holder.viewType == VIEW_EMPTY) {
+            //空账单
         } else if (holder.viewType == VIEW_NORMAL) {
             Bill bill = null;
             if (dataSet.size() > 0) bill = dataSet.get(position - 1);
             final Bill item = bill;
-            if (item == null) {
-                holder.csm_bill_wrap.setVisibility(View.GONE);
-                return;
-            } else {
-                holder.csm_bill_wrap.setVisibility(View.VISIBLE);
-            }
+            if (item == null) return;
             //icon
             Glide.with(mActivity).load(item.getLogoUrl()).transform(new GlideCircleTransform(mActivity)).into(holder.iv_home_bill_icon);
             //name
@@ -232,12 +226,15 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return VIEW_HEADER;
-        else return VIEW_NORMAL;
+        else if (dataSet == null || dataSet.size() == 0) {
+            if (!userHelper.isLogin()) return VIEW_EMPTY_NOT_LGOIN;
+            else return VIEW_EMPTY;
+        } else return VIEW_NORMAL;
     }
 
     @Override
     public int getItemCount() {
-        if (dataSet.size() == 0) return 1;
+        if (dataSet.size() == 0) return 2;
         return dataSet.size() + 1;
     }
 

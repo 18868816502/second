@@ -38,6 +38,7 @@ public class CreditBill implements Serializable {
      * startTime : 2017-03-12 00:00:00
      * endTime : 2017-04-11 00:00:00
      * presentFlag: false
+     * lastBill : false
      */
 
     private String id;
@@ -49,7 +50,7 @@ public class CreditBill implements Serializable {
     private int currencyType;
     private double lastBalance;
     private double lastPayment;
-    private int interest;
+    private double interest;
     private double newBalance;
     private double minPayment;
     private int billSource;
@@ -62,6 +63,7 @@ public class CreditBill implements Serializable {
     private String startTime;
     private String endTime;
     private boolean presentFlag;
+    private boolean lastBill;
 
     public String getId() {
         return id;
@@ -135,11 +137,11 @@ public class CreditBill implements Serializable {
         this.lastPayment = lastPayment;
     }
 
-    public int getInterest() {
+    public double getInterest() {
         return interest;
     }
 
-    public void setInterest(int interest) {
+    public void setInterest(double interest) {
         this.interest = interest;
     }
 
@@ -237,5 +239,13 @@ public class CreditBill implements Serializable {
 
     public void setPresentFlag(boolean presentFlag) {
         this.presentFlag = presentFlag;
+    }
+
+    public boolean isLastBill() {
+        return lastBill;
+    }
+
+    public void setLastBill(boolean lastBill) {
+        this.lastBill = lastBill;
     }
 }
