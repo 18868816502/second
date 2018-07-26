@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -20,6 +22,7 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.DlgUtil;
+import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
@@ -118,6 +121,8 @@ public class MakeBillActivity extends BaseComponentActivity {
     private int repayTip = 0;
     private List<String> timeList = new ArrayList<>();
     private List<String> houseYearList = new ArrayList<>();
+    private String numText;
+    private MakeBillActivity activity;
 
     @Override
     public int getLayoutId() {
@@ -129,6 +134,7 @@ public class MakeBillActivity extends BaseComponentActivity {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        activity = this;
     }
 
     @Override
@@ -138,18 +144,24 @@ public class MakeBillActivity extends BaseComponentActivity {
         String title = getIntent().getStringExtra("title");
         tvToolbarTitle.setText(title);
         //if (type == TYPE_NET_LOAN) tvToolbarTitle.setText(title);
+        if (type == TYPE_NET_LOAN) {
+            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+        }
         if (type == TYPE_HOUSE_LOAN) {
             repay_times_wrap.setEnabled(false);
             tv_repay_cycle.setText("每月一次");
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
+            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_CAR_LOAN) {
             repay_times_wrap.setEnabled(false);
             tv_repay_cycle.setText("每月一次");
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
+            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_USER_DIFINE) {
             flCustomWrap.setVisibility(View.VISIBLE);
+            InputMethodUtil.openSoftKeyboard(this, etCustomName);
         }
         iconId = getIntent().getStringExtra("iconId");
         tallyId = getIntent().getStringExtra("tallyId");
@@ -170,6 +182,25 @@ public class MakeBillActivity extends BaseComponentActivity {
         map.put("tallyType", 1);//图标类型 1-公共 2-个性(isPrivate=0时tallyType=1/isPrivate=1时tallyType=2)
         map.put("channelName", title);
         map.put("termType", 2);//周期类型 1-日, 2-月, 3-年,全部按月计算
+
+        etInputMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s == null || s.toString().trim().isEmpty() || !StringUtil.isFloat(s.toString())) {
+                    ToastUtils.showToast(activity, "请输入正确的每期金额");
+                    return;
+                }
+                numText = s.toString().trim();
+            }
+        });
     }
 
     @Override
@@ -239,7 +270,6 @@ public class MakeBillActivity extends BaseComponentActivity {
             map.put("channelName", customName);
         }
         //金额
-        String numText = etInputMoney.getText().toString().trim();
         if (numText == null || numText.isEmpty()) {
             ToastUtils.showToast(this, "请输入每期金额");
             return;
@@ -308,7 +338,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 }
                 if (item == 3) {//还款期数
                     tvRepayTimes.setText(op.get(options1));
-                    if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN) {
+                    if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN || type == TYPE_USER_DIFINE) {
                         repayTimes = options1 + 1;
                     }
                     if (type == TYPE_HOUSE_LOAN) {

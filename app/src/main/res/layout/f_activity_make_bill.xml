@@ -61,8 +61,8 @@
             android:inputType="text"
             android:maxLength="8"
             android:maxLines="1"
-            android:textColorHint="#d3d4d5"
             android:textColor="@color/black_1"
+            android:textColorHint="#d3d4d5"
             android:textCursorDrawable="@drawable/cursor_drawable"
             android:textSize="15dp" />
     </FrameLayout>
@@ -92,8 +92,8 @@
             android:gravity="right"
             android:hint="0.00"
             android:inputType="numberDecimal"
-            android:textColorHint="#d3d4d5"
             android:textColor="@color/black_1"
+            android:textColorHint="#d3d4d5"
             android:textCursorDrawable="@drawable/cursor_drawable"
             android:textSize="15dp" />
     </FrameLayout>
@@ -242,8 +242,8 @@
                 android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:textColorHint="#d3d4d5"
                 android:textColor="@color/black_1"
+                android:textColorHint="#d3d4d5"
                 android:textCursorDrawable="@drawable/cursor_drawable"
                 android:textSize="15dp" />
         </FrameLayout>

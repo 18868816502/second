@@ -91,8 +91,8 @@ public class CreditDetailActivity extends BaseComponentActivity {
     public void initDatas() {
         recordId = getIntent().getStringExtra("recordId");
         billId = getIntent().getStringExtra("billId");
-        request();
         initRecyclerView();
+        request();
     }
 
     public void request() {
