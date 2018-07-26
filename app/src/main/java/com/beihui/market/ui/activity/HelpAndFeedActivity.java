@@ -372,7 +372,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                 useDefaultIndicator(getResources().getColor(R.color.red), 2)
                 .createAgentWeb()//
                 .ready()
-                .go(NetConstants.DOMAIN + "/help-v2.html");
+                .go(NetConstants.H5_DOMAIN + "/help-v2.html");
 
         return helpView;
     }
