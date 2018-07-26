@@ -10,9 +10,13 @@ import com.beihui.market.BuildConfig;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.ui.activity.GetuiDialogActivity;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.NotificationUtil;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
@@ -34,7 +38,7 @@ public class PushReceiveIntentService extends GTIntentService {
     @Override
     public void onReceiveClientId(Context context, String s) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "onReceiveClintId " + s);
+            Log.i(TAG + 726, "onReceiveClintId " + s);
         }
         if (UserHelper.getInstance(App.getInstance()).getProfile() != null) {
             String bindClientId = SPUtils.getPushBindClientId(context);
@@ -73,13 +77,23 @@ public class PushReceiveIntentService extends GTIntentService {
         }
         try {
             String json = new String(gtTransmitMessage.getPayload());
+            LogUtils.i(TAG, json);
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title") != null ? obj.getString("title") : "";
             String content = obj.getString("content") != null ? obj.getString("content") : "";
+            if (obj.getInt("type") == 6) {
+                Intent intent = new Intent(context, GetuiDialogActivity.class);
+                intent.putExtra("pending_json", json);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (!CommonUtils.isForeground(context, GetuiDialogActivity.class.getName())) {
+                    context.startActivity(intent);
+                }
 
-            Intent intent = new Intent("send_push_clicked_event");
-            intent.putExtra("pending_json", json);
-            NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message", false);
+            } else {
+                Intent intent = new Intent("send_push_clicked_event");
+                intent.putExtra("pending_json", json);
+                NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message", false);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

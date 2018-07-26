@@ -62,70 +62,41 @@ android {
     flavorDimensions("id", "channel")
 
     productFlavors {
-        loanmarket {
-            dimension "id"
-            applicationId "com.beihui.market"
-
-            //Version3.1.0前的生产环境
-//            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
-
-            //新的生产环境
-//            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
-            //正式环境魔蝎appkey
-//            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
-
-            //测试使用的魔蝎appkey
-            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
-            //测试一
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "ZHANG_DOMAIN", "\"http://192.168.1.61:8082\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-
-            //前端本地联调地址
-            //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.63:100\"")
-
-            //开发环境
-            //buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
-
-            //后台本地
-            // buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")
-            //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
-
-            manifestPlaceholders = [
-                    GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
-                    GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
-                    GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
-
-                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-
-                    qqappid         : "1106280475",
-
-                    PACKAGE_NAME    : applicationId
-            ]
-
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
-
-            signingConfig signingConfigs.loanmarket
-        }
-
-//        loanmarkettest {
+//        loanmarket {
 //            dimension "id"
-//            applicationId "com.beihui.market.test"
+//            applicationId "com.beihui.market"
+//
+//            //Version3.1.0前的生产环境
+////            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
+////            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
+//
+//            //新的生产环境
+////            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+////            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
+//            //正式环境魔蝎appkey
+////            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
 //
 //            //测试使用的魔蝎appkey
 //            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
-//
+//            //测试一
 //            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+//            buildConfigField("String", "ZHANG_DOMAIN", "\"http://192.168.1.61:8082\"")
 //            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
 //
+//            //前端本地联调地址
+//            //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.63:100\"")
+//
+//            //开发环境
+//            //buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
+//
+//            //后台本地
+//            // buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")
+//            //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
+//
 //            manifestPlaceholders = [
-//                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
-//                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
-//                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
+//                    GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
+//                    GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
+//                    GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
 //
 //                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
 //
@@ -138,9 +109,38 @@ android {
 //            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
 //            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
 //
-//            signingConfig signingConfigs.loanmarkettest
-//
+//            signingConfig signingConfigs.loanmarket
 //        }
+
+        loanmarkettest {
+            dimension "id"
+            applicationId "com.beihui.market.test"
+
+            //测试使用的魔蝎appkey
+            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
+
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+
+            manifestPlaceholders = [
+                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
+                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
+                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
+
+                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
+
+                    qqappid         : "1106280475",
+
+                    PACKAGE_NAME    : applicationId
+            ]
+
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+
+            signingConfig signingConfigs.loanmarkettest
+
+        }
 
         baidu { dimension "channel" }
 //        market360 { dimension "channel" }

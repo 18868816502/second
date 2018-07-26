@@ -309,8 +309,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
-        startActivity(new Intent(getActivity(), GetuiDialogActivity.class));
-
     }
 
     @Override
