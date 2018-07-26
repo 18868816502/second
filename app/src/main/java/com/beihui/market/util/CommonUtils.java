@@ -444,7 +444,6 @@ public class CommonUtils {
         }
     }
 
-
     /**
      * 两个String数组拼接
      *
@@ -458,7 +457,6 @@ public class CommonUtils {
         System.arraycopy(b, 0, c, a.length, b.length);
         return c;
     }
-
 
     /**
      * 通过包名判断有没有安装某个应用
@@ -530,7 +528,6 @@ public class CommonUtils {
             formatString = "0";
         }
         return formatString;
-
     }
 
 
@@ -717,5 +714,4 @@ public class CommonUtils {
             }
         }
     }
-
 }

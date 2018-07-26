@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class StringUtil {
     public static boolean isFloat(String value) {
-        String regex_float = "^([1-9][0-9]*)+(\\.[0-9]{0,2})?$";
+        String regex_float = "^([0-9][0-9]*)+(\\.[0-9]{0,2})?$";
         Pattern p = Pattern.compile(regex_float);
         Matcher m = p.matcher(value);
         return m.matches();

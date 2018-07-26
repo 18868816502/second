@@ -100,5 +100,4 @@ public class InputMethodUtil {
             //软键盘未弹出
         }
     }
-
 }

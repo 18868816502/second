@@ -126,7 +126,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);
                 } else {
                     holder.headBillNum.setText(hideNum);
-                    holder.headBillVisible.setImageResource(R.mipmap.icon_eye_close);
+                    holder.headBillVisible.setImageResource(R.mipmap.ic_eye_close);
                 }
             }
             /*活动入口*/

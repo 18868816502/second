@@ -5,7 +5,6 @@ import android.text.Spanned;
 import android.widget.EditText;
 
 public class EditTextUtils {
-
     public static void addDisableEmojiInputFilter(EditText editText) {
         InputFilter[] filters = editText.getFilters();
         InputFilter[] newFilters;
@@ -32,9 +31,7 @@ public class EditTextUtils {
         editText.setFilters(newFilters);
     }
 
-
     static class EmojiFilter implements InputFilter {
-
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             for (int i = start; i < end; i++) {
@@ -57,5 +54,4 @@ public class EditTextUtils {
             return null;
         }
     }
-
 }

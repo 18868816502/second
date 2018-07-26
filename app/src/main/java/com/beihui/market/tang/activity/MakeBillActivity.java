@@ -28,6 +28,7 @@ import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.ToastUtils;
+import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -73,7 +74,7 @@ public class MakeBillActivity extends BaseComponentActivity {
     @BindView(R.id.tv_save_bill)
     TextView tvSaveBill;
     @BindView(R.id.et_input_money)
-    EditText etInputMoney;
+    ClearEditText etInputMoney;
     @BindView(R.id.tv_repay_date)
     TextView tvRepayDate;
     @BindView(R.id.fl_repay_date_wrap)
@@ -85,7 +86,7 @@ public class MakeBillActivity extends BaseComponentActivity {
     @BindView(R.id.tv_repay_times)
     TextView tvRepayTimes;
     @BindView(R.id.et_remark)
-    EditText etRemark;
+    ClearEditText etRemark;
     @BindView(R.id.tv_notice)
     TextView tvNotice;
     @BindView(R.id.fl_notice_wrap)
@@ -101,7 +102,7 @@ public class MakeBillActivity extends BaseComponentActivity {
     @BindView(R.id.fl_custom_wrap)
     FrameLayout flCustomWrap;
     @BindView(R.id.et_custom_name)
-    EditText etCustomName;
+    ClearEditText etCustomName;
     @BindView(R.id.fl_repay_times_wrap)
     FrameLayout repay_times_wrap;
 
@@ -143,7 +144,6 @@ public class MakeBillActivity extends BaseComponentActivity {
 
         String title = getIntent().getStringExtra("title");
         tvToolbarTitle.setText(title);
-        //if (type == TYPE_NET_LOAN) tvToolbarTitle.setText(title);
         if (type == TYPE_NET_LOAN) {
             InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
@@ -162,7 +162,9 @@ public class MakeBillActivity extends BaseComponentActivity {
         if (type == TYPE_USER_DIFINE) {
             flCustomWrap.setVisibility(View.VISIBLE);
             InputMethodUtil.openSoftKeyboard(this, etCustomName);
+            etCustomName.setMaxLenght(8);
         }
+        etInputMoney.setMaxLenght(12);
         iconId = getIntent().getStringExtra("iconId");
         tallyId = getIntent().getStringExtra("tallyId");
 
