@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +15,15 @@ import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.activity.CommonDetailActivity;
+import com.beihui.market.tang.activity.CreditDetailActivity;
+import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.BillSummaryAdapter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.LogUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -44,7 +49,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private TextView toatlOverMoney;
     private BillSummaryActivity activity;
     private View view;
-    private boolean isRefresh;
+    private boolean isRefresh = true;
     private View emptyView;
 
     @Override
@@ -85,8 +90,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
         toatlLiMoney = view.findViewById(R.id.totalliamount);
         toatlOverMoney = view.findViewById(R.id.totalover_amount);
         adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this, activity);
-        adapter.setEmptyView(emptyView);
-        adapter.addHeaderView(view);
+        //adapter.setEmptyView(emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
@@ -103,22 +107,26 @@ public class BillSummaryActivity extends BaseComponentActivity {
                 pageNo++;
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
-                LogUtils.i("列表长度" + data.getPersonBillItem().size() + "");
-                if (data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
-                    list = data.getPersonBillItem();
-                    if (isRefresh) {
-                        adapter.replaceData(data.getPersonBillItem());
-                    } else {
-                        adapter.addData(list);
-                    }
-                    if (data.getTotalLiAmount() != null) {
-                        toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
-                    }
-
-                    if (data.getOverLiAmount() != null) {
-                        toatlOverMoney.setText("¥ " + CommonUtils.numToString(data.getOverLiAmount()));
-                    }
+                list = data.getPersonBillItem();
+                if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() == 0) {
+                    adapter.setEmptyView(emptyView);
+                } else if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
+                    adapter.removeAllHeaderView();
+                    adapter.addHeaderView(view);
                 }
+                if (isRefresh) {
+                    adapter.replaceData(list);
+                } else {
+                    adapter.addData(list);
+                }
+                if (data.getTotalLiAmount() != null) {
+                    toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
+                }
+
+                if (data.getOverLiAmount() != null) {
+                    toatlOverMoney.setText("¥ " + CommonUtils.numToString(data.getOverLiAmount()));
+                }
+
             }
 
             @Override
@@ -129,4 +137,14 @@ public class BillSummaryActivity extends BaseComponentActivity {
         });
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            pageNo = 1;
+            isRefresh = true;
+            getBillSummaryData();
+        }
+    }
 }

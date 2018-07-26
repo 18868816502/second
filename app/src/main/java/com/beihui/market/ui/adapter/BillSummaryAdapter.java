@@ -77,7 +77,7 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
                 if (intent != null) {
                     intent.putExtra("recordId", item.getRecordId());
                     intent.putExtra("billId", item.getRecordId());
-                    activity.startActivity(intent);
+                    activity.startActivityForResult(intent, 0);
                 }
             }
         });

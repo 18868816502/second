@@ -8,6 +8,8 @@ public class SysMsgDetail {
     private String title;
     private long gmtCreate;
     private String content;
+    private String answer;
+    private String image;
 
     public String getExplain() {
         return explain;
@@ -47,5 +49,21 @@ public class SysMsgDetail {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

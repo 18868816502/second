@@ -1,7 +1,9 @@
 package com.beihui.market.ui.activity;
 
 
+import android.media.Image;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -15,6 +17,7 @@ import com.beihui.market.injection.module.SysMsgDetailModule;
 import com.beihui.market.ui.contract.SysMsgDetailContract;
 import com.beihui.market.ui.presenter.SysMsgDetailPresenter;
 import com.beihui.market.util.DateFormatUtils;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import javax.inject.Inject;
@@ -33,6 +36,10 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     TextView readSumTv;
     @BindView(R.id.content)
     TextView contentTv;
+    @BindView(R.id.answer)
+    TextView answerTv;
+    @BindView(R.id.feed_img)
+    ImageView imageView;
 
     @Inject
     SysMsgDetailPresenter presenter;
@@ -90,6 +97,12 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
             dateTv.setText(DateFormatUtils.formatMMddHHmm(detail.getGmtCreate()));
             if (detail.getContent() != null) {
                 contentTv.setText(detail.getContent());
+            }
+            if (detail.getAnswer() != null) {
+                answerTv.setText(detail.getAnswer());
+            }
+            if (detail.getImage() != null) {
+                Glide.with(this).load(detail.getImage()).into(imageView);
             }
         }
     }

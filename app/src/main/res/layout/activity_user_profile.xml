@@ -137,7 +137,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/line"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <!--修改密码-->
             <FrameLayout
@@ -185,7 +185,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/right_icon"
                     android:gravity="center_vertical"
                     android:text="手机号"
                     android:textColor="@color/black_1"
@@ -196,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="5dp"
                     android:text=""
                     android:textColor="#ff909298"
                     android:textSize="13sp" />
@@ -225,7 +224,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/right_icon"
                     android:gravity="center_vertical"
                     android:text="微信号"
                     android:textColor="@color/black_1"
@@ -236,7 +234,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="right"
                     android:text=""
                     android:textColor="#ff909298"
                     android:textSize="13sp" />
@@ -250,7 +249,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/line"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <!--关于我们-->
             <FrameLayout
@@ -289,8 +288,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:layout_marginBottom="15dp"
-                android:visibility="gone"
-                android:background="#f8f8f8" />
+                android:background="#f8f8f8"
+                android:visibility="gone" />
 
             <!--清除缓存-->
             <FrameLayout
@@ -331,7 +330,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/line"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <!--版本号-->
             <FrameLayout
@@ -369,7 +368,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:background="#f8f8f8"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_user_profile_exit"
@@ -380,7 +379,7 @@
                 android:textColor="#ffff5240"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
 
             <!--<RelativeLayout-->

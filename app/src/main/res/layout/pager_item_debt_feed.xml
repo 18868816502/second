@@ -41,9 +41,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
         android:layout_marginTop="17dp"
         android:text="可以在此上传图片"
-        android:layout_marginLeft="12dp"
         android:textColor="@color/black_2"
         android:textSize="12sp" />
 
@@ -56,11 +56,11 @@
 
         <ImageView
             android:id="@+id/feed_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentLeft="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/debt_feed_add_image_icon" />
+            android:scaleType="fitXY"
+            android:background="@drawable/debt_feed_add_image_icon" />
     </RelativeLayout>
 
     <EditText
