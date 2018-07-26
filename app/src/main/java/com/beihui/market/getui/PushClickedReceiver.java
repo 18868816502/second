@@ -84,6 +84,8 @@ public class PushClickedReceiver extends BroadcastReceiver {
             } else if (type == 5) {//跳转到账单首页
                 intent = new Intent(context, MainActivity.class);
                 intent.putExtra("account", true);
+            } else if (type == 6) {//弹框
+
             }
 
             if (intent != null) {

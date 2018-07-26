@@ -18,6 +18,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.BillSummaryAdapter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LogUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -44,6 +45,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private BillSummaryActivity activity;
     private View view;
     private boolean isRefresh;
+    private View emptyView;
 
     @Override
     public int getLayoutId() {
@@ -79,12 +81,12 @@ public class BillSummaryActivity extends BaseComponentActivity {
             }
         });
         view = View.inflate(this, R.layout.bill_summary_header, null);
-        View emptyView = View.inflate(this, R.layout.empty_bill_summary_layout, null);
+        emptyView = View.inflate(this, R.layout.empty_bill_summary_layout, null);
         toatlLiMoney = view.findViewById(R.id.totalliamount);
         toatlOverMoney = view.findViewById(R.id.totalover_amount);
         adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this, activity);
-        adapter.addHeaderView(view);
         adapter.setEmptyView(emptyView);
+        adapter.addHeaderView(view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
@@ -101,6 +103,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
                 pageNo++;
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
+                LogUtils.i("列表长度" + data.getPersonBillItem().size() + "");
                 if (data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
                     list = data.getPersonBillItem();
                     if (isRefresh) {
