@@ -19,6 +19,7 @@ import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
 import com.beihui.market.ui.activity.BillSummaryActivity;
 import com.beihui.market.ui.activity.CollectionActivity;
+import com.beihui.market.ui.activity.GetuiDialogActivity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.RemindActivity;
@@ -308,6 +309,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
+        startActivity(new Intent(getActivity(), GetuiDialogActivity.class));
 
     }
 
