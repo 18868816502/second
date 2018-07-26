@@ -43,7 +43,6 @@ public class ToastUtils {
                     //如果这个Toast已经在显示了，那么这里会立即改变Toast的文本
                     sToast.setText(msg);
                 }
-
                 sToast.show();
             }
         });
@@ -53,7 +52,6 @@ public class ToastUtils {
      * 显示吐司
      */
     public static void showToastLongTime(Context context, String msg){
-
         if(sToast == null){
             //用ApplicationContext防止内存泄露
             sToast = Toast.makeText(context.getApplicationContext(), msg, Toast.LENGTH_LONG);
@@ -61,7 +59,6 @@ public class ToastUtils {
             //如果这个Toast已经在显示了，那么这里会立即改变Toast的文本
             sToast.setText(msg);
         }
-
         sToast.show();
     }
 }

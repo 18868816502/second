@@ -81,5 +81,4 @@ public class AndroidBug5497Fix {
         mChildOfContent.getWindowVisibleDisplayFrame(r);
         return (r.bottom - r.top);
     }
-
 }

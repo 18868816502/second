@@ -23,6 +23,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.ToastUtils;
+import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.EditTextUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -50,7 +51,7 @@ public class RemarkActivity extends BaseComponentActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.edit_text)
-    EditText edit_text;
+    ClearEditText edit_text;
     @BindView(R.id.confirm)
     TextView confirmBtn;
 
@@ -83,45 +84,9 @@ public class RemarkActivity extends BaseComponentActivity {
         if (remark != null && !remark.isEmpty()) {
             edit_text.setText(remark);
             edit_text.setSelection(remark.length());
+            InputMethodUtil.openSoftKeyboard(this, edit_text);
         }
-        InputFilter filter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if (source != null) {
-                    try {
-                        String destStr = dest.toString();
-                        String srcStr = source.toString();
-                        String result = srcStr + destStr;
-                        byte[] bytes = result.getBytes("GBK");
-                        //10个中文或者20个字符
-                        if (bytes.length > 20) {
-                            int srcEnd = srcStr.length() - 1;
-                            bytes = (destStr + srcStr.substring(0, srcEnd)).getBytes("GBk");
-                            while (bytes.length > 20) {
-                                srcEnd--;
-                                bytes = (destStr + srcStr.substring(0, srcEnd)).getBytes("GBk");
-                            }
-                            return srcStr.substring(0, srcEnd);
-                        }
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-        };
-
-        InputFilter[] filters = edit_text.getFilters();
-        if (filters == null) {
-            filters = new InputFilter[]{filter};
-        } else {
-            InputFilter[] temp = filters;
-            filters = new InputFilter[temp.length + 1];
-            System.arraycopy(temp, 0, filters, 0, temp.length);
-            filters[temp.length] = filter;
-        }
-        EditTextUtils.addDisableEmojiInputFilter(edit_text);
-        edit_text.setFilters(filters);
+        edit_text.setMaxLenght(20);
 
         edit_text.addTextChangedListener(new TextWatcher() {
             @Override
@@ -135,22 +100,8 @@ public class RemarkActivity extends BaseComponentActivity {
                     confirmBtn.setTextColor(ContextCompat.getColor(activity, R.color.black_2));
                     return;
                 }
-                byte[] bytes = new byte[0];
-                try {
-                    if (!TextUtils.isEmpty(s.toString())) {
-                        bytes = s.toString().getBytes("GBk");
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                boolean isConfirm = bytes.length > 0 && bytes.length < 21;
-                confirmBtn.setEnabled(isConfirm);
-                confirmBtn.setTextColor(isConfirm ? Color.parseColor("#ff5240") : ContextCompat.getColor(activity, R.color.black_2));
-
-                if (bytes.length > 20) {
-                    ToastUtils.showToast(activity, "支持输入1~20个字符");
-                    return;
-                }
+                confirmBtn.setEnabled(true);
+                confirmBtn.setTextColor(ContextCompat.getColor(activity, R.color.refresh_one));
                 remark = s.toString().trim();
             }
 

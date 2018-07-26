@@ -121,10 +121,10 @@ public class CommonDetailActivity extends BaseComponentActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_more_setting://更多设置
-                if (itemAdapter.getBillStatus()) {
+                /*if (itemAdapter.getBillStatus()) {
                     ToastUtils.showToast(activity, "账单已结清，无需更多操作");
                     return;
-                }
+                }*/
                 DlgUtil.createDlg(activity, R.layout.f_dlg_edit_bill, DlgUtil.DlgLocation.BOTTOM, new DlgUtil.OnDlgViewClickListener() {
                     @Override
                     public void onViewClick(final Dialog dialog, View dlgView) {

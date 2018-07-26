@@ -48,7 +48,6 @@
             android:gravity="center_vertical"
             android:hint="好记性不如写备注~"
             android:inputType="text"
-            android:maxLength="20"
             android:paddingLeft="15dp"
             android:textColor="@color/black_1"
             android:textColorHint="#d3d4d5"
