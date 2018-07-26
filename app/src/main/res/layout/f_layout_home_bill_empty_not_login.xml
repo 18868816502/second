@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/x_card_background"
+            android:background="@drawable/x_shandow"
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingTop="8dp">
@@ -128,7 +128,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/x_card_background"
+            android:background="@drawable/x_shandow"
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingTop="8dp">

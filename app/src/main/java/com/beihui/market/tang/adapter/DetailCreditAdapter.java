@@ -98,7 +98,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
             holder.tv_term_num.setText(bill.getBillMonth().substring(5, 7) + "月");
             holder.tv_present_flag.setVisibility(bill.isPresentFlag() ? View.VISIBLE : View.GONE);
             holder.tv_term_pay_amount.setText(String.format("%.2f", bill.getNewBalance()));
-            holder.tv_term_repay_date.setText(bill.getBillDate().substring(0, 10));
+            holder.tv_term_repay_date.setText(bill.getBillDate().substring(0, 10).replace("-", "."));
             final int status = bill.getStatus();
             String statusTxt = "";
             switch (status) {
@@ -127,7 +127,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
                     break;
             }
             holder.tv_status.setText(statusTxt);
-            holder.tv_bill_start_end_time.setText("账单周期 " + bill.getStartTime().substring(0, 10) + "~" + bill.getEndTime().substring(0, 10));
+            holder.tv_bill_start_end_time.setText("账单周期 " + bill.getStartTime().substring(0, 10).replace("-", ".") + "-" + bill.getEndTime().substring(0, 10).replace("-", "."));
 
             holder.initRecyclerView();
             holder.recycler.setAdapter(detailAdapter);

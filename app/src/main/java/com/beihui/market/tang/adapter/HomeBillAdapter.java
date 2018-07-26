@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.Bill;
-import com.beihui.market.ui.contract.AllDebtContract;
-import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;

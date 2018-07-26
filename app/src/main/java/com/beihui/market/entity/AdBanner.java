@@ -8,16 +8,134 @@ public class AdBanner implements Parcelable {
     /**
      * 广告类型，1 跳转url， 2跳转产品详情页
      */
-    private int type;
-    private String url;
-    private String localId;
-    private String imgUrl;
+
     private String id;
+    private String userId;
     private String title;
+    private String explain;
+    private String image;
+    private String url;
+    private int type;
+    private int priority;
+    private Object productType;
+    private int status;
+    private String port;
+    private String localId;
+    private int uv;
+    private int pv;
+    private long gmtCreate;
+    private long gmtModify;
+    private Object packageInfoId;
+    private int needLogin;
     private long beginTime;
     private long endTime;
     private int showTimes;
-    private int needLogin;
+    private int location;//1-账单首页，2-发现页
+    private String imgUrl;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getExplain() {
+        return explain;
+    }
+
+    public void setExplain(String explain) {
+        this.explain = explain;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public Object getProductType() {
+        return productType;
+    }
+
+    public void setProductType(Object productType) {
+        this.productType = productType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public int getUv() {
+        return uv;
+    }
+
+    public void setUv(int uv) {
+        this.uv = uv;
+    }
+
+    public int getPv() {
+        return pv;
+    }
+
+    public void setPv(int pv) {
+        this.pv = pv;
+    }
+
+    public long getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(long gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public long getGmtModify() {
+        return gmtModify;
+    }
+
+    public void setGmtModify(long gmtModify) {
+        this.gmtModify = gmtModify;
+    }
+
+    public Object getPackageInfoId() {
+        return packageInfoId;
+    }
+
+    public void setPackageInfoId(Object packageInfoId) {
+        this.packageInfoId = packageInfoId;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
 
     public int getType() {
         return type;
@@ -66,7 +184,6 @@ public class AdBanner implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public long getBeginTime() {
         return beginTime;

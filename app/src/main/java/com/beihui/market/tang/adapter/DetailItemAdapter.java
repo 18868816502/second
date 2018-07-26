@@ -121,10 +121,6 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
                 holder.tv_add_remark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (data.getStatus() == 2) {
-                            ToastUtils.showToast(mActivity, "账单已结清，无需更多操作");
-                            return;
-                        }
                         Intent intent = new Intent(mActivity, RemarkActivity.class);
                         intent.putExtra("type", 2);
                         intent.putExtra("recordId", data.getRecordId());
@@ -145,7 +141,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
             //金额
             holder.tv_term_pay_amount.setText(String.format("%.2f", bill.getTermPayableAmount()));
             //日期
-            holder.tv_term_repay_date.setText(bill.getTermRepayDate());
+            holder.tv_term_repay_date.setText(bill.getTermRepayDate().replace("-","."));
             //账单状态 + 右侧文字背景
             final int billStatus = bill.getStatus();
             if (billStatus == 1) {//未还

@@ -84,8 +84,8 @@ public class RemarkActivity extends BaseComponentActivity {
         if (remark != null && !remark.isEmpty()) {
             edit_text.setText(remark);
             edit_text.setSelection(remark.length());
-            InputMethodUtil.openSoftKeyboard(this, edit_text);
         }
+        InputMethodUtil.openSoftKeyboard(this, edit_text);
         edit_text.setMaxLenght(20);
 
         edit_text.addTextChangedListener(new TextWatcher() {

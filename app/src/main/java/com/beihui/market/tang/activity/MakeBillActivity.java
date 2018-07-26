@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentActivity;
@@ -22,7 +23,6 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.DlgUtil;
-import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
@@ -150,12 +150,14 @@ public class MakeBillActivity extends BaseComponentActivity {
         if (type == TYPE_HOUSE_LOAN) {
             repay_times_wrap.setEnabled(false);
             tv_repay_cycle.setText("每月一次");
+            tv_repay_cycle.setCompoundDrawables(null, null, null, null);
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
             InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_CAR_LOAN) {
             repay_times_wrap.setEnabled(false);
             tv_repay_cycle.setText("每月一次");
+            tv_repay_cycle.setCompoundDrawables(null, null, null, null);
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
             InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
@@ -178,6 +180,8 @@ public class MakeBillActivity extends BaseComponentActivity {
             houseYearList.add((i + 1) * 5 + "年");
         }
 
+        tvNotice.setText(opBeforeDate.get(App.remind_day - 1));
+
         map.put("userId", UserHelper.getInstance(this).id());
         map.put("iconId", iconId);
         map.put("channelId", tallyId);
@@ -196,9 +200,25 @@ public class MakeBillActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s == null || s.toString().trim().isEmpty() || !StringUtil.isFloat(s.toString())) {
-                    ToastUtils.showToast(activity, "请输入正确的每期金额");
+                if (TextUtils.isEmpty(s.toString()) || "0".equals(s)) {
+                    numText = "";
                     return;
+                }
+                if (s.toString().startsWith("00")) {
+                    String txt = s.toString().replaceFirst("^00*", "0");
+                    etInputMoney.setText(txt);
+                    etInputMoney.setSelection(txt.length());
+                }
+                String temp = s.toString();
+                int dotPosition = temp.indexOf(".");
+                if (dotPosition > 0) {
+                    if (temp.length() - dotPosition - 1 > 2) {
+                        s.delete(dotPosition + 3, temp.length());
+                    }
+                } else {
+                    if (temp.length() >= 8) {
+                        s.delete(8, temp.length());
+                    }
                 }
                 numText = s.toString().trim();
             }
@@ -234,16 +254,16 @@ public class MakeBillActivity extends BaseComponentActivity {
                 firstRepayDatePicker();
                 break;
             case R.id.fl_repay_times_wrap://还款周期
-                repayPicker(opCycleTimes, getString(R.string.repay_cycle), 1);
+                repayPicker(opCycleTimes, getString(R.string.repay_cycle), 1, 0);
                 break;
             case R.id.ll_cycle_times_wrap://还款期数
                 if (type == TYPE_NET_LOAN || type == TYPE_CAR_LOAN || type == TYPE_USER_DIFINE)
-                    repayPicker(timeList, getString(R.string.repay_times), 3);
+                    repayPicker(timeList, getString(R.string.repay_times), 3, 0);
                 if (type == TYPE_HOUSE_LOAN)
-                    repayPicker(houseYearList, getString(R.string.repay_times), 3);
+                    repayPicker(houseYearList, getString(R.string.repay_times), 3, 0);
                 break;
             case R.id.fl_notice_wrap://还款提醒
-                repayPicker(opBeforeDate, getString(R.string.repay_tip), 2);
+                repayPicker(opBeforeDate, getString(R.string.repay_tip), 2, App.remind_day - 1);
                 break;
             case R.id.rl_expand_shrink:
                 if (isExpand) {
@@ -273,7 +293,7 @@ public class MakeBillActivity extends BaseComponentActivity {
         }
         //金额
         if (numText == null || numText.isEmpty()) {
-            ToastUtils.showToast(this, "请输入每期金额");
+            ToastUtils.showToast(this, "请输入正确金额");
             return;
         }
         double num = 0;
@@ -283,7 +303,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 ToastUtils.showToast(this, "每期金额不可为0");
                 return;
             }
-            if (num > 1e8) {
+            if (num > 1e7) {
                 ToastUtils.showToast(this, "每期金额过大");
                 return;
             }
@@ -319,7 +339,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 });
     }
 
-    private void repayPicker(final List<String> op, String title, final int item) {
+    private void repayPicker(final List<String> op, String title, final int item, int position) {
         OptionsPickerView pickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -358,6 +378,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 .setTitleText(title)
                 .setTitleColor(titleColor)
                 .setTitleBgColor(Color.WHITE)
+                .setSelectOptions(position)
                 .setBgColor(Color.WHITE)
                 .build();
         pickerView.setPicker(op);

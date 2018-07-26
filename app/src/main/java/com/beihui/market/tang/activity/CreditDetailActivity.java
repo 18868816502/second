@@ -17,6 +17,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.MoxieUtil;
+import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.adapter.DetailCreditAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -25,6 +26,9 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -87,7 +91,7 @@ public class CreditDetailActivity extends BaseComponentActivity {
                     @Override
                     public void onNext(@NonNull CreditCardDebtDetail data) {
                         creditAdapter.notifyHead(data);
-                        tv_update_time.setText(data.getLastCollectionDate() + "更新");
+                        tv_update_time.setText(StringUtil.time2Str(data.getLastCollectionDate()) + "更新");
                     }
                 });
         //账单列表

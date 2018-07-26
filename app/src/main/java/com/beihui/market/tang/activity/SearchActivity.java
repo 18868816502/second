@@ -21,6 +21,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.LoanBillAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.util.InputMethodUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.gyf.barlibrary.ImmersionBar;
@@ -70,6 +71,7 @@ public class SearchActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
+        InputMethodUtil.openSoftKeyboard(this, etSearchKey);
         initRecyclerView();
         etSearchKey.addTextChangedListener(new TextWatcher() {
             @Override
@@ -108,7 +110,7 @@ public class SearchActivity extends BaseComponentActivity {
                                         }
                                     });
                         }
-                    }, 1000);
+                    }, 1500);
                 }
             }
         });

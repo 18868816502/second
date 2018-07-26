@@ -15,15 +15,12 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.AdBanner;
-import com.beihui.market.ui.activity.MainActivity;
-import com.beihui.market.util.SPUtils;
 import com.bumptech.glide.Glide;
 
 public class AdDialog extends DialogFragment {
 
     private AdBanner ad;
     private View.OnClickListener listener;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

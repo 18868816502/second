@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,20 +35,18 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.request.RequestConstants;
-import com.beihui.market.event.TabNewsWebViewFragmentTitleEvent;
 import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
-import com.beihui.market.ui.fragment.BillLoanAnalysisFragment;
-import com.beihui.market.ui.fragment.DiscoverFragment;
 import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.ui.fragment.PersonalFragment;
-import com.beihui.market.ui.fragment.TabAccountFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
@@ -121,9 +118,6 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_forms_text)
     TextView tabFormsText;
 
-    /*@BindView(R.id.iv_bill_add_buttom)
-    ImageView mAddBill;*/
-
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
 
@@ -163,16 +157,11 @@ public class MainActivity extends BaseComponentActivity {
         }
     }
 
-    /**
-     * 广告页弹窗
-     */
+    /*广告页弹窗*/
     @Override
     protected void onStart() {
         super.onStart();
-        if (SPUtils.getShowMainAddBanner(this)) {
-            SPUtils.setShowMainAddBanner(this, false);
-            Api.getInstance().querySupernatant(RequestConstants.SUP_TYPE_DIALOG)
-                    .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
+                    /*.compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                     .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
                                    @Override
                                    public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
@@ -191,9 +180,30 @@ public class MainActivity extends BaseComponentActivity {
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
-
                                 }
-                            });
+                            });*/
+        if (SPUtils.getShowMainAddBanner(this)) {
+            SPUtils.setShowMainAddBanner(this, false);
+            Api.getInstance().querySupernatant(3)
+                    .compose(RxResponse.<List<AdBanner>>compatT())
+                    .subscribe(new ApiObserver<List<AdBanner>>() {
+                        @Override
+                        public void onNext(@NonNull List<AdBanner> data) {
+                            if (data != null && data.size() > 0) {
+                                AdBanner adBanner = data.get(0);
+                                if (!adBanner.getId().equals(SPUtils.getValue(MainActivity.this, adBanner.getId()))) {
+                                    if (adBanner.getLocation() == 2) {//发现页
+                                        navigationBar.select(R.id.tab_account);
+                                    } else {//首页
+                                        navigationBar.select(R.id.tab_forms_root);
+                                    }
+                                    showAdDialog(adBanner);
+                                }
+                                //更新广告展示时间
+                                SPUtils.setLastAdShowTime(MainActivity.this, System.currentTimeMillis());
+                            }
+                        }
+                    });
         }
         showGuide();//显示高亮
     }
@@ -201,22 +211,17 @@ public class MainActivity extends BaseComponentActivity {
     private void showAdDialog(final AdBanner ad) {
         //umeng统计
         Statistic.onEvent(Events.RESUME_AD_DIALOG);
-
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
-
         new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //umeng统计
                 Statistic.onEvent(Events.CLICK_AD_DIALOG);
-
                 //统计点击
                 DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
-
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
-
                 //是否需要登录
                 if (ad.needLogin()) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null) {
@@ -230,7 +235,6 @@ public class MainActivity extends BaseComponentActivity {
                     Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
                     intent.putExtra("loanId", ad.getLocalId());
                     startActivity(intent);
-
                     SPUtils.setValue(MainActivity.this, ad.getId());
                 } else if (!TextUtils.isEmpty(ad.getUrl())) {
                     String url = ad.getUrl();
@@ -241,17 +245,13 @@ public class MainActivity extends BaseComponentActivity {
                     intent.putExtra("title", ad.getTitle());
                     intent.putExtra("url", url);
                     startActivity(intent);
-
                     SPUtils.setValue(MainActivity.this, ad.getId());
                 }
             }
         }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
     }
 
-
-    /**
-     * 引导图
-     */
+    /*引导图*/
     public void showGuide() {
         if ("showGuideMainActivity".equals(SPUtils.getValue(MainActivity.this, "showGuideMainActivity"))) {
             return;
@@ -263,7 +263,7 @@ public class MainActivity extends BaseComponentActivity {
                         infoHighLight.autoRemove(false)
                                 .intercept(true)
                                 .enableNext()
-                                .addHighLight(/*R.id.tv_bill_add_buttom*/R.id.tab_account_text, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
+                                .addHighLight(/*R.id.tv_bill_add_buttom*/R.id.tab_account, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.bottomMargin = rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 10);
@@ -273,8 +273,7 @@ public class MainActivity extends BaseComponentActivity {
                             @Override
                             public void onNext(HightLightView hightLightView, View targetView, View tipView) {
                                 // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                //if (targetView.getId() == R.id.tv_bill_add_buttom) {
-                                if (targetView.getId() == R.id.tab_account_text) {
+                                if (targetView.getId() == R.id.tab_account) {
                                     infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -339,7 +338,6 @@ public class MainActivity extends BaseComponentActivity {
         /*mAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!FastClickUtils.isFastClick()) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
                     //UserAuthorizationActivity.launch(MainActivity.this, null);
@@ -361,7 +359,7 @@ public class MainActivity extends BaseComponentActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateNews(NavigateNews event) {
-        navigationBar.select(R.id.tab_news);
+        navigationBar.select(R.id.tab_account);
     }
 
     /**
@@ -422,9 +420,6 @@ public class MainActivity extends BaseComponentActivity {
                 ft.show(tabForm);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
 
-                /*mAddBill.setVisibility(View.GONE);
-                tabAccountText.setVisibility(View.VISIBLE);*/
-
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
                 break;
@@ -437,10 +432,6 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
-
-                /*mAddBill.setVisibility(View.VISIBLE);
-                tabAccountText.setVisibility(View.GONE);*/
-
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 break;
@@ -453,10 +444,6 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabFind);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
-
-                /*mAddBill.setVisibility(View.GONE);
-                tabAccountText.setVisibility(View.VISIBLE);*/
-
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 break;
@@ -549,7 +536,6 @@ public class MainActivity extends BaseComponentActivity {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(final Throwable throwable) throws Exception {
-                                Log.e("MainActivity", throwable.toString());
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -563,6 +549,20 @@ public class MainActivity extends BaseComponentActivity {
                                 });
                             }
                         });
+        Api.getInstance().queryBottomImage()
+                .compose(RxResponse.<TabImageBean>compatT())
+                .subscribe(new ApiObserver<TabImageBean>() {
+                    @Override
+                    public void onNext(@NonNull TabImageBean data) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        navigationBar.select(R.id.tab_forms_root);
+                    }
+                });
     }
 
     private void updateBottomSelector(List<TabImage> list) {
@@ -592,10 +592,7 @@ public class MainActivity extends BaseComponentActivity {
         boolean isShowTabAccount = true;
         for (int i = 0; i < list.size(); ++i) {
             TabImage tabImage = list.get(i);
-            /**
-             * @author xhb
-             * focus配置app模块展示的优先级
-             */
+            /*focus配置app模块展示的优先级*/
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
                 if (tabImage.getPosition() == 1) {
                     navigationBar.select(R.id.tab_forms_root);
@@ -641,7 +638,6 @@ public class MainActivity extends BaseComponentActivity {
 
                                 bytes = client.newCall(new Request.Builder().url(strings[1]).build()).execute().body().bytes();
                                 images[1] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
                                 return images;
                             }
                         })
@@ -655,7 +651,6 @@ public class MainActivity extends BaseComponentActivity {
                                                stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
                                                stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
                                                stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
-
                                                iconView[index].setImageDrawable(stateListDrawable);
                                            }
                                        }
@@ -663,7 +658,6 @@ public class MainActivity extends BaseComponentActivity {
                                 new Consumer<Throwable>() {
                                     @Override
                                     public void accept(final Throwable throwable) throws Exception {
-                                        Log.e("MainActivity", throwable.toString());
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {

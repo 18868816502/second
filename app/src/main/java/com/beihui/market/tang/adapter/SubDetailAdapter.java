@@ -26,6 +26,6 @@ public class SubDetailAdapter extends BaseQuickAdapter<BillDetail, BaseViewHolde
     protected void convert(BaseViewHolder helper, BillDetail item) {
         helper.setText(R.id.tv_sub_description, item.getDiscription())
                 .setText(R.id.tv_sub_amount, String.format("%.2f", item.getAmountMoney()))
-                .setText(R.id.tv_sub_time, item.getTransDate().substring(0, 10));
+                .setText(R.id.tv_sub_time, item.getTransDate().substring(0, 10).replace("-", "."));
     }
 }

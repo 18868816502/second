@@ -11,6 +11,6 @@
         android:drawablePadding="8dp"
         android:drawableTop="@mipmap/ic_search_empty"
         android:text="抱歉，暂时无相关产品哦~"
-        android:textColor="@color/black_1"
+        android:textColor="@color/black_2"
         android:textSize="15dp" />
 </LinearLayout>

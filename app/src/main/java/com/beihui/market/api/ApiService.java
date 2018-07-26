@@ -589,7 +589,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/supernatant/querySupernatant")
-//    Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType, @Field("packageId") String packageId);
     Observable<ResultEntity<List<AdBanner>>> querySupernatant(@Field("port") int port, @Field("supernatantType") int supernatantType);
 
     /**

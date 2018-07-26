@@ -9,6 +9,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
@@ -109,7 +110,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                     messageRemind = 0;
                 }
                 remindSetting();
-
             }
         });
 
@@ -135,11 +135,9 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                     messageSwitch.setChecked(false);
                     messageRemind = 0;
                 }
-
                 selectTv.setText(CommonUtils.getDay(data.getDay() - 1));
                 remindDay = data.getDay();
-
-
+                App.remind_day = remindDay;
             }
         });
     }
@@ -151,7 +149,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 .remindModule(new RemindModule(this))
                 .build()
                 .inject(this);
-
     }
 
     @Override
@@ -180,8 +177,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
 
         optionsPickerView.setPicker(list);
         optionsPickerView.show();
-
-
     }
 
     private void remindSetting() {
@@ -191,6 +186,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 .subscribe(new ApiObserver<ResultEntity>() {
                     @Override
                     public void onNext(ResultEntity data) {
+                        App.remind_day = remindDay;
                         if (type == 0 && pushSwitch.isChecked()) {
                             ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
                         } else if (type == 1 && messageSwitch.isChecked()) {

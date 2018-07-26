@@ -31,6 +31,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
@@ -90,6 +91,7 @@ public class HomeFragment extends BaseTabFragment {
     public int pageNo = 2;
     public int mMeasuredRecyclerViewHeaderHeight;
     public float mScrollY = 0f;
+    private double num;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -160,11 +162,16 @@ public class HomeFragment extends BaseTabFragment {
                         @Override
                         public void onNext(@NonNull HomeData data) {
                             swipeRefreshLayout.setRefreshing(false);
-                            mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
-                            mPullToRefreshListener.onLoadMore(mPullContainer);
+                            //mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
+                            //mPullToRefreshListener.onLoadMore(mPullContainer);
                             //账单头
                             tv_top_loan_month.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));//x月应还
-                            tv_top_loan_num.setText(String.format("￥%.2f", data.getTotalAmount()));//应还金额
+                            num = data.getTotalAmount();
+                            if (SPUtils.getNumVisible(mActivity)) {
+                                tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
+                            } else {
+                                tv_top_loan_num.setText("****");//应还金额
+                            }
                             pageAdapter.notifyHead(data.getTotalAmount(), data.getXmonth());
                             pageAdapter.notifyPayChanged(data.getItem());
                         }
@@ -198,8 +205,8 @@ public class HomeFragment extends BaseTabFragment {
             //上拉加载更多 这里要将pageNo++，刷新下一页数据
             @Override
             public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
-                mPullToRefreshListener.onLoadMore(mPullContainer);
+                //mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
+                //mPullToRefreshListener.onLoadMore(mPullContainer);
             }
         });
 
@@ -232,6 +239,11 @@ public class HomeFragment extends BaseTabFragment {
                 if (max > 1) max = 1;
                 if (max > 0.55f) mTitle.setAlpha(1);
                 else mTitle.setAlpha(0);
+                if (SPUtils.getNumVisible(mActivity)) {
+                    tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
+                } else {
+                    tv_top_loan_num.setText("****");//应还金额
+                }
             }
         });
     }

@@ -22,8 +22,8 @@ import com.beihui.market.tang.MoxieUtil;
 import com.beihui.market.tang.activity.CommonDetailActivity;
 import com.beihui.market.tang.activity.CreditBillActivity;
 import com.beihui.market.tang.activity.CreditDetailActivity;
-import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.LoanBillActivity;
+import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -69,6 +69,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private UserHelper userHelper;
     private String url;
     private final String hideNum = "****";
+    private final String makeBill = "赶紧先记上一笔";
     private boolean numVisible;
 
     public void notifyEmpty() {
@@ -117,12 +118,22 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.headEventEntry.setVisibility(View.GONE);
             } else holder.headEventEntry.setVisibility(View.VISIBLE);
             if (!userHelper.isLogin() || totalAmount < 0) {
-                holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), currentMonth));
-                holder.headBillNum.setText("赶紧先记上一笔");
+                holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), Integer.parseInt(currentMonth) + ""));
+                if (numVisible) {
+                    holder.headBillNum.setText(makeBill);
+                } else {
+                    holder.headBillNum.setText(hideNum);
+                }
             } else {
                 holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), xMonth));
                 if (numVisible) {
-                    holder.headBillNum.setText(String.format("￥%.2f", totalAmount));
+                    String billNum;
+                    if (totalAmount == 0 && dataSet.size() == 0) {
+                        billNum = makeBill;
+                    } else {
+                        billNum = String.format("￥%.2f", totalAmount);
+                    }
+                    holder.headBillNum.setText(billNum);
                     holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);
                 } else {
                     holder.headBillNum.setText(hideNum);
@@ -141,7 +152,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                         SPUtils.putNumVisible(mActivity, false);
                     } else {
                         holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);
-                        String num = userHelper.isLogin() ? String.format("￥%.2f", totalAmount) : "赶紧先记上一笔";
+
+                        String billNum;
+                        if (totalAmount == 0 && dataSet.size() == 0) {
+                            billNum = makeBill;
+                        } else {
+                            billNum = String.format("￥%.2f", totalAmount);
+                        }
+                        String num = userHelper.isLogin() ? billNum : makeBill;
                         holder.headBillNum.setText(num);
                         SPUtils.putNumVisible(mActivity, true);
                     }
@@ -193,7 +211,11 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             //time
             holder.tv_home_bill_time.setText(item.getRepayTime());
 
-            holder.csm_bill_wrap.setSwipeEnable(true);
+            if (item.getType() == 2) {//信用卡
+                holder.csm_bill_wrap.setSwipeEnable(false);
+            } else {
+                holder.csm_bill_wrap.setSwipeEnable(true);
+            }
             //结清当期 + item点击事件
             holder.tv_home_bill_over.setOnClickListener(new View.OnClickListener() {
                 @Override
