@@ -283,6 +283,10 @@ public class MakeBillActivity extends BaseComponentActivity {
                 ToastUtils.showToast(this, "每期金额不可为0");
                 return;
             }
+            if (num > 1e8) {
+                ToastUtils.showToast(this, "每期金额过大");
+                return;
+            }
         }
         map.put("amount", num);
         //首期还款时间
@@ -308,7 +312,6 @@ public class MakeBillActivity extends BaseComponentActivity {
                     @Override
                     public void onNext(@NonNull CreateAccountReturnIDsBean data) {
                         Intent intent = new Intent(MakeBillActivity.this, MainActivity.class);
-                        //intent.putExtra("index", 0);
                         startActivity(intent);
                         EventBus.getDefault().post("1");
                         finish();

@@ -1,20 +1,14 @@
 package com.beihui.market.tang.activity;
 
 import android.app.Dialog;
-import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.anim.SlideInLeftAnimator;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.CreditBill;
 import com.beihui.market.entity.CreditCardDebtDetail;
@@ -26,18 +20,8 @@ import com.beihui.market.tang.MoxieUtil;
 import com.beihui.market.tang.adapter.DetailCreditAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.ui.activity.MainActivity;
-import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
 import com.gyf.barlibrary.ImmersionBar;
-import com.moxie.client.exception.ExceptionType;
-import com.moxie.client.exception.MoxieException;
-import com.moxie.client.manager.MoxieCallBack;
-import com.moxie.client.manager.MoxieCallBackData;
-import com.moxie.client.manager.MoxieContext;
-import com.moxie.client.manager.MoxieSDK;
-import com.moxie.client.model.MxParam;
-import com.moxie.client.model.TitleParams;
 
 import org.greenrobot.eventbus.EventBus;
 

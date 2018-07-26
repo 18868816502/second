@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -52,6 +53,7 @@ public class SearchActivity extends BaseComponentActivity {
 
     private LoanBillAdapter loanBillAdapter;
     private Activity activity;
+    private String searchKey;
 
     @Override
     public int getLayoutId() {
@@ -80,15 +82,33 @@ public class SearchActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s != null && !s.toString().trim().isEmpty()) {
-                    Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).id(), s.toString().trim())
-                            .compose(RxResponse.<List<LoanAccountIconBean>>compatT())
-                            .subscribe(new ApiObserver<List<LoanAccountIconBean>>() {
-                                @Override
-                                public void onNext(@NonNull List<LoanAccountIconBean> data) {
-                                    loanBillAdapter.setNewData(data);
-                                }
-                            });
+                if (!TextUtils.isEmpty(s.toString().trim())) {
+                    searchKey = s.toString().trim();
+                    etSearchKey.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).id(), searchKey)
+                                    .compose(RxResponse.<List<LoanAccountIconBean>>compatT())
+                                    .subscribe(new ApiObserver<List<LoanAccountIconBean>>() {
+                                        @Override
+                                        public void onNext(@NonNull List<LoanAccountIconBean> data) {
+                                            if (data != null && data.size() > 0)
+                                                loanBillAdapter.setNewData(data);
+                                            else {
+                                                loanBillAdapter.setNewData(null);
+                                                loanBillAdapter.setEmptyView(R.layout.f_layout_search_empty, recyclerView);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(@NonNull Throwable t) {
+                                            super.onError(t);
+                                            loanBillAdapter.setNewData(null);
+                                            loanBillAdapter.setEmptyView(R.layout.f_layout_search_empty, recyclerView);
+                                        }
+                                    });
+                        }
+                    }, 1000);
                 }
             }
         });
