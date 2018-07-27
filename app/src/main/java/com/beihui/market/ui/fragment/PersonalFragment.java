@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -65,9 +66,13 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     @BindView(R.id.login)
     TextView loginTv;
     @BindView(R.id.kaola_group)
-    RelativeLayoutBar mineProductContainer;
+    RelativeLayout mineProductContainer;
     @BindView(R.id.tv_message_num)
     TextView tvMessageNum;
+    @BindView(R.id.event_tv)
+    TextView eventTv;
+    @BindView(R.id.event_img)
+    ImageView eventImg;
     @Inject
     TabMinePresenter presenter;
 
@@ -147,14 +152,13 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 .subscribe(new ApiObserver<EventBean>() {
                     @Override
                     public void onNext(@NonNull EventBean data) {
-                        if (data != null || data.getTitle() != null) {
+                        if (data.getTitle() != null) {
                             mineProductContainer.setVisibility(View.VISIBLE);
-                            mineProductContainer.setLeftImageSize(20, 20);
                             title = data.getTitle();
                             url = data.getUrl();
-                            ImageView img = mineProductContainer.getLeftImage();
-                            Glide.with(getActivity()).load(data.getImgUrl()).into(img);
-                            mineProductContainer.setLeftTextViewText(data.getTitle());
+                            eventTv.setText(data.getTitle());
+                            Glide.with(getActivity()).load(data.getImgUrl()).into(eventImg);
+
                         } else {
                             mineProductContainer.setVisibility(View.GONE);
                         }
@@ -376,8 +380,8 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
      */
     @Override
     public void updateMyLoanVisible(boolean visible) {
-        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
-        mineProductContainer.setVisibility(visible ? View.VISIBLE : View.VISIBLE);
+        // mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+        // mineProductContainer.setVisibility(visible ? View.VISIBLE : View.VISIBLE);
     }
 
 

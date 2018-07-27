@@ -136,17 +136,43 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                <com.beihui.market.view.RelativeLayoutBar
+                <RelativeLayout
                     android:id="@+id/kaola_group"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    app:left_image="@drawable/mine_encourage_icon"
-                    app:left_image_Visible="true"
-                    app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_text="111"
-                    app:left_textView_textSize="15sp" />
+                    android:background="@drawable/relativebar_selector_bg"
+                    android:visibility="gone">
+
+
+                    <ImageView
+                        android:id="@+id/event_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp" />
+
+                    <TextView
+                        android:id="@+id/event_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/event_img"
+                        android:textColor="@color/color_primary_black"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="12dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@mipmap/right_icon" />
+
+
+                </RelativeLayout>
+
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/bill_summary"

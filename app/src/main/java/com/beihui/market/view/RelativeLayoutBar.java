@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -273,8 +274,10 @@ public class RelativeLayoutBar extends RelativeLayout {
     }
 
     public void setLeftImageSize(int w, int h) {
-        leftImage.getLayoutParams().width = w;
-        leftImage.getLayoutParams().height = h;
+        LayoutParams layout = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layout.width = w;
+        layout.height = h;
+        leftImage.setLayoutParams(layout);
     }
 
     /**
