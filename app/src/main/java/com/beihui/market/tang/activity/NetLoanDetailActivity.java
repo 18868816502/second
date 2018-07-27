@@ -19,7 +19,10 @@ import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.adapter.DetailItemAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.ToastUtils;
+import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
+import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -27,6 +30,8 @@ import com.gyf.barlibrary.ImmersionBar;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,11 +56,14 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     PulledTabAccountRecyclerView mRecyclerView;
     @BindView(R.id.tv_finish_all)
     TextView tv_finish_all;
+    @BindView(R.id.prl_fg_tab_account_list)
+    PullToRefreshScrollLayout pullMoreLayout;
 
     private NetLoanDetailActivity activity;
     private String recordId;
     private String billId;
     private DetailItemAdapter itemAdapter;
+    private int page = 1;
 
     @Override
     public int getLayoutId() {
@@ -75,11 +83,12 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     public void initDatas() {
         recordId = getIntent().getStringExtra("recordId");
         billId = getIntent().getStringExtra("billId");
-        request();
         initRecyclerView();
+        request();
     }
 
     public void request() {
+        page = 1;
         Api.getInstance().detailHead(UserHelper.getInstance(activity).id(), recordId)
                 .compose(RxResponse.<DetailHead>compatT())
                 .subscribe(new ApiObserver<DetailHead>() {
@@ -93,7 +102,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
                         }
                     }
                 });
-        Api.getInstance().detailList(UserHelper.getInstance(activity).id(), recordId, 1, 20)
+        Api.getInstance().detailList(UserHelper.getInstance(activity).id(), recordId, page, 500)
                 .compose(RxResponse.<DetailList>compatT())
                 .subscribe(new ApiObserver<DetailList>() {
                     @Override
@@ -119,10 +128,6 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_more_setting://更多设置
-                /*if (itemAdapter.getBillStatus()) {
-                    ToastUtils.showToast(activity, "账单已结清，无需更多操作");
-                    return;
-                }*/
                 DlgUtil.createDlg(activity, R.layout.f_dlg_edit_bill, DlgUtil.DlgLocation.BOTTOM, new DlgUtil.OnDlgViewClickListener() {
                     @Override
                     public void onViewClick(final Dialog dialog, View dlgView) {

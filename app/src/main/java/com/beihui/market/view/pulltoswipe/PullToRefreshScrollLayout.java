@@ -538,7 +538,6 @@ public class PullToRefreshScrollLayout extends RelativeLayout {
 	 * 自动模拟手指滑动的task
 	 */
 	private class AutoRefreshAndLoadTask extends AsyncTask<Integer, Float, String> {
-
 		@Override
 		protected String doInBackground(Integer... params) {
 			while (pullDownY < 4 / 3 * refreshDist) {

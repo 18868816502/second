@@ -88,5 +88,4 @@ public class PullToRefreshListener implements PullToRefreshScrollLayout.OnRefres
             }
         }, 0);
     }
-
 }

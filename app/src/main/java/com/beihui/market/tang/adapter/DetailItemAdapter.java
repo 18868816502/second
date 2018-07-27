@@ -73,6 +73,11 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
         return false;
     }
 
+    public int listSize() {
+        if (dataSet != null) return dataSet.size();
+        else return 0;
+    }
+
     public void notifyHead(DetailHead data) {
         if (data != null) {
             this.data = data;
@@ -93,6 +98,13 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
         if (data != null) dataSet = data;
         else dataSet.clear();
         notifyDataSetChanged();
+    }
+
+    public void addData(List<DetailList.RowsBean> data) {
+        if (data != null) {
+            dataSet.addAll(data);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -141,7 +153,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
             //金额
             holder.tv_term_pay_amount.setText(String.format("%.2f", bill.getTermPayableAmount()));
             //日期
-            holder.tv_term_repay_date.setText(bill.getTermRepayDate().replace("-","."));
+            holder.tv_term_repay_date.setText(bill.getTermRepayDate().replace("-", "."));
             //账单状态 + 右侧文字背景
             final int billStatus = bill.getStatus();
             if (billStatus == 1) {//未还

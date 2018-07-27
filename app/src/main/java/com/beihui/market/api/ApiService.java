@@ -1116,7 +1116,7 @@ public interface ApiService {
     /*v4.2.0首页数据*/
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/index/v420")
-    Observable<ResultEntity<HomeData>> home(@Field("userId") String userId, @Field("pageNo") String pageNo);
+    Observable<ResultEntity<HomeData>> home(@Field("userId") String userId, @Field("pageNo") int pageNo);
 
     /*v4.2.0活动入口*/
     @FormUrlEncoded
