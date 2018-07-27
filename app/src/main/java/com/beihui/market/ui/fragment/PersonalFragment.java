@@ -149,6 +149,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     public void onNext(@NonNull EventBean data) {
                         if (data != null || data.getTitle() != null) {
                             mineProductContainer.setVisibility(View.VISIBLE);
+                            mineProductContainer.setLeftImageSize(20, 20);
                             title = data.getTitle();
                             url = data.getUrl();
                             ImageView img = mineProductContainer.getLeftImage();
@@ -346,10 +347,11 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
-        Intent intent = new Intent(getActivity(), H5Activity.class);
-        intent.putExtra("webViewUrl", url);
-        intent.putExtra("title", title);
-        getActivity().startActivity(intent);
+//        Intent intent = new Intent(getActivity(), H5Activity.class);
+//        intent.putExtra("webViewUrl", url);
+//        intent.putExtra("title", title);
+//        getActivity().startActivity(intent);
+        request();
     }
 
     @Override

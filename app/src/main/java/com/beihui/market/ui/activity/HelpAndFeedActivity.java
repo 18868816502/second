@@ -188,6 +188,10 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                     finish();
 
                 if ("提交".equals(commitTv.getText().toString())) {
+                    if (KeyBoard(etFeedContent)) {
+                        closeSoftBoard(etFeedContent);
+                    }
+
                     viewPager.setCurrentItem(0);
                     helpTv.setText("帮助中心");
                     commitTv.setText("");
@@ -243,7 +247,9 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                            imageFilePath = null;
                                            etFeedContent.setText("");
                                            ivFeedImage.setImageResource(R.drawable.debt_feed_add_image_icon);
-                                           closeSoftBoard();
+                                           if (KeyBoard(etFeedContent)) {
+                                               closeSoftBoard(etFeedContent);
+                                           }
 
                                        } else {
                                            ToastUtils.showShort(context, result.getMsg(), null);
@@ -270,6 +276,22 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         if (isOpen) {
             imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         }
+
+    }
+
+    protected void closeSoftBoard(EditText vi) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(vi.getWindowToken(), 0);
+    }
+
+    //输入法是否显示着
+    public static boolean KeyBoard(EditText edittext) {
+        boolean bool = false;
+        InputMethodManager imm = (InputMethodManager) edittext.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            bool = true;
+        }
+        return bool;
 
     }
 
@@ -446,7 +468,9 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         ivFeedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeSoftBoard();
+                if (KeyBoard(etFeedContent)) {
+                    closeSoftBoard(etFeedContent);
+                }
                 showImagePicker();
             }
         });

@@ -2,7 +2,7 @@
 <resources>
 
     <style name="SplashStyle" parent="@style/AppTheme">
-        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <item name="android:windowBackground">@drawable/splash_bottom_logo_new</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowTranslucentStatus">true</item>

@@ -32,8 +32,10 @@ import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
 import com.umeng.socialize.UMAuthListener;
@@ -163,6 +165,13 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
         switch (view.getId()) {
             //下一步
             case R.id.tv_login:
+                if (TextUtils.isEmpty(phoneNumber.getText().toString())) {
+                    return;
+                }
+                if (!CommonUtils.isMobileNO(phoneNumber.getText().toString())) {
+                    ToastUtil.toast("号码不正确");
+                    return;
+                }
                 if (!TextUtils.isEmpty(phoneNumber.getText().toString()) && isCheckContract) {
                     UserCertificationCodeActivity.launch(getActivity(), phoneNumber.getText().toString());
                 }

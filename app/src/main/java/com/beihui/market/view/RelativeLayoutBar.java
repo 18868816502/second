@@ -272,6 +272,11 @@ public class RelativeLayoutBar extends RelativeLayout {
         leftTextView.setTextColor(left_textView_color);
     }
 
+    public void setLeftImageSize(int w, int h) {
+        leftImage.getLayoutParams().width = w;
+        leftImage.getLayoutParams().height = h;
+    }
+
     /**
      * 设置右边第二个文字颜色
      *
