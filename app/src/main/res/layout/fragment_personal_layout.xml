@@ -138,13 +138,14 @@
 
                 <com.beihui.market.view.RelativeLayoutBar
                     android:id="@+id/kaola_group"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="8dp"
                     app:left_image="@drawable/mine_encourage_icon"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
-                    app:left_textView_text="考拉圈圈"
+                    app:left_textView_text=""
                     app:left_textView_textSize="15sp" />
 
                 <com.beihui.market.view.RelativeLayoutBar

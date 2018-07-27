@@ -9,17 +9,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseTabFragment;
+import com.beihui.market.entity.EventBean;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.BillSummaryActivity;
 import com.beihui.market.ui.activity.CollectionActivity;
-import com.beihui.market.ui.activity.GetuiDialogActivity;
+import com.beihui.market.ui.activity.H5Activity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.RemindActivity;
@@ -45,6 +50,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
 
 public class PersonalFragment extends BaseTabFragment implements TabMineContract.View {
 
@@ -64,6 +70,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     TextView tvMessageNum;
     @Inject
     TabMinePresenter presenter;
+
+    private String url;
+
+    private String title;
 
     private String pendingPhone;
     MyRecevier myRecevier = new MyRecevier();
@@ -112,6 +122,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void initDatas() {
+        request();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("logout");
         if (getActivity() != null) {
@@ -128,6 +139,26 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 .build()
                 .inject(this);
 
+    }
+
+    private void request() {
+        Api.getInstance().homeEvent("4", 1)
+                .compose(RxResponse.<EventBean>compatT())
+                .subscribe(new ApiObserver<EventBean>() {
+                    @Override
+                    public void onNext(@NonNull EventBean data) {
+                        if (data != null || data.getTitle() != null) {
+                            mineProductContainer.setVisibility(View.VISIBLE);
+                            title = data.getTitle();
+                            url = data.getUrl();
+                            ImageView img = mineProductContainer.getLeftImage();
+                            Glide.with(getActivity()).load(data.getImgUrl()).into(img);
+                            mineProductContainer.setLeftTextViewText(data.getTitle());
+                        } else {
+                            mineProductContainer.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -315,6 +346,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
+        Intent intent = new Intent(getActivity(), H5Activity.class);
+        intent.putExtra("webViewUrl", url);
+        intent.putExtra("title", title);
+        getActivity().startActivity(intent);
     }
 
     @Override

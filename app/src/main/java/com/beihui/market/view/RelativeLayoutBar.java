@@ -17,7 +17,7 @@ import com.beihui.market.util.Px2DpUtils;
 
 /**
  * @author wubo on 2018/6/5 10:51
- *         类说明：选项栏
+ * 类说明：选项栏
  */
 public class RelativeLayoutBar extends RelativeLayout {
     /**
@@ -239,6 +239,10 @@ public class RelativeLayoutBar extends RelativeLayout {
             p.setMargins(l, t, r, b);
             rightTextView2.requestLayout();
         }
+    }
+
+    public ImageView getLeftImage() {
+        return leftImage;
     }
 
     /**

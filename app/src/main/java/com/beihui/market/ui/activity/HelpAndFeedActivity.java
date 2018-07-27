@@ -3,6 +3,7 @@ package com.beihui.market.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -237,6 +239,12 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                            helpTv.setText("帮助中心");
                                            commitTv.setText("");
                                            bottomLayout.setVisibility(View.VISIBLE);
+                                           image = null;
+                                           imageFilePath = null;
+                                           etFeedContent.setText("");
+                                           ivFeedImage.setImageResource(R.drawable.debt_feed_add_image_icon);
+                                           closeSoftBoard();
+
                                        } else {
                                            ToastUtils.showShort(context, result.getMsg(), null);
                                        }
@@ -251,6 +259,18 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         } else {
             ToastUtils.showShort(context, "请先添加反馈内容哦~", null);
         }
+    }
+
+    /**
+     * 关闭软键盘
+     */
+    protected void closeSoftBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        boolean isOpen = imm.isActive();
+        if (isOpen) {
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        }
+
     }
 
     @Override

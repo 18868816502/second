@@ -100,6 +100,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
+        verifyCode.setMaxLenght(4);
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -249,7 +250,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
      */
     private void loginNoPwd(UserProfileAbstract result) {
         if (result.isNewUser()) {
-            UserPsdEditActivity.launch(UserCertificationCodeActivity.this,1, pendingPhone);
+            UserPsdEditActivity.launch(UserCertificationCodeActivity.this, 1, pendingPhone);
 
             //umeng统计
             Statistic.onEvent(Events.LOGIN_REGISTER);
@@ -273,12 +274,13 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
 
     /**
      * 跳转输入验证码页面
+     *
      * @param context
      * @param pendingPhone 登陆手机号
      */
-    public static void launch(Activity context, String pendingPhone){
-        Intent i = new Intent(context,UserCertificationCodeActivity.class);
-        i.putExtra("pendingPhone",pendingPhone);
+    public static void launch(Activity context, String pendingPhone) {
+        Intent i = new Intent(context, UserCertificationCodeActivity.class);
+        i.putExtra("pendingPhone", pendingPhone);
         context.startActivity(i);
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
     }
@@ -286,12 +288,13 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
     /**
      * 绑定的手机号码
      * 跳转输入验证码页面
+     *
      * @param context
      * @param bindPhone
      */
-    public static void launchBindNewMobile(Activity context, String bindPhone){
-        Intent i = new Intent(context,UserCertificationCodeActivity.class);
-        i.putExtra("bindPhone",bindPhone);
+    public static void launchBindNewMobile(Activity context, String bindPhone) {
+        Intent i = new Intent(context, UserCertificationCodeActivity.class);
+        i.putExtra("bindPhone", bindPhone);
         context.startActivity(i);
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
         context.finish();
