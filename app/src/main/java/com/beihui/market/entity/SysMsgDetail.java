@@ -10,6 +10,7 @@ public class SysMsgDetail {
     private String content;
     private String answer;
     private String image;
+    private int messageType;
 
     public String getExplain() {
         return explain;
@@ -65,5 +66,13 @@ public class SysMsgDetail {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(int messageType) {
+        this.messageType = messageType;
     }
 }

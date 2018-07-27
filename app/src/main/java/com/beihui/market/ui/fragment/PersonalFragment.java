@@ -134,12 +134,18 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     public void showProfile(UserHelper.Profile profile) {
         loginTv.setVisibility(View.GONE);
         userNameTv.setVisibility(View.VISIBLE);
+        if (UserHelper.getInstance(getActivity()).isLogin()) {
+            userInfo.setText("查看并编辑资料");
+
+        } else {
+            userInfo.setText("立即登录，开启记账旅程！");
+        }
         if (profile.getHeadPortrait() != null) {
             Glide.with(getActivity())
                     .load(profile.getHeadPortrait())
                     .asBitmap()
                     .into(avatarIv);
-            userInfo.setText("查看并编辑资料");
+
         }
         String username = profile.getUserName();
         if (username != null) {
@@ -375,7 +381,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             if (intent.getAction() != null) {
                 if (intent.getAction().equals("logout")) {
                     userNameTv.setText("请登录");
-                    userInfo.setText("查看并编辑资料");
+                    userInfo.setText("立即登录，开启记账旅程！");
                     Glide.with(getActivity())
                             .load(R.drawable.mine_icon_head)
                             .asBitmap()

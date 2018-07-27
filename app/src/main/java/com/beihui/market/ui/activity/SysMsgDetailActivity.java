@@ -3,7 +3,9 @@ package com.beihui.market.ui.activity;
 
 import android.media.Image;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -40,6 +42,8 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     TextView answerTv;
     @BindView(R.id.feed_img)
     ImageView imageView;
+    @BindView(R.id.feed_liner_layout)
+    LinearLayout feed_line;
 
     @Inject
     SysMsgDetailPresenter presenter;
@@ -91,19 +95,26 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     @Override
     public void showSysMsgDetail(SysMsgDetail detail) {
         if (detail != null) {
+            if (detail.getMessageType() == 0) {
+                feed_line.setVisibility(View.GONE);
+                answerTv.setText(detail.getContent());
+            } else {
+                feed_line.setVisibility(View.VISIBLE);
+                if (detail.getAnswer() != null) {
+                    answerTv.setText(detail.getAnswer());
+                }
+                if (detail.getContent() != null) {
+                    contentTv.setText(detail.getContent());
+                }
+                if (detail.getImage() != null) {
+                    Glide.with(this).load(detail.getImage()).into(imageView);
+                }
+            }
             if (detail.getTitle() != null) {
                 titleTv.setText(detail.getTitle());
             }
             dateTv.setText(DateFormatUtils.formatMMddHHmm(detail.getGmtCreate()));
-            if (detail.getContent() != null) {
-                contentTv.setText(detail.getContent());
-            }
-            if (detail.getAnswer() != null) {
-                answerTv.setText(detail.getAnswer());
-            }
-            if (detail.getImage() != null) {
-                Glide.with(this).load(detail.getImage()).into(imageView);
-            }
+
         }
     }
 }
