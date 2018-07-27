@@ -446,6 +446,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         ivFeedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeSoftBoard();
                 showImagePicker();
             }
         });
