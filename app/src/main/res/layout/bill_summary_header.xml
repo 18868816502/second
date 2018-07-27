@@ -13,7 +13,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="当前总负债(元)"
+        android:text="当前总负债  (元)"
         android:textColor="@color/white"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"

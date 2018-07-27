@@ -81,19 +81,11 @@ public class PushReceiveIntentService extends GTIntentService {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title") != null ? obj.getString("title") : "";
             String content = obj.getString("content") != null ? obj.getString("content") : "";
-            if (obj.getInt("type") == 6) {
-                Intent intent = new Intent(context, GetuiDialogActivity.class);
-                intent.putExtra("pending_json", json);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (!CommonUtils.isForeground(context, GetuiDialogActivity.class.getName())) {
-                    context.startActivity(intent);
-                }
 
-            } else {
-                Intent intent = new Intent("send_push_clicked_event");
-                intent.putExtra("pending_json", json);
-                NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message", false);
-            }
+            Intent intent = new Intent("send_push_clicked_event");
+            intent.putExtra("pending_json", json);
+            NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message", false);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,6 +16,7 @@ import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.util.RxUtil;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class PushClickedReceiver extends BroadcastReceiver {
                             });
 
             String title = obj.getString("title") != null ? obj.getString("title") : "";
+            String json = paramIntent.getStringExtra("pending_json");
 
             Intent intent = null;
             int type = obj.getInt("type");
@@ -85,7 +87,9 @@ public class PushClickedReceiver extends BroadcastReceiver {
                 intent = new Intent(context, MainActivity.class);
                 intent.putExtra("account", true);
             } else if (type == 6) {//弹框
-
+                intent = new Intent(context, MainActivity.class);
+                intent.putExtra("tankuang", json);
+                intent.putExtra("istk", true);
             }
 
             if (intent != null) {

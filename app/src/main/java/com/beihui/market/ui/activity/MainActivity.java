@@ -51,6 +51,7 @@ import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
@@ -152,6 +153,15 @@ public class MainActivity extends BaseComponentActivity {
                 navigationBar.select(R.id.tab_account);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
                     ToastUtils.showToast(MainActivity.this, extras.getString("moxieMsg"));
+                }
+            }
+            if (extras.getBoolean("istk")) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
+                    Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
+                    if (!CommonUtils.isForeground(MainActivity.this, GetuiDialogActivity.class.getName())) {
+                        startActivity(intent);
+                    }
                 }
             }
         }
