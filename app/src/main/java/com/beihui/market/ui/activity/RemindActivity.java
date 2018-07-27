@@ -1,13 +1,10 @@
 package com.beihui.market.ui.activity;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beihui.market.App;
 import com.beihui.market.R;
@@ -27,7 +24,7 @@ import com.beihui.market.ui.presenter.RemindPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -37,7 +34,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -188,9 +184,11 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                     public void onNext(ResultEntity data) {
                         App.remind_day = remindDay;
                         if (type == 0 && pushSwitch.isChecked()) {
-                            ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                            //ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                            ToastUtil.toast("开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
                         } else if (type == 1 && messageSwitch.isChecked()) {
-                            ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                            //ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                            ToastUtil.toast("开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
                         }
                     }
                 });

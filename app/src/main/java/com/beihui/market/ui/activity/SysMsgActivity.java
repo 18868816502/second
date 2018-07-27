@@ -24,7 +24,6 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSysMsgComponent;
 import com.beihui.market.injection.module.SysMsgModule;
-import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
@@ -32,7 +31,7 @@ import com.beihui.market.ui.dialog.AlertDialog;
 import com.beihui.market.ui.presenter.SysMsgPresenter;
 import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.MessageStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -122,7 +121,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         Api.getInstance().onReadAll(userId).compose(RxUtil.<ResultEntity>io2main()).subscribe(new ApiObserver<ResultEntity>() {
             @Override
             public void onNext(ResultEntity data) {
-                ToastUtils.showToast(SysMsgActivity.this, "操作成功");
+                //ToastUtils.showToast(SysMsgActivity.this, "操作成功");
+                ToastUtil.toast("操作成功");
                 presenter.loadMeaasge();
             }
         });
@@ -134,7 +134,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         Api.getInstance().onDeleteMessageAll(userId).compose(RxUtil.<ResultEntity>io2main()).subscribe(new ApiObserver<ResultEntity>() {
             @Override
             public void onNext(ResultEntity data) {
-                ToastUtils.showToast(SysMsgActivity.this, "已清空消息");
+                //ToastUtils.showToast(SysMsgActivity.this, "已清空消息");
+                ToastUtil.toast("已清空消息");
                 presenter.loadMeaasge();
             }
         });

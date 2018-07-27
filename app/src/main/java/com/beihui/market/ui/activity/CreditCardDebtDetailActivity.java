@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,8 +47,8 @@ import com.beihui.market.util.DateFormatUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
-import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -68,7 +67,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -80,7 +78,6 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 import static android.text.TextUtils.isEmpty;
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb
@@ -541,7 +538,8 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                             }
                                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                             } else {
-                                com.beihui.market.util.ToastUtils.showToast(CreditCardDebtDetailActivity.this, "本期账单已还清");
+                                //ToastUtils.showToast(CreditCardDebtDetailActivity.this, "本期账单已还清");
+                                ToastUtil.toast("本期账单已还清");
                             }
 
 

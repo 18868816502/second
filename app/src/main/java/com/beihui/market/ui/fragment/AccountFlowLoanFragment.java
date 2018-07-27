@@ -43,7 +43,7 @@ import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.AlphabetIndexBar;
 import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.EditTextUtils;
@@ -438,7 +438,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                             }
                         }
                         if (Double.parseDouble(temp.toString() + (primaryCode - 48)) > 999999999D) {
-                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
                         temp.append(primaryCode - 48);
@@ -464,7 +464,8 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         }
                         String s = etCurrent.getText().toString() + (primaryCode - 48);
                         if (Double.parseDouble(s) > 999999999D) {
-                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            //ToastUtils.showToast(activity, "输入的金额太大啦");
+                            ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
                         etCurrent.setText(s);

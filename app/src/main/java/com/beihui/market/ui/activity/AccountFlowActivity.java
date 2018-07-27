@@ -34,7 +34,7 @@ import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.NoScrollViewPager;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -342,28 +342,34 @@ public class AccountFlowActivity extends BaseComponentActivity {
             return true;
         }
         if (!TextUtils.isEmpty((String) map.get("amount")) && (((String) map.get("amount")).substring(1).contains("+") || ((String) map.get("amount")).substring(1).contains("-"))) {
-            ToastUtils.showToast(this, "请输入正确的金额");
+            //ToastUtils.showToast(this, "请输入正确的金额");
+            ToastUtil.toast("请输入正确的金额");
             return true;
         }
 
         double amount = Double.parseDouble(map.get("amount") + "");
         if (amount < 0D) {
-            ToastUtils.showToast(this, "每期金额不能小于0");
+            //ToastUtils.showToast(this, "每期金额不能小于0");
+            ToastUtil.toast("每期金额不能小于0");
             return true;
         } else if (amount == 0D) {
-            ToastUtils.showToast(this, "每期金额不能为0");
+            //ToastUtils.showToast(this, "每期金额不能为0");
+            ToastUtil.toast("每期金额不能为0");
             return true;
         } else if (amount > 999999999D) {
-            ToastUtils.showToast(this, "输入的金额太大啦");
+            //ToastUtils.showToast(this, "输入的金额太大啦");
+            ToastUtil.toast("输入的金额太大啦");
             return true;
         }
 
         if (map.get("projectName") == null && type == 0) {
-            ToastUtils.showToast(this, "账单名称不能为空");
+            //ToastUtils.showToast(this, "账单名称不能为空");
+            ToastUtil.toast("账单名称不能为空");
             return true;
         }
         if (map.get("channelName") == null && type == 1) {
-            ToastUtils.showToast(this, "账单名称不能为空");
+            //ToastUtils.showToast(this, "账单名称不能为空");
+            ToastUtil.toast("账单名称不能为空");
             return true;
         }
         return false;
@@ -387,7 +393,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
 
                                        if (mNormalFragment.debtNormalDetail != null) {
-                                           ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
+                                           //ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
+                                           ToastUtil.toast("更新成功，已默认初始还款状态");
                                        }
 
                                        Intent intent = new Intent();
@@ -396,7 +403,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        setResult(1, intent);
                                        finish();
                                    } else {
-                                       ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
+                                       //ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
+                                       ToastUtil.toast(result.getMsg());
                                    }
                                }
                            },
@@ -423,7 +431,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
 
                                        if (mLoanFragment.debtNormalDetail != null) {
-                                           ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
+                                           //ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
+                                           ToastUtil.toast("更新成功，已默认初始还款状态");
                                        }
 
                                        /**
@@ -435,7 +444,8 @@ public class AccountFlowActivity extends BaseComponentActivity {
                                        setResult(1, intent);
                                        finish();
                                    } else {
-                                       ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
+                                       //ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
+                                       ToastUtil.toast(result.getMsg());
                                    }
                                }
                            },

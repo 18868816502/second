@@ -40,6 +40,7 @@ import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
 
@@ -202,7 +203,8 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
          * 用户密码登录
          */
         dismissProgress();
-        com.beihui.market.util.ToastUtils.showToast(getActivity(), msg);
+        //com.beihui.market.util.ToastUtils.showToast(getActivity(), msg);
+        ToastUtil.toast(msg);
 //        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
         if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
             mActivity.finish();

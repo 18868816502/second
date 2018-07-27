@@ -128,7 +128,7 @@ public class MoxieUtil {
                 }
                 Intent intent = new Intent(activity, MainActivity.class);
                 intent.putExtra("account", true);
-                intent.putExtra("moxieMsg", "3秒后刷新页面信用卡就会显示啦");
+                //intent.putExtra("moxieMsg", "3秒后刷新页面信用卡就会显示啦");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 activity.startActivity(intent);
                 EventBus.getDefault().post("1");

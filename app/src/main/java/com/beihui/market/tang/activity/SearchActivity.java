@@ -2,6 +2,7 @@ package com.beihui.market.tang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -55,6 +56,32 @@ public class SearchActivity extends BaseComponentActivity {
     private LoanBillAdapter loanBillAdapter;
     private Activity activity;
     private String searchKey;
+    private Handler handler = new Handler();
+    private Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).id(), searchKey)
+                    .compose(RxResponse.<List<LoanAccountIconBean>>compatT())
+                    .subscribe(new ApiObserver<List<LoanAccountIconBean>>() {
+                        @Override
+                        public void onNext(@NonNull List<LoanAccountIconBean> data) {
+                            if (data != null && data.size() > 0)
+                                loanBillAdapter.setNewData(data);
+                            else {
+                                loanBillAdapter.setNewData(null);
+                                loanBillAdapter.setEmptyView(R.layout.f_layout_search_empty, recyclerView);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable t) {
+                            super.onError(t);
+                            loanBillAdapter.setNewData(null);
+                            loanBillAdapter.setEmptyView(R.layout.f_layout_search_empty, recyclerView);
+                        }
+                    });
+        }
+    };
 
     @Override
     public int getLayoutId() {
@@ -84,33 +111,13 @@ public class SearchActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s.toString().trim())) {
-                    searchKey = s.toString().trim();
-                    etSearchKey.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(activity).id(), searchKey)
-                                    .compose(RxResponse.<List<LoanAccountIconBean>>compatT())
-                                    .subscribe(new ApiObserver<List<LoanAccountIconBean>>() {
-                                        @Override
-                                        public void onNext(@NonNull List<LoanAccountIconBean> data) {
-                                            if (data != null && data.size() > 0)
-                                                loanBillAdapter.setNewData(data);
-                                            else {
-                                                loanBillAdapter.setNewData(null);
-                                                loanBillAdapter.setEmptyView(R.layout.f_layout_search_empty, recyclerView);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(@NonNull Throwable t) {
-                                            super.onError(t);
-                                            loanBillAdapter.setNewData(null);
-                                            loanBillAdapter.setEmptyView(R.layout.f_layout_search_empty, recyclerView);
-                                        }
-                                    });
-                        }
-                    }, 1500);
+                searchKey = TextUtils.isEmpty(s) ? "" : s.toString().trim();
+                if (TextUtils.isEmpty(searchKey) || "".equals(searchKey)) {
+                    if (handler != null) handler.removeCallbacks(task);
+                    return;
+                } else {
+                    if (handler != null) handler.removeCallbacks(task);
+                    handler.postDelayed(task, 1000);
                 }
             }
         });
@@ -137,6 +144,13 @@ public class SearchActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+        handler = null;
     }
 
     @OnClick(R.id.tv_cancel)

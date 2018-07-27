@@ -12,7 +12,6 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

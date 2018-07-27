@@ -1592,9 +1592,9 @@ public class Api {
         return service.commonCloseAll(userId, recordId);
     }
 
-    /*账单列表*/
+    /*账单列表----信用卡*/
     public Observable<ResultEntity<List<CreditBill>>> creditList(String userId, String recordId) {
-        return service.creditList(userId, recordId);
+        return service.creditList(userId, recordId, 1, 100);
     }
 
     /*账单详情列表*/

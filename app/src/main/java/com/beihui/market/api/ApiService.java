@@ -1145,7 +1145,7 @@ public interface ApiService {
     /*账单列表*/
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/creditcard/billList")
-    Observable<ResultEntity<List<CreditBill>>> creditList(@Field("userId") String userId, @Field("recordId") String recordId);
+    Observable<ResultEntity<List<CreditBill>>> creditList(@Field("userId") String userId, @Field("recordId") String recordId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /*账单详情列表*/
     @FormUrlEncoded

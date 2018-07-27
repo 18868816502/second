@@ -12,17 +12,14 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.DetailHead;
 import com.beihui.market.entity.DetailList;
-import com.beihui.market.entity.EventBean;
 import com.beihui.market.helper.UserHelper;
-import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.RemarkActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -187,8 +184,9 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override
                                     public void onNext(@NonNull Object data) {
-                                        com.beihui.market.util.viewutils.ToastUtils.showShort(mActivity,
-                                                "恭喜，本期账单已结清", ContextCompat.getDrawable(mActivity, R.drawable.ic_detail_over));
+                                        /*com.beihui.market.util.viewutils.ToastUtils.showShort(mActivity,
+                                                "恭喜，本期账单已结清", ContextCompat.getDrawable(mActivity, R.drawable.ic_detail_over));*/
+                                        ToastUtil.toast("恭喜，本期账单已结清", R.drawable.ic_detail_over);
                                         mActivity.request();
                                         EventBus.getDefault().post("1");
                                     }
@@ -200,7 +198,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override
                                     public void onNext(@NonNull Object data) {
-                                        ToastUtils.showToast(mActivity, "已设为未还");
+                                        ToastUtil.toast("已设为未还");
                                         mActivity.request();
                                         EventBus.getDefault().post("1");
                                     }

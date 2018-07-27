@@ -27,7 +27,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
@@ -123,7 +123,6 @@ public class MakeBillActivity extends BaseComponentActivity {
     private List<String> timeList = new ArrayList<>();
     private List<String> houseYearList = new ArrayList<>();
     private String numText;
-    private MakeBillActivity activity;
 
     @Override
     public int getLayoutId() {
@@ -135,7 +134,6 @@ public class MakeBillActivity extends BaseComponentActivity {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
-        activity = this;
     }
 
     @Override
@@ -286,32 +284,32 @@ public class MakeBillActivity extends BaseComponentActivity {
         if (type == TYPE_USER_DIFINE) {
             String customName = etCustomName.getText().toString().trim();
             if (customName == null || customName.isEmpty()) {
-                ToastUtils.showToast(this, "账单名称不能为空");
+                ToastUtil.toast("账单名称不能为空");
                 return;
             }
             map.put("channelName", customName);
         }
         //金额
         if (numText == null || numText.isEmpty()) {
-            ToastUtils.showToast(this, "请输入正确金额");
+            ToastUtil.toast("请输入正确金额");
             return;
         }
         double num = 0;
         if (numText != null && !numText.isEmpty()) {
             num = Double.valueOf(numText);
             if (num <= 0) {
-                ToastUtils.showToast(this, "每期金额不可为0");
+                ToastUtil.toast("每期金额不可为0");
                 return;
             }
             if (num > 1e7) {
-                ToastUtils.showToast(this, "每期金额过大");
+                ToastUtil.toast("每期金额过大");
                 return;
             }
         }
         map.put("amount", num);
         //首期还款时间
         if (firstRepayDate == null || firstRepayDate.isEmpty()) {
-            ToastUtils.showToast(this, "请选择首期应还款日");
+            ToastUtil.toast("请选择首期应还款日");
             return;
         }
         map.put("firstRepaymentDate", firstRepayDate);
