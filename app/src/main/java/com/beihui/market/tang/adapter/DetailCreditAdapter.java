@@ -95,7 +95,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
             if (dataSet.size() > 0) item = dataSet.get(position - 1);
             final CreditBill bill = item;
             if (bill == null) return;
-            holder.tv_term_num.setText(bill.getBillMonth().substring(5, 7) + "月");
+            holder.tv_term_num.setText(Integer.valueOf(bill.getBillMonth().substring(5, 7)) + "月");
             holder.tv_present_flag.setVisibility(bill.isPresentFlag() ? View.VISIBLE : View.GONE);
             holder.tv_term_pay_amount.setText(String.format("%.2f", bill.getNewBalance()));
             holder.tv_term_repay_date.setText(bill.getBillDate().substring(0, 10).replace("-", "."));

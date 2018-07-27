@@ -19,19 +19,14 @@ import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.adapter.DetailItemAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.util.SoundUtils;
-import com.beihui.market.util.ToastUtils;
-import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -140,7 +135,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
                                         break;
                                     case R.id.tv_edit_num:
                                         dialog.dismiss();
-                                        ToastUtils.showToast(activity, "修改金额");
+                                        ToastUtil.toast("修改金额");
                                         break;
                                     case R.id.tv_delete_bill:
                                         dialog.dismiss();

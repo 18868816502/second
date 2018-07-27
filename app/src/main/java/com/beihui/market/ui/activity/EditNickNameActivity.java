@@ -21,6 +21,7 @@ import com.beihui.market.injection.module.EditUserNameModule;
 import com.beihui.market.ui.contract.EditUserNameContract;
 import com.beihui.market.ui.presenter.EditUserNamePresenter;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.EditTextUtils;
@@ -151,7 +152,8 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
 
                 if (bytes.length > 16) {
-                    com.beihui.market.util.ToastUtils.showToast(EditNickNameActivity.this, "支持输入1~16个字符");
+                    //com.beihui.market.util.ToastUtils.showToast(EditNickNameActivity.this, "支持输入1~16个字符");
+                    ToastUtil.toast("支持输入1~16个字符");
                 }
 
                 Log.e("xhxhxb", "bytes --> " + bytes.length);

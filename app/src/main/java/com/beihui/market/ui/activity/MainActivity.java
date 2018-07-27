@@ -34,7 +34,6 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
-import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
@@ -57,7 +56,7 @@ import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.BottomNavigationBar;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -150,10 +149,10 @@ public class MainActivity extends BaseComponentActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.getBoolean("account")) {
-                navigationBar.select(R.id.tab_account);
-                if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
-                    ToastUtils.showToast(MainActivity.this, extras.getString("moxieMsg"));
-                }
+                navigationBar.select(R.id.tab_forms_root);
+                /*if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
+                    ToastUtil.showToast(MainActivity.this, extras.getString("moxieMsg"));
+                }*/
             }
             if (extras.getBoolean("istk")) {
                 if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
@@ -171,27 +170,6 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-                    /*.compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
-                    .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
-                                   @Override
-                                   public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
-                                       if (result.isSuccess()) {
-                                           AdBanner adBanner = result.getData().get(0);
-                                           if (!adBanner.getId().equals(SPUtils.getValue(MainActivity.this, adBanner.getId()))) {
-                                               showAdDialog(adBanner);
-                                           }
-                                           //更新广告展示时间
-                                           SPUtils.setLastAdShowTime(MainActivity.this, System.currentTimeMillis());
-                                       } else {
-                                           showErrorMsg(result.getMsg());
-                                       }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                }
-                            });*/
         if (SPUtils.getShowMainAddBanner(this)) {
             SPUtils.setShowMainAddBanner(this, false);
             Api.getInstance().querySupernatant(3)
@@ -476,7 +454,8 @@ public class MainActivity extends BaseComponentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if (System.currentTimeMillis() - exitTime > 2000) {
-                ToastUtils.showToast(this, "再按一次退出");
+                //ToastUtil.showToast(this, "再按一次退出");
+                ToastUtil.toast("再按一次退出");
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();

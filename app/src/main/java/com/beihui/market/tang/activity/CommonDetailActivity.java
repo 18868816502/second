@@ -17,10 +17,9 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.adapter.DetailCommonAdapter;
-import com.beihui.market.tang.adapter.DetailItemAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -137,7 +136,7 @@ public class CommonDetailActivity extends BaseComponentActivity {
                                         break;
                                     case R.id.tv_edit_num:
                                         dialog.dismiss();
-                                        ToastUtils.showToast(activity, "修改金额");
+                                        ToastUtil.toast("修改金额");
                                         break;
                                     case R.id.tv_delete_bill:
                                         dialog.dismiss();

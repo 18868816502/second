@@ -19,7 +19,6 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.LoanBillAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.util.ToastUtils;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;

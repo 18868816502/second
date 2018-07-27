@@ -1,14 +1,8 @@
 package com.beihui.market.ui.fragment;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.inputmethodservice.Keyboard;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,14 +11,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.LinearInterpolator;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,40 +24,25 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AccountFlowIconBean;
-import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.event.AccountFlowTypeActivityEvent;
-import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
-import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.AccountFlowActivity;
-import com.beihui.market.ui.activity.AccountFlowTypeActivity;
-import com.beihui.market.ui.activity.LoanDebtDetailActivity;
-import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
-import com.beihui.market.ui.dialog.NicknameDialog;
-import com.beihui.market.ui.dialog.RemarkDialog;
-import com.beihui.market.ui.dialog.ShareDialog;
-import com.beihui.market.ui.dialog.XTabAccountDialog;
-import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.AutoAdjustSizeEditText;
 import com.beihui.market.view.customekeyboard.CustomBaseKeyboard;
 import com.beihui.market.view.customekeyboard.CustomKeyboardManager;
-import com.beihui.market.view.flowlayout.FlowLayout;
-import com.beihui.market.view.flowlayout.TagAdapter;
-import com.beihui.market.view.flowlayout.TagFlowLayout;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
-import com.beihui.market.view.pulltoswipe.PulledRecyclerView;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -80,11 +54,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -430,7 +401,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                             }
                         }
                         if (Double.parseDouble(temp.toString()+(primaryCode - 48)) > 999999999D) {
-                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            //ToastUtils.showToast(activity, "输入的金额太大啦");
+                            ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
                         temp.append(primaryCode - 48);
@@ -456,7 +428,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         }
                         String s = etCurrent.getText().toString() + (primaryCode - 48);
                         if (Double.parseDouble(s) > 999999999D) {
-                            ToastUtils.showToast(activity, "输入的金额太大啦");
+                            //ToastUtils.showToast(activity, "输入的金额太大啦");
+                            ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
                         etCurrent.setText(s);

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 
 import com.beihui.market.R;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +27,7 @@ public class ClearEditText extends AppCompatEditText implements OnFocusChangeLis
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
             if (emojiMatcher.find()) {
-                ToastUtils.showToast(getContext(), "不支持输入Emoji表情符号");
+                ToastUtil.toast("不支持输入Emoji表情符号");
                 return "";
             }
             return null;

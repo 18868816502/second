@@ -19,7 +19,7 @@ import com.beihui.market.tang.activity.CommonDetailActivity;
 import com.beihui.market.tang.activity.RemarkActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -189,7 +189,7 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override
                                     public void onNext(@NonNull Object data) {
-                                        ToastUtils.showToast(mActivity, "已设为未还");
+                                        ToastUtil.toast("已设为未还");
                                         mActivity.request();
                                         EventBus.getDefault().post("1");
                                     }

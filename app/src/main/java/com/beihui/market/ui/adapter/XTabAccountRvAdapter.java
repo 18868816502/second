@@ -45,7 +45,7 @@ import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.NumAnimUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
-import com.beihui.market.util.ToastUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.beihui.market.view.MarqueeTextView;
@@ -181,7 +181,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         }
                         dataSet.addAll(unPayeset);
                         holder.mHeaderSortType.setText("待还");
-                        ToastUtils.showToast(mActivity, "已显示待还账单");
+                        ToastUtil.toast("已显示待还账单");
                         showAll = false;
                     } else {
                         if (dataSet.size() > 0) {
@@ -189,7 +189,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         }
                         dataSet.addAll(dataSetCopy);
                         holder.mHeaderSortType.setText("全部");
-                        ToastUtils.showToast(mActivity, "已显示全部账单");
+                        ToastUtil.toast("已显示待还账单");
                         showAll = true;
                     }
 
