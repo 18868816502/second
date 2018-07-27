@@ -101,7 +101,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void configViews() {
-
+        loginBtn.setClickable(false);
         psdVisibilityCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

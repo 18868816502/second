@@ -20,34 +20,11 @@
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/about_us_logo" />
-
-    <TextView
+    <RelativeLayout
+        android:id="@+id/web_about_kaola"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="40dp"
-        android:lineSpacingExtra="6dp"
-        android:text="考拉记账是由杭州贝沃科技有限公司推出的智能记账平台。"
-        android:textColor="@color/black_1"
-        android:textSize="14sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="20dp"
-        android:lineSpacingExtra="6dp"
-        android:text="考拉记账基于用户多维度记账数据,金融数据和不断优化的算法技术,为您提供全方位和个性化的金融服务,并最终真正做到智能金融。"
-        android:textColor="@color/black_1"
-        android:textSize="14sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 
 </LinearLayout>

@@ -21,7 +21,7 @@
         app:shape_mode="round_rect"
         app:stroke_color="#18000000"
         app:stroke_width="0.5dp"
-        tools:src="@drawable/about_us_logo" />
+        tools:src="@drawable/about_kaola_logo" />
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="65dp"
         android:scaleType="centerCrop"
-        tools:src="@drawable/about_us_logo" />
+        tools:src="@drawable/about_kaola_logo" />
 
     <TextView
         android:id="@+id/credit_card_name"

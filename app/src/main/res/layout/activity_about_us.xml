@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:src="@drawable/about_us_logo" />
+        android:src="@drawable/about_kaola_logo" />
 
     <TextView
         android:layout_width="wrap_content"

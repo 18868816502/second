@@ -20,7 +20,7 @@
         android:scaleType="centerCrop"
         app:civ_border_color="#18000000"
         app:civ_border_width="0.5dp"
-        tools:src="@drawable/about_us_logo" />
+        tools:src="@drawable/about_kaola_logo" />
 
     <LinearLayout
         android:layout_width="wrap_content"
