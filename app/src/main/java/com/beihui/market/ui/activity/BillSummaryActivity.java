@@ -51,6 +51,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private View view;
     private boolean isRefresh = true;
     private View emptyView;
+    private int postion;
 
     @Override
     public int getLayoutId() {
@@ -68,13 +69,13 @@ public class BillSummaryActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        getBillSummaryData();
+        getBillSummaryData(false);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageNo = 1;
                 isRefresh = true;
-                getBillSummaryData();
+                getBillSummaryData(false);
             }
         });
 
@@ -82,7 +83,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 isRefresh = false;
-                getBillSummaryData();
+                getBillSummaryData(false);
             }
         });
         view = View.inflate(this, R.layout.bill_summary_header, null);
@@ -93,13 +94,32 @@ public class BillSummaryActivity extends BaseComponentActivity {
         //adapter.setEmptyView(emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = null;
+                postion = position;
+                if (list.get(position).getType().equals("1")) {//网贷
+                    intent = new Intent(activity, NetLoanDetailActivity.class);
+                } else if (list.get(position).getType().equals("2")) {//信用卡
+                    intent = new Intent(activity, CreditDetailActivity.class);
+                } else if (list.get(position).getType().equals("3")) {//通用
+                    intent = new Intent(activity, CommonDetailActivity.class);
+                }
+                if (intent != null) {
+                    intent.putExtra("recordId", list.get(position).getRecordId());
+                    intent.putExtra("billId", list.get(position).getRecordId());
+                    activity.startActivityForResult(intent, 0);
+                }
+            }
+        });
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    private void getBillSummaryData() {
+    private void getBillSummaryData(final boolean isDelete) {
         String userId = UserHelper.getInstance(this).getProfile().getId();
         Api.getInstance().onBillSummary(userId, pageNo + "").compose(RxResponse.<BillSummaryBean>compatT()).subscribe(new ApiObserver<BillSummaryBean>() {
             @Override
@@ -107,17 +127,21 @@ public class BillSummaryActivity extends BaseComponentActivity {
                 pageNo++;
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
-                list = data.getPersonBillItem();
-                if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() == 0) {
-                    adapter.setEmptyView(emptyView);
-                } else if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
-                    adapter.removeAllHeaderView();
-                    adapter.addHeaderView(view);
-                }
-                if (isRefresh) {
-                    adapter.replaceData(list);
-                } else {
-                    adapter.addData(list);
+                data.getPersonBillItem();
+                if (!isDelete) {
+                    if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() == 0) {
+                        adapter.setEmptyView(emptyView);
+                    } else if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() > 0) {
+                        adapter.removeAllHeaderView();
+                        adapter.addHeaderView(view);
+                    }
+                    if (isRefresh) {
+                        list.clear();
+                        adapter.replaceData(data.getPersonBillItem());
+                    } else {
+                        adapter.addData(data.getPersonBillItem());
+                        list.addAll(data.getPersonBillItem());
+                    }
                 }
                 if (data.getTotalLiAmount() != null) {
                     toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
@@ -141,10 +165,12 @@ public class BillSummaryActivity extends BaseComponentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
-            pageNo = 1;
-            isRefresh = true;
-            getBillSummaryData();
+        if (requestCode == 0 && resultCode == 100) {
+            adapter.remove(postion);
+            getBillSummaryData(true);
+            if (list.size() == 1) {
+                adapter.setEmptyView(emptyView);
+            }
         }
     }
 }

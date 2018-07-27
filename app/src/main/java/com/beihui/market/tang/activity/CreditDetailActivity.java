@@ -151,6 +151,7 @@ public class CreditDetailActivity extends BaseComponentActivity {
                                                                             @Override
                                                                             public void onNext(@NonNull Object data) {
                                                                                 EventBus.getDefault().post("1");
+                                                                                setResult(100);
                                                                                 finish();
                                                                             }
                                                                         });

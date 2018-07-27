@@ -77,7 +77,6 @@ public class PushReceiveIntentService extends GTIntentService {
         }
         try {
             String json = new String(gtTransmitMessage.getPayload());
-            LogUtils.i(TAG, json);
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title") != null ? obj.getString("title") : "";
             String content = obj.getString("content") != null ? obj.getString("content") : "";

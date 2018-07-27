@@ -40,7 +40,7 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final BillSummaryBean.PersonBillItemBean item) {
+    protected void convert(final BaseViewHolder helper, final BillSummaryBean.PersonBillItemBean item) {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/dinmedium.ttf");
         TextView totalTv = helper.getView(R.id.total_money_tv);
         totalTv.setTypeface(typeface);
@@ -63,24 +63,24 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
             helper.setText(R.id.term_tag_tv, item.getTotalTerm() + "期");
         }
 
-        helper.getView(R.id.ll_bill_summary).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = null;
-                if (item.getType().equals("1")) {//网贷
-                    intent = new Intent(activity, NetLoanDetailActivity.class);
-                } else if (item.getType().equals("2")) {//信用卡
-                    intent = new Intent(activity, CreditDetailActivity.class);
-                } else if (item.getType().equals("3")) {//通用
-                    intent = new Intent(activity, CommonDetailActivity.class);
-                }
-                if (intent != null) {
-                    intent.putExtra("recordId", item.getRecordId());
-                    intent.putExtra("billId", item.getRecordId());
-                    activity.startActivityForResult(intent, 0);
-                }
-            }
-        });
+//        helper.getView(R.id.ll_bill_summary).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = null;
+//                if (item.getType().equals("1")) {//网贷
+//                    intent = new Intent(activity, NetLoanDetailActivity.class);
+//                } else if (item.getType().equals("2")) {//信用卡
+//                    intent = new Intent(activity, CreditDetailActivity.class);
+//                } else if (item.getType().equals("3")) {//通用
+//                    intent = new Intent(activity, CommonDetailActivity.class);
+//                }
+//                if (intent != null) {
+//                    intent.putExtra("recordId", item.getRecordId());
+//                    intent.putExtra("billId", item.getRecordId());
+//                    activity.startActivityForResult(intent, helper.getLayoutPosition());
+//                }
+//            }
+//        });
 
 
     }
