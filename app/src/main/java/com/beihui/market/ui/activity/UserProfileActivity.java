@@ -55,6 +55,7 @@ import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -193,7 +194,8 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             if (avatar != null) {
                 presenter.updateAvatar(avatar);
             } else {
-                ToastUtils.showShort(this, "头像解析错误", null);
+                //ToastUtils.showShort(this, "头像解析错误", null);
+                ToastUtil.toast("头像解析错误");
             }
         }
     }

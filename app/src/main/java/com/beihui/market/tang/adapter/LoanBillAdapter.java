@@ -1,10 +1,14 @@
 package com.beihui.market.tang.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.LoanAccountIconBean;
+import com.beihui.market.tang.activity.MakeBillActivity;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -28,11 +32,23 @@ public class LoanBillAdapter extends BaseQuickAdapter<LoanAccountIconBean, BaseV
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LoanAccountIconBean item) {
-        Context context = helper.itemView.getContext();
+    protected void convert(BaseViewHolder helper, final LoanAccountIconBean item) {
+        final Context context = helper.itemView.getContext();
         ImageView ivIcon = helper.getView(R.id.iv_item_credit_card_avatar);
         Glide.with(context).load(item.logo).centerCrop().transform(new GlideCircleTransform(context)).placeholder(R.drawable.mine_bank_default_icon).into(ivIcon);
         helper.setText(R.id.iv_item_credit_card_name, item.iconName);
         helper.addOnClickListener(R.id.iv_item_credit_card_root);
+        helper.getView(R.id.iv_item_credit_card_root).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoanAccountIconBean iconBean = item;
+                Intent intent = new Intent(context, MakeBillActivity.class);
+                intent.putExtra("type", MakeBillActivity.TYPE_NET_LOAN);
+                intent.putExtra("title", iconBean.iconName);
+                intent.putExtra("iconId", iconBean.iconId);
+                intent.putExtra("tallyId", iconBean.tallyId);
+                ((Activity) context).startActivity(intent);
+            }
+        });
     }
 }

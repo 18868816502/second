@@ -124,7 +124,7 @@
     <string name="x_home_bill_today">今天到期</string>
     <string name="x_home_bill_will_come">%d天后到期</string>
     <string name="x_home_bill_credit">%d月账单</string>
-    <string name="x_home_bill_loan">%1$d/%2$d期</string>
+    <string name="x_home_bill_loan">%1$d/%2$s期</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

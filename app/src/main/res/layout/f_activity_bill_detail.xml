@@ -42,7 +42,7 @@
             android:id="@+id/prl_fg_tab_account_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="35dp">
+            android:paddingBottom="45dp">
 
             <include layout="@layout/x_pull_to_refresh_head" />
 

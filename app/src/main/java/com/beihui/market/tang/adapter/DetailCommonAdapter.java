@@ -2,6 +2,7 @@ package com.beihui.market.tang.adapter;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,6 +56,13 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
     private int color3;
     private Drawable drawable1;
     private Drawable drawable2;
+    private Handler handler = new Handler();
+    private Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            mActivity.request();
+        }
+    };
 
     public DetailCommonAdapter(CommonDetailActivity activity) {
         this.mActivity = activity;
@@ -98,14 +106,14 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder.viewType == VIEW_HEADER) {
             if (data != null) {
                 Glide.with(mActivity).load(data.getLogo()).transform(new GlideCircleTransform(mActivity)).into(holder.iv_detail_icon);
                 holder.tv_detail_name.setText(data.getChannelName());
                 holder.tv_still_balance.setText(String.format("￥%.2f", data.getStayReturnedAmount()));
                 holder.tv_already_num.setText(String.format("%.2f", data.getReturnedAmount()));
-                holder.tv_cycle_num.setText(data.getReturnedTerm() + "/" + data.getTerm());
+                holder.tv_cycle_num.setText(data.getReturnedTerm() + "/" + (data.getTerm() == -1 ? "∞" : data.getTerm()));
                 if (data.getRemark() != null && !data.getRemark().isEmpty()) {
                     holder.tv_add_remark.setText(data.getRemark());
                 }
@@ -118,10 +126,6 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
                 holder.tv_add_remark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*if (data.getStatus() == 2) {
-                            ToastUtils.showToast(mActivity, "账单已结清，无需更多操作");
-                            return;
-                        }*/
                         Intent intent = new Intent(mActivity, RemarkActivity.class);
                         intent.putExtra("type", 1);
                         intent.putExtra("recordId", data.getRecordId());
@@ -170,15 +174,15 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
             holder.tv_set_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    holder.csm_bill_wrap.smoothClose();
                     if (billStatus == 1 || billStatus == 3) {//结清当期
                         Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), bill.getRecordId(), 2, null)
                                 .compose(RxResponse.compatO())
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override
                                     public void onNext(@NonNull Object data) {
-                                        com.beihui.market.util.viewutils.ToastUtils.showShort(mActivity,
-                                                "恭喜，本期账单已结清", ContextCompat.getDrawable(mActivity, R.drawable.ic_detail_over));
-                                        mActivity.request();
+                                        ToastUtil.toast("恭喜，本期账单已结清", R.drawable.ic_detail_over);
+                                        handler.postDelayed(task, 300);
                                         EventBus.getDefault().post("1");
                                     }
                                 });
@@ -190,7 +194,7 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
                                     @Override
                                     public void onNext(@NonNull Object data) {
                                         ToastUtil.toast("已设为未还");
-                                        mActivity.request();
+                                        handler.postDelayed(task, 300);
                                         EventBus.getDefault().post("1");
                                     }
                                 });

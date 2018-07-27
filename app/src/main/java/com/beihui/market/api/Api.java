@@ -18,6 +18,7 @@ import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
+import com.beihui.market.entity.BillState;
 import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
@@ -380,6 +381,15 @@ public class Api {
 
     public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, int status) {
         return service.updateDebtStatus(userId, liabilitiesDetailId, status);
+    }
+
+    /*更新账单状态*/
+    public Observable<ResultEntity<BillState>> updateStatus(String userId, String billId, int status, int type) {
+        if (type == 0) {
+            return service.updateNormalStatus(userId, billId, status);
+        } else {
+            return service.updateStatus(userId, billId, status);
+        }
     }
 
     /**

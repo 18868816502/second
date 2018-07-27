@@ -154,7 +154,11 @@ public class HomeFragment extends BaseTabFragment {
                                 mPullToRefreshListener.onLoadMore(pullMoreLayout);
                                 if (data.getItem() != null && data.getItem().size() > 0) {
                                     pageAdapter.addData(data.getItem());
-                                    mRecyclerView.setCanPullUp(true);
+                                    if (data.getItem() != null && data.getItem().size() >= 20) {
+                                        mRecyclerView.setCanPullUp(true);
+                                    } else {
+                                        mRecyclerView.setCanPullUp(false);
+                                    }
                                 } else {
                                     mRecyclerView.setCanPullUp(false);
                                 }
@@ -201,7 +205,11 @@ public class HomeFragment extends BaseTabFragment {
                             }
                             pageAdapter.notifyHead(data.getTotalAmount(), data.getXmonth());
                             pageAdapter.notifyPayChanged(data.getItem());
-                            mRecyclerView.setCanPullUp(true);
+                            if (data.getItem() != null && data.getItem().size() >= 20) {
+                                mRecyclerView.setCanPullUp(true);
+                            } else {
+                                mRecyclerView.setCanPullUp(false);
+                            }
                         }
                     });
         } else {

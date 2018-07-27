@@ -22,7 +22,6 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.BillSummaryAdapter;
 import com.beihui.market.util.CommonUtils;
-import com.beihui.market.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

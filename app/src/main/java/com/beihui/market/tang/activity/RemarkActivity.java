@@ -80,6 +80,14 @@ public class RemarkActivity extends BaseComponentActivity {
         InputMethodUtil.openSoftKeyboard(this, edit_text);
         edit_text.setMaxLenght(20);
 
+        if (TextUtils.isEmpty(edit_text.getText().toString().trim())) {
+            confirmBtn.setEnabled(false);
+            confirmBtn.setTextColor(ContextCompat.getColor(activity, R.color.black_2));
+        } else {
+            confirmBtn.setEnabled(true);
+            confirmBtn.setTextColor(ContextCompat.getColor(activity, R.color.refresh_one));
+        }
+
         edit_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

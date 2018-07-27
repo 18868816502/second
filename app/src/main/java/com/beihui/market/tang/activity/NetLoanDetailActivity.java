@@ -1,6 +1,7 @@
 package com.beihui.market.tang.activity;
 
 import android.app.Dialog;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -111,7 +112,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
         itemAdapter = new DetailItemAdapter(activity);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setAdapter(itemAdapter);
-        mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());//SlideInLeftAnimator
         mRecyclerView.setCanPullUp(false);
     }
 

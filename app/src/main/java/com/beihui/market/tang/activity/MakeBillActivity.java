@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -119,7 +120,7 @@ public class MakeBillActivity extends BaseComponentActivity {
     private String firstRepayDate = null;
     private int repayCycle = 1;
     private int repayTimes = 1;
-    private int repayTip = 0;
+    private int repayTip = 1;
     private List<String> timeList = new ArrayList<>();
     private List<String> houseYearList = new ArrayList<>();
     private String numText;
@@ -162,11 +163,12 @@ public class MakeBillActivity extends BaseComponentActivity {
         if (type == TYPE_USER_DIFINE) {
             flCustomWrap.setVisibility(View.VISIBLE);
             InputMethodUtil.openSoftKeyboard(this, etCustomName);
-            etCustomName.setMaxLenght(8);
         }
-        etInputMoney.setMaxLenght(12);
         iconId = getIntent().getStringExtra("iconId");
         tallyId = getIntent().getStringExtra("tallyId");
+
+        etCustomName.setMaxLenght(8);
+        etRemark.setMaxLenght(20);
 
         opCycleTimes = Arrays.asList(getResources().getStringArray(R.array.repay_cycle_times));
         opBeforeDate = Arrays.asList(getResources().getStringArray(R.array.tip_before_date));
@@ -209,7 +211,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 }
                 String temp = s.toString();
                 int dotPosition = temp.indexOf(".");
-                if (dotPosition > 0) {
+                if (dotPosition >= 0) {
                     if (temp.length() - dotPosition - 1 > 2) {
                         s.delete(dotPosition + 3, temp.length());
                     }
@@ -321,7 +323,8 @@ public class MakeBillActivity extends BaseComponentActivity {
         if (isExpand) {
             String remark = etRemark.getText().toString().trim();
             if (remark != null && !remark.isEmpty()) map.put("remark", remark);
-            if (repayTip != 0) map.put("remind", repayTip);
+            repayTip = App.remind_day - 1;
+            map.put("remind", repayTip);
         }
 
         Api.getInstance().createLoanAccount(map)

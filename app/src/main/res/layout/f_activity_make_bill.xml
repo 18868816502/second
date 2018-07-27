@@ -51,13 +51,14 @@
 
         <com.beihui.market.view.ClearEditText
             android:id="@+id/et_custom_name"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:background="@null"
             android:ellipsize="end"
             android:gravity="right"
             android:hint="不超过8个字"
+            android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLength="8"
             android:maxLines="1"
@@ -85,12 +86,13 @@
 
         <com.beihui.market.view.ClearEditText
             android:id="@+id/et_input_money"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:background="@null"
             android:gravity="right"
-            android:hint="0.00"
+            android:hint="0"
+            android:imeOptions="actionNext"
             android:inputType="numberDecimal"
             android:textColor="@color/black_1"
             android:textColorHint="#d3d4d5"
@@ -232,13 +234,15 @@
 
             <com.beihui.market.view.ClearEditText
                 android:id="@+id/et_remark"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="45dp"
                 android:background="@null"
                 android:ellipsize="end"
                 android:gravity="right"
                 android:hint="不超过20个字"
+                android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"

@@ -82,7 +82,7 @@ public class CreditDetailActivity extends BaseComponentActivity {
 
     public void request() {
         //信用卡头信息
-        Api.getInstance().fetchCreditCardDebtDetail(UserHelper.getInstance(activity).id(), recordId)
+        Api.getInstance().fetchCreditCardDebtDetail(UserHelper.getInstance(activity).id(), recordId, billId)
                 .compose(RxResponse.<CreditCardDebtDetail>compatT())
                 .subscribe(new ApiObserver<CreditCardDebtDetail>() {
                     @Override

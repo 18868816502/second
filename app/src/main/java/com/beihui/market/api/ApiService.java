@@ -12,6 +12,7 @@ import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
+import com.beihui.market.entity.BillState;
 import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
@@ -316,6 +317,15 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/newUpdateRepayStatus")
     Observable<ResultEntity> updateDebtStatus(@Field("userId") String userId, @Field("liabilitiesDetailId") String liabilitiesDetailId, @Field("status") int status);
+
+
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/netLoan/updateStatus")
+    Observable<ResultEntity<BillState>> updateStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("status") int status);
+
+    @FormUrlEncoded
+    @POST(BASE_PATH_S_FOUR + "/bookKeeping/updateStatus")
+    Observable<ResultEntity<BillState>> updateNormalStatus(@Field("userId") String userId, @Field("billId") String billId, @Field("status") int status);
 
     /**
      * 获取信用卡账单详情

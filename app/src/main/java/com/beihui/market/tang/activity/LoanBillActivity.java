@@ -118,19 +118,6 @@ public class LoanBillActivity extends BaseComponentActivity {
         loanBillAdapter = new LoanBillAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(loanBillAdapter);
-
-        recyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
-            @Override
-            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                LoanAccountIconBean iconBean = loanBillAdapter.getData().get(position);
-                Intent intent = new Intent(getApplicationContext(), MakeBillActivity.class);
-                intent.putExtra("type", MakeBillActivity.TYPE_NET_LOAN);
-                intent.putExtra("title", iconBean.iconName);
-                intent.putExtra("iconId", iconBean.iconId);
-                intent.putExtra("tallyId", iconBean.tallyId);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

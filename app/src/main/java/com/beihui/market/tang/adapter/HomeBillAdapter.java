@@ -47,7 +47,7 @@ public class HomeBillAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
             tvTag.setText(String.format(context.getString(R.string.x_home_bill_credit), item.getMonth()));
         } else {//1-网贷(3-快捷记账（删了）)
             tvSynchronized.setVisibility(View.GONE);
-            tvTag.setText(String.format(context.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm()));
+            tvTag.setText(String.format(context.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm()==-1?"∞":item.getTotalTerm()));
         }
         //账单到期时间
         TextView tvTimeTip = helper.getView(R.id.tv_home_bill_time_tip);

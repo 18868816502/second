@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.entity.Bill;
+import com.beihui.market.entity.BillState;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.tang.DlgUtil;
@@ -30,6 +32,7 @@ import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.util.SPUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -71,6 +74,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private final String hideNum = "****";
     private final String makeBill = "赶紧先记上一笔";
     private boolean numVisible;
+    private Handler handler = new Handler();
+    private Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            homeFragment.request();
+        }
+    };
 
     public void notifyEmpty() {
         url = "";
@@ -200,7 +210,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_credit), item.getMonth()));
             } else {//1-网贷(3-快捷记账（删了）)
                 holder.tv_home_bill_synchronized.setVisibility(View.GONE);
-                holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm()));
+                holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm() == -1 ? "∞" : item.getTotalTerm()));
             }
             //账单到期时间
             if (item.getReturnDay() > 0) {//x天后到期
@@ -313,46 +323,57 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                                 public void onNext(@NonNull Object data) {
                                                     notifyItemRemoved(position);
                                                     dataSet.remove(position - 1);
-                                                    dlgView.postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            homeFragment.request();
-                                                        }
-                                                    }, 500);
+                                                    handler.postDelayed(task, 500);
                                                 }
                                             });
                                 } else if (type == 1) {//网贷记账
-                                    Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
+                                    Api.getInstance().updateStatus(userHelper.id(), billId, 2, 1)
+                                            .compose(RxResponse.<BillState>compatT())
+                                            .subscribe(new ApiObserver<BillState>() {
+                                                @Override
+                                                public void onNext(@NonNull BillState data) {
+                                                    notifyItemRemoved(position);
+                                                    dataSet.remove(position - 1);
+                                                    handler.postDelayed(task, 500);
+                                                    if (data.status == 2) {
+                                                        ToastUtil.toast(data.message);
+                                                    }
+                                                }
+                                            });
+                                    /*Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
                                             .compose(RxResponse.compatO())
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
                                                     notifyItemRemoved(position);
                                                     dataSet.remove(position - 1);
-                                                    dlgView.postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            homeFragment.request();
-                                                        }
-                                                    }, 500);
+                                                    handler.postDelayed(task, 500);
                                                 }
-                                            });
+                                            });*/
                                 } else if (type == 3) {//快捷记账
-                                    Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
+                                    Api.getInstance().updateStatus(userHelper.id(), billId, 2, 0)
+                                            .compose(RxResponse.<BillState>compatT())
+                                            .subscribe(new ApiObserver<BillState>() {
+                                                @Override
+                                                public void onNext(@NonNull BillState data) {
+                                                    notifyItemRemoved(position);
+                                                    dataSet.remove(position - 1);
+                                                    handler.postDelayed(task, 500);
+                                                    if (data.status == 2) {
+                                                        ToastUtil.toast(data.message);
+                                                    }
+                                                }
+                                            });
+                                    /*Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
                                             .compose(RxResponse.compatO())
                                             .subscribe(new ApiObserver<Object>() {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
                                                     notifyItemRemoved(position);
                                                     dataSet.remove(position - 1);
-                                                    dlgView.postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            homeFragment.request();
-                                                        }
-                                                    }, 500);
+                                                    handler.postDelayed(task, 500);
                                                 }
-                                            });
+                                            });*/
                                 }
                                 dialog.dismiss();
                                 break;
