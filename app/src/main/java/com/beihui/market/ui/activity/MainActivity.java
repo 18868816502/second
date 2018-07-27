@@ -215,7 +215,7 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     });
         }
-        showGuide();//显示高亮
+        //showGuide();//显示高亮
     }
 
     private void showAdDialog(final AdBanner ad) {
@@ -564,7 +564,6 @@ public class MainActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<TabImageBean>() {
                     @Override
                     public void onNext(@NonNull TabImageBean data) {
-
                     }
 
                     @Override

@@ -97,6 +97,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void addData(List<Bill> list) {
+        if (list != null && list.size() > 0) {
+            dataSet.addAll(list);
+            notifyDataSetChanged();
+        }
+    }
+
     public HomePageAdapter(Activity activity, HomeFragment homeFragment) {
         this.mActivity = activity;
         this.homeFragment = homeFragment;

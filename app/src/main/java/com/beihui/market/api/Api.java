@@ -1548,7 +1548,7 @@ public class Api {
 
 
     /*v4.2.0首页数据*/
-    public Observable<ResultEntity<HomeData>> home(String userId, String pageNo) {
+    public Observable<ResultEntity<HomeData>> home(String userId, int pageNo) {
         return service.home(userId, pageNo);
     }
 

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.beihui.market.R;
 import com.beihui.market.anim.SlideInLeftAnimator;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.entity.Bill;
 import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.HomeData;
 import com.beihui.market.helper.DataStatisticsHelper;
@@ -35,13 +33,10 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
-import com.tencent.mm.opensdk.modelmsg.GetMessageFromWX;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
@@ -72,7 +67,7 @@ public class HomeFragment extends BaseTabFragment {
     RelativeLayout mRefreshRoot;
 
     @BindView(R.id.prl_fg_tab_account_list)
-    PullToRefreshScrollLayout mPullContainer;
+    PullToRefreshScrollLayout pullMoreLayout;
     @BindView(R.id.rv_fg_tab_account_list)
     PulledTabAccountRecyclerView mRecyclerView;
     @BindView(R.id.tv_top_loan_month)
@@ -87,8 +82,7 @@ public class HomeFragment extends BaseTabFragment {
     private HomePageAdapter pageAdapter;
     //上拉与下拉的刷新监听器
     public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
-    public Integer total = null;
-    public int pageNo = 2;
+    public int page = 1;
     public int mMeasuredRecyclerViewHeaderHeight;
     public float mScrollY = 0f;
     private double num;
@@ -142,10 +136,45 @@ public class HomeFragment extends BaseTabFragment {
     public void initDatas() {
         initRecyclerView();
         request();
+        /*上拉加载更多的监听 请求分页数据*/
+        pullMoreLayout.setOnRefreshListener(new PullToRefreshScrollLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
+            }
+
+            @Override
+            public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
+                page++;
+                Api.getInstance().home(userHelper.id(), page)
+                        .compose(RxResponse.<HomeData>compatT())
+                        .subscribe(new ApiObserver<HomeData>() {
+                            @Override
+                            public void onNext(@NonNull HomeData data) {
+                                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
+                                mPullToRefreshListener.onLoadMore(pullMoreLayout);
+                                if (data.getItem() != null && data.getItem().size() > 0) {
+                                    pageAdapter.addData(data.getItem());
+                                    mRecyclerView.setCanPullUp(true);
+                                } else {
+                                    mRecyclerView.setCanPullUp(false);
+                                }
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable t) {
+                                super.onError(t);
+                                mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.FAIL;
+                                mPullToRefreshListener.onLoadMore(pullMoreLayout);
+                                mRecyclerView.setCanPullUp(false);
+                            }
+                        });
+            }
+        });
     }
 
     public void request() {
         if (userHelper.isLogin()) {
+            page = 1;
             //活动入口
             Api.getInstance().homeEvent("3", 1)
                     .compose(RxResponse.<EventBean>compatT())
@@ -156,14 +185,12 @@ public class HomeFragment extends BaseTabFragment {
                         }
                     });
             //首页数据
-            Api.getInstance().home(userHelper.id(), "1")
+            Api.getInstance().home(userHelper.id(), page)
                     .compose(RxResponse.<HomeData>compatT())
                     .subscribe(new ApiObserver<HomeData>() {
                         @Override
                         public void onNext(@NonNull HomeData data) {
                             swipeRefreshLayout.setRefreshing(false);
-                            //mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_ALL;
-                            //mPullToRefreshListener.onLoadMore(mPullContainer);
                             //账单头
                             tv_top_loan_month.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));//x月应还
                             num = data.getTotalAmount();
@@ -174,6 +201,7 @@ public class HomeFragment extends BaseTabFragment {
                             }
                             pageAdapter.notifyHead(data.getTotalAmount(), data.getXmonth());
                             pageAdapter.notifyPayChanged(data.getItem());
+                            mRecyclerView.setCanPullUp(true);
                         }
                     });
         } else {
@@ -188,27 +216,6 @@ public class HomeFragment extends BaseTabFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(pageAdapter);
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
-        mRecyclerView.setCanPullUp(false);
-
-        //PullToRefreshLayout设置监听
-        mPullContainer.setOnRefreshListener(mPullToRefreshListener);
-        /**
-         * 下拉加载与加载更多的监听
-         * 请求分页数据
-         */
-        mPullContainer.setOnRefreshListener(new PullToRefreshScrollLayout.OnRefreshListener() {
-            //下拉刷新 这里要将pageNo 置为 1，刷新第一页数据
-            @Override
-            public void onRefresh(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-            }
-
-            //上拉加载更多 这里要将pageNo++，刷新下一页数据
-            @Override
-            public void onLoadMore(PullToRefreshScrollLayout pullToRefreshScrollLayout) {
-                //mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
-                //mPullToRefreshListener.onLoadMore(mPullContainer);
-            }
-        });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_one);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
