@@ -33,6 +33,8 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
@@ -88,11 +90,11 @@ public class UserPsdEditActivity extends BaseComponentActivity {
         setupToolbar(toolbar);
         SlidePanelHelper.attach(this);
         tvLogin.setClickable(false);
-        returnType = getIntent().getIntExtra("returnType",1);
+        returnType = getIntent().getIntExtra("returnType", 1);
         pendingPhone = getIntent().getStringExtra("pendingPhone");
-        if (returnType == 2){
+        if (returnType == 2) {
             tvTitle.setText("设置新密码");
-        }else{
+        } else {
             tvTitle.setText("设置密码");
         }
 
@@ -199,33 +201,36 @@ public class UserPsdEditActivity extends BaseComponentActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("account", true);
         startActivity(intent);
+        EventBus.getDefault().post("1");
         finish();
 
     }
 
     /**
      * 跳转设置密码界面
+     *
      * @param context
-     * @param returnType  1.正常跳转，输入验证码页面跳转 标题“设置密码”
-     *                    2.微信快速登陆跳转，标题“设置新密码”
+     * @param returnType 1.正常跳转，输入验证码页面跳转 标题“设置密码”
+     *                   2.微信快速登陆跳转，标题“设置新密码”
      */
-    public static void launch(Activity context, int returnType){
-        Intent i = new Intent(context,UserPsdEditActivity.class);
-        i.putExtra("returnType",returnType);
+    public static void launch(Activity context, int returnType) {
+        Intent i = new Intent(context, UserPsdEditActivity.class);
+        i.putExtra("returnType", returnType);
         context.startActivity(i);
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
     }
 
     /**
      * 跳转设置密码界面
+     *
      * @param context
-     * @param returnType  1.正常跳转，输入验证码页面跳转 标题“设置密码”
-     *                    2.微信快速登陆跳转，标题“设置新密码”
+     * @param returnType 1.正常跳转，输入验证码页面跳转 标题“设置密码”
+     *                   2.微信快速登陆跳转，标题“设置新密码”
      */
-    public static void launch(Activity context, int returnType, String pendingPhone){
-        Intent i = new Intent(context,UserPsdEditActivity.class);
-        i.putExtra("returnType",returnType);
-        i.putExtra("pendingPhone",pendingPhone);
+    public static void launch(Activity context, int returnType, String pendingPhone) {
+        Intent i = new Intent(context, UserPsdEditActivity.class);
+        i.putExtra("returnType", returnType);
+        i.putExtra("pendingPhone", pendingPhone);
         context.startActivity(i);
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
         context.finish();

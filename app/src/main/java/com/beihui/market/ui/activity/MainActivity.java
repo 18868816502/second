@@ -257,21 +257,22 @@ public class MainActivity extends BaseComponentActivity {
                                         marginInfo.bottomMargin = rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 10);
                                         marginInfo.rightMargin = rectF.width() / 2 + Px2DpUtils.dp2px(MainActivity.this, 15);
                                     }
-                                }, new CircleLightShape()).setOnNextCallback(new HighLightInterface.OnNextCallback() {
-                            @Override
-                            public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-                                // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                if (targetView.getId() == R.id.tab_account) {
-                                    infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            infoHighLight.remove();
-                                            SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
+                                }, new CircleLightShape())
+                                .setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                                    @Override
+                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                        if (targetView.getId() == R.id.tab_account) {
+                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    infoHighLight.remove();
+                                                    SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
+                                                }
+                                            });
                                         }
-                                    });
-                                }
-                            }
-                        }).show();
+                                    }
+                                }).show();
                     }
                 });
     }

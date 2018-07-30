@@ -60,7 +60,11 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
             helper.setText(R.id.term_tag_tv, Integer.valueOf(item.getMonth()) + "月账单");
         } else {
             helper.getView(R.id.label_card).setVisibility(View.GONE);
-            helper.setText(R.id.term_tag_tv, ("-1".equals(item.getTotalTerm()) ? "∞" : item.getTotalTerm()) + "期");
+            if ("-1".equals(item.getTotalTerm())) {
+                helper.setText(R.id.term_tag_tv, "∞");
+            } else {
+                helper.setText(R.id.term_tag_tv, item.getTotalTerm() + "期");
+            }
         }
 
 //        helper.getView(R.id.ll_bill_summary).setOnClickListener(new View.OnClickListener() {

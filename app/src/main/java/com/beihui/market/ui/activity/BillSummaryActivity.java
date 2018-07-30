@@ -107,7 +107,7 @@ public class BillSummaryActivity extends BaseComponentActivity {
                 }
                 if (intent != null) {
                     intent.putExtra("recordId", list.get(position).getRecordId());
-                    intent.putExtra("billId", list.get(position).getRecordId());
+                    intent.putExtra("billId", list.get(position).billId);
                     activity.startActivityForResult(intent, 0);
                 }
             }

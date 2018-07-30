@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:text="支持输入1~20个字符"
+        android:text="支持输入1~20个字"
         android:textColor="@color/black_2"
         android:textSize="12dp" />
 </LinearLayout>

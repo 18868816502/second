@@ -64,6 +64,7 @@ public class CreditBill implements Serializable {
     private String endTime;
     private boolean presentFlag;
     private boolean lastBill;
+    public boolean isExpand = false;/*自定义，用于控制是否展开显示*/
 
     public String getId() {
         return id;
