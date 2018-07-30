@@ -3,6 +3,7 @@ package com.beihui.market.ui.fragment;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -172,7 +173,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     }
 
-    @OnClick({R.id.confirm,R.id.fetch_text})
+    @OnClick({R.id.confirm, R.id.fetch_text})
     void onViewClicked(View view) {
         //获取验证码
         if (view.getId() == R.id.fetch_text) {
@@ -205,36 +206,41 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
         dismissProgress();
         //com.beihui.market.util.ToastUtils.showToast(getActivity(), msg);
         ToastUtil.toast(msg);
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
+                    mActivity.finish();
+                }
+            }
+        }, 1200);
 //        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
-        if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
-            mActivity.finish();
-            return;
-        }
-        Api.getInstance().logout(UserHelper.getInstance(getActivity()).getProfile().getId())
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       UserHelper.getInstance(getActivity()).clearUser(getContext());
-                                       //发送用户退出全局事件
-                                       EventBus.getDefault().post(new UserLogoutEvent());
-                                       UserHelper.getInstance(getActivity()).clearUser(getActivity());
-                                       UserAuthorizationActivity.launch(getActivity(), null);
 
-                                       //umeng统计
-                                       Statistic.logout();
-                                   } else {
-                                       showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-
-                            }
-                        });
+//        Api.getInstance().logout(UserHelper.getInstance(getActivity()).getProfile().getId())
+//                .compose(RxUtil.<ResultEntity>io2main())
+//                .subscribe(new Consumer<ResultEntity>() {
+//                               @Override
+//                               public void accept(@NonNull ResultEntity result) throws Exception {
+//                                   if (result.isSuccess()) {
+//                                       UserHelper.getInstance(getActivity()).clearUser(getContext());
+//                                       //发送用户退出全局事件
+//                                       EventBus.getDefault().post(new UserLogoutEvent());
+//                                       UserHelper.getInstance(getActivity()).clearUser(getActivity());
+//                                       UserAuthorizationActivity.launch(getActivity(), null);
+//
+//                                       //umeng统计
+//                                       Statistic.logout();
+//                                   } else {
+//                                       showErrorMsg(result.getMsg());
+//                                   }
+//                               }
+//                           },
+//                        new Consumer<Throwable>() {
+//                            @Override
+//                            public void accept(@NonNull Throwable throwable) throws Exception {
+//
+//                            }
+//                        });
 
 //        Api.getInstance().login(requestPhone, passwordEt.getText().toString())
 //                .compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())

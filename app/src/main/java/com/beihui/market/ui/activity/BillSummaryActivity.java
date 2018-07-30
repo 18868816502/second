@@ -22,6 +22,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.BillSummaryAdapter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -51,6 +52,9 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private boolean isRefresh = true;
     private View emptyView;
     private int postion;
+    private boolean isFirst = true;
+    private int first;
+    private final static String TAG = BillSummaryActivity.class.getSimpleName();
 
     @Override
     public int getLayoutId() {
@@ -123,10 +127,15 @@ public class BillSummaryActivity extends BaseComponentActivity {
         Api.getInstance().onBillSummary(userId, pageNo + "").compose(RxResponse.<BillSummaryBean>compatT()).subscribe(new ApiObserver<BillSummaryBean>() {
             @Override
             public void onNext(BillSummaryBean data) {
+
                 pageNo++;
                 refreshLayout.finishRefresh();
                 refreshLayout.finishLoadMore();
-                data.getPersonBillItem();
+                if (isFirst && data.getPersonBillItem() != null) {
+                    first = data.getPersonBillItem().size();
+                    isFirst = false;
+                }
+
                 if (!isDelete) {
                     if (isRefresh && data.getPersonBillItem() != null && data.getPersonBillItem().size() == 0) {
                         adapter.setEmptyView(emptyView);
@@ -166,10 +175,13 @@ public class BillSummaryActivity extends BaseComponentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0 && resultCode == 100) {
             adapter.remove(postion);
-            getBillSummaryData(true);
-            if (list.size() == 1) {
+            if (list.size() == 1 || first == 1) {
                 adapter.setEmptyView(emptyView);
+                first = 0;
             }
+            getBillSummaryData(true);
+            LogUtils.i(TAG, "列表大小" + list.size());
+
         }
     }
 }

@@ -422,10 +422,12 @@
             android:name=".ui.activity.GetuiDialogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleTop" />
-
-        android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.H5Activity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.InvitationWebActivity"
             android:screenOrientation="portrait" />
     </application>
 

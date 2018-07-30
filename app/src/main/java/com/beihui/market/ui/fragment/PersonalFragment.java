@@ -28,6 +28,7 @@ import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.H5Activity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationActivity;
+import com.beihui.market.ui.activity.InvitationWebActivity;
 import com.beihui.market.ui.activity.RemindActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
@@ -346,7 +347,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void navigateInvitation(String userId) {
-        startActivity(new Intent(getActivity(), InvitationActivity.class));
+        startActivity(new Intent(getActivity(), InvitationWebActivity.class));
     }
 
     @Override
@@ -355,7 +356,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         intent.putExtra("webViewUrl", url);
         intent.putExtra("title", title);
         getActivity().startActivity(intent);
-       // request();
+        // request();
     }
 
     @Override
