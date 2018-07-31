@@ -240,6 +240,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
             @Override
             public void onStart(SHARE_MEDIA share_media) {
+
             }
 
             @Override

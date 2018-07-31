@@ -20,7 +20,7 @@ import com.beihui.market.util.Px2DpUtils;
  * @author wubo on 2018/6/5 10:51
  * 类说明：选项栏
  */
-public class RelativeLayoutBar extends RelativeLayout {
+public class CardLayoutBar extends RelativeLayout {
     /**
      * leftImage 左边图片
      * rightImage 右边图片
@@ -80,10 +80,10 @@ public class RelativeLayoutBar extends RelativeLayout {
 
     private boolean left_textView_style;
 
-    public RelativeLayoutBar(Context context, AttributeSet attrs) {
+    public CardLayoutBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        LayoutInflater.from(context).inflate(R.layout.public_relativelayout_bar, this, true);
+        LayoutInflater.from(context).inflate(R.layout.public_cardlayout_bar, this, true);
 
         leftImage = findViewById(R.id.left_image);
         rightImage = findViewById(R.id.right_image);

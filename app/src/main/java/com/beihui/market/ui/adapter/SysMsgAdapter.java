@@ -1,6 +1,7 @@
 package com.beihui.market.ui.adapter;
 
 
+import android.content.Context;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -18,10 +19,13 @@ import java.util.Locale;
 public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 HH:mm", Locale.CHINA);
     private List<SysMsg.Row> dataSet = new ArrayList<>();
+    private Context context;
 
-    public SysMsgAdapter() {
+    public SysMsgAdapter(Context context) {
         super(R.layout.rv_sys_msg);
+        this.context = context;
     }
+
 
     @Override
     protected void convert(BaseViewHolder helper, SysMsg.Row item) {
@@ -34,6 +38,13 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
         }
         helper.setText(R.id.date, dateFormat.format(new Date(item.getGmtCreate())));
         helper.setGone(R.id.iv_system_message_dot, item.getIsRead() == 0); //是否已读，0未读，1已读
+        if (item.getIsRead() == 0) {
+            helper.setTextColor(R.id.title, context.getResources().getColor(R.color.black_1));
+        } else {
+            helper.setTextColor(R.id.title, context.getResources().getColor(R.color.black_2));
+        }
+
+
     }
 
     public void notifySysMsgChanged(List<SysMsg.Row> list) {

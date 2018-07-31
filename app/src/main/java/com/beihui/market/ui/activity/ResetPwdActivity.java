@@ -18,7 +18,6 @@ import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.presenter.ResetPwdSetPwdPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;

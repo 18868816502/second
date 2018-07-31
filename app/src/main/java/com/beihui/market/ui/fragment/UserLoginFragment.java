@@ -211,7 +211,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
             @Override
             public void onStart(SHARE_MEDIA share_media) {
-                showProgress();
             }
 
             @Override

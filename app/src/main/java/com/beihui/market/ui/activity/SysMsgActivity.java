@@ -155,7 +155,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         setupToolbar(toolbar);
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        adapter = new SysMsgAdapter();
+        adapter = new SysMsgAdapter(SysMsgActivity.this);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
