@@ -8,11 +8,12 @@
     <TextView
         android:id="@+id/tv_edit_num"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="55dp"
         android:gravity="center"
         android:text="修改金额"
         android:textColor="@color/black_1"
-        android:textSize="17dp" />
+        android:textSize="17dp"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
     <TextView
         android:id="@+id/tv_delete_bill"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="55dp"
         android:gravity="center"
         android:text="删除"
         android:textColor="@color/refresh_one"
@@ -36,7 +37,7 @@
     <TextView
         android:id="@+id/cancel"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="55dp"
         android:gravity="center"
         android:text="取消"
         android:textColor="@color/black_2"

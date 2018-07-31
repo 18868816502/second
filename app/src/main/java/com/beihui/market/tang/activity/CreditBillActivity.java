@@ -56,14 +56,14 @@ public class CreditBillActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        //SlidePanelHelper.attach(this);
+        SlidePanelHelper.attach(this);
         activity = this;
         mAdapter = new AccountFlowCreditCardAdapter(activity);
         LinearLayoutManager manager = new LinearLayoutManager(activity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -78,7 +78,7 @@ public class CreditBillActivity extends BaseComponentActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
             }
-        });
+        });*/
 
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYCREDITCARD);

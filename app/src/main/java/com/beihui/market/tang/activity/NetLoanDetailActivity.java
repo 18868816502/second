@@ -71,7 +71,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
         EventBus.getDefault().register(this);
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        //SlidePanelHelper.attach(this);
+        SlidePanelHelper.attach(this);
         activity = this;
     }
 

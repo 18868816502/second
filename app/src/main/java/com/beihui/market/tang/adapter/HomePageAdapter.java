@@ -32,6 +32,7 @@ import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.ui.fragment.HomeFragment;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
@@ -156,7 +157,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     if (totalAmount == 0 && dataSet.size() == 0) {
                         billNum = makeBill;
                     } else {
-                        billNum = String.format("￥%.2f", totalAmount);
+                        billNum = "￥" + FormatNumberUtils.FormatNumberFor2(totalAmount);//String.format("￥%.2f", totalAmount);
                     }
                     holder.headBillNum.setText(billNum);
                     holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);

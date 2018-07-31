@@ -5,16 +5,12 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="35dp"
-        android:src="@mipmap/ic_bill_empty" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="10dp"
+        android:drawableTop="@mipmap/ic_bill_empty"
         android:text="小懒猫，赶紧先记一笔吧~"
         android:textColor="@color/black_2"
         android:textSize="15dp" />

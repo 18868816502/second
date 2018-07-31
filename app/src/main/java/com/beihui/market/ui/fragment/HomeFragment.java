@@ -249,6 +249,12 @@ public class HomeFragment extends BaseTabFragment {
                                 mRecyclerView.setCanPullUp(false);
                             }
                         }
+
+                        @Override
+                        public void onError(@NonNull Throwable t) {
+                            super.onError(t);
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
                     });
             //mRecyclerView.smoothScrollToPosition(0);
             //mScrollY = 0;
@@ -256,6 +262,7 @@ public class HomeFragment extends BaseTabFragment {
         } else {
             pageAdapter.notifyEmpty();
             swipeRefreshLayout.setRefreshing(false);
+            mRecyclerView.setCanPullUp(false);
         }
     }
 
