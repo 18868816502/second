@@ -26,8 +26,8 @@ public class Umeng {
         /**
          * 老的微信账号
          */
-        //PlatformConfig.setWeixin("wx85ba05e3d5eca8a5", "ed4bfef7288e94df20e2b3a4ef92d792");
-        PlatformConfig.setWeixin("wx82d44ebf242141d3", "1865f152b919af142cb882f3375a1ffe");
+        PlatformConfig.setWeixin("wx85ba05e3d5eca8a5", "ed4bfef7288e94df20e2b3a4ef92d792");
+        //PlatformConfig.setWeixin("wx82d44ebf242141d3", "1865f152b919af142cb882f3375a1ffe");
         PlatformConfig.setQQZone("1106217443", "UiOL1Ct0h3tGOirD");
         PlatformConfig.setSinaWeibo("2037274409", "ad8ac41cb179ffcb92f28b312a055074", "http://sns.whalecloud.com");
 

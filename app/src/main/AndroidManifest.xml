@@ -429,6 +429,12 @@
         <activity
             android:name=".ui.activity.InvitationWebActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.WeChatBindFirstActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.WechatBindDoneActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

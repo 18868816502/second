@@ -34,6 +34,13 @@ android {
             keyAlias "loanMarket"
             keyPassword "123456"
         }
+
+        debug {
+            storeFile file('../loanMarket.jks')
+            storePassword "123456"
+            keyAlias "loanMarket"
+            keyPassword "123456"
+        }
     }
 
     buildTypes {

@@ -24,7 +24,9 @@ import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerLoginComponent;
 import com.beihui.market.injection.module.LoginModule;
+import com.beihui.market.ui.activity.InputNewMobileActivity;
 import com.beihui.market.ui.activity.ResetPsdActivity;
+import com.beihui.market.ui.activity.WeChatBindFirstActivity;
 import com.beihui.market.ui.activity.WeChatBindPhoneActivity;
 import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.contract.LoginContract;
@@ -258,7 +260,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void navigateWechatBindAccount() {
         dismissProgress();
-        Intent intent = new Intent(getContext(), WeChatBindPhoneActivity.class);
+        Intent intent = new Intent(getContext(), WeChatBindFirstActivity.class);
         intent.putExtra("openId", wechatInfo.get("unionid"));
         intent.putExtra("name", wechatInfo.get("name"));
         intent.putExtra("profile_image_url", wechatInfo.get("profile_image_url"));

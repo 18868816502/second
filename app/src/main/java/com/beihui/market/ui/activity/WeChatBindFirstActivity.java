@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
@@ -18,42 +20,52 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 
 /**
- * Created by admin on 2018/6/12.
- * 输入新手机号码
+ * Copyright: zhujia (C)2018
+ * FileName: WeChatBindFirstActivity
+ * Author: jiang
+ * Create on: 2018/7/31 10:11
+ * Description: 微信绑定手机号
  */
-
-public class InputNewMobileActivity extends BaseComponentActivity {
+public class WeChatBindFirstActivity extends BaseComponentActivity {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    @BindView(R.id.cel_new_phone_number)
+    @BindView(R.id.wechat_phone_edit)
     ClearEditText phoneNumber;
-    @BindView(R.id.tv_new_phone_update)
+    @BindView(R.id.tv_wechat_bind_next)
     TextView next;
-    private String bingNewMobile;
 
     private String wxOpenId;
     private String wxName;
     private String wxImage;
 
-
     @Override
     public int getLayoutId() {
-        return R.layout.x_activity_input_new_mobile;
+        return R.layout.activity_wechat_bind_phone_first_layout;
     }
 
     @Override
     public void configViews() {
+
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
 
-        wxOpenId = getIntent().getStringExtra("openId");
-        wxName = getIntent().getStringExtra("name");
-        wxImage = getIntent().getStringExtra("profile_image_url");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            setResult(RESULT_OK);
+            finish();
+        }
     }
 
     @Override
     public void initDatas() {
+        wxOpenId = getIntent().getStringExtra("openId");
+        wxName = getIntent().getStringExtra("name");
+        wxImage = getIntent().getStringExtra("profile_image_url");
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -74,14 +86,21 @@ public class InputNewMobileActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(phoneNumber.getText().toString())) {
-                    if (TextUtils.isEmpty(bingNewMobile)) {
-                        UserCertificationCodeActivity.launch(InputNewMobileActivity.this, phoneNumber.getText().toString());
-                    } else {
-                        UserCertificationCodeActivity.launchBindNewMobile(InputNewMobileActivity.this, phoneNumber.getText().toString());
-                    }
+                    Intent intent = new Intent(WeChatBindFirstActivity.this, WechatBindDoneActivity.class);
+                    intent.putExtra("openId", wxOpenId);
+                    intent.putExtra("name", wxName);
+                    intent.putExtra("profile_image_url", wxImage);
+                    intent.putExtra("phone", phoneNumber.getText().toString());
+                    startActivityForResult(intent, 1);
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void configureComponent(AppComponent appComponent) {
+
     }
 
     /**
@@ -89,17 +108,12 @@ public class InputNewMobileActivity extends BaseComponentActivity {
      */
     private void validation() {
         String phone = phoneNumber.getText().toString();
-        if (LegalInputUtils.validatePhone(phone)) {
+        if (CommonUtils.isMobileNO(phone)) {
             next.setClickable(true);
             next.setTextColor(Color.WHITE);
         } else {
             next.setClickable(false);
             next.setTextColor(Color.parseColor("#50ffffff"));
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 }
