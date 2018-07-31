@@ -253,6 +253,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 public void onClick(View v) {
                     holder.csm_bill_wrap.smoothClose();
                     showDialog(item, position);
+                    homeFragment.recycler().smoothScrollToPosition(0);
                 }
             });
             holder.ll_bill_wrap.setOnClickListener(new View.OnClickListener() {
@@ -271,6 +272,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                         intent.putExtra("billId", item.getBillId());
                         mActivity.startActivity(intent);
                     }
+                    homeFragment.recycler().smoothScrollToPosition(0);
                 }
             });
 

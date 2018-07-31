@@ -152,8 +152,7 @@ public class MakeBillActivity extends BaseComponentActivity {
         String title = getIntent().getStringExtra("title");
         tvToolbarTitle.setText(title);
         if (type == TYPE_NET_LOAN) {
-            //InputMethodUtil.openSoftKeyboard(this, etInputMoney);
-            //showSoft(etInputMoney);
+            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_HOUSE_LOAN) {//房贷
             repay_times_wrap.setEnabled(false);
@@ -161,8 +160,7 @@ public class MakeBillActivity extends BaseComponentActivity {
             repayCycle = 1;
             tv_repay_cycle.setCompoundDrawables(null, null, null, null);
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
-            //InputMethodUtil.openSoftKeyboard(this, etInputMoney);
-            //showSoft(etInputMoney);
+            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_CAR_LOAN) {//车贷
             repay_times_wrap.setEnabled(false);
@@ -170,11 +168,11 @@ public class MakeBillActivity extends BaseComponentActivity {
             repayCycle = 1;
             tv_repay_cycle.setCompoundDrawables(null, null, null, null);
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
-            //InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_USER_DIFINE) {//自定义
             flCustomWrap.setVisibility(View.VISIBLE);
-            //InputMethodUtil.openSoftKeyboard(this, etCustomName);
+            InputMethodUtil.openSoftKeyboard(this, etCustomName);
         }
         iconId = getIntent().getStringExtra("iconId");
         tallyId = getIntent().getStringExtra("tallyId");

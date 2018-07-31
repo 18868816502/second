@@ -1,5 +1,6 @@
 package com.beihui.market.ui.fragment;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -86,6 +87,11 @@ public class HomeFragment extends BaseTabFragment {
     public int mMeasuredRecyclerViewHeaderHeight;
     private double num;
     public float mScrollY = 0f;
+
+    public PulledTabAccountRecyclerView recycler() {
+        return mRecyclerView;
+    }
+
     private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -101,27 +107,22 @@ public class HomeFragment extends BaseTabFragment {
             });
             int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
             int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
+
             mScrollY += dy;
 
             //隐藏显示布局的变化率
             float max = 0f;
-            if (height > 0) max = Math.max(mScrollY * 1.0f / height, 0f);
-            System.out.println("1 =" + height);
-            System.out.println("2 =" + mScrollY);
-            //if (max > 1) max = 1;
-            if (max >= 0.55f) mTitle.setVisibility(View.VISIBLE);
-            else mTitle.setVisibility(View.GONE);
+            if (height > 0)
+                max = Math.max(mScrollY * 1.0f / height, 0f);
+            if (max > 1) max = 1;
+            if (max >= 0.55f) mTitle.setAlpha(1);
+            else mTitle.setAlpha(0);
 
             if (SPUtils.getNumVisible(mActivity)) {
                 tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
             } else {
                 tv_top_loan_num.setText("****");//应还金额
             }
-        }
-
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
         }
     };
 
@@ -256,9 +257,8 @@ public class HomeFragment extends BaseTabFragment {
                             swipeRefreshLayout.setRefreshing(false);
                         }
                     });
-            //mRecyclerView.smoothScrollToPosition(0);
+            //mTitle.setAlpha(0);
             //mScrollY = 0;
-            mTitle.setVisibility(View.GONE);
         } else {
             pageAdapter.notifyEmpty();
             swipeRefreshLayout.setRefreshing(false);
@@ -270,6 +270,7 @@ public class HomeFragment extends BaseTabFragment {
         pageAdapter = new HomePageAdapter(getActivity(), this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(pageAdapter);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
 
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_one);
