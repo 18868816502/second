@@ -56,7 +56,7 @@ public class CreditBillActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        SlidePanelHelper.attach(this);
+        //SlidePanelHelper.attach(this);
         activity = this;
         mAdapter = new AccountFlowCreditCardAdapter(activity);
         LinearLayoutManager manager = new LinearLayoutManager(activity);

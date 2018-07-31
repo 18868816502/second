@@ -78,7 +78,7 @@ public class LoanBillActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        SlidePanelHelper.attach(this);
+        //SlidePanelHelper.attach(this);
         activity = this;
     }
 
@@ -93,12 +93,12 @@ public class LoanBillActivity extends BaseComponentActivity {
                         houseBean = data.get(0);
                         tv_house_name.setText(houseBean.iconName);
                         tv_house_remark.setText(houseBean.remark);
-                        Glide.with(activity).load(houseBean.logo).transform(new GlideCircleTransform(activity)).into(iv_house_icon);
+                        //Glide.with(activity).load(houseBean.logo).transform(new GlideCircleTransform(activity)).into(iv_house_icon);
 
                         carBean = data.get(1);
                         tv_car_name.setText(carBean.iconName);
                         tv_car_remark.setText(carBean.remark);
-                        Glide.with(activity).load(carBean.logo).transform(new GlideCircleTransform(activity)).into(iv_car_icon);
+                        //Glide.with(activity).load(carBean.logo).transform(new GlideCircleTransform(activity)).into(iv_car_icon);
 
                         customBean = data.get(2);
                         tv_custom_loan.setText(customBean.iconName);
