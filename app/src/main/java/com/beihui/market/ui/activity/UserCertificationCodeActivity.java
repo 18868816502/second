@@ -30,6 +30,8 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
@@ -163,7 +165,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                                if (result.isSuccess()) {
                                                    //umeng统计
                                                    Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
-
+                                                   EventBus.getDefault().post("1");
                                                    //登录之后，将用户信息注册到本地
                                                    UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
                                                    //保存用户id,缓存

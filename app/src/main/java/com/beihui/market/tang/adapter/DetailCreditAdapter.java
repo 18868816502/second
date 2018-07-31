@@ -46,8 +46,8 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
     private List<CreditBill> dataSet = new ArrayList<>();
     private CreditDetailActivity mActivity;
     private CreditCardDebtDetail data;
-    private boolean isExpand = false;
     private SubDetailAdapter detailAdapter = new SubDetailAdapter();
+    private int lastPos = 0;
 
     public void notifyHead(CreditCardDebtDetail debtDetail) {
         if (debtDetail != null) {
@@ -76,18 +76,18 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
     }
 
     @Override
-    public void onBindViewHolder(final DetailCreditAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final DetailCreditAdapter.ViewHolder holder, final int position) {
         if (holder.viewType == VIEW_HEADER) {
             if (data != null) {
                 Glide.with(mActivity).load(data.image).transform(new GlideCircleTransform(mActivity)).into(holder.iv_detail_icon);
-                holder.tv_detail_name.setText(data.bankName);
+                holder.tv_detail_name.setText(data.bankName + " " + data.getCardNums());
                 CreditCardDebtDetail.ShowBillBean showBill = data.getShowBill();
                 if (showBill != null) {
-                    holder.tv_x_month.setText(String.format(mActivity.getString(R.string.x_month_repay), showBill.getBillMonth().substring(5, 7)));
+                    holder.tv_x_month.setText(String.format(mActivity.getString(R.string.x_month_repay), Integer.parseInt(showBill.getBillMonth().substring(5, 7)) + ""));
                     holder.tv_still_balance.setText(String.format("￥%.2f", showBill.getNewBalance()));
                     holder.tv_min_amount.setText(String.format("%.2f", showBill.getMinPayment()));
-                    holder.tv_bill_date.setText(showBill.getBillDate().substring(5, 11));
-                    holder.tv_pay_date.setText(showBill.getPaymentDueDate().substring(5, 11));
+                    holder.tv_bill_date.setText(showBill.getBillDate().substring(5, 11).replace("-", "."));
+                    holder.tv_pay_date.setText(showBill.getPaymentDueDate().substring(5, 11).replace("-", "."));
                 }
             }
         } else if (holder.viewType == VIEW_NORMAL) {
@@ -131,41 +131,88 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
 
             holder.initRecyclerView();
             holder.recycler.setAdapter(detailAdapter);
+            if (bill.isExpand) {
+                holder.iv_left.setImageResource(R.mipmap.ic_left_down);
+                holder.ll_subitem_wrap.setVisibility(View.VISIBLE);
+            } else {
+                holder.iv_left.setImageResource(R.mipmap.ic_left);
+                holder.ll_subitem_wrap.setVisibility(View.GONE);
+            }
 
             holder.fl_credit_item_wrap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isExpand) {
-                        holder.iv_left.setImageResource(R.mipmap.ic_left);
-                        holder.ll_subitem_wrap.setVisibility(View.GONE);
-                        detailAdapter.getData().clear();
-                    } else {
-                        holder.iv_left.setImageResource(R.mipmap.ic_left_down);
-                        holder.ll_subitem_wrap.setVisibility(View.VISIBLE);
-                        Api.getInstance().billDetail(bill.getUserId(), bill.getId())
-                                .compose(RxResponse.<List<BillDetail>>compatT())
-                                .subscribe(new ApiObserver<List<BillDetail>>() {
-                                    @Override
-                                    public void onNext(@NonNull List<BillDetail> data) {
-                                        if (data.size() == 0) {
-                                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                                        } else {
-                                            holder.rl_empty_wrap.setVisibility(View.GONE);
-                                            detailAdapter.setNewData(data);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(@NonNull Throwable t) {
-                                        holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                                        super.onError(t);
-                                    }
-                                });
-                    }
-                    isExpand = !isExpand;
+                    itemClick(position - 1, holder);
                 }
             });
         }
+    }
+
+    private void itemClick(final int curPos, final ViewHolder holder) {
+        if (lastPos != curPos) {
+            dataSet.get(lastPos).isExpand = false;
+            dataSet.get(curPos).isExpand = true;
+            lastPos = curPos;
+        } else if (curPos == 0) {
+            dataSet.get(lastPos).isExpand = false;
+            dataSet.get(curPos).isExpand = true;
+        } else {
+            dataSet.get(lastPos).isExpand = false;
+            dataSet.get(curPos).isExpand = false;
+            lastPos = 0;
+        }
+        System.out.println("current = "+curPos);
+        mActivity.getRecyclerView().smoothScrollToPosition(curPos);
+        CreditBill bill = dataSet.get(curPos);
+        Api.getInstance().billDetail(bill.getUserId(), bill.getId())
+                .compose(RxResponse.<List<BillDetail>>compatT())
+                .subscribe(new ApiObserver<List<BillDetail>>() {
+                    @Override
+                    public void onNext(@NonNull List<BillDetail> data) {
+                        if (data.size() == 0) {
+                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.rl_empty_wrap.setVisibility(View.GONE);
+                            detailAdapter.setNewData(data);
+                        }
+                        notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        holder.rl_empty_wrap.setVisibility(View.VISIBLE);
+                        super.onError(t);
+                    }
+                });
+        /*if (bill.isExpand) {
+            holder.iv_left.setImageResource(R.mipmap.ic_left);
+            holder.ll_subitem_wrap.setVisibility(View.GONE);
+            detailAdapter.getData().clear();
+        } else {
+            holder.iv_left.setImageResource(R.mipmap.ic_left_down);
+            holder.ll_subitem_wrap.setVisibility(View.VISIBLE);
+            Api.getInstance().billDetail(bill.getUserId(), bill.getId())
+                    .compose(RxResponse.<List<BillDetail>>compatT())
+                    .subscribe(new ApiObserver<List<BillDetail>>() {
+                        @Override
+                        public void onNext(@NonNull List<BillDetail> data) {
+                            notifyItemChanged(lastPos);
+                            notifyItemChanged(curPos);
+                            if (data.size() == 0) {
+                                holder.rl_empty_wrap.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.rl_empty_wrap.setVisibility(View.GONE);
+                                detailAdapter.setNewData(data);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable t) {
+                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
+                            super.onError(t);
+                        }
+                    });
+        }*/
     }
 
     @Override

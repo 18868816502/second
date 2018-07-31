@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.RectF;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.ui.fragment.HomeFragment;
+import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
@@ -43,6 +45,11 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.annotations.NonNull;
+import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -81,6 +88,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             homeFragment.request();
         }
     };
+    private HighLight infoHighLight;
 
     public void notifyEmpty() {
         url = "";
@@ -210,7 +218,12 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_credit), item.getMonth()));
             } else {//1-网贷(3-快捷记账（删了）)
                 holder.tv_home_bill_synchronized.setVisibility(View.GONE);
-                holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm() == -1 ? "∞" : item.getTotalTerm()));
+                if (item.getTotalTerm() == -1) {
+                    holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan_), item.getTerm(), "∞"));
+                } else {
+                    holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm() + ""));
+                }
+                //holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm() == -1 ? "∞" : item.getTotalTerm()));
             }
             //账单到期时间
             if (item.getReturnDay() > 0) {//x天后到期
@@ -259,6 +272,38 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     }
                 }
             });
+
+            if ("showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity")))
+                return;//说明已经展示过引导
+            infoHighLight = new HighLight(mActivity)
+                    .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                        @Override
+                        public void onLayouted() {
+                            infoHighLight.autoRemove(false)
+                                    .intercept(true)
+                                    .enableNext()
+                                    .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
+                                        @Override
+                                        public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                            marginInfo.leftMargin = rectF.centerX() - Px2DpUtils.dp2px(mActivity, 10);
+                                            marginInfo.topMargin = rectF.centerY() - Px2DpUtils.dp2px(mActivity, 5);
+                                        }
+                                    }, new CircleLightShape())
+                                    .setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                                        @Override
+                                        public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                            // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                            infoHighLight.getHightLightView().findViewById(R.id.iv_guide).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    infoHighLight.remove();
+                                                    SPUtils.setValue(mActivity, "showGuideMainActivity");
+                                                }
+                                            });
+                                        }
+                                    }).show();
+                        }
+                    });
         }
     }
 

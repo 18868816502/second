@@ -86,6 +86,44 @@ public class HomeFragment extends BaseTabFragment {
     public int mMeasuredRecyclerViewHeaderHeight;
     public float mScrollY = 0f;
     private double num;
+    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            final LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            manager.getChildAt(0).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    //移出视图树
+                    manager.getChildAt(0).getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    //列表头布局高度
+                    mMeasuredRecyclerViewHeaderHeight = mRecyclerView.getChildAt(0).getMeasuredHeight();
+                }
+            });
+            int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
+            int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
+            mScrollY += dy;
+
+            //隐藏显示布局的变化率
+            float max = 0f;
+            if (height > 0) max = Math.max(mScrollY * 1.0f / height, 0f);
+            System.out.println("1 =" + height);
+            System.out.println("2 =" + mScrollY);
+            //if (max > 1) max = 1;
+            if (max >= 0.55f) mTitle.setVisibility(View.VISIBLE);
+            else mTitle.setVisibility(View.GONE);
+
+            if (SPUtils.getNumVisible(mActivity)) {
+                tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
+            } else {
+                tv_top_loan_num.setText("****");//应还金额
+            }
+        }
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+    };
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -212,11 +250,12 @@ public class HomeFragment extends BaseTabFragment {
                             }
                         }
                     });
+            //mRecyclerView.smoothScrollToPosition(0);
+            mTitle.setVisibility(View.GONE);
         } else {
             pageAdapter.notifyEmpty();
             swipeRefreshLayout.setRefreshing(false);
         }
-        mScrollY = 0;
     }
 
     private void initRecyclerView() {
@@ -233,34 +272,7 @@ public class HomeFragment extends BaseTabFragment {
             }
         });
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                final LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                manager.getChildAt(0).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        //移出视图树
-                        manager.getChildAt(0).getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        //列表头布局高度
-                        mMeasuredRecyclerViewHeaderHeight = mRecyclerView.getChildAt(0).getMeasuredHeight();
-                    }
-                });
-                int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
-                int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
-                mScrollY += dy;
-                //隐藏显示布局的变化率
-                float max = Math.max(mScrollY / height, 0f);
-                if (max > 1) max = 1;
-                if (max > 0.55f) mTitle.setAlpha(1);
-                else mTitle.setAlpha(0);
-                if (SPUtils.getNumVisible(mActivity)) {
-                    tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
-                } else {
-                    tv_top_loan_num.setText("****");//应还金额
-                }
-            }
-        });
+        mRecyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override

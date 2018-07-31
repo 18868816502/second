@@ -110,6 +110,10 @@ public class CreditDetailActivity extends BaseComponentActivity {
         mRecyclerView.setCanPullUp(false);
     }
 
+    public PulledTabAccountRecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }

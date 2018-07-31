@@ -58,6 +58,7 @@ public class BillSummaryBean implements Serializable {
          */
 
         private String recordId;
+        public String billId;
         private String title;
         private Object iconId;
         private String totalAmount;
