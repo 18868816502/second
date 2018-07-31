@@ -108,6 +108,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
         ft.commit();
     }
 
+
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);

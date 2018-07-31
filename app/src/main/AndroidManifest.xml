@@ -435,6 +435,9 @@
         <activity
             android:name=".ui.activity.WechatBindDoneActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ResetPwdActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

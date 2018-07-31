@@ -2,6 +2,7 @@ package com.beihui.market.ui.fragment;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSetPwdComponent;
 import com.beihui.market.injection.module.SetPwdModule;
+import com.beihui.market.ui.activity.ResetPwdActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserCertificationCodeActivity;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
@@ -81,6 +83,8 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     TextView fetchText;
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
+    @BindView(R.id.tv_reset_phone)
+    TextView phoneTv;
 
     public Activity mActivity;
 
@@ -110,17 +114,6 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     @Override
     public void configViews() {
         mActivity = getActivity();
-        psdVisibilityCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    passwordEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                } else {
-                    passwordEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }
-                CommonUtils.setEditTextCursorLocation(passwordEt);
-            }
-        });
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -132,7 +125,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
                 boolean validateCode = verifyCodeEt.getText().length() == 4;
 
-                if (LegalInputUtils.validatePassword(passwordEt.getText().toString()) && validateCode) {
+                if (validateCode) {
                     confirmBtn.setClickable(true);
                     confirmBtn.setTextColor(Color.WHITE);
                 } else {
@@ -154,12 +147,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     @Override
     public void initDatas() {
         requestPhone = getArguments().getString("requestPhone");
-        String tileName = getActivity().getIntent().getStringExtra("tileName");
-        if (!TextUtils.isEmpty(tileName)) {
-            titleName.setText(tileName);
-        } else {
-            titleName.setText("忘记密码");
-        }
+        phoneTv.setText(LegalInputUtils.formatMobile(requestPhone));
         presenter.requestVerification(requestPhone);
     }
 
@@ -286,6 +274,17 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     @Override
     public void moveToNextStep(String requestPhone) {
-        presenter.resetPwd(requestPhone, passwordEt.getText().toString());
+        // presenter.resetPwd(requestPhone, passwordEt.getText().toString());
+        Intent intent = new Intent(getActivity(), ResetPwdActivity.class);
+        intent.putExtra("phone", requestPhone);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 0) {
+            mActivity.finish();
+        }
     }
 }

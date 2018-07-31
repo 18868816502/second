@@ -5,7 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    android:orientation="vertical"
     tools:ignore="RtlHardcoded">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical">
+
+            <ImageView
+                android:id="@+id/mine_msg"
+                style="@style/ToolBarIconStyle"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/mine_message" />
+
+            <TextView
+                android:id="@+id/tv_message_num"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignRight="@+id/mine_msg"
+                android:background="@drawable/round_red"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,38 +60,6 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/tool_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/tool_bar_height">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical">
-
-                        <ImageView
-                            android:id="@+id/mine_msg"
-                            style="@style/ToolBarIconStyle"
-                            android:layout_marginRight="15dp"
-                            android:src="@drawable/mine_message" />
-
-                        <TextView
-                            android:id="@+id/tv_message_num"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_alignRight="@+id/mine_msg"
-                            android:background="@drawable/round_red"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="9sp"
-                            android:visibility="invisible" />
-
-                    </RelativeLayout>
-
-
-                </android.support.v7.widget.Toolbar>
 
                 <LinearLayout
                     android:id="@+id/ll_navigate_user_profile"

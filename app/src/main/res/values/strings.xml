@@ -21,7 +21,7 @@
     <string name="input_phone_number">请输入手机号</string>
     <string name="fetch">获取</string>
     <string name="verify_code">验证码</string>
-    <string name="input_verify_code">请输入短信验证码</string>
+    <string name="input_verify_code">请输入验证码</string>
     <string name="next_step">下一步</string>
     <string name="message_center">消息中心</string>
     <string name="news_recommend">资讯推荐</string>

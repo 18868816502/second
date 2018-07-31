@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -17,6 +18,8 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.media.UMImage;
@@ -103,5 +106,11 @@ public class InvitationWebActivity extends BaseComponentActivity {
                     .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.onResume();
     }
 }

@@ -80,7 +80,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/mine_head" />
+                        android:src="@drawable/mine_icon_head" />
 
                 </FrameLayout>
 
