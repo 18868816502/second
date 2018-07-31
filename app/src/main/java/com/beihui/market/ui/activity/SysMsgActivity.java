@@ -183,9 +183,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        float density = getResources().getDisplayMetrics().density;
-        int padding = (int) (density * 7);
-        recyclerView.addItemDecoration(new NewsItemDeco((int) (density * 0.5), padding, padding));
 
         refreshLayout.setColorSchemeResources(R.color.colorPrimary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

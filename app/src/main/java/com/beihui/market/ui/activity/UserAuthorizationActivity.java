@@ -206,7 +206,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_PSD) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-//            ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
+            ft.setCustomAnimations(R.anim.slide_from_right, R.anim.hold_still);
 
             Fragment mainLoginTag = fm.findFragmentByTag(LoginMainFragment.class.getSimpleName());
             ft.detach(mainLoginTag);
@@ -214,6 +214,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             String loginPsdTag = UserLoginFragment.class.getSimpleName();
             Fragment loginPsd = new UserLoginFragment();
             ft.add(R.id.content_container, loginPsd, loginPsdTag);
+
             ft.attach(loginPsd);
             ft.addToBackStack(loginPsdTag);
             ft.commit();
@@ -221,7 +222,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         } else if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_FAST) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-//            ft.setCustomAnimations(R.anim.auth_enter, R.anim.auth_exit, R.anim.auth_enter, R.anim.auth_exit);
+            ft.setCustomAnimations(R.anim.slide_from_right, R.anim.hold_still);
 
             Fragment loginPsdTag = fm.findFragmentByTag(UserLoginFragment.class.getSimpleName());
             ft.detach(loginPsdTag);

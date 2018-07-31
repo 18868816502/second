@@ -185,10 +185,10 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                         App.remind_day = remindDay;
                         if (type == 0 && pushSwitch.isChecked()) {
                             //ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
-                            ToastUtil.toast("开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                            ToastUtil.toast("开启成功");
                         } else if (type == 1 && messageSwitch.isChecked()) {
                             //ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
-                            ToastUtil.toast("开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
+                            ToastUtil.toast("开启成功");
                         }
                     }
                 });

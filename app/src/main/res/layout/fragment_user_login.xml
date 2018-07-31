@@ -113,7 +113,7 @@
             <TextView
                 android:id="@+id/login"
                 style="@style/TextButtonStyle"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
                 android:background="@drawable/round_login_btn"
                 android:text="@string/login"
                 android:textColor="#50ffffff" />
