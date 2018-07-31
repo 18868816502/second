@@ -10,10 +10,10 @@
         android:layout_height="match_parent"
         android:background="@mipmap/bg_bill_item"
         android:orientation="vertical"
-        android:paddingBottom="12dp"
+        android:paddingBottom="18dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="12dp">
+        android:paddingTop="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +75,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="6dp">
 
             <TextView
                 android:id="@+id/tv_home_bill_time_tip"
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:text="07.13"
             android:textColor="#909298"
             android:textSize="10dp" />

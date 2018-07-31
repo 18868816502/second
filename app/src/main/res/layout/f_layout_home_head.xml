@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="-50dp"
+    android:layout_marginBottom="-45dp"
     android:background="@mipmap/bg_home_page"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="210dp">
+        android:layout_marginTop="16dp"
+        android:layout_height="200dp">
 
         <TextView
             android:id="@+id/tv_event_entry"
@@ -16,36 +17,32 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="20dp"
             android:padding="5dp"
             android:text="记账分钱"
             android:textColor="@color/white" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_month_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_bill_num"
+            android:layout_marginLeft="15dp"
+            android:text="x月应还"
+            android:textColor="@color/white"
+            android:textSize="13dp" />
+
+        <com.beihui.market.tang.widget.CustomNumTextView
+            android:id="@+id/tv_bill_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_month_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x月应还"
-                android:textColor="@color/white"
-                android:textSize="13dp" />
-
-            <com.beihui.market.tang.widget.CustomNumTextView
-                android:id="@+id/tv_bill_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="赶紧先记上一笔"
-                android:textColor="@color/white"
-                android:textSize="25dp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:text="赶紧先记上一笔"
+            android:textColor="@color/white"
+            android:textSize="32dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_bill_visible"
@@ -53,7 +50,7 @@
             android:layout_height="45dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="15dp"
             android:padding="8dp"
             android:src="@mipmap/ic_eye_open" />
     </RelativeLayout>
@@ -87,9 +84,9 @@
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="21dp"
             android:layout_marginTop="18dp"
-            android:background="@color/white"
+            android:background="#3fff"
             android:paddingBottom="5dp" />
 
         <TextView

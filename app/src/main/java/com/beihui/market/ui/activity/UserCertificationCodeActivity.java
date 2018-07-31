@@ -260,9 +260,9 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
             /**
              * 进入账单模块首页
              */
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("account", true);
-            startActivity(intent);
+            startActivity(intent);*/
 
             Statistic.login(result.getId());
             //登录之后，将用户信息注册到本地

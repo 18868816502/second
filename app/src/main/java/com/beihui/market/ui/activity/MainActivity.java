@@ -7,7 +7,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -29,7 +28,6 @@ import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.TabImage;
@@ -52,8 +50,6 @@ import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
-import com.beihui.market.util.Px2DpUtils;
-import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.ToastUtil;
@@ -80,10 +76,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBaseCallback;
-import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.view.HightLightView;
 
 public class MainActivity extends BaseComponentActivity {
 
@@ -239,44 +231,6 @@ public class MainActivity extends BaseComponentActivity {
         }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
     }
 
-    /*引导图*/
-    public void showGuide() {
-        if ("showGuideMainActivity".equals(SPUtils.getValue(MainActivity.this, "showGuideMainActivity"))) {
-            return;
-        }
-        infoHighLight = new HighLight(this)
-                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-                    @Override
-                    public void onLayouted() {
-                        infoHighLight.autoRemove(false)
-                                .intercept(true)
-                                .enableNext()
-                                .addHighLight(/*R.id.tv_bill_add_buttom*/R.id.tab_account, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
-                                    @Override
-                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.bottomMargin = rectF.height() + Px2DpUtils.dp2px(MainActivity.this, 10);
-                                        marginInfo.rightMargin = rectF.width() / 2 + Px2DpUtils.dp2px(MainActivity.this, 15);
-                                    }
-                                }, new CircleLightShape())
-                                .setOnNextCallback(new HighLightInterface.OnNextCallback() {
-                                    @Override
-                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                        if (targetView.getId() == R.id.tab_account) {
-                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    infoHighLight.remove();
-                                                    SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
-                                                }
-                                            });
-                                        }
-                                    }
-                                }).show();
-                    }
-                });
-    }
-
     @Override
     protected void onDestroy() {
         updateHelper.destroy();
@@ -408,9 +362,15 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 ft.show(tabForm);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
-
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
+
+                tabFomrsIcon.setImageResource(R.mipmap.ic_tab_bill_select);
+                tabFormsText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
+                tabAccountIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
+                tabAccountText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabNewsIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
+                tabNewsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
                 break;
             //账单
             case R.id.tab_account:
@@ -423,6 +383,13 @@ public class MainActivity extends BaseComponentActivity {
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+
+                tabFomrsIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
+                tabFormsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabAccountIcon.setImageResource(R.mipmap.ic_tab_discover_select);
+                tabAccountText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
+                tabNewsIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
+                tabNewsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
                 break;
             //发现
             case R.id.tab_news:
@@ -435,6 +402,13 @@ public class MainActivity extends BaseComponentActivity {
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
+
+                tabFomrsIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
+                tabFormsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabAccountIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
+                tabAccountText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabNewsIcon.setImageResource(R.mipmap.ic_tab_mine_select);
+                tabNewsText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
                 break;
         }
         ft.commit();
@@ -496,54 +470,23 @@ public class MainActivity extends BaseComponentActivity {
 
     private void queryBottomImage() {
         Api.getInstance().queryBottomImage()
-                .compose(RxUtil.<ResultEntity<TabImageBean>>io2main())
-                .subscribe(new Consumer<ResultEntity<TabImageBean>>() {
-                               @Override
-                               public void accept(ResultEntity<TabImageBean> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null) {
-                                           /**
-                                            * 审核 1-资讯页，2-借贷页
-                                            */
-                                           if (result.getData().audit == 1) {
-                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
-                                               EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                                           } else if (result.getData().audit == 2) {
-                                               NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
-                                               EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                                           }
-                                           if (result.getData().bottomList.size() > 0) {
-                                               updateBottomSelector(result.getData().bottomList);
-                                           } else {
-                                               navigationBar.select(R.id.tab_forms_root);
-                                           }
-                                       } else {
-                                           navigationBar.select(R.id.tab_forms_root);
-                                       }
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(final Throwable throwable) throws Exception {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        navigationBar.select(R.id.tab_forms_root);
-                                        try {
-                                            throw throwable;
-                                        } catch (Throwable throwable1) {
-                                            throwable1.printStackTrace();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-        Api.getInstance().queryBottomImage()
                 .compose(RxResponse.<TabImageBean>compatT())
                 .subscribe(new ApiObserver<TabImageBean>() {
                     @Override
                     public void onNext(@NonNull TabImageBean data) {
+                        //审核 1-资讯页，2-借贷页
+                        if (data.audit == 1) {
+                            NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
+                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
+                        } else if (data.audit == 2) {
+                            NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
+                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
+                        }
+                        if (data.bottomList.size() > 0) {
+                            updateBottomSelector(data.bottomList);
+                        } else {
+                            navigationBar.select(R.id.tab_forms_root);
+                        }
                     }
 
                     @Override

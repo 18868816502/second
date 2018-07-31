@@ -62,7 +62,7 @@ public class RemarkActivity extends BaseComponentActivity {
         activity = this;
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        //SlidePanelHelper.attach(this);
+        SlidePanelHelper.attach(this);
     }
 
     @Override

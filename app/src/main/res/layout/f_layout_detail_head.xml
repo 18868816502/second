@@ -91,13 +91,13 @@
                     android:textSize="15dp" />
             </LinearLayout>
 
-            <View
+            <!--<View
                 android:layout_width="0.8dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:background="#e8e8e8" />
-
+-->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

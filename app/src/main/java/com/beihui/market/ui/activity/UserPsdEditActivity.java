@@ -195,15 +195,12 @@ public class UserPsdEditActivity extends BaseComponentActivity {
      * 上一页就登录成功
      */
     private void login() {
-        /**
-         * 进入我的模块首页
-         */
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //进入我的模块首页
+        /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("account", true);
-        startActivity(intent);
+        startActivity(intent);*/
         EventBus.getDefault().post("1");
         finish();
-
     }
 
     /**

@@ -51,7 +51,7 @@
                         android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@drawable/tab_bill_anasisly" />
+                        android:src="@mipmap/ic_tab_bill_select" />
 
                     <TextView
                         android:id="@+id/tab_forms_text"
@@ -61,7 +61,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:text="@string/tab_account"
-                        android:textColor="@color/select_blue_grey"
+                        android:textColor="@color/black_1"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -79,7 +79,7 @@
                         android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@drawable/tab_account" />
+                        android:src="@mipmap/ic_tab_discover_normal" />
 
                     <TextView
                         android:id="@+id/tab_account_text"
@@ -89,7 +89,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:text="@string/tab_news"
-                        android:textColor="@color/select_blue_grey"
+                        android:textColor="@color/black_2"
                         android:textSize="12sp" />
                 </RelativeLayout>
 
@@ -106,7 +106,7 @@
                         android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@drawable/tab_news" />
+                        android:src="@mipmap/ic_tab_mine_normal" />
 
                     <TextView
                         android:id="@+id/tab_news_text"
@@ -116,11 +116,12 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:text="@string/tab_personal"
-                        android:textColor="@color/select_blue_grey"
+                        android:textColor="@color/black_2"
                         android:textSize="12sp" />
                 </RelativeLayout>
             </com.beihui.market.view.BottomNavigationBar>
         </FrameLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"

@@ -57,15 +57,25 @@
             <include layout="@layout/x_pull_to_refresh_load_more" />
         </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
 
-        <TextView
-            android:id="@+id/tv_finish_all"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/x_shandow"
-            android:gravity="center"
-            android:text="结清全部"
-            android:textColor="@color/black_1"
-            android:textSize="15dp" />
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e8e8e8" />
+
+            <TextView
+                android:id="@+id/tv_finish_all"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:text="结清全部"
+                android:textColor="@color/black_1"
+                android:textSize="15dp" />
+        </LinearLayout>
     </FrameLayout>
 </LinearLayout>
