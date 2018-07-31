@@ -123,7 +123,7 @@ public class ResetPwdActivity extends BaseComponentActivity {
                                        Statistic.onEvent(Events.CHANGE_PASSWORD_SUCCESS);
 
 
-                                       ToastUtil.toast(result.getMsg());
+                                       ToastUtil.toast("密码重置成功");
 
                                        new Handler().postDelayed(new Runnable() {
                                            public void run() {
