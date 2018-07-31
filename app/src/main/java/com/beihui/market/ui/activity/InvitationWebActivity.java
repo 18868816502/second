@@ -20,6 +20,7 @@ import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.LogUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.media.UMImage;
@@ -63,8 +64,9 @@ public class InvitationWebActivity extends BaseComponentActivity {
                         useDefaultIndicator(getResources().getColor(R.color.red), 1)
                 .createAgentWeb()//
                 .ready()
-                .go(BuildConfig.H5_DOMAIN + "/invite-friends.html");
+                .go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
+        LogUtils.i(UserHelper.getInstance(context).getProfile().getId());
 
     }
 

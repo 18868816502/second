@@ -64,6 +64,10 @@ public class NetConstants {
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
 
+    public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
+
+
+
     public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
     public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
@@ -141,6 +145,10 @@ public class NetConstants {
 
     public static String generateInvitationUrl(String userId) {
         return H5_INVITATION + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+    }
+
+    public static String invitationUrl(String userId) {
+        return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateInternalMessageUrl(String id) {
