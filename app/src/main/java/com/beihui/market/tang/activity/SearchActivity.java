@@ -93,7 +93,7 @@ public class SearchActivity extends BaseComponentActivity {
         activity = this;
         setupToolbar(mToolbar, true);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        SlidePanelHelper.attach(this);
+        //SlidePanelHelper.attach(this);
     }
 
     @Override

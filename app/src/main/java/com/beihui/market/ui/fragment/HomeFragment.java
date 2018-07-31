@@ -84,8 +84,8 @@ public class HomeFragment extends BaseTabFragment {
     public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
     public int page = 1;
     public int mMeasuredRecyclerViewHeaderHeight;
-    public float mScrollY = 0f;
     private double num;
+    public float mScrollY = 0f;
     private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -251,6 +251,7 @@ public class HomeFragment extends BaseTabFragment {
                         }
                     });
             //mRecyclerView.smoothScrollToPosition(0);
+            //mScrollY = 0;
             mTitle.setVisibility(View.GONE);
         } else {
             pageAdapter.notifyEmpty();

@@ -154,14 +154,16 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
             dataSet.get(curPos).isExpand = true;
             lastPos = curPos;
         } else if (curPos == 0) {
-            dataSet.get(lastPos).isExpand = false;
-            dataSet.get(curPos).isExpand = true;
+            if (dataSet.get(0).isExpand) {
+                dataSet.get(0).isExpand = false;
+            } else {
+                dataSet.get(0).isExpand = true;
+            }
         } else {
             dataSet.get(lastPos).isExpand = false;
             dataSet.get(curPos).isExpand = false;
             lastPos = 0;
         }
-        System.out.println("current = "+curPos);
         mActivity.getRecyclerView().smoothScrollToPosition(curPos);
         CreditBill bill = dataSet.get(curPos);
         Api.getInstance().billDetail(bill.getUserId(), bill.getId())
@@ -184,35 +186,6 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
                         super.onError(t);
                     }
                 });
-        /*if (bill.isExpand) {
-            holder.iv_left.setImageResource(R.mipmap.ic_left);
-            holder.ll_subitem_wrap.setVisibility(View.GONE);
-            detailAdapter.getData().clear();
-        } else {
-            holder.iv_left.setImageResource(R.mipmap.ic_left_down);
-            holder.ll_subitem_wrap.setVisibility(View.VISIBLE);
-            Api.getInstance().billDetail(bill.getUserId(), bill.getId())
-                    .compose(RxResponse.<List<BillDetail>>compatT())
-                    .subscribe(new ApiObserver<List<BillDetail>>() {
-                        @Override
-                        public void onNext(@NonNull List<BillDetail> data) {
-                            notifyItemChanged(lastPos);
-                            notifyItemChanged(curPos);
-                            if (data.size() == 0) {
-                                holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                            } else {
-                                holder.rl_empty_wrap.setVisibility(View.GONE);
-                                detailAdapter.setNewData(data);
-                            }
-                        }
-
-                        @Override
-                        public void onError(@NonNull Throwable t) {
-                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                            super.onError(t);
-                        }
-                    });
-        }*/
     }
 
     @Override

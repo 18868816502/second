@@ -68,7 +68,7 @@ public class CreditDetailActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        SlidePanelHelper.attach(this);
+        //SlidePanelHelper.attach(this);
         activity = this;
     }
 

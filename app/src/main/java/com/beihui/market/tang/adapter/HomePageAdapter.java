@@ -385,16 +385,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                                     }
                                                 }
                                             });
-                                    /*Api.getInstance().updateDebtStatus(userHelper.id(), billId, 2)
-                                            .compose(RxResponse.compatO())
-                                            .subscribe(new ApiObserver<Object>() {
-                                                @Override
-                                                public void onNext(@NonNull Object data) {
-                                                    notifyItemRemoved(position);
-                                                    dataSet.remove(position - 1);
-                                                    handler.postDelayed(task, 500);
-                                                }
-                                            });*/
                                 } else if (type == 3) {//快捷记账
                                     Api.getInstance().updateStatus(userHelper.id(), billId, 2, 0)
                                             .compose(RxResponse.<BillState>compatT())
@@ -409,16 +399,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                                     }
                                                 }
                                             });
-                                    /*Api.getInstance().updateFastDebtBillStatus(userHelper.id(), billId, recordId, 2, amount)
-                                            .compose(RxResponse.compatO())
-                                            .subscribe(new ApiObserver<Object>() {
-                                                @Override
-                                                public void onNext(@NonNull Object data) {
-                                                    notifyItemRemoved(position);
-                                                    dataSet.remove(position - 1);
-                                                    handler.postDelayed(task, 500);
-                                                }
-                                            });*/
                                 }
                                 dialog.dismiss();
                                 break;

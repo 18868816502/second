@@ -1,6 +1,7 @@
 package com.beihui.market.tang.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -28,6 +32,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.pickerview.OptionsPickerView;
@@ -49,6 +54,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -106,6 +112,8 @@ public class MakeBillActivity extends BaseComponentActivity {
     ClearEditText etCustomName;
     @BindView(R.id.fl_repay_times_wrap)
     FrameLayout repay_times_wrap;
+    @BindView(R.id.tv_alert_dlg)
+    View alertDlg;
 
     private int type;
     private String iconId;
@@ -134,7 +142,7 @@ public class MakeBillActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
-        SlidePanelHelper.attach(this);
+        //SlidePanelHelper.attach(this);
     }
 
     @Override
@@ -144,7 +152,8 @@ public class MakeBillActivity extends BaseComponentActivity {
         String title = getIntent().getStringExtra("title");
         tvToolbarTitle.setText(title);
         if (type == TYPE_NET_LOAN) {
-            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+            //InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+            //showSoft(etInputMoney);
         }
         if (type == TYPE_HOUSE_LOAN) {//房贷
             repay_times_wrap.setEnabled(false);
@@ -152,7 +161,8 @@ public class MakeBillActivity extends BaseComponentActivity {
             repayCycle = 1;
             tv_repay_cycle.setCompoundDrawables(null, null, null, null);
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
-            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+            //InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+            //showSoft(etInputMoney);
         }
         if (type == TYPE_CAR_LOAN) {//车贷
             repay_times_wrap.setEnabled(false);
@@ -160,11 +170,11 @@ public class MakeBillActivity extends BaseComponentActivity {
             repayCycle = 1;
             tv_repay_cycle.setCompoundDrawables(null, null, null, null);
             ll_cycle_times_wrap.setVisibility(View.VISIBLE);
-            InputMethodUtil.openSoftKeyboard(this, etInputMoney);
+            //InputMethodUtil.openSoftKeyboard(this, etInputMoney);
         }
         if (type == TYPE_USER_DIFINE) {//自定义
             flCustomWrap.setVisibility(View.VISIBLE);
-            InputMethodUtil.openSoftKeyboard(this, etCustomName);
+            //InputMethodUtil.openSoftKeyboard(this, etCustomName);
         }
         iconId = getIntent().getStringExtra("iconId");
         tallyId = getIntent().getStringExtra("tallyId");
@@ -227,6 +237,13 @@ public class MakeBillActivity extends BaseComponentActivity {
         });
     }
 
+    private void showSoft(EditText editText) {
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
@@ -235,23 +252,23 @@ public class MakeBillActivity extends BaseComponentActivity {
             R.id.fl_notice_wrap, R.id.rl_expand_shrink, R.id.ll_cycle_times_wrap})
     public void onViewClicked(View view) {
         InputMethodUtil.closeSoftKeyboard(this);//收起软键盘
-        mToolbar.requestFocus();
-        mToolbar.setFocusable(true);
-        mToolbar.setFocusableInTouchMode(true);
         switch (view.getId()) {
             case R.id.tv_save_bill:
                 createBill();
                 break;
             case R.id.tv_alert_dlg:
-                DlgUtil.createDlg(this, R.layout.dlg_info_dout, new DlgUtil.OnDlgViewClickListener() {
+                DlgUtil.createDlg(MakeBillActivity.this, R.layout.dlg_info_dout, new DlgUtil.OnDlgViewClickListener() {
                     @Override
                     public void onViewClick(final Dialog dialog, View dlgView) {
-                        dlgView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                        View.OnClickListener listener = new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                dialog.dismiss();
+                                if (R.id.confirm == v.getId()) {
+                                    dialog.dismiss();
+                                }
                             }
-                        });
+                        };
+                        dlgView.findViewById(R.id.confirm).setOnClickListener(listener);
                     }
                 });
                 break;
@@ -285,6 +302,9 @@ public class MakeBillActivity extends BaseComponentActivity {
             default:
                 break;
         }
+        tvSaveBill.requestFocus();
+        tvSaveBill.setFocusable(true);
+        tvSaveBill.setFocusableInTouchMode(true);
     }
 
     private void createBill() {
@@ -338,7 +358,7 @@ public class MakeBillActivity extends BaseComponentActivity {
         repayTip = App.remind_day - 1;
         if (repayTip != 0) map.put("remind", repayTip);
 
-        Api.getInstance().createLoanAccount(map)
+        /*Api.getInstance().createLoanAccount(map)
                 .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
                 .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
                     @Override
@@ -348,6 +368,24 @@ public class MakeBillActivity extends BaseComponentActivity {
                         startActivity(intent);
                         EventBus.getDefault().post("1");
                         finish();
+                    }
+                });*/
+        Api.getInstance().createLoanAccount(map)
+                .compose(RxUtil.<ResultEntity<CreateAccountReturnIDsBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
+                    @Override
+                    public void accept(ResultEntity<CreateAccountReturnIDsBean> resultEntity) throws Exception {
+                        if (resultEntity.isSuccess()) {
+                            ToastUtil.toast(resultEntity.getMsg());
+                            Intent intent = new Intent(MakeBillActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            EventBus.getDefault().post("1");
+                            finish();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
                     }
                 });
     }

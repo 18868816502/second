@@ -150,9 +150,9 @@ public class MainActivity extends BaseComponentActivity {
         if (extras != null) {
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_forms_root);
-                /*if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
-                    ToastUtil.showToast(MainActivity.this, extras.getString("moxieMsg"));
-                }*/
+                if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
+                    ToastUtil.toast(extras.getString("moxieMsg"));
+                }
             }
             if (extras.getBoolean("istk")) {
                 if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
