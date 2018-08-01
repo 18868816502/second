@@ -29,6 +29,7 @@ public class PushClickedReceiver extends BroadcastReceiver {
         try {
             JSONObject obj = new JSONObject(paramIntent.getStringExtra("pending_json"));
 
+
             String userId = null;
             if (UserHelper.getInstance(context).getProfile() != null) {
                 userId = UserHelper.getInstance(context).getProfile().getId();

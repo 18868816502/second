@@ -26,9 +26,9 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:text="可可贷"
+        android:textColor="@color/black_1"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"
-        android:textColor="@color/black_1"
         app:layout_constraintBottom_toBottomOf="@+id/circleImg"
         app:layout_constraintStart_toEndOf="@+id/circleImg"
         app:layout_constraintTop_toTopOf="@+id/circleImg"
@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="6月三期账单"
-        android:textSize="13sp"
         android:textColor="@color/black_2"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/bill_title_tv"
         app:layout_constraintTop_toBottomOf="@+id/bill_title_tv" />
 
@@ -50,13 +50,12 @@
         android:id="@+id/total_money_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1005.00"
         android:textColor="@color/black_1"
         android:textSize="15sp"
         android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="@+id/term_tag_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/term_tag_tv"/>
+        app:layout_constraintTop_toTopOf="@+id/term_tag_tv" />
 
     <TextView
         android:id="@+id/label_card"
@@ -84,4 +83,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/term_tag_tv"
         app:srcCompat="@color/common_bg" />
+
+    <TextView
+        android:id="@+id/normal_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_1"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

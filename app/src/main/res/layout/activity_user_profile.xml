@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="12dp"
-                    android:src="@mipmap/right_icon" />
+                    android:src="@drawable/icon_come" />
 
             </LinearLayout>
 
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/right_icon"
+                    android:drawableRight="@drawable/icon_come"
                     android:gravity="center_vertical"
                     android:text="昵称"
                     android:textColor="@color/black_1"

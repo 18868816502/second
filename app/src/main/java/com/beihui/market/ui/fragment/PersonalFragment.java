@@ -42,6 +42,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.LegalInputUtils;
+import com.beihui.market.util.NotificationUtil;
 import com.beihui.market.view.CircleImageView;
 import com.beihui.market.view.RelativeLayoutBar;
 import com.bumptech.glide.Glide;
@@ -356,7 +357,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         intent.putExtra("webViewUrl", url);
         intent.putExtra("title", title);
         getActivity().startActivity(intent);
-        // request();
+
     }
 
     @Override

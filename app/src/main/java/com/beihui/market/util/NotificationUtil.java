@@ -1,6 +1,7 @@
 package com.beihui.market.util;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,7 +9,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.app.NotificationCompat;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.beihui.market.R;
@@ -18,38 +20,74 @@ import java.util.Random;
 
 public class NotificationUtil {
     public static void showNotification(Context context, String title, String content, Intent contentIntent, String group, boolean activity) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
-                //设置群组
-                .setGroup(group)
-                .setSmallIcon(R.drawable.push_small)
-                //通知首次出现在通知栏，带上升动画效果的
-                .setTicker(title)
-                //设置通知的标题
-                .setContentTitle(title)
-                //设置通知的内容
-                .setContentText(content)
-                //通知产生的时间，会在通知信息里显示
-                .setWhen(System.currentTimeMillis())
-                //设置这个标志当用户单击面板就可以让通知将自动取消
-                .setAutoCancel(true)
-                //设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
-                .setOngoing(false)
-                //向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
-                .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
-        //如果有跳转
-        if (contentIntent != null) {
-            if (activity) {
-                builder.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
-            } else {
-                builder.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
-            }
-        }
-
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        //发起通知
-        Random random = new Random(System.currentTimeMillis());
-        notificationManager.notify(random.nextInt(), builder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("chat", "getui", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+            NotificationCompat.Builder  notification = new NotificationCompat.Builder(context, "chat").
+            setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
+                    //设置群组
+                    .setGroup(group)
+                    .setSmallIcon(R.drawable.push_small)
+                    //通知首次出现在通知栏，带上升动画效果的
+                    .setTicker(title)
+                    //设置通知的标题
+                    .setContentTitle(title)
+                    //设置通知的内容
+                    .setContentText(content)
+                    //通知产生的时间，会在通知信息里显示
+                    .setWhen(System.currentTimeMillis())
+                    //设置这个标志当用户单击面板就可以让通知将自动取消
+                    .setAutoCancel(true)
+                    //设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+                    .setOngoing(false)
+                    //向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                    .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
+            //如果有跳转
+            if (contentIntent != null) {
+                if (activity) {
+                    notification.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                } else {
+                    notification.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                }
+            }
+
+            notificationManager.notify(1, notification.build());
+
+        } else {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
+                    //设置群组
+                    .setGroup(group)
+                    .setSmallIcon(R.drawable.push_small)
+                    //通知首次出现在通知栏，带上升动画效果的
+                    .setTicker(title)
+                    //设置通知的标题
+                    .setContentTitle(title)
+                    //设置通知的内容
+                    .setContentText(content)
+                    //通知产生的时间，会在通知信息里显示
+                    .setWhen(System.currentTimeMillis())
+                    //设置这个标志当用户单击面板就可以让通知将自动取消
+                    .setAutoCancel(true)
+                    //设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+                    .setOngoing(false)
+                    //向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                    .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
+            //如果有跳转
+            if (contentIntent != null) {
+                if (activity) {
+                    builder.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                } else {
+                    builder.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                }
+            }
+
+
+            //发起通知
+            Random random = new Random(System.currentTimeMillis());
+            notificationManager.notify(random.nextInt(), builder.build());
+        }
 
     }
 

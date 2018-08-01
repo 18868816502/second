@@ -43,12 +43,14 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
     protected void convert(final BaseViewHolder helper, final BillSummaryBean.PersonBillItemBean item) {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/dinmedium.ttf");
         TextView totalTv = helper.getView(R.id.total_money_tv);
+        TextView nomralTv = helper.getView(R.id.normal_money);
         totalTv.setTypeface(typeface);
-        totalTv.setText(CommonUtils.numToString(item.getTotalAmount()));
+        nomralTv.setTypeface(typeface);
         helper.setText(R.id.bill_title_tv, item.getTitle());
         Glide.with(context).load(item.getLogoUrl()).asBitmap().into((CircleImageView) helper.getView(R.id.circleImg));
         if (item.getType() != null && item.getType().equals("2")) {
             helper.getView(R.id.label_card).setVisibility(View.VISIBLE);
+            totalTv.setVisibility(View.VISIBLE);
             helper.getView(R.id.label_card).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,8 +60,13 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
                 }
             });
             helper.setText(R.id.term_tag_tv, Integer.valueOf(item.getMonth()) + "月账单");
+            totalTv.setText(CommonUtils.numToString(item.getTotalAmount()));
+            nomralTv.setVisibility(View.GONE);
         } else {
+            nomralTv.setVisibility(View.VISIBLE);
+            totalTv.setVisibility(View.GONE);
             helper.getView(R.id.label_card).setVisibility(View.GONE);
+            nomralTv.setText(CommonUtils.numToString(item.getTotalAmount()));
             if ("-1".equals(item.getTotalTerm())) {
                 helper.setText(R.id.term_tag_tv, "∞");
             } else {
