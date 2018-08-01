@@ -221,7 +221,7 @@ public class SplashActivity extends BaseComponentActivity {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            ignoreTv.setText((millisUntilFinished / 1000) + "  跳过");
+            ignoreTv.setText((millisUntilFinished / 1000 + 1) + "  跳过");
         }
 
         @Override
