@@ -1,6 +1,5 @@
 package com.beihui.market.tang.adapter;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,6 +29,7 @@ import com.beihui.market.tang.activity.LoanBillActivity;
 import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.ui.fragment.HomeFragment;
@@ -71,7 +71,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     public static final int VIEW_EMPTY = R.layout.f_layout_home_bill_empty;
     public static final int VIEW_EMPTY_NOT_LGOIN = R.layout.f_layout_home_bill_empty_not_login;
 
-    private Activity mActivity;
+    private MainActivity mActivity;
     private List<Bill> dataSet = new ArrayList<>();
     private HomeFragment homeFragment;
     private double totalAmount;
@@ -90,7 +90,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             homeFragment.request();
         }
     };
-    private HighLight infoHighLight;
 
     public void notifyEmpty() {
         bean = null;
@@ -124,7 +123,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         }
     }
 
-    public HomePageAdapter(Activity activity, HomeFragment homeFragment) {
+    public HomePageAdapter(MainActivity activity, HomeFragment homeFragment) {
         this.mActivity = activity;
         this.homeFragment = homeFragment;
         currentMonth = new SimpleDateFormat("MM", Locale.CHINA).format(System.currentTimeMillis());
@@ -257,7 +256,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 public void onClick(View v) {
                     holder.csm_bill_wrap.smoothClose();
                     showDialog(item, position);
-                    homeFragment.recycler().smoothScrollToPosition(0);
+                    //homeFragment.recycler().smoothScrollToPosition(0);
                 }
             });
             holder.ll_bill_wrap.setOnClickListener(new View.OnClickListener() {
@@ -276,13 +275,18 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                         intent.putExtra("billId", item.getBillId());
                         mActivity.startActivity(intent);
                     }
-                    homeFragment.recycler().smoothScrollToPosition(0);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            homeFragment.recycler().smoothScrollToPosition(0);
+                        }
+                    }, 300);
                 }
             });
-            if ("showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity"))) {
-                return;//说明已经展示过引导
-            }
-            if (userHelper.isLogin() && homeFragment.isResumed()) {
+        }
+
+        if (!"showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity"))) {
+            if (userHelper.isLogin() && dataSet.size() > 1 && (mActivity.currentFragment instanceof HomeFragment)) {
                 infoHighLight = new HighLight(mActivity)
                         .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                             @Override
@@ -315,6 +319,8 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             }
         }
     }
+
+    private HighLight infoHighLight;
 
     @Override
     public int getItemViewType(int position) {
@@ -357,8 +363,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private void showDialog(Bill item, final int position) {
         final int type = item.getType();
         final String billId = item.getBillId();
-        final String recordId = item.getRecordId();
-        final double amount = item.getAmount();
         DlgUtil.createDlg(mActivity, R.layout.dlg_pay_over_bill, new DlgUtil.OnDlgViewClickListener() {
             @Override
             public void onViewClick(final Dialog dialog, final View dlgView) {

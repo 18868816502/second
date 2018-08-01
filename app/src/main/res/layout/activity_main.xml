@@ -5,13 +5,31 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <FrameLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="-10dp"
+        android:layout_weight="1">
+
+        <View
+            android:id="@+id/view_center"
+            android:layout_width="0.1dp"
+            android:layout_height="0.1dp"
+            android:layout_marginLeft="155dp"
+            android:layout_marginTop="340dp" />
+
+        <FrameLayout
+            android:id="@+id/tab_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <!--<FrameLayout
         android:id="@+id/tab_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="-10dp"
-        android:layout_weight="1" />
-
+        android:layout_weight="1" />-->
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -30,7 +48,6 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white" />
 
-
             <com.beihui.market.view.BottomNavigationBar
                 android:id="@+id/navigation_bar"
                 android:layout_width="match_parent"
@@ -47,8 +64,8 @@
 
                     <ImageView
                         android:id="@+id/tab_bill_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
                         android:src="@mipmap/ic_tab_bill_select" />
@@ -59,10 +76,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tab_bill_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:text="@string/tab_account"
                         android:textColor="@color/black_1"
-                        android:textSize="12sp" />
+                        android:textSize="10dp" />
 
                 </RelativeLayout>
 
@@ -75,8 +92,8 @@
 
                     <ImageView
                         android:id="@+id/tab_discover_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
                         android:src="@mipmap/ic_tab_discover_normal" />
@@ -87,10 +104,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tab_discover_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:text="@string/tab_news"
                         android:textColor="@color/black_2"
-                        android:textSize="12sp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -102,8 +119,8 @@
 
                     <ImageView
                         android:id="@+id/tab_mine_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
                         android:src="@mipmap/ic_tab_mine_normal" />
@@ -114,10 +131,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tab_mine_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:text="@string/tab_personal"
                         android:textColor="@color/black_2"
-                        android:textSize="12sp" />
+                        android:textSize="10dp" />
                 </RelativeLayout>
             </com.beihui.market.view.BottomNavigationBar>
         </FrameLayout>
@@ -128,33 +145,5 @@
             android:layout_alignBottom="@id/fl_bottom"
             android:layout_marginBottom="50dp"
             android:background="@color/line" />
-
-        <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:weightSum="3">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_bill_add_buttom"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerInParent="true" />
-
-                <ImageView
-                    android:id="@+id/iv_bill_add_buttom"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/transparent"
-                    android:src="@drawable/x_tab_bill_add_btn" />
-            </RelativeLayout>
-        </LinearLayout>-->
-
     </RelativeLayout>
-
 </LinearLayout>

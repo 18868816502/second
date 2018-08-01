@@ -22,12 +22,10 @@ public class SlidePanelHelper {
         SlidePanel slidePanel = new SlidePanel(activity, contentView, cacheView, new SlidePanel.SlideCallback() {
             @Override
             public void onSlideStart() {
-
             }
 
             @Override
             public void onSlide(int left, int dx) {
-
             }
 
             @Override
@@ -40,7 +38,6 @@ public class SlidePanelHelper {
 
             @Override
             public void onSlideReset() {
-
             }
         });
         decorView.addView(slidePanel);

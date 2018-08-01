@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -43,6 +44,7 @@ import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
+import com.beihui.market.ui.fragment.DiscoverFragment;
 import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.ui.fragment.PersonalFragment;
 import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
@@ -51,6 +53,7 @@ import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
+import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.ToastUtil;
@@ -77,6 +80,10 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 public class MainActivity extends BaseComponentActivity {
 
@@ -182,7 +189,6 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     });
         }
-        //showGuide();//显示高亮
     }
 
     private void showAdDialog(final AdBanner ad) {
@@ -264,23 +270,6 @@ public class MainActivity extends BaseComponentActivity {
         checkPermission();
         updateHelper.checkUpdate(this);
         queryBottomImage();//请求底部导航栏图标 文字 字体颜色
-
-        //添加账单
-        /*mAddBill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!FastClickUtils.isFastClick()) {
-                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                    //UserAuthorizationActivity.launch(MainActivity.this, null);
-                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, AccountFlowActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            }
-        });*/
     }
 
     //空事件
@@ -326,78 +315,85 @@ public class MainActivity extends BaseComponentActivity {
     public HomeFragment tabHome;
     public TabNewsWebViewFragment tabDiscover;
     public PersonalFragment tabMine;
+    public Fragment currentFragment;
 
     private void selectTab(int id) {
         selectedFragmentId = id;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (tabHome != null) {
-            ft.hide(tabHome);
+        if (tabHome == null) {
+            //tabDiscover = BillLoanAnalysisFragment.newInstance();
+            tabHome = HomeFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
-        if (tabDiscover != null) {
-            ft.hide(tabDiscover);
+        if (tabDiscover == null) {
+            //tabHome = TabAccountFragment.newInstance();
+            tabDiscover = TabNewsWebViewFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
-        if (tabMine != null) {
-            ft.hide(tabMine);
+        if (tabMine == null) {
+            //tabMine = TabNewsWebViewFragment.newInstance();
+            tabMine = PersonalFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabMine).hide(tabMine);
         }
         switch (id) {
             case R.id.tab_bill_root://账单
-                if (tabHome == null) {
-                    //tabDiscover = BillLoanAnalysisFragment.newInstance();
-                    tabHome = HomeFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabHome);
-                }
-                ft.show(tabHome);
+                ft.show(tabHome).hide(tabDiscover).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
+                currentFragment = tabHome;
 
-                /*tabBillIcon.setImageResource(R.mipmap.ic_tab_bill_select);
-                tabBillText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
-                tabDiscoverIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
-                tabDiscoverText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabMineIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
-                tabMineText.setTextColor(ContextCompat.getColor(this, R.color.black_2));*/
+                if (!"showGuideMainActivity".equals(SPUtils.getValue(this, "showGuideMainActivity"))) {
+                    if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter.getItemCount() > 1) {
+                        infoHighLight = new HighLight(this)
+                                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                                    @Override
+                                    public void onLayouted() {
+                                        infoHighLight.autoRemove(false)
+                                                .intercept(true)
+                                                .enableNext()
+                                                .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
+                                                    @Override
+                                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                                        marginInfo.leftMargin = rectF.centerX() - Px2DpUtils.dp2px(MainActivity.this, 10);
+                                                        marginInfo.topMargin = rectF.centerY() - Px2DpUtils.dp2px(MainActivity.this, 5);
+                                                    }
+                                                }, new CircleLightShape())
+                                                .setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                                                    @Override
+                                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                                        infoHighLight.getHightLightView().findViewById(R.id.iv_guide).setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                infoHighLight.remove();
+                                                                SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
+                                                            }
+                                                        });
+                                                    }
+                                                }).show();
+                                    }
+                                });
+                    }
+                }
+
                 break;
             case R.id.tab_discover_root://发现
-                if (tabDiscover == null) {
-                    //tabHome = TabAccountFragment.newInstance();
-                    tabDiscover = TabNewsWebViewFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabDiscover);
-                }
-                ft.show(tabDiscover);
+                ft.show(tabDiscover).hide(tabHome).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
-
+                currentFragment = tabDiscover;
                 if (tabHome != null) tabHome.recycler().smoothScrollToPosition(0);
-
-                /*tabBillIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
-                tabBillText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabDiscoverIcon.setImageResource(R.mipmap.ic_tab_discover_select);
-                tabDiscoverText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
-                tabMineIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
-                tabMineText.setTextColor(ContextCompat.getColor(this, R.color.black_2));*/
                 break;
             case R.id.tab_mine_root://个人
-                if (tabMine == null) {
-                    //tabMine = TabNewsWebViewFragment.newInstance();
-                    tabMine = PersonalFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabMine);
-                }
-                ft.show(tabMine);
+                ft.show(tabMine).hide(tabHome).hide(tabDiscover);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
-
+                currentFragment = tabMine;
                 if (tabHome != null) tabHome.recycler().smoothScrollToPosition(0);
-
-                /*tabBillIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
-                tabBillText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabDiscoverIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
-                tabDiscoverText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabMineIcon.setImageResource(R.mipmap.ic_tab_mine_select);
-                tabMineText.setTextColor(ContextCompat.getColor(this, R.color.black_1));*/
                 break;
             default:
                 break;
@@ -420,7 +416,6 @@ public class MainActivity extends BaseComponentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if (System.currentTimeMillis() - exitTime > 2000) {
-                //ToastUtil.showToast(this, "再按一次退出");
                 ToastUtil.toast("再按一次退出");
                 exitTime = System.currentTimeMillis();
             } else {
@@ -484,6 +479,7 @@ public class MainActivity extends BaseComponentActivity {
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
+                        defaultTabIconTxt();
                         navigationBar.select(R.id.tab_bill_root);
                     }
                 });
