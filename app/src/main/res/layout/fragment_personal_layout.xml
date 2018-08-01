@@ -67,8 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="20dp">
+                    android:paddingBottom="20dp"
+                    android:orientation="horizontal">
 
 
                     <FrameLayout
@@ -77,18 +77,18 @@
                         android:layout_marginLeft="15dp">
 
                         <View
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@mipmap/mine_head_shadow_icon" />
+                            android:layout_width="95dp"
+                            android:layout_height="95dp"
+                            android:background="@drawable/mine_bg_head_shadow" />
 
                         <com.beihui.market.view.CircleImageView
                             android:id="@+id/avatar"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
                             android:layout_gravity="center"
                             android:scaleType="centerCrop"
                             android:src="@drawable/mine_icon_head"
-                            app:civ_border_color="#F9FBFF"
+                            app:civ_border_color="#ffffff"
                             app:civ_border_width="3dp" />
 
                     </FrameLayout>
