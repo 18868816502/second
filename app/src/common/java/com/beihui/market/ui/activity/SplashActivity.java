@@ -42,8 +42,8 @@ public class SplashActivity extends BaseComponentActivity {
     ImageView adImageView;
     @BindView(R.id.ignore)
     TextView ignoreTv;
-    //@BindView(R.id.bottom_logo)
-    //ImageView bottomLogoIv;
+    @BindView(R.id.bottom_logo)
+    ImageView bottomLogoIv;
 
     private AdTimer adTimer;
 
@@ -76,8 +76,6 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        int padding = (int) getResources().getDisplayMetrics().density * 35;
-        //bottomLogoIv.setPadding(0, padding, 0, padding);
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

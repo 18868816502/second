@@ -4,18 +4,21 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!--<ImageView-->
-    <!--android:id="@+id/bottom_logo"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:src="@drawable/splash_bottom_logo_new" />-->
+    <ImageView
+        android:id="@+id/bottom_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="35dp"
+        android:src="@drawable/splash_bottom_logo" />
 
     <ImageView
         android:id="@+id/ad_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY" />
+        android:layout_marginBottom="130dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/ignore"
