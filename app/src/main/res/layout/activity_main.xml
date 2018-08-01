@@ -39,14 +39,14 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/tab_forms_root"
+                    android:id="@+id/tab_bill_root"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingTop="6dp">
 
                     <ImageView
-                        android:id="@+id/tab_forms_icon"
+                        android:id="@+id/tab_bill_icon"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
@@ -54,10 +54,10 @@
                         android:src="@mipmap/ic_tab_bill_select" />
 
                     <TextView
-                        android:id="@+id/tab_forms_text"
+                        android:id="@+id/tab_bill_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tab_forms_icon"
+                        android:layout_below="@+id/tab_bill_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:text="@string/tab_account"
@@ -67,14 +67,14 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/tab_account"
+                    android:id="@+id/tab_discover_root"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingTop="6dp">
 
                     <ImageView
-                        android:id="@+id/tab_account_icon"
+                        android:id="@+id/tab_discover_icon"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
@@ -82,10 +82,10 @@
                         android:src="@mipmap/ic_tab_discover_normal" />
 
                     <TextView
-                        android:id="@+id/tab_account_text"
+                        android:id="@+id/tab_discover_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tab_account_icon"
+                        android:layout_below="@+id/tab_discover_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:text="@string/tab_news"
@@ -94,14 +94,14 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/tab_news"
+                    android:id="@+id/tab_mine_root"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingTop="6dp">
 
                     <ImageView
-                        android:id="@+id/tab_news_icon"
+                        android:id="@+id/tab_mine_icon"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_centerHorizontal="true"
@@ -109,10 +109,10 @@
                         android:src="@mipmap/ic_tab_mine_normal" />
 
                     <TextView
-                        android:id="@+id/tab_news_text"
+                        android:id="@+id/tab_mine_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tab_news_icon"
+                        android:layout_below="@+id/tab_mine_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:text="@string/tab_personal"

@@ -34,7 +34,7 @@
     <FrameLayout
         android:id="@+id/fl_custom_wrap"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:paddingLeft="15dp"
@@ -70,7 +70,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:paddingLeft="15dp"
@@ -111,7 +111,7 @@
     <FrameLayout
         android:id="@+id/fl_repay_date_wrap"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:background="@color/white"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -145,7 +145,7 @@
     <FrameLayout
         android:id="@+id/fl_repay_times_wrap"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:background="@color/white"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -185,7 +185,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -224,7 +224,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -266,7 +266,7 @@
         <FrameLayout
             android:id="@+id/fl_notice_wrap"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -306,7 +306,7 @@
     <RelativeLayout
         android:id="@+id/rl_expand_shrink"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:background="@color/white">
 
         <TextView

@@ -18,6 +18,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.entity.Bill;
 import com.beihui.market.entity.BillState;
+import com.beihui.market.entity.EventBean;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.tang.DlgUtil;
@@ -78,7 +79,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private String currentMonth;
     private Resources resources;
     private UserHelper userHelper;
-    private String url;
+    private EventBean bean;
     private final String hideNum = "****";
     private final String makeBill = "赶紧先记上一笔";
     private boolean numVisible;
@@ -92,14 +93,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     private HighLight infoHighLight;
 
     public void notifyEmpty() {
-        url = "";
+        bean = null;
         totalAmount = -1;
         dataSet.clear();
         notifyDataSetChanged();
     }
 
-    public void notifyEventEnter(String url) {
-        this.url = url;
+    public void notifyEventEnter(EventBean bean) {
+        this.bean = bean;
         notifyItemChanged(0);
     }
 
@@ -140,9 +141,12 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder.viewType == VIEW_HEADER) {
-            if (url == null || url.isEmpty()) {
+            if (bean == null) {
                 holder.headEventEntry.setVisibility(View.GONE);
-            } else holder.headEventEntry.setVisibility(View.VISIBLE);
+            } else {
+                holder.headEventEntry.setVisibility(View.VISIBLE);
+                holder.headEventEntry.setText(bean.getTitle());
+            }
             if (!userHelper.isLogin() || totalAmount < 0) {
                 holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), Integer.parseInt(currentMonth) + ""));
                 if (numVisible) {
@@ -275,38 +279,40 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     homeFragment.recycler().smoothScrollToPosition(0);
                 }
             });
-
-            if ("showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity")))
+            if ("showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity"))) {
                 return;//说明已经展示过引导
-            infoHighLight = new HighLight(mActivity)
-                    .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-                        @Override
-                        public void onLayouted() {
-                            infoHighLight.autoRemove(false)
-                                    .intercept(true)
-                                    .enableNext()
-                                    .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
-                                        @Override
-                                        public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                            marginInfo.leftMargin = rectF.centerX() - Px2DpUtils.dp2px(mActivity, 10);
-                                            marginInfo.topMargin = rectF.centerY() - Px2DpUtils.dp2px(mActivity, 5);
-                                        }
-                                    }, new CircleLightShape())
-                                    .setOnNextCallback(new HighLightInterface.OnNextCallback() {
-                                        @Override
-                                        public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-                                            // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                            infoHighLight.getHightLightView().findViewById(R.id.iv_guide).setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    infoHighLight.remove();
-                                                    SPUtils.setValue(mActivity, "showGuideMainActivity");
-                                                }
-                                            });
-                                        }
-                                    }).show();
-                        }
-                    });
+            }
+            if (userHelper.isLogin() && homeFragment.isResumed()) {
+                infoHighLight = new HighLight(mActivity)
+                        .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                            @Override
+                            public void onLayouted() {
+                                infoHighLight.autoRemove(false)
+                                        .intercept(true)
+                                        .enableNext()
+                                        .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
+                                            @Override
+                                            public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                                marginInfo.leftMargin = rectF.centerX() - Px2DpUtils.dp2px(mActivity, 10);
+                                                marginInfo.topMargin = rectF.centerY() - Px2DpUtils.dp2px(mActivity, 5);
+                                            }
+                                        }, new CircleLightShape())
+                                        .setOnNextCallback(new HighLightInterface.OnNextCallback() {
+                                            @Override
+                                            public void onNext(HightLightView hightLightView, View targetView, View tipView) {
+                                                // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
+                                                infoHighLight.getHightLightView().findViewById(R.id.iv_guide).setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        infoHighLight.remove();
+                                                        SPUtils.setValue(mActivity, "showGuideMainActivity");
+                                                    }
+                                                });
+                                            }
+                                        }).show();
+                            }
+                        });
+            }
         }
     }
 
@@ -334,7 +340,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         switch (v.getId()) {
             case R.id.tv_event_entry://活动入口
                 Intent intent = new Intent(mActivity, WebViewActivity.class);
-                intent.putExtra("webViewUrl", url);
+                intent.putExtra("webViewUrl", bean.getUrl());
                 mActivity.startActivity(intent);
                 break;
             case R.id.fl_add_account_bill_wrap://添加账单
@@ -421,7 +427,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public int viewType;
-        private View headEventEntry;
+        private TextView headEventEntry;
         private TextView headMonthNum;
         private TextView headBillNum;
         private ImageView headBillVisible;
@@ -443,7 +449,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
-                headEventEntry = itemView.findViewById(R.id.tv_event_entry);
+                headEventEntry = (TextView) itemView.findViewById(R.id.tv_event_entry);
                 headMonthNum = (TextView) itemView.findViewById(R.id.tv_month_num);
                 headBillNum = (TextView) itemView.findViewById(R.id.tv_bill_num);
                 headBillVisible = (ImageView) itemView.findViewById(R.id.iv_bill_visible);

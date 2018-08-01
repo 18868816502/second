@@ -38,7 +38,6 @@ public class App extends Application {
 
     private static App sInstance;
     private AppComponent appComponent;
-    public static int remind_day = 1;
 
     //窗口
     public static WindowManager mWindowManager;

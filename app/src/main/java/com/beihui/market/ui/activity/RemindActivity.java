@@ -133,7 +133,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 }
                 selectTv.setText(CommonUtils.getDay(data.getDay() - 1));
                 remindDay = data.getDay();
-                App.remind_day = remindDay;
             }
         });
     }
@@ -182,7 +181,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 .subscribe(new ApiObserver<ResultEntity>() {
                     @Override
                     public void onNext(ResultEntity data) {
-                        App.remind_day = remindDay;
                         if (type == 0 && pushSwitch.isChecked()) {
                             //ToastUtils.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
                             ToastUtil.toast("开启成功");
