@@ -144,12 +144,12 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
             if (extras.getBoolean("istk")) {
+                navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
                     tkIntent.putExtra("pending_json", extras.getString("tankuang"));
-                    if (!CommonUtils.isForeground(MainActivity.this, GetuiDialogActivity.class.getName())) {
-                        startActivity(intent);
-                    }
+                    startActivity(tkIntent);
+
                 }
             }
         }
@@ -182,6 +182,19 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     });
         }
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras.getBoolean("istk")) {
+                navigationBar.select(R.id.tab_bill_root);
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
+                    Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
+                    startActivity(tkIntent);
+
+                }
+            }
+        }
+
         //showGuide();//显示高亮
     }
 

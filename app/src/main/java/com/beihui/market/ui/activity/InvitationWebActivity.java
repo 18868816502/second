@@ -80,7 +80,6 @@ public class InvitationWebActivity extends BaseComponentActivity {
 
         LogUtils.i(UserHelper.getInstance(context).getProfile().getId());
 
-
     }
 
     @Override

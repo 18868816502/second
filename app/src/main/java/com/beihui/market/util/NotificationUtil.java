@@ -51,8 +51,9 @@ public class NotificationUtil {
                     notification.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
                 }
             }
-
-            notificationManager.notify(1, notification.build());
+            //发起通知
+            Random random = new Random(System.currentTimeMillis());
+            notificationManager.notify(random.nextInt(), notification.build());
 
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
