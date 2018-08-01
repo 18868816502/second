@@ -162,11 +162,15 @@ public class BillSummaryActivity extends BaseComponentActivity {
                 if (data.getTotalLiAmount() != null) {
                     double num = Double.valueOf(data.getTotalLiAmount());
                     toatlLiMoney.setText("¥ " + FormatNumberUtils.FormatNumberFor2(num));
+                } else {
+                    toatlLiMoney.setText("¥ 0.00");
                 }
 
                 if (data.getOverLiAmount() != null) {
-                    double num = Double.valueOf(data.getTotalLiAmount());
+                    double num = Double.valueOf(data.getOverLiAmount());
                     toatlOverMoney.setText("¥ " + FormatNumberUtils.FormatNumberFor2(num));
+                } else {
+                    toatlOverMoney.setText("¥ 0.00");
                 }
 
             }
