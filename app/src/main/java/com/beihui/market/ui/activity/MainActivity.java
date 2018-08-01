@@ -434,7 +434,6 @@ public class MainActivity extends BaseComponentActivity {
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
-                System.exit(0);
             }
             return true;
         }
