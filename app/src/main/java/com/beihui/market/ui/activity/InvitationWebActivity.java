@@ -3,6 +3,7 @@ package com.beihui.market.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -41,7 +42,10 @@ public class InvitationWebActivity extends BaseComponentActivity {
     @BindView(R.id.web_view_invitation)
     RelativeLayout relativeLayout;
     private Context context;
-    ;
+    @BindView(R.id.invitation_reload)
+    SwipeRefreshLayout swipeRefreshLayout;
+    private AgentWeb agentWeb;
+
 
     @Override
     public int getLayoutId() {
@@ -59,14 +63,23 @@ public class InvitationWebActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        AgentWeb agentWeb = AgentWeb.with(this)
+        agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1)).
                         useDefaultIndicator(getResources().getColor(R.color.red), 1)
                 .createAgentWeb()//
                 .ready()
                 .go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                agentWeb.getUrlLoader().reload();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         LogUtils.i(UserHelper.getInstance(context).getProfile().getId());
+
 
     }
 

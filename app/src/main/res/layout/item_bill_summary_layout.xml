@@ -25,15 +25,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:text="可可贷"
         android:textColor="@color/black_1"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/circleImg"
         app:layout_constraintStart_toEndOf="@+id/circleImg"
-        app:layout_constraintTop_toTopOf="@+id/circleImg"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="66dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/term_tag_tv"

@@ -84,7 +84,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
                 CreditCardDebtDetail.ShowBillBean showBill = data.getShowBill();
                 if (showBill != null) {
                     holder.tv_x_month.setText(String.format(mActivity.getString(R.string.x_month_repay), Integer.parseInt(showBill.getBillMonth().substring(5, 7)) + ""));
-                    holder.tv_still_balance.setText(String.format("￥%.2f", showBill.getNewBalance()));
+                    holder.tv_still_balance.setText(String.format("¥%.2f", showBill.getNewBalance()));
                     holder.tv_min_amount.setText(String.format("%.2f", showBill.getMinPayment()));
                     holder.tv_bill_date.setText(showBill.getBillDate().substring(5, 11).replace("-", "."));
                     holder.tv_pay_date.setText(showBill.getPaymentDueDate().substring(5, 11).replace("-", "."));

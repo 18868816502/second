@@ -15,6 +15,7 @@ import com.beihui.market.tang.activity.CommonDetailActivity;
 import com.beihui.market.tang.activity.CreditDetailActivity;
 import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -44,6 +45,12 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/dinmedium.ttf");
         TextView totalTv = helper.getView(R.id.total_money_tv);
         TextView nomralTv = helper.getView(R.id.normal_money);
+        String showNum = "";
+        if (item.getTotalAmount() != null) {
+            double num = Double.valueOf(item.getTotalAmount());
+            showNum = FormatNumberUtils.FormatNumberFor2(num);
+        }
+
         totalTv.setTypeface(typeface);
         nomralTv.setTypeface(typeface);
         helper.setText(R.id.bill_title_tv, item.getTitle());
@@ -60,13 +67,13 @@ public class BillSummaryAdapter extends BaseQuickAdapter<BillSummaryBean.PersonB
                 }
             });
             helper.setText(R.id.term_tag_tv, Integer.valueOf(item.getMonth()) + "月账单");
-            totalTv.setText(CommonUtils.numToString(item.getTotalAmount()));
+            totalTv.setText(showNum);
             nomralTv.setVisibility(View.GONE);
         } else {
             nomralTv.setVisibility(View.VISIBLE);
             totalTv.setVisibility(View.GONE);
             helper.getView(R.id.label_card).setVisibility(View.GONE);
-            nomralTv.setText(CommonUtils.numToString(item.getTotalAmount()));
+            nomralTv.setText(showNum);
             if ("-1".equals(item.getTotalTerm())) {
                 helper.setText(R.id.term_tag_tv, "∞");
             } else {

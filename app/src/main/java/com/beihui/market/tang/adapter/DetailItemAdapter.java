@@ -123,7 +123,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
             if (data != null) {
                 Glide.with(mActivity).load(data.getLogo()).transform(new GlideCircleTransform(mActivity)).into(holder.iv_detail_icon);
                 holder.tv_detail_name.setText(data.getChannelName());
-                holder.tv_still_balance.setText(String.format("￥%.2f", data.getStayReturnedAmount()));
+                holder.tv_still_balance.setText(String.format("¥%.2f", data.getStayReturnedAmount()));
                 holder.tv_already_num.setText(String.format("%.2f", data.getReturnedAmount()));
                 holder.tv_cycle_num.setText(data.getReturnedTerm() + "/" + (data.getTerm() == -1 ? "∞" : data.getTerm()));
                 if (data.getRemark() != null && !data.getRemark().isEmpty()) {

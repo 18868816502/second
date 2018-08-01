@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.BillSummaryAdapter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -55,6 +57,8 @@ public class BillSummaryActivity extends BaseComponentActivity {
     private boolean isFirst = true;
     private int first;
     private final static String TAG = BillSummaryActivity.class.getSimpleName();
+    private TextView totalTile;
+    private TextView liTile;
 
     @Override
     public int getLayoutId() {
@@ -93,6 +97,10 @@ public class BillSummaryActivity extends BaseComponentActivity {
         emptyView = View.inflate(this, R.layout.empty_bill_summary_layout, null);
         toatlLiMoney = view.findViewById(R.id.totalliamount);
         toatlOverMoney = view.findViewById(R.id.totalover_amount);
+        totalTile = view.findViewById(R.id.total_title);
+        liTile = view.findViewById(R.id.li_tv);
+        totalTile.setTextColor(Color.argb(204, 255, 255, 255));
+        liTile.setTextColor(Color.argb(204, 255, 255, 255));
         adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this, activity);
         //adapter.setEmptyView(emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -152,11 +160,13 @@ public class BillSummaryActivity extends BaseComponentActivity {
                     }
                 }
                 if (data.getTotalLiAmount() != null) {
-                    toatlLiMoney.setText("¥ " + CommonUtils.numToString(data.getTotalLiAmount()));
+                    double num = Double.valueOf(data.getTotalLiAmount());
+                    toatlLiMoney.setText("¥ " + FormatNumberUtils.FormatNumberFor2(num));
                 }
 
                 if (data.getOverLiAmount() != null) {
-                    toatlOverMoney.setText("¥ " + CommonUtils.numToString(data.getOverLiAmount()));
+                    double num = Double.valueOf(data.getTotalLiAmount());
+                    toatlOverMoney.setText("¥ " + FormatNumberUtils.FormatNumberFor2(num));
                 }
 
             }

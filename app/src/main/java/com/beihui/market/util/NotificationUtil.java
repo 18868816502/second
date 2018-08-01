@@ -22,10 +22,10 @@ public class NotificationUtil {
     public static void showNotification(Context context, String title, String content, Intent contentIntent, String group, boolean activity) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("chat", "getui", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("kaola", "个推", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
-            NotificationCompat.Builder  notification = new NotificationCompat.Builder(context, "chat").
-            setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "kaola").
+                    setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
                     //设置群组
                     .setGroup(group)
                     .setSmallIcon(R.drawable.push_small)
