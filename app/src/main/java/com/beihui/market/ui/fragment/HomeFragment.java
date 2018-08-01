@@ -2,6 +2,7 @@ package com.beihui.market.ui.fragment;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +31,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
@@ -41,6 +43,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
+import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnBaseCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.view.HightLightView;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -117,6 +124,9 @@ public class HomeFragment extends BaseTabFragment {
             if (max > 1) max = 1;
             if (max >= 0.55f) mTitle.setAlpha(1);
             else mTitle.setAlpha(0);
+            /*System.out.println("1: " + height);
+            System.out.println("2: " + mScrollY);
+            System.out.println("3: " + max);*/
 
             if (SPUtils.getNumVisible(mActivity)) {
                 tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
@@ -224,7 +234,13 @@ public class HomeFragment extends BaseTabFragment {
                     .subscribe(new ApiObserver<EventBean>() {
                         @Override
                         public void onNext(@NonNull EventBean data) {
-                            pageAdapter.notifyEventEnter(data.getUrl());
+                            pageAdapter.notifyEventEnter(data);
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable t) {
+                            pageAdapter.notifyEventEnter(null);
+                            super.onError(t);
                         }
                     });
             //首页数据
@@ -257,12 +273,12 @@ public class HomeFragment extends BaseTabFragment {
                             swipeRefreshLayout.setRefreshing(false);
                         }
                     });
-            //mTitle.setAlpha(0);
-            //mScrollY = 0;
+            mTitle.setAlpha(0);
         } else {
             pageAdapter.notifyEmpty();
             swipeRefreshLayout.setRefreshing(false);
             mRecyclerView.setCanPullUp(false);
+            mTitle.setAlpha(0);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.beihui.market.tang.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,12 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
+import com.beihui.market.entity.RemindBean;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -128,10 +126,10 @@ public class MakeBillActivity extends BaseComponentActivity {
     private String firstRepayDate = null;
     private int repayCycle = 0;
     private int repayTimes = 0;
-    private int repayTip = 1;
     private List<String> timeList = new ArrayList<>();
     private List<String> houseYearList = new ArrayList<>();
     private String numText;
+    private int remind_day = 3;//默认提前3天
 
     @Override
     public int getLayoutId() {
@@ -190,7 +188,15 @@ public class MakeBillActivity extends BaseComponentActivity {
             houseYearList.add((i + 1) * 5 + "年");
         }
 
-        tvNotice.setText(opBeforeDate.get(App.remind_day - 1));
+        Api.getInstance().onRemindInfo(UserHelper.getInstance(this).id())
+                .compose(RxResponse.<RemindBean>compatT())
+                .subscribe(new ApiObserver<RemindBean>() {
+                    @Override
+                    public void onNext(@NonNull RemindBean data) {
+                        remind_day = data.getDay();
+                        tvNotice.setText(opBeforeDate.get(remind_day - 1));
+                    }
+                });
 
         map.put("userId", UserHelper.getInstance(this).id());
         map.put("iconId", iconId);
@@ -235,13 +241,6 @@ public class MakeBillActivity extends BaseComponentActivity {
         });
     }
 
-    private void showSoft(EditText editText) {
-        editText.setFocusable(true);
-        editText.setFocusableInTouchMode(true);
-        editText.requestFocus();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    }
-
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
@@ -283,7 +282,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                     repayPicker(houseYearList, getString(R.string.repay_times), 3, 0);
                 break;
             case R.id.fl_notice_wrap://还款提醒
-                repayPicker(opBeforeDate, getString(R.string.repay_tip), 2, App.remind_day - 1);
+                repayPicker(opBeforeDate, getString(R.string.repay_tip), 2, remind_day - 1);
                 break;
             case R.id.rl_expand_shrink:
                 if (isExpand) {
@@ -353,8 +352,8 @@ public class MakeBillActivity extends BaseComponentActivity {
         //高级配置
         String remark = etRemark.getText().toString().trim();
         if (remark != null && !remark.isEmpty()) map.put("remark", remark);
-        repayTip = App.remind_day - 1;
-        if (repayTip != 0) map.put("remind", repayTip);
+        //提前x天提醒
+        map.put("remind", remind_day);
 
         /*Api.getInstance().createLoanAccount(map)
                 .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
@@ -408,7 +407,7 @@ public class MakeBillActivity extends BaseComponentActivity {
                 }
                 if (item == 2) {//还款提醒
                     tvNotice.setText(op.get(options1));
-                    repayTip = options1 + 1;
+                    remind_day = options1 + 1;
                 }
                 if (item == 3) {//还款期数
                     tvRepayTimes.setText(op.get(options1));

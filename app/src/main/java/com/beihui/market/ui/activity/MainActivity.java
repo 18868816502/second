@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,29 +87,25 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
 
-    //账单图标
-    @BindView(R.id.tab_account)
-    RelativeLayout tabAccountRoot;
-    //账单图标
-    @BindView(R.id.tab_account_icon)
-    ImageView tabAccountIcon;
     //账单
-    @BindView(R.id.tab_account_text)
-    TextView tabAccountText;
-
+    @BindView(R.id.tab_bill_icon)
+    ImageView tabBillIcon;
+    @BindView(R.id.tab_bill_text)
+    TextView tabBillText;
     //发现
-    @BindView(R.id.tab_news)
-    RelativeLayout tabNewsRoot;
-    @BindView(R.id.tab_news_icon)
-    ImageView tabNewsIcon;
-    @BindView(R.id.tab_news_text)
-    TextView tabNewsText;
-
-    //报表
-    @BindView(R.id.tab_forms_icon)
-    ImageView tabFomrsIcon;
-    @BindView(R.id.tab_forms_text)
-    TextView tabFormsText;
+    @BindView(R.id.tab_discover_root)
+    RelativeLayout tabDiscoverRoot;
+    @BindView(R.id.tab_discover_icon)
+    ImageView tabDiscoverIcon;
+    @BindView(R.id.tab_discover_text)
+    TextView tabDiscoverText;
+    //个人
+    @BindView(R.id.tab_mine_root)
+    RelativeLayout tabMineRoot;
+    @BindView(R.id.tab_mine_icon)
+    ImageView tabMineIcon;
+    @BindView(R.id.tab_mine_text)
+    TextView tabMineText;
 
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
@@ -141,7 +138,7 @@ public class MainActivity extends BaseComponentActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.getBoolean("account")) {
-                navigationBar.select(R.id.tab_forms_root);
+                navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
                     ToastUtil.toast(extras.getString("moxieMsg"));
                 }
@@ -173,9 +170,9 @@ public class MainActivity extends BaseComponentActivity {
                                 AdBanner adBanner = data.get(0);
                                 if (!adBanner.getId().equals(SPUtils.getValue(MainActivity.this, adBanner.getId()))) {
                                     if (adBanner.getLocation() == 2) {//发现页
-                                        navigationBar.select(R.id.tab_account);
+                                        navigationBar.select(R.id.tab_discover_root);
                                     } else {//首页
-                                        navigationBar.select(R.id.tab_forms_root);
+                                        navigationBar.select(R.id.tab_bill_root);
                                     }
                                     showAdDialog(adBanner);
                                 }
@@ -245,30 +242,21 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabFomrsIcon, tabAccountIcon, tabNewsIcon};
-        textView = new TextView[]{tabFormsText, tabAccountText, tabNewsText};
+        iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabMineIcon};
+        textView = new TextView[]{tabBillText, tabDiscoverText, tabMineText};
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
-                /*if (selectedId == R.id.tab_forms_root) {
-                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
-                        startActivity(intent);
-                        navigationBar.select(selectedFragmentId);
-                        return;
-                    }
-                }*/
-                //点击音效
-                SoundUtils.getInstance().playTab();
+                SoundUtils.getInstance().playTab();//点击音效
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }
             }
         });
-        selectTab(R.id.tab_forms_icon);
+        selectTab(R.id.tab_bill_icon);
     }
 
     @Override
@@ -302,7 +290,7 @@ public class MainActivity extends BaseComponentActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void navigateNews(NavigateNews event) {
-        navigationBar.select(R.id.tab_account);
+        navigationBar.select(R.id.tab_discover_root);
     }
 
     /**
@@ -335,80 +323,83 @@ public class MainActivity extends BaseComponentActivity {
     /**
      * 三大模块
      */
-    public Fragment tabHome;
-    public Fragment tabForm;
-    public Fragment tabFind;
+    public HomeFragment tabHome;
+    public TabNewsWebViewFragment tabDiscover;
+    public PersonalFragment tabMine;
 
     private void selectTab(int id) {
         selectedFragmentId = id;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (tabForm != null) {
-            ft.hide(tabForm);
-        }
         if (tabHome != null) {
             ft.hide(tabHome);
         }
-        if (tabFind != null) {
-            ft.hide(tabFind);
+        if (tabDiscover != null) {
+            ft.hide(tabDiscover);
+        }
+        if (tabMine != null) {
+            ft.hide(tabMine);
         }
         switch (id) {
-            //报表
-            case R.id.tab_forms_root:
-                if (tabForm == null) {
-                    //tabForm = BillLoanAnalysisFragment.newInstance();
-                    tabForm = HomeFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabForm);
+            case R.id.tab_bill_root://账单
+                if (tabHome == null) {
+                    //tabDiscover = BillLoanAnalysisFragment.newInstance();
+                    tabHome = HomeFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabHome);
                 }
-                ft.show(tabForm);
+                ft.show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
 
-                tabFomrsIcon.setImageResource(R.mipmap.ic_tab_bill_select);
-                tabFormsText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
-                tabAccountIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
-                tabAccountText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabNewsIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
-                tabNewsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                /*tabBillIcon.setImageResource(R.mipmap.ic_tab_bill_select);
+                tabBillText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
+                tabDiscoverIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
+                tabDiscoverText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabMineIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
+                tabMineText.setTextColor(ContextCompat.getColor(this, R.color.black_2));*/
                 break;
-            //账单
-            case R.id.tab_account:
-                if (tabHome == null) {
+            case R.id.tab_discover_root://发现
+                if (tabDiscover == null) {
                     //tabHome = TabAccountFragment.newInstance();
-                    tabHome = TabNewsWebViewFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabHome);
+                    tabDiscover = TabNewsWebViewFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabDiscover);
                 }
-                ft.show(tabHome);
+                ft.show(tabDiscover);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
 
-                tabFomrsIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
-                tabFormsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabAccountIcon.setImageResource(R.mipmap.ic_tab_discover_select);
-                tabAccountText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
-                tabNewsIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
-                tabNewsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                if (tabHome != null) tabHome.recycler().smoothScrollToPosition(0);
+
+                /*tabBillIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
+                tabBillText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabDiscoverIcon.setImageResource(R.mipmap.ic_tab_discover_select);
+                tabDiscoverText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
+                tabMineIcon.setImageResource(R.mipmap.ic_tab_mine_normal);
+                tabMineText.setTextColor(ContextCompat.getColor(this, R.color.black_2));*/
                 break;
-            //发现
-            case R.id.tab_news:
-                if (tabFind == null) {
-                    //tabFind = TabNewsWebViewFragment.newInstance();
-                    tabFind = PersonalFragment.newInstance();
-                    ft.add(R.id.tab_fragment, tabFind);
+            case R.id.tab_mine_root://个人
+                if (tabMine == null) {
+                    //tabMine = TabNewsWebViewFragment.newInstance();
+                    tabMine = PersonalFragment.newInstance();
+                    ft.add(R.id.tab_fragment, tabMine);
                 }
-                ft.show(tabFind);
+                ft.show(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
 
-                tabFomrsIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
-                tabFormsText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabAccountIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
-                tabAccountText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
-                tabNewsIcon.setImageResource(R.mipmap.ic_tab_mine_select);
-                tabNewsText.setTextColor(ContextCompat.getColor(this, R.color.black_1));
+                if (tabHome != null) tabHome.recycler().smoothScrollToPosition(0);
+
+                /*tabBillIcon.setImageResource(R.mipmap.ic_tab_bill_normal);
+                tabBillText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabDiscoverIcon.setImageResource(R.mipmap.ic_tab_discover_normal);
+                tabDiscoverText.setTextColor(ContextCompat.getColor(this, R.color.black_2));
+                tabMineIcon.setImageResource(R.mipmap.ic_tab_mine_select);
+                tabMineText.setTextColor(ContextCompat.getColor(this, R.color.black_1));*/
+                break;
+            default:
                 break;
         }
         ft.commit();
@@ -485,16 +476,50 @@ public class MainActivity extends BaseComponentActivity {
                         if (data.bottomList.size() > 0) {
                             updateBottomSelector(data.bottomList);
                         } else {
-                            navigationBar.select(R.id.tab_forms_root);
+                            defaultTabIconTxt();
+                            navigationBar.select(R.id.tab_bill_root);
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
-                        navigationBar.select(R.id.tab_forms_root);
+                        navigationBar.select(R.id.tab_bill_root);
                     }
                 });
+    }
+
+    private void defaultTabIconTxt() {
+        int[] colors = new int[]{
+                ContextCompat.getColor(this, R.color.black_1),
+                ContextCompat.getColor(this, R.color.black_1),
+                ContextCompat.getColor(this, R.color.black_2)
+        };
+        int[][] states = new int[3][];
+        states[0] = new int[]{android.R.attr.state_selected};
+        states[1] = new int[]{android.R.attr.state_pressed};
+        states[2] = new int[]{};
+        ColorStateList colorStateList = new ColorStateList(states, colors);
+        List<String> tabTxt = new ArrayList<>();
+        tabTxt.add("账单");
+        tabTxt.add("发现");
+        tabTxt.add("我的");
+        List<Drawable[]> drawables = new ArrayList<>();
+        Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_normal)};
+        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
+        drawables.add(bitmaps0);
+        drawables.add(bitmaps1);
+        drawables.add(bitmaps2);
+        for (int i = 0; i < 3; i++) {
+            textView[i].setTextColor(colorStateList);
+            textView[i].setText(tabTxt.get(i));
+            StateListDrawable stateListDrawable = new StateListDrawable();
+            stateListDrawable.addState(new int[]{android.R.attr.state_selected}, drawables.get(i)[0]);
+            stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, drawables.get(i)[0]);
+            stateListDrawable.addState(new int[]{}, drawables.get(i)[1]);
+            iconView[i].setImageDrawable(stateListDrawable);
+        }
     }
 
     private void updateBottomSelector(List<TabImage> list) {
@@ -507,11 +532,13 @@ public class MainActivity extends BaseComponentActivity {
 
         TabImage bgTabImage = null;
         for (TabImage tabImage : list) {
+            //位置：1第1位，2第2位，3第3位，4第4位，5第5位，6底部栏横条
             if (tabImage.getPosition() == 6) {
                 bgTabImage = tabImage;
                 break;
             }
         }
+        //底部栏背景
         if (bgTabImage != null) {
             Glide.with(this)
                     .load(bgTabImage.getUnselectedImage())
@@ -520,20 +547,20 @@ public class MainActivity extends BaseComponentActivity {
                     .into(navigationBarBg);
         }
 
-        final OkHttpClient client = new OkHttpClient();
+
         boolean isShowTabAccount = true;
         for (int i = 0; i < list.size(); ++i) {
             TabImage tabImage = list.get(i);
             /*focus配置app模块展示的优先级*/
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
                 if (tabImage.getPosition() == 1) {
-                    navigationBar.select(R.id.tab_forms_root);
+                    navigationBar.select(R.id.tab_bill_root);
                     isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 2) {
-                    navigationBar.select(R.id.tab_account);
+                    navigationBar.select(R.id.tab_discover_root);
                     isShowTabAccount = false;
                 } else if (tabImage.getPosition() == 3) {
-                    navigationBar.select(R.id.tab_news);
+                    navigationBar.select(R.id.tab_mine_root);
                     isShowTabAccount = false;
                 }
             }
@@ -564,6 +591,7 @@ public class MainActivity extends BaseComponentActivity {
                         .map(new Function<String[], Bitmap[]>() {
                             @Override
                             public Bitmap[] apply(String[] strings) throws Exception {
+                                OkHttpClient client = new OkHttpClient();
                                 Bitmap[] images = new Bitmap[2];
                                 byte[] bytes = client.newCall(new Request.Builder().url(strings[0]).build()).execute().body().bytes();
                                 images[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -604,12 +632,8 @@ public class MainActivity extends BaseComponentActivity {
                                 });
             }
         }
-        /**
-         * @author xhb
-         * @desc 都没有选择那就选择首页
-         */
-        if (isShowTabAccount) {
-            navigationBar.select(R.id.tab_forms_root);
+        if (isShowTabAccount) {//都没有选择那就选择首页
+            navigationBar.select(R.id.tab_bill_root);
         }
     }
 }
