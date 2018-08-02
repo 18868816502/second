@@ -250,7 +250,9 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
             getView().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getActivity().finish();
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 }
             }, 200);
         }
