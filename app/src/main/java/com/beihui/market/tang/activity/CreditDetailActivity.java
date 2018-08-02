@@ -49,8 +49,6 @@ public class CreditDetailActivity extends BaseComponentActivity {
     Toolbar mToolbar;
     @BindView(R.id.recycler)
     PulledTabAccountRecyclerView mRecyclerView;
-    @BindView(R.id.tv_synchronized)
-    TextView tv_synchronized;
     @BindView(R.id.tv_update_time)
     TextView tv_update_time;
 
@@ -118,7 +116,7 @@ public class CreditDetailActivity extends BaseComponentActivity {
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.tv_synchronized, R.id.iv_more_setting})
+    @OnClick({R.id.ll_synchronized, R.id.iv_more_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_more_setting:
@@ -178,7 +176,7 @@ public class CreditDetailActivity extends BaseComponentActivity {
                     }
                 });
                 break;
-            case R.id.tv_synchronized:
+            case R.id.ll_synchronized:
                 MoxieUtil.sychronized(creditAdapter.getBankCode(), activity);
                 break;
             default:

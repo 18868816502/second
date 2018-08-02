@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="38dp"
-            android:paddingTop="15dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,24 +123,6 @@
             android:text="账单周期 4月1日-4月30日"
             android:textColor="@color/black_2"
             android:textSize="11dp" />
-
-        <RelativeLayout
-            android:id="@+id/rl_empty_wrap"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableLeft="@mipmap/ic_sub_empty"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:text="暂无记录"
-                android:textColor="@color/black_2"
-                android:textSize="13dp" />
-        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"

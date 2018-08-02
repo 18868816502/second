@@ -47,7 +47,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
     private List<CreditBill> dataSet = new ArrayList<>();
     private CreditDetailActivity mActivity;
     private CreditCardDebtDetail data;
-    private SubDetailAdapter detailAdapter = new SubDetailAdapter();
+    private SubAdapter subAdapter = new SubAdapter();
     private int lastPos = 0;
 
     public void notifyHead(CreditCardDebtDetail debtDetail) {
@@ -72,12 +72,12 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
     }
 
     @Override
-    public DetailCreditAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new DetailCreditAdapter.ViewHolder(LayoutInflater.from(mActivity).inflate(viewType, parent, false), viewType);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(mActivity).inflate(viewType, parent, false), viewType);
     }
 
     @Override
-    public void onBindViewHolder(final DetailCreditAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder.viewType == VIEW_HEADER) {
             if (data != null) {
                 Glide.with(mActivity).load(data.image).transform(new GlideCircleTransform(mActivity)).into(holder.iv_detail_icon);
@@ -131,7 +131,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
             holder.tv_bill_start_end_time.setText("账单周期 " + bill.getStartTime().substring(0, 10).replace("-", ".") + "-" + bill.getEndTime().substring(0, 10).replace("-", "."));
 
             holder.initRecyclerView();
-            holder.recycler.setAdapter(detailAdapter);
+            holder.recycler.setAdapter(subAdapter);
             if (bill.isExpand) {
                 holder.iv_left.setImageResource(R.mipmap.ic_left_down);
                 holder.ll_subitem_wrap.setVisibility(View.VISIBLE);
@@ -167,32 +167,22 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
         }
         mActivity.getRecyclerView().smoothScrollToPosition(curPos);
         CreditBill bill = dataSet.get(curPos);
-        if (bill.getId() == null || bill.getUserId() == null) {
-            //ToastUtil.toast("暂无账单");
-        } else {
-            holder.rl_empty_wrap.setVisibility(View.GONE);
-            Api.getInstance().billDetail(bill.getUserId(), bill.getId())
-                    .compose(RxResponse.<List<BillDetail>>compatT())
-                    .subscribe(new ApiObserver<List<BillDetail>>() {
-                        @Override
-                        public void onNext(@NonNull List<BillDetail> data) {
-                            if (data.size() == 0) {
-                                holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                            } else {
-                                holder.rl_empty_wrap.setVisibility(View.GONE);
-                                detailAdapter.setNewData(data);
-                            }
-                            notifyDataSetChanged();
-                        }
+        Api.getInstance().billDetail(bill.getUserId(), bill.getId())
+                .compose(RxResponse.<List<BillDetail>>compatT())
+                .subscribe(new ApiObserver<List<BillDetail>>() {
+                    @Override
+                    public void onNext(@NonNull List<BillDetail> data) {
+                        subAdapter.notify(data);
+                        notifyDataSetChanged();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable t) {
-                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                            notifyDataSetChanged();
-                            super.onError(t);
-                        }
-                    });
-        }
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        subAdapter.notify(null);
+                        notifyDataSetChanged();
+                        super.onError(t);
+                    }
+                });
     }
 
     @Override
@@ -227,7 +217,6 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
         private LinearLayout ll_subitem_wrap;
         private TextView tv_bill_start_end_time;
         private RecyclerView recycler;
-        private View rl_empty_wrap;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -252,7 +241,6 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
                 ll_subitem_wrap = (LinearLayout) itemView.findViewById(R.id.ll_subitem_wrap);
                 tv_bill_start_end_time = (TextView) itemView.findViewById(R.id.tv_bill_start_end_time);
                 recycler = (RecyclerView) itemView.findViewById(R.id.recycler);
-                rl_empty_wrap = itemView.findViewById(R.id.rl_empty_wrap);
             }
         }
 

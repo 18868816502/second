@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -144,7 +145,16 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.headEventEntry.setVisibility(View.GONE);
             } else {
                 holder.headEventEntry.setVisibility(View.VISIBLE);
-                Glide.with(mActivity).load(bean.getImgUrl()).into(holder.headEventEntry);
+                Glide.with(mActivity).load(bean.getImgUrl()).transform(new GlideCircleTransform(mActivity)).into(holder.headEventEntry);
+                /*活动入口*/
+                holder.headEventEntry.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mActivity, WebViewActivity.class);
+                        intent.putExtra("webViewUrl", bean.getUrl());
+                        mActivity.startActivity(intent);
+                    }
+                });
             }
             if (!userHelper.isLogin() || totalAmount < 0) {
                 holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), Integer.parseInt(currentMonth) + ""));
@@ -169,15 +179,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     holder.headBillVisible.setImageResource(R.mipmap.ic_eye_close);
                 }
             }
-            /*活动入口*/
-            holder.headEventEntry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mActivity, WebViewActivity.class);
-                    intent.putExtra("webViewUrl", bean.getUrl());
-                    mActivity.startActivity(intent);
-                }
-            });
             /*账单数目是否可见*/
             holder.headBillVisible.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -454,7 +455,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
-                headEventEntry = (ImageView) itemView.findViewById(R.id.tv_event_entry);
+                headEventEntry = (ImageView) itemView.findViewById(R.id.iv_event_entry);
                 headMonthNum = (TextView) itemView.findViewById(R.id.tv_month_num);
                 headBillNum = (TextView) itemView.findViewById(R.id.tv_bill_num);
                 headBillVisible = (ImageView) itemView.findViewById(R.id.iv_bill_visible);

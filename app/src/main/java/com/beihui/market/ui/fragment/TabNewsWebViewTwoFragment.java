@@ -48,12 +48,12 @@ import java.net.URLDecoder;
 import butterknife.BindView;
 
 /**
- * @date 20180419
- * @version 2.1.1
  * @author xhb
- * 发现 模块 使用WebView页面 (非资讯详情页)
+ *         发现 模块 使用WebView页面 (非资讯详情页)
+ * @version 2.1.1
+ * @date 20180419
  */
-public class TabNewsWebViewTwoFragment extends BaseTabFragment{
+public class TabNewsWebViewTwoFragment extends BaseTabFragment {
 
     @BindView(R.id.bwv_news_web_view)
     BusinessWebView webView;
@@ -76,7 +76,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainEvent(UserLogoutEvent event){
+    public void onMainEvent(UserLogoutEvent event) {
         load();
     }
 
@@ -121,7 +121,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
     }
 
     @Override
-    public void initDatas() {}
+    public void initDatas() {
+    }
 
     @Override
     public void configViews() {
@@ -209,7 +210,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                ((MainActivity)mActivity).startActivityWithoutOverride(intent);
+                ((MainActivity) mActivity).startActivityWithoutOverride(intent);
             }
         });
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
@@ -238,18 +239,19 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
             e.printStackTrace();
         }
         newsUrl = NetConstants.generateActivityWebViewUrl(userId, channelId, versionName);
+        System.out.println("2: "+newsUrl);
         webView.loadUrl(newsUrl);
     }
 
     /**
      * 调用js
      */
-    class mobileJsMethod{
+    class mobileJsMethod {
         /**
          * 跳转到登陆页面
          */
         @JavascriptInterface
-        public void authorize(String nextUrl){
+        public void authorize(String nextUrl) {
             UserAuthorizationActivity.launch(getActivity(), null);
         }
 
@@ -257,7 +259,7 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment{
          * 获取HTML滑动的Y轴的值
          */
         @JavascriptInterface
-        public void getFindHtmlScrollY(String scrollY){
+        public void getFindHtmlScrollY(String scrollY) {
             mScrollY = scrollY;
         }
     }

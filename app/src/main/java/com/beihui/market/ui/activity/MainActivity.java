@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -133,6 +134,7 @@ public class MainActivity extends BaseComponentActivity {
      * 最新公告ID
      */
     private String mNoticeId = "";
+    private MainActivity activity;
 
     //高亮
     private HighLight infoHighLight;
@@ -167,29 +169,22 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (SPUtils.getShowMainAddBanner(this)) {
-            SPUtils.setShowMainAddBanner(this, false);
-            Api.getInstance().querySupernatant(3)
-                    .compose(RxResponse.<List<AdBanner>>compatT())
-                    .subscribe(new ApiObserver<List<AdBanner>>() {
-                        @Override
-                        public void onNext(@NonNull List<AdBanner> data) {
-                            if (data != null && data.size() > 0) {
-                                AdBanner adBanner = data.get(0);
-                                if (!adBanner.getId().equals(SPUtils.getValue(MainActivity.this, adBanner.getId()))) {
-                                    if (adBanner.getLocation() == 2) {//发现页
-                                        navigationBar.select(R.id.tab_discover_root);
-                                    } else {//首页
-                                        navigationBar.select(R.id.tab_bill_root);
-                                    }
-                                    showAdDialog(adBanner);
-                                }
-                                //更新广告展示时间
-                                SPUtils.setLastAdShowTime(MainActivity.this, System.currentTimeMillis());
+        Api.getInstance().querySupernatant(3)
+                .compose(RxResponse.<List<AdBanner>>compatT())
+                .subscribe(new ApiObserver<List<AdBanner>>() {
+                    @Override
+                    public void onNext(@NonNull List<AdBanner> data) {
+                        if (data != null && data.size() > 0) {
+                            AdBanner adBanner = data.get(0);
+                            if (adBanner.getLocation() == 2) {//发现页
+                                navigationBar.select(R.id.tab_discover_root);
+                            } else {//首页
+                                navigationBar.select(R.id.tab_bill_root);
                             }
+                            showAdDialog(adBanner);
                         }
-                    });
-        }
+                    }
+                });
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
             if (extras.getBoolean("istk")) {
@@ -202,11 +197,24 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         }
-
-        //showGuide();//显示高亮
     }
 
     private void showAdDialog(final AdBanner ad) {
+        if (ad.getShowTimes() == 1) {//仅显示一次
+            if ("only_show_onece".equals(SPUtils.getValue(activity, "only_show_onece"))) {
+                return;
+            } else {
+                SPUtils.setValue(activity, "only_show_onece");
+            }
+        } else if (ad.getShowTimes() == 2) {//未点击继续显示
+            if ("ad_already_clicked".equals(SPUtils.getValue(activity, "ad_already_clicked"))) {
+                return;
+            }
+        } else {//其他情况不展示弹窗广告
+            return;
+        }
+        //更新广告展示时间
+        SPUtils.setLastAdShowTime(MainActivity.this, System.currentTimeMillis());
         //umeng统计
         Statistic.onEvent(Events.RESUME_AD_DIALOG);
         //pv，uv统计
@@ -228,12 +236,11 @@ public class MainActivity extends BaseComponentActivity {
                     }
                 }
 
-                //跳原生还是跳Web
-                if (ad.isNative()) {
+                if (ad.isNative()) {//跳原生还是跳Web
                     Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
                     intent.putExtra("loanId", ad.getLocalId());
                     startActivity(intent);
-                    SPUtils.setValue(MainActivity.this, ad.getId());
+                    SPUtils.setValue(activity, "ad_already_clicked");
                 } else if (!TextUtils.isEmpty(ad.getUrl())) {
                     String url = ad.getUrl();
                     if (url.contains("USERID") && UserHelper.getInstance(MainActivity.this).getProfile() != null) {
@@ -243,7 +250,7 @@ public class MainActivity extends BaseComponentActivity {
                     intent.putExtra("title", ad.getTitle());
                     intent.putExtra("url", url);
                     startActivity(intent);
-                    SPUtils.setValue(MainActivity.this, ad.getId());
+                    SPUtils.setValue(activity, "ad_already_clicked");
                 }
             }
         }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
@@ -265,6 +272,7 @@ public class MainActivity extends BaseComponentActivity {
     public void configViews() {
         iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabMineIcon};
         textView = new TextView[]{tabBillText, tabDiscoverText, tabMineText};
+        activity = this;
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
@@ -285,23 +293,6 @@ public class MainActivity extends BaseComponentActivity {
         checkPermission();
         updateHelper.checkUpdate(this);
         queryBottomImage();//请求底部导航栏图标 文字 字体颜色
-
-        //添加账单
-        /*mAddBill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!FastClickUtils.isFastClick()) {
-                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null || UserHelper.getInstance(MainActivity.this).getProfile().getId() == null) {
-                    //UserAuthorizationActivity.launch(MainActivity.this, null);
-                        Intent intent = new Intent(MainActivity.this, UserAuthorizationActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, AccountFlowActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            }
-        });*/
     }
 
     //空事件
@@ -341,9 +332,6 @@ public class MainActivity extends BaseComponentActivity {
         }, 400);
     }
 
-    /**
-     * 三大模块
-     */
     public HomeFragment tabHome;
     public TabNewsWebViewFragment tabDiscover;
     public PersonalFragment tabMine;
@@ -574,7 +562,6 @@ public class MainActivity extends BaseComponentActivity {
                     .centerCrop()
                     .into(navigationBarBg);
         }
-
 
         boolean isShowTabAccount = true;
         for (int i = 0; i < list.size(); ++i) {

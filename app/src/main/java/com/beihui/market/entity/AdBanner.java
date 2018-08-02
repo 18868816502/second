@@ -29,7 +29,7 @@ public class AdBanner implements Parcelable {
     private int needLogin;
     private long beginTime;
     private long endTime;
-    private int showTimes;
+    private int showTimes;//-1:仅显示一次，-2：未点击继续显示
     private int location;//1-账单首页，2-发现页
     private String imgUrl;
 
