@@ -281,6 +281,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     if (intent != null) {
                         intent.putExtra("recordId", item.getRecordId());
                         intent.putExtra("billId", item.getBillId());
+                        intent.putExtra("title", item.getTitle());
                         mActivity.startActivity(intent);
                     }
                     handler.postDelayed(new Runnable() {
