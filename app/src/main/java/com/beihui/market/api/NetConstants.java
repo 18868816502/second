@@ -23,6 +23,7 @@ public class NetConstants {
     //public static final String ZHANG_DOMAIN = BuildConfig.ZHANG_DOMAIN;
 
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
+    public static final String APP_NAME = "考拉记账";
 
     public static final String BASE_PATH = "/s1";
     public static final String BASE_PATH_S_FOUR = "/s4";
@@ -67,7 +68,6 @@ public class NetConstants {
     public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
 
 
-
     public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
     public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
@@ -85,7 +85,8 @@ public class NetConstants {
     /**
      * 用户协议H5
      */
-    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/registrationProtocol.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/majiabao/regist-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version="
+            + VERSION_NAME + "&appName=" + APP_NAME;
 
     /**
      * 魔蝎协议

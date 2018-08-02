@@ -13,6 +13,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
@@ -23,6 +24,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.util.CommonUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -37,14 +39,11 @@ public class UserProtocolActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar mToolBar;
     @BindView(R.id.web_view)
-    WebView webView;
+    RelativeLayout webView;
 
 
     @Override
     protected void onDestroy() {
-        webView.getSettings().setJavaScriptEnabled(false);
-        webView.destroy();
-        webView = null;
         super.onDestroy();
     }
 
@@ -72,36 +71,42 @@ public class UserProtocolActivity extends BaseComponentActivity {
 //        mToolBar.setLayoutParams(lp);
 
 
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-            }
-        });
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-        });
-
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+//        webView.setWebChromeClient(new WebChromeClient() {
+//            @Override
+//            public void onProgressChanged(WebView view, int newProgress) {
+//            }
+//        });
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                return super.shouldOverrideUrlLoading(view, url);
+//            }
+//        });
+//
+//        WebSettings settings = webView.getSettings();
+//        settings.setJavaScriptEnabled(true);
+//        settings.setDomStorageEnabled(true);
+//        settings.setSupportZoom(true);
+//        settings.setBuiltInZoomControls(true);
+//        settings.setDisplayZoomControls(false);
+//        settings.setUseWideViewPort(true);
+//        settings.setLoadWithOverviewMode(true);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        }
 
         SlidePanelHelper.attach(this);
     }
 
     @Override
     public void initDatas() {
-        webView.loadUrl(NetConstants.H5_USER_REGISTRATION_PROTOCOL);
+        //webView.loadUrl(NetConstants.H5_USER_REGISTRATION_PROTOCOL);
+        AgentWeb.with(this)
+                .setAgentWebParent(webView, new RelativeLayout.LayoutParams(-1, -1)).
+                useDefaultIndicator(getResources().getColor(R.color.red), 1)
+                .createAgentWeb()//
+                .ready()
+                .go(NetConstants.H5_USER_REGISTRATION_PROTOCOL);
     }
 
     @Override

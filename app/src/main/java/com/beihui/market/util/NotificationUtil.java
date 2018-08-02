@@ -96,15 +96,29 @@ public class NotificationUtil {
      * 显示一个下载带进度条的通知
      */
     public static NotificationCompat.Builder showNotificationProgress(Context context) {
-        //进度条通知
-        final NotificationCompat.Builder builderProgress = new NotificationCompat.Builder(context);
-        builderProgress.setContentTitle("下载中");
-        builderProgress.setSmallIcon(R.drawable.push_small);
-        builderProgress.setTicker("下载中");
-        builderProgress.setProgress(100, 0, false);
-        Notification notification = builderProgress.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(2, notification);
+        NotificationCompat.Builder builderProgress;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("download", "更新", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+            builderProgress = new NotificationCompat.Builder(context, "download").setContentTitle("下载中");
+            builderProgress.setSmallIcon(R.drawable.push_small);
+            builderProgress.setTicker("下载中");
+            builderProgress.setProgress(100, 0, false);
+            Notification notification = builderProgress.build();
+
+            notificationManager.notify(2, notification);
+        } else {
+            //进度条通知
+            builderProgress = new NotificationCompat.Builder(context);
+            builderProgress.setContentTitle("下载中");
+            builderProgress.setSmallIcon(R.drawable.push_small);
+            builderProgress.setTicker("下载中");
+            builderProgress.setProgress(100, 0, false);
+            Notification notification = builderProgress.build();
+
+            notificationManager.notify(2, notification);
+        }
 
         return builderProgress;
     }

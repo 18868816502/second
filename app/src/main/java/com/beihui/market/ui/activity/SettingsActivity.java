@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -215,7 +216,8 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showLatestVersion(String version) {
-        if (version != null) {
+        if (version != null && !TextUtils.isEmpty(version)) {
+            checkVersionRel.setRightTextView1Text(version);
         }
     }
 

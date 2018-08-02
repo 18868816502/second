@@ -102,7 +102,6 @@ public class BillSummaryActivity extends BaseComponentActivity {
         totalTile.setTextColor(Color.argb(204, 255, 255, 255));
         liTile.setTextColor(Color.argb(204, 255, 255, 255));
         adapter = new BillSummaryAdapter(R.layout.item_bill_summary_layout, list, this, activity);
-        //adapter.setEmptyView(emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

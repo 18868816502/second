@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -238,18 +239,24 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                    public void accept(ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
                                            ToastUtils.showShort(context, "提交成功", null);
-                                           //finish();
-                                           viewPager.setCurrentItem(0);
-                                           helpTv.setText("帮助中心");
-                                           commitTv.setText("");
-                                           bottomLayout.setVisibility(View.VISIBLE);
-                                           image = null;
-                                           imageFilePath = null;
-                                           etFeedContent.setText("");
-                                           ivFeedImage.setImageResource(R.drawable.debt_feed_add_image_icon);
                                            if (KeyBoard(etFeedContent)) {
                                                closeSoftBoard(etFeedContent);
                                            }
+                                           new Handler().postDelayed(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   viewPager.setCurrentItem(0);
+                                                   helpTv.setText("帮助中心");
+                                                   commitTv.setText("");
+                                                   bottomLayout.setVisibility(View.VISIBLE);
+                                                   image = null;
+                                                   imageFilePath = null;
+                                                   etFeedContent.setText("");
+                                                   ivFeedImage.setImageResource(R.drawable.debt_feed_add_image_icon);
+
+                                               }
+                                           }, 1500);
+
 
                                        } else {
                                            ToastUtils.showShort(context, result.getMsg(), null);
