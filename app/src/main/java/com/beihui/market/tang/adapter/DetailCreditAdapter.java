@@ -20,7 +20,6 @@ import com.beihui.market.tang.activity.CreditDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.FormatNumberUtils;
-import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 

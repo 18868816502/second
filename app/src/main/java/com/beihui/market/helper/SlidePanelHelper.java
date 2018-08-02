@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.beihui.market.R;
 import com.beihui.market.view.slidepanel.SlidePanel;
 
 public class SlidePanelHelper {
@@ -30,8 +31,8 @@ public class SlidePanelHelper {
 
             @Override
             public void onSlideEnd() {
-                curActivity.overridePendingTransition(0, 0);
                 curActivity.finish();
+                curActivity.overridePendingTransition(R.anim.no_anim, R.anim.no_anim);
 
                 ActivityTracker.getInstance().removeTrackImmediately(curActivity);
             }
