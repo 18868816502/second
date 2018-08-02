@@ -67,6 +67,7 @@ public class ComWebViewActivity extends BaseComponentActivity {
         } else {
             ImmersionBar.with(this).titleBar(toolbar).init();
         }
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
