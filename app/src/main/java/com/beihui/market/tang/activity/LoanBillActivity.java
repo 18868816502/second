@@ -90,18 +90,23 @@ public class LoanBillActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<List<LoanAccountIconBean>>() {
                     @Override
                     public void onNext(@NonNull List<LoanAccountIconBean> data) {
-                        houseBean = data.get(0);
-                        tv_house_name.setText(houseBean.iconName);
-                        tv_house_remark.setText(houseBean.remark);
-                        //Glide.with(activity).load(houseBean.logo).transform(new GlideCircleTransform(activity)).into(iv_house_icon);
-
-                        carBean = data.get(1);
-                        tv_car_name.setText(carBean.iconName);
-                        tv_car_remark.setText(carBean.remark);
-                        //Glide.with(activity).load(carBean.logo).transform(new GlideCircleTransform(activity)).into(iv_car_icon);
-
-                        customBean = data.get(2);
-                        tv_custom_loan.setText(customBean.iconName);
+                        if (data.size() > 0) {
+                            houseBean = data.get(0);
+                            tv_house_name.setText(houseBean.iconName);
+                            tv_house_remark.setText(houseBean.remark);
+                        }
+                        if (data.size() > 1) {
+                            carBean = data.get(1);
+                            tv_car_name.setText(carBean.iconName);
+                            tv_car_remark.setText(carBean.remark);
+                        }
+                        if (data.size() > 2) {
+                            customBean = data.get(2);
+                            tv_custom_loan.setVisibility(View.VISIBLE);
+                            tv_custom_loan.setText(customBean.iconName);
+                        } else {
+                            tv_custom_loan.setVisibility(View.GONE);
+                        }
                     }
                 });
         Api.getInstance().queryLoanAccountIcon(UserHelper.getInstance(this).getProfile().getId())

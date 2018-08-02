@@ -45,5 +45,4 @@ public class ShadowView extends View {
     double easeInCubic(float input) {
         return input * input * input;
     }
-
 }

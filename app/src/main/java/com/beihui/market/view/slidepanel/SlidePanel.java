@@ -73,7 +73,6 @@ public class SlidePanel extends FrameLayout {
     }
 
     private class DragCallback extends ViewDragHelper.Callback {
-
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
             boolean capture = dragHelper.isEdgeTouched(ViewDragHelper.EDGE_LEFT) && child == contentView;

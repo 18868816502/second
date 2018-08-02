@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.HomePageAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.Px2DpUtils;
@@ -85,15 +87,15 @@ public class HomeFragment extends BaseTabFragment {
     @BindView(R.id.ll_home_wrap)
     View ll_home_wrap;
 
-    private Activity mActivity;
+    private MainActivity mActivity;
     private UserHelper userHelper;
-    private HomePageAdapter pageAdapter;
+    public HomePageAdapter pageAdapter;
     //上拉与下拉的刷新监听器
     public PullToRefreshListener mPullToRefreshListener = new PullToRefreshListener();
     public int page = 1;
-    public int mMeasuredRecyclerViewHeaderHeight;
     private double num;
-    public float mScrollY = 0f;
+    private LinearLayoutManager layoutManager;
+    private int itemPos;
 
     public PulledTabAccountRecyclerView recycler() {
         return mRecyclerView;
@@ -102,36 +104,29 @@ public class HomeFragment extends BaseTabFragment {
     private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            final LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-            manager.getChildAt(0).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    //移出视图树
-                    manager.getChildAt(0).getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    //列表头布局高度
-                    mMeasuredRecyclerViewHeaderHeight = mRecyclerView.getChildAt(0).getMeasuredHeight();
+            if (recyclerView.canScrollVertically(1)) {//可以上拉
+                int fullHeight = recyclerView.getHeight();
+                View headView = recyclerView.getChildAt(0);
+                int headHeight = headView.getHeight();
+                if (layoutManager.getItemCount() > 0) {
+                    View itemView = recyclerView.getChildAt(1);
+                    int itemHeight = itemView.getHeight();
+                    if (headHeight != itemHeight) {
+                        float pos = (fullHeight - headHeight / 3) * 1.0f / itemHeight;
+                        itemPos = Math.round(pos + 0.5f);
+                    }
+                    int lastPos = layoutManager.findLastVisibleItemPosition();
+                    if (lastPos >= itemPos) {
+                        mTitle.setAlpha(1);
+                    } else {
+                        mTitle.setAlpha(0);
+                    }
+                    if (SPUtils.getNumVisible(mActivity)) {
+                        tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
+                    } else {
+                        tv_top_loan_num.setText("****");//应还金额
+                    }
                 }
-            });
-            int mTitleMeasuredHeight = mTitle.getMeasuredHeight();
-            int height = mMeasuredRecyclerViewHeaderHeight - mTitleMeasuredHeight;
-
-            mScrollY += dy;
-
-            //隐藏显示布局的变化率
-            float max = 0f;
-            if (height > 0)
-                max = Math.max(mScrollY * 1.0f / height, 0f);
-            if (max > 1) max = 1;
-            if (max >= 0.55f) mTitle.setAlpha(1);
-            else mTitle.setAlpha(0);
-            /*System.out.println("1: " + height);
-            System.out.println("2: " + mScrollY);
-            System.out.println("3: " + max);*/
-
-            if (SPUtils.getNumVisible(mActivity)) {
-                tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
-            } else {
-                tv_top_loan_num.setText("****");//应还金额
             }
         }
     };
@@ -171,7 +166,7 @@ public class HomeFragment extends BaseTabFragment {
 
     @Override
     public void configViews() {
-        mActivity = getActivity();
+        mActivity = (MainActivity) getActivity();
         userHelper = UserHelper.getInstance(mActivity);
         int statusHeight = CommonUtils.getStatusBarHeight(mActivity);
         //设置toolbar的高度为状态栏相同高度
@@ -273,18 +268,22 @@ public class HomeFragment extends BaseTabFragment {
                             swipeRefreshLayout.setRefreshing(false);
                         }
                     });
-            mTitle.setAlpha(0);
         } else {
             pageAdapter.notifyEmpty();
             swipeRefreshLayout.setRefreshing(false);
             mRecyclerView.setCanPullUp(false);
+        }
+        if (itemPos != 0 && layoutManager.findLastVisibleItemPosition() >= itemPos) {
+            mTitle.setAlpha(1);
+        } else {
             mTitle.setAlpha(0);
         }
     }
 
     private void initRecyclerView() {
-        pageAdapter = new HomePageAdapter(getActivity(), this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        pageAdapter = new HomePageAdapter((MainActivity) getActivity(), this);
+        layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(pageAdapter);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
