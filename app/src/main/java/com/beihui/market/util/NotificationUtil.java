@@ -46,9 +46,9 @@ public class NotificationUtil {
             //如果有跳转
             if (contentIntent != null) {
                 if (activity) {
-                    notification.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                    notification.setContentIntent(PendingIntent.getActivity(context, new Random(System.currentTimeMillis()).nextInt(), contentIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                 } else {
-                    notification.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                    notification.setContentIntent(PendingIntent.getBroadcast(context, new Random(System.currentTimeMillis()).nextInt(), contentIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                 }
             }
             //发起通知
@@ -78,9 +78,9 @@ public class NotificationUtil {
             //如果有跳转
             if (contentIntent != null) {
                 if (activity) {
-                    builder.setContentIntent(PendingIntent.getActivity(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                    builder.setContentIntent(PendingIntent.getActivity(context, new Random(System.currentTimeMillis()).nextInt(), contentIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                 } else {
-                    builder.setContentIntent(PendingIntent.getBroadcast(context, 1, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+                    builder.setContentIntent(PendingIntent.getBroadcast(context, new Random(System.currentTimeMillis()).nextInt(), contentIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                 }
             }
 
