@@ -1,5 +1,6 @@
 package com.beihui.market.tang.adapter;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -203,6 +204,9 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
                                                 ToastUtil.toast("恭喜，本期账单已结清", R.drawable.ic_detail_over);
                                                 handler.postDelayed(task, 300);
                                                 EventBus.getDefault().post("1");
+                                                if (getBillStatus()) {
+
+                                                }
                                             }
                                         });
                             }
@@ -233,6 +237,10 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
     public int getItemCount() {
         if (dataSet.size() == 0) return 1;
         return dataSet.size() + 1;
+    }
+
+    private void anim() {
+        //ObjectAnimator.ofFloat()
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -192,13 +192,13 @@ public class MainActivity extends BaseComponentActivity {
 
     private void showAdDialog(final AdBanner ad) {
         if (ad.getShowTimes() == 1) {//仅显示一次
-            if ("only_show_onece".equals(SPUtils.getValue(activity, "only_show_onece"))) {
+            if (ad.getId().equals(SPUtils.getValue(activity, ad.getId()))) {
                 return;
             } else {
-                SPUtils.setValue(activity, "only_show_onece");
+                SPUtils.setValue(activity, ad.getId());
             }
         } else if (ad.getShowTimes() == 2) {//未点击继续显示
-            if ("ad_already_clicked".equals(SPUtils.getValue(activity, "ad_already_clicked"))) {
+            if (ad.getId().equals(SPUtils.getValue(activity, ad.getId()))) {
                 return;
             }
         } else {//其他情况不展示弹窗广告
@@ -226,12 +226,11 @@ public class MainActivity extends BaseComponentActivity {
                         return;
                     }
                 }
-
                 if (ad.isNative()) {//跳原生还是跳Web
                     Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
                     intent.putExtra("loanId", ad.getLocalId());
                     startActivity(intent);
-                    SPUtils.setValue(activity, "ad_already_clicked");
+                    SPUtils.setValue(activity, ad.getId());
                 } else if (!TextUtils.isEmpty(ad.getUrl())) {
                     String url = ad.getUrl();
                     if (url.contains("USERID") && UserHelper.getInstance(MainActivity.this).getProfile() != null) {
@@ -241,7 +240,7 @@ public class MainActivity extends BaseComponentActivity {
                     intent.putExtra("title", ad.getTitle());
                     intent.putExtra("url", url);
                     startActivity(intent);
-                    SPUtils.setValue(activity, "ad_already_clicked");
+                    SPUtils.setValue(activity, ad.getId());
                 }
             }
         }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());

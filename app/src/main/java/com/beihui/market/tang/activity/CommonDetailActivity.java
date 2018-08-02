@@ -3,6 +3,7 @@ package com.beihui.market.tang.activity;
 import android.app.Dialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -47,6 +48,8 @@ public class CommonDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tv_toolbar_title)
+    TextView tv_toolbar_title;
     @BindView(R.id.recycler)
     PulledTabAccountRecyclerView mRecyclerView;
     @BindView(R.id.tv_finish_all)
@@ -55,6 +58,7 @@ public class CommonDetailActivity extends BaseComponentActivity {
     private CommonDetailActivity activity;
     private String recordId;
     private String billId;
+    private String title;
     private DetailCommonAdapter itemAdapter;
 
     @Override
@@ -75,6 +79,7 @@ public class CommonDetailActivity extends BaseComponentActivity {
     public void initDatas() {
         recordId = getIntent().getStringExtra("recordId");
         billId = getIntent().getStringExtra("billId");
+        title = getIntent().getStringExtra("title");
         request();
         initRecyclerView();
     }
@@ -105,12 +110,26 @@ public class CommonDetailActivity extends BaseComponentActivity {
                 });
     }
 
+    private int scrollY;
+
     private void initRecyclerView() {
         itemAdapter = new DetailCommonAdapter(activity);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setAdapter(itemAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setCanPullUp(false);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int height = mToolbar.getHeight();
+                scrollY += dy;
+                if (scrollY > height) {
+                    tv_toolbar_title.setText(title);
+                } else {
+                    tv_toolbar_title.setText("账单详情");
+                }
+            }
+        });
     }
 
     @Override
