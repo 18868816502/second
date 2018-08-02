@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="-10dp"
         android:layout_weight="1">
 
         <View
@@ -24,23 +23,14 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
-    <!--<FrameLayout
-        android:id="@+id/tab_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="-10dp"
-        android:layout_weight="1" />-->
-
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginBottom="-10dp">
+        android:layout_height="50dp">
 
         <FrameLayout
             android:id="@+id/fl_bottom"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp">
+            android:layout_height="50dp">
 
             <ImageView
                 android:id="@+id/navigation_bar_bg"
@@ -142,8 +132,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_alignBottom="@id/fl_bottom"
-            android:layout_marginBottom="50dp"
-            android:background="@color/line" />
+            android:background="@color/line_color" />
     </RelativeLayout>
 </LinearLayout>

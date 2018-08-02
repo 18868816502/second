@@ -262,7 +262,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, channelId, versionName);
+        newsUrl = NetConstants.generateNewsWebViewUrl(userId, BuildConfig.APPLICATION_ID, versionName);
+        System.out.println("1: " + newsUrl);
         webView.loadUrl(newsUrl);
     }
 

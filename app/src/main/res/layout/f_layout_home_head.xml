@@ -12,14 +12,12 @@
         android:layout_marginTop="16dp">
 
         <ImageView
-            android:id="@+id/tv_event_entry"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:id="@+id/iv_event_entry"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:background="#0f0"
-            android:clickable="true"
+            android:layout_marginTop="25dp"
             android:scaleType="centerCrop"
             android:textColor="@color/white" />
 
