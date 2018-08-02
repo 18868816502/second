@@ -122,6 +122,7 @@ public class MainActivity extends BaseComponentActivity {
 
     private ImageView[] iconView;
     private TextView[] textView;
+    private boolean flag = false;
 
     @SuppressLint("InlinedApi")
     private String[] needPermission = {
@@ -156,6 +157,9 @@ public class MainActivity extends BaseComponentActivity {
                 if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
                     tkIntent.putExtra("pending_json", extras.getString("tankuang"));
+                    if (CommonUtils.isForeground(MainActivity.this, GetuiDialogActivity.class.getName())) {
+                        finish();
+                    }
                     startActivity(tkIntent);
 
                 }
@@ -190,18 +194,23 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     });
         }
-        if (getIntent() != null && getIntent().getExtras() != null) {
+
+        if (getIntent() != null && getIntent().getExtras() != null && !flag) {
             Bundle extras = getIntent().getExtras();
             if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
                     tkIntent.putExtra("pending_json", extras.getString("tankuang"));
+                    if (CommonUtils.isForeground(MainActivity.this, GetuiDialogActivity.class.getName())) {
+                        finish();
+                    }
                     startActivity(tkIntent);
 
                 }
             }
         }
+
 
         //showGuide();//显示高亮
     }
@@ -663,5 +672,11 @@ public class MainActivity extends BaseComponentActivity {
         if (isShowTabAccount) {//都没有选择那就选择首页
             navigationBar.select(R.id.tab_bill_root);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        flag = true;
     }
 }
