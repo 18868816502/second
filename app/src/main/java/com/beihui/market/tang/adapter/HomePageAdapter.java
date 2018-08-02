@@ -152,6 +152,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     public void onClick(View v) {
                         Intent intent = new Intent(mActivity, WebViewActivity.class);
                         intent.putExtra("webViewUrl", bean.getUrl());
+                        intent.putExtra("webViewTitleName", bean.getTitle());
                         mActivity.startActivity(intent);
                     }
                 });

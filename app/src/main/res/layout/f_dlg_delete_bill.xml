@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="25dp"
-            android:text="确定要删除账单？"
+            android:text="删除后，将不会收到还款提醒哦~"
             android:textColor="@color/black_1"
             android:textSize="17dp" />
 
