@@ -19,6 +19,7 @@ import com.beihui.market.entity.CreditCardDebtDetail;
 import com.beihui.market.tang.activity.CreditDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 
@@ -84,8 +85,8 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
                 CreditCardDebtDetail.ShowBillBean showBill = data.getShowBill();
                 if (showBill != null) {
                     holder.tv_x_month.setText(String.format(mActivity.getString(R.string.x_month_repay), Integer.parseInt(showBill.getBillMonth().substring(5, 7)) + ""));
-                    holder.tv_still_balance.setText(String.format("¥%.2f", showBill.getNewBalance()));
-                    holder.tv_min_amount.setText(String.format("%.2f", showBill.getMinPayment()));
+                    holder.tv_still_balance.setText("¥" + FormatNumberUtils.FormatNumberFor2(showBill.getNewBalance()));
+                    holder.tv_min_amount.setText(FormatNumberUtils.FormatNumberFor2(showBill.getMinPayment()));
                     holder.tv_bill_date.setText(showBill.getBillDate().substring(5, 11).replace("-", "."));
                     holder.tv_pay_date.setText(showBill.getPaymentDueDate().substring(5, 11).replace("-", "."));
                 }
@@ -97,7 +98,7 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
             if (bill == null) return;
             holder.tv_term_num.setText(Integer.valueOf(bill.getBillMonth().substring(5, 7)) + "月");
             holder.tv_present_flag.setVisibility(bill.isPresentFlag() ? View.VISIBLE : View.GONE);
-            holder.tv_term_pay_amount.setText(String.format("%.2f", bill.getNewBalance()));
+            holder.tv_term_pay_amount.setText(FormatNumberUtils.FormatNumberFor2(bill.getNewBalance()));
             holder.tv_term_repay_date.setText(bill.getBillDate().substring(0, 10).replace("-", "."));
             final int status = bill.getStatus();
             String statusTxt = "";

@@ -12,9 +12,12 @@
 
         <TextView
             android:id="@+id/tv_sub_description"
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:text="支付宝-杭州科技有限公司"
+            android:layout_marginRight="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="支付宝-杭州科技有限公司州科技有州科技有州科技有州科技有州科技有州科技有"
             android:textColor="@color/black_1"
             android:textSize="13dp" />
 
@@ -27,6 +30,8 @@
             android:id="@+id/tv_sub_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"
             android:text="1000.00"
             android:textColor="@color/black_1"
             android:textSize="13dp" />

@@ -227,7 +227,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 } else {
                     holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm() + ""));
                 }
-                //holder.tv_home_bill_tag.setText(String.format(resources.getString(R.string.x_home_bill_loan), item.getTerm(), item.getTotalTerm() == -1 ? "∞" : item.getTotalTerm()));
             }
             //账单到期时间
             if (item.getReturnDay() > 0) {//x天后到期
@@ -241,7 +240,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.tv_home_bill_time_tip.setText(String.format(resources.getString(R.string.x_home_bill_overdue), -item.getReturnDay()));
             }
             //金额
-            holder.tv_home_bill_loan_num.setText(String.format("%.2f", item.getAmount()));
+            holder.tv_home_bill_loan_num.setText(FormatNumberUtils.FormatNumberFor2(item.getAmount()));
             //time
             holder.tv_home_bill_time.setText(item.getRepayTime());
 

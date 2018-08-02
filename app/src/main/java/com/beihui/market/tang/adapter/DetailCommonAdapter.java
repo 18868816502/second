@@ -20,6 +20,7 @@ import com.beihui.market.tang.activity.CommonDetailActivity;
 import com.beihui.market.tang.activity.RemarkActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
@@ -111,8 +112,8 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
             if (data != null) {
                 Glide.with(mActivity).load(data.getLogo()).transform(new GlideCircleTransform(mActivity)).into(holder.iv_detail_icon);
                 holder.tv_detail_name.setText(data.getChannelName());
-                holder.tv_still_balance.setText(String.format("¥%.2f", data.getStayReturnedAmount()));
-                holder.tv_already_num.setText(String.format("%.2f", data.getReturnedAmount()));
+                holder.tv_still_balance.setText("¥" + FormatNumberUtils.FormatNumberFor2(data.getStayReturnedAmount()));
+                holder.tv_already_num.setText(FormatNumberUtils.FormatNumberFor2(data.getReturnedAmount()));
                 holder.tv_cycle_num.setText(data.getReturnedTerm() + "/" + (data.getTerm() == -1 ? "∞" : data.getTerm()));
                 if (data.getRemark() != null && !data.getRemark().isEmpty()) {
                     holder.tv_add_remark.setText(data.getRemark());

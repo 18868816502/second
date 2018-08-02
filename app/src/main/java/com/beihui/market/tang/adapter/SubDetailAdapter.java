@@ -2,6 +2,7 @@ package com.beihui.market.tang.adapter;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.BillDetail;
+import com.beihui.market.util.FormatNumberUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -25,7 +26,7 @@ public class SubDetailAdapter extends BaseQuickAdapter<BillDetail, BaseViewHolde
     @Override
     protected void convert(BaseViewHolder helper, BillDetail item) {
         helper.setText(R.id.tv_sub_description, item.getDiscription())
-                .setText(R.id.tv_sub_amount, String.format("%.2f", item.getAmountMoney()))
+                .setText(R.id.tv_sub_amount, FormatNumberUtils.FormatNumberFor2(item.getAmountMoney()))
                 .setText(R.id.tv_sub_time, item.getTransDate().substring(0, 10).replace("-", "."));
     }
 }

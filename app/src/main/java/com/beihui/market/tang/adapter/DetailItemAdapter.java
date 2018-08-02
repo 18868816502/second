@@ -20,6 +20,7 @@ import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.activity.RemarkActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
@@ -123,8 +124,8 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
             if (data != null) {
                 Glide.with(mActivity).load(data.getLogo()).transform(new GlideCircleTransform(mActivity)).into(holder.iv_detail_icon);
                 holder.tv_detail_name.setText(data.getChannelName());
-                holder.tv_still_balance.setText(String.format("¥%.2f", data.getStayReturnedAmount()));
-                holder.tv_already_num.setText(String.format("%.2f", data.getReturnedAmount()));
+                holder.tv_still_balance.setText("¥" + FormatNumberUtils.FormatNumberFor2(data.getStayReturnedAmount()));
+                holder.tv_already_num.setText(FormatNumberUtils.FormatNumberFor2(data.getReturnedAmount()));
                 holder.tv_cycle_num.setText(data.getReturnedTerm() + "/" + (data.getTerm() == -1 ? "∞" : data.getTerm()));
                 if (data.getRemark() != null && !data.getRemark().isEmpty()) {
                     holder.tv_add_remark.setText(data.getRemark());
@@ -156,7 +157,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
             //是否本期标识位
             holder.tv_present_flag.setVisibility(bill.isPresentFlag() ? View.VISIBLE : View.GONE);
             //金额
-            holder.tv_term_pay_amount.setText(String.format("%.2f", bill.getTermPayableAmount()));
+            holder.tv_term_pay_amount.setText(FormatNumberUtils.FormatNumberFor2(bill.getTermPayableAmount()));
             //日期
             holder.tv_term_repay_date.setText(bill.getTermRepayDate().replace("-", "."));
             //账单状态 + 右侧文字背景
