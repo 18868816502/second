@@ -139,6 +139,8 @@ public class MainActivity extends BaseComponentActivity {
 
     //高亮
     private HighLight infoHighLight;
+    private Bundle extras;
+    private Bundle extras1;
 
     /**
      * 重新进入MainActivity切换的对应的Fragment
@@ -146,7 +148,8 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Bundle extras = intent.getExtras();
+        extras = intent.getExtras();
+        extras1 = intent.getExtras();
         if (extras != null) {
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_bill_root);
@@ -154,11 +157,11 @@ public class MainActivity extends BaseComponentActivity {
                     ToastUtil.toast(extras.getString("moxieMsg"));
                 }
             }
-            if (extras.getBoolean("istk")) {
+            if (extras1.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
                     startActivity(tkIntent);
 
                 }
@@ -186,16 +189,13 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     }
                 });
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras.getBoolean("istk")) {
-                navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
+        if (getIntent() != null && getIntent().getExtras() != null && !flag) {
+            extras1 = getIntent().getExtras();
+            if (extras1.getBoolean("istk")) {
+                //navigationBar.select(R.id.tab_bill_root);
+                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
-                    if (CommonUtils.isForeground(MainActivity.this, GetuiDialogActivity.class.getName())) {
-                        finish();
-                    }
+                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
                     startActivity(tkIntent);
 
                 }
@@ -663,5 +663,6 @@ public class MainActivity extends BaseComponentActivity {
     protected void onStop() {
         super.onStop();
         flag = true;
+        extras1 = null;
     }
 }
