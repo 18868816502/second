@@ -1,5 +1,6 @@
 package com.beihui.market.tang.adapter;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -204,9 +205,9 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
                                                 ToastUtil.toast("恭喜，本期账单已结清", R.drawable.ic_detail_over);
                                                 handler.postDelayed(task, 300);
                                                 EventBus.getDefault().post("1");
-                                                if (getBillStatus()) {
-
-                                                }
+                                                /*if (getBillStatus()) {
+                                                    animIn(holder);
+                                                }*/
                                             }
                                         });
                             }
@@ -239,8 +240,22 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
         return dataSet.size() + 1;
     }
 
-    private void anim() {
-        //ObjectAnimator.ofFloat()
+    private void animIn(ViewHolder holder) {
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(holder.iv_bill_over_tag, "alpha", 0f, 1f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(holder.iv_bill_over_tag, "scaleX", 3f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(holder.iv_bill_over_tag, "scaleY", 3f, 1f);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(alpha, scaleX, scaleY);
+        set.setDuration(3000).start();
+    }
+
+    private void animOut(ViewHolder holder) {
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(holder.iv_bill_over_tag, "alpha", 1f, 0f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(holder.iv_bill_over_tag, "scaleX", 1f, 0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(holder.iv_bill_over_tag, "scaleY", 1f, 0f);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(alpha, scaleX, scaleY);
+        set.setDuration(3000).start();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
