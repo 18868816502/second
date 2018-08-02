@@ -222,34 +222,42 @@
         <!-- 4.2.0贷款账单 -->
         <activity
             android:name=".tang.activity.LoanBillActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 信用卡账单 -->
         <activity
             android:name=".tang.activity.CreditBillActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 创建账单 -->
         <activity
             android:name=".tang.activity.MakeBillActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 搜索 -->
         <activity
             android:name=".tang.activity.SearchActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--账单详情-->
         <activity
             android:name=".tang.activity.NetLoanDetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--添加备注-->
         <activity
             android:name=".tang.activity.RemarkActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--信用卡详情-->
         <activity
             android:name=".tang.activity.CreditDetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--通用账单-->
         <activity
             android:name=".tang.activity.CommonDetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->

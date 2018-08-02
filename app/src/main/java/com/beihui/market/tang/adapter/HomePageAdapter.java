@@ -144,7 +144,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.headEventEntry.setVisibility(View.GONE);
             } else {
                 holder.headEventEntry.setVisibility(View.VISIBLE);
-                holder.headEventEntry.setText(bean.getTitle());
+                Glide.with(mActivity).load(bean.getImgUrl()).into(holder.headEventEntry);
             }
             if (!userHelper.isLogin() || totalAmount < 0) {
                 holder.headMonthNum.setText(String.format(resources.getString(R.string.x_month_repay), Integer.parseInt(currentMonth) + ""));
@@ -170,7 +170,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 }
             }
             /*活动入口*/
-            holder.headEventEntry.setOnClickListener(this);
+            holder.headEventEntry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity, WebViewActivity.class);
+                    intent.putExtra("webViewUrl", bean.getUrl());
+                    mActivity.startActivity(intent);
+                }
+            });
             /*账单数目是否可见*/
             holder.headBillVisible.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -343,11 +350,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             return;
         }
         switch (v.getId()) {
-            case R.id.tv_event_entry://活动入口
-                Intent intent = new Intent(mActivity, WebViewActivity.class);
-                intent.putExtra("webViewUrl", bean.getUrl());
-                mActivity.startActivity(intent);
-                break;
             case R.id.fl_add_account_bill_wrap://添加账单
                 mActivity.startActivity(new Intent(mActivity, LoanBillActivity.class));
                 break;
@@ -430,7 +432,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public int viewType;
-        private TextView headEventEntry;
+        private ImageView headEventEntry;
         private TextView headMonthNum;
         private TextView headBillNum;
         private ImageView headBillVisible;
@@ -452,7 +454,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
-                headEventEntry = (TextView) itemView.findViewById(R.id.tv_event_entry);
+                headEventEntry = (ImageView) itemView.findViewById(R.id.tv_event_entry);
                 headMonthNum = (TextView) itemView.findViewById(R.id.tv_month_num);
                 headBillNum = (TextView) itemView.findViewById(R.id.tv_bill_num);
                 headBillVisible = (ImageView) itemView.findViewById(R.id.iv_bill_visible);

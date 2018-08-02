@@ -96,17 +96,6 @@ public class WebViewActivity extends BaseComponentActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-//        webView.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-//
-//                }
-//                return false;
-//            }
-//        });
-
-
         webView.setWebViewClient(new WebViewClient());
 
         webView.setDownloadListener(new DownloadListener() {
@@ -118,10 +107,7 @@ public class WebViewActivity extends BaseComponentActivity {
             }
         });
 
-
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
-
-
 
         String userId = null;
         if (UserHelper.getInstance(this).getProfile() != null) {
@@ -140,13 +126,13 @@ public class WebViewActivity extends BaseComponentActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-       if (!TextUtils.isEmpty(webViewUrl)) {
+        if (!TextUtils.isEmpty(webViewUrl)) {
             if (webViewUrl.contains("?")) {
                 webView.loadUrl(webViewUrl + "&isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + versionName);
             } else {
                 webView.loadUrl(webViewUrl + "?isApp=1&userId=" + userId + "&packageId=" + channelId + "&version=" + versionName);
             }
-       }
+        }
 
         mReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,12 +163,12 @@ public class WebViewActivity extends BaseComponentActivity {
     /**
      * 调用js
      */
-    class mobileJsMethod{
+    class mobileJsMethod {
         /**
          * 跳转到登陆页面
          */
         @JavascriptInterface
-        public void authorize(String nextUrl){
+        public void authorize(String nextUrl) {
             UserAuthorizationActivity.launch(WebViewActivity.this, null);
         }
 
@@ -190,7 +176,7 @@ public class WebViewActivity extends BaseComponentActivity {
          * 获取HTML滑动的Y轴的值
          */
         @JavascriptInterface
-        public void getFindHtmlScrollY(String scrollY){
+        public void getFindHtmlScrollY(String scrollY) {
             mScrollY = scrollY;
         }
 
@@ -198,7 +184,7 @@ public class WebViewActivity extends BaseComponentActivity {
          * 唤醒微信
          */
         @JavascriptInterface
-        public void openWeChat(){
+        public void openWeChat() {
             try {
                 Intent intent = new Intent();
                 ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");

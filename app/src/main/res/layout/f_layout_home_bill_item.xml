@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
-                android:background="#e6eeff"
+                android:background="@drawable/bg_tongbu"
                 android:paddingBottom="1.5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"

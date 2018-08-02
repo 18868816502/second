@@ -46,6 +46,9 @@ android {
         release {
             minifyEnabled false
         }
+        debug{
+            debuggable true
+        }
     }
 
     sourceSets {

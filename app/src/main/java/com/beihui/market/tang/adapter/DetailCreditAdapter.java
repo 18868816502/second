@@ -20,6 +20,7 @@ import com.beihui.market.tang.activity.CreditDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.FormatNumberUtils;
+import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 
@@ -167,26 +168,32 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
         }
         mActivity.getRecyclerView().smoothScrollToPosition(curPos);
         CreditBill bill = dataSet.get(curPos);
-        Api.getInstance().billDetail(bill.getUserId(), bill.getId())
-                .compose(RxResponse.<List<BillDetail>>compatT())
-                .subscribe(new ApiObserver<List<BillDetail>>() {
-                    @Override
-                    public void onNext(@NonNull List<BillDetail> data) {
-                        if (data.size() == 0) {
-                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.rl_empty_wrap.setVisibility(View.GONE);
-                            detailAdapter.setNewData(data);
+        if (bill.getId() == null || bill.getUserId() == null) {
+            //ToastUtil.toast("暂无账单");
+        } else {
+            holder.rl_empty_wrap.setVisibility(View.GONE);
+            Api.getInstance().billDetail(bill.getUserId(), bill.getId())
+                    .compose(RxResponse.<List<BillDetail>>compatT())
+                    .subscribe(new ApiObserver<List<BillDetail>>() {
+                        @Override
+                        public void onNext(@NonNull List<BillDetail> data) {
+                            if (data.size() == 0) {
+                                holder.rl_empty_wrap.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.rl_empty_wrap.setVisibility(View.GONE);
+                                detailAdapter.setNewData(data);
+                            }
+                            notifyDataSetChanged();
                         }
-                        notifyDataSetChanged();
-                    }
 
-                    @Override
-                    public void onError(@NonNull Throwable t) {
-                        holder.rl_empty_wrap.setVisibility(View.VISIBLE);
-                        super.onError(t);
-                    }
-                });
+                        @Override
+                        public void onError(@NonNull Throwable t) {
+                            holder.rl_empty_wrap.setVisibility(View.VISIBLE);
+                            notifyDataSetChanged();
+                            super.onError(t);
+                        }
+                    });
+        }
     }
 
     @Override
