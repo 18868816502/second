@@ -70,6 +70,7 @@ public class InvitationWebActivity extends BaseComponentActivity {
                 .ready()
                 .go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.c_ff5240));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
