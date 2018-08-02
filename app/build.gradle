@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'org.greenrobot.greendao'
 
-
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
@@ -46,6 +45,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+        }
+        debug{
+            debuggable true
         }
     }
 
@@ -104,11 +106,8 @@ android {
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                     GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
                     GETUI_APP_SECRET: "yfrkIskmFO7WwcyCrddADA",
-
                     UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-
                     qqappid         : "1106280475",
-
                     PACKAGE_NAME    : applicationId
             ]
             buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
@@ -120,13 +119,10 @@ android {
         /*loanmarkettest {
             dimension "id"
             applicationId "com.beihui.market.test"
-
             //测试使用的魔蝎appkey
             buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
-
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-
             manifestPlaceholders = [
                     GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
                     GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
@@ -138,7 +134,6 @@ android {
 
                     PACKAGE_NAME    : applicationId
             ]
-
             buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
             buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
             buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
@@ -204,7 +199,6 @@ repositories {
         dirs 'libs'
     }
 }
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -292,7 +286,8 @@ dependencies {
 
     //swipe menu
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
-
+    //rxbinding
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     //hightlight
     compile 'com.isanwenyu.highlight:highlight:1.8.0'
 

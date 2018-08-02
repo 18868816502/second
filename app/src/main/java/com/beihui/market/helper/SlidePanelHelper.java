@@ -30,8 +30,8 @@ public class SlidePanelHelper {
 
             @Override
             public void onSlideEnd() {
-                curActivity.finish();
                 curActivity.overridePendingTransition(0, 0);
+                curActivity.finish();
 
                 ActivityTracker.getInstance().removeTrackImmediately(curActivity);
             }

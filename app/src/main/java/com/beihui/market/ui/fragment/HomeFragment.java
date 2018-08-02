@@ -33,6 +33,7 @@ import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
@@ -122,7 +123,7 @@ public class HomeFragment extends BaseTabFragment {
                         mTitle.setAlpha(0);
                     }
                     if (SPUtils.getNumVisible(mActivity)) {
-                        tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
+                        tv_top_loan_num.setText("￥" + FormatNumberUtils.FormatNumberFor2(num));//应还金额
                     } else {
                         tv_top_loan_num.setText("****");//应还金额
                     }

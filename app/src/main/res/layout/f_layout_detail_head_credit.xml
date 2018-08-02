@@ -15,9 +15,8 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp" />
 
-        <!--网贷名称 或者 信用卡名称-->
         <TextView
             android:id="@+id/tv_detail_name"
             android:layout_width="wrap_content"
@@ -30,17 +29,18 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="#e8e8e8" />
+        android:background="@drawable/bg_dash_stroke"
+        android:layerType="software" />
 
     <TextView
         android:id="@+id/tv_x_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="x月应还（元）"
         android:textColor="@color/black_2"
         android:textSize="11dp" />

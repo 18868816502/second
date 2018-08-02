@@ -39,6 +39,7 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.adapter.HomePageAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.busevents.NavigateNews;
@@ -376,7 +377,8 @@ public class MainActivity extends BaseComponentActivity {
                 currentFragment = tabHome;
 
                 if (!"showGuideMainActivity".equals(SPUtils.getValue(this, "showGuideMainActivity"))) {
-                    if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter.getItemCount() > 1) {
+                    if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter.getItemCount() > 1
+                            && tabHome.pageAdapter.getItemViewType(1) == HomePageAdapter.VIEW_NORMAL) {
                         infoHighLight = new HighLight(this)
                                 .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                                     @Override

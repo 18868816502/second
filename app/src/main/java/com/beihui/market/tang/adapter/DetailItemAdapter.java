@@ -25,13 +25,17 @@ import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -184,36 +188,38 @@ public class DetailItemAdapter extends RecyclerView.Adapter<DetailItemAdapter.Vi
             //侧滑
             holder.csm_bill_wrap.setSwipeEnable(true);
             //右侧按钮点击事件
-            holder.tv_set_status.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.csm_bill_wrap.smoothClose();
-                    if (billStatus == 1 || billStatus == 3) {//结清当期
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), 2)
-                                .compose(RxResponse.compatO())
-                                .subscribe(new ApiObserver<Object>() {
-                                    @Override
-                                    public void onNext(@NonNull Object data) {
-                                        ToastUtil.toast("恭喜，本期账单已结清", R.drawable.ic_detail_over);
-                                        handler.postDelayed(task, 300);
-                                        EventBus.getDefault().post("1");
-                                    }
-                                });
-                    }
-                    if (billStatus == 2) {//置为未还
-                        Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), 1)
-                                .compose(RxResponse.compatO())
-                                .subscribe(new ApiObserver<Object>() {
-                                    @Override
-                                    public void onNext(@NonNull Object data) {
-                                        ToastUtil.toast("已设为未还");
-                                        handler.postDelayed(task, 300);
-                                        EventBus.getDefault().post("1");
-                                    }
-                                });
-                    }
-                }
-            });
+            RxView.clicks(holder.tv_set_status)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(Object o) throws Exception {
+                            holder.csm_bill_wrap.smoothClose();
+                            if (billStatus == 1 || billStatus == 3) {//结清当期
+                                Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), 2)
+                                        .compose(RxResponse.compatO())
+                                        .subscribe(new ApiObserver<Object>() {
+                                            @Override
+                                            public void onNext(@NonNull Object data) {
+                                                ToastUtil.toast("恭喜，本期账单已结清", R.drawable.ic_detail_over);
+                                                handler.postDelayed(task, 300);
+                                                EventBus.getDefault().post("1");
+                                            }
+                                        });
+                            }
+                            if (billStatus == 2) {//置为未还
+                                Api.getInstance().updateDebtStatus(UserHelper.getInstance(mActivity).id(), bill.getBillId(), 1)
+                                        .compose(RxResponse.compatO())
+                                        .subscribe(new ApiObserver<Object>() {
+                                            @Override
+                                            public void onNext(@NonNull Object data) {
+                                                ToastUtil.toast("已设为未还");
+                                                handler.postDelayed(task, 300);
+                                                EventBus.getDefault().post("1");
+                                            }
+                                        });
+                            }
+                        }
+                    });
         }
     }
 
