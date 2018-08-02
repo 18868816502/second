@@ -3,6 +3,7 @@ package com.beihui.market.tang.activity;
 import android.app.Dialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tv_toolbar_title)
+    TextView tv_toolbar_title;
     @BindView(R.id.recycler)
     PulledTabAccountRecyclerView mRecyclerView;
     @BindView(R.id.tv_finish_all)
@@ -58,6 +61,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     private NetLoanDetailActivity activity;
     private String recordId;
     private String billId;
+    private String title;
     private DetailItemAdapter itemAdapter;
     private int page = 1;
 
@@ -79,6 +83,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     public void initDatas() {
         recordId = getIntent().getStringExtra("recordId");
         billId = getIntent().getStringExtra("billId");
+        title = getIntent().getStringExtra("title");
         initRecyclerView();
         request();
     }
@@ -108,12 +113,26 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
                 });
     }
 
+    private int scrollY;
+
     private void initRecyclerView() {
         itemAdapter = new DetailItemAdapter(activity);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setAdapter(itemAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());//SlideInLeftAnimator
         mRecyclerView.setCanPullUp(false);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int height = mToolbar.getHeight();
+                scrollY += dy;
+                if (scrollY > height) {
+                    tv_toolbar_title.setText(title);
+                } else {
+                    tv_toolbar_title.setText("账单详情");
+                }
+            }
+        });
     }
 
     @Override

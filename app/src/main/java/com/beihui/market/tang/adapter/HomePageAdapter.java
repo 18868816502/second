@@ -145,7 +145,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 holder.headEventEntry.setVisibility(View.GONE);
             } else {
                 holder.headEventEntry.setVisibility(View.VISIBLE);
-                Glide.with(mActivity).load(bean.getImgUrl()).transform(new GlideCircleTransform(mActivity)).into(holder.headEventEntry);
+                Glide.with(mActivity).load(bean.getImgUrl()).into(holder.headEventEntry);
                 /*活动入口*/
                 holder.headEventEntry.setOnClickListener(new View.OnClickListener() {
                     @Override
