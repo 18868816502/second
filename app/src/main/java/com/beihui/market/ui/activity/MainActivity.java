@@ -173,26 +173,10 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Api.getInstance().querySupernatant(3)
-                .compose(RxResponse.<List<AdBanner>>compatT())
-                .subscribe(new ApiObserver<List<AdBanner>>() {
-                    @Override
-                    public void onNext(@NonNull List<AdBanner> data) {
-                        if (data != null && data.size() > 0) {
-                            AdBanner adBanner = data.get(0);
-                            if (adBanner.getLocation() == 2) {//发现页
-                                navigationBar.select(R.id.tab_discover_root);
-                            } else {//首页
-                                navigationBar.select(R.id.tab_bill_root);
-                            }
-                            showAdDialog(adBanner);
-                        }
-                    }
-                });
         if (getIntent() != null && getIntent().getExtras() != null && !flag) {
             extras1 = getIntent().getExtras();
             if (extras1.getBoolean("istk")) {
-                //navigationBar.select(R.id.tab_bill_root);
+                navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
                     tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
@@ -300,6 +284,22 @@ public class MainActivity extends BaseComponentActivity {
         checkPermission();
         updateHelper.checkUpdate(this);
         queryBottomImage();//请求底部导航栏图标 文字 字体颜色
+        Api.getInstance().querySupernatant(3)
+                .compose(RxResponse.<List<AdBanner>>compatT())
+                .subscribe(new ApiObserver<List<AdBanner>>() {
+                    @Override
+                    public void onNext(@NonNull List<AdBanner> data) {
+                        if (data != null && data.size() > 0) {
+                            AdBanner adBanner = data.get(0);
+                            if (adBanner.getLocation() == 2) {//发现页
+                                navigationBar.select(R.id.tab_discover_root);
+                            } else {//首页
+                                navigationBar.select(R.id.tab_bill_root);
+                            }
+                            showAdDialog(adBanner);
+                        }
+                    }
+                });
     }
 
     //空事件
