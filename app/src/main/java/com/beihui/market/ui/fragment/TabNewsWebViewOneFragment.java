@@ -5,23 +5,30 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
@@ -64,6 +71,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nsv_scroll_view)
     NestedScrollView scrollView;
+    @BindView(R.id.ll_neterror)
+    LinearLayout ll_neterror;
 
     /**
      * 拼接URL
@@ -185,20 +194,44 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
         webView.requestFocus();
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        //解决图片不显示
+        webSettings.setBlockNetworkImage(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
 
-        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.getSettings().setSavePassword(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setSavePassword(false);
 
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setDatabaseEnabled(true);
-        webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
 
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setAppCacheEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setAppCacheMaxSize(1024 * 1024 * 8);
+
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAppCacheEnabled(true);
         /**
          * 客户端监听器
          */
         webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                isError = true;
+
+                webView.setVisibility(View.GONE);
+                ll_neterror.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                isError = true;
+
+                webView.setVisibility(View.GONE);
+                ll_neterror.setVisibility(View.VISIBLE);
+            }
+
             // url拦截
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -210,7 +243,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
                     Intent intent = new Intent(mActivity, WebViewActivity.class);
                     try {
                         intent.putExtra("webViewUrl", URLDecoder.decode(url, "utf-8"));
-                        //intent.putExtra("webViewTitleName", view.getTitle());
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -221,24 +253,35 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
             }
 
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-            }
-
-            @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if (!isError) {
+                    //回调成功后的相关操作
+                    ll_neterror.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+                } else {
+                    isError = false;
+                    ll_neterror.setVisibility(View.VISIBLE);
+                }
 
-                int touchSlop = ViewConfiguration.get(webView.getContext()).getScaledTouchSlop();
+                /*int touchSlop = ViewConfiguration.get(webView.getContext()).getScaledTouchSlop();
                 StringBuilder jsSb = new StringBuilder("javascript:initTouchSlop('").append(touchSlop).append("')");
-                webView.loadUrl(jsSb.toString());
-
+                webView.loadUrl(jsSb.toString());*/
             }
         });
         webView.clearCache(true);
         webView.clearHistory();
         webView.setHapticFeedbackEnabled(false);
+
+        ll_neterror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.loadUrl(newsUrl);
+            }
+        });
     }
+
+    private boolean isError = false;
 
     /**
      * webView 加载Url
@@ -248,11 +291,9 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
         if (UserHelper.getInstance(mActivity).getProfile() != null) {
             userId = UserHelper.getInstance(mActivity).getProfile().getId();
         }
-
         if (TextUtils.isEmpty(userId)) {
             userId = "";
         }
-
         //生成发现页链接
         String channelId = "unknown";
         String versionName = BuildConfig.VERSION_NAME;
@@ -263,8 +304,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
             e.printStackTrace();
         }
         newsUrl = NetConstants.generateNewsWebViewUrl(userId, BuildConfig.APPLICATION_ID, versionName);
-        System.out.println("1: " + newsUrl);
         webView.loadUrl(newsUrl);
+        //webView.loadUrl("http://192.168.1.2:8080?data=hahd");
     }
 
     /**

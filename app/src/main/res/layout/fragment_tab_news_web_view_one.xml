@@ -11,24 +11,34 @@
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nsv_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scrollbars="vertical">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
+
+                <include layout="@layout/f_layout_neterror" />
 
                 <com.beihui.market.view.BusinessWebView
                     android:id="@+id/bwv_news_web_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@android:color/white" />
+            </FrameLayout>
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            </LinearLayout>
+                <include layout="@layout/f_layout_neterror" />
 
+                <com.beihui.market.view.BusinessWebView
+                    android:id="@+id/bwv_news_web_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white" />
+            </LinearLayout>-->
         </android.support.v4.widget.NestedScrollView>
-
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </LinearLayout>

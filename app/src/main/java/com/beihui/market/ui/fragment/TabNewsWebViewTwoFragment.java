@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -17,9 +18,12 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
@@ -61,6 +65,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nsv_scroll_view)
     NestedScrollView scrollView;
+    @BindView(R.id.ll_neterror)
+    LinearLayout ll_neterror;
 
     /**
      * 拼接URL
@@ -136,9 +142,13 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
         webView.requestFocus();
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        //解决图片不显示
+        webSettings.setBlockNetworkImage(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
 
         webView.setWebViewClient(new WebViewClient());
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -165,6 +175,24 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
          * 客户端监听器
          */
         webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                isError = true;
+
+                webView.setVisibility(View.GONE);
+                ll_neterror.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                isError = true;
+
+                webView.setVisibility(View.GONE);
+                ll_neterror.setVisibility(View.VISIBLE);
+            }
+
             // url拦截
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -191,17 +219,20 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if (!isError) {
+                    //回调成功后的相关操作
+                    ll_neterror.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+                } else {
+                    isError = false;
+                    ll_neterror.setVisibility(View.VISIBLE);
+                }
             }
 
             // WebView加载的所有资源url
             @Override
             public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
             }
         });
 
@@ -214,7 +245,16 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
             }
         });
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
+
+        ll_neterror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.loadUrl(newsUrl);
+            }
+        });
     }
+
+    private boolean isError = false;
 
     /**
      * webView 加载Url
@@ -239,8 +279,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
             e.printStackTrace();
         }
         newsUrl = NetConstants.generateActivityWebViewUrl(userId, channelId, versionName);
-        System.out.println("2: "+newsUrl);
         webView.loadUrl(newsUrl);
+        //webView.loadUrl("http://192.168.1.2:8080?data=hahd");
     }
 
     /**

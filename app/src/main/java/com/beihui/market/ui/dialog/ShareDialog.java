@@ -143,14 +143,14 @@ public class ShareDialog extends DialogFragment {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "share action start");
+                    //Log.d(TAG, "share action start");
                 }
             }
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "share action result " + share_media);
+                    //Log.d(TAG, "share action result " + share_media);
                 }
             }
 
@@ -164,7 +164,7 @@ public class ShareDialog extends DialogFragment {
             @Override
             public void onCancel(SHARE_MEDIA share_media) {
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "share action cancel " + share_media);
+                    //Log.d(TAG, "share action cancel " + share_media);
                 }
             }
         }).share();

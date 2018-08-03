@@ -25,7 +25,7 @@ public class WrapContentLinearLayoutManager extends LinearLayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        Log.e("xxx", "state----> " + state);
+        //Log.e("xxx", "state----> " + state);
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {

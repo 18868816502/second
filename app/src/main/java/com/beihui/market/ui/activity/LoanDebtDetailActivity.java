@@ -269,7 +269,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                             new Consumer<Throwable>() {
                                                 @Override
                                                 public void accept(Throwable throwable) throws Exception {
-                                                    Log.e("exception_custom", throwable.getMessage());
+                                                    //Log.e("exception_custom", throwable.getMessage());
                                                 }
                                             });;
                         }
@@ -315,7 +315,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                     new Consumer<Throwable>() {
                                         @Override
                                         public void accept(Throwable throwable) throws Exception {
-                                            Log.e("exception_custom", throwable.getMessage());
+                                            //Log.e("exception_custom", throwable.getMessage());
                                         }
                                     });
                 }
@@ -671,7 +671,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
                                             new Consumer<Throwable>() {
                                                 @Override
                                                 public void accept(Throwable throwable) throws Exception {
-                                                    Log.e("exception_custom", throwable.getMessage());
+                                                    //Log.e("exception_custom", throwable.getMessage());
                                                 }
                                             });
                         }

@@ -195,11 +195,11 @@ public class MultiGroupHistogramView extends View {
                 lastX = event.getX();
 
 
-                Log.e("xhb", "按下的位置--> " + lastX);
-                Log.e("xhb", "华东的巨鹿--> " + ScrollX);
-                Log.e("xhb", "单个柱状图的宽度--> " + DisplayUtil.dp2px(20));
+                //Log.e("xhb", "按下的位置--> " + lastX);
+                //Log.e("xhb", "华东的巨鹿--> " + ScrollX);
+                //Log.e("xhb", "单个柱状图的宽度--> " + DisplayUtil.dp2px(20));
                 float v = (ScrollX + lastX) / DisplayUtil.dp2px(50);
-                Log.e("xhb", "position--> " + v);
+                //Log.e("xhb", "position--> " + v);
 
                 if (this.onItemClickListener != null) {
                     this.onItemClickListener.onItemClick((int)(v+0.5f));

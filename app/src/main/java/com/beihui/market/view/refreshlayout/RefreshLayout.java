@@ -368,7 +368,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (mRefreshManager == null) {
-            Log.d(LOG_TAG, "no RefreshManager attached, skip layout");
+            //Log.d(LOG_TAG, "no RefreshManager attached, skip layout");
             return;
         }
         mRefreshManager.layoutTargetAndRefresh(mTargetView, mRefreshView, changed, l, t, r, b);
@@ -424,7 +424,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
 
             case MotionEvent.ACTION_MOVE:
                 if (mActivePointerId == INVALID_POINTER) {
-                    Log.e(LOG_TAG, "Got ACTION_MOVE event but don't have an active pointer id.");
+                    //Log.e(LOG_TAG, "Got ACTION_MOVE event but don't have an active pointer id.");
                     return false;
                 }
 
@@ -476,7 +476,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
             case MotionEvent.ACTION_MOVE: {
                 final int pointerIndex = ev.findPointerIndex(mActivePointerId);
                 if (pointerIndex < 0) {
-                    Log.e(LOG_TAG, "Got ACTION_MOVE event but have an invalid active pointer id.");
+                    //Log.e(LOG_TAG, "Got ACTION_MOVE event but have an invalid active pointer id.");
                     return false;
                 }
 
@@ -499,7 +499,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
             case MotionEvent.ACTION_UP: {
                 final int pointerIndex = ev.findPointerIndex(mActivePointerId);
                 if (pointerIndex < 0) {
-                    Log.e(LOG_TAG, "Got ACTION_UP event but don't have an active pointer id.");
+                    //Log.e(LOG_TAG, "Got ACTION_UP event but don't have an active pointer id.");
                     return false;
                 }
                 mIsBeingDragged = false;

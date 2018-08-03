@@ -255,8 +255,8 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
             start = startYear+"-"+startWeek;
             end = endYear+"-"+endWeek;
 
-            Log.e("calendar" , "calendar---> " + startYear+"-"+startWeek);
-            Log.e("calendar" , "calendar---> " + endYear+"-"+endWeek);
+            //Log.e("calendar" , "calendar---> " + startYear+"-"+startWeek);
+            //Log.e("calendar" , "calendar---> " + endYear+"-"+endWeek);
         } else {
             calendar.add(Calendar.MONTH, -5);
             int startMonth = calendar.get(Calendar.MONTH)+1;
@@ -315,7 +315,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
             timeTitleTop = getMonthDay(calendar)+"-"+getSunDay(calendar);
             timeTitleBottom = week+"";
 
-            Log.e("calendar" , "calendar  time---> " + time);
+            //Log.e("calendar" , "calendar  time---> " + time);
         } else {
             int month = calendar.get(Calendar.MONTH)+1;
             int year = calendar.get(Calendar.YEAR);
@@ -323,7 +323,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
 
             timeTitleTop = year+"年";
             timeTitleBottom = month+"";
-            Log.e("calendar" , "calendar  time---> " + time);
+            //Log.e("calendar" , "calendar  time---> " + time);
         }
 
         //列表数据
@@ -332,7 +332,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
                 .subscribe(new Consumer<ResultEntity<BillLoanAnalysisBean>>() {
                                @Override
                                public void accept(ResultEntity<BillLoanAnalysisBean> result) throws Exception {
-                                   Log.e("calendar" , "result.isSuccess()---> " + result.isSuccess());
+                                   //Log.e("calendar" , "result.isSuccess()---> " + result.isSuccess());
                                    if (result.isSuccess()) {
                                        mAdapter.notifyListData(result.getData(), timeTitleTop, timeTitleBottom);
                                    } else {
@@ -346,7 +346,7 @@ public class BillLoanAnalysisFragmentWeek extends BaseComponentFragment {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                Log.e("calendar" , "throwable.getMessage()---> " + throwable.getMessage());
+                                //Log.e("calendar" , "throwable.getMessage()---> " + throwable.getMessage());
                                 if (swipeRefreshLayout.isRefreshing()) {
                                     swipeRefreshLayout.setRefreshing(false);
                                 }

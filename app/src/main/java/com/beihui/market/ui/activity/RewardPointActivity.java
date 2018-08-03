@@ -244,7 +244,7 @@ public class RewardPointActivity extends BaseComponentActivity {
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
-                                    Log.e(RewardPointActivity.class.getSimpleName(), throwable.toString());
+                                    //Log.e(RewardPointActivity.class.getSimpleName(), throwable.toString());
                                 }
                             });
         }
@@ -257,14 +257,14 @@ public class RewardPointActivity extends BaseComponentActivity {
                                @Override
                                public void accept(ResultEntity resultEntity) throws Exception {
                                    if (!resultEntity.isSuccess()) {
-                                       Log.e(RewardPointActivity.class.getSimpleName(), resultEntity.getMsg());
+                                       //Log.e(RewardPointActivity.class.getSimpleName(), resultEntity.getMsg());
                                    }
                                }
                            },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                Log.e(RewardPointActivity.class.getSimpleName(), throwable.toString());
+                                //Log.e(RewardPointActivity.class.getSimpleName(), throwable.toString());
                             }
                         });
     }

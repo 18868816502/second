@@ -138,7 +138,7 @@ public class NutEmailActivity extends BaseComponentActivity {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                Log.e("NutEmailActivity", throwable.toString());
+                                //Log.e("NutEmailActivity", throwable.toString());
                                 ToastUtils.showShort(NutEmailActivity.this, "请求出错", null);
                             }
                         });

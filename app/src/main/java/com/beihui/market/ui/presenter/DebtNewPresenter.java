@@ -102,7 +102,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         if (debtChannel.isCustom()) {
             params.put("projectName", debtChannel.projectName);
             params.put("channelName", "自定义");
-            Log.e("adf", "projectname + " + debtChannel.projectName);
+            //Log.e("adf", "projectname + " + debtChannel.projectName);
         } else {
             params.put("channelName", debtChannel.getChannelName());
             if (!TextUtils.isEmpty(debtChannel.projectName)) {
@@ -164,7 +164,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
         if (debtChannel.isCustom()) {
             params.put("projectName", debtChannel.projectName);
             params.put("channelName", "自定义");
-            Log.e("adf", "projectname + " + debtChannel.projectName);
+            //Log.e("adf", "projectname + " + debtChannel.projectName);
         } else {
             params.put("channelName", debtChannel.getChannelName());
             if (!TextUtils.isEmpty(debtChannel.projectName)) {

@@ -122,7 +122,7 @@ public class Api {
         @Override
         public void log(String message) {
             //打印日志
-            Log.w("OkHttp--->message: ", message);
+            //Log.w("OkHttp--->message: ", message);
         }
     });
 

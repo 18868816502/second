@@ -268,7 +268,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
-                                    Log.e("HelpAndFeedActivity", throwable.toString());
+                                    //Log.e("HelpAndFeedActivity", throwable.toString());
                                 }
                             });
         } else {
