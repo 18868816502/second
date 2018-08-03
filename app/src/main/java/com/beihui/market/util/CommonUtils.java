@@ -764,4 +764,27 @@ public class CommonUtils {
         else
             return mobileNums.matches(telRegex);
     }
+
+    /**
+     * 判断应用是否安装
+     */
+
+    public static boolean checkAppInstall(Context context, String app) {
+        boolean isInstall = false;
+
+        PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals(app)) {
+                    isInstall = true;
+                } else {
+                    isInstall = false;
+                }
+            }
+
+        }
+        return isInstall;
+    }
 }

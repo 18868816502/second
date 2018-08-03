@@ -21,6 +21,8 @@ import android.view.WindowManager;
 
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.ToastUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -81,26 +83,45 @@ public class ShareDialog extends DialogFragment {
         switch (view.getId()) {
             //微信
             case R.id.share_wechat:
-                shareWeb(SHARE_MEDIA.WEIXIN);
+                if (CommonUtils.isAppInstalled(getActivity(), "com.tencent.mm")) {
+                    shareWeb(SHARE_MEDIA.WEIXIN);
+                } else {
+                    ToastUtil.toast("未安装");
+                }
                 break;
             //朋友圈
             case R.id.share_wechat_moment:
-                shareWeb(SHARE_MEDIA.WEIXIN_CIRCLE);
+                if (CommonUtils.isAppInstalled(getActivity(), "com.tencent.mm")) {
+                    shareWeb(SHARE_MEDIA.WEIXIN_CIRCLE);
+                } else {
+                    ToastUtil.toast("未安装");
+                }
+
                 break;
             //QQ
             case R.id.share_qq:
-                //qq分享需要存储权限
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                        || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    this.requestPermissions(permission, 1);
+                if (CommonUtils.isAppInstalled(getActivity(), "com.tencent.mqq")) {
+                    //qq分享需要存储权限
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        this.requestPermissions(permission, 1);
+                    } else {
+                        shareWeb(SHARE_MEDIA.QQ);
+                    }
                 } else {
-                    shareWeb(SHARE_MEDIA.QQ);
+                    ToastUtil.toast("未安装");
                 }
+
                 break;
             //微博
             case R.id.share_weibo:
-                shareWeb(SHARE_MEDIA.SINA);
+                if (CommonUtils.isAppInstalled(getActivity(), "com.sina.weibo")) {
+                    shareWeb(SHARE_MEDIA.SINA);
+                } else {
+                    ToastUtil.toast("未安装");
+                }
+
                 break;
             case R.id.cancel:
                 dismiss();
