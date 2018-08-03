@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
@@ -79,14 +80,11 @@ public class WebViewActivity extends BaseComponentActivity {
         } else if (!TextUtils.isEmpty(getIntent().getStringExtra("webViewTitleName"))) {
             titleName.setText(getIntent().getStringExtra("webViewTitleName"));
         }
-
         SlidePanelHelper.attach(this);
     }
 
-
     @Override
     public void initDatas() {
-
         /**
          * 在fragment里面 webView监听返回键事件
          */
@@ -95,6 +93,11 @@ public class WebViewActivity extends BaseComponentActivity {
         webView.requestFocus();
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        //解决图片不显示
+        webSettings.setBlockNetworkImage(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
 
         webView.setWebViewClient(new WebViewClient());
 

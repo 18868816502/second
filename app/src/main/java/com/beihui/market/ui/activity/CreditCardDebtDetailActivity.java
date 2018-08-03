@@ -274,7 +274,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                 switch (view.getId()) {
                     case R.id.month_bill_container: {
 
-                        Log.e("position", "position--> " + position);
+                        //Log.e("position", "position--> " + position);
                         if (position < ((CreditCardDebtDetailPresenter)presenter).billList.size()) {
                             ((CreditCardDebtDetailPresenter)presenter).bill = ((CreditCardDebtDetailPresenter)presenter).billList.get(position);
                             showStatus(((CreditCardDebtDetailPresenter) presenter).billList.get(position).getStatus());
@@ -609,7 +609,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                                     new Consumer<Throwable>() {
                                                         @Override
                                                         public void accept(Throwable throwable) throws Exception {
-                                                            Log.e("exception_custom", throwable.getMessage());
+                                                            //Log.e("exception_custom", throwable.getMessage());
                                                         }
                                                     });;
                                 }
@@ -838,11 +838,11 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             @Override
             public boolean callback(MoxieContext moxieContext, MoxieCallBackData moxieCallBackData) {
 
-                Log.e("customMoxie", Thread.currentThread().getName());
-                Log.e("customMoxie", "魔蝎回调 成功");
+                //Log.e("customMoxie", Thread.currentThread().getName());
+                //Log.e("customMoxie", "魔蝎回调 成功");
                 if (moxieCallBackData != null) {
-                    Log.e("customMoxie", "MoxieSDK Callback Data : "+ moxieCallBackData.toString());
-                    Log.e("customMoxie", "MoxieSDK Callback Code : "+ moxieCallBackData.toString());
+                    //Log.e("customMoxie", "MoxieSDK Callback Data : "+ moxieCallBackData.toString());
+                    //Log.e("customMoxie", "MoxieSDK Callback Code : "+ moxieCallBackData.toString());
                     switch (moxieCallBackData.getCode()) {
                         /**
                          * 账单导入中
@@ -855,10 +855,10 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                         case MxParam.ResultCode.IMPORTING:
                             if(moxieCallBackData.isLoginDone()) {
                                 //状态为IMPORTING, 且loginDone为true，说明这个时候已经在采集中，已经登录成功
-                                Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                                //Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             } else {
                                 //状态为IMPORTING, 且loginDone为false，说明这个时候正在登录中
-                                Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                                //Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             }
                             break;
                         /**
@@ -872,7 +872,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                          *      return true;
                          * */
                         case MxParam.ResultCode.IMPORT_UNSTART:
-                            Log.e("customMoxie", "任务未开始");
+                            //Log.e("customMoxie", "任务未开始");
                             break;
                         case MxParam.ResultCode.THIRD_PARTY_SERVER_ERROR:
 //                            Toast.makeText(getContext(), "导入失败(平台方服务问题)", Toast.LENGTH_SHORT).show();
@@ -887,7 +887,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 //                            Toast.makeText(getContext(), "导入失败", Toast.LENGTH_SHORT).show();
                             break;
                         case MxParam.ResultCode.IMPORT_SUCCESS:
-                            Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            //Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             //根据taskType进行对应的处理
                             switch (moxieCallBackData.getTaskType()) {
                                 case MxParam.PARAM_FUNCTION_EMAIL:
@@ -910,7 +910,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
             @Override
             public void onError(MoxieContext moxieContext, MoxieException moxieException) {
                 super.onError(moxieContext, moxieException);
-                Log.e("customMoxie","魔蝎失败" + moxieException.getMessage());
+                //Log.e("customMoxie","魔蝎失败" + moxieException.getMessage());
                 if(moxieException.getExceptionType() == ExceptionType.SDK_HAS_STARTED){
                     Toast.makeText(CreditCardDebtDetailActivity.this, moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 } else if(moxieException.getExceptionType() == ExceptionType.SDK_LACK_PARAMETERS){

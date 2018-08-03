@@ -198,10 +198,10 @@ public class XTabAccountDialog extends DialogFragment {
                         case MxParam.ResultCode.IMPORTING:
                             if(moxieCallBackData.isLoginDone()) {
                                 //状态为IMPORTING, 且loginDone为true，说明这个时候已经在采集中，已经登录成功
-                                Log.d(TAG, "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                                //Log.d(TAG, "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             } else {
                                 //状态为IMPORTING, 且loginDone为false，说明这个时候正在登录中
-                                Log.d(TAG, "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                                //Log.d(TAG, "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             }
                             break;
                         /**
@@ -230,7 +230,7 @@ public class XTabAccountDialog extends DialogFragment {
 //                                    Toast.makeText(getContext(), "导入失败", Toast.LENGTH_SHORT).show();
                             break;
                         case MxParam.ResultCode.IMPORT_SUCCESS:
-                            Log.d(TAG, "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            //Log.d(TAG, "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             //根据taskType进行对应的处理
                             switch (moxieCallBackData.getTaskType()) {
                                 case MxParam.PARAM_FUNCTION_EMAIL:

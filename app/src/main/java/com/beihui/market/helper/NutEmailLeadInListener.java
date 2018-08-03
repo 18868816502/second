@@ -76,7 +76,7 @@ public class NutEmailLeadInListener {
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
-                                    Log.e(TAG, "throwable " + throwable);
+                                    //Log.e(TAG, "throwable " + throwable);
                                 }
                             });
             hasEnterResult = false;

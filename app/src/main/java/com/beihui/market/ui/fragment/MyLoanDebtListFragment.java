@@ -93,7 +93,6 @@ public class MyLoanDebtListFragment extends BaseComponentFragment implements MyL
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("asdfa", "dasfasdfasdfdsf");
 //        if (requestCode == 1 && resultCode == Activity.RESULT_OK & data != null) {
 //            presenter.debtDeleted(data.getStringExtra("deleteDebtId"));
 //            }

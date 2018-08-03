@@ -568,9 +568,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         break;
                     case MotionEvent.ACTION_UP:
                         moveY = event.getY();
-                        Log.e("android_normal_account", "startY--> " + startY);
-                        Log.e("android_normal_account", "moveY--> " + moveY);
-                        Log.e("android_normal_account", "isShow--> " + customKeyboardManager.isShow);
+                        //Log.e("android_normal_account", "startY--> " + startY);
+                        //Log.e("android_normal_account", "moveY--> " + moveY);
+                        //Log.e("android_normal_account", "isShow--> " + customKeyboardManager.isShow);
                         if (moveY - startY > 1) {
                             customKeyboardManager.showSoftKeyboard(etInputPrice);
                         }
@@ -748,7 +748,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                Log.e("exception_custom", throwable.getMessage());
+                                //Log.e("exception_custom", throwable.getMessage());
                             }
                         });
     }

@@ -156,7 +156,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
                     ToastUtil.toast("支持输入1~16个字符");
                 }
 
-                Log.e("xhxhxb", "bytes --> " + bytes.length);
+                //Log.e("xhxhxb", "bytes --> " + bytes.length);
             }
 
             @Override

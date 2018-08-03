@@ -212,7 +212,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                             entity.setCode(1000000);
                             entity.setData(thirdAuthResult);
 
-                            Log.e("LoanDetailPresenter", "轮询超时，失败处理");
+                            //Log.e("LoanDetailPresenter", "轮询超时，失败处理");
                             return Observable.just(entity);
                         }
                     }

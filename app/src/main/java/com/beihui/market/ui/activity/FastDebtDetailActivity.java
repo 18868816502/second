@@ -262,7 +262,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                         new Consumer<Throwable>() {
                                             @Override
                                             public void accept(Throwable throwable) throws Exception {
-                                                Log.e("exception_custom", throwable.getMessage());
+                                                //Log.e("exception_custom", throwable.getMessage());
                                             }
                                         });;
                     }
@@ -309,7 +309,7 @@ public class FastDebtDetailActivity extends BaseComponentActivity {
                                     new Consumer<Throwable>() {
                                         @Override
                                         public void accept(Throwable throwable) throws Exception {
-                                            Log.e("exception_custom", throwable.getMessage());
+                                            //Log.e("exception_custom", throwable.getMessage());
                                         }
                                     });
                 }

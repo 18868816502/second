@@ -336,7 +336,7 @@ public class TabMineActivity extends BaseComponentActivity implements TabMineCon
                 String brand=android.os.Build.BRAND;
                 //制造商
                 String manufacturer=android.os.Build.MANUFACTURER;
-                Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
+                //Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
                 if ("samsung".equals(manufacturer)) {
                     goToSamsungappsMarket();
                 } else {

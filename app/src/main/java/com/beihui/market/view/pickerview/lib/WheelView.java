@@ -365,7 +365,7 @@ public class WheelView extends View {
             preCurrentIndex = initPosition + change % adapter.getItemsCount();
 
         } catch (ArithmeticException e) {
-            Log.e("WheelView", "出错了！adapter.getItemsCount() == 0，联动数据不匹配");
+            //Log.e("WheelView", "出错了！adapter.getItemsCount() == 0，联动数据不匹配");
         }
         if (!isLoop) {//不循环的情况
             if (preCurrentIndex < 0) {

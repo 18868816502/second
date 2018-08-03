@@ -41,7 +41,7 @@ public class PushClickedReceiver extends BroadcastReceiver {
                                    public void accept(ResultEntity resultEntity) throws Exception {
                                        if (BuildConfig.DEBUG) {
                                            if (!resultEntity.isSuccess()) {
-                                               Log.e("PushClickedReceiver", "error " + resultEntity.getMsg());
+                                               //Log.e("PushClickedReceiver", "error " + resultEntity.getMsg());
                                            }
                                        }
                                    }
@@ -50,7 +50,7 @@ public class PushClickedReceiver extends BroadcastReceiver {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
                                     if (BuildConfig.DEBUG) {
-                                        Log.e("PushClickedReceiver", "thrbowable " + throwable);
+                                        //Log.e("PushClickedReceiver", "thrbowable " + throwable);
                                     }
                                 }
                             });

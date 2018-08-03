@@ -31,14 +31,14 @@ public class PushReceiveIntentService extends GTIntentService {
     @Override
     public void onReceiveServicePid(Context context, int i) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "onReceiveServicePid " + i);
+            //Log.i(TAG, "onReceiveServicePid " + i);
         }
     }
 
     @Override
     public void onReceiveClientId(Context context, String s) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG + 726, "onReceiveClintId " + s);
+            //Log.i(TAG + 726, "onReceiveClintId " + s);
         }
         if (UserHelper.getInstance(App.getInstance()).getProfile() != null) {
             String bindClientId = SPUtils.getPushBindClientId(context);
@@ -73,7 +73,7 @@ public class PushReceiveIntentService extends GTIntentService {
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "onReceiveMessageData " + gtTransmitMessage);
+            //Log.i(TAG, "onReceiveMessageData " + gtTransmitMessage);
         }
         try {
             String json = new String(gtTransmitMessage.getPayload());
@@ -93,14 +93,14 @@ public class PushReceiveIntentService extends GTIntentService {
     @Override
     public void onReceiveOnlineState(Context context, boolean b) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "onReceiveOnlineState " + b);
+            //Log.i(TAG, "onReceiveOnlineState " + b);
         }
     }
 
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage gtCmdMessage) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "onReceiveCommandResult " + gtCmdMessage);
+            //Log.i(TAG, "onReceiveCommandResult " + gtCmdMessage);
         }
     }
 }

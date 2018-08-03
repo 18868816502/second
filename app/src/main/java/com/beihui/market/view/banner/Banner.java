@@ -143,7 +143,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             mScroller.setDuration(scrollTime);
             mField.set(viewPager, mScroller);
         } catch (Exception e) {
-            Log.e(tag, e.getMessage());
+            //Log.e(tag, e.getMessage());
         }
     }
 
@@ -182,7 +182,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         try {
             setPageTransformer(true, transformer.newInstance());
         } catch (Exception e) {
-            Log.e(tag, "Please set the PageTransformer class");
+            //Log.e(tag, "Please set the PageTransformer class");
         }
         return this;
     }
@@ -334,7 +334,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private void setImageList(List<?> imagesUrl) {
         if (imagesUrl == null || imagesUrl.size() <= 0) {
             bannerDefaultImage.setVisibility(VISIBLE);
-            Log.e(tag, "The image data set is empty.");
+            //Log.e(tag, "The image data set is empty.");
             return;
         }
         bannerDefaultImage.setVisibility(GONE);
@@ -359,8 +359,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             imageViews.add(imageView);
             if (imageLoader != null)
                 imageLoader.displayImage(context, url, imageView);
-            else
-                Log.e(tag, "Please set images loader.");
+            else {
+                //Log.e(tag, "Please set images loader.");
+            }
         }
     }
 
@@ -517,8 +518,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.e(tag, "你正在使用旧版点击事件接口，下标是从1开始，" +
-                                "为了体验请更换为setOnBannerListener，下标从0开始计算");
+                        //Log.e(tag, "你正在使用旧版点击事件接口，下标是从1开始，" + "为了体验请更换为setOnBannerListener，下标从0开始计算");
                         bannerListener.OnBannerClick(position);
                     }
                 });

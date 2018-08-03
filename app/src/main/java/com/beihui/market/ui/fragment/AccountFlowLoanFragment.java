@@ -169,7 +169,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
          */
         @Override
         public void OnKeyBoardPop(int keyBoardHeight) {
-            Log.e("dafs", "keyBoardHeight--> " + keyBoardHeight);
+            //Log.e("dafs", "keyBoardHeight--> " + keyBoardHeight);
         }
 
         /**
@@ -177,7 +177,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
          */
         @Override
         public void OnKeyBoardClose(int oldKeyBoardHeight) {
-            Log.e("dafs", "oldKeyBoardHeight--> " + oldKeyBoardHeight);
+            //Log.e("dafs", "oldKeyBoardHeight--> " + oldKeyBoardHeight);
             if (dialog != null) {
                 dialog.dismiss();
             }
@@ -682,7 +682,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                Log.e("exception_custom", throwable.getMessage());
+                                //Log.e("exception_custom", throwable.getMessage());
                             }
                         });
     }
@@ -779,7 +779,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                Log.e("exception_custom", throwable.getMessage());
+                                //Log.e("exception_custom", throwable.getMessage());
                             }
                         });
 

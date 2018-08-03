@@ -100,7 +100,7 @@ public class MoxieUtil {
                          *      return true;
                          * */
                         case MxParam.ResultCode.IMPORT_UNSTART:
-                            Log.e("customMoxie", "任务未开始");
+                            //Log.e("customMoxie", "任务未开始");
                             moxieContext.finish();
                             return true;
                         case MxParam.ResultCode.THIRD_PARTY_SERVER_ERROR:
@@ -112,7 +112,7 @@ public class MoxieUtil {
                         case MxParam.ResultCode.IMPORT_FAIL:
                             break;
                         case MxParam.ResultCode.IMPORT_SUCCESS:
-                            Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            //Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             //根据taskType进行对应的处理
                             switch (moxieCallBackData.getTaskType()) {
                                 case MxParam.PARAM_FUNCTION_EMAIL:
@@ -138,7 +138,7 @@ public class MoxieUtil {
             @Override
             public void onError(MoxieContext moxieContext, MoxieException moxieException) {
                 super.onError(moxieContext, moxieException);
-                Log.e("customMoxie", "魔蝎失败" + moxieException.getMessage());
+                //Log.e("customMoxie", "魔蝎失败" + moxieException.getMessage());
                 if (moxieException.getExceptionType() == ExceptionType.SDK_HAS_STARTED) {
                     Toast.makeText(activity, moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 } else if (moxieException.getExceptionType() == ExceptionType.SDK_LACK_PARAMETERS) {

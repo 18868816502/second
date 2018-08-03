@@ -133,11 +133,11 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
             @Override
             public boolean callback(MoxieContext moxieContext, MoxieCallBackData moxieCallBackData) {
 
-                Log.w("customMoxie", Thread.currentThread().getName());
-                Log.w("customMoxie", "魔蝎回调 成功");
+                //Log.w("customMoxie", Thread.currentThread().getName());
+                //Log.w("customMoxie", "魔蝎回调 成功");
                 if (moxieCallBackData != null) {
-                    Log.w("customMoxie", "MoxieSDK Callback Data : " + moxieCallBackData.toString());
-                    Log.w("customMoxie", "MoxieSDK Callback Code : " + moxieCallBackData.toString());
+                    //Log.w("customMoxie", "MoxieSDK Callback Data : " + moxieCallBackData.toString());
+                    //Log.w("customMoxie", "MoxieSDK Callback Code : " + moxieCallBackData.toString());
                     switch (moxieCallBackData.getCode()) {
                         /**
                          * 账单导入中
@@ -150,10 +150,10 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
                         case MxParam.ResultCode.IMPORTING:
                             if (moxieCallBackData.isLoginDone()) {
                                 //状态为IMPORTING, 且loginDone为true，说明这个时候已经在采集中，已经登录成功
-                                Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                                //Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             } else {
                                 //状态为IMPORTING, 且loginDone为false，说明这个时候正在登录中
-                                Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                                //Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             }
                             break;
                         /**
@@ -167,7 +167,7 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
                          *      return true;
                          * */
                         case MxParam.ResultCode.IMPORT_UNSTART:
-                            Log.e("customMoxie", "任务未开始");
+                            //Log.e("customMoxie", "任务未开始");
                             moxieContext.finish();
                             return true;
                         case MxParam.ResultCode.THIRD_PARTY_SERVER_ERROR:
@@ -183,7 +183,7 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
 //                            Toast.makeText(getContext(), "导入失败", Toast.LENGTH_SHORT).show();
                             break;
                         case MxParam.ResultCode.IMPORT_SUCCESS:
-                            Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+                            //Log.e("customMoxie", "任务采集成功，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             //根据taskType进行对应的处理
                             switch (moxieCallBackData.getTaskType()) {
                                 case MxParam.PARAM_FUNCTION_EMAIL:
@@ -212,7 +212,7 @@ public class AccountFlowCreditCardAdapter extends RecyclerView.Adapter<AccountFl
             @Override
             public void onError(MoxieContext moxieContext, MoxieException moxieException) {
                 super.onError(moxieContext, moxieException);
-                Log.e("customMoxie", "魔蝎失败" + moxieException.getMessage());
+                //Log.e("customMoxie", "魔蝎失败" + moxieException.getMessage());
                 if (moxieException.getExceptionType() == ExceptionType.SDK_HAS_STARTED) {
                     Toast.makeText(mActivity, moxieException.getMessage(), Toast.LENGTH_SHORT).show();
                 } else if (moxieException.getExceptionType() == ExceptionType.SDK_LACK_PARAMETERS) {
