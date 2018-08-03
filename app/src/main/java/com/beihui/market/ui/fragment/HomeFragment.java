@@ -112,7 +112,7 @@ public class HomeFragment extends BaseTabFragment {
                         mTitle.setAlpha(0);
                     }
                     if (SPUtils.getNumVisible(mActivity)) {
-                        tv_top_loan_num.setText("￥" + FormatNumberUtils.FormatNumberFor2(num));//应还金额
+                        tv_top_loan_num.setText("¥" + FormatNumberUtils.FormatNumberFor2(num));//应还金额
                     } else {
                         tv_top_loan_num.setText("****");//应还金额
                     }

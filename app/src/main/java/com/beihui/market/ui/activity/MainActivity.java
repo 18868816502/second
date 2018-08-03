@@ -269,7 +269,7 @@ public class MainActivity extends BaseComponentActivity {
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
-                SoundUtils.getInstance().playTab();//点击音效
+                //SoundUtils.getInstance().playTab();//点击音效
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }

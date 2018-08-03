@@ -36,6 +36,7 @@ import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -48,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -239,6 +241,15 @@ public class MakeBillActivity extends BaseComponentActivity {
                 numText = s.toString().trim();
             }
         });
+
+        RxView.clicks(tvSaveBill)
+                .throttleFirst(1500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        createBill();
+                    }
+                });
     }
 
     @Override
@@ -250,9 +261,9 @@ public class MakeBillActivity extends BaseComponentActivity {
     public void onViewClicked(View view) {
         InputMethodUtil.closeSoftKeyboard(this);//收起软键盘
         switch (view.getId()) {
-            case R.id.tv_save_bill:
+            /*case R.id.tv_save_bill:
                 createBill();
-                break;
+                break;*/
             case R.id.tv_alert_dlg:
                 DlgUtil.createDlg(MakeBillActivity.this, R.layout.dlg_info_dout, new DlgUtil.OnDlgViewClickListener() {
                     @Override
