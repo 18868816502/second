@@ -1,6 +1,7 @@
 package com.beihui.market.helper.updatehelper;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import android.widget.ProgressBar;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
+import com.beihui.market.Manifest;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
@@ -135,8 +139,7 @@ public class AppUpdateHelper {
     }
 
     private void startDownload(Context context, String url, String version, boolean isForce) {
-        if (weakReference.get() == null)
-            return;
+        if (weakReference.get() == null) return;
         String name = version.replace(".", "_");
         String dirPath = FileProviderHelper.getTempDirPath(context);
         String filePath = dirPath + "/" + name + ".apk";
@@ -151,7 +154,6 @@ public class AppUpdateHelper {
                 //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
             weakReference.get().runOnUiThread(new Runnable() {
@@ -230,11 +232,8 @@ public class AppUpdateHelper {
     }
 
     private static class DownloadAppTask extends AsyncTask<String, Long, Boolean> {
-
         private AppUpdateHelper helper;
-
         private String filePath;
-
         public DownloadAppTask(AppUpdateHelper helper, String filePath) {
             this.helper = helper;
             this.filePath = filePath;
