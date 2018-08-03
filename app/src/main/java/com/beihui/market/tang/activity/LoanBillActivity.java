@@ -80,6 +80,7 @@ public class LoanBillActivity extends BaseComponentActivity {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        setupToolbarBackNavigation(mToolbar, R.mipmap.finish_icon);
         activity = this;
     }
 
