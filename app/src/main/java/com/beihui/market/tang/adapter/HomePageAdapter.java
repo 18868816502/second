@@ -171,7 +171,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     if (totalAmount == 0 && dataSet.size() == 0) {
                         billNum = makeBill;
                     } else {
-                        billNum = "￥" + FormatNumberUtils.FormatNumberFor2(totalAmount);
+                        billNum = "¥" + FormatNumberUtils.FormatNumberFor2(totalAmount);
                     }
                     holder.headBillNum.setText(billNum);
                     holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);
