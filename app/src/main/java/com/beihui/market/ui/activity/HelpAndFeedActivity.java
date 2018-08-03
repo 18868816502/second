@@ -107,6 +107,8 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     private String imageFilePath;
     private Bitmap image;
 
+    private AgentWeb agentWeb;
+
     /**
      * 当前选中的tab
      */
@@ -416,7 +418,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
         View helpView = LayoutInflater.from(HelpAndFeedActivity.this)
                 .inflate(R.layout.pager_item_debt_help, container, false);
         RelativeLayout relativeLayout = helpView.findViewById(R.id.web_view);
-        AgentWeb.with(this)
+        agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1)).
                 useDefaultIndicator(getResources().getColor(R.color.red), 2)
                 .createAgentWeb()//

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
@@ -28,7 +29,7 @@ public class NotificationUtil {
                     setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
                     //设置群组
                     .setGroup(group)
-                    .setSmallIcon(R.drawable.push_small)
+                    .setSmallIcon(R.drawable.notifycation_logo).setColor(context.getResources().getColor(R.color.c_ff5240))
                     //通知首次出现在通知栏，带上升动画效果的
                     .setTicker(title)
                     //设置通知的标题
@@ -60,7 +61,8 @@ public class NotificationUtil {
             builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.push))
                     //设置群组
                     .setGroup(group)
-                    .setSmallIcon(R.drawable.push_small)
+                    .setSmallIcon(R.drawable.notifycation_logo)
+                    .setColor(context.getResources().getColor(R.color.c_ff5240))
                     //通知首次出现在通知栏，带上升动画效果的
                     .setTicker(title)
                     //设置通知的标题
