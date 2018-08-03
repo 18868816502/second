@@ -6,10 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.anim.SlideInLeftAnimator;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DetailHead;
@@ -53,8 +54,8 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     TextView tv_toolbar_title;
     @BindView(R.id.recycler)
     PulledTabAccountRecyclerView mRecyclerView;
-    @BindView(R.id.tv_finish_all)
-    TextView tv_finish_all;
+    @BindView(R.id.ll_finish_all)
+    LinearLayout ll_finish_all;
     @BindView(R.id.prl_fg_tab_account_list)
     PullToRefreshScrollLayout pullMoreLayout;
 
@@ -64,6 +65,8 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
     private String title;
     private DetailItemAdapter itemAdapter;
     private int page = 1;
+    private FrameLayout.LayoutParams params;
+    private int bottomMargin;
 
     @Override
     public int getLayoutId() {
@@ -97,9 +100,13 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
                     public void onNext(@NonNull DetailHead data) {
                         itemAdapter.notifyHead(data);
                         if (data.getStatus() == 2) {
-                            tv_finish_all.setVisibility(View.GONE);
+                            ll_finish_all.setVisibility(View.GONE);
+                            params.bottomMargin = 0;
+                            pullMoreLayout.setLayoutParams(params);
                         } else {
-                            tv_finish_all.setVisibility(View.VISIBLE);
+                            ll_finish_all.setVisibility(View.VISIBLE);
+                            params.bottomMargin = bottomMargin;
+                            pullMoreLayout.setLayoutParams(params);
                         }
                     }
                 });
@@ -133,13 +140,15 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
                 }
             }
         });
+        params = (FrameLayout.LayoutParams) pullMoreLayout.getLayoutParams();
+        bottomMargin = params.bottomMargin;
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.iv_more_setting, R.id.tv_finish_all})
+    @OnClick({R.id.iv_more_setting, R.id.ll_finish_all})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_more_setting://更多设置
@@ -203,7 +212,7 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
                     }
                 });
                 break;
-            case R.id.tv_finish_all://结清全部
+            case R.id.ll_finish_all://结清全部
                 DlgUtil.createDlg(activity, R.layout.f_dlg_close_all, new DlgUtil.OnDlgViewClickListener() {
                     @Override
                     public void onViewClick(final Dialog dialog, View dlgView) {

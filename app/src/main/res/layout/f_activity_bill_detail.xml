@@ -43,7 +43,7 @@
             android:id="@+id/prl_fg_tab_account_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="45dp">
+            android:layout_marginBottom="45dp">
 
             <include layout="@layout/x_pull_to_refresh_head" />
 
@@ -59,6 +59,7 @@
         </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
 
         <LinearLayout
+            android:id="@+id/ll_finish_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -70,7 +71,6 @@
                 android:background="#e8e8e8" />
 
             <TextView
-                android:id="@+id/tv_finish_all"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center"
