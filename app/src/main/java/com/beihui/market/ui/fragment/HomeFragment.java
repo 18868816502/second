@@ -1,19 +1,14 @@
 package com.beihui.market.ui.fragment;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,7 +29,6 @@ import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
-import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
@@ -46,11 +40,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
-import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBaseCallback;
-import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.view.HightLightView;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -157,6 +146,7 @@ public class HomeFragment extends BaseTabFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRecieve(String value) {
         if ("1".equals(value)) request();
+        pageAdapter.light();
     }
 
     @Override

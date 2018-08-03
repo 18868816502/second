@@ -264,7 +264,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                 public void onClick(View v) {
                     holder.csm_bill_wrap.smoothClose();
                     showDialog(item, position);
-                    //homeFragment.recycler().smoothScrollToPosition(0);
                 }
             });
             holder.ll_bill_wrap.setOnClickListener(new View.OnClickListener() {
@@ -292,10 +291,15 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     }, 300);
                 }
             });
+            light();
         }
+    }
 
+    private HighLight infoHighLight;
+
+    public void light() {
         if (!"showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity"))) {
-            if (userHelper.isLogin() && dataSet.size() > 1 && (mActivity.currentFragment instanceof HomeFragment)) {
+            if (userHelper.isLogin() && dataSet.size() > 0 && (mActivity.currentFragment instanceof HomeFragment)) {
                 infoHighLight = new HighLight(mActivity)
                         .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                             @Override
@@ -328,8 +332,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             }
         }
     }
-
-    private HighLight infoHighLight;
 
     @Override
     public int getItemViewType(int position) {

@@ -135,7 +135,6 @@ public class App extends Application {
         mWidthPixels = metric.widthPixels;
     }
 
-
     public static App getInstance() {
         return sInstance;
     }

@@ -145,7 +145,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
             }
         });
         swipeRefreshLayout.setColorScheme(R.color.refresh_one);
-
         if (scrollView != null) {
             scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                 @Override
@@ -211,6 +210,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
                     Intent intent = new Intent(mActivity, WebViewActivity.class);
                     try {
                         intent.putExtra("webViewUrl", URLDecoder.decode(url, "utf-8"));
+                        //intent.putExtra("webViewTitleName", view.getTitle());
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

@@ -74,17 +74,14 @@ android {
         loanmarket {
             dimension "id"
             applicationId "com.beihui.market"
-
             //Version3.1.0前的生产环境
 //            buildConfigField("String", "DOMAIN", "\"https://api.axguanjia.com:6868\"")
 //            buildConfigField("String", "H5_DOMAIN", "\"https://h5.axguanjia.com\"")
-
             //新的生产环境
 //            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
 //            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
             //正式环境魔蝎appkey
 //            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
-
             //测试使用的魔蝎appkey
             buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
             //测试一
@@ -94,14 +91,11 @@ android {
 
             //前端本地联调地址
             //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.63:100\"")
-
             //开发环境
             //buildConfigField("String", "DOMAIN", "\"http://47.96.85.21:8082\"")
-
             //后台本地
             // buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")
             //buildConfigField("String", "H5_DOMAIN", "\"http://192.168.1.179\"")
-
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                     GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",

@@ -945,7 +945,6 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/accounting/repayment/billList")
     Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
-
     /**
      * 查询底部栏图标
      */
