@@ -100,7 +100,7 @@ public class ShareDialog extends DialogFragment {
                 break;
             //QQ
             case R.id.share_qq:
-                if (CommonUtils.isAppInstalled(getActivity(), "com.tencent.mqq")) {
+                if (CommonUtils.isAppInstalled(getActivity(), "com.tencent.mobileqq")) {
                     //qq分享需要存储权限
                     if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                             || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

@@ -114,7 +114,7 @@ public class InvitationWebActivity extends BaseComponentActivity {
             UMWeb umWeb = new UMWeb(NetConstants.generateInvitationUrl(UserHelper.getInstance(context).getProfile().getId()));
             umWeb.setTitle("告诉你一个手机借款神器");
             umWeb.setDescription("急用钱？秒到账！超给力新口子，下款快，额度高，注册极简.");
-            UMImage image = new UMImage(context, R.mipmap.ic_launcher);
+            UMImage image = new UMImage(context, R.drawable.ic_launcher_kaola);
             umWeb.setThumb(image);
             new ShareDialog()
                     .setUmWeb(umWeb)
