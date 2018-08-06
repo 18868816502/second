@@ -150,7 +150,6 @@ public class Api {
     private Api(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NetConstants.DOMAIN)
-//                .baseUrl(NetConstants.ZHANG_DOMAIN)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
