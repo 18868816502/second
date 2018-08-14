@@ -2,7 +2,9 @@
 
 buildscript {
     repositories {
+        //google()
         jcenter()
+        //mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -15,24 +17,24 @@ buildscript {
 
 allprojects {
     repositories {
+        //google()
         jcenter()
         mavenCentral()
         //个推
-        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }
+        maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
-        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
-        maven { url 'https://maven.google.com' }
-    }
-
-    ext {
-        compile_sdk_version = 26
-        build_tools_version = '26.0.2'
-        min_sdk_version = 16
-        target_sdk_version = 26
-        support_library_version = '26.1.0'
+        //maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local/" }
+        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    compile_sdk_version = 26
+    min_sdk_version = 16
+    target_sdk_version = 26
+    support_library_version = '26.1.0'
 }

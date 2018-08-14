@@ -64,7 +64,7 @@ public class PackageIdAndVersionNameInterceptor implements Interceptor {
                     bodyBuilder.addEncoded(fb.encodedName(i), fb.encodedValue(i));
             }
             FormBody formBody = bodyBuilder
-                    //.addEncoded("packageId", App.sChannelId)
+                    .addEncoded("packageId", App.sChannelId)
                     .addEncoded("packageId", BuildConfig.APPLICATION_ID)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .build();

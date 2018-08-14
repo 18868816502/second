@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseActivity;
+import com.beihui.market.helper.UserHelper;
+import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.IndicatorView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -39,7 +41,6 @@ public class WelcomeActivity extends BaseActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -49,7 +50,6 @@ public class WelcomeActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
         startNowView.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +58,7 @@ public class WelcomeActivity extends BaseActivity {
                 if (fromAboutUs) {
                     finish();
                 } else {
+                    SPUtils.setValue(WelcomeActivity.this, "splash", "");
                     Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -65,13 +66,8 @@ public class WelcomeActivity extends BaseActivity {
 
             }
         });
-
-
         ImmersionBar.with(this).init();
-
         fromAboutUs = getIntent().getBooleanExtra("fromAboutUs", false);
-
-
     }
 
     @Override
@@ -81,7 +77,6 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private class WelcomeAdapter extends PagerAdapter {
-
         private LinkedList<View> cachedView = new LinkedList<>();
         private int[] imageId = {R.drawable.welcome_page_1, R.drawable.welcome_page_2, R.drawable.welcome_page_3};
 

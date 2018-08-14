@@ -19,6 +19,7 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.presenter.RegisterVerifyPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -54,13 +55,11 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
     @BindView(R.id.tv_login)
     TextView tvLogin;
 
-
     private CountDownTimerUtils countDownTimer;
 
     //手机号
     private String pendingPhone;
     private Intent intent;
-
 
     @Override
     protected void onDestroy() {
@@ -135,16 +134,13 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
-
 
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.finish();
     }
-
 
     @OnClick({R.id.fetch_text, R.id.tv_login})
     public void onViewClicked(View view) {
@@ -166,6 +162,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                                    //umeng统计
                                                    Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
                                                    EventBus.getDefault().post("1");
+                                                   EventBus.getDefault().post(new UserLoginEvent());
                                                    //登录之后，将用户信息注册到本地
                                                    UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
                                                    //保存用户id,缓存

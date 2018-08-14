@@ -1,6 +1,7 @@
 package com.beihui.market.api.interceptor;
 
 
+import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.NetConstants;
 
@@ -54,7 +55,7 @@ public class AccessHeadInterceptor implements Interceptor {
                 }
             }
             String url = httpUrl.toString();
-            url = url + "?" + "packageId=" + BuildConfig.APPLICATION_ID + "&version=" + BuildConfig.VERSION_NAME;
+            url = url + "?" + "packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME;
             StringBuilder sb = new StringBuilder();
             if (params.size() > 0) {
                 Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
@@ -73,8 +74,8 @@ public class AccessHeadInterceptor implements Interceptor {
                     bodyBuilder.addEncoded(fb.encodedName(i), fb.encodedValue(i));
             }
             FormBody formBody = bodyBuilder
-                    //.addEncoded("packageId", App.sChannelId)
-                    .addEncoded("packageId", BuildConfig.APPLICATION_ID)
+                    .addEncoded("packageId", App.sChannelId)
+                    //.addEncoded("packageId", BuildConfig.APPLICATION_ID)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .build();
             request = request.newBuilder().post(formBody).build();

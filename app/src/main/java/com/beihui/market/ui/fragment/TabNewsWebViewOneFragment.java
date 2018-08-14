@@ -303,7 +303,7 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, BuildConfig.APPLICATION_ID, versionName);
+        newsUrl = NetConstants.generateNewsWebViewUrl(userId, App.sChannelId, versionName);
         webView.loadUrl(newsUrl);
         //webView.loadUrl("http://192.168.1.2:8080?data=hahd");
     }

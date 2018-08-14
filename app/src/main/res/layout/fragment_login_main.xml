@@ -17,7 +17,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,7 +32,6 @@
                 android:textColor="@color/black_2"
                 android:textSize="12sp" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +45,6 @@
                 android:layout_height="60dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
 
                 <com.beihui.market.view.ClearEditText
                     android:id="@+id/phone_number"
@@ -104,9 +101,7 @@
                     android:text="《考拉记账用户协议》"
                     android:textColor="#2A84FF"
                     android:textSize="12sp" />
-
             </LinearLayout>
-
 
             <ImageView
                 android:id="@+id/iv_login_wechat"
@@ -124,8 +119,6 @@
                 android:text="微信登录"
                 android:textColor="@color/black_2"
                 android:textSize="12sp" />
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

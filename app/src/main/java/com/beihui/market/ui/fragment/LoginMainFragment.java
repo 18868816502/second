@@ -107,7 +107,6 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void configViews() {
-
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -238,10 +237,8 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
     private void wxLogin() {
         UMAuthListener listener = new UMAuthListener() {
-
             @Override
             public void onStart(SHARE_MEDIA share_media) {
-
             }
 
             @Override

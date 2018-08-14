@@ -26,7 +26,6 @@ public abstract class BaseComponentActivity extends BaseActivity {
     //进度条
     protected CommNoneAndroidLoading loading;
 
-
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +33,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
          * 注入App
          */
         configureComponent(App.getInstance().getAppComponent());
-
         super.onCreate(savedInstanceState);
-
-
         setContentView(getLayoutId());
         //初始化沉浸式
         ImmersionBar.with(this).init();
@@ -45,8 +41,6 @@ public abstract class BaseComponentActivity extends BaseActivity {
             FragmentManager manager = getSupportFragmentManager();
             manager.popBackStackImmediate(null, 1);
         }
-
-
         ButterKnife.bind(this);
         configViews();
         initDatas();
@@ -76,9 +70,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
 
     public abstract void initDatas();
 
-
     protected abstract void configureComponent(AppComponent appComponent);
-
 
     /**
      * set tool bar render and behavior with default action
