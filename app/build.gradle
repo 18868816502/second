@@ -4,17 +4,19 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
+    buildToolsVersion '26.0.2'
+    //buildToolsVersion compile_sdk_version
 
     defaultConfig {
+        applicationId "com.beihui.market"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 16
-        versionName "4.2.0"
+        versionCode 18
+        versionName "4.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        renderscriptTargetApi target_sdk_version
-        renderscriptSupportModeEnabled true
+        //renderscriptTargetApi target_sdk_version
+        //renderscriptSupportModeEnabled true
 
         multiDexEnabled true
     }
@@ -33,21 +35,12 @@ android {
             keyAlias "loanMarket"
             keyPassword "123456"
         }
-
-        debug {
-            storeFile file('../loanMarket.jks')
-            storePassword "123456"
-            keyAlias "loanMarket"
-            keyPassword "123456"
-        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-        }
-        debug {
-            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -67,9 +60,8 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
 
+    flavorDimensions "id", "channel"
     //维度
-    flavorDimensions("id", "channel")
-
     productFlavors {
         loanmarket {
             dimension "id"
@@ -78,7 +70,6 @@ android {
             buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
             buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
             buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
-
             //测试环境 + 测试魔蝎appkey
             /*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
@@ -97,7 +88,7 @@ android {
             signingConfig signingConfigs.loanmarket
         }
 
-        klbillvest{
+        /*klbillvest {
             dimension "id"
             applicationId "com.beiwo.klbill"//包名改变
             //生产环境 + 正式环境魔蝎appkey
@@ -105,9 +96,9 @@ android {
             buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
             buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
             //测试环境 + 测试魔蝎appkey
-            /*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            *//*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")*/
+            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")*//*
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                     GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
@@ -120,7 +111,7 @@ android {
             buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
             buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
             signingConfig signingConfigs.loanmarket
-        }
+        }*/
 
         /*loanmarkettest {
             dimension "id"
@@ -143,22 +134,22 @@ android {
             signingConfig signingConfigs.loanmarkettest
         }*/
 
-        baidu { dimension "channel" }
-//        market360 { dimension "channel" }
-//        xiaomi { dimension "channel" }
-//        huawei { dimension "channel" }
-//        VIVO { dimension "channel" }
-//        OPPO { dimension "channel" }
-//        meizu { dimension "channel" }
-//        chuizi { dimension "channel" }
+        kaolajizhang_baidu { dimension "channel" }
+        kaolajizhang_360 { dimension "channel" }
+        kaolajizhang_yingyongbao { dimension "channel" }
+        kaolajizhang_xiaomi { dimension "channel" }
+        kaolajizhang_huawei { dimension "channel" }
+        kaolajizhang_vivo { dimension "channel" }
+        kaolajizhang_oppo { dimension "channel" }
+        kaolajizhang_meizu { dimension "channel" }
+        kaolajizhang_chuizi { dimension "channel" }
+        kaolajizhang_sanxing { dimension "channel" }
+        kaolajizhang_jifeng { dimension "channel" }
+        kaolajizhang_mumayi { dimension "channel" }
+//        kaolajizhang_anzhi { dimension "channel" }
+//        kaolajizhang_sougou { dimension "channel" }
 //        wandoujia { dimension "channel" }
-//        samsung { dimension "channel" }
-//        mumayi { dimension "channel" }
-//        anzhi { dimension "channel" }
-//        sougou { dimension "channel" }
-//        jifeng  { dimension "channel" }
 //        h5 { dimension "channel" }
-//        yingyongbao { dimension "channel" }
 //        yingyongbaocpd { dimension "channel" }
 
 //        暂时不打包的渠道
@@ -180,12 +171,26 @@ android {
         }
     }
 
+    /*applicationVariants.all { variant ->    //批量修改Apk名字
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                //这里修改apk文件名
+                def sourceFile = outputFile.name.replace(".apk", "")
+                def replaceFile = variant.getBaseName()
+                outputFileName = output.outputFile.name.replace(sourceFile, replaceFile)
+                //output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }*/
+
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 //这里修改apk文件名
                 def fileName = variant.getBaseName() + ".apk"
+                fileName = fileName.substring(fileName.indexOf("-") + 1, fileName.length())
                 output.outputFile = new File(outputFile.parent, fileName)
             }
         }
@@ -205,11 +210,10 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile project(':xiaonengchat')
-
     //魔蝎信用
     compile(name: 'moxie-client-2.2.1', ext: 'aar')
+
     //坚果信用
     compile(name: 'newnutsdk', ext: 'aar')
 
@@ -218,7 +222,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$support_library_version"
     compile "com.android.support:cardview-v7:$support_library_version"
     compile "com.android.support:design:$support_library_version"
-
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:multidex:1.0.1'
 
@@ -233,6 +236,7 @@ dependencies {
     //OkHttp
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+
     //添加拦截日志
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
@@ -261,6 +265,7 @@ dependencies {
     //umeng统计
     compile 'com.umeng.sdk:common:1.5.0'
     compile 'com.umeng.sdk:analytics:7.5.0'
+
     //umeng分享，微信，QQ，微博
     compile 'com.umeng.sdk:share-core:6.9.0'
     compile 'com.umeng.sdk:share-qq:6.9.0'
@@ -269,8 +274,6 @@ dependencies {
 
     //database-greeodao
     compile 'org.greenrobot:greendao:3.2.2'
-
-    /*View Lib*/
 
     //MarqueeView
     compile 'com.sunfusheng:marqueeview:1.3.2'
@@ -289,8 +292,10 @@ dependencies {
 
     //swipe menu
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+
     //rxbinding
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
     //hightlight
     compile 'com.isanwenyu.highlight:highlight:1.8.0'
 
@@ -300,8 +305,10 @@ dependencies {
     //Permission
     compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
     apt "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
+
     //webview
     compile 'com.just.agentweb:agentweb:4.0.2'
+
     //refresh
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-7'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-7'

@@ -3,8 +3,9 @@
     android:id="@+id/root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <View
         android:id="@+id/top_view"
         android:layout_width="match_parent"
@@ -28,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-
         <TextView
             android:id="@+id/tv_change"
             android:layout_width="wrap_content"
@@ -37,12 +37,9 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="密码登录"
-            android:textSize="15sp"
-            android:textColor="@color/black_1"/>
-
+            android:textColor="@color/black_1"
+            android:textSize="15sp" />
     </LinearLayout>
-
-
 
     <FrameLayout
         android:id="@+id/deco_container"
@@ -54,8 +51,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/round_white" />
-
-
     </FrameLayout>
-
 </LinearLayout>

@@ -76,6 +76,7 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        SPUtils.setValue(this, "splash");
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,8 +120,9 @@ public class SplashActivity extends BaseComponentActivity {
     private void launch() {
         handler.removeMessages(1);
         if (!adClicked) {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            finish();
+            //startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            //finish();
+            MainActivity.main(this);
         }
     }
 
@@ -131,7 +133,6 @@ public class SplashActivity extends BaseComponentActivity {
                                @Override
                                public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
                                    handler.removeMessages(1);
-
                                    if (result.isSuccess()) {
                                        if (result.getData() != null && result.getData().size() > 0) {
                                            startAd(result.getData().get(0));

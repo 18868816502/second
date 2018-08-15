@@ -2,6 +2,7 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -181,13 +182,9 @@ public class MainActivity extends BaseComponentActivity {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
                     tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
                     startActivity(tkIntent);
-
                 }
             }
         }
-
-
-        //showGuide();//显示高亮
     }
 
     private void showAdDialog(final AdBanner ad) {
@@ -281,6 +278,16 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         checkPermission();
+        /*用户首次进入app，弹出登陆界面*/
+        try {
+            if (!"splash".equals(SPUtils.getValue(this, "splash")) &&
+                    !TextUtils.equals("userLogin", SPUtils.getValue(this, "userLogin")) && !UserHelper.getInstance(this).isLogin()) {
+                UserAuthorizationActivity.launch(this);
+                SPUtils.setValue(this, "splash");
+                SPUtils.setValue(this, "userLogin");
+            }
+        } catch (Exception e) {
+        }
         updateHelper.checkUpdate(this);
         queryBottomImage();//请求底部导航栏图标 文字 字体颜色
         Api.getInstance().querySupernatant(3)
@@ -299,6 +306,11 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     }
                 });
+    }
+
+    public static void main(Activity activity) {
+        activity.startActivity(new Intent(activity, MainActivity.class));
+        activity.finish();
     }
 
     //空事件

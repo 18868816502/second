@@ -138,6 +138,13 @@ public class SPUtils {
         return sp.getString(key, "");
     }
 
+    public static void setValue(Context context, String key, String value) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
     public static void setShowMainAddBanner(Context context, boolean isShow) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();

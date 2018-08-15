@@ -21,7 +21,6 @@ public class CommNoneAndroidLoading extends Dialog {
         this.message = message;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -20,6 +20,7 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.helper.ActivityTracker;
+import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.busevents.AuthNavigationEvent;
 import com.beihui.market.ui.busevents.UserLoginEvent;
@@ -48,11 +49,8 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     View rootContainer;
     @BindView(R.id.deco_container)
     View decoContainer;
-
-
     @BindView(R.id.tv_change)
     TextView tvChange;
-
 
     private BlurringDrawable blurringDrawable;
 
@@ -77,6 +75,10 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
         context.startActivity(intent);
 //        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
+    }
+
+    public static void launch(Activity activity) {
+        activity.startActivity(new Intent(activity, UserAuthorizationActivity.class));
     }
 
     @Override
@@ -124,6 +126,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.content_container, fragment, LoginMainFragment.class.getSimpleName())
                 .commit();
+        SlidePanelHelper.attach(this);
 //        decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 //            @Override
 //            public void onGlobalLayout() {
@@ -150,7 +153,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-
     }
 
     @Override
@@ -195,7 +197,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
-
     /**
      * EventBus事件
      *
@@ -218,7 +219,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             ft.attach(loginPsd);
             ft.addToBackStack(loginPsdTag);
             ft.commit();
-
         } else if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_FAST) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -240,7 +240,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             setPsd.setArguments(bundle);
             ft.addToBackStack(setPsdTag);
             ft.commit();
-
         } else if (event.navigationTag == AuthNavigationEvent.TAG_HEAD_TO_LOGIN) {
             getSupportFragmentManager().popBackStack();
         }
@@ -287,6 +286,5 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-
     }
 }

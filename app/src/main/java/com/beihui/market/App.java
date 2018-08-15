@@ -34,6 +34,7 @@ import com.umeng.analytics.AnalyticsConfig;
 
 import cn.xiaoneng.uiapi.Ntalker;
 
+
 public class App extends Application {
 
     private static App sInstance;
@@ -103,7 +104,6 @@ public class App extends Application {
 
 
         //生成发现页链接
-
         try {
             sChannelId = App.getInstance().getPackageManager()
                     .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");

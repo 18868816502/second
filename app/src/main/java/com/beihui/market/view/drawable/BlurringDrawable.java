@@ -1,6 +1,7 @@
 package com.beihui.market.view.drawable;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,13 +12,13 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -100,6 +101,7 @@ public class BlurringDrawable extends Drawable {
     }
 
 
+    @SuppressLint("NewApi")
     public void setBlurRadius(int radius) {
         this.blurScript.setRadius((float) radius);
     }
@@ -138,6 +140,7 @@ public class BlurringDrawable extends Drawable {
         }
     }
 
+    @SuppressLint("NewApi")
     private void initializeRenderScript(Context context) {
         renderScript = RenderScript.create(context);
         blurScript = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(this.renderScript));
@@ -175,6 +178,7 @@ public class BlurringDrawable extends Drawable {
         return true;
     }
 
+    @SuppressLint("NewApi")
     private void blur() {
         blurInput.copyFrom(bitmapToBlur);
         blurScript.setInput(blurInput);
