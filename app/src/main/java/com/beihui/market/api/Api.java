@@ -1616,6 +1616,12 @@ public class Api {
         return service.deleteCredit(userId, recordId, status);
     }
 
+    /*获取短信内容*/
+    public Observable<ResultEntity<String>> getInviteMsg(String userId) {
+        return service.getInviteMsg(userId);
+    }
+
+
     /**************+***************************************************+******************************************************/
 
     private String getChannelId() {

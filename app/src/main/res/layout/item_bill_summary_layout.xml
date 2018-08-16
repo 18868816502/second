@@ -73,7 +73,7 @@
         app:layout_constraintTop_toTopOf="@+id/bill_title_tv" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/contact_avatar"
         android:layout_width="368dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"

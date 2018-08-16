@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -240,27 +243,27 @@
             android:name=".tang.activity.SearchActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--账单详情-->
+        <!-- 账单详情 -->
         <activity
             android:name=".tang.activity.NetLoanDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--添加备注-->
+        <!-- 添加备注 -->
         <activity
             android:name=".tang.activity.RemarkActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--信用卡详情-->
+        <!-- 信用卡详情 -->
         <activity
             android:name=".tang.activity.CreditDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--通用账单-->
+        <!-- 通用账单 -->
         <activity
             android:name=".tang.activity.CommonDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--快速记账页面-->
+        <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->
         <activity
@@ -341,7 +344,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/XiaoNengAppTheme" />
-
         <activity
             android:name="cn.xiaoneng.activity.LeaveMsgActivity"
             android:launchMode="singleTask"
@@ -435,7 +437,6 @@
         <activity
             android:name=".ui.activity.H5Activity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.InvitationWebActivity"
             android:screenOrientation="portrait" />
@@ -447,6 +448,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ResetPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ContactsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.DailyMissonActivity"
             android:screenOrientation="portrait" />
     </application>
 

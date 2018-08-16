@@ -148,7 +148,12 @@ public class NetConstants {
     }
 
     public static String invitationUrl(String userId) {
-        return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+        //return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+        return "http://192.168.1.63:8086/page/activity-invite-friends.html" + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+    }
+    public static String missionUrl(String userId) {
+        //return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+        return "http://192.168.1.63:8086/page/activity-invite-task.html" + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String generateInternalMessageUrl(String id) {

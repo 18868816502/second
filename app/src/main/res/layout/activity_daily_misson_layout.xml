@@ -18,24 +18,14 @@
         android:background="@color/transparent">
 
         <TextView
+            android:id="@+id/tool_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/invite_friend"
+            android:text="@string/daily_misson"
             android:textColor="@color/white"
             android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/daily_mission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="今日任务"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
     </android.support.v7.widget.Toolbar>
 
 </FrameLayout>

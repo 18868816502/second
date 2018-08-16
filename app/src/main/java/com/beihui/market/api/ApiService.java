@@ -88,7 +88,7 @@ import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
 
 /**
  * @author xhb
- *         请求接口
+ * 请求接口
  */
 public interface ApiService {
 
@@ -1179,4 +1179,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/bookKeeping/closeAll")
     Observable<ResultEntity> commonCloseAll(@Field("userId") String userId, @Field("recordId") String recordId);
+
+    /*获取短信内容*/
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/inviteActiveController/getInviteMsg")
+    Observable<ResultEntity<String>> getInviteMsg(@Field("userId") String userId);
 }

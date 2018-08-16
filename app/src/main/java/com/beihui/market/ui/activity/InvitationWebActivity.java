@@ -28,6 +28,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Copyright: zhujia (C)2018
@@ -42,8 +43,6 @@ public class InvitationWebActivity extends BaseComponentActivity {
     @BindView(R.id.web_view_invitation)
     RelativeLayout relativeLayout;
     private Context context;
-    @BindView(R.id.invitation_reload)
-    SwipeRefreshLayout swipeRefreshLayout;
     private AgentWeb agentWeb;
 
 
@@ -55,7 +54,8 @@ public class InvitationWebActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         setupToolbar(toolbar);
-        ImmersionBar.with(this).statusBarDarkFont(true).init();
+        setupToolbarBackNavigation(toolbar, R.drawable.back_white);
+        ImmersionBar.with(this).statusBarDarkFont(false).init();
         SlidePanelHelper.attach(this);
         context = this;
     }
@@ -69,16 +69,8 @@ public class InvitationWebActivity extends BaseComponentActivity {
                 .createAgentWeb()//
                 .ready()
                 .go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
+        //.go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.c_ff5240));
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                agentWeb.getUrlLoader().reload();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
         LogUtils.i(UserHelper.getInstance(context).getProfile().getId());
 
     }
@@ -88,23 +80,13 @@ public class InvitationWebActivity extends BaseComponentActivity {
 
     }
 
+    @OnClick(R.id.daily_mission)
+    void dailyMission() {
+        startActivity(new Intent(context, DailyMissonActivity.class));
+
+    }
+
     public class JsInterration {
-
-        @JavascriptInterface
-        public String getUserId() {
-            return UserHelper.getInstance(context).getProfile().getId();
-        }
-
-        @JavascriptInterface
-        public String getPackageId() {
-            return BuildConfig.APPLICATION_ID;
-        }
-
-        @JavascriptInterface
-        public String getVersion() {
-            return BuildConfig.VERSION_NAME;
-
-        }
 
         @JavascriptInterface
         public void invite() {
@@ -119,6 +101,13 @@ public class InvitationWebActivity extends BaseComponentActivity {
             new ShareDialog()
                     .setUmWeb(umWeb)
                     .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
+        }
+
+
+        @JavascriptInterface
+        public void contactInvite() {
+            context.startActivity(new Intent(context, ContactsActivity.class));
+
         }
 
     }
