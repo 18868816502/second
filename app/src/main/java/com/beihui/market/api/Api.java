@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AccountFlowIconBean;
@@ -59,6 +60,7 @@ import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.PurseBalance;
 import com.beihui.market.entity.RemindBean;
 import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
@@ -72,6 +74,7 @@ import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
+import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.entity.request.XAccountInfo;
 
@@ -94,6 +97,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -121,7 +125,8 @@ public class Api {
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            Log.w("OkHttp--->message: ", message);
+            if (BuildConfig.DEBUG)
+                Log.w("OkHttp--->message: ", message);//打印日志
         }
     });
 
@@ -135,14 +140,9 @@ public class Api {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .cache(cache)
-                .addInterceptor(new HttpLoggingInterceptor())
                 .addInterceptor(new AccessHeadInterceptor());
 
-        //设置拦截日志
-//        if (BuildConfig.DEBUG) {
         builder.addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY));
-//        }
-
         return builder.build();
     }
 
@@ -1613,6 +1613,14 @@ public class Api {
     /*更新信用卡状态 删除*/
     public Observable<ResultEntity> deleteCredit(String userId, String recordId, int status) {
         return service.deleteCredit(userId, recordId, status);
+    }
+
+    public Observable<ResultEntity<PurseBalance>> purseBalance(String userId) {
+        return service.purseBalance(userId);
+    }
+
+    public Observable<ResultEntity<WithdrawRecord>> withdrawRecord(Map<String, Object> map) {
+        return service.withdrawRecord(map);
     }
 
     /*获取短信内容*/

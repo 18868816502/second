@@ -55,7 +55,7 @@
     <color name="line">#f8f8f8</color>
     <color name="c_f1eff2">#f1eff2</color>
     <color name="line_color">#e8e8e8</color>
-    
+
     <color name="c_222222">#222222</color>
     <color name="c_333333">#333333</color>
     <color name="c_666666">#666666</color>
@@ -117,4 +117,5 @@
     <color name="actionsheet_blue">#037BFF</color>
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
+    <color name="withdraw_success">#23b448</color>
 </resources>

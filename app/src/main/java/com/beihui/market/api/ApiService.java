@@ -53,6 +53,7 @@ import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
+import com.beihui.market.entity.PurseBalance;
 import com.beihui.market.entity.RemindBean;
 import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
@@ -67,6 +68,7 @@ import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
+import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.XAccountInfo;
 
 import java.util.ArrayList;
@@ -439,7 +441,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-//    Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("packageId") String packageId, @Field("platform") int platform);
     Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(@Field("account") String account, @Field("platform") int platform);
 
     /**
@@ -454,7 +455,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/sms/sendSms")
-//    Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type, @Field("packageId") String packageId);
     Observable<ResultEntity<Phone>> requestSms(@Field("phone") String phone, @Field("type") String type);
 
     /**
@@ -470,8 +470,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/wx/newAuthVerify")
-//    Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
-//                                                                       @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("packageId") String packageId, @Field("platform") String platform);
     Observable<ResultEntity<UserProfileAbstract>> verifyWeChatBindCode(@Field("account") String account, @Field("wxOpenId") String wxOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
                                                                        @Field("verificationCodeType") String type, @Field("verificationCode") String code, @Field("platform") String platform);
 
@@ -480,9 +478,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/register")
-//    Observable<ResultEntity<UserProfileAbstract>> register(@Field("platform") int platform, @Field("account") String account, @Field("pwd") String pwd,
-//                                                           @Field("wxOpenId") String exOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
-//                                                           @Field("inviteCode") String inviteCode, @Field("packageId") String packageId);
     Observable<ResultEntity<UserProfileAbstract>> register(@Field("platform") int platform, @Field("account") String account, @Field("pwd") String pwd,
                                                            @Field("wxOpenId") String exOpenId, @Field("wxName") String wxName, @Field("wxImage") String wxImage,
                                                            @Field("inviteCode") String inviteCode);
@@ -1193,4 +1188,13 @@ public interface ApiService {
             , @Field("imgType") String imgType
             , @Field("activeName") String activeName
             , @Field("base64") String base64);
+
+    /*钱包*/
+    @FormUrlEncoded
+    @POST("/s1/purse/balance")
+    Observable<ResultEntity<PurseBalance>> purseBalance(@Field("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("/s1/purse/trade/listData")
+    Observable<ResultEntity<WithdrawRecord>> withdrawRecord(@FieldMap Map<String, Object> map);
 }

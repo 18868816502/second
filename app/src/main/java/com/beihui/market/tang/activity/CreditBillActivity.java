@@ -63,23 +63,6 @@ public class CreditBillActivity extends BaseComponentActivity {
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
-        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    line.setVisibility(View.GONE);
-                } else {
-                    line.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });*/
-
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYCREDITCARD);
     }

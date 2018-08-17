@@ -263,6 +263,27 @@
             android:name=".tang.activity.CommonDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <!--钱包-->
+        <activity
+            android:name=".tang.activity.WalletActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--提现-->
+        <activity
+            android:name=".tang.activity.WithdrawActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--提现记录-->
+        <activity
+            android:name=".tang.activity.WithdrawRecordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--绑定/编辑支付宝-->
+        <activity
+            android:name=".tang.activity.BindAlpActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--快速记账页面-->
         <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->
