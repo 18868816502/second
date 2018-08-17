@@ -21,6 +21,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
+import com.beihui.market.tang.activity.WalletActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.BillSummaryActivity;
@@ -124,7 +125,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void configViews() {
-
     }
 
     @Override
@@ -135,7 +135,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         if (getActivity() != null) {
             getActivity().registerReceiver(myRecevier, intentFilter);
         }
-
     }
 
     @Override
@@ -145,7 +144,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 .tabMineModule(new TabMineModule(this))
                 .build()
                 .inject(this);
-
     }
 
     private void request() {
@@ -160,7 +158,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                             url = data.getUrl();
                             eventTv.setText(data.getTitle());
                             Glide.with(getActivity()).load(data.getImgUrl()).into(eventImg);
-
                         } else {
                             mineProductContainer.setVisibility(View.GONE);
                         }
@@ -174,7 +171,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         userNameTv.setVisibility(View.VISIBLE);
         if (UserHelper.getInstance(getActivity()).isLogin()) {
             userInfo.setText("查看并编辑资料");
-
         } else {
             userInfo.setText("立即登录，开启记账旅程！");
         }
@@ -183,7 +179,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     .load(profile.getHeadPortrait())
                     .asBitmap()
                     .into(avatarIv);
-
         }
         String username = profile.getUserName();
         if (username != null) {
@@ -193,21 +188,18 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 userNameTv.setText(username);
             }
         }
-
     }
 
     @Override
     public void showRewardPoints(int points) {
-
     }
 
     @Override
     public void setPresenter(TabMineContract.Presenter presenter) {
-
     }
 
 
-    @OnClick({R.id.kaola_group, R.id.bill_summary,
+    @OnClick({R.id.kaola_group, R.id.bill_summary, R.id.my_wallet,
             R.id.remind, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
             R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg})
     public void onViewClicked(View view) {
@@ -216,7 +208,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             return;
         }
         switch (view.getId()) {
-
             //考拉圈圈
             case R.id.kaola_group:
                 if (!FastClickUtils.isFastClick()) {
@@ -225,13 +216,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 break;
             case R.id.bill_summary:
                 if (!FastClickUtils.isFastClick()) {
-
                     presenter.clickMineBill();
                 }
                 break;
-
             case R.id.remind:
-
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickRemind();
                 }
@@ -248,44 +236,39 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     presenter.clickUserProfile();
                 }
                 break;
-
             case R.id.ll_navigate_user_profile:
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickUserProfile();
                 }
                 break;
-
-
             case R.id.invite_friend:
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
-
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickInvitation();
                 }
                 break;
-
             case R.id.help_center:
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickHelpAndFeedback();
                 }
                 break;
-
             case R.id.settings:
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickSetting();
                 }
-
                 break;
             case R.id.mine_msg:
                 Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickMessage();
                 }
-
                 break;
-
+            case R.id.my_wallet://我的钱包
+                if (!FastClickUtils.isFastClick())
+                    startActivity(new Intent(getActivity(), WalletActivity.class));
+                break;
             default:
                 break;
         }

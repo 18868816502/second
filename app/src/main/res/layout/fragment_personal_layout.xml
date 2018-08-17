@@ -185,8 +185,8 @@
                     app:left_textView_text="@string/invite_friend"
                     app:left_textView_textSize="15sp"
                     app:right_textView1_Visible="true"
-                    app:right_textView1_text="首邀好友得15元"
                     app:right_textView1_color="#FF5240"
+                    app:right_textView1_text="首邀好友得15元"
                     app:right_textView1_textSize="12sp" />
 
                 <com.beihui.market.view.CardLayoutBar
@@ -197,11 +197,11 @@
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"
                     app:left_textView_text="@string/my_wallet"
+                    app:left_textView_textSize="15sp"
                     app:right_textView1_Visible="true"
-                    app:right_textView1_text="支付宝提现"
                     app:right_textView1_color="#FF5240"
-                    app:right_textView1_textSize="12sp"
-                    app:left_textView_textSize="15sp" />
+                    app:right_textView1_text="支付宝提现"
+                    app:right_textView1_textSize="12sp" />
 
                 <com.beihui.market.view.CardLayoutBar
                     android:id="@+id/bill_summary"
