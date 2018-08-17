@@ -121,8 +121,7 @@ public class Api {
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            //打印日志
-            //Log.w("OkHttp--->message: ", message);
+            Log.w("OkHttp--->message: ", message);
         }
     });
 
@@ -136,7 +135,7 @@ public class Api {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .cache(cache)
-                //.addInterceptor(new PackageIdAndVersionNameInterceptor())
+                .addInterceptor(new HttpLoggingInterceptor())
                 .addInterceptor(new AccessHeadInterceptor());
 
         //设置拦截日志
@@ -1619,6 +1618,17 @@ public class Api {
     /*获取短信内容*/
     public Observable<ResultEntity<String>> getInviteMsg(String userId) {
         return service.getInviteMsg(userId);
+    }
+
+    /*上传活动图片*/
+    public Observable<ResultEntity> uploadImg(String userId, String phone, String imgType, String activeName, byte[] image) {
+        String imageBase64 = "";
+        if (image != null && image.length > 0) {
+            imageBase64 = Base64.encodeToString(image, Base64.DEFAULT);
+
+        }
+        return service.uploadImg(userId, phone, imgType, activeName, imageBase64);
+
     }
 
 

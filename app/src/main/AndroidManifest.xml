@@ -455,6 +455,9 @@
         <activity
             android:name=".ui.activity.DailyMissonActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EnterInviteCodeActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

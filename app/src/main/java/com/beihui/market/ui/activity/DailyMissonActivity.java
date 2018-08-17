@@ -10,21 +10,32 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.widget.RelativeLayout;
 
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.entity.UpLoadBean;
+import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.ui.dialog.AlertDialog;
 import com.beihui.market.util.ImageUtils;
-import com.beihui.market.util.ToastUtil;
+import com.beihui.market.util.viewutils.ToastUtils;
+import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 
+import java.io.ByteArrayOutputStream;
+
 import butterknife.BindView;
-import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -37,6 +48,10 @@ public class DailyMissonActivity extends BaseComponentActivity {
     RelativeLayout relativeLayout;
     private Context context;
     private AgentWeb agentWeb;
+    String imgType;
+    String activeName;
+    String path = null;
+    private Bitmap image;
 
 
     @Override
@@ -62,6 +77,8 @@ public class DailyMissonActivity extends BaseComponentActivity {
                 .createAgentWeb()
                 .ready()
                 .go(NetConstants.missionUrl(UserHelper.getInstance(context).getProfile().getId()));
+        agentWeb.getAgentWebSettings().getWebSettings().setJavaScriptEnabled(true);
+        agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
     }
 
     @Override
@@ -69,33 +86,123 @@ public class DailyMissonActivity extends BaseComponentActivity {
 
     }
 
-    @OnClick(R.id.tool_title)
-    void uploadPhoto() {
-        //DailyMissonActivityPermissionsDispatcher.openAlbumWithCheck(this);
-
-    }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            String path = null;
-            Bitmap avatar = null;
-            if (requestCode == 1) {
-                path = getRealPathFromURI(data.getData());
-            }
-            if (path != null) {
-                avatar = ImageUtils.getFixedBitmap(path, 512);
-            }
-            if (avatar != null) {
-                //upload(avatar);
-            } else {
-                ToastUtil.toast("图片解析错误");
-            }
+    protected void onActivityResult(final int requestCode, int resultCode, final Intent data) {
+
+        if (resultCode == RESULT_OK && requestCode == 2) {
+            agentWeb.getJsAccessEntrace().callJs("uploadPhoto()", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+                    UpLoadBean bean = new Gson().fromJson(value, UpLoadBean.class);
+                    imgType = bean.getImgType();
+                    activeName = bean.getActiveName();
+                    path = getRealPathFromURI(data.getData());
+
+                    if (path != null) {
+                        ByteArrayOutputStream baos;
+                        image = ImageUtils.getFixedBitmap(path, 512);
+                        if (image != null) {
+                            baos = new ByteArrayOutputStream();
+                            int quality = 100;
+                            image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                            while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
+                                quality -= 5;
+                                if (quality <= 0) {
+                                    quality = 0;
+                                }
+                                baos.reset();
+                                image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                                if (quality == 0) {
+                                    break;
+                                }
+                            }
+                            uploadImg(baos.toByteArray(), imgType, activeName);
+                        } else {
+                            ToastUtils.showShort(DailyMissonActivity.this, "图片解析错误", null);
+                        }
+                    }
+
+                }
+            });
+
+        }
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            agentWeb.getJsAccessEntrace().callJs("uploadPhotoOwn()", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+                    UpLoadBean bean = new Gson().fromJson(value, UpLoadBean.class);
+                    imgType = bean.getImgType();
+                    activeName = bean.getActiveName();
+                    path = getRealPathFromURI(data.getData());
+
+                    if (path != null) {
+                        ByteArrayOutputStream baos;
+                        image = ImageUtils.getFixedBitmap(path, 512);
+                        if (image != null) {
+                            baos = new ByteArrayOutputStream();
+                            int quality = 100;
+                            image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                            while (baos.size() > RequestConstants.AVATAR_BYTE_SIZE) {
+                                quality -= 5;
+                                if (quality <= 0) {
+                                    quality = 0;
+                                }
+                                baos.reset();
+                                image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                                if (quality == 0) {
+                                    break;
+                                }
+                            }
+                            uploadImg(baos.toByteArray(), imgType, activeName);
+                        } else {
+                            ToastUtils.showShort(DailyMissonActivity.this, "图片解析错误", null);
+                        }
+                    }
+
+                }
+            });
+
+
         }
     }
 
-    private void upload(Bitmap img) {
+    private void uploadImg(final byte[] base64Img, final String imgType, final String activeName) {
+        new AlertDialog(this).builder().setMsg("1天只有1次上传机会，经由人工审核，非贷超注册成功页面，奖励不予发放!").setTitle("确认上传该图片么？")
+                .setPositiveButton("确认", new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View arg0) {
+                        showProgress();
+                        Api.getInstance().uploadImg(UserHelper.getInstance(DailyMissonActivity.this).getProfile().getId(),
+                                UserHelper.getInstance(DailyMissonActivity.this).getProfile().getAccount(),
+                                imgType,
+                                activeName,
+                                base64Img).compose(RxResponse.compatO()).subscribe(new ApiObserver<Object>() {
+                            @Override
+                            public void onNext(Object data) {
+                                dismissProgress();
+                                new AlertDialog(DailyMissonActivity.this).builder().setPositiveButton("我知道了", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                    }
+                                }).setTitle("上传成功！").setMsg("我们会尽快审核您上传的图片，审核通过后，奖励到账！您可以至”我的-消息“处查看审核情况。").show();
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                super.onError(t);
+                                dismissProgress();
+                            }
+                        });
+                    }
+
+                }).setNegativeButton("取消", new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            }
+        }).show();
 
     }
 
@@ -105,6 +212,14 @@ public class DailyMissonActivity extends BaseComponentActivity {
         Intent toAlbum = new Intent(Intent.ACTION_PICK);
         toAlbum.setType("image/*");
         startActivityForResult(toAlbum, 2);
+    }
+
+    @SuppressLint("InlinedApi")
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void openAlbumOwn() {
+        Intent toAlbum = new Intent(Intent.ACTION_PICK);
+        toAlbum.setType("image/*");
+        startActivityForResult(toAlbum, 1);
     }
 
     String getRealPathFromURI(Uri uri) {
@@ -129,5 +244,25 @@ public class DailyMissonActivity extends BaseComponentActivity {
         return null;
     }
 
+    public class JsInterration {
+
+        @JavascriptInterface
+        void uploadPhoto() {
+            DailyMissonActivityPermissionsDispatcher.openAlbumWithCheck(DailyMissonActivity.this);
+
+        }
+
+        @JavascriptInterface
+        void uploadPhotoOwn() {
+            DailyMissonActivityPermissionsDispatcher.openAlbumOwnWithCheck(DailyMissonActivity.this);
+
+        }
+
+        @JavascriptInterface
+        void enterInviteCode() {
+            startActivity(new Intent(context, EnterInviteCodeActivity.class));
+        }
+
+    }
 
 }

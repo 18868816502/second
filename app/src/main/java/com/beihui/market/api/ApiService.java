@@ -1184,4 +1184,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/inviteActiveController/getInviteMsg")
     Observable<ResultEntity<String>> getInviteMsg(@Field("userId") String userId);
+
+    /*获取短信内容*/
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/inviteActiveController/uploadImg")
+    Observable<ResultEntity> uploadImg(@Field("userId") String userId
+            , @Field("phone") String phone
+            , @Field("imgType") String imgType
+            , @Field("activeName") String activeName
+            , @Field("base64") String base64);
 }
