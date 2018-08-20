@@ -71,12 +71,10 @@ import cn.xiaoneng.uiapi.Ntalker;
 public class TabMineActivity extends BaseComponentActivity implements TabMineContract.View {
     @Override
     public void navigateRemind(String userId) {
-
     }
 
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
-
     }
 
     @BindView(R.id.tool_bar)

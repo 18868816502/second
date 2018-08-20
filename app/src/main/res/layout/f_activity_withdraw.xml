@@ -46,6 +46,7 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:id="@+id/tv_withdraw_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
@@ -74,6 +75,7 @@
             android:textSize="14dp" />
 
         <LinearLayout
+            android:id="@+id/ll_alp_wrap"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:gravity="center_vertical"
@@ -87,6 +89,7 @@
                 android:src="@mipmap/ic_alp" />
 
             <TextView
+                android:id="@+id/tv_pay_account"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"

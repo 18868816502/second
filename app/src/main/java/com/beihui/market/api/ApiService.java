@@ -1,7 +1,5 @@
 package com.beihui.market.api;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.AdBanner;
@@ -50,6 +48,7 @@ import com.beihui.market.entity.Notice;
 import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.NutEmail;
+import com.beihui.market.entity.PayAccount;
 import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
@@ -61,13 +60,13 @@ import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
 import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
-import com.beihui.market.entity.TabImage;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
+import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.XAccountInfo;
 
@@ -77,7 +76,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -85,12 +83,12 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 import static com.beihui.market.api.NetConstants.BASE_PATH;
-import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 import static com.beihui.market.api.NetConstants.BASE_PATH_S_FOUR;
+import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 
 /**
  * @author xhb
- * 请求接口
+ *         请求接口
  */
 public interface ApiService {
 
@@ -425,7 +423,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-//    Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("packageId") String packageId, @Field("platform") int platform);
     Observable<ResultEntity<UserProfileAbstract>> login(@Field("account") String account, @Field("pwd") String pwd, @Field("platform") int platform);
 
     /**
@@ -433,7 +430,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUser/login")
-//    Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("packageId") String packageId, @Field("platform") int platform);
     Observable<ResultEntity<UserProfileAbstract>> loginByCode(@Field("account") String account, @Field("loginType") String loginType, @Field("verifyCode") String verifyCode, @Field("platform") int platform);
 
     /**
@@ -754,7 +750,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/version/queryVersion")
-//    Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType, @Field("packageId") String packageId);
     Observable<ResultEntity<AppUpdate>> queryAppUpdate(@Field("clientType") String clientType);
 
     /**
@@ -1194,7 +1189,23 @@ public interface ApiService {
     @POST("/s1/purse/balance")
     Observable<ResultEntity<PurseBalance>> purseBalance(@Field("userId") String userId);
 
+    /*提现记录列表*/
     @FormUrlEncoded
     @POST("/s1/purse/trade/listData")
     Observable<ResultEntity<WithdrawRecord>> withdrawRecord(@FieldMap Map<String, Object> map);
+
+    /*获取支付宝账户*/
+    @FormUrlEncoded
+    @POST("/s1/purse/receipt/accountList")
+    Observable<ResultEntity<List<PayAccount>>> payAccount(@Field("userId") String userId);
+
+    /*保存支付宝账户*/
+    @FormUrlEncoded
+    @POST("/s1/purse/receipt/saveAccount")
+    Observable<ResultEntity<PayAccount>> saveAlpAccount(@FieldMap Map<String, Object> map);
+
+    /*提现*/
+    @FormUrlEncoded
+    @POST("/s1/purse/trade/create")
+    Observable<ResultEntity<Withdraw>> withdraw(@FieldMap Map<String, Object> map);
 }

@@ -45,7 +45,7 @@ public class WithdrawRecordActivity extends BaseComponentActivity {
     View fl_item_wrap;
 
     private int pageNo = 1;
-    private int pageSize = 20;
+    private int pageSize = 50;
     private Map<String, Object> map = new HashMap<>();
     private WithdrawRecordAdapter adapter = new WithdrawRecordAdapter();
 

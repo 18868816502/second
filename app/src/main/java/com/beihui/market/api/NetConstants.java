@@ -13,7 +13,6 @@ import java.util.List;
  * 需要检查
  */
 public class NetConstants {
-
     /**
      * 分组贷超产品列表 产品分组Id 秒批到账
      */
@@ -48,9 +47,6 @@ public class NetConstants {
     /**
      * TODO 发现页 链接
      */
-//    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5.html";
-//    public static final String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "http://192.168.1.40:100/findH5-av301.html";
-//    public static String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-av301.html";
     public static String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-v4.html";
     public static final String H5_FIND_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/findH5-v4.html";
 

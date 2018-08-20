@@ -3,9 +3,7 @@ package com.beihui.market.ui.fragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,20 +13,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
@@ -63,7 +57,7 @@ import butterknife.BindView;
  * @version 2.1.1
  * @date 20180419
  */
-public class TabNewsWebViewOneFragment extends BaseTabFragment {
+public class TabOneFragment extends BaseTabFragment {
 
     @BindView(R.id.bwv_news_web_view)
     BusinessWebView webView;
@@ -92,8 +86,8 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
         load();
     }
 
-    public static TabNewsWebViewOneFragment newInstance() {
-        return new TabNewsWebViewOneFragment();
+    public static TabOneFragment newInstance() {
+        return new TabOneFragment();
     }
 
     @Nullable
@@ -305,7 +299,6 @@ public class TabNewsWebViewOneFragment extends BaseTabFragment {
         }
         newsUrl = NetConstants.generateNewsWebViewUrl(userId, App.sChannelId, versionName);
         webView.loadUrl(newsUrl);
-        //webView.loadUrl("http://192.168.1.2:8080?data=hahd");
     }
 
     /**
