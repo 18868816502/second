@@ -55,7 +55,7 @@ public class Umeng {
          * 初始化common库
          * 参数1:上下文，不能为空
          * 参数2:友盟 app key
-         * 参数3:友盟 channel
+         * 参数3:友盟 channel.txt
          * 参数4:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
          * 参数5:Push推送业务的secret
          */

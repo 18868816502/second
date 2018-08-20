@@ -380,8 +380,8 @@ public class MainActivity extends BaseComponentActivity {
                 currentFragment = tabHome;
 
                 if (!"showGuideMainActivity".equals(SPUtils.getValue(this, "showGuideMainActivity"))) {
-                    if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter.getItemCount() > 1
-                            && tabHome.pageAdapter.getItemViewType(1) == HomePageAdapter.VIEW_NORMAL) {
+                    if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter != null &&
+                            tabHome.pageAdapter.getItemCount() > 1 && tabHome.pageAdapter.getItemViewType(1) == HomePageAdapter.VIEW_NORMAL) {
                         infoHighLight = new HighLight(this)
                                 .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
                                     @Override

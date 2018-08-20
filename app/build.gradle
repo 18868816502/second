@@ -5,7 +5,6 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion '26.0.2'
-    //buildToolsVersion compile_sdk_version
 
     defaultConfig {
         applicationId "com.beihui.market"
@@ -14,9 +13,6 @@ android {
         versionCode 18
         versionName "4.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        //renderscriptTargetApi target_sdk_version
-        //renderscriptSupportModeEnabled true
 
         multiDexEnabled true
     }
@@ -67,14 +63,14 @@ android {
             dimension "id"
             applicationId "com.beihui.market"
             //生产环境 + 正式环境魔蝎appkey
-            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+            /*buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
             buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
-            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")*/
             //测试环境 + 测试魔蝎appkey
-            /*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             //buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")//林峰本地
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")*/
+            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                     GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
@@ -122,22 +118,6 @@ android {
         kaolajizhang_sanxing { dimension "channel" }
         kaolajizhang_jifeng { dimension "channel" }
         kaolajizhang_mumayi { dimension "channel" }*/
-//        kaolajizhang_anzhi { dimension "channel" }
-//        kaolajizhang_sougou { dimension "channel" }
-//        wandoujia { dimension "channel" }
-//        h5 { dimension "channel" }
-//        yingyongbaocpd { dimension "channel" }
-
-//        暂时不打包的渠道
-//        anbei { dimension "channel" }
-//        market91 { dimension "channel" }
-//        anzhuomarket { dimension "channel" }
-//        Nduo { dimension "channel" }
-//        liqumarket { dimension "channel" }
-//        youyi { dimension "channel" }
-//        anfen { dimension "channel" }
-//        anzhuoyuan { dimension "channel" }
-//        lvan { dimension "channel" }
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
@@ -146,19 +126,6 @@ android {
             ])
         }
     }
-
-    /*applicationVariants.all { variant ->    //批量修改Apk名字
-        variant.outputs.all { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                //这里修改apk文件名
-                def sourceFile = outputFile.name.replace(".apk", "")
-                def replaceFile = variant.getBaseName()
-                outputFileName = output.outputFile.name.replace(sourceFile, replaceFile)
-                //output.outputFile = new File(outputFile.parent, fileName)
-            }
-        }
-    }*/
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
