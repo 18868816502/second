@@ -40,7 +40,7 @@ public class TabNewsWebViewSecordActivity extends BaseActivity{
     Toolbar toolbar;
     @BindView(R.id.iv_tab_fg_news_web_back)
     ImageView comeBack;
-    @BindView(R.id.iv_tab_fg_news_web_title)
+    @BindView(R.id.tv_tab_one_title)
     TextView newsTitleName;
     @BindView(R.id.bwv_news_web_view)
     BusinessWebView webView;
@@ -50,7 +50,7 @@ public class TabNewsWebViewSecordActivity extends BaseActivity{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        setContentView(R.layout.fragment_tab_news_web_view);
+        setContentView(R.layout.fragment_discover);
     }
 
     @Override

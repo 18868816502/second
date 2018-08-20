@@ -2,7 +2,6 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -28,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -50,15 +50,12 @@ import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.DiscoverFragment;
 import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.ui.fragment.PersonalFragment;
-import com.beihui.market.ui.fragment.TabNewsWebViewFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
-import com.beihui.market.util.SoundUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.BottomNavigationBar;
 import com.bumptech.glide.Glide;
@@ -135,7 +132,6 @@ public class MainActivity extends BaseComponentActivity {
     /**
      * 最新公告ID
      */
-    private String mNoticeId = "";
     private MainActivity activity;
 
     //高亮
@@ -267,6 +263,7 @@ public class MainActivity extends BaseComponentActivity {
 
         EventBus.getDefault().register(this);
         ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
+
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
@@ -276,12 +273,12 @@ public class MainActivity extends BaseComponentActivity {
                 }
             }
         });
-        selectTab(R.id.tab_bill_icon);
     }
 
     @Override
     public void initDatas() {
         checkPermission();
+        queryBottomImage();//请求底部导航栏图标 文字 字体颜色
         /*用户首次进入app，弹出登陆界面*/
         try {
             if (!"splash".equals(SPUtils.getValue(this, "splash")) &&
@@ -293,7 +290,6 @@ public class MainActivity extends BaseComponentActivity {
         } catch (Exception e) {
         }
         updateHelper.checkUpdate(this);
-        queryBottomImage();//请求底部导航栏图标 文字 字体颜色
         Api.getInstance().querySupernatant(3)
                 .compose(RxResponse.<List<AdBanner>>compatT())
                 .subscribe(new ApiObserver<List<AdBanner>>() {
@@ -355,7 +351,7 @@ public class MainActivity extends BaseComponentActivity {
     }
 
     public HomeFragment tabHome;
-    public TabNewsWebViewFragment tabDiscover;
+    public DiscoverFragment tabDiscover;
     public PersonalFragment tabMine;
     public Fragment currentFragment;
 
@@ -364,17 +360,14 @@ public class MainActivity extends BaseComponentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (tabHome == null) {
-            //tabDiscover = BillLoanAnalysisFragment.newInstance();
             tabHome = HomeFragment.newInstance();
             ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
         if (tabDiscover == null) {
-            //tabHome = TabAccountFragment.newInstance();
-            tabDiscover = TabNewsWebViewFragment.newInstance();
+            tabDiscover = DiscoverFragment.newInstance();
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabMine == null) {
-            //tabMine = TabNewsWebViewFragment.newInstance();
             tabMine = PersonalFragment.newInstance();
             ft.add(R.id.tab_fragment, tabMine).hide(tabMine);
         }

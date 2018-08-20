@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseTabFragment;
-import com.beihui.market.event.TabNewsWebViewFragmentUrlEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
@@ -57,7 +55,7 @@ import butterknife.BindView;
  * @version 2.1.1
  * @date 20180419
  */
-public class TabNewsWebViewTwoFragment extends BaseTabFragment {
+public class TabTwoFragment extends BaseTabFragment {
 
     @BindView(R.id.bwv_news_web_view)
     BusinessWebView webView;
@@ -86,8 +84,8 @@ public class TabNewsWebViewTwoFragment extends BaseTabFragment {
         load();
     }
 
-    public static TabNewsWebViewTwoFragment newInstance() {
-        return new TabNewsWebViewTwoFragment();
+    public static TabTwoFragment newInstance() {
+        return new TabTwoFragment();
     }
 
     @Nullable
