@@ -127,4 +127,9 @@ public class ContactsActivity extends BaseComponentActivity {
         adapter.setNewData(list);
     }
 
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+    }
 }

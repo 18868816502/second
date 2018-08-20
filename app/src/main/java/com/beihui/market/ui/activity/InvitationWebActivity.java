@@ -3,13 +3,10 @@ package com.beihui.market.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
-import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
@@ -19,9 +16,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.LogUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.media.UMImage;
@@ -43,7 +38,6 @@ public class InvitationWebActivity extends BaseComponentActivity {
     @BindView(R.id.web_view_invitation)
     RelativeLayout relativeLayout;
     private Context context;
-    private AgentWeb agentWeb;
 
 
     @Override
@@ -63,16 +57,13 @@ public class InvitationWebActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        agentWeb = AgentWeb.with(this)
+        AgentWeb agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1)).
                         useDefaultIndicator(getResources().getColor(R.color.red), 1)
                 .createAgentWeb()//
                 .ready()
                 .go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
-        //.go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
-        LogUtils.i(UserHelper.getInstance(context).getProfile().getId());
-
     }
 
     @Override
@@ -83,7 +74,6 @@ public class InvitationWebActivity extends BaseComponentActivity {
     @OnClick(R.id.daily_mission)
     void dailyMission() {
         startActivity(new Intent(context, DailyMissonActivity.class));
-
     }
 
     public class JsInterration {
@@ -107,9 +97,12 @@ public class InvitationWebActivity extends BaseComponentActivity {
         @JavascriptInterface
         public void contactInvite() {
             context.startActivity(new Intent(context, ContactsActivity.class));
-
         }
 
+        @JavascriptInterface
+        public void guideInvite() {
+            context.startActivity(new Intent(context, GuideInviteActivity.class));
+        }
     }
 
     @Override

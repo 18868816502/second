@@ -8,8 +8,7 @@
     <RelativeLayout
         android:id="@+id/web_view_invitation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_height="match_parent" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"

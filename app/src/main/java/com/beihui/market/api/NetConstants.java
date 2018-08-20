@@ -66,6 +66,15 @@ public class NetConstants {
 
     public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
 
+    public static final String H5_INVITATION_CONTACTS = H5_DOMAIN + "/page/activity-invite-friends.html";
+
+
+    public static final String H5_MISSION = H5_DOMAIN + "/page/activity-invite-task.html";
+
+    public static final String H5_CODE = H5_DOMAIN + "/page/activity-input-invite.html";
+
+    public static final String H5_GUIDE_INVITE = H5_DOMAIN + "/page/activity-guide-task.html";
+
 
     public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
 
@@ -149,17 +158,19 @@ public class NetConstants {
 
     public static String invitationUrl(String userId) {
         //return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
-        return "http://192.168.1.63:8086/page/activity-invite-friends.html" + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+        return H5_INVITATION_CONTACTS + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String missionUrl(String userId) {
-        //return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
-        return "http://192.168.1.63:8086/page/activity-invite-task.html" + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+        return H5_MISSION + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String codeUrl(String userId, String phone) {
-        //return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
-        return "http://192.168.1.63:8086/page/activity-input-invite.html" + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&phone" + phone;
+        return H5_CODE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&phone" + phone;
+    }
+
+    public static String guideInvite() {
+        return H5_GUIDE_INVITE;
     }
 
     public static String generateInternalMessageUrl(String id) {

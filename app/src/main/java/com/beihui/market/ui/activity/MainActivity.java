@@ -158,6 +158,9 @@ public class MainActivity extends BaseComponentActivity {
                     ToastUtil.toast(extras.getString("moxieMsg"));
                 }
             }
+            if (extras.getBoolean("loan")) {
+                navigationBar.select(R.id.tab_discover_root);
+            }
             if (extras1.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
@@ -184,6 +187,7 @@ public class MainActivity extends BaseComponentActivity {
                     startActivity(tkIntent);
                 }
             }
+
         }
     }
 

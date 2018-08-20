@@ -40,6 +40,8 @@ public class ContactAdapter extends BaseQuickAdapter<ContactBean, BaseViewHolder
     protected void convert(final BaseViewHolder helper, final ContactBean item) {
 
         helper.setText(R.id.name, item.getDisplayName());
+//        helper.getView(R.id.add).setVisibility(View.GONE);
+//        helper.getView(R.id.add_contact_tv).setVisibility(View.VISIBLE);
         final String num;
         if (item.getPhoneNum() == null) {
             num = "";
@@ -61,9 +63,6 @@ public class ContactAdapter extends BaseQuickAdapter<ContactBean, BaseViewHolder
                         intent.putExtra("sms_body", data);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
-                        helper.getView(R.id.add).setVisibility(View.GONE);
-                        helper.getView(R.id.add_contact_tv).setVisibility(View.VISIBLE);
-
                     }
                 });
             }

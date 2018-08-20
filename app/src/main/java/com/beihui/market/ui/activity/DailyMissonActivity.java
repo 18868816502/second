@@ -263,6 +263,13 @@ public class DailyMissonActivity extends BaseComponentActivity {
             startActivity(new Intent(context, EnterInviteCodeActivity.class));
         }
 
+        @JavascriptInterface
+        void enterLoanMarket() {
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.putExtra("loan", true);
+            startActivity(intent);
+        }
+
     }
 
 }
