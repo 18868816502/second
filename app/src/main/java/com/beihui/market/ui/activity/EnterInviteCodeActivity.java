@@ -1,6 +1,7 @@
 package com.beihui.market.ui.activity;
 
 import android.support.v7.widget.Toolbar;
+import android.webkit.JavascriptInterface;
 import android.widget.RelativeLayout;
 
 import com.beihui.market.R;
@@ -44,6 +45,16 @@ public class EnterInviteCodeActivity extends BaseComponentActivity {
                 .createAgentWeb()
                 .ready()
                 .go(NetConstants.codeUrl(UserHelper.getInstance(this).getProfile().getId(), UserHelper.getInstance(this).getProfile().getAccount()));
+        agentWeb.getJsInterfaceHolder().addJavaObject("android", new EnterInviteCodeActivity.JsInterration());
+
+    }
+
+    public class JsInterration {
+        @JavascriptInterface
+        public void confirmCode() {
+            finish();
+        }
+
 
     }
 

@@ -421,7 +421,8 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                if (tabHome != null) tabHome.recycler().smoothScrollToPosition(0);
+                if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);
                 break;
             case R.id.tab_mine_root://个人
                 ft.show(tabMine).hide(tabHome).hide(tabDiscover);
@@ -429,7 +430,8 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 currentFragment = tabMine;
-                if (tabHome != null) tabHome.recycler().smoothScrollToPosition(0);
+                if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);
                 break;
             default:
                 break;

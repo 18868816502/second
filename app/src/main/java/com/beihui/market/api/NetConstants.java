@@ -62,14 +62,15 @@ public class NetConstants {
 
     public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
 
-    public static final String H5_INVITATION_CONTACTS = H5_DOMAIN + "/page/activity-invite-friends.html";
+    public static final String H5_INVITATION_CONTACTS = H5_DOMAIN + "/activity/page/activity-invite-friends.html";
+    //public static final String H5_INVITATION_CONTACTS = "http://192.168.1.63:8086/page/activity-invite-friends.html";
 
 
-    public static final String H5_MISSION = H5_DOMAIN + "/page/activity-invite-task.html";
+    public static final String H5_MISSION = H5_DOMAIN + "/activity/page/activity-invite-task.html";
 
-    public static final String H5_CODE = H5_DOMAIN + "/page/activity-input-invite.html";
+    public static final String H5_CODE = H5_DOMAIN + "/activity/page/activity-input-invite.html";
 
-    public static final String H5_GUIDE_INVITE = H5_DOMAIN + "/page/activity-guide-task.html";
+    public static final String H5_GUIDE_INVITE = H5_DOMAIN + "/activity/page/activity-guide-task.html";
 
 
     public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;

@@ -45,8 +45,6 @@ public class AboutKaolaActivity extends BaseComponentActivity {
                 .createAgentWeb()//
                 .ready()
                 .go(NetConstants.H5_ABOUT_US);
-
-
     }
 
     @Override
