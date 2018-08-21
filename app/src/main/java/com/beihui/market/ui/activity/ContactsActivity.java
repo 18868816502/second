@@ -61,7 +61,11 @@ public class ContactsActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        adapter = new ContactAdapter(R.layout.contact_item_layout, list, this);
+        String value = "";
+        if (getIntent() != null) {
+            value = getIntent().getStringExtra("contact");
+        }
+        adapter = new ContactAdapter(R.layout.contact_item_layout, list, this, value);
         checkPermission();
         contactRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         contactRecycler.setAdapter(adapter);

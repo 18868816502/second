@@ -244,32 +244,35 @@ public class DailyMissonActivity extends BaseComponentActivity {
         return null;
     }
 
-    public class JsInterration {
 
+    class JsInterration {
+        @SuppressLint("JavascriptInterface")
         @JavascriptInterface
-        void uploadPhoto() {
+        public void uploadPhoto() {
             DailyMissonActivityPermissionsDispatcher.openAlbumWithCheck(DailyMissonActivity.this);
 
         }
 
+        @SuppressLint("JavascriptInterface")
         @JavascriptInterface
-        void uploadPhotoOwn() {
+        public void uploadPhotoOwn() {
             DailyMissonActivityPermissionsDispatcher.openAlbumOwnWithCheck(DailyMissonActivity.this);
 
         }
 
+        @SuppressLint("JavascriptInterface")
         @JavascriptInterface
-        void enterInviteCode() {
+        public void enterInviteCode() {
             startActivity(new Intent(context, EnterInviteCodeActivity.class));
         }
 
+        @SuppressLint("JavascriptInterface")
         @JavascriptInterface
-        void enterLoanMarket() {
+        public void enterLoanMarket() {
             Intent intent = new Intent(context, MainActivity.class);
             intent.putExtra("loan", true);
             startActivity(intent);
         }
-
     }
 
 }

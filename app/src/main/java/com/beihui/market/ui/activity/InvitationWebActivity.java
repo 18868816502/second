@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.widget.RelativeLayout;
 
 import com.beihui.market.R;
@@ -17,6 +18,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.LogUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.media.UMImage;
@@ -38,6 +40,7 @@ public class InvitationWebActivity extends BaseComponentActivity {
     @BindView(R.id.web_view_invitation)
     RelativeLayout relativeLayout;
     private Context context;
+    private AgentWeb agentWeb;
 
 
     @Override
@@ -57,7 +60,7 @@ public class InvitationWebActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        AgentWeb agentWeb = AgentWeb.with(this)
+        agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1)).
                         useDefaultIndicator(getResources().getColor(R.color.red), 1)
                 .createAgentWeb()//
@@ -96,7 +99,17 @@ public class InvitationWebActivity extends BaseComponentActivity {
 
         @JavascriptInterface
         public void contactInvite() {
-            context.startActivity(new Intent(context, ContactsActivity.class));
+            agentWeb.getJsAccessEntrace().callJs("contactInvite()", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+                    LogUtils.i("value------------->" + value);
+                    Intent intent = new Intent(context, ContactsActivity.class);
+                    intent.putExtra("contact", value);
+                    context.startActivity(intent);
+
+                }
+            });
+
         }
 
         @JavascriptInterface

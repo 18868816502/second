@@ -29,11 +29,13 @@ import java.util.List;
  */
 public class ContactAdapter extends BaseQuickAdapter<ContactBean, BaseViewHolder> {
     private Context context;
+    private String value;
 
 
-    public ContactAdapter(int layoutResId, @Nullable List<ContactBean> data, Context context) {
+    public ContactAdapter(int layoutResId, @Nullable List<ContactBean> data, Context context, String value) {
         super(layoutResId, data);
         this.context = context;
+        this.value = value;
     }
 
     @Override
@@ -56,15 +58,12 @@ public class ContactAdapter extends BaseQuickAdapter<ContactBean, BaseViewHolder
         helper.getView(R.id.add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Api.getInstance().getInviteMsg(UserHelper.getInstance(context).getProfile().getId()).compose(RxResponse.<String>compatT()).subscribe(new ApiObserver<String>() {
-                    @Override
-                    public void onNext(String data) {
-                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + num));
-                        intent.putExtra("sms_body", data);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }
-                });
+
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + num));
+                intent.putExtra("sms_body", value);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
             }
         });
 
