@@ -31,7 +31,7 @@ public class WalletAdapter extends BaseQuickAdapter<PurseBalance.Amount, BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, PurseBalance.Amount item) {
-        SpannableString amount = new SpannableString(String.format("%.0f", item.getAmount()) + "元");
+        SpannableString amount = new SpannableString(String.format("%.0f元", item.getAmount()));
         AbsoluteSizeSpan span = new AbsoluteSizeSpan(80);
         amount.setSpan(span, 0, amount.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         TextView tv_amount = helper.getView(R.id.tv_amount);

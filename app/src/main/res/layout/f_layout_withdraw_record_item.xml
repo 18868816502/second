@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="15dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_account_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
         android:text="张三李四"
         android:textColor="@color/black_1"
         android:textSize="17dp"
@@ -22,38 +23,41 @@
         android:id="@+id/tv_account_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
         android:text="100.00"
         android:textColor="@color/black_1"
         android:textSize="17dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_account_name" />
 
     <TextView
         android:id="@+id/tv_account_alp"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:paddingBottom="15dp"
         android:paddingLeft="15dp"
-        android:text="594495733@qq.com"
         android:textColor="@color/black_2"
         android:textSize="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_account_name" />
+        app:layout_constraintRight_toLeftOf="@+id/tv_account_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_account_name"
+        tools:text="59449573adfaadsfasfasdfasdfasdfasfd3@qq.com" />
 
     <TextView
         android:id="@+id/tv_account_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="2018.08.03 16:43"
         android:textColor="@color/black_2"
         android:textSize="12dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_account_name" />
+        app:layout_constraintLeft_toLeftOf="@+id/tv_account_amount"
+        app:layout_constraintTop_toBottomOf="@+id/tv_account_name" />
 
     <TextView
         android:id="@+id/tv_account_status"

@@ -45,11 +45,12 @@
                 android:textColor="@color/black_1"
                 android:textSize="14dp" />
 
-            <TextView
+            <com.beihui.market.tang.widget.CustomNumTextView
                 android:id="@+id/tv_withdraw_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
+                android:layout_marginBottom="3dp"
                 android:layout_marginRight="45dp"
                 android:text="100"
                 android:textColor="@color/black_1"
@@ -96,6 +97,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:lineSpacingExtra="3dp"
                 android:text="张三李四 594495733@qq.com"
                 android:textColor="@color/black_1"
                 android:textSize="15dp" />

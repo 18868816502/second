@@ -49,7 +49,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="135dp"
             android:text="提现金额与时间"
             android:textColor="#909298"
             android:textSize="13dp" />
