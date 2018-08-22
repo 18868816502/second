@@ -1,7 +1,6 @@
 package com.beihui.market.tang.adapter;
 
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -29,7 +28,7 @@ public class WithdrawRecordAdapter extends BaseQuickAdapter<WithdrawRecord.Rows,
     @Override
     protected void convert(BaseViewHolder helper, WithdrawRecord.Rows item) {
         helper.setText(R.id.tv_account_name, item.getTradeName())
-                .setText(R.id.tv_account_amount, String.format("%.2f", item.getTradeAmount()))
+                .setText(R.id.tv_account_amount, String.format("%.2f", -item.getTradeAmount()))
                 .setText(R.id.tv_account_alp, item.getTradeAccount())
                 .setText(R.id.tv_account_time, item.getGmtCreate())
                 .setVisible(R.id.iv_account_status, item.getStatus() == 0);
