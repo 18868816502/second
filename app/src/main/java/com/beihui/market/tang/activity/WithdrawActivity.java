@@ -118,7 +118,7 @@ public class WithdrawActivity extends BaseComponentActivity {
                             @Override
                             public void onNext(@NonNull Withdraw data) {
                                 EventBus.getDefault().post(String.format("%.2f", data.getBalance()));
-                                ToastUtil.toast("提现成功");
+                                ToastUtil.toast("提交审核，请耐心等待");
                                 finish();
                             }
                         });

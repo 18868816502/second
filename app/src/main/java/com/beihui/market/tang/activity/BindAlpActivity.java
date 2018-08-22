@@ -65,8 +65,8 @@ public class BindAlpActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        et_alp_account.setMaxLenght(20);
-        et_alp_name.setMaxLenght(16);
+        et_alp_account.setMaxLenght(50);
+        et_alp_name.setMaxLenght(50);
         try {
             payAccount = (PayAccount) getIntent().getSerializableExtra("payAccount");
             if (payAccount != null) {
