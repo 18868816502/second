@@ -27,11 +27,16 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.dialog.AlertDialog;
+import com.beihui.market.ui.dialog.ShareDialog;
+import com.beihui.market.umeng.Events;
+import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.io.ByteArrayOutputStream;
 
@@ -272,6 +277,21 @@ public class DailyMissonActivity extends BaseComponentActivity {
             Intent intent = new Intent(context, MainActivity.class);
             intent.putExtra("loan", true);
             startActivity(intent);
+        }
+
+        @JavascriptInterface
+        public void invite() {
+            //umeng统计
+            Statistic.onEvent(Events.INVITATION_INVITE);
+
+            UMWeb umWeb = new UMWeb(NetConstants.invitationActivityUrl(UserHelper.getInstance(context).getProfile().getId()));
+            umWeb.setTitle("告诉你一个手机借款神器");
+            umWeb.setDescription("急用钱？秒到账！超给力新口子，下款快，额度高，注册极简.");
+            UMImage image = new UMImage(context, R.drawable.ic_launcher_kaola);
+            umWeb.setThumb(image);
+            new ShareDialog()
+                    .setUmWeb(umWeb)
+                    .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         }
     }
 

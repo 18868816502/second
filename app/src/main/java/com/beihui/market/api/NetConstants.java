@@ -59,6 +59,8 @@ public class NetConstants {
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
+    public static final String H5_INVITATION_ACTIVITY = H5_DOMAIN + "/activity/page/activity-contact-invite.html";
+
 
     public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
 
@@ -151,6 +153,10 @@ public class NetConstants {
 
     public static String generateInvitationUrl(String userId) {
         return H5_INVITATION + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+    }
+
+    public static String invitationActivityUrl(String userId) {
+        return H5_INVITATION_ACTIVITY + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 
     public static String invitationUrl(String userId) {
