@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -34,17 +34,17 @@
     <FrameLayout
         android:id="@+id/wallet_balance_wrap"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="68dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/bg_wallet_balance">
+        android:background="@mipmap/bg_wallet_balance">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="25dp"
             android:drawableLeft="@mipmap/ic_wallet_balance"
             android:drawablePadding="5dp"
             android:gravity="center"
@@ -57,11 +57,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="25dp"
             android:gravity="center"
-            tools:text="680.00"
             android:textColor="@color/refresh_one"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            tools:text="680.00" />
     </FrameLayout>
 
     <TextView

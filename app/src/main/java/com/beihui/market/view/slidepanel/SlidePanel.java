@@ -80,7 +80,7 @@ public class SlidePanel extends FrameLayout {
                 cacheView.setVisibility(VISIBLE);
                 cacheView.drawCache(cacheContentView);
 
-                shadowView.setVisibility((VISIBLE));
+                shadowView.setVisibility(VISIBLE);
             }
             return capture;
         }

@@ -54,4 +54,18 @@ public class StringUtil {
         }
         return "";
     }
+
+    public static boolean isEmail(String target) {
+        String emailPattern = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
+        Pattern p = Pattern.compile(emailPattern);
+        Matcher m = p.matcher(target);
+        return m.matches();
+    }
+
+    public static boolean isPhone(String target) {
+        String phonePattern = "^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\\d{8}$";
+        Pattern p = Pattern.compile(phonePattern);
+        Matcher m = p.matcher(target);
+        return m.matches();
+    }
 }

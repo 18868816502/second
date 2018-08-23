@@ -58,6 +58,7 @@ public class WalletActivity extends BaseComponentActivity {
 
     private WalletAdapter adapter = new WalletAdapter();
     private double balance;
+    private int last = 0;
 
     @Override
     public int getLayoutId() {
@@ -69,11 +70,11 @@ public class WalletActivity extends BaseComponentActivity {
         setupToolbar(mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        initRecyclerView();
     }
 
     @Override
     public void initDatas() {
-        initRecyclerView();
         if (UserHelper.getInstance(this).isLogin())
             Api.getInstance().purseBalance(UserHelper.getInstance(this).id())
                     .compose(RxResponse.<PurseBalance>compatT())
@@ -83,15 +84,13 @@ public class WalletActivity extends BaseComponentActivity {
                             tv_amount_balance.setText(String.format("%.2f", data.getBalance()));
                             balance = data.getBalance();
                             List<PurseBalance.Amount> amountList = data.getAmountList();
-                            if (amountList != null && amountList.size() > 0) {
-                                amountList.get(0).setSelect(true);
+                            if (amountList != null && amountList.size() > last) {
+                                amountList.get(last).setSelect(true);
                                 adapter.setNewData(amountList);
                             }
                         }
                     });
     }
-
-    private int last = 0;
 
     private void initRecyclerView() {
         recycler.setLayoutManager(new GridLayoutManager(this, 3));
