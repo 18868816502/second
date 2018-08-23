@@ -86,7 +86,7 @@ public class InvitationWebActivity extends BaseComponentActivity {
             //umeng统计
             Statistic.onEvent(Events.INVITATION_INVITE);
 
-            UMWeb umWeb = new UMWeb(NetConstants.generateInvitationUrl(UserHelper.getInstance(context).getProfile().getId()));
+            UMWeb umWeb = new UMWeb(NetConstants.invitationActivityUrl(UserHelper.getInstance(context).getProfile().getId()));
             umWeb.setTitle("告诉你一个手机借款神器");
             umWeb.setDescription("急用钱？秒到账！超给力新口子，下款快，额度高，注册极简.");
             UMImage image = new UMImage(context, R.drawable.ic_launcher_kaola);
