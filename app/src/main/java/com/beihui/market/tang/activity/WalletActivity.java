@@ -122,7 +122,7 @@ public class WalletActivity extends BaseComponentActivity {
             case R.id.tv_withdraw:
                 if (adapter.getData() == null || adapter.getData().size() < last + 1) return;
                 if (balance < adapter.getData().get(last).getAmount()) {
-                    ToastUtil.toast("余额不足");
+                    ToastUtil.toast("余额不足，再去赚钱吧");
                     return;
                 }
                 Intent intent = new Intent(this, WithdrawActivity.class);

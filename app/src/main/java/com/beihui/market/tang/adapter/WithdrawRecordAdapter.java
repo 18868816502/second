@@ -1,10 +1,13 @@
 package com.beihui.market.tang.adapter;
 
+import android.app.Dialog;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.WithdrawRecord;
+import com.beihui.market.tang.DlgUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -26,7 +29,7 @@ public class WithdrawRecordAdapter extends BaseQuickAdapter<WithdrawRecord.Rows,
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, WithdrawRecord.Rows item) {
+    protected void convert(final BaseViewHolder helper, final WithdrawRecord.Rows item) {
         helper.setText(R.id.tv_account_name, item.getTradeName())
                 .setText(R.id.tv_account_amount, String.format("%.2f", -item.getTradeAmount()))
                 .setText(R.id.tv_account_alp, item.getTradeAccount())
@@ -53,5 +56,27 @@ public class WithdrawRecordAdapter extends BaseQuickAdapter<WithdrawRecord.Rows,
         }
         tv_account_status.setText(status);
         tv_account_status.setTextColor(color);
+        if (item.getStatus() == 0) {
+            helper.addOnClickListener(R.id.iv_account_status);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DlgUtil.createDlg(helper.itemView.getContext(), R.layout.f_dlg_apl_fail, new DlgUtil.OnDlgViewClickListener() {
+                        @Override
+                        public void onViewClick(final Dialog dialog, View dlgView) {
+                            TextView content = dlgView.findViewById(R.id.content);
+                            content.setText(item.getReason());
+                            dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    });
+                }
+            };
+            helper.getView(R.id.iv_account_status).setOnClickListener(listener);
+        }
     }
 }
