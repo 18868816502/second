@@ -39,6 +39,7 @@ public class WithdrawRecord {
         private double tradeAmount;
         private int status;// 0- 交易失败, 1-处理中, 2-交易成功
         private String gmtCreate;
+        private String reason;
 
         public String getTradeAccount() {
             return tradeAccount;
@@ -78,6 +79,14 @@ public class WithdrawRecord {
 
         public void setGmtCreate(String gmtCreate) {
             this.gmtCreate = gmtCreate;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
         }
     }
 }

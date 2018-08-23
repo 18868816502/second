@@ -106,7 +106,7 @@ public class WithdrawActivity extends BaseComponentActivity {
             case R.id.tv_withdraw:
                 map.put("userId", UserHelper.getInstance(this).id());
                 if (payAccount == null) {
-                    ToastUtil.toast("还未绑定支付宝账号，请绑定后提现");
+                    ToastUtil.toast("请绑定支付宝账户");
                     return;
                 }
                 map.put("tradeAccount", payAccount.getPayeeAccount());

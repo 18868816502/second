@@ -77,9 +77,9 @@
 
     <ImageView
         android:id="@+id/iv_account_status"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
-        android:layout_marginRight="3dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:padding="6dp"
         android:src="@mipmap/ic_status_info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@id/tv_account_status"
