@@ -52,7 +52,8 @@ public class EnterInviteCodeActivity extends BaseComponentActivity {
     public class JsInterration {
         @JavascriptInterface
         public void confirmCode() {
-            finish();
+            EnterInviteCodeActivity.this.setResult(100);
+            EnterInviteCodeActivity.this.finish();
         }
 
 

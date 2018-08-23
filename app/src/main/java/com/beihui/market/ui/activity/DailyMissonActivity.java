@@ -32,6 +32,7 @@ import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
@@ -168,7 +169,10 @@ public class DailyMissonActivity extends BaseComponentActivity {
                 }
             });
 
-
+        }
+        if (requestCode == 100 && resultCode == 100) {
+            LogUtils.i("reload------------------->" + resultCode);
+            agentWeb.getUrlLoader().reload();
         }
     }
 
@@ -269,7 +273,7 @@ public class DailyMissonActivity extends BaseComponentActivity {
         @SuppressLint("JavascriptInterface")
         @JavascriptInterface
         public void enterInviteCode() {
-            startActivity(new Intent(context, EnterInviteCodeActivity.class));
+            startActivityForResult(new Intent(context, EnterInviteCodeActivity.class), 100);
         }
 
         @SuppressLint("JavascriptInterface")

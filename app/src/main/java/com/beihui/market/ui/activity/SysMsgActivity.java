@@ -95,7 +95,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
      */
     private void showAlertDialog() {
         final AlertDialog dialog = new AlertDialog(this);
-        dialog.builder().setMsg("确定清空消息？")
+        dialog.builder().setTitle("确定清空消息？")
                 .setPositiveButton("确定", new View.OnClickListener() {
 
                     @Override

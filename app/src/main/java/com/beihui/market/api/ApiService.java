@@ -1175,6 +1175,11 @@ public interface ApiService {
     @POST(BASE_PATH + "/inviteActiveController/getInviteMsg")
     Observable<ResultEntity<String>> getInviteMsg(@Field("userId") String userId);
 
+    /*分享朋友圈回调*/
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/inviteActiveController/shareUser")
+    Observable<ResultEntity> shareUser(@Field("userId") String userId);
+
     /*获取短信内容*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/inviteActiveController/uploadImg")

@@ -19,8 +19,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.helper.UserHelper;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ToastUtil;
 import com.umeng.socialize.ShareAction;
@@ -150,7 +155,15 @@ public class ShareDialog extends DialogFragment {
             @Override
             public void onResult(SHARE_MEDIA share_media) {
                 if (BuildConfig.DEBUG) {
-                    //Log.d(TAG, "share action result " + share_media);
+                    Log.d(TAG, "share action result " + share_media);
+                    Api.getInstance().shareUser(UserHelper.getInstance(App.getInstance().getApplicationContext()).getProfile().getId())
+                            .compose(RxResponse.compatO())
+                            .subscribe(new ApiObserver<Object>() {
+                                @Override
+                                public void onNext(Object data) {
+
+                                }
+                            });
                 }
             }
 

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.beihui.market.R;
@@ -66,6 +67,7 @@ public class ContactsActivity extends BaseComponentActivity {
             value = getIntent().getStringExtra("contact");
         }
         adapter = new ContactAdapter(R.layout.contact_item_layout, list, this, value);
+        adapter.addHeaderView(View.inflate(this, R.layout.contact_header_gray_view, null));
         checkPermission();
         contactRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         contactRecycler.setAdapter(adapter);

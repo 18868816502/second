@@ -1608,7 +1608,12 @@ public class Api {
         return service.getInviteMsg(userId);
     }
 
-    /*上传活动图片*/
+    /*获取短信内容*/
+    public Observable<ResultEntity> shareUser(String userId) {
+        return service.shareUser(userId);
+    }
+
+    /*分享朋友圈回调*/
     public Observable<ResultEntity> uploadImg(String userId, String phone, String imgType, String activeName, byte[] image) {
         String imageBase64 = "";
         if (image != null && image.length > 0) {
