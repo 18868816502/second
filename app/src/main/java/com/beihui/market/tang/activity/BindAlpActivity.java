@@ -11,6 +11,7 @@ import com.beihui.market.entity.PayAccount;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.ToastUtil;
@@ -91,6 +92,10 @@ public class BindAlpActivity extends BaseComponentActivity {
                 payeeAccount = et_alp_account.getText().toString().trim();
                 if (TextUtils.isEmpty(payeeName) || TextUtils.isEmpty(payeeAccount)) {
                     ToastUtil.toast("支付宝账号或姓名不能为空");
+                    return;
+                }
+                if (!(StringUtil.isEmail(payeeAccount) || StringUtil.isPhone(payeeAccount))) {
+                    ToastUtil.toast("支付宝账号格式不正确，请检查");
                     return;
                 }
 
