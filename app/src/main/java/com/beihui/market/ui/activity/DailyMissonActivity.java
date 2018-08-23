@@ -31,6 +31,7 @@ import com.beihui.market.ui.dialog.ShareDialog;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.ImageUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
@@ -293,6 +294,13 @@ public class DailyMissonActivity extends BaseComponentActivity {
                     .setUmWeb(umWeb)
                     .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        InputMethodUtil.closeSoftKeyboard(this);
+        super.onResume();
     }
 
 }

@@ -169,7 +169,7 @@ public class NetConstants {
     }
 
     public static String codeUrl(String userId, String phone) {
-        return H5_CODE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&phone" + phone;
+        return H5_CODE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&phone=" + phone;
     }
 
     public static String guideInvite() {
