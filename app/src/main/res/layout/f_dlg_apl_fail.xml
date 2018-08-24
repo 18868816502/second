@@ -45,7 +45,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="我知道了"
-                android:textColor="@color/black_1"
+                android:textColor="@color/refresh_one"
                 android:textSize="17dp" />
 
             <View

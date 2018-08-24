@@ -45,8 +45,8 @@ public class WalletAdapter extends BaseQuickAdapter<PurseBalance.Amount, BaseVie
             backgroud = R.drawable.bg_item_normal;
         }
         tv_amount.setTextColor(color);
-        tv_amount.setBackgroundResource(backgroud);
         tv_amount.setGravity(Gravity.CENTER);
         tv_amount.setText(amount);
+        helper.getView(R.id.ll_wrap).setBackgroundResource(backgroud);
     }
 }
