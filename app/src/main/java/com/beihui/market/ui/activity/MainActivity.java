@@ -157,6 +157,9 @@ public class MainActivity extends BaseComponentActivity {
             if (extras.getBoolean("loan")) {
                 navigationBar.select(R.id.tab_discover_root);
             }
+            if (extras.getBoolean("home")) {
+                navigationBar.select(R.id.tab_bill_root);
+            }
             if (extras1.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {

@@ -202,6 +202,13 @@ public class WebViewActivity extends BaseComponentActivity {
                 ToastUtils.showShort(WebViewActivity.this, "无法跳转到微信，请检查您是否安装了微信！", null);
             }
         }
+
+        @JavascriptInterface
+        public void skipToHome() {
+            Intent intent = new Intent(WebViewActivity.this, MainActivity.class);
+            intent.putExtra("home", true);
+            startActivity(intent);
+        }
     }
 
     /**

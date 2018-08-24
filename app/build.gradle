@@ -59,7 +59,7 @@ android {
     flavorDimensions "id", "channel"
     //维度
     productFlavors {
-        loanmarket {
+        /*loanmarket {
             dimension "id"
             applicationId "com.beihui.market"
             //生产环境 + 正式环境魔蝎appkey
@@ -67,7 +67,7 @@ android {
             buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
             buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")*/
             //测试环境 + 测试魔蝎appkey
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            /*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             //buildConfigField("String", "DOMAIN", "\"http://192.168.1.62:8082\"")//林峰本地
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
             buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
@@ -83,9 +83,9 @@ android {
             buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
             buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
             signingConfig signingConfigs.loanmarket
-        }
+        }*/
 
-        /*loanmarkettest {
+        loanmarkettest {
             dimension "id"
             applicationId "com.beihui.market.test"
             //测试使用的魔蝎appkey
@@ -104,7 +104,7 @@ android {
             buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
             buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
             signingConfig signingConfigs.loanmarkettest
-        }*/
+        }
 
         kaolajizhang_baidu { dimension "channel" }
         /*kaolajizhang_360 { dimension "channel" }

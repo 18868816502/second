@@ -39,6 +39,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.BusinessWebView;
 
@@ -53,7 +54,7 @@ import butterknife.BindView;
 
 /**
  * @author xhb
- *         发现 模块 使用WebView页面 (非资讯详情页)
+ * 发现 模块 使用WebView页面 (非资讯详情页)
  * @version 2.1.1
  * @date 20180419
  */

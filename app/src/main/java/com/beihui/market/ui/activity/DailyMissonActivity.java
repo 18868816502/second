@@ -216,6 +216,7 @@ public class DailyMissonActivity extends BaseComponentActivity {
 
     }
 
+
     @SuppressLint("InlinedApi")
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void openAlbum() {
@@ -298,6 +299,18 @@ public class DailyMissonActivity extends BaseComponentActivity {
                     .setUmWeb(umWeb)
                     .show(getSupportFragmentManager(), ShareDialog.class.getSimpleName());
         }
+
+        @JavascriptInterface
+        public void showDialog() {
+            new AlertDialog(DailyMissonActivity.this).builder().setPositiveButton("我知道了", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }).setTitle("上传成功！").setMsg("我们会尽快审核您上传的图片，审核通过后，奖励到账！您可以至”我的-消息“处查看审核情况。").show();
+        }
+
+
     }
 
 
