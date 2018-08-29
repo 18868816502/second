@@ -38,6 +38,8 @@ public class NetConstants {
     /**********H5 static field********/
     public static final String H5_DOMAIN = BuildConfig.H5_DOMAIN;
 
+    public static final String H5_DOMAIN_NEW = BuildConfig.H5_DOMAIN_NEW;
+
     public static final String H5_HELPER = H5_DOMAIN + BuildConfig.PATH_HELPER_CENTER + "?isApp=1";
 
     public static final String H5_TEST = H5_DOMAIN + "/test.html?isApp=1";
@@ -59,21 +61,21 @@ public class NetConstants {
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
 
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
-    public static final String H5_INVITATION_ACTIVITY = H5_DOMAIN + "/activity/page/activity-contact-invite.html";
+    public static final String H5_INVITATION_ACTIVITY = H5_DOMAIN_NEW + "/activity/page/activity-contact-invite.html";
 
 
     public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
 
-    public static final String H5_INVITATION_CONTACTS = H5_DOMAIN + "/activity/page/activity-invite-friends.html";
+    public static final String H5_INVITATION_CONTACTS = H5_DOMAIN_NEW + "/activity/page/activity-invite-friends.html";
     //public static final String H5_INVITATION_CONTACTS = "http://192.168.1.63:8086/page/activity-invite-friends.html";
 
 
-    public static final String H5_MISSION = H5_DOMAIN + "/activity/page/activity-invite-task.html";
+    public static final String H5_MISSION = H5_DOMAIN_NEW + "/activity/page/activity-invite-task.html";
     //public static final String H5_MISSION = "http://192.168.1.63:8086/page/activity-invite-task.html";
 
-    public static final String H5_CODE = H5_DOMAIN + "/activity/page/activity-input-invite.html";
+    public static final String H5_CODE = H5_DOMAIN_NEW + "/activity/page/activity-input-invite.html";
 
-    public static final String H5_GUIDE_INVITE = H5_DOMAIN + "/activity/page/activity-guide-task.html";
+    public static final String H5_GUIDE_INVITE = H5_DOMAIN_NEW + "/activity/page/activity-guide-task.html";
 
 
     public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
