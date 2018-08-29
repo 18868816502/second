@@ -16,6 +16,9 @@ import com.beihui.market.tang.adapter.WithdrawRecordAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.gyf.barlibrary.ImmersionBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +46,8 @@ public class WithdrawRecordActivity extends BaseComponentActivity {
     RecyclerView recycler;
     @BindView(R.id.fl_item_wrap)
     View fl_item_wrap;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refresh_layout;
 
     private int pageNo = 1;
     private int pageSize = 500;
@@ -64,7 +69,16 @@ public class WithdrawRecordActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         initRecyclerView();
+        request();
+        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@android.support.annotation.NonNull RefreshLayout refreshLayout) {
+                request();
+            }
+        });
+    }
 
+    private void request() {
         map.put("userId", UserHelper.getInstance(this).id());
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
@@ -73,6 +87,7 @@ public class WithdrawRecordActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<WithdrawRecord>() {
                     @Override
                     public void onNext(@NonNull WithdrawRecord data) {
+                        refresh_layout.finishRefresh();
                         List<WithdrawRecord.Rows> rows = data.getRows();
                         if (rows != null && rows.size() > 0) {
                             fl_item_wrap.setVisibility(View.VISIBLE);

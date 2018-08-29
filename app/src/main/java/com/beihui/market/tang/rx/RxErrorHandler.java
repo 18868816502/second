@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.beihui.market.App;
 import com.beihui.market.tang.exception.ApiException;
 import com.beihui.market.tang.exception.BaseException;
+import com.beihui.market.util.ToastUtil;
 
 import org.json.JSONException;
 
@@ -28,7 +29,7 @@ import retrofit2.HttpException;
  */
 
 public class RxErrorHandler {
-    private Context context = App.getInstance();
+    //private Context context = App.getInstance();
 
     public BaseException errorHandle(Throwable t) {
         BaseException exception = new BaseException();
@@ -57,8 +58,8 @@ public class RxErrorHandler {
     }
 
     public void showError(BaseException exception) {
-        if (!TextUtils.isEmpty(exception.getMsg()) && !"未知错误".equals(exception.getMsg())) {
-            Toast.makeText(context, exception.getMsg(), Toast.LENGTH_SHORT).show();
+        if (exception.getCode() != BaseException.UNKNOWN_ERROR) {
+            ToastUtil.toast(exception.getMsg());
         }
     }
 }

@@ -74,7 +74,7 @@ public class WithdrawActivity extends BaseComponentActivity {
             amount = getIntent().getDoubleExtra("amount", 0);
         } catch (Exception e) {
         }
-        tv_withdraw_amount.setText(String.format("%.2f", amount));
+        tv_withdraw_amount.setText(String.format("%.0f", amount));
 
         Api.getInstance().payAccount(UserHelper.getInstance(this).id())
                 .compose(RxResponse.<List<PayAccount>>compatT())
