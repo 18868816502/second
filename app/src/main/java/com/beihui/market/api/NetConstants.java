@@ -69,6 +69,7 @@ public class NetConstants {
 
 
     public static final String H5_MISSION = H5_DOMAIN + "/activity/page/activity-invite-task.html";
+    //public static final String H5_MISSION = "http://192.168.1.63:8086/page/activity-invite-task.html";
 
     public static final String H5_CODE = H5_DOMAIN + "/activity/page/activity-input-invite.html";
 

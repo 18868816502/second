@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -37,6 +38,9 @@ import com.beihui.market.util.viewutils.ToastUtils;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -53,6 +57,9 @@ public class DailyMissonActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.web_view_invitation)
     RelativeLayout relativeLayout;
+
+    @BindView(R.id.mission_refresh)
+    SmartRefreshLayout refreshLayout;
     private Context context;
     private AgentWeb agentWeb;
     String imgType;
@@ -86,6 +93,14 @@ public class DailyMissonActivity extends BaseComponentActivity {
                 .go(NetConstants.missionUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getAgentWebSettings().getWebSettings().setJavaScriptEnabled(true);
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh();
+                agentWeb.getUrlLoader().reload();
+            }
+        });
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.beihui.market.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -21,6 +22,9 @@ import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LogUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
@@ -41,6 +45,8 @@ public class InvitationWebActivity extends BaseComponentActivity {
     RelativeLayout relativeLayout;
     private Context context;
     private AgentWeb agentWeb;
+    @BindView(R.id.invitation_refresh)
+    SmartRefreshLayout refreshLayout;
 
 
     @Override
@@ -67,6 +73,14 @@ public class InvitationWebActivity extends BaseComponentActivity {
                 .ready()
                 .go(NetConstants.invitationUrl(UserHelper.getInstance(context).getProfile().getId()));
         agentWeb.getJsInterfaceHolder().addJavaObject("android", new JsInterration());
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                agentWeb.getUrlLoader().reload();
+                refreshLayout.finishRefresh();
+            }
+        });
     }
 
     @Override
