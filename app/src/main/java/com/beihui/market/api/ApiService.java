@@ -88,7 +88,7 @@ import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 
 /**
  * @author xhb
- *         请求接口
+ * 请求接口
  */
 public interface ApiService {
 
@@ -1120,6 +1120,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/activeHomeController/isShowActive")
     Observable<ResultEntity<EventBean>> homeEvent(@Field("location") String location, @Field("port") int port);
+
+    /*v4.2.3活动入口*/
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/activeHomeController/isShowOwnerActive")
+    Observable<ResultEntity<List<EventBean>>> isShowOwnerActive(@Field("location") String location, @Field("port") int port);
 
     /*获取网贷配置图标*/
     @POST(BASE_PATH_S_FOUR + "/channelsIcon/getIconConfigure")

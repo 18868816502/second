@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -28,7 +28,6 @@ import com.beihui.market.ui.activity.BillSummaryActivity;
 import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.H5Activity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
-import com.beihui.market.ui.activity.InvitationActivity;
 import com.beihui.market.ui.activity.InvitationWebActivity;
 import com.beihui.market.ui.activity.RemindActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
@@ -36,6 +35,7 @@ import com.beihui.market.ui.activity.SettingsActivity;
 import com.beihui.market.ui.activity.SysMsgActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.UserProfileActivity;
+import com.beihui.market.ui.adapter.DeployAdapter;
 import com.beihui.market.ui.contract.TabMineContract;
 import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.umeng.Events;
@@ -43,18 +43,19 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.NotificationUtil;
 import com.beihui.market.view.CircleImageView;
-import com.beihui.market.view.RelativeLayoutBar;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.annotations.NonNull;
 
 public class PersonalFragment extends BaseTabFragment implements TabMineContract.View {
 
@@ -68,23 +69,24 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     TextView userInfo;
     @BindView(R.id.login)
     TextView loginTv;
-    @BindView(R.id.kaola_group)
-    RelativeLayout mineProductContainer;
     @BindView(R.id.tv_message_num)
     TextView tvMessageNum;
-    @BindView(R.id.event_tv)
-    TextView eventTv;
-    @BindView(R.id.event_img)
-    ImageView eventImg;
     @Inject
     TabMinePresenter presenter;
 
-    private String url;
+    @BindView(R.id.activity_deploy_recycler)
+    RecyclerView deployRecyclerView;
 
-    private String title;
+    private DeployAdapter deployAdapter;
+
+    private List<EventBean> list = new ArrayList<>();
 
     private String pendingPhone;
     MyRecevier myRecevier = new MyRecevier();
+
+    private String title;
+
+    private String webViewUrl;
 
     public static PersonalFragment newInstance() {
         return new PersonalFragment();
@@ -125,6 +127,26 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void configViews() {
+        deployAdapter = new DeployAdapter(R.layout.activity_deploy_list_item, list, getActivity());
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        deployRecyclerView.setLayoutManager(linearLayout);
+        deployRecyclerView.setAdapter(deployAdapter);
+
+        deployAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (list.size() >= position && list.get(position) != null) {
+                    title = list.get(position).getTitle().split("#")[0];
+                    webViewUrl = list.get(position).getUrl();
+                    presenter.clickKaolaGroup();
+                }
+            }
+        });
     }
 
     @Override
@@ -147,20 +169,13 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     }
 
     private void request() {
-        Api.getInstance().homeEvent("4", 1)
-                .compose(RxResponse.<EventBean>compatT())
-                .subscribe(new ApiObserver<EventBean>() {
+        Api.getInstance().isShowOwnerActive("4", 1)
+                .compose(RxResponse.<List<EventBean>>compatT())
+                .subscribe(new ApiObserver<List<EventBean>>() {
                     @Override
-                    public void onNext(@NonNull EventBean data) {
-                        if (data.getTitle() != null) {
-                            mineProductContainer.setVisibility(View.VISIBLE);
-                            title = data.getTitle();
-                            url = data.getUrl();
-                            eventTv.setText(data.getTitle());
-                            Glide.with(getActivity()).load(data.getImgUrl()).into(eventImg);
-                        } else {
-                            mineProductContainer.setVisibility(View.GONE);
-                        }
+                    public void onNext(List<EventBean> data) {
+                        list = data;
+                        deployAdapter.setNewData(data);
                     }
                 });
     }
@@ -199,7 +214,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     }
 
 
-    @OnClick({R.id.kaola_group, R.id.bill_summary, R.id.my_wallet,
+    @OnClick({R.id.bill_summary, R.id.my_wallet,
             R.id.remind, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
             R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg})
     public void onViewClicked(View view) {
@@ -208,12 +223,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             return;
         }
         switch (view.getId()) {
-            //考拉圈圈
-            case R.id.kaola_group:
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickKaolaGroup();
-                }
-                break;
             case R.id.bill_summary:
                 if (!FastClickUtils.isFastClick()) {
                     presenter.clickMineBill();
@@ -336,10 +345,15 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
-        Intent intent = new Intent(getActivity(), H5Activity.class);
-        intent.putExtra("webViewUrl", url);
-        intent.putExtra("title", title);
-        getActivity().startActivity(intent);
+        if (title.equals("邀请好友")) {
+            startActivity(new Intent(getActivity(), InvitationWebActivity.class));
+        } else {
+            Intent intent = new Intent(getActivity(), H5Activity.class);
+            intent.putExtra("webViewUrl", webViewUrl);
+            intent.putExtra("title", title);
+            getActivity().startActivity(intent);
+        }
+
 
     }
 

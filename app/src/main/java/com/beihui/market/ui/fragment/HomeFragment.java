@@ -38,6 +38,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 
@@ -215,12 +217,14 @@ public class HomeFragment extends BaseTabFragment {
         if (userHelper.isLogin()) {
             page = 1;
             //活动入口
-            Api.getInstance().homeEvent("3", 1)
-                    .compose(RxResponse.<EventBean>compatT())
-                    .subscribe(new ApiObserver<EventBean>() {
+            Api.getInstance().isShowOwnerActive("3", 1)
+                    .compose(RxResponse.<List<EventBean>>compatT())
+                    .subscribe(new ApiObserver<List<EventBean>>() {
                         @Override
-                        public void onNext(@NonNull EventBean data) {
-                            pageAdapter.notifyEventEnter(data);
+                        public void onNext(@NonNull List<EventBean> data) {
+                            if (data != null && data.size() > 0) {
+                                pageAdapter.notifyEventEnter(data.get(0));
+                            }
                         }
 
                         @Override

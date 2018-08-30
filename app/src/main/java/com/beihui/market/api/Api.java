@@ -1528,6 +1528,11 @@ public class Api {
         return service.homeEvent(location, port);
     }
 
+    /*v4.2.3活动*/
+    public Observable<ResultEntity<List<EventBean>>> isShowOwnerActive(String location, int port) {
+        return service.isShowOwnerActive(location, port);
+    }
+
     /*获取网贷配置图标*/
     public Observable<ResultEntity<List<LoanAccountIconBean>>> netIcon() {
         return service.netIcon();

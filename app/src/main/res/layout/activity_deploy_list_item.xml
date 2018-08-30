@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/mine_list_bg">
+
+
+    <ImageView
+        android:id="@+id/activity_event_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="21dp"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/activity_event_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="9dp"
+        android:layout_toRightOf="@+id/activity_event_img"
+        android:textColor="@color/color_primary_black"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/icon_come" />
+
+    <TextView
+        android:id="@+id/subTitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@id/right_arrow"
+        android:textColor="#FF5240"
+        android:textSize="12sp" />
+
+</RelativeLayout>
