@@ -25,9 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -53,7 +51,6 @@ import com.beihui.market.ui.fragment.PersonalFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
@@ -440,15 +437,6 @@ public class MainActivity extends BaseComponentActivity {
                 break;
         }
         ft.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (FastClickUtils.isFastBackPress()) {
-            super.onBackPressed();
-        } else {
-            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private long exitTime = 0;

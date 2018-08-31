@@ -5,9 +5,12 @@ import android.support.v7.widget.Toolbar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
@@ -59,7 +62,8 @@ public class H5Activity extends BaseComponentActivity {
                 useDefaultIndicator(getResources().getColor(R.color.red), 1)
                 .createAgentWeb()//
                 .ready()
-                .go(webViewUrl);
+                .go(webViewUrl + "?userId=" + UserHelper.getInstance(this).getProfile().getId() + "&packageId=" + App.sChannelId
+                        + "&version=" + BuildConfig.VERSION_NAME + "&phone=" + UserHelper.getInstance(this).getProfile().getAccount());
 
     }
 
