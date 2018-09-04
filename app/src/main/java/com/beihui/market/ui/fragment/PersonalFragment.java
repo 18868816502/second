@@ -353,8 +353,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             intent.putExtra("title", title);
             getActivity().startActivity(intent);
         }
-
-
     }
 
     @Override
@@ -393,8 +391,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     public void navigateMessage(String userId) {
         Intent intent = new Intent(getActivity(), SysMsgActivity.class);
         startActivity(intent);
-
-
     }
 
     /**
@@ -430,5 +426,4 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             }
         }
     }
-
 }

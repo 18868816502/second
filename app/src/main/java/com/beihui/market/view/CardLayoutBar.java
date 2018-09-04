@@ -18,7 +18,7 @@ import com.beihui.market.util.Px2DpUtils;
 
 /**
  * @author wubo on 2018/6/5 10:51
- * 类说明：选项栏
+ *         类说明：选项栏
  */
 public class CardLayoutBar extends RelativeLayout {
     /**
@@ -35,7 +35,7 @@ public class CardLayoutBar extends RelativeLayout {
      * rightTextView1 右边第二个文字
      * rightTextView2 右边第一个文字
      */
-    private TextView leftTextView, rightTextView1, rightTextView2;
+    private TextView leftTextView, leftTextDownView, rightTextView1, rightTextView2;
 
     /**
      * view 底部横线
@@ -50,7 +50,7 @@ public class CardLayoutBar extends RelativeLayout {
      * right_textView2_color 右边第一个文字颜色
      * view_margin_right 线条相对与右边距离
      */
-    private int left_image, right_image, left_textView_color, right_textView1_color,
+    private int left_image, right_image, left_textView_color, left_down_color, right_textView1_color,
             right_textView2_color, view_margin_right;
 
     /**
@@ -58,14 +58,14 @@ public class CardLayoutBar extends RelativeLayout {
      * right_textView1_size 右边第二个文字大小
      * right_textView2_size 右边第一个文字大小
      */
-    private int left_textView_size, right_textView1_size, right_textView2_size;
+    private int left_textView_size, left_down_size, right_textView1_size, right_textView2_size;
 
     /**
      * left_textView_text 左边文字内容
      * right_textView1_text 右边第二个文字内容
      * right_textView2_text 右边第一个文字内容
      */
-    private String left_textView_text, right_textView1_text, right_textView2_text;
+    private String left_textView_text, left_down_text, right_textView1_text, right_textView2_text;
 
     /**
      * left_image_Visible 左边图片是否显示
@@ -75,10 +75,10 @@ public class CardLayoutBar extends RelativeLayout {
      * right_textView2_Visible 右边第一个文字是否显示
      * view_Visible 底部横线是否显示
      */
-    private boolean left_image_Visible, right_image_Visible, left_textView_Visible,
+    private boolean left_image_Visible, right_image_Visible, left_textView_Visible, left_down_Visible,
             right_textView1_Visible, right_textView2_Visible, view_Visible;
 
-    private boolean left_textView_style;
+    private boolean left_textView_style, left_down_style;
 
     public CardLayoutBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -88,52 +88,42 @@ public class CardLayoutBar extends RelativeLayout {
         leftImage = findViewById(R.id.left_image);
         rightImage = findViewById(R.id.right_image);
         leftTextView = findViewById(R.id.left_text);
+        leftTextDownView = findViewById(R.id.left_text_down);
         rightTextView1 = findViewById(R.id.right_text1);
         rightTextView2 = findViewById(R.id.right_text2);
         view = findViewById(R.id.view);
 
         /**获取属性值*/
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable
-                .RelativeLayoutBar);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RelativeLayoutBar);
 
         left_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_left_image, R.color.transparent);
-        right_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_right_image, R
-                .drawable.icon_come);
+        right_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_right_image, R.drawable.icon_come);
 
-        left_textView_color = typedArray.getColor(R.styleable
-                .RelativeLayoutBar_left_textView_color, Color.WHITE);
-        right_textView1_color = typedArray.getColor(R.styleable
-                .RelativeLayoutBar_right_textView1_color, Color.WHITE);
-        right_textView2_color = typedArray.getColor(R.styleable
-                .RelativeLayoutBar_right_textView2_color, Color.WHITE);
+        left_textView_color = typedArray.getColor(R.styleable.RelativeLayoutBar_left_textView_color, Color.WHITE);
+        left_down_color = typedArray.getColor(R.styleable.RelativeLayoutBar_left_down_color, Color.WHITE);
+        right_textView1_color = typedArray.getColor(R.styleable.RelativeLayoutBar_right_textView1_color, Color.WHITE);
+        right_textView2_color = typedArray.getColor(R.styleable.RelativeLayoutBar_right_textView2_color, Color.WHITE);
 
-        left_textView_size = typedArray.getDimensionPixelSize(R.styleable
-                .RelativeLayoutBar_left_textView_textSize, 14);
-        right_textView1_size = typedArray.getDimensionPixelSize(R.styleable
-                .RelativeLayoutBar_right_textView1_textSize, 14);
-        right_textView2_size = typedArray.getDimensionPixelSize(R.styleable
-                .RelativeLayoutBar_right_textView2_textSize, 14);
+        left_textView_size = typedArray.getDimensionPixelSize(R.styleable.RelativeLayoutBar_left_textView_textSize, 14);
+        left_down_size = typedArray.getDimensionPixelSize(R.styleable.RelativeLayoutBar_left_down_textSize, 14);
+        right_textView1_size = typedArray.getDimensionPixelSize(R.styleable.RelativeLayoutBar_right_textView1_textSize, 14);
+        right_textView2_size = typedArray.getDimensionPixelSize(R.styleable.RelativeLayoutBar_right_textView2_textSize, 14);
 
         left_textView_text = typedArray.getString(R.styleable.RelativeLayoutBar_left_textView_text);
-        right_textView1_text = typedArray.getString(R.styleable
-                .RelativeLayoutBar_right_textView1_text);
-        right_textView2_text = typedArray.getString(R.styleable
-                .RelativeLayoutBar_right_textView2_text);
+        left_down_text = typedArray.getString(R.styleable.RelativeLayoutBar_left_down_text);
+        right_textView1_text = typedArray.getString(R.styleable.RelativeLayoutBar_right_textView1_text);
+        right_textView2_text = typedArray.getString(R.styleable.RelativeLayoutBar_right_textView2_text);
 
-        left_image_Visible = typedArray.getBoolean(R.styleable
-                .RelativeLayoutBar_left_image_Visible, false);
-        right_image_Visible = typedArray.getBoolean(R.styleable
-                .RelativeLayoutBar_right_image_Visible, true);
-        left_textView_Visible = typedArray.getBoolean(R.styleable
-                .RelativeLayoutBar_left_textView_Visible, false);
-        right_textView1_Visible = typedArray.getBoolean(R.styleable
-                .RelativeLayoutBar_right_textView1_Visible, false);
-        right_textView2_Visible = typedArray.getBoolean(R.styleable
-                .RelativeLayoutBar_right_textView2_Visible, false);
+        left_image_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_image_Visible, false);
+        right_image_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_right_image_Visible, true);
+        left_textView_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_textView_Visible, false);
+        left_down_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_down_Visible, false);
+        right_textView1_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_right_textView1_Visible, false);
+        right_textView2_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_right_textView2_Visible, false);
         view_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_view_Visible, false);
         view_margin_right = typedArray.getInteger(R.styleable.RelativeLayoutBar_view_margin_right, 0);
-        left_textView_style = typedArray.getBoolean(R.styleable
-                .RelativeLayoutBar_left_textView_style, false);
+        left_textView_style = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_textView_style, false);
+        left_down_style = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_down_style, false);
 
         /**设置值**/
         setLeftImage(left_image);
@@ -154,6 +144,12 @@ public class CardLayoutBar extends RelativeLayout {
         setRightTextView2Visible(right_textView2_Visible);
         setViewVisible(view_Visible, view_margin_right);
         setTextViewIsBold(left_textView_style);
+
+        leftTextDownView.setText(left_down_text);
+        leftTextDownView.setTextColor(left_down_color);
+        leftTextDownView.setTextSize(Px2DpUtils.px2dp(context, left_down_size));
+        leftTextDownView.setVisibility(left_down_Visible ? VISIBLE : GONE);
+        leftTextDownView.setTypeface(left_down_style ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
     }
 
     public void setTextViewIsBold(boolean isBold) {

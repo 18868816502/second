@@ -133,6 +133,13 @@
         <attr name="left_textView_textSize" format="dimension" />
         <attr name="left_textView_Visible" format="boolean" />
         <attr name="left_textView_style" format="boolean" />
+
+        <attr name="left_down_text" format="string" />
+        <attr name="left_down_color" format="color" />
+        <attr name="left_down_textSize" format="dimension" />
+        <attr name="left_down_Visible" format="boolean" />
+        <attr name="left_down_style" format="boolean" />
+
         <attr name="right_image" format="reference|integer" />
         <attr name="right_image_Visible" format="boolean" />
         <attr name="right_textView1_text" format="string" />

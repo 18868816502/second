@@ -40,6 +40,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.HomePageAdapter;
+import com.beihui.market.tang.fragment.SocialFragment;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.busevents.NavigateNews;
@@ -352,6 +353,7 @@ public class MainActivity extends BaseComponentActivity {
 
     public HomeFragment tabHome;
     public DiscoverFragment tabDiscover;
+    public SocialFragment tabSocial;
     public PersonalFragment tabMine;
     public Fragment currentFragment;
 
@@ -367,13 +369,17 @@ public class MainActivity extends BaseComponentActivity {
             tabDiscover = DiscoverFragment.newInstance();
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
+        if (tabSocial == null) {
+            tabSocial = SocialFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
+        }
         if (tabMine == null) {
             tabMine = PersonalFragment.newInstance();
             ft.add(R.id.tab_fragment, tabMine).hide(tabMine);
         }
         switch (id) {
             case R.id.tab_bill_root://账单
-                ft.show(tabHome).hide(tabDiscover).hide(tabMine);
+                ft.show(tabHome).hide(tabDiscover).hide(tabSocial).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
@@ -416,7 +422,16 @@ public class MainActivity extends BaseComponentActivity {
 
                 break;
             case R.id.tab_discover_root://发现
-                ft.show(tabDiscover).hide(tabHome).hide(tabMine);
+                ft.show(tabDiscover).hide(tabHome).hide(tabSocial).hide(tabMine);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                currentFragment = tabDiscover;
+                if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);
+                break;
+            case R.id.tab_social_root://工具
+                ft.show(tabSocial).hide(tabHome).hide(tabDiscover).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
@@ -425,7 +440,7 @@ public class MainActivity extends BaseComponentActivity {
                     tabHome.recycler().smoothScrollToPosition(0);
                 break;
             case R.id.tab_mine_root://个人
-                ft.show(tabMine).hide(tabHome).hide(tabDiscover);
+                ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
@@ -527,15 +542,18 @@ public class MainActivity extends BaseComponentActivity {
         List<String> tabTxt = new ArrayList<>();
         tabTxt.add("账单");
         tabTxt.add("发现");
+        tabTxt.add("工具");
         tabTxt.add("我的");
         List<Drawable[]> drawables = new ArrayList<>();
         Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_normal)};
         Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
-        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
+        Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
         drawables.add(bitmaps0);
         drawables.add(bitmaps1);
         drawables.add(bitmaps2);
-        for (int i = 0; i < 3; i++) {
+        drawables.add(bitmaps3);
+        for (int i = 0; i < tabTxt.size(); i++) {
             textView[i].setTextColor(colorStateList);
             textView[i].setText(tabTxt.get(i));
             StateListDrawable stateListDrawable = new StateListDrawable();
@@ -575,6 +593,9 @@ public class MainActivity extends BaseComponentActivity {
         for (int i = 0; i < list.size(); ++i) {
             TabImage tabImage = list.get(i);
             /*focus配置app模块展示的优先级*/
+            if (TextUtils.equals("1", tabImage.getFocus())) {
+
+            }
             if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
                 if (tabImage.getPosition() == 1) {
                     navigationBar.select(R.id.tab_bill_root);
@@ -592,7 +613,7 @@ public class MainActivity extends BaseComponentActivity {
             if (index < 0 || index >= textView.length) {
                 continue;
             }
-
+            //tab字体颜色和文字
             if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
                 int[] colors = new int[]{
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),
@@ -627,32 +648,31 @@ public class MainActivity extends BaseComponentActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<Bitmap[]>() {
-                                       @Override
-                                       public void accept(Bitmap[] bitmaps) throws Exception {
-                                           if (bitmaps[0] != null && bitmaps[1] != null) {
-                                               StateListDrawable stateListDrawable = new StateListDrawable();
-                                               stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                               stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                               stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
-                                               iconView[index].setImageDrawable(stateListDrawable);
-                                           }
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Bitmap[] bitmaps) throws Exception {
+                                if (bitmaps[0] != null && bitmaps[1] != null) {
+                                    StateListDrawable stateListDrawable = new StateListDrawable();
+                                    stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
+                                    stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
+                                    stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
+                                    iconView[index].setImageDrawable(stateListDrawable);
+                                }
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(final Throwable throwable) throws Exception {
+                                runOnUiThread(new Runnable() {
                                     @Override
-                                    public void accept(final Throwable throwable) throws Exception {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                try {
-                                                    throw throwable;
-                                                } catch (Throwable throwable1) {
-                                                    throwable1.printStackTrace();
-                                                }
-                                            }
-                                        });
+                                    public void run() {
+                                        try {
+                                            throw throwable;
+                                        } catch (Throwable throwable1) {
+                                            throwable1.printStackTrace();
+                                        }
                                     }
                                 });
+                            }
+                        });
             }
         }
         if (isShowTabAccount) {//都没有选择那就选择首页

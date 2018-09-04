@@ -283,6 +283,11 @@
             android:name=".tang.activity.BindAlpActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <!--发票助手-->
+        <activity
+            android:name=".tang.activity.TicketActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->
         <!-- 快速记账页面 -->

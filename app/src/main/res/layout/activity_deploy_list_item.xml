@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/mine_list_bg">
 
-
     <ImageView
         android:id="@+id/activity_event_img"
         android:layout_width="20dp"

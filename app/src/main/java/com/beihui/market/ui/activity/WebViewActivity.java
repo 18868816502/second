@@ -160,7 +160,6 @@ public class WebViewActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     /**

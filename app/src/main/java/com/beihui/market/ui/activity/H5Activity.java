@@ -50,8 +50,6 @@ public class H5Activity extends BaseComponentActivity {
         SlidePanelHelper.attach(this);
         webViewUrl = getIntent().getStringExtra("webViewUrl");
         title = getIntent().getStringExtra("title");
-
-
     }
 
     @Override
@@ -69,6 +67,5 @@ public class H5Activity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 }
