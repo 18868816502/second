@@ -3,6 +3,7 @@ package com.beihui.market.tang.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +20,10 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.ToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -73,14 +78,16 @@ public class TicketDetailActivity extends BaseComponentActivity {
             Object obj = getIntent().getSerializableExtra("ticket");
             if (obj != null) ticket = (Ticket) obj;
         }
-        if (ticket != null) {
-            company_name.setText(ticket.getCompanyName());
-            tax_no.setText(ticket.getTaxNo() == null ? "" : ticket.getTaxNo());
-            company_address.setText(ticket.getCompanyAddress() == null ? "" : ticket.getCompanyAddress());
-            phone_no.setText(ticket.getTelephone() == null ? "" : ticket.getTelephone());
-            bank_name.setText(ticket.getOpenBank() == null ? "" : ticket.getOpenBank());
-            bank_account.setText(ticket.getBankAccount() == null ? "" : ticket.getBankAccount());
-        }
+        if (ticket != null) setView(ticket);
+    }
+
+    private void setView(Ticket ticket) {
+        company_name.setText(ticket.getCompanyName());
+        tax_no.setText(ticket.getTaxNo() == null ? "" : ticket.getTaxNo());
+        company_address.setText(ticket.getCompanyAddress() == null ? "" : ticket.getCompanyAddress());
+        phone_no.setText(ticket.getTelephone() == null ? "" : ticket.getTelephone());
+        bank_name.setText(ticket.getOpenBank() == null ? "" : ticket.getOpenBank());
+        bank_account.setText(ticket.getBankAccount() == null ? "" : ticket.getBankAccount());
     }
 
     @Override
@@ -157,5 +164,22 @@ public class TicketDetailActivity extends BaseComponentActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recieve(Ticket ticket) {
+        setView(ticket);
     }
 }

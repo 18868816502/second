@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="添加发票"
+        android:textColor="@color/black_1"
+        android:textSize="17dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/ticket_save"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:text="保存"
+        android:textColor="@color/refresh_one"
+        android:textSize="14dp" />
+</android.support.v7.widget.Toolbar>

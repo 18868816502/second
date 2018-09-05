@@ -548,7 +548,7 @@ public class MainActivity extends BaseComponentActivity {
         List<Drawable[]> drawables = new ArrayList<>();
         Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_normal)};
         Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
-        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_normal)};
         Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
         drawables.add(bitmaps0);
         drawables.add(bitmaps1);

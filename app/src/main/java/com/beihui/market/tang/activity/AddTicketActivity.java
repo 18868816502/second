@@ -19,6 +19,8 @@ import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,7 +73,7 @@ public class AddTicketActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        setupToolbar(toolbar);
+        setupToolbarBackNavigation(toolbar, R.drawable.back);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
     }
@@ -136,7 +138,7 @@ public class AddTicketActivity extends BaseComponentActivity {
                 }
                 // 电话号码
                 telephone = str(cet_phone_no);
-                if (StringUtil.isPhone(telephone)) {
+                if (!TextUtils.isEmpty(telephone)) {
                     map.put("telephone", telephone);
                 }
                 // 开户银行
@@ -154,8 +156,12 @@ public class AddTicketActivity extends BaseComponentActivity {
                         .subscribe(new ApiObserver<Ticket>() {
                             @Override
                             public void onNext(@NonNull Ticket data) {
-                                if (ticket != null) ToastUtil.toast("编辑成功");
-                                else ToastUtil.toast("添加成功");
+                                if (ticket != null) {
+                                    ToastUtil.toast("编辑成功");
+                                    EventBus.getDefault().post(data);
+                                } else {
+                                    ToastUtil.toast("添加成功");
+                                }
                                 finish();
                             }
                         });

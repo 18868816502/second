@@ -287,13 +287,13 @@
         <activity
             android:name=".tang.activity.TicketActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait" />
         <!--添加/编辑发票-->
         <activity
             android:name=".tang.activity.AddTicketActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <!--发票详情-->
         <activity
             android:name=".tang.activity.TicketDetailActivity"
