@@ -287,6 +287,17 @@
         <activity
             android:name=".tang.activity.TicketActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <!--添加/编辑发票-->
+        <activity
+            android:name=".tang.activity.AddTicketActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--发票详情-->
+        <activity
+            android:name=".tang.activity.TicketDetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--快速记账页面-->
         <!-- 快速记账页面 -->

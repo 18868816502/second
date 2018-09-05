@@ -63,6 +63,7 @@ import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
+import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
@@ -88,7 +89,7 @@ import static com.beihui.market.api.NetConstants.PRODUCT_PATH;
 
 /**
  * @author xhb
- * 请求接口
+ *         请求接口
  */
 public interface ApiService {
 
@@ -1218,4 +1219,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/s1/purse/trade/create")
     Observable<ResultEntity<Withdraw>> withdraw(@FieldMap Map<String, Object> map);
+
+    /*发票列表*/
+    @FormUrlEncoded
+    @POST("/s1/tools/invoice/listData")
+    Observable<ResultEntity<List<Ticket>>> tickets(@Field("userId") String userId);
+
+    /*保存/编辑发票*/
+    @FormUrlEncoded
+    @POST("/s1/tools/invoice/save")
+    Observable<ResultEntity<Ticket>> saveTicket(@FieldMap Map<String, Object> map);
+
+    /*删除发票*/
+    @FormUrlEncoded
+    @POST("/s1/tools/invoice/delete")
+    Observable<ResultEntity> deleteTicket(@Field("userId") String userId, @Field("invoiceId") long invoiceId);
 }

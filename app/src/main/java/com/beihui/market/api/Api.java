@@ -72,6 +72,7 @@ import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
+import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
@@ -100,6 +101,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -1606,6 +1609,21 @@ public class Api {
     /*提现*/
     public Observable<ResultEntity<Withdraw>> withdraw(Map<String, Object> map) {
         return service.withdraw(map);
+    }
+
+    /*发票列表*/
+    public Observable<ResultEntity<List<Ticket>>> tickets(@Field("userId") String userId) {
+        return service.tickets(userId);
+    }
+
+    /*保存/编辑发票*/
+    public Observable<ResultEntity<Ticket>> saveTicket(@FieldMap Map<String, Object> map) {
+        return service.saveTicket(map);
+    }
+
+    /*删除发票*/
+    public Observable<ResultEntity> deleteTicket(@Field("userId") String userId, @Field("invoiceId") long invoiceId) {
+        return service.deleteTicket(userId, invoiceId);
     }
 
     /*获取短信内容*/

@@ -63,15 +63,15 @@ android {
             dimension "id"
             applicationId "com.beihui.market"
             //生产环境 + 正式环境魔蝎appkey
-            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
-            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
-            buildConfigField("String", "H5_DOMAIN_NEW", "\"https://tg.kaolabill.com\"")
-            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+//            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
+//            buildConfigField("String", "H5_DOMAIN_NEW", "\"https://tg.kaolabill.com\"")
+//            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
             //测试环境 + 测试魔蝎appkey
-//            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-//            buildConfigField("String", "H5_DOMAIN_NEW", "\"http://116.62.148.52\"")
-//            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
+            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "H5_DOMAIN_NEW", "\"http://116.62.148.52\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                     GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",

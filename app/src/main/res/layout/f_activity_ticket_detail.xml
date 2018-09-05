@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="详情"
+            android:textColor="@color/black_1"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_more_setting"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/ic_more_setting" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/bg_ticket_detail"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="发票抬头"
+            android:textColor="@color/black_1"
+            android:textSize="17dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="公司名称"
+                android:textColor="@color/black_1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ticket_detail_company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                tools:text="杭州贝沃科技有限公司" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="税        号"
+                android:textColor="@color/black_1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ticket_detail_tax_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                tools:text="6517856213265983" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="公司地址"
+                android:textColor="@color/black_1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ticket_detail_company_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:lineSpacingExtra="3.5dp"
+                tools:text="杭州市滨江区星耀城人民路1300号香溢大厦9楼" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="电话号码"
+                android:textColor="@color/black_1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ticket_detail_phone_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                tools:text="0571-6813452" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="开户银行"
+                android:textColor="@color/black_1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ticket_detail_bank_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                tools:text="中国人民银行" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:text="银行账户"
+                android:textColor="@color/black_1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ticket_detail_bank_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                tools:text="6001064248951120" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

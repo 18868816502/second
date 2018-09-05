@@ -98,15 +98,16 @@ public class MainActivity extends BaseComponentActivity {
     @BindView(R.id.tab_bill_text)
     TextView tabBillText;
     //发现
-    @BindView(R.id.tab_discover_root)
-    RelativeLayout tabDiscoverRoot;
     @BindView(R.id.tab_discover_icon)
     ImageView tabDiscoverIcon;
     @BindView(R.id.tab_discover_text)
     TextView tabDiscoverText;
+    //发现
+    @BindView(R.id.tab_social_icon)
+    ImageView tabSocialIcon;
+    @BindView(R.id.tab_social_text)
+    TextView tabSocialText;
     //个人
-    @BindView(R.id.tab_mine_root)
-    RelativeLayout tabMineRoot;
     @BindView(R.id.tab_mine_icon)
     ImageView tabMineIcon;
     @BindView(R.id.tab_mine_text)
@@ -258,8 +259,8 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabMineIcon};
-        textView = new TextView[]{tabBillText, tabDiscoverText, tabMineText};
+        iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabSocialIcon, tabMineIcon};
+        textView = new TextView[]{tabBillText, tabDiscoverText, tabSocialText, tabMineText};
         activity = this;
 
         EventBus.getDefault().register(this);
