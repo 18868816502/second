@@ -134,7 +134,7 @@
                         android:id="@+id/tv_zh_year"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="30"
+                        android:text="30年(360期)"
                         android:textColor="@color/black_1"
                         android:gravity="right"/>
                     <ImageView
@@ -180,7 +180,7 @@
                     android:id="@+id/tv_zh_gjj_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.90"
+                    android:text="基准利率(4.90%)"
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/black_1"/>
                 <ImageView

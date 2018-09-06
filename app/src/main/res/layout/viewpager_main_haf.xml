@@ -95,7 +95,7 @@
                             android:id="@+id/tv_gjj_year"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="20"
+                            android:text="30年(360期)"
                             android:gravity="right"/>
                         <ImageView
                             android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                         android:id="@+id/tv_gjj_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4.90"/>
+                        android:text="基准利率(4.90%)"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -5,10 +5,92 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_month_pay_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8924.06"
+                android:textSize="18sp"
+                android:textColor="@color/black_1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="月供(元)"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/pickerview_cancle"/>
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorBackground"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_sum_interest_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8924.06"
+                android:textSize="18sp"
+                android:textColor="@color/black_1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="利息总额(万元)"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/pickerview_cancle"/>
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorBackground"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_sum_payback_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8924.06"
+                android:textSize="18sp"
+                android:textColor="@color/black_1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="还款总额(万元)"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/pickerview_cancle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -181,25 +263,26 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:src="@drawable/cursor"
-        android:scaleType="fitXY"/>
+        android:layout_height="8dp"
+        android:background="@color/colorBackground"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="期数"
-            android:textColor="#000000"
-            android:textSize="15sp"
+            android:textColor="@color/black_2"
+            android:textSize="12sp"
             android:layout_weight="1"/>
 
         <TextView
@@ -207,8 +290,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="偿还本金"
-            android:textColor="#000000"
-            android:textSize="15sp"
+            android:textColor="@color/black_2"
+            android:textSize="12sp"
             android:layout_weight="1"/>
 
         <TextView
@@ -216,8 +299,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="偿还利息"
-            android:textColor="#000000"
-            android:textSize="15sp"
+            android:textColor="@color/black_2"
+            android:textSize="12sp"
             android:layout_weight="1"/>
 
         <TextView
@@ -225,21 +308,19 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="月供"
-            android:textColor="#000000"
-            android:textSize="15sp"
+            android:textColor="@color/black_2"
+            android:textSize="12sp"
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:src="@drawable/cursor"
-        android:scaleType="fitXY"
-        android:layout_marginTop="2dp" />
+        android:layout_height="1dp"
+        android:background="@color/colorBackground"/>
 
-    <com.kaola.houseloandemo.LoanListView
+    <com.beihui.market.view.dialog.LoanListView
         android:id="@+id/CapitalCombination_ListTwo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.kaola.houseloandemo.LoanListView>
+    </com.beihui.market.view.dialog.LoanListView>
 </LinearLayout>

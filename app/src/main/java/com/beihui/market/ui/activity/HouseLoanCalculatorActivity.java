@@ -42,6 +42,7 @@ import java.util.List;
  */
 public class HouseLoanCalculatorActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private ImageView ivBack;
     private LinearLayout tabCommContainer;
     private TextView tvCommTab;
     private View indicateComm;
@@ -241,6 +242,8 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     //1.初始化Views
     public void initViews(){
+        ivBack = findViewById(R.id.navigate);
+
         tabCommContainer = findViewById(R.id.tab_comm);
         tvCommTab = findViewById(R.id.tv_commb_tab);
         indicateComm = findViewById(R.id.indicate_comm);
@@ -360,6 +363,12 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         ivPaybackCombPrincipal.setOnClickListener(this);
 
         tvCalculate.setOnClickListener(this);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     /**
@@ -388,7 +397,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * @return
      */
     private boolean checkGroupLoan() {
-        if (CombCalculationMethod == COMB_CAPITAL){
+//        if (CombCalculationMethod == COMB_CAPITAL){
             CombMortgageHAF = CombMortgageHAFEditText.getText().toString();
             CombMortgageComm = CombMortgageCommEditText.getText().toString();
             if(TextUtils.isEmpty(CombMortgageHAF)){
@@ -401,7 +410,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
             }
             double sum = Double.valueOf(CombMortgageHAF) + Double.valueOf(CombMortgageComm);
             CombPay = String.valueOf(sum);
-        }
+//        }
 
         if (Double.valueOf(CombMortgageHAF) == 0){
             Toast.makeText(HouseLoanCalculatorActivity.this,"公积金贷款金额不能为0", Toast.LENGTH_SHORT).show();
@@ -446,9 +455,9 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * @return
      */
     private boolean checkGongjijinLoan() {
-        if (HAFCalculationMethod == HAF_CAPITAL){
+//        if (HAFCalculationMethod == HAF_CAPITAL){
             HAFMortgage = HAFMortgageEditText.getText().toString();
-        }
+//        }
 
         if(TextUtils.isEmpty(HAFMortgage)){
             Toast.makeText(HouseLoanCalculatorActivity.this,"请填写贷款金额", Toast.LENGTH_SHORT).show();
@@ -493,9 +502,9 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * 检验商业贷款填写是否合格
      */
     private boolean checkCommercialLoan() {
-        if (CommCalculationMethod == COMM_CAPITAL){
+//        if (CommCalculationMethod == COMM_CAPITAL){
             CommMortgage = CommMortgageEditText.getText().toString();
-        }
+//        }
         if(TextUtils.isEmpty(CommMortgage)){
             Toast.makeText(HouseLoanCalculatorActivity.this,"请填写贷款金额", Toast.LENGTH_SHORT).show();
             return false;
@@ -760,16 +769,19 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                 viewPager.setCurrentItem(0);
                 clearTabState();
                 setSelectState(0);
+                currentItem = 0;
                 break;
             case R.id.tab_haf://公积金贷款
                 viewPager.setCurrentItem(1);
                 clearTabState();
                 setSelectState(1);
+                currentItem = 1;
                 break;
             case R.id.tab_comb://组合贷款
                 viewPager.setCurrentItem(2);
                 clearTabState();
                 setSelectState(2);
+                currentItem = 2;
                 break;
 
                 /*商业贷款方式*/
@@ -898,6 +910,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
         @Override
         public void onPageSelected(int position) {
+            currentItem = position;
             clearTabState();
             setSelectState(position);
         }

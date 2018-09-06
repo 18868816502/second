@@ -7,12 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -21,6 +23,7 @@ import com.beihui.market.ui.adapter.houseloan.HouseLoanVPAdapter;
 import com.beihui.market.view.dialog.LoanListView;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,14 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
     private double sum = 0;
     private double interest = 0;
 
+    private ImageView ivBack;
+    private LinearLayout tabLeftContainer;
+    private LinearLayout tabRightContainer;
+    private TextView tvTabLeftTitle;
+    private TextView tvTabRightTitle;
+    private View indicateLeft;
+    private View indicateRight;
+
     //用于显示等额本息和等额本金的ViewPager
     private ViewPager viewPager;
     private List<View> viewList;
@@ -49,14 +60,15 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
     private LoanListView listViewOne;                     //等额本息的ListView
     private LoanListView listViewTwo;                     //等额本金的ListView
 
-    private TextView typeOneText;                       //等额本息的标题
-    private TextView typeTwoText;                       //等额本金的标题
-
     private TextView oneLoanSumTextView;                //显示等额本息的结果
     private TextView oneMonthTextView;
     private TextView onePaySumTextView;
     private TextView oneInterestTextView;
     private TextView oneMonthPayTextView;
+
+    private TextView tvMonthPayLeft;
+    private TextView tvSumInterestLeft;
+    private TextView tvSumPaybackLeft;
 
     private TextView twoLoanSumTextView;                //显示等额本金的结果
     private TextView twoMonthTextView;
@@ -64,6 +76,10 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
     private TextView twoInterestTextView;
     private TextView twoFirstMonthPayTextView;
     private TextView twoDeltaMonthPayTextView;
+
+    private TextView tvMonthPayRight;
+    private TextView tvSumInterestRight;
+    private TextView tvSumPaybackRight;
 
     private String oneSumString;                        //等额本息的结果数据
     private String oneInterestString;
@@ -83,12 +99,12 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
     private String[] twoMonthPayStrings;
 
     private int currentItem = 0;
-    private ImageView cursorImageView;
     private int offSet;
     private Matrix matrix = new Matrix();
     private Animation animation;
 
     private ProgressDialog progressDialog = null;
+    DecimalFormat df;
 
     private static final int DONE = 1;
     private Handler handler = new Handler(){
@@ -97,7 +113,23 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case DONE:
-                    showResult();//9.显示结果
+                    //计算总利息
+
+                    double inOneSum = 0.0;
+                    double inTwoSum = 0.0;
+                    try {
+                        for(int i = 0;i<oneInterestStrings.length;i++){
+                            inOneSum = inOneSum + df.parse(oneInterestStrings[i]).doubleValue();
+                        }
+
+                        for(int i = 0;i<twoInterestStrings.length;i++){
+                            inTwoSum = inTwoSum + df.parse(twoInterestStrings[i]).doubleValue();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    showResult(inOneSum,inTwoSum);//9.显示结果
 
                     //等额本息的结果
                     HouseLoanResultVPAdapter adapterList1 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, oneTimeStrings, oneCapitalStrings, oneInterestStrings, oneMonthPayStrings);
@@ -122,7 +154,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_commerce_loan_result);
 
         progressDialog = ProgressDialog.show(CommerceLoanResultActivity.this, "", "正在计算...", false, true);
-
+        df = new DecimalFormat("#,###.0");
         getData();                  //1.获得数据
         initViews();                //2.初始化控件
         initViewPager();            //3.设置ViewPager
@@ -189,29 +221,79 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
 
     //2.初始化控件
     public void initViews(){
+        ivBack = findViewById(R.id.navigate);
         viewPager = (ViewPager)findViewById(R.id.viewpager);
-        typeOneText = (TextView)findViewById(R.id.typeOneTextView);
-        typeTwoText = (TextView)findViewById(R.id.typeTwoTextView);
-        cursorImageView = (ImageView)findViewById(R.id.ResultCursorImageView);
+        tabLeftContainer = findViewById(R.id.tab_left);
+        tabRightContainer = findViewById(R.id.tab_right);
+        tvTabLeftTitle = (TextView)findViewById(R.id.tv_left_title);
+        tvTabRightTitle = (TextView)findViewById(R.id.tv_right_title);
+        indicateLeft = findViewById(R.id.indicate_left);
+        indicateRight = findViewById(R.id.indicate_right);
 
     }
 
     //4.设置监听器
     public void setListeners() {
-        typeOneText.setOnClickListener(new View.OnClickListener() {
+        tabLeftContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(0);
+                clearTabState();
+                setSelectState(0);
             }
         });
 
-        typeTwoText.setOnClickListener(new View.OnClickListener() {
+        tabRightContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(1);
+                clearTabState();
+                setSelectState(1);
+            }
+        });
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
+
+    /**
+     * 清除Tab状态
+     */
+    private void clearTabState(){
+        tvTabLeftTitle.setTextColor(getResources().getColor(R.color.c_909298));
+        tvTabRightTitle.setTextColor(getResources().getColor(R.color.c_909298));
+
+        indicateLeft.setBackgroundColor(getResources().getColor(R.color.c_909298));
+        indicateRight.setBackgroundColor(getResources().getColor(R.color.c_909298));
+
+        indicateLeft.setVisibility(View.GONE);
+        indicateRight.setVisibility(View.GONE);
+    }
+
+    /**
+     * 设置Tab选中状态
+     * @param position
+     */
+    private void setSelectState(int position){
+        switch (position){
+            case 0:
+                tvTabLeftTitle.setTextColor(getResources().getColor(R.color.c_ff5240));
+                indicateLeft.setBackgroundColor(getResources().getColor(R.color.c_ff5240));
+                indicateLeft.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                tvTabRightTitle.setTextColor(getResources().getColor(R.color.c_ff5240));
+                indicateRight.setBackgroundColor(getResources().getColor(R.color.c_ff5240));
+                indicateRight.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     //3.设置ViewPager
     public void initViewPager(){
@@ -229,6 +311,11 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
         onePaySumTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_PaySum_Number_TextView);
         oneInterestTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_Interest_Number_TextView);
         oneMonthPayTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_MonthPay_Number_TextView);
+
+        tvMonthPayLeft = view1.findViewById(R.id.tv_month_pay_left);
+        tvSumInterestLeft = view1.findViewById(R.id.tv_sum_interest_left);
+        tvSumPaybackLeft = view1.findViewById(R.id.tv_sum_payback_left);
+
         listViewOne = (LoanListView)view1.findViewById(R.id.listOne);
 
         twoLoanSumTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_LoanSum_Number_TextView);
@@ -237,6 +324,11 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
         twoInterestTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_Interest_Number_TextView);
         twoFirstMonthPayTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_FirstMonthPay_Number_TextView);
         twoDeltaMonthPayTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_DeltaMonthPay_Number_TextView);
+
+        tvMonthPayRight = view2.findViewById(R.id.tv_month_pay_right);
+        tvSumInterestRight = view2.findViewById(R.id.tv_sum_interest_right);
+        tvSumPaybackRight = view2.findViewById(R.id.tv_sum_payback_right);
+
         listViewTwo = (LoanListView)view2.findViewById(R.id.listTwo);
 
         HouseLoanVPAdapter adapter = new HouseLoanVPAdapter(viewList);
@@ -247,7 +339,6 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         offSet = displayMetrics.widthPixels / 2;                            //每个标题的宽度（720/2=360）
         matrix.setTranslate(0, 0);
-        cursorImageView.setImageMatrix(matrix);                             // 需要imageView的scaleType为matrix*/
     }
 
     //3-1.ViewPager的监听器
@@ -259,19 +350,8 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
 
         @Override
         public void onPageSelected(int position) {
-            //设置光标
-            switch (position){
-                case 0:
-                    animation = new TranslateAnimation(offSet, 0, 0, 0);
-                    break;
-                case 1:
-                    animation = new TranslateAnimation(0, offSet, 0, 0);
-                    break;
-            }
-            currentItem = position;
-            animation.setDuration(150); // 光标滑动速度
-            animation.setFillAfter(true);
-            cursorImageView.startAnimation(animation);
+            clearTabState();
+            setSelectState(position);
         }
 
         @Override
@@ -590,24 +670,65 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
     }
 
     //9.显示结果
-    public void showResult(){
-        DecimalFormat df = new DecimalFormat("#,###.0");
+    public void showResult(double inOneSum, double inTwoSum){
+//        DecimalFormat df = new DecimalFormat("#,###.0");
 
         if (aheadTime == 0){
             //等额本息的结果
-            oneLoanSumTextView.setText(df.format(mortgage / 10000) + "万元");
-            oneMonthTextView.setText(time + "月");
-            onePaySumTextView.setText(oneSumString + "元");
-            oneInterestTextView.setText(oneInterestString + "元");
-            oneMonthPayTextView.setText(oneMonthPayString + "元");
+
+//            oneLoanSumTextView.setText(df.format(mortgage / 10000) + "万元");
+//            oneMonthTextView.setText(time + "月");
+////            onePaySumTextView.setText(oneSumString + "元");
+//            if (TextUtils.isEmpty(oneSumString)){
+//                oneSumString = "0";
+//            }
+//            double paySum = 0;
+//            try {
+//                paySum = df.parse(oneSumString).doubleValue();
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            onePaySumTextView.setText(df.format(paySum / 10000) + "");
+//            oneInterestTextView.setText(oneInterestString + "元");
+//            oneMonthPayTextView.setText(oneMonthPayString + "");
+
+
+            tvMonthPayLeft.setText(oneMonthPayString);
+            tvSumInterestLeft.setText(df.format(inOneSum / 10000) + "");
+            if (TextUtils.isEmpty(oneSumString)){
+                oneSumString = "0";
+            }
+            double paySum = 0;
+            try {
+                paySum = df.parse(oneSumString).doubleValue();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            tvSumPaybackLeft.setText(df.format(paySum / 10000) + "");
+
+
 
             //等额本金的结果
-            twoLoanSumTextView.setText(df.format(mortgage / 10000) + "万元");
-            twoMonthTextView.setText(time + "月");
-            twoPaySumTextView.setText(twoSumString + "元");
-            twoInterestTextView.setText(twoInterestString + "元");
-            twoFirstMonthPayTextView.setText(twoFistMonthSum + "元");
-            twoDeltaMonthPayTextView.setText(twoDeltaMonthSum + "元");
+//            twoLoanSumTextView.setText(df.format(mortgage / 10000) + "万元");
+//            twoMonthTextView.setText(time + "月");
+//            twoPaySumTextView.setText(twoSumString + "元");
+//            twoInterestTextView.setText(twoInterestString + "元");
+//            twoFirstMonthPayTextView.setText(twoFistMonthSum + "元");
+//            twoDeltaMonthPayTextView.setText(twoDeltaMonthSum + "");
+
+
+            tvMonthPayRight.setText(twoFistMonthSum);
+            tvSumInterestRight.setText(df.format(inTwoSum / 10000) + "");
+            if (TextUtils.isEmpty(twoSumString)){
+                twoSumString = "0";
+            }
+            double paySumTwo = 0;
+            try {
+                paySumTwo = df.parse(twoSumString).doubleValue();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            tvSumPaybackRight.setText(df.format(paySumTwo / 10000) + "");
         }
     }
 }

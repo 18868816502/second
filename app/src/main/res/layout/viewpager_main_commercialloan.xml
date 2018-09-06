@@ -90,7 +90,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginRight="20dp"
                         android:layout_alignParentRight="true"
-                        android:text="30"
+                        android:text="30年(360期)"
                         android:textSize="14sp"
                         android:textColor="@color/black_1"
                         android:gravity="center_vertical"/>
@@ -139,7 +139,7 @@
                         android:id="@+id/tv_sy_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4.90"
+                        android:text="基准利率(4.90%)"
                         android:textColor="@color/black_1"/>
                     <ImageView
                         android:layout_width="wrap_content"
