@@ -21,6 +21,7 @@ import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.BillState;
 import com.beihui.market.entity.BillSummaryBean;
+import com.beihui.market.entity.BlackList;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
@@ -1612,18 +1613,28 @@ public class Api {
     }
 
     /*发票列表*/
-    public Observable<ResultEntity<List<Ticket>>> tickets(@Field("userId") String userId) {
+    public Observable<ResultEntity<List<Ticket>>> tickets(String userId) {
         return service.tickets(userId);
     }
 
     /*保存/编辑发票*/
-    public Observable<ResultEntity<Ticket>> saveTicket(@FieldMap Map<String, Object> map) {
+    public Observable<ResultEntity<Ticket>> saveTicket(Map<String, Object> map) {
         return service.saveTicket(map);
     }
 
     /*删除发票*/
-    public Observable<ResultEntity> deleteTicket(@Field("userId") String userId, @Field("invoiceId") long invoiceId) {
+    public Observable<ResultEntity> deleteTicket(String userId, long invoiceId) {
         return service.deleteTicket(userId, invoiceId);
+    }
+
+    /*信用查询*/
+    public Observable<ResultEntity<BlackList>> queryCredit(Map<String, Object> map) {
+        return service.queryCredit(map);
+    }
+
+    /*重复-获取短信验证码*/
+    public Observable<ResultEntity<Phone>> requestSms(String phone, String type) {
+        return service.requestSms(phone, type);
     }
 
     /*获取短信内容*/

@@ -299,9 +299,12 @@
             android:name=".tang.activity.TicketDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--快速记账页面-->
-        <!-- 快速记账页面 -->
-        <!-- 快速记账页面 -->
+        <!--信用查询-->
+        <activity
+            android:name=".tang.activity.CreditQueryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <!-- 快速记账页面 -->
         <activity
             android:name=".ui.activity.FastAddDebtActivity"
@@ -499,5 +502,4 @@
             android:name=".ui.activity.GuideInviteActivity"
             android:screenOrientation="portrait" />
     </application>
-
 </manifest>

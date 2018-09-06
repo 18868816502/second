@@ -12,6 +12,7 @@ import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
 import com.beihui.market.entity.BillState;
 import com.beihui.market.entity.BillSummaryBean;
+import com.beihui.market.entity.BlackList;
 import com.beihui.market.entity.CalendarAbstract;
 import com.beihui.market.entity.CalendarDebt;
 import com.beihui.market.entity.CreateAccountReturnIDsBean;
@@ -1234,4 +1235,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/s1/tools/invoice/delete")
     Observable<ResultEntity> deleteTicket(@Field("userId") String userId, @Field("invoiceId") long invoiceId);
+
+    /*信用查询*/
+    @FormUrlEncoded
+    @POST("/s1/tools/credit/check")
+    Observable<ResultEntity<BlackList>> queryCredit(@FieldMap Map<String, Object> map);
 }

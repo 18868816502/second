@@ -258,10 +258,6 @@ public class TabOneFragment extends BaseTabFragment {
                     isError = false;
                     ll_neterror.setVisibility(View.VISIBLE);
                 }
-
-                /*int touchSlop = ViewConfiguration.get(webView.getContext()).getScaledTouchSlop();
-                StringBuilder jsSb = new StringBuilder("javascript:initTouchSlop('").append(touchSlop).append("')");
-                webView.loadUrl(jsSb.toString());*/
             }
         });
         webView.clearCache(true);
@@ -290,15 +286,7 @@ public class TabOneFragment extends BaseTabFragment {
             userId = "";
         }
         //生成发现页链接
-        String channelId = "unknown";
-        String versionName = BuildConfig.VERSION_NAME;
-        try {
-            channelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        newsUrl = NetConstants.generateNewsWebViewUrl(userId, App.sChannelId, versionName);
+        newsUrl = NetConstants.generateNewsWebViewUrl(userId, App.sChannelId, BuildConfig.VERSION_NAME);
         webView.loadUrl(newsUrl);
     }
 

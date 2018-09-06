@@ -183,7 +183,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
                 /**
                  * 判断微信是否安装
                  */
-
                 PackageManager packageManager = getActivity().getPackageManager();// 获取packagemanager
                 List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
                 if (pinfo != null) {
@@ -208,7 +207,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     private void wxLogin() {
         UMAuthListener listener = new UMAuthListener() {
-
             @Override
             public void onStart(SHARE_MEDIA share_media) {
             }
@@ -216,8 +214,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
                 wechatInfo = map;
-                //Log.e("wechatInfo", "wechatInfo.get(openid)" + wechatInfo.get("openid"));
-                //Log.e("wechatInfo", "wechatInfo.get(unionid) -- > " + wechatInfo.get("unionid"));
                 presenter.loginWithWeChat(wechatInfo.get("unionid"));
             }
 

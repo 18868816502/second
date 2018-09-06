@@ -33,6 +33,7 @@ import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -161,6 +162,7 @@ public class HomeFragment extends BaseTabFragment {
     public void configViews() {
         mActivity = (MainActivity) getActivity();
         userHelper = UserHelper.getInstance(mActivity);
+
         int statusHeight = CommonUtils.getStatusBarHeight(mActivity);
         //设置toolbar的高度为状态栏相同高度
         mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);

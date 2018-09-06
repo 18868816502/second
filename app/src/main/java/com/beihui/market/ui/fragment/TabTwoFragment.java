@@ -268,17 +268,8 @@ public class TabTwoFragment extends BaseTabFragment {
         }
 
         //生成发现页链接
-        String channelId = "unknown";
-        String versionName = BuildConfig.VERSION_NAME;
-        try {
-            channelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        newsUrl = NetConstants.generateActivityWebViewUrl(userId, channelId, versionName);
+        newsUrl = NetConstants.generateActivityWebViewUrl(userId, App.sChannelId, BuildConfig.VERSION_NAME);
         webView.loadUrl(newsUrl);
-        //webView.loadUrl("http://192.168.1.2:8080?data=hahd");
     }
 
     /**

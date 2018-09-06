@@ -264,7 +264,7 @@ public class MainActivity extends BaseComponentActivity {
         activity = this;
 
         EventBus.getDefault().register(this);
-        ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
+        //ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
 
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
@@ -380,7 +380,7 @@ public class MainActivity extends BaseComponentActivity {
         }
         switch (id) {
             case R.id.tab_bill_root://账单
-                ft.show(tabHome).hide(tabDiscover).hide(tabSocial).hide(tabMine);
+                ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
@@ -420,7 +420,6 @@ public class MainActivity extends BaseComponentActivity {
                                 });
                     }
                 }
-
                 break;
             case R.id.tab_discover_root://发现
                 ft.show(tabDiscover).hide(tabHome).hide(tabSocial).hide(tabMine);
