@@ -12,7 +12,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,8 +29,7 @@ import java.util.List;
 /**
  * 组合放贷计算结果页面
  */
-public class CombinationLoanResultActivity extends AppCompatActivity {
-    private static final String TAG = "youmi-demo";
+public class CombinationLoanResultActivity extends AppCompatActivity implements View.OnClickListener {
 
     private double mortgage;                    //贷款总额
     private int time;                           //贷款时间
@@ -145,7 +143,6 @@ public class CombinationLoanResultActivity extends AppCompatActivity {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
                     showResult(inOneSum,inTwoSum);                       //9.显示结果
 
                     //等额本息的结果
@@ -170,7 +167,6 @@ public class CombinationLoanResultActivity extends AppCompatActivity {
         df = new DecimalFormat("#,###.0");
         progressDialog = ProgressDialog.show(CombinationLoanResultActivity.this, "", "正在计算...", false, true);
 
-        init();                     //0.初始化
         getData();                  //1.获得数据
         initViews();                //2.初始化控件
         initViewPager();            //3.设置ViewPager
@@ -191,19 +187,13 @@ public class CombinationLoanResultActivity extends AppCompatActivity {
         }).start();
     }
 
-    //0.初始化
-    public void init(){
-        //微信分享初始化
-        //有米
-        //获取要嵌入广告条的布局
-        LinearLayout bannerLayout = (LinearLayout)findViewById(R.id.ll_banner2);
-
-    }
-
     //1.获得数据
     public void getData(){
         //从前一个Activity传来的数据
         Bundle bundle = this.getIntent().getExtras();
+        if(bundle == null){
+            return;
+        }
         String mortgageString = bundle.getString("mortgage");                   //贷款总额
         String HAFMortgageString = bundle.getString("HAFMortgage");             //公积金贷款
         String commMortgageString = bundle.getString("commMortgage");           //商业贷款
@@ -312,6 +302,27 @@ public class CombinationLoanResultActivity extends AppCompatActivity {
         matrix.setTranslate(0, 0);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.tab_left:
+                viewPager.setCurrentItem(0);
+                clearTabState();
+                setSelectState(0);
+                break;
+            case R.id.tab_right:
+                viewPager.setCurrentItem(1);
+                clearTabState();
+                setSelectState(1);
+                break;
+            case R.id.navigate:
+                finish();
+                break;
+                default:
+                    break;
+        }
+    }
+
     //3-1.ViewPager的监听器
     public class PageChangeListener implements ViewPager.OnPageChangeListener{
         @Override
@@ -333,29 +344,9 @@ public class CombinationLoanResultActivity extends AppCompatActivity {
 
     //4.设置监听器
     public void setListeners(){
-        tabLeftContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(0);
-                clearTabState();
-                setSelectState(0);
-            }
-        });
-
-        tabRightContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(1);
-                clearTabState();
-                setSelectState(1);
-            }
-        });
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        tabLeftContainer.setOnClickListener(this);
+        tabRightContainer.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
     }
 
     /**

@@ -1,28 +1,19 @@
 package com.beihui.market.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +21,6 @@ import com.beihui.market.R;
 import com.beihui.market.entity.HouseLoanBean;
 import com.beihui.market.ui.adapter.houseloan.HouseLoanAdapter;
 import com.beihui.market.ui.adapter.houseloan.HouseLoanVPAdapter;
-import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.dialog.PopDialog;
 
 import java.util.ArrayList;
@@ -40,7 +30,7 @@ import java.util.List;
 /**
  * 商业贷款给和公积金贷款计算详情页面
  */
-public class HouseLoanCalculatorActivity extends AppCompatActivity implements View.OnClickListener{
+public class HouseLoanCalculatorActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView ivBack;
     private LinearLayout tabCommContainer;
@@ -73,18 +63,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private ImageView ivPaybackCombPrincipal;
 
     /**
-     * 商业贷款
-     */
-//    private TextView commercialLoanTextView;
-    /**
-     * 公积金贷款
-     */
-    private TextView HAFTextView;
-    /**
-     * 组合贷款
-     */
-    private TextView combinationTextView;
-    /**
      * 默认利率
      */
     private static final String DEFAULT_RATE = "4.90";//默认利率
@@ -105,23 +83,11 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      */
     private int currentItem = 0;
     /**
-     * 滑动控件标识
-     */
-//    private ImageView cursorImageView;
-    /**
-     * 滑动控件标识偏移量
-     */
-    private int offSet;
-    private Matrix matrix = new Matrix();
-    private Animation animation;
-
-    /**
      * 计算按钮
      */
     private TextView tvCalculate;
 
     //商业贷款部分
-    private Spinner CommPaybackMethodSpinner;
     private RelativeLayout rlYearContainer;
     private TextView tvYear;
 
@@ -130,8 +96,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     private Calendar CommCalendar;
     //动态添加的控件
-    private final static int COMM_CAPITAL = 0;
-    private int CommCalculationMethod = COMM_CAPITAL;
     private EditText CommMortgageEditText;          //按贷款金额计算
 
     /**
@@ -160,7 +124,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private int CommPaybackMethod = 0;                  //
 
     //公积金贷款部分
-    private Spinner HAFPaybackMethodSpinner;
     private RelativeLayout rlYearGJJContainer;
     private TextView tvYearGJJ;
 
@@ -169,8 +132,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     private Calendar HAFCalendar;
     //动态添加的控件
-    private final static int HAF_CAPITAL = 0;
-    private int HAFCalculationMethod = HAF_CAPITAL;
     private EditText HAFMortgageEditText;           //按贷款金额计算
 
     /**
@@ -199,7 +160,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private int HAFPaybackMethod = 0;
 
     //组合贷款部分
-    private Spinner CombPaybackMethodSpinner;
     private RelativeLayout rlYearZHContainer;
     private TextView tvZHYear;
     private LinearLayout llZHRate;
@@ -209,8 +169,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private Calendar CombCalendar;
 
     //动态添加的控件
-    private final static int COMB_CAPITAL = 0;
-    private int CombCalculationMethod = COMB_CAPITAL;
     //按贷款金额计算
     private EditText CombMortgageHAFEditText;                       //公积金贷款部分
     private EditText CombMortgageCommEditText;                      //商业贷款部分
@@ -225,9 +183,11 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private int CombFirstMonth;
     private int CombPaybackMethod = 0;                  //还款方式（等额本息、等额本金）
 
-    String[] rateString = {"基准利率(4.95)","基准利率7折(3.43%)","基准利率85折(4.165%)","基准利率88折(4.312%)",
-            "基准利率9折(4.41%)","基准利率1.1折(5.39%)","基准利率1.2折(5.88%)","基准利率1.3折(6.37%)"};
-    Double[] rates = {4.95,3.43,4.165,4.312,4.41,5.39,5.88,6.37};
+    List<HouseLoanBean> yearList;
+
+    String[] rateString = {"基准利率(4.95)", "基准利率7折(3.43%)", "基准利率85折(4.165%)", "基准利率88折(4.312%)",
+            "基准利率9折(4.41%)", "基准利率1.1折(5.39%)", "基准利率1.2折(5.88%)", "基准利率1.3折(6.37%)"};
+    Double[] rates = {4.95, 3.43, 4.165, 4.312, 4.41, 5.39, 5.88, 6.37};
     final List<HouseLoanBean> rateLists = new ArrayList<>();
 
     @Override
@@ -237,29 +197,26 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         initViews();
         initViewPager();
         setListeners();
-        initSpinner();
+        initPopWindow();
     }
 
     //1.初始化Views
-    public void initViews(){
+    public void initViews() {
         ivBack = findViewById(R.id.navigate);
 
         tabCommContainer = findViewById(R.id.tab_comm);
         tvCommTab = findViewById(R.id.tv_commb_tab);
         indicateComm = findViewById(R.id.indicate_comm);
 
-
         tabHafContainer = findViewById(R.id.tab_haf);
         tvHafTab = findViewById(R.id.tv_HAF_tab);
         indicateHaf = findViewById(R.id.indicate_haf);
-
 
         tabCombContainer = findViewById(R.id.tab_comb);
         tvCombTab = findViewById(R.id.tv_comb_tab);
         indicateComb = findViewById(R.id.indicate_comb);
 
-
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         tvCalculate = findViewById(R.id.tv_calculate);
 
         CommCalendar = Calendar.getInstance();
@@ -276,7 +233,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     }
 
     //2.初始化ViewPager
-    public void initViewPager(){
+    public void initViewPager() {
         viewList = new ArrayList<View>();
         LayoutInflater layoutInflater = getLayoutInflater().from(this);
 
@@ -286,44 +243,41 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         View combinationView = layoutInflater.inflate(R.layout.viewpager_main_combination, null);
 
         //商业贷款页面控件
-        CommPaybackMethodSpinner = (Spinner)commercialLoanView.findViewById(R.id.Commercial_PaybackMethod_Spinner);
         rlYearContainer = commercialLoanView.findViewById(R.id.rl_year_container);
         tvYear = commercialLoanView.findViewById(R.id.tv_year);
         llSYRateContainer = commercialLoanView.findViewById(R.id.ll_sy_rate_container);
         tvSYRate = commercialLoanView.findViewById(R.id.tv_sy_rate);
-        CommMortgageEditText = (EditText)commercialLoanView.findViewById(R.id.Commercial_MortgageEditText);
+        CommMortgageEditText = commercialLoanView.findViewById(R.id.Commercial_MortgageEditText);
 
         paybackCommInterestContainer = commercialLoanView.findViewById(R.id.ll_comm_payback_interest);
-        paybackCommPrincipalContainer = commercialLoanView.findViewById(R.id.ll_comm_payback_interest);
+        paybackCommPrincipalContainer = commercialLoanView.findViewById(R.id.ll_comm_payback_principal);
         ivPaybackCommInterest = commercialLoanView.findViewById(R.id.iv_comm_payback_interest);
         ivPaybackCommPrincipal = commercialLoanView.findViewById(R.id.iv_comm_payback_principal);
 
         //公积金贷款页面
-        HAFPaybackMethodSpinner = (Spinner)HAFView.findViewById(R.id.HAF_PaybackMethod_Spinner);
         rlYearGJJContainer = HAFView.findViewById(R.id.rl_gjj_year_container);
         tvYearGJJ = HAFView.findViewById(R.id.tv_gjj_year);
         llGJJRateContainer = HAFView.findViewById(R.id.ll_gjj_rate_container);
         tvGJJRate = HAFView.findViewById(R.id.tv_gjj_rate);
-        HAFMortgageEditText = (EditText)HAFView.findViewById(R.id.HAF_MortgageEditText);
+        HAFMortgageEditText = HAFView.findViewById(R.id.HAF_MortgageEditText);
 
         paybackHafInterestContainer = HAFView.findViewById(R.id.ll_haf_payback_interest);
-        paybackHafPrincipalContainer = HAFView.findViewById(R.id.ll_haf_payback_interest);
+        paybackHafPrincipalContainer = HAFView.findViewById(R.id.ll_haf_payback_principal);
         ivPaybackHafInterest = HAFView.findViewById(R.id.iv_haf_payback_interest);
         ivPaybackHafPrincipal = HAFView.findViewById(R.id.iv_haf_payback_principal);
 
         //组合贷款页面
-        CombPaybackMethodSpinner = (Spinner)combinationView.findViewById(R.id.Combination_PaybackMethod_Spinner);
         rlYearZHContainer = combinationView.findViewById(R.id.rl_zh_year_container);
         tvZHYear = combinationView.findViewById(R.id.tv_zh_year);
         llZHGJJRate = combinationView.findViewById(R.id.ll_zh_gjj_rate_container);
         tvZHGJJRate = combinationView.findViewById(R.id.tv_zh_gjj_rate);
         llZHRate = combinationView.findViewById(R.id.ll_zh_rate_container);
         tvZHRate = combinationView.findViewById(R.id.tv_zh_rate);
-        CombMortgageHAFEditText = (EditText)combinationView.findViewById(R.id.Combination_Mortgage_HAF_EditText);
-        CombMortgageCommEditText = (EditText)combinationView.findViewById(R.id.Combination_Mortgage_Comm_EditText);
+        CombMortgageHAFEditText = combinationView.findViewById(R.id.Combination_Mortgage_HAF_EditText);
+        CombMortgageCommEditText = combinationView.findViewById(R.id.Combination_Mortgage_Comm_EditText);
 
         paybackCombInterestContainer = combinationView.findViewById(R.id.ll_comb_payback_interest);
-        paybackCombPrincipalContainer = combinationView.findViewById(R.id.ll_comb_payback_interest);
+        paybackCombPrincipalContainer = combinationView.findViewById(R.id.ll_comb_payback_principal);
         ivPaybackCombInterest = combinationView.findViewById(R.id.iv_comb_payback_interest);
         ivPaybackCombPrincipal = combinationView.findViewById(R.id.iv_comb_payback_principal);
 
@@ -335,15 +289,10 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(currentItem);
         viewPager.setOnPageChangeListener(new PageChangeListener());        //2-1.ViewPager的监听器
-
-        //设置光标
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        offSet = displayMetrics.widthPixels / 3;         //每个标题的宽度（720/3=240）
-        matrix.setTranslate(0, 0);
     }
 
     //3.设置监听器
-    public void setListeners(){
+    public void setListeners() {
         tabCommContainer.setOnClickListener(this);
         tabHafContainer.setOnClickListener(this);
         tabCombContainer.setOnClickListener(this);
@@ -363,12 +312,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         ivPaybackCombPrincipal.setOnClickListener(this);
 
         tvCalculate.setOnClickListener(this);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        ivBack.setOnClickListener(this);
     }
 
     /**
@@ -394,38 +338,36 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 检验组合贷款填写是否合格
-     * @return
+     *
+     * @return 是否通过
      */
     private boolean checkGroupLoan() {
-//        if (CombCalculationMethod == COMB_CAPITAL){
-            CombMortgageHAF = CombMortgageHAFEditText.getText().toString();
-            CombMortgageComm = CombMortgageCommEditText.getText().toString();
-            if(TextUtils.isEmpty(CombMortgageHAF)){
-                Toast.makeText(HouseLoanCalculatorActivity.this,"请填写公积金贷款金额", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(TextUtils.isEmpty(CombMortgageComm)){
-                Toast.makeText(HouseLoanCalculatorActivity.this,"请填商贷金额", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            double sum = Double.valueOf(CombMortgageHAF) + Double.valueOf(CombMortgageComm);
-            CombPay = String.valueOf(sum);
-//        }
-
-        if (Double.valueOf(CombMortgageHAF) == 0){
-            Toast.makeText(HouseLoanCalculatorActivity.this,"公积金贷款金额不能为0", Toast.LENGTH_SHORT).show();
+        CombMortgageHAF = CombMortgageHAFEditText.getText().toString();
+        CombMortgageComm = CombMortgageCommEditText.getText().toString();
+        if (TextUtils.isEmpty(CombMortgageHAF)) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "请填写公积金贷款金额", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(CombMortgageComm)) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "请填商贷金额", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        double sum = Double.valueOf(CombMortgageHAF) + Double.valueOf(CombMortgageComm);
+        CombPay = String.valueOf(sum);
+        if (Double.valueOf(CombMortgageHAF) == 0) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "公积金贷款金额不能为0", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if(TextUtils.isEmpty(CombTime)){
+        if (TextUtils.isEmpty(CombTime)) {
             CombTime = DEFAULT_YEAR;
         }
 
-        if(TextUtils.isEmpty(CombHAFRate)){
+        if (TextUtils.isEmpty(CombHAFRate)) {
             CombHAFRate = DEFAULT_RATE;
         }
 
-        if(TextUtils.isEmpty(CombCommRate)){
+        if (TextUtils.isEmpty(CombCommRate)) {
             CombCommRate = DEFAULT_RATE;
         }
         return true;
@@ -452,28 +394,26 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 检查公积金贷款是否合格
-     * @return
+     *
+     * @return 是否通过
      */
     private boolean checkGongjijinLoan() {
-//        if (HAFCalculationMethod == HAF_CAPITAL){
-            HAFMortgage = HAFMortgageEditText.getText().toString();
-//        }
-
-        if(TextUtils.isEmpty(HAFMortgage)){
-            Toast.makeText(HouseLoanCalculatorActivity.this,"请填写贷款金额", Toast.LENGTH_SHORT).show();
+        HAFMortgage = HAFMortgageEditText.getText().toString();
+        if (TextUtils.isEmpty(HAFMortgage)) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "请填写贷款金额", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (Double.valueOf(HAFMortgage) == 0){
-            Toast.makeText(HouseLoanCalculatorActivity.this,"贷款金额不能为0", Toast.LENGTH_SHORT).show();
+        if (Double.valueOf(HAFMortgage) == 0) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "贷款金额不能为0", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if(TextUtils.isEmpty(HAFTime)){
+        if (TextUtils.isEmpty(HAFTime)) {
             HAFTime = DEFAULT_YEAR;
         }
 
-        if(TextUtils.isEmpty(HAFRate)){
+        if (TextUtils.isEmpty(HAFRate)) {
             HAFRate = DEFAULT_RATE;
         }
         return true;
@@ -502,31 +442,27 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * 检验商业贷款填写是否合格
      */
     private boolean checkCommercialLoan() {
-//        if (CommCalculationMethod == COMM_CAPITAL){
-            CommMortgage = CommMortgageEditText.getText().toString();
-//        }
-        if(TextUtils.isEmpty(CommMortgage)){
-            Toast.makeText(HouseLoanCalculatorActivity.this,"请填写贷款金额", Toast.LENGTH_SHORT).show();
+        CommMortgage = CommMortgageEditText.getText().toString();
+        if (TextUtils.isEmpty(CommMortgage)) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "请填写贷款金额", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(TextUtils.isEmpty(CommRate)){
+        if (TextUtils.isEmpty(CommRate)) {
             CommRate = DEFAULT_RATE;
         }
-        if(TextUtils.isEmpty(CommTime)){
+        if (TextUtils.isEmpty(CommTime)) {
             CommTime = DEFAULT_YEAR;
         }
 
-        if (Double.valueOf(CommMortgage) == 0){
-            Toast.makeText(HouseLoanCalculatorActivity.this,"贷款金额不能为0", Toast.LENGTH_SHORT).show();
+        if (Double.valueOf(CommMortgage) == 0) {
+            Toast.makeText(HouseLoanCalculatorActivity.this, "贷款金额不能为0", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
 
-    //4.设置Spinner
-    public void initSpinner(){
-        //还款方式的下拉菜单
-//        initPaybackMethods();
+    //4.设置弹窗
+    public void initPopWindow() {
         //装载商业贷款年限菜单
         initLoanYear();
         //利率菜单
@@ -538,13 +474,13 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      */
     private void initLoanRate() {
         int size = rates.length;
-        for(int i = 0 ; i <size;i++){
+        for (int i = 0; i < size; i++) {
             HouseLoanBean bean = new HouseLoanBean();
             bean.setContent(rateString[i]);
             bean.setRate(rates[i]);
-            if(i == 0){
+            if (i == 0) {
                 bean.setSelect(true);
-            }else{
+            } else {
                 bean.setSelect(false);
             }
             rateLists.add(bean);
@@ -558,11 +494,12 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 显示利率弹窗
-     * @param rateList
-     * @param type
+     *
+     * @param rateList 利率data
+     * @param type 利率类型
      */
     private void showRateDialog(final List<HouseLoanBean> rateList, final int type) {
-        PopDialog mDialog = new PopDialog.Builder(getSupportFragmentManager(),HouseLoanCalculatorActivity.this)
+        PopDialog mDialog = new PopDialog.Builder(getSupportFragmentManager(), HouseLoanCalculatorActivity.this)
                 .setLayoutId(R.layout.dialog_house_loan_rate)
                 .setCancelableOutside(true)
                 .setGravity(Gravity.BOTTOM)
@@ -570,8 +507,8 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                     @Override
                     public void initPop(View view, final PopDialog dialog) {
                         //此处可以设置文字的大小、颜色，按钮点击事件
-                        initRateList(view,type,rateList,dialog);
-                        initCustomRate(view,type,rateList,dialog);
+                        initRateList(view, type, rateList, dialog);
+                        initCustomRate(view, type, dialog);
                     }
                 })
                 .create();
@@ -580,34 +517,36 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 装载弹窗自定义利率
-     * @param view
-     * @param type
-     * @param rateList
-     * @param dialog
+     *
+     * @param view 利率弹窗控件
+     * @param type 利率类型
+     * @param dialog 弹窗引用
      */
-    private void initCustomRate(View view, final int type, List<HouseLoanBean> rateList, final PopDialog dialog) {
+    private void initCustomRate(View view, final int type, final PopDialog dialog) {
         final EditText etRate = view.findViewById(R.id.et_rate);
         TextView tvEnsure = view.findViewById(R.id.tv_ensure);
         tvEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (type){
+                switch (type) {
                     case 1://商业
-                        CommRate = etRate.getText().toString()+"";
-                        tvSYRate.setText("基准利率("+CommRate+"%)");
+                        CommRate = etRate.getText().toString() + "";
+                        tvSYRate.setText("基准利率(" + CommRate + "%)");
                         break;
                     case 2://公积金
-                        HAFRate = etRate.getText().toString()+"";
-                        tvGJJRate.setText("基准利率("+HAFRate+"%)");
+                        HAFRate = etRate.getText().toString() + "";
+                        tvGJJRate.setText("基准利率(" + HAFRate + "%)");
                         break;
                     case 3:
-                        CombHAFRate = etRate.getText().toString()+"";
-                        tvZHGJJRate.setText("基准利率("+CombHAFRate+"%)");
+                        CombHAFRate = etRate.getText().toString() + "";
+                        tvZHGJJRate.setText("基准利率(" + CombHAFRate + "%)");
                         break;
                     case 4:
                         CombCommRate = etRate.getText().toString();
-                        tvZHRate.setText("基准利率("+CombCommRate+"%)");
+                        tvZHRate.setText("基准利率(" + CombCommRate + "%)");
                         break;
+                        default:
+                            break;
                 }
                 dialog.dismiss();
             }
@@ -616,10 +555,11 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 装载弹窗利率列表
-     * @param view
-     * @param type
-     * @param rateList
-     * @param dialog
+     *
+     * @param view 利率弹窗控件
+     * @param type 贷款类型
+     * @param rateList 利率data
+     * @param dialog 弹窗引用
      */
     private void initRateList(View view, final int type, List<HouseLoanBean> rateList, final PopDialog dialog) {
         RecyclerView rateRecycler = view.findViewById(R.id.rate_recycler);
@@ -633,22 +573,22 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         adapter.setOnItemClickListener(new HouseLoanAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(HouseLoanBean bean) {
-                switch (type){
+                switch (type) {
                     case 1://商业贷款
-                        CommRate = bean.getRate()+"";
-                        tvSYRate.setText(bean.getContent()+"");
+                        CommRate = bean.getRate() + "";
+                        tvSYRate.setText(bean.getContent());
                         break;
                     case 2://公积金贷款
-                        CombHAFRate = bean.getRate()+"";
-                        tvGJJRate.setText(bean.getContent()+"");
+                        CombHAFRate = bean.getRate() + "";
+                        tvGJJRate.setText(bean.getContent());
                         break;
                     case 3://组合贷款-公积金
-                        CombHAFRate = bean.getRate()+"";
-                        tvZHGJJRate.setText(bean.getContent()+"");
+                        CombHAFRate = bean.getRate() + "";
+                        tvZHGJJRate.setText(bean.getContent());
                         break;
                     case 4://组合贷款-商贷
-                        CombCommRate = bean.getRate()+"";
-                        tvZHRate.setText(bean.getContent()+"");
+                        CombCommRate = bean.getRate() + "";
+                        tvZHRate.setText(bean.getContent());
                         break;
                     default:
                         break;
@@ -662,50 +602,31 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * 装载年限
      */
     private void initLoanYear() {
-        Integer[] mYears = new Integer[6];
-        int yearSize = mYears.length;
-        final List<HouseLoanBean> yearList = new ArrayList<>();
-        for(int i = 0;i < yearSize;i++){
+        yearList = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
             HouseLoanBean bean = new HouseLoanBean();
-            bean.setContent( (i+1) * 5 +"年 ("+(i+1)*12+"期)");
-            bean.setValue((i+1) * 5);
-            if(i == 5){
+            bean.setContent((i + 1) * 5 + "年 (" + (i + 1) * 12 + "期)");
+            bean.setValue((i + 1) * 5);
+            if (i == 5) {
                 bean.setSelect(true);
-            }else{
+            } else {
                 bean.setSelect(false);
             }
             yearList.add(bean);
         }
 
-        rlYearContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                showYearDialog(yearList,1);
-            }
-        });
-
-        rlYearGJJContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showYearDialog(yearList,2);
-            }
-        });
-
-        rlYearZHContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showYearDialog(yearList,3);
-            }
-        });
-
+        rlYearContainer.setOnClickListener(this);
+        rlYearGJJContainer.setOnClickListener(this);
+        rlYearZHContainer.setOnClickListener(this);
     }
 
     /**
      * 显示年限弹窗
-     * @param yearList
+     *
+     * @param yearList 贷款年限data
      */
     private void showYearDialog(final List<HouseLoanBean> yearList, final int type) {
-        PopDialog mDialog = new PopDialog.Builder(getSupportFragmentManager(),HouseLoanCalculatorActivity.this)
+        PopDialog mDialog = new PopDialog.Builder(getSupportFragmentManager(), HouseLoanCalculatorActivity.this)
                 .setLayoutId(R.layout.dialog_house_loan_year)
                 .setCancelableOutside(true)
                 .setGravity(Gravity.BOTTOM)
@@ -724,21 +645,21 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                         adapter.setOnItemClickListener(new HouseLoanAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(HouseLoanBean bean) {
-                                switch (type){
+                                switch (type) {
                                     case 1:
                                         CommTime = String.valueOf(bean.getValue());
-                                        tvYear.setText(CommTime+"年"+(bean.getValue()*12)+"");
+                                        tvYear.setText(CommTime + "年(" + (bean.getValue() * 12) + "期)");
                                         break;
                                     case 2:
                                         HAFTime = String.valueOf(bean.getValue());
-                                        tvYearGJJ.setText(HAFTime+"年"+(bean.getValue()*12)+"");
+                                        tvYearGJJ.setText(HAFTime + "年(" + (bean.getValue() * 12) + "期)");
                                         break;
                                     case 3:
                                         CombTime = String.valueOf(bean.getValue());
-                                        tvZHYear.setText(CombTime+"年"+(bean.getValue()*12)+"");
+                                        tvZHYear.setText(CombTime + "年(" + (bean.getValue() * 12) + "期)");
                                         break;
-                                        default:
-                                            break;
+                                    default:
+                                        break;
                                 }
                                 dialog.dismiss();
                             }
@@ -751,20 +672,37 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_sy_rate_container:
-                showRateDialog(rateLists,1);//商业贷款
-                break;
-            case R.id.ll_gjj_rate_container:
-                showRateDialog(rateLists,2);//公积金贷款
-                break;
-            case R.id.ll_zh_gjj_rate_container:
-                showRateDialog(rateLists,3);//组合贷款-公积金贷款
-                break;
-            case R.id.ll_zh_rate_container:
-                showRateDialog(rateLists,4);//组合贷款-商业贷款
+        switch (v.getId()) {
+            case R.id.navigate:
+                finish();
                 break;
 
+                /*贷款年限*/
+            case R.id.rl_year_container:
+                showYearDialog(yearList, 1);
+                break;
+            case R.id.rl_gjj_year_container:
+                showYearDialog(yearList, 2);
+                break;
+            case R.id.rl_zh_year_container:
+                showYearDialog(yearList, 3);
+                break;
+
+                /*贷款利率*/
+            case R.id.ll_sy_rate_container:
+                showRateDialog(rateLists, 1);//商业贷款
+                break;
+            case R.id.ll_gjj_rate_container:
+                showRateDialog(rateLists, 2);//公积金贷款
+                break;
+            case R.id.ll_zh_gjj_rate_container:
+                showRateDialog(rateLists, 3);//组合贷款-公积金贷款
+                break;
+            case R.id.ll_zh_rate_container:
+                showRateDialog(rateLists, 4);//组合贷款-商业贷款
+                break;
+
+                /*Tab*/
             case R.id.tab_comm://商业贷款
                 viewPager.setCurrentItem(0);
                 clearTabState();
@@ -784,7 +722,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                 currentItem = 2;
                 break;
 
-                /*商业贷款方式*/
+            /*商业贷款方式*/
             case R.id.iv_comm_payback_interest:
                 ivPaybackCommInterest.setBackgroundResource(R.drawable.btn_on);
                 ivPaybackCommPrincipal.setBackgroundResource(R.drawable.btn_off);
@@ -806,7 +744,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                 ivPaybackHafPrincipal.setBackgroundResource(R.drawable.btn_on);
                 HAFPaybackMethod = 1;
                 break;
-                /*组合贷款方式*/
+            /*组合贷款方式*/
             case R.id.iv_comb_payback_interest:
                 ivPaybackCombInterest.setBackgroundResource(R.drawable.btn_on);
                 ivPaybackCombPrincipal.setBackgroundResource(R.drawable.btn_off);
@@ -817,23 +755,20 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                 ivPaybackCombPrincipal.setBackgroundResource(R.drawable.btn_on);
                 CombPaybackMethod = 1;
                 break;
-                /*开始计算*/
+
+            /*开始计算*/
             case R.id.tv_calculate:
                 startCalculation();
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
-    }
-
-    private void setPaybackState(ImageView imageView){
-
     }
 
     /**
      * 清除Tab状态
      */
-    private void clearTabState(){
+    private void clearTabState() {
         tvCommTab.setTextColor(getResources().getColor(R.color.c_909298));
         tvHafTab.setTextColor(getResources().getColor(R.color.c_909298));
         tvCombTab.setTextColor(getResources().getColor(R.color.c_909298));
@@ -849,10 +784,11 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 设置Tab选中状态
-     * @param position
+     *
+     * @param position tab位置
      */
-    private void setSelectState(int position){
-        switch (position){
+    private void setSelectState(int position) {
+        switch (position) {
             case 0:
                 tvCommTab.setTextColor(getResources().getColor(R.color.c_ff5240));
                 indicateComm.setBackgroundColor(getResources().getColor(R.color.c_ff5240));
@@ -868,8 +804,8 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                 indicateComb.setBackgroundColor(getResources().getColor(R.color.c_ff5240));
                 indicateComb.setVisibility(View.VISIBLE);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -877,32 +813,34 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * 开始计算
      */
     private void startCalculation() {
-        switch (currentItem){
+        switch (currentItem) {
             case 0:
                 //按贷款金额计算
-                if(checkCommercialLoan()){
+                if (checkCommercialLoan()) {
                     toResultActivity();
                 }
                 break;
             case 1:
                 //按贷款金额计算
-                if(checkGongjijinLoan()){
+                if (checkGongjijinLoan()) {
                     toResult2Activity();
                 }
                 break;
             case 2:
                 //按贷款金额计算
-                if(checkGroupLoan()){
+                if (checkGroupLoan()) {
                     toResult3Activity();
                 }
                 break;
+                default:
+                    break;
         }
     }
 
     /**
      * ViewPager监听器
      */
-    public class PageChangeListener implements ViewPager.OnPageChangeListener{
+    public class PageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

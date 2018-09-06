@@ -27,8 +27,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommerceLoanResultActivity extends AppCompatActivity {
-    private static final String TAG = "youmi-demo";
+public class CommerceLoanResultActivity extends AppCompatActivity implements View.OnClickListener {
 
     private double mortgage;
     private int time;
@@ -234,29 +233,9 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
 
     //4.设置监听器
     public void setListeners() {
-        tabLeftContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(0);
-                clearTabState();
-                setSelectState(0);
-            }
-        });
-
-        tabRightContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(1);
-                clearTabState();
-                setSelectState(1);
-            }
-        });
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        tabLeftContainer.setOnClickListener(this);
+        tabRightContainer.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
     }
 
     /**
@@ -339,6 +318,27 @@ public class CommerceLoanResultActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         offSet = displayMetrics.widthPixels / 2;                            //每个标题的宽度（720/2=360）
         matrix.setTranslate(0, 0);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.tab_left:
+                viewPager.setCurrentItem(0);
+                clearTabState();
+                setSelectState(0);
+                break;
+            case R.id.tab_right:
+                viewPager.setCurrentItem(1);
+                clearTabState();
+                setSelectState(1);
+                break;
+            case R.id.navigate:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     //3-1.ViewPager的监听器
