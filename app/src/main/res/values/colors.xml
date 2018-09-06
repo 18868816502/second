@@ -118,4 +118,11 @@
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
     <color name="withdraw_success">#23b448</color>
+
+
+    <!--house loan-->
+    <color name="c_909298">#909298</color>
+    <color name="c_fff5f5f5">#fff5f5f5</color>
+    <color name="c_ffe8e8e8">#ffe8e8e8</color>
+
 </resources>

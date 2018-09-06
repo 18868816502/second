@@ -10,6 +10,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.activity.CreditQueryActivity;
 import com.beihui.market.tang.activity.TicketActivity;
+import com.beihui.market.ui.activity.HouseLoanCalculatorActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ToastUtil;
@@ -69,7 +70,8 @@ public class SocialFragment extends BaseComponentFragment {
                 startActivity(new Intent(getActivity(), CreditQueryActivity.class));
                 break;
             case R.id.clb_interest_wrap:
-                ToastUtil.toast("敬请期待...");
+//                ToastUtil.toast("敬请期待...");
+                startActivity(new Intent(getActivity(), HouseLoanCalculatorActivity.class));
                 break;
             case R.id.clb_ticket_wrap:
                 startActivity(new Intent(getActivity(), TicketActivity.class));

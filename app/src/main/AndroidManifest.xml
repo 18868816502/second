@@ -501,5 +501,15 @@
         <activity
             android:name=".ui.activity.GuideInviteActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.HouseLoanCalculatorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CommerceLoanResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CombinationLoanResultActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/tv_year_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center"
+        android:text="选择贷款年限"
+        android:textSize="16sp"
+        android:textColor="@color/pickerview_title"
+        android:background="@color/white"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/year_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_year_title"
+        android:background="@color/colorBackground"/>
+
+</LinearLayout>

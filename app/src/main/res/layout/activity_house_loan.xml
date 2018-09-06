@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HouseLoanCalculatorActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/navigate"
+            style="@style/ToolBarIconStyle"
+            android:src="@mipmap/left_arrow_black"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="放贷计算器"
+            android:textSize="16sp"
+            android:textColor="@color/black_1"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_below="@id/tool_bar">
+
+        <LinearLayout
+            android:id="@+id/tab_comm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_commb_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="商业贷款"
+                android:textSize="14sp"
+                android:textColor="@color/c_909298"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <View
+                android:id="@+id/indicate_comm"
+                android:layout_width="30dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/c_ff5240"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_haf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_HAF_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="公积金贷款"
+                android:textSize="14sp"
+                android:textColor="@color/c_909298"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <View
+                android:id="@+id/indicate_haf"
+                android:layout_width="30dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/c_ff5240"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_comb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_comb_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/c_909298"
+                android:gravity="center"
+                android:text="组合贷款"
+                android:layout_weight="1"/>
+            <View
+                android:id="@+id/indicate_comb"
+                android:layout_width="30dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/c_ff5240"
+                android:visibility="gone"/>
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    <View
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/c_fff5f5f5"
+        android:layout_below="@id/layout"/>
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/space"
+        android:layout_above="@+id/tv_calculate"
+        android:background="@color/white">
+    </android.support.v4.view.ViewPager>
+
+        <TextView
+            android:id="@+id/tv_calculate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shape_house_loan_btn"
+            android:gravity="center"
+            android:text="开始计算"
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
+</RelativeLayout>
