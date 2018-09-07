@@ -66,11 +66,10 @@ public class SocialFragment extends BaseComponentFragment {
         }
         switch (view.getId()) {
             case R.id.clb_credit_wrap:
-                //ToastUtil.toast("敬请期待...");
-                startActivity(new Intent(getActivity(), CreditQueryActivity.class));
+                ToastUtil.toast("敬请期待...");
+                //startActivity(new Intent(getActivity(), CreditQueryActivity.class));
                 break;
             case R.id.clb_interest_wrap:
-//                ToastUtil.toast("敬请期待...");
                 startActivity(new Intent(getActivity(), HouseLoanCalculatorActivity.class));
                 break;
             case R.id.clb_ticket_wrap:

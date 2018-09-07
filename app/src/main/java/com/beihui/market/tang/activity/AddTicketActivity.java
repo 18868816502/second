@@ -105,7 +105,7 @@ public class AddTicketActivity extends BaseComponentActivity {
 
         cet_company_name.setMaxLenght(20);
         cet_tax_no.setMaxLenght(20);
-        cet_company_address.setMaxLenght(20);
+        cet_company_address.setMaxLenght(40);
         cet_phone_no.setMaxLenght(20);
         cet_bank_name.setMaxLenght(20);
         cet_bank_account.setMaxLenght(20);
