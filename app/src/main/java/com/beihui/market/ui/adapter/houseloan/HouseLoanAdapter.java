@@ -41,9 +41,9 @@ public class HouseLoanAdapter extends RecyclerView.Adapter {
         viewHolder.tvContent.setText(mList.get(position).getContent());
         boolean isSelect = mList.get(position).isSelect();
         if(isSelect){
-
+            viewHolder.imgSelect.setVisibility(View.VISIBLE);
         }else{
-
+            viewHolder.imgSelect.setVisibility(View.GONE);
         }
         viewHolder.itemView.setTag(position);
     }
@@ -66,7 +66,7 @@ public class HouseLoanAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     int position = (int) v.getTag();
-                    listener.onItemClick(mList.get(position));
+                    listener.onItemClick(mList.get(position),position);
                 }
             });
         }
@@ -79,6 +79,6 @@ public class HouseLoanAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener{
-        void onItemClick(HouseLoanBean bean);
+        void onItemClick(HouseLoanBean bean,int position);
     }
 }

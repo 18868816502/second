@@ -183,9 +183,9 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private int CombFirstMonth;
     private int CombPaybackMethod = 0;                  //还款方式（等额本息、等额本金）
 
-    List<HouseLoanBean> yearList;
+    List<HouseLoanBean> yearLists;
 
-    String[] rateString = {"基准利率(4.95)", "基准利率7折(3.43%)", "基准利率85折(4.165%)", "基准利率88折(4.312%)",
+    String[] rateString = {"基准利率(4.95%)", "基准利率7折(3.43%)", "基准利率85折(4.165%)", "基准利率88折(4.312%)",
             "基准利率9折(4.41%)", "基准利率1.1折(5.39%)", "基准利率1.2折(5.88%)", "基准利率1.3折(6.37%)"};
     Double[] rates = {4.95, 3.43, 4.165, 4.312, 4.41, 5.39, 5.88, 6.37};
     final List<HouseLoanBean> rateLists = new ArrayList<>();
@@ -528,6 +528,9 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         tvEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for(int i = 0;i<rateLists.size();i++){
+                    rateLists.get(i).setSelect(false);
+                }
                 switch (type) {
                     case 1://商业
                         CommRate = etRate.getText().toString() + "";
@@ -561,9 +564,9 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * @param rateList 利率data
      * @param dialog 弹窗引用
      */
-    private void initRateList(View view, final int type, List<HouseLoanBean> rateList, final PopDialog dialog) {
+    private void initRateList(View view, final int type, final List<HouseLoanBean> rateList, final PopDialog dialog) {
         RecyclerView rateRecycler = view.findViewById(R.id.rate_recycler);
-        HouseLoanAdapter adapter = new HouseLoanAdapter(HouseLoanCalculatorActivity.this);
+        final HouseLoanAdapter adapter = new HouseLoanAdapter(HouseLoanCalculatorActivity.this);
         adapter.setList(rateList);
         LinearLayoutManager manager = new LinearLayoutManager(HouseLoanCalculatorActivity.this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -572,7 +575,12 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         adapter.notifyDataSetChanged();
         adapter.setOnItemClickListener(new HouseLoanAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(HouseLoanBean bean) {
+            public void onItemClick(HouseLoanBean bean,int position) {
+                for(int i = 0;i<rateLists.size();i++){
+                    rateLists.get(i).setSelect(false);
+                }
+                rateLists.get(position).setSelect(true);
+                adapter.notifyDataSetChanged();
                 switch (type) {
                     case 1://商业贷款
                         CommRate = bean.getRate() + "";
@@ -602,7 +610,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * 装载年限
      */
     private void initLoanYear() {
-        yearList = new ArrayList<>();
+        yearLists = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             HouseLoanBean bean = new HouseLoanBean();
             bean.setContent((i + 1) * 5 + "年 (" + (i + 1) * 12 + "期)");
@@ -612,7 +620,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
             } else {
                 bean.setSelect(false);
             }
-            yearList.add(bean);
+            yearLists.add(bean);
         }
 
         rlYearContainer.setOnClickListener(this);
@@ -635,7 +643,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                     public void initPop(View view, final PopDialog dialog) {
                         //此处可以设置文字的大小、颜色，按钮点击事件
                         RecyclerView yearRecycler = view.findViewById(R.id.year_recycler);
-                        HouseLoanAdapter adapter = new HouseLoanAdapter(HouseLoanCalculatorActivity.this);
+                        final HouseLoanAdapter adapter = new HouseLoanAdapter(HouseLoanCalculatorActivity.this);
                         adapter.setList(yearList);
                         LinearLayoutManager manager = new LinearLayoutManager(HouseLoanCalculatorActivity.this);
                         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -644,7 +652,12 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                         adapter.notifyDataSetChanged();
                         adapter.setOnItemClickListener(new HouseLoanAdapter.OnItemClickListener() {
                             @Override
-                            public void onItemClick(HouseLoanBean bean) {
+                            public void onItemClick(HouseLoanBean bean,int position) {
+                                for(int i = 0;i<yearLists.size();i++){
+                                    yearLists.get(i).setSelect(false);
+                                }
+                                yearLists.get(position).setSelect(true);
+                                adapter.notifyDataSetChanged();
                                 switch (type) {
                                     case 1:
                                         CommTime = String.valueOf(bean.getValue());
@@ -679,13 +692,13 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
                 /*贷款年限*/
             case R.id.rl_year_container:
-                showYearDialog(yearList, 1);
+                showYearDialog(yearLists, 1);
                 break;
             case R.id.rl_gjj_year_container:
-                showYearDialog(yearList, 2);
+                showYearDialog(yearLists, 2);
                 break;
             case R.id.rl_zh_year_container:
-                showYearDialog(yearList, 3);
+                showYearDialog(yearLists, 3);
                 break;
 
                 /*贷款利率*/
