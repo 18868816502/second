@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.beihui.market.App;
+import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentActivity;
@@ -81,6 +83,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
     private String realName, idNo, phoneNo, authCode;
     private Map<String, Object> map = new HashMap<>();
     private TimeCounter timeCounter = new TimeCounter(60 * 1000, 1000);
+    private String webViewUrl = "";
 
     @Override
     public int getLayoutId() {
@@ -142,7 +145,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (timeCounter != null) timeCounter.cancel();
+        if (timeCounter != null) timeCounter.onFinish();
     }
 
     @Override
@@ -174,14 +177,25 @@ public class CreditQueryActivity extends BaseComponentActivity {
                 map.put("idCard", idNo);
                 map.put("phone", phoneNo);
                 map.put("verifyCode", authCode);
-                Api.getInstance().queryCredit(map)
+
+                Intent intent = new Intent(CreditQueryActivity.this, CreditResultActivity.class);
+                intent.putExtra("webViewUrl", generateUrl(1));
+                intent.putExtra("title", "信用查询");
+                startActivity(intent);
+
+
+                /*Api.getInstance().queryCredit(map)
                         .compose(RxResponse.<BlackList>compatT())
                         .subscribe(new ApiObserver<BlackList>() {
                             @Override
                             public void onNext(@NonNull BlackList data) {
-                                ToastUtil.toast("是否黑名单：" + (data.getBlackList() == 1));//黑名单用户 0-否 1-是
+                                Intent intent = new Intent(CreditQueryActivity.this, CreditResultActivity.class);
+                                intent.putExtra("webViewUrl", generateUrl(data.getBlackList()));
+                                intent.putExtra("title", "信用查询");
+                                startActivity(intent);
+                                //ToastUtil.toast("是否黑名单：" + (data.getBlackList() == 1));//黑名单用户 0-否 1-是
                             }
-                        });
+                        });*/
                 break;
             case R.id.iv_agree_protocal:
                 iv_agree_protocal.setImageResource(!checked ? R.drawable.btn_open_rb : R.drawable.btn_close_rb);
@@ -194,6 +208,13 @@ public class CreditQueryActivity extends BaseComponentActivity {
             default:
                 break;
         }
+    }
+
+    private String generateUrl(int black) {
+        webViewUrl = "http://192.168.1.63:8086/page/activity-credit-query.html?userId="
+                + UserHelper.getInstance(this).id() + "&packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&title=信用查询&black=" + black;
+        System.out.println(webViewUrl);
+        return webViewUrl;
     }
 
     private class TimeCounter extends CountDownTimer {
