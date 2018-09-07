@@ -96,7 +96,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     private Calendar CommCalendar;
     //动态添加的控件
-    private EditText CommMortgageEditText;          //按贷款金额计算
+    private EditText CommMortgageEditText;//按贷款金额计算
 
     /**
      * 贷款时间（年）
@@ -121,7 +121,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     /**
      * 还款方式（等额本息、等额本金）
      */
-    private int CommPaybackMethod = 0;                  //
+    private int CommPaybackMethod = 0;
 
     //公积金贷款部分
     private RelativeLayout rlYearGJJContainer;
@@ -183,12 +183,26 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     private int CombFirstMonth;
     private int CombPaybackMethod = 0;                  //还款方式（等额本息、等额本金）
 
-    List<HouseLoanBean> yearLists;
+    private List<HouseLoanBean> sdYearLists;
+    private List<HouseLoanBean> gjjYearLists;
+    private List<HouseLoanBean> combYearLists;
 
-    String[] rateString = {"基准利率(4.95%)", "基准利率7折(3.43%)", "基准利率85折(4.165%)", "基准利率88折(4.312%)",
+    /**
+     * 商贷利率
+     */
+    String[] sdRateStrings = {"基准利率(4.95%)", "基准利率7折(3.43%)", "基准利率85折(4.165%)", "基准利率88折(4.312%)",
             "基准利率9折(4.41%)", "基准利率1.1折(5.39%)", "基准利率1.2折(5.88%)", "基准利率1.3折(6.37%)"};
-    Double[] rates = {4.95, 3.43, 4.165, 4.312, 4.41, 5.39, 5.88, 6.37};
-    final List<HouseLoanBean> rateLists = new ArrayList<>();
+    Double[] sdRates = {4.95, 3.43, 4.165, 4.312, 4.41, 5.39, 5.88, 6.37};
+    private List<HouseLoanBean> sdRateLists = new ArrayList<>();
+    private List<HouseLoanBean> combSdRateLists = new ArrayList<>();
+
+    /**
+     * 公积金利率
+     */
+    String[] gjjRateStrings = {"基准利率3.25%","7折2.275%","85折2.7625%","88折2.86%","9折2.925%","1.1折3.575%","1.2折3.9%","1.3折4.225%"};
+    Double[] gjjRates = {3.25, 2.275, 2.7625, 2.86, 2.925, 3.575, 3.9, 4.225};
+    private List<HouseLoanBean> gjjRateLists = new ArrayList<>();
+    private List<HouseLoanBean> combGjjRateLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -394,7 +408,6 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
     /**
      * 检查公积金贷款是否合格
-     *
      * @return 是否通过
      */
     private boolean checkGongjijinLoan() {
@@ -473,22 +486,43 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
      * 装载利率
      */
     private void initLoanRate() {
-        int size = rates.length;
+        //装载商贷利率data
+        int size = sdRates.length;
+        sdRateLists = getRateLists(size,sdRateStrings,sdRates);
+        combSdRateLists = getRateLists(size,sdRateStrings,sdRates);
+
+        //装载公积金利率data
+        int length = sdRates.length;
+        gjjRateLists = getRateLists(length,gjjRateStrings,gjjRates);
+        combGjjRateLists = getRateLists(length,gjjRateStrings,gjjRates);
+
+        llSYRateContainer.setOnClickListener(this);
+        llGJJRateContainer.setOnClickListener(this);
+        llZHGJJRate.setOnClickListener(this);
+        llZHRate.setOnClickListener(this);
+    }
+
+    /**
+     * 获取利率（公积金利率和商业利率）
+     * @param size 默认数据大小
+     * @param rateStrings 利率填充内容数组
+     * @param rates 利率值数组
+     * @return 返回利率数组
+     */
+    private List<HouseLoanBean> getRateLists(int size,String[] rateStrings,Double[] rates){
+        List<HouseLoanBean> rateList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             HouseLoanBean bean = new HouseLoanBean();
-            bean.setContent(rateString[i]);
+            bean.setContent(rateStrings[i]);
             bean.setRate(rates[i]);
             if (i == 0) {
                 bean.setSelect(true);
             } else {
                 bean.setSelect(false);
             }
-            rateLists.add(bean);
+            rateList.add(bean);
         }
-        llSYRateContainer.setOnClickListener(this);
-        llGJJRateContainer.setOnClickListener(this);
-        llZHGJJRate.setOnClickListener(this);
-        llZHRate.setOnClickListener(this);
+        return rateList;
     }
 
 
@@ -528,25 +562,26 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         tvEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i = 0;i<rateLists.size();i++){
-                    rateLists.get(i).setSelect(false);
-                }
                 switch (type) {
                     case 1://商业
                         CommRate = etRate.getText().toString() + "";
                         tvSYRate.setText("基准利率(" + CommRate + "%)");
+                        clearRateState(sdRateLists);
                         break;
                     case 2://公积金
                         HAFRate = etRate.getText().toString() + "";
                         tvGJJRate.setText("基准利率(" + HAFRate + "%)");
+                        clearRateState(gjjRateLists);
                         break;
                     case 3:
                         CombHAFRate = etRate.getText().toString() + "";
                         tvZHGJJRate.setText("基准利率(" + CombHAFRate + "%)");
+                        clearRateState(combGjjRateLists);
                         break;
                     case 4:
                         CombCommRate = etRate.getText().toString();
                         tvZHRate.setText("基准利率(" + CombCommRate + "%)");
+                        clearRateState(combSdRateLists);
                         break;
                         default:
                             break;
@@ -576,27 +611,26 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         adapter.setOnItemClickListener(new HouseLoanAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(HouseLoanBean bean,int position) {
-                for(int i = 0;i<rateLists.size();i++){
-                    rateLists.get(i).setSelect(false);
-                }
-                rateLists.get(position).setSelect(true);
-                adapter.notifyDataSetChanged();
                 switch (type) {
                     case 1://商业贷款
                         CommRate = bean.getRate() + "";
                         tvSYRate.setText(bean.getContent());
+                        setRateState(sdRateLists,position);
                         break;
                     case 2://公积金贷款
                         CombHAFRate = bean.getRate() + "";
                         tvGJJRate.setText(bean.getContent());
+                        setRateState(gjjRateLists,position);
                         break;
                     case 3://组合贷款-公积金
                         CombHAFRate = bean.getRate() + "";
                         tvZHGJJRate.setText(bean.getContent());
+                        setRateState(combGjjRateLists,position);
                         break;
                     case 4://组合贷款-商贷
                         CombCommRate = bean.getRate() + "";
                         tvZHRate.setText(bean.getContent());
+                        setRateState(combSdRateLists,position);
                         break;
                     default:
                         break;
@@ -606,11 +640,39 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         });
     }
 
+    private void setRateState(List<HouseLoanBean> list,int position){
+        clearRateState(list);
+        list.get(position).setSelect(true);
+    }
+
+    private void clearRateState(List<HouseLoanBean> list){
+        for(int i = 0;i<list.size();i++){
+            list.get(i).setSelect(false);
+        }
+    }
+
     /**
      * 装载年限
      */
     private void initLoanYear() {
-        yearLists = new ArrayList<>();
+        sdYearLists = new ArrayList<>();
+        gjjYearLists = new ArrayList<>();
+        combYearLists = new ArrayList<>();
+        sdYearLists = getYearLists();
+        gjjYearLists = getYearLists();
+        combYearLists = getYearLists();
+
+        rlYearContainer.setOnClickListener(this);
+        rlYearGJJContainer.setOnClickListener(this);
+        rlYearZHContainer.setOnClickListener(this);
+    }
+
+    /**
+     * 获取贷款年限数据
+     * @return
+     */
+    private List<HouseLoanBean> getYearLists(){
+        List<HouseLoanBean> yearList = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             HouseLoanBean bean = new HouseLoanBean();
             bean.setContent((i + 1) * 5 + "年 (" + (i + 1) * 12 + "期)");
@@ -620,12 +682,9 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
             } else {
                 bean.setSelect(false);
             }
-            yearLists.add(bean);
+            yearList.add(bean);
         }
-
-        rlYearContainer.setOnClickListener(this);
-        rlYearGJJContainer.setOnClickListener(this);
-        rlYearZHContainer.setOnClickListener(this);
+        return yearList;
     }
 
     /**
@@ -653,23 +712,21 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
                         adapter.setOnItemClickListener(new HouseLoanAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(HouseLoanBean bean,int position) {
-                                for(int i = 0;i<yearLists.size();i++){
-                                    yearLists.get(i).setSelect(false);
-                                }
-                                yearLists.get(position).setSelect(true);
-                                adapter.notifyDataSetChanged();
                                 switch (type) {
                                     case 1:
                                         CommTime = String.valueOf(bean.getValue());
                                         tvYear.setText(CommTime + "年(" + (bean.getValue() * 12) + "期)");
+                                        setYearState(sdYearLists,position);
                                         break;
                                     case 2:
                                         HAFTime = String.valueOf(bean.getValue());
                                         tvYearGJJ.setText(HAFTime + "年(" + (bean.getValue() * 12) + "期)");
+                                        setYearState(gjjYearLists,position);
                                         break;
                                     case 3:
                                         CombTime = String.valueOf(bean.getValue());
                                         tvZHYear.setText(CombTime + "年(" + (bean.getValue() * 12) + "期)");
+                                        setYearState(combYearLists,position);
                                         break;
                                     default:
                                         break;
@@ -683,6 +740,26 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
         mDialog.show();
     }
 
+    /**
+     * 设置贷款年限选中状态
+     * @param list
+     * @param position
+     */
+    private void setYearState(List<HouseLoanBean> list,int position){
+        clearYearState(list);
+        list.get(position).setSelect(true);
+    }
+
+    /**
+     * 清除贷款年限选中状态
+     * @param list
+     */
+    private void clearYearState(List<HouseLoanBean> list){
+        for(int i = 0; i < list.size();i++){
+            list.get(i).setSelect(false);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -692,27 +769,27 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
 
                 /*贷款年限*/
             case R.id.rl_year_container:
-                showYearDialog(yearLists, 1);
+                showYearDialog(sdYearLists, 1);
                 break;
             case R.id.rl_gjj_year_container:
-                showYearDialog(yearLists, 2);
+                showYearDialog(gjjYearLists, 2);
                 break;
             case R.id.rl_zh_year_container:
-                showYearDialog(yearLists, 3);
+                showYearDialog(combYearLists, 3);
                 break;
 
                 /*贷款利率*/
             case R.id.ll_sy_rate_container:
-                showRateDialog(rateLists, 1);//商业贷款
+                showRateDialog(sdRateLists, 1);//商业贷款
                 break;
             case R.id.ll_gjj_rate_container:
-                showRateDialog(rateLists, 2);//公积金贷款
+                showRateDialog(gjjRateLists, 2);//公积金贷款
                 break;
             case R.id.ll_zh_gjj_rate_container:
-                showRateDialog(rateLists, 3);//组合贷款-公积金贷款
+                showRateDialog(combGjjRateLists, 3);//组合贷款-公积金贷款
                 break;
             case R.id.ll_zh_rate_container:
-                showRateDialog(rateLists, 4);//组合贷款-商业贷款
+                showRateDialog(combSdRateLists, 4);//组合贷款-商业贷款
                 break;
 
                 /*Tab*/
