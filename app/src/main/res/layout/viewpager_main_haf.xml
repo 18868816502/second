@@ -145,7 +145,7 @@
                     android:id="@+id/tv_gjj_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="基准利率(4.90%)"
+                    android:text="基准利率(3.25%)"
                     android:textColor="@color/black_1" />
 
                 <ImageView

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="放贷计算器"
+            android:text="房贷计算器"
             android:textColor="@color/black_1"
             android:textSize="16sp" />
     </RelativeLayout>

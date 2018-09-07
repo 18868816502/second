@@ -87,6 +87,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
     private String[] oneCapitalStrings;
     private String[] oneInterestStrings;
     private String[] oneMonthPayStrings;
+    private String[] remainPays;
 
     private String twoSumString;                        //等额本金的结果数据
     private String twoInterestString;
@@ -96,6 +97,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
     private String[] twoCapitalStrings;
     private String[] twoInterestStrings;
     private String[] twoMonthPayStrings;
+    private String[] twoRemainPays;
 
     private int currentItem = 0;
     private int offSet;
@@ -104,6 +106,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
     private ProgressDialog progressDialog = null;
     DecimalFormat df;
+    DecimalFormat mdf;
 
     private static final int DONE = 1;
     private Handler handler = new Handler(){
@@ -130,12 +133,40 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
                     showResult(inOneSum,inTwoSum);//9.显示结果
 
+
+
+                    //剩余未还
+                    double mPaybackSum = 0.0;
+                    remainPays = new String[oneMonthPayStrings.length];
+                    try {
+                        for(int i = 0 ; i < oneMonthPayStrings .length ; i++){
+                            mPaybackSum = mPaybackSum + df.parse(oneMonthPayStrings[i]).doubleValue();
+                            remainPays[i] = mdf.format((df.parse(oneSumString).doubleValue() - mPaybackSum) > 0 ? (df.parse(oneSumString).doubleValue() - mPaybackSum) : 0);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    double mTwoPaybackSum = 0.0;
+                    twoRemainPays = new String[twoMonthPayStrings.length];
+                    try {
+                        for(int i = 0 ; i < twoMonthPayStrings .length ; i++){
+                            mTwoPaybackSum = mTwoPaybackSum + df.parse(twoMonthPayStrings[i]).doubleValue();
+                            twoRemainPays[i] = mdf.format((df.parse(twoSumString).doubleValue() - mTwoPaybackSum) > 0 ?(df.parse(twoSumString).doubleValue() - mTwoPaybackSum):0);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
                     //等额本息的结果
-                    HouseLoanResultVPAdapter adapterList1 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, oneTimeStrings, oneCapitalStrings, oneInterestStrings, oneMonthPayStrings);
+//                    HouseLoanResultVPAdapter adapterList1 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, oneTimeStrings, oneCapitalStrings, oneInterestStrings, oneMonthPayStrings);
+                    HouseLoanResultVPAdapter adapterList1 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, oneTimeStrings, oneCapitalStrings, oneInterestStrings, remainPays);
                     listViewOne.setAdapter(adapterList1);
 
                     //等额本金的结果
-                    HouseLoanResultVPAdapter adapterList2 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, twoTimeStrings, twoCapitalStrings, twoInterestStrings, twoMonthPayStrings);
+//                    HouseLoanResultVPAdapter adapterList2 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, twoTimeStrings, twoCapitalStrings, twoInterestStrings, twoMonthPayStrings);
+                    HouseLoanResultVPAdapter adapterList2 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, twoTimeStrings, twoCapitalStrings, twoInterestStrings, twoRemainPays);
                     listViewTwo.setAdapter(adapterList2);
 
                     viewPager.setCurrentItem(currentItem);
@@ -151,9 +182,9 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commerce_loan_result);
-
         progressDialog = ProgressDialog.show(CommerceLoanResultActivity.this, "", "正在计算...", false, true);
-        df = new DecimalFormat("#,###.0");
+        df = new DecimalFormat("#,##0.00");
+        mdf = new DecimalFormat("######0.00");
         getData();                  //1.获得数据
         initViews();                //2.初始化控件
         initViewPager();            //3.设置ViewPager
@@ -380,7 +411,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
         double paidCapital = 0;     //已还本金
         double paidInterest = 0;    //已还利息
         double paid = 0;            //总共已还
-        DecimalFormat df = new DecimalFormat("#,###.0");       //保留两位小数
+        DecimalFormat df = new DecimalFormat("#,##0.00");       //保留两位小数
         for (int i = 1; i <= aheadTime; i++){
 
             //每月应还本金：每月应还本金=贷款本金×月利率×(1+月利率)^(还款月序号-1)÷〔(1+月利率)^还款月数-1〕
@@ -394,7 +425,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
             //得到输出字符串
             //strings[i] = i + "期" + "     " + monthCapital[i] + "     " + monthInterest[i] + "     " + monthSum[i];
-            oneTimeStrings[i-1] = i + "期";
+            oneTimeStrings[i-1] = i + "";
             oneCapitalStrings[i-1] = monthCapital[i];
             oneInterestStrings[i-1] = monthInterest[i];
             oneMonthPayStrings[i-1] = monthSum[i];
@@ -454,7 +485,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
         String monthInterest[] = new String[time + 1];
         String monthSum[] = new String[time + 1];
 
-        DecimalFormat df = new DecimalFormat("#,###.0");
+        DecimalFormat df = new DecimalFormat("#,##0.00");
         double paid = 0;
         double paidCapital = 0;
         double paidInterest = 0;
