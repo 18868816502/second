@@ -13,7 +13,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:gravity="center"
-        android:text="选择常用利率"
+        android:text="@string/loan_choose_rate_title"
         android:textSize="16sp"
         android:textColor="#000000"
         android:background="@color/white"/>
@@ -25,19 +25,6 @@
         app:layout_constraintTop_toBottomOf="@id/tv_rate_title"
         android:background="@color/colorBackground"/>
 
-    <TextView
-        android:id="@+id/tv_rate_customer"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:gravity="center"
-        android:text="或者自定义利率"
-        android:textSize="16sp"
-        android:textColor="#000000"
-        android:background="@color/white"
-        android:visibility="gone"/>
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -47,7 +34,7 @@
             android:id="@+id/tv_customer_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="自定义利率(%):"
+            android:text="@string/loan_custome_rate_title"
             android:textSize="14sp"
             android:textColor="@color/black_1"
             app:layout_constraintTop_toTopOf="parent"
@@ -61,11 +48,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/tv_customer_title"
             android:layout_marginLeft="10dp"
-            android:hint="请输入自定义利率"
+            android:hint="@string/loan_custome_rate_input"
             android:inputType="numberDecimal"
             android:textSize="14sp"
             android:textColor="@color/black_1"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:background="@color/c_fff5f5f5" />
         <TextView
             android:layout_width="wrap_content"
@@ -82,7 +69,7 @@
             android:id="@+id/tv_ensure"
             android:layout_width="56dp"
             android:layout_height="30dp"
-            android:text="确定"
+            android:text="@string/loan_custome_rate_ensure_text"
             android:gravity="center"
             android:background="@drawable/shape_house_loan_rate"
             app:layout_constraintRight_toRightOf="parent"

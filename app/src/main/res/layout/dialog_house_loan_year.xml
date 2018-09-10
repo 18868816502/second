@@ -14,7 +14,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:gravity="center"
-        android:text="选择贷款年限"
+        android:text="@string/loan_choose_year_title"
         android:textSize="16sp"
         android:textColor="@color/pickerview_title"
         android:background="@color/white"/>

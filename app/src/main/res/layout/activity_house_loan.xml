@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HouseLoanCalculatorActivity">
+    tools:context=".HouseLoanCalculatorActivity"
+    android:id="@+id/rl_container">
 
     <RelativeLayout
         android:id="@+id/tool_bar"
@@ -24,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="房贷计算器"
+            android:text="@string/loan_calculate"
             android:textColor="@color/black_1"
             android:textSize="16sp" />
     </RelativeLayout>
@@ -52,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="商业贷款"
+                android:text="@string/loan_comm"
                 android:textColor="@color/c_909298"
                 android:textSize="14sp" />
 
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="公积金贷款"
+                android:text="@string/loan_gjj"
                 android:textColor="@color/c_909298"
                 android:textSize="14sp" />
 
@@ -105,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="组合贷款"
+                android:text="@string/loan_comb"
                 android:textColor="@color/c_909298"
                 android:textSize="14sp" />
 
@@ -146,7 +147,7 @@
         android:layout_marginRight="15dp"
         android:background="@drawable/shape_house_loan_btn"
         android:gravity="center"
-        android:text="开始计算"
+        android:text="@string/loan_start_calculate"
         android:textColor="@color/white"
         android:textSize="18sp" />
 </RelativeLayout>

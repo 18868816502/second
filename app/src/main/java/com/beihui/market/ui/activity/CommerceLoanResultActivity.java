@@ -1,20 +1,18 @@
 package com.beihui.market.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -27,21 +25,23 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @name
+ * @class name：com.beihui.market
+ * @class describe 商业和公积金放贷计算结果页面
+ * @anthor chenguoguo
+ * @time
+ */
 public class CommerceLoanResultActivity extends AppCompatActivity implements View.OnClickListener {
 
     private double mortgage;
     private int time;
-    private double rate;
     private double montRate;
     private int aheadTime;
-    private int firstYear;
-    private int firstMonth;
-    private int calculationMethod;
     private String title;
-
     private double sum = 0;
-    private double interest = 0;
 
+    private RelativeLayout rlContainer;
     private ImageView ivBack;
     private LinearLayout tabLeftContainer;
     private LinearLayout tabRightContainer;
@@ -52,36 +52,18 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
     //用于显示等额本息和等额本金的ViewPager
     private ViewPager viewPager;
-    private List<View> viewList;
-    private View view1;
-    private View view2;
-
     private LoanListView listViewOne;                     //等额本息的ListView
     private LoanListView listViewTwo;                     //等额本金的ListView
-
-    private TextView oneLoanSumTextView;                //显示等额本息的结果
-    private TextView oneMonthTextView;
-    private TextView onePaySumTextView;
-    private TextView oneInterestTextView;
-    private TextView oneMonthPayTextView;
 
     private TextView tvMonthPayLeft;
     private TextView tvSumInterestLeft;
     private TextView tvSumPaybackLeft;
-
-    private TextView twoLoanSumTextView;                //显示等额本金的结果
-    private TextView twoMonthTextView;
-    private TextView twoPaySumTextView;
-    private TextView twoInterestTextView;
-    private TextView twoFirstMonthPayTextView;
-    private TextView twoDeltaMonthPayTextView;
 
     private TextView tvMonthPayRight;
     private TextView tvSumInterestRight;
     private TextView tvSumPaybackRight;
 
     private String oneSumString;                        //等额本息的结果数据
-    private String oneInterestString;
     private String oneMonthPayString;
     private String[] oneTimeStrings;
     private String[] oneCapitalStrings;
@@ -90,9 +72,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
     private String[] remainPays;
 
     private String twoSumString;                        //等额本金的结果数据
-    private String twoInterestString;
     private String twoFistMonthSum;
-    private String twoDeltaMonthSum;
     private String[] twoTimeStrings;
     private String[] twoCapitalStrings;
     private String[] twoInterestStrings;
@@ -100,82 +80,63 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
     private String[] twoRemainPays;
 
     private int currentItem = 0;
-    private int offSet;
-    private Matrix matrix = new Matrix();
-    private Animation animation;
 
     private ProgressDialog progressDialog = null;
     DecimalFormat df;
     DecimalFormat mdf;
 
     private static final int DONE = 1;
+
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
                 case DONE:
-                    //计算总利息
-
-                    double inOneSum = 0.0;
-                    double inTwoSum = 0.0;
-                    try {
-                        for(int i = 0;i<oneInterestStrings.length;i++){
-                            inOneSum = inOneSum + df.parse(oneInterestStrings[i]).doubleValue();
-                        }
-
-                        for(int i = 0;i<twoInterestStrings.length;i++){
-                            inTwoSum = inTwoSum + df.parse(twoInterestStrings[i]).doubleValue();
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                    showResult(inOneSum,inTwoSum);//9.显示结果
-
-
-
+                    //9.显示结果
+                    showResult();
                     //剩余未还
-                    double mPaybackSum = 0.0;
-                    remainPays = new String[oneMonthPayStrings.length];
-                    try {
-                        for(int i = 0 ; i < oneMonthPayStrings .length ; i++){
-                            mPaybackSum = mPaybackSum + df.parse(oneMonthPayStrings[i]).doubleValue();
-                            remainPays[i] = mdf.format((df.parse(oneSumString).doubleValue() - mPaybackSum) > 0 ? (df.parse(oneSumString).doubleValue() - mPaybackSum) : 0);
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                    double mTwoPaybackSum = 0.0;
-                    twoRemainPays = new String[twoMonthPayStrings.length];
-                    try {
-                        for(int i = 0 ; i < twoMonthPayStrings .length ; i++){
-                            mTwoPaybackSum = mTwoPaybackSum + df.parse(twoMonthPayStrings[i]).doubleValue();
-                            twoRemainPays[i] = mdf.format((df.parse(twoSumString).doubleValue() - mTwoPaybackSum) > 0 ?(df.parse(twoSumString).doubleValue() - mTwoPaybackSum):0);
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-
+                    calculateRemainPayback();
                     //等额本息的结果
-//                    HouseLoanResultVPAdapter adapterList1 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, oneTimeStrings, oneCapitalStrings, oneInterestStrings, oneMonthPayStrings);
                     HouseLoanResultVPAdapter adapterList1 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, oneTimeStrings, oneCapitalStrings, oneInterestStrings, remainPays);
                     listViewOne.setAdapter(adapterList1);
-
                     //等额本金的结果
-//                    HouseLoanResultVPAdapter adapterList2 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, twoTimeStrings, twoCapitalStrings, twoInterestStrings, twoMonthPayStrings);
                     HouseLoanResultVPAdapter adapterList2 = new HouseLoanResultVPAdapter(CommerceLoanResultActivity.this, twoTimeStrings, twoCapitalStrings, twoInterestStrings, twoRemainPays);
                     listViewTwo.setAdapter(adapterList2);
-
                     viewPager.setCurrentItem(currentItem);
-
                     progressDialog.dismiss();
                     break;
             }
         }
     };
+
+    /**
+     * 计算剩余未还
+     */
+    private void calculateRemainPayback() {
+        double mPaybackSum = 0.0;
+        remainPays = new String[oneMonthPayStrings.length];
+        try {
+            for(int i = 0 ; i < oneMonthPayStrings .length ; i++){
+                mPaybackSum = mPaybackSum + df.parse(oneMonthPayStrings[i]).doubleValue();
+                remainPays[i] = mdf.format((df.parse(oneSumString).doubleValue() - mPaybackSum) > 0 ? (df.parse(oneSumString).doubleValue() - mPaybackSum) : 0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        double mTwoPaybackSum = 0.0;
+        twoRemainPays = new String[twoMonthPayStrings.length];
+        try {
+            for(int i = 0 ; i < twoMonthPayStrings .length ; i++){
+                mTwoPaybackSum = mTwoPaybackSum + df.parse(twoMonthPayStrings[i]).doubleValue();
+                twoRemainPays[i] = mdf.format((df.parse(twoSumString).doubleValue() - mTwoPaybackSum) > 0 ?(df.parse(twoSumString).doubleValue() - mTwoPaybackSum):0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -195,11 +156,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
             @Override
             public void run() {
                 calculateTypeOne(time, aheadTime);              //5.等额本息的计算方法
-//                sortOneStrings();                               //7.等额本金数据整理
-
                 calculateTypeTwo(time, aheadTime);              //6.等额本金的计算方法
-//                sortTwoStrings();                               //8.等额本金数据整理
-
                 handler.sendEmptyMessage(DONE);
             }
         }).start();
@@ -209,24 +166,25 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
     public void getData(){
         //从前一个Activity传来的数据
         Bundle bundle = this.getIntent().getExtras();
+        if(bundle == null){
+            return;
+        }
         String m = bundle.getString("mortgage");
         String r = bundle.getString("rate");
         String t = bundle.getString("time");
         String a = bundle.getString("aheadTime");
-        firstYear = bundle.getInt("firstYear");
-        firstMonth = bundle.getInt("firstMonth");
         currentItem = bundle.getInt("paybackMethod");
-        calculationMethod = bundle.getInt("calculationMethod");
+        int calculationMethod = bundle.getInt("calculationMethod");
 
         switch (calculationMethod){
             case 0:
-                title = "商业贷款";
+                title = getString(R.string.loan_comm);
                 break;
             case 1:
-                title = "公积金贷款";
+                title = getString(R.string.loan_gjj);
                 break;
             case 2:
-                title = "组合贷款";
+                title = getString(R.string.loan_comb);
                 break;
         }
         this.setTitle(title);
@@ -236,7 +194,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
         mortgage = mortgage * 10000;
 
         //年利率转换为月利率
-        rate = Double.valueOf(r);
+        double rate = Double.valueOf(r);
         rate = rate / 100;
         montRate = rate / 12;
 
@@ -251,12 +209,13 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
     //2.初始化控件
     public void initViews(){
+        rlContainer = findViewById(R.id.rl_container);
         ivBack = findViewById(R.id.navigate);
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         tabLeftContainer = findViewById(R.id.tab_left);
         tabRightContainer = findViewById(R.id.tab_right);
-        tvTabLeftTitle = (TextView)findViewById(R.id.tv_left_title);
-        tvTabRightTitle = (TextView)findViewById(R.id.tv_right_title);
+        tvTabLeftTitle = findViewById(R.id.tv_left_title);
+        tvTabRightTitle = findViewById(R.id.tv_right_title);
         indicateLeft = findViewById(R.id.indicate_left);
         indicateRight = findViewById(R.id.indicate_right);
 
@@ -285,7 +244,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
     /**
      * 设置Tab选中状态
-     * @param position
+     * @param position tab位置
      */
     private void setSelectState(int position){
         switch (position){
@@ -307,48 +266,27 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
     //3.设置ViewPager
     public void initViewPager(){
-        viewList = new ArrayList<View>();
-        LayoutInflater layoutInflater = getLayoutInflater().from(this);
+        List<View> viewList = new ArrayList<>();
 
-        view1 = layoutInflater.inflate(R.layout.viewpager_result_capital_interest, null);
-        view2 = layoutInflater.inflate(R.layout.viewpager_result_capital, null);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.viewpager_result_capital_interest,rlContainer,false);
+        View view2 = LayoutInflater.from(this).inflate(R.layout.viewpager_result_capital,rlContainer,false);
 
         viewList.add(view1);
         viewList.add(view2);
 
-        oneLoanSumTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_LoanSum_Number_TextView);
-        oneMonthTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_Month_Number_TextView);
-        onePaySumTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_PaySum_Number_TextView);
-        oneInterestTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_Interest_Number_TextView);
-        oneMonthPayTextView = (TextView)view1.findViewById(R.id.ViewPager_CapitalInterest_MonthPay_Number_TextView);
-
         tvMonthPayLeft = view1.findViewById(R.id.tv_month_pay_left);
         tvSumInterestLeft = view1.findViewById(R.id.tv_sum_interest_left);
         tvSumPaybackLeft = view1.findViewById(R.id.tv_sum_payback_left);
-
-        listViewOne = (LoanListView)view1.findViewById(R.id.listOne);
-
-        twoLoanSumTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_LoanSum_Number_TextView);
-        twoMonthTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_Month_Number_TextView);
-        twoPaySumTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_PaySum_Number_TextView);
-        twoInterestTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_Interest_Number_TextView);
-        twoFirstMonthPayTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_FirstMonthPay_Number_TextView);
-        twoDeltaMonthPayTextView = (TextView)view2.findViewById(R.id.ViewPager_Capital_DeltaMonthPay_Number_TextView);
+        listViewOne = view1.findViewById(R.id.listOne);
 
         tvMonthPayRight = view2.findViewById(R.id.tv_month_pay_right);
         tvSumInterestRight = view2.findViewById(R.id.tv_sum_interest_right);
         tvSumPaybackRight = view2.findViewById(R.id.tv_sum_payback_right);
-
-        listViewTwo = (LoanListView)view2.findViewById(R.id.listTwo);
+        listViewTwo = view2.findViewById(R.id.listTwo);
 
         HouseLoanVPAdapter adapter = new HouseLoanVPAdapter(viewList);
         viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new PageChangeListener());        //3-1.ViewPager的监听器
-
-        //设置光标
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        offSet = displayMetrics.widthPixels / 2;                            //每个标题的宽度（720/2=360）
-        matrix.setTranslate(0, 0);
+        viewPager.addOnPageChangeListener(new PageChangeListener());        //3-1.ViewPager的监听器
     }
 
     @Override
@@ -413,18 +351,14 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
         double paid = 0;            //总共已还
         DecimalFormat df = new DecimalFormat("#,##0.00");       //保留两位小数
         for (int i = 1; i <= aheadTime; i++){
-
             //每月应还本金：每月应还本金=贷款本金×月利率×(1+月利率)^(还款月序号-1)÷〔(1+月利率)^还款月数-1〕
             monthCapital[i] = df.format(mortgage * montRate * Math.pow((1 + montRate), i - 1) / (Math.pow(1 + montRate, time) - 1));
-
             //每月应还利息：贷款本金×月利率×〔(1+月利率)^还款月数-(1+月利率)^(还款月序号-1)〕÷〔(1+月利率)^还款月数-1〕
             monthInterest[i] = df.format(mortgage * montRate * (Math.pow(1 + montRate, time) - Math.pow(1 + montRate, i - 1)) / (Math.pow(1 + montRate, time) - 1));
-
             //月供：每月月供额=〔贷款本金×月利率×(1＋月利率)＾还款月数〕÷〔(1＋月利率)＾还款月数-1〕
             monthSum[i] = df.format(mortgage * montRate * Math.pow((1 + montRate), time) / (Math.pow(1 + montRate, time) - 1));
 
             //得到输出字符串
-            //strings[i] = i + "期" + "     " + monthCapital[i] + "     " + monthInterest[i] + "     " + monthSum[i];
             oneTimeStrings[i-1] = i + "";
             oneCapitalStrings[i-1] = monthCapital[i];
             oneInterestStrings[i-1] = monthInterest[i];
@@ -432,16 +366,10 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
 
             //已还本金
             paidCapital = paidCapital + mortgage * montRate * Math.pow((1 + montRate), i - 1) / (Math.pow(1 + montRate, time) - 1);
-
             //已还利息
             paidInterest = paidInterest + mortgage * montRate * (Math.pow(1 + montRate, time) - Math.pow(1 + montRate, i - 1)) / (Math.pow(1 + montRate, time) - 1);
-
             //总共已还
             paid = paid + mortgage * montRate * Math.pow((1 + montRate), time) / (Math.pow(1 + montRate, time) - 1);
-
-            //剩余未还
-
-
         }
 
         //月供
@@ -450,18 +378,10 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
         //还款总额
         sum = monthPay * time;
 
-        //还款利息总额
-        interest =  monthPay * time - mortgage;
-
         //格式化
         oneSumString = df.format(sum);
-        oneInterestString = df.format(interest);
         oneMonthPayString = df.format(monthPay);
 
-        //提前还款的相关数据
-        String pi = df.format(paidInterest);
-        String rest = df.format(mortgage - paidCapital);
-        String p = df.format(paid);
     }
 
     //6.等额本金的计算方法
@@ -470,17 +390,11 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
             aheadTime = time;
         }
 
-//        twoTimeStrings = new String[aheadTime + 1];
-//        twoCapitalStrings = new String[aheadTime + 1];
-//        twoInterestStrings = new String[aheadTime + 1];
-//        twoMonthPayStrings = new String[aheadTime + 1];
-
         twoTimeStrings = new String[aheadTime];
         twoCapitalStrings = new String[aheadTime];
         twoInterestStrings = new String[aheadTime];
         twoMonthPayStrings = new String[aheadTime];
 
-        //String[] strings = new String[aheadTime + 1];
         String monthCapital[] = new String[time + 1];
         String monthInterest[] = new String[time + 1];
         String monthSum[] = new String[time + 1];
@@ -491,241 +405,55 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
         double paidInterest = 0;
         double paidSum = 0;
         for (int i = 1; i <= aheadTime; i++){
-
             //每月应还本金：贷款本金÷还款月数
             monthCapital[i] = df.format(mortgage / time);
-
             //每月应还利息：剩余本金×月利率=(贷款本金-已归还本金累计额)×月利率
             monthInterest[i] = df.format((mortgage - paid) * montRate);
-
             //月供：(贷款本金÷还款月数)+(贷款本金-已归还本金累计额)×月利率
             monthSum[i] = df.format((mortgage / time) + (mortgage - paid) * montRate);
-
             //已归还本金累计额
             paid = paid + mortgage / time;
-
             //已还本金
             paidCapital = paidCapital + mortgage / time;
-
             //已还利息
             paidInterest = paidInterest + (mortgage - paid) * montRate;
-
             //总共已还
             paidSum = paidSum + (mortgage / time) + (mortgage - paid) * montRate;
 
-            //strings[i] = i + "期" + "     " + monthCapital[i] + "     "+ monthInterest[i] + "     "+ monthSum[i];
-
-            //注意，i是从1开始的
-//            twoTimeStrings[i] = i + "期";
-//            twoCapitalStrings[i] = monthCapital[i];
-//            twoInterestStrings[i] = monthInterest[i];
-//            twoMonthPayStrings[i] = monthSum[i];
-            twoTimeStrings[i-1] = i + "期";
+            twoTimeStrings[i-1] = i + "";
             twoCapitalStrings[i-1] = monthCapital[i];
             twoInterestStrings[i-1] = monthInterest[i];
             twoMonthPayStrings[i-1] = monthSum[i];
         }
         sum = time * (mortgage * montRate - montRate * (mortgage / time) * (time - 1) / 2 + mortgage / time);
-        interest = sum - mortgage;
-
         twoSumString = df.format(sum);
-        twoInterestString = df.format(interest);
         twoFistMonthSum = monthSum[1];
 
-        //计算每月递减
-        String firstMonth = monthSum[1].replaceAll(",", "");
-        String secondMonth = monthSum[2].replaceAll(",", "");
-        double delta = Double.valueOf(firstMonth) - Double.valueOf(secondMonth);
-        twoDeltaMonthSum = df.format(delta);
-
-        //提前还款的相关数据
-        String p = df.format(paidSum);
-        String pi = df.format(paidInterest);
-        String rest = df.format(mortgage - paidCapital);
-    }
-
-    //7.等额本息数据整理
-    public void sortOneStrings(){
-        ArrayList timeList = new ArrayList();
-        ArrayList capitalList = new ArrayList();
-        ArrayList interestList = new ArrayList();
-        ArrayList monthPayList = new ArrayList();
-
-        int deltaMonth = 12 - firstMonth + 1;
-        int deltaYear = time / 12;
-        int max = 0;
-
-        //开始月份不是1月
-        if (deltaMonth != 12){
-            String[] years = new String[deltaYear + 1];
-            for (int i = 0; i < deltaYear + 1; i++){
-                years[i] = (firstYear + i) + "年";
-            }
-            max = time + (deltaYear + 1) - (deltaMonth + 1);
-
-            timeList.add(years[0]);  capitalList.add(""); interestList.add(""); monthPayList.add("");
-            for (int i = 0; i < deltaMonth; i ++){
-                timeList.add((firstMonth + i) + "月," + oneTimeStrings[i + 1]);
-                capitalList.add(oneCapitalStrings[i + 1]);
-                interestList.add(oneInterestStrings[i + 1]);
-                monthPayList.add(oneMonthPayStrings[i + 1]);
-            }
-
-            int j = 1;
-            int k = deltaMonth + 1;
-            for (int i = 0; i < max; i++){
-                int index = i % 13;
-                if (index == 0){
-                    timeList.add(years[j]); capitalList.add(""); interestList.add(""); monthPayList.add("");
-                    j++;
-                }
-                else {
-                    timeList.add(index + "月," + oneTimeStrings[k]);
-                    capitalList.add(oneCapitalStrings[k]);
-                    interestList.add(oneInterestStrings[k]);
-                    monthPayList.add(oneMonthPayStrings[k]);
-                    k++;
-                }
-            }
-        }
-
-        //开始月份是1月
-        else {
-            String[] years = new String[deltaYear];
-            for (int i = 0; i < deltaYear; i++){
-                years[i] = (firstYear + i) + "年";
-            }
-            max = time + deltaYear;
-            int j = 0;
-            int k = 1;
-            for (int i = 0; i < max; i++){
-                int index = i % 13;
-                if (index == 0){
-                    timeList.add(years[j]); capitalList.add(""); interestList.add(""); monthPayList.add("");
-                    j++;
-                }
-                else {
-                    timeList.add(index + "月," + oneTimeStrings[k]);
-                    capitalList.add(oneCapitalStrings[k]);
-                    interestList.add(oneInterestStrings[k]);
-                    monthPayList.add(oneMonthPayStrings[k]);
-                    k++;
-                }
-            }
-        }
-
-        oneTimeStrings = (String[])timeList.toArray(new String[timeList.size()]);
-        oneCapitalStrings = (String[])capitalList.toArray(new String[capitalList.size()]);
-        oneInterestStrings = (String[])interestList.toArray(new String[interestList.size()]);
-        oneMonthPayStrings = (String[])monthPayList.toArray(new String[monthPayList.size()]);
-
-        //return resultString;
-    }
-
-    //8.等额本金数据整理
-    public void sortTwoStrings(){
-        ArrayList timeList = new ArrayList();
-        ArrayList capitalList = new ArrayList();
-        ArrayList interestList = new ArrayList();
-        ArrayList monthPayList = new ArrayList();
-
-        int deltaMonth = 12 - firstMonth + 1;
-        int deltaYear = time / 12;
-        int max = 0;
-
-        //开始月份不是1月
-        if (deltaMonth != 12){
-            String[] years = new String[deltaYear + 1];
-            for (int i = 0; i < deltaYear + 1; i++){
-                years[i] = (firstYear + i) + "年";
-            }
-
-            max = time + (deltaYear + 1) - (deltaMonth + 1);
-            timeList.add(years[0]);  capitalList.add(""); interestList.add(""); monthPayList.add("");
-            for (int i = 0; i < deltaMonth; i ++){
-                timeList.add((firstMonth + i) + "月," + twoTimeStrings[i + 1]);
-                capitalList.add(twoCapitalStrings[i + 1]);
-                interestList.add(twoInterestStrings[i + 1]);
-                monthPayList.add(twoMonthPayStrings[i + 1]);
-            }
-
-            int j = 1;
-            int k = deltaMonth + 1;
-            for (int i = 0; i < max; i++){
-                int index = i % 13;
-                if (index == 0){
-                    timeList.add(years[j]); capitalList.add(""); interestList.add(""); monthPayList.add("");
-                    j++;
-                }
-                else {
-                    timeList.add(index + "月," + twoTimeStrings[k]);
-                    capitalList.add(twoCapitalStrings[k]);
-                    interestList.add(twoInterestStrings[k]);
-                    monthPayList.add(twoMonthPayStrings[k]);
-                    k++;
-                }
-            }
-        }
-
-        //开始月份是1月
-        else {
-            String[] years = new String[deltaYear];
-            for (int i = 0; i < deltaYear; i++){
-                years[i] = (firstYear + i) + "年";
-            }
-            max = time + deltaYear;
-            int j = 0;
-            int k = 1;
-            for (int i = 0; i < max; i++){
-                int index = i % 13;
-                if (index == 0){
-                    timeList.add(years[j]); capitalList.add(""); interestList.add(""); monthPayList.add("");
-                    j++;
-                }
-                else {
-                    timeList.add(index + "月," + twoTimeStrings[k]);
-                    capitalList.add(twoCapitalStrings[k]);
-                    interestList.add(twoInterestStrings[k]);
-                    monthPayList.add(twoMonthPayStrings[k]);
-                    k++;
-                }
-            }
-        }
-
-        twoTimeStrings = (String[])timeList.toArray(new String[timeList.size()]);
-        twoCapitalStrings = (String[])capitalList.toArray(new String[capitalList.size()]);
-        twoInterestStrings = (String[])interestList.toArray(new String[interestList.size()]);
-        twoMonthPayStrings = (String[])monthPayList.toArray(new String[monthPayList.size()]);
-
-        //return resultString;
     }
 
     //9.显示结果
-    public void showResult(double inOneSum, double inTwoSum){
-//        DecimalFormat df = new DecimalFormat("#,###.0");
+    public void showResult(){
+
+        //计算总利息
+        double inOneSum = 0.0;
+        double inTwoSum = 0.0;
+        try {
+            for (String interest:
+                    oneInterestStrings) {
+                inOneSum = inOneSum + df.parse(interest).doubleValue();
+            }
+            for (String interest:
+                    twoInterestStrings) {
+                inTwoSum = inTwoSum + df.parse(interest).doubleValue();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         if (aheadTime == 0){
             //等额本息的结果
-
-//            oneLoanSumTextView.setText(df.format(mortgage / 10000) + "万元");
-//            oneMonthTextView.setText(time + "月");
-////            onePaySumTextView.setText(oneSumString + "元");
-//            if (TextUtils.isEmpty(oneSumString)){
-//                oneSumString = "0";
-//            }
-//            double paySum = 0;
-//            try {
-//                paySum = df.parse(oneSumString).doubleValue();
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            onePaySumTextView.setText(df.format(paySum / 10000) + "");
-//            oneInterestTextView.setText(oneInterestString + "元");
-//            oneMonthPayTextView.setText(oneMonthPayString + "");
-
-
             tvMonthPayLeft.setText(oneMonthPayString);
-            tvSumInterestLeft.setText(df.format(inOneSum / 10000) + "");
+            tvSumInterestLeft.setText(df.format(inOneSum / 10000));
             if (TextUtils.isEmpty(oneSumString)){
                 oneSumString = "0";
             }
@@ -735,21 +463,12 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            tvSumPaybackLeft.setText(df.format(paySum / 10000) + "");
-
+            tvSumPaybackLeft.setText(df.format(paySum / 10000));
 
 
             //等额本金的结果
-//            twoLoanSumTextView.setText(df.format(mortgage / 10000) + "万元");
-//            twoMonthTextView.setText(time + "月");
-//            twoPaySumTextView.setText(twoSumString + "元");
-//            twoInterestTextView.setText(twoInterestString + "元");
-//            twoFirstMonthPayTextView.setText(twoFistMonthSum + "元");
-//            twoDeltaMonthPayTextView.setText(twoDeltaMonthSum + "");
-
-
             tvMonthPayRight.setText(twoFistMonthSum);
-            tvSumInterestRight.setText(df.format(inTwoSum / 10000) + "");
+            tvSumInterestRight.setText(df.format(inTwoSum / 10000));
             if (TextUtils.isEmpty(twoSumString)){
                 twoSumString = "0";
             }
@@ -759,7 +478,7 @@ public class CommerceLoanResultActivity extends AppCompatActivity implements Vie
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            tvSumPaybackRight.setText(df.format(paySumTwo / 10000) + "");
+            tvSumPaybackRight.setText(df.format(paySumTwo / 10000));
         }
     }
 }

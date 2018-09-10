@@ -21,11 +21,29 @@
         android:layout_toRightOf="@id/left_image"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/left_text"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="爱的色放" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/left_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="爱的色放" />
+            <TextView
+                android:id="@+id/left_remark"
+                android:layout_width="32dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/shape_tools_free"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:text="免费" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/left_text_down"

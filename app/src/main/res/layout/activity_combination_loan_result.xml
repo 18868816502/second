@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rl_container">
 
     <RelativeLayout
         android:id="@+id/tool_bar"
@@ -21,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="放贷计算器"
+            android:text="@string/loan_calculate"
             android:textSize="16sp"
             android:textColor="@color/black_1"/>
     </RelativeLayout>
@@ -45,11 +46,10 @@
                 android:id="@+id/tv_left_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="等额本息"
+                android:text="@string/loan_equal_amount_of_interest"
                 android:textSize="14sp"
                 android:textColor="@color/c_ff5240"
-                android:gravity="center"
-                android:layout_weight="1"/>
+                android:gravity="center"/>
             <View
                 android:id="@+id/indicate_left"
                 android:layout_width="30dp"
@@ -68,11 +68,10 @@
                 android:id="@+id/tv_right_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="等额本金"
+                android:text="@string/loan_equal_amount_of_principal"
                 android:textColor="@color/c_909298"
                 android:textSize="14sp"
-                android:gravity="center"
-                android:layout_weight="1"/>
+                android:gravity="center"/>
             <View
                 android:id="@+id/indicate_right"
                 android:layout_width="30dp"
@@ -82,38 +81,6 @@
                 android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/Result_Combination_Layout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/Result_Combination_TypeOne_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="等额本息"
-            android:textSize="18sp"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/Result_Combination_TypeTwo_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="等额本金"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
 
     <android.support.v4.view.ViewPager
         android:id="@+id/Result_Combination_Viewpager"

@@ -129,6 +129,7 @@
         <attr name="left_image" format="reference|integer" />
         <attr name="left_image_Visible" format="boolean" />
         <attr name="left_textView_text" format="string" />
+        <attr name="left_textView_remark_Visible" format="boolean" />
         <attr name="left_textView_color" format="color" />
         <attr name="left_textView_textSize" format="dimension" />
         <attr name="left_textView_Visible" format="boolean" />

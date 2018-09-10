@@ -268,50 +268,7 @@
         android:layout_height="8dp"
         android:background="@color/colorBackground"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="2dp"
-        android:gravity="center_vertical"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="期数"
-            android:textColor="@color/black_2"
-            android:textSize="12sp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="偿还本金"
-            android:textColor="@color/black_2"
-            android:textSize="12sp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="偿还利息"
-            android:textColor="@color/black_2"
-            android:textSize="12sp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="剩余(本金+利息)"
-            android:textColor="@color/black_2"
-            android:textSize="12sp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+    <include layout="@layout/item_loan_result_title"/>
 
     <View
         android:layout_width="match_parent"

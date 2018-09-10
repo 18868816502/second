@@ -168,7 +168,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
                             @Override
                             public void onNext(@NonNull Phone data) {
                                 timeCounter.start();
-                                ToastUtil.toast("phone: " + data.getPhone());
+                                ToastUtil.toast("验证码已发送至" + data.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                             }
                         });
                 break;
@@ -178,13 +178,12 @@ public class CreditQueryActivity extends BaseComponentActivity {
                 map.put("phone", phoneNo);
                 map.put("verifyCode", authCode);
 
-                Intent intent = new Intent(CreditQueryActivity.this, CreditResultActivity.class);
-                intent.putExtra("webViewUrl", generateUrl(1));
-                intent.putExtra("title", "信用查询");
-                startActivity(intent);
+//                Intent intent = new Intent(CreditQueryActivity.this, CreditResultActivity.class);
+//                intent.putExtra("webViewUrl", generateUrl(1));
+//                intent.putExtra("title", "信用查询");
+//                startActivity(intent);
 
-
-                /*Api.getInstance().queryCredit(map)
+                Api.getInstance().queryCredit(map)
                         .compose(RxResponse.<BlackList>compatT())
                         .subscribe(new ApiObserver<BlackList>() {
                             @Override
@@ -195,7 +194,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
                                 startActivity(intent);
                                 //ToastUtil.toast("是否黑名单：" + (data.getBlackList() == 1));//黑名单用户 0-否 1-是
                             }
-                        });*/
+                        });
                 break;
             case R.id.iv_agree_protocal:
                 iv_agree_protocal.setImageResource(!checked ? R.drawable.btn_open_rb : R.drawable.btn_close_rb);
@@ -211,7 +210,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
     }
 
     private String generateUrl(int black) {
-        webViewUrl = "http://192.168.1.63:8086/page/activity-credit-query.html?userId="
+        webViewUrl = "http://116.62.148.52/activity/page/activity-credit-query.html?userId="
                 + UserHelper.getInstance(this).id() + "&packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&title=信用查询&black=" + black;
         System.out.println(webViewUrl);
         return webViewUrl;

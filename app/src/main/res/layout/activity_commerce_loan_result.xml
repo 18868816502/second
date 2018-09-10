@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rl_container">
 
     <RelativeLayout
         android:id="@+id/tool_bar"
@@ -97,15 +98,5 @@
         android:paddingBottom="10dp"
         android:layout_below="@+id/layout">
     </android.support.v4.view.ViewPager>
-
-    <LinearLayout
-        android:id="@+id/ll_banner1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-    </LinearLayout>
-
 
 </RelativeLayout>

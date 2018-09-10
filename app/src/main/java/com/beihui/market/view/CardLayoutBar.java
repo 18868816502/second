@@ -35,7 +35,7 @@ public class CardLayoutBar extends RelativeLayout {
      * rightTextView1 右边第二个文字
      * rightTextView2 右边第一个文字
      */
-    private TextView leftTextView, leftTextDownView, rightTextView1, rightTextView2;
+    private TextView leftTextView,tvLeftRemark, leftTextDownView, rightTextView1, rightTextView2;
 
     /**
      * view 底部横线
@@ -75,7 +75,7 @@ public class CardLayoutBar extends RelativeLayout {
      * right_textView2_Visible 右边第一个文字是否显示
      * view_Visible 底部横线是否显示
      */
-    private boolean left_image_Visible, right_image_Visible, left_textView_Visible, left_down_Visible,
+    private boolean left_image_Visible,left_remark_Visible, right_image_Visible, left_textView_Visible, left_down_Visible,
             right_textView1_Visible, right_textView2_Visible, view_Visible;
 
     private boolean left_textView_style, left_down_style;
@@ -88,6 +88,8 @@ public class CardLayoutBar extends RelativeLayout {
         leftImage = findViewById(R.id.left_image);
         rightImage = findViewById(R.id.right_image);
         leftTextView = findViewById(R.id.left_text);
+        tvLeftRemark = findViewById(R.id.left_remark);
+
         leftTextDownView = findViewById(R.id.left_text_down);
         rightTextView1 = findViewById(R.id.right_text1);
         rightTextView2 = findViewById(R.id.right_text2);
@@ -100,6 +102,7 @@ public class CardLayoutBar extends RelativeLayout {
         right_image = typedArray.getResourceId(R.styleable.RelativeLayoutBar_right_image, R.drawable.icon_come);
 
         left_textView_color = typedArray.getColor(R.styleable.RelativeLayoutBar_left_textView_color, Color.WHITE);
+//        left_textView_remark_color = typedArray.getColor(R.styleable.RelativeLayoutBar_left_textView_color, Color.WHITE);
         left_down_color = typedArray.getColor(R.styleable.RelativeLayoutBar_left_down_color, Color.WHITE);
         right_textView1_color = typedArray.getColor(R.styleable.RelativeLayoutBar_right_textView1_color, Color.WHITE);
         right_textView2_color = typedArray.getColor(R.styleable.RelativeLayoutBar_right_textView2_color, Color.WHITE);
@@ -115,6 +118,7 @@ public class CardLayoutBar extends RelativeLayout {
         right_textView2_text = typedArray.getString(R.styleable.RelativeLayoutBar_right_textView2_text);
 
         left_image_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_image_Visible, false);
+        left_remark_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_textView_remark_Visible, false);
         right_image_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_right_image_Visible, true);
         left_textView_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_textView_Visible, false);
         left_down_Visible = typedArray.getBoolean(R.styleable.RelativeLayoutBar_left_down_Visible, false);
@@ -138,6 +142,7 @@ public class CardLayoutBar extends RelativeLayout {
         setRightTextView1Text(right_textView1_text);
         setRightTextView2Text(right_textView2_text);
         setLeftImageVisible(left_image_Visible);
+        setLeftRemarkVisible(left_remark_Visible);
         setRightImageVisible(right_image_Visible);
         setLeftTextViewVisible(left_textView_Visible);
         setRightTextView1Visible(right_textView1_Visible);
@@ -355,6 +360,14 @@ public class CardLayoutBar extends RelativeLayout {
      */
     public void setLeftImageVisible(boolean left_image_Visible) {
         leftImage.setVisibility(left_image_Visible ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * 设置左边标记是否显示
+     * @param left_remard_Visible
+     */
+    public void setLeftRemarkVisible(boolean left_remard_Visible){
+        tvLeftRemark.setVisibility(left_remard_Visible ? View.VISIBLE : View.GONE);
     }
 
     /**

@@ -15,7 +15,8 @@ public class EditInputFilter implements InputFilter {
     /**
      * 最大数字
      */
-    private long MAX_VALUE = 100000000;
+    public static long MAX_VALUE = 10000;
+    public static int MAX_VALUE_PERCENT = 100;
 
     /**
      * 小数点后的数字的位数
@@ -79,7 +80,7 @@ public class EditInputFilter implements InputFilter {
                     return "0.";
                 } else if ("0".equals(source) && dstart == 0){
                     //用于修复能输入多位0
-                    return "";
+                    return "0.";
                 }
             }
         }
