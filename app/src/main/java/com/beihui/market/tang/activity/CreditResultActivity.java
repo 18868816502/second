@@ -4,6 +4,10 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.webkit.WebBackForwardList;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +45,10 @@ public class CreditResultActivity extends BaseComponentActivity {
 
     private String webViewUrl = "";
     private String title = "";
+    private int flag = 0;
+
+    private AgentWeb mAgentWeb;
+    private WebView mWebView;
 
     @Override
     public int getLayoutId() {
@@ -65,14 +73,26 @@ public class CreditResultActivity extends BaseComponentActivity {
         }
         titleTv.setText(title);
 
-        AgentWeb.with(this)
+        mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1)).useDefaultIndicator(ContextCompat.getColor(this, R.color.white), 1)
                 .createAgentWeb()
                 .ready()
                 .go(webViewUrl);
+        mWebView = mAgentWeb.getWebCreator().getWebView();
+
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
+    }
+
+    @Override
+    public void onBackPressed() {
+        WebBackForwardList list = mWebView.copyBackForwardList();
+        if(list.getCurrentIndex() == 0){
+            finish();
+        }else {
+            mAgentWeb.back();
+        }
     }
 }
