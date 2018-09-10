@@ -5,13 +5,14 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion '26.0.2'
+    //buildToolsVersion compile_sdk_version
 
     defaultConfig {
         applicationId "com.beihui.market"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 20
-        versionName "4.2.3"
+        versionCode 18
+        versionName "4.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -31,6 +32,20 @@ android {
             keyAlias "loanMarket"
             keyPassword "123456"
         }
+
+        ymjzaz {
+            storeFile file('../fishrice.jks')
+            storePassword "123456"
+            keyAlias "fishrice"
+            keyPassword "123456"
+        }
+
+        kljzkz {
+            storeFile file('../kljzkz.jks')
+            storePassword "123456"
+            keyAlias "kljzkz"
+            keyPassword "123456"
+        }
     }
 
     buildTypes {
@@ -43,11 +58,6 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-        }
-        debug {
-            java.srcDir 'src/common/java'
-        }
-        release {
             java.srcDir 'src/common/java'
         }
     }
@@ -57,21 +67,19 @@ android {
     }
 
     flavorDimensions "id", "channel"
-    //维度
+    //维度04
     productFlavors {
         loanmarket {
             dimension "id"
             applicationId "com.beihui.market"
             //生产环境 + 正式环境魔蝎appkey
-//            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
-//            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
-//            buildConfigField("String", "H5_DOMAIN_NEW", "\"https://tg.kaolabill.com\"")
-//            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
             //测试环境 + 测试魔蝎appkey
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            /*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-            buildConfigField("String", "H5_DOMAIN_NEW", "\"http://116.62.148.52\"")
-            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")*/
             manifestPlaceholders = [
                     GETUI_APP_ID    : "j9tetKeuS18Ej6qmIVQqH2",
                     GETUI_APP_KEY   : "55v5sb5MNg8ElrkKO3GhT",
@@ -86,13 +94,60 @@ android {
             signingConfig signingConfigs.loanmarket
         }
 
+        ymjz {
+            dimension "id"
+            applicationId "com.FishAccount.az"//包名改变
+            versionCode 21
+            versionName "4.0.2"
+            //生产环境 + 正式环境魔蝎appkey
+            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+            //测试环境 + 测试魔蝎appkey
+            /*buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
+            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")*/
+            manifestPlaceholders = [
+                    GETUI_APP_ID    : "wMFEqeUEWV7EMXyAksKwb2",
+                    GETUI_APP_KEY   : "533LoBWUAsAS141scxEgn1",
+                    GETUI_APP_SECRET: "9mI4DDWSKk537DqyDfmbQ1",
+                    UMENG_APP_KEY   : "5b447757f43e487f3c000060",
+                    qqappid         : "1106280475",
+                    PACKAGE_NAME    : applicationId
+            ]
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/majiabao/regist-v2.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/majiabao/regist-v2.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+            signingConfig signingConfigs.ymjzaz
+        }
+
+        kljzkz {
+            dimension "id"
+            applicationId "com.beiwo.kljzkzaz"
+            //测试环境 + 测试魔蝎appkey
+            buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
+            buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
+            buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+            manifestPlaceholders = [
+                    GETUI_APP_ID    : "Uy6CqJCvtZ7Kuy66paI4f4",
+                    GETUI_APP_KEY   : "fTtovIiuVK6XxIHXytVfc4",
+                    GETUI_APP_SECRET: "90ey3NggV3ADgkcgPz29PA",
+                    UMENG_APP_KEY   : "5b90d40ff43e481de0000297",
+                    qqappid         : "1106280475",
+                    PACKAGE_NAME    : applicationId
+            ]
+            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
+            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
+            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+            signingConfig signingConfigs.kljzkz
+        }
+
         /*loanmarkettest {
             dimension "id"
             applicationId "com.beihui.market.test"
             //测试使用的魔蝎appkey
             buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
             buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN_NEW", "\"https://tg.kaolabill.com\"")
             buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
             manifestPlaceholders = [
                     GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
@@ -108,25 +163,52 @@ android {
             signingConfig signingConfigs.loanmarkettest
         }*/
 
-        kaolajizhang_baidu { dimension "channel" }
+        /*kaolajizhang_baidu { dimension "channel" }
         kaolajizhang_360 { dimension "channel" }
         kaolajizhang_yingyongbao { dimension "channel" }
         kaolajizhang_xiaomi { dimension "channel" }
-        kaolajizhang_huawei { dimension "channel" }
         kaolajizhang_vivo { dimension "channel" }
         kaolajizhang_oppo { dimension "channel" }
         kaolajizhang_meizu { dimension "channel" }
         kaolajizhang_chuizi { dimension "channel" }
         kaolajizhang_sanxing { dimension "channel" }
         kaolajizhang_jifeng { dimension "channel" }
-        kaolajizhang_mumayi { dimension "channel" }
-        kaolajizhang_guanfang { dimension "channel" }
+        kaolajizhang_mumayi { dimension "channel" }*/
 
-        productFlavors.all { flavor ->
-            manifestPlaceholders.putAll([
-                    UMENG_CHANNEL: name,
-                    CHANNEL_ID   : name,
-            ])
+        /*ymjzaz_vivo { dimension "channel" }
+        ymjzaz_meizu { dimension "channel" }
+        ymjzaz_huawei { dimension "channel" }
+        ymjzaz_baidu { dimension "channel" }
+        ymjzaz_360 { dimension "channel" }
+        ymjzaz_yingyongbao { dimension "channel" }
+        ymjzaz_xiaomi { dimension "channel" }
+        ymjzaz_oppo { dimension "channel" }
+        ymjzaz_chuizi { dimension "channel" }
+        ymjzaz_sanxing { dimension "channel" }
+        ymjzaz_jifeng { dimension "channel" }
+        ymjzaz_mumayi { dimension "channel" }
+        ymjzaz_guanfang { dimension "channel" }*/
+
+        kljzkzaz_xiaomi { dimension "channel" }
+        kljzkzaz_huawei { dimension "channel" }
+        kljzkzaz_oppo { dimension "channel" }
+        kljzkzaz_vivo { dimension "channel" }
+        kljzkzaz_360 { dimension "channel" }
+        kljzkzaz_yingyongbao { dimension "channel" }
+        kljzkzaz_meizu { dimension "channel" }
+        kljzkzaz_sanxing { dimension "channel" }
+        kljzkzaz_baidu { dimension "channel" }
+        klzdkzaz_chuizi { dimension "channel" }
+        kljzkzaz_jifeng { dimension "channel" }
+        kljzkzaz_anzhi { dimension "channel" }
+        kljzkzaz_mumayi { dimension "channel" }
+
+        productFlavors.all {
+            flavor ->
+                manifestPlaceholders.putAll([
+                        UMENG_CHANNEL: name,
+                        CHANNEL_ID   : name,
+                ])
         }
     }
 
