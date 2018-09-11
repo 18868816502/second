@@ -1,21 +1,41 @@
 package com.beihui.market.tang.fragment;
 
-import android.content.Intent;
+import android.content.Context;
+import android.graphics.Color;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.tang.activity.CreditQueryActivity;
-import com.beihui.market.tang.activity.TicketActivity;
-import com.beihui.market.ui.activity.HouseLoanCalculatorActivity;
-import com.beihui.market.ui.activity.UserAuthorizationActivity;
+import com.beihui.market.tang.adapter.SocialAdapter;
 import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.DensityUtil;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeAnchor;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule;
 
 import butterknife.BindView;
-import butterknife.OnClick;
+
 
 /**
  * https://gitee.com/tangbuzhi
@@ -25,12 +45,19 @@ import butterknife.OnClick;
  * @package:
  * @description:
  * @modify:
- * @date: 2018/9/4
+ * @date: 2018/9/11
  */
 
 public class SocialFragment extends BaseComponentFragment {
     @BindView(R.id.hold_view)
     View hold_view;
+    @BindView(R.id.indicator)
+    MagicIndicator indicator;
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
+
+    private String[] mDataList = {"关注", "推荐"};
+    private SocialAdapter adapter = new SocialAdapter(mDataList);
 
     public static SocialFragment newInstance() {
         return new SocialFragment();
@@ -38,7 +65,7 @@ public class SocialFragment extends BaseComponentFragment {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.f_fragment_social;
+        return R.layout.f_layout_social;
     }
 
     @Override
@@ -47,34 +74,65 @@ public class SocialFragment extends BaseComponentFragment {
         ViewGroup.LayoutParams params = hold_view.getLayoutParams();
         params.height = statusHeight;
         hold_view.setLayoutParams(params);
+        initIndicator();
+
+        viewpager.setAdapter(adapter);
+        viewpager.setCurrentItem(1);
     }
 
     @Override
     public void initDatas() {
+
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.clb_credit_wrap, R.id.clb_interest_wrap, R.id.clb_ticket_wrap})
-    public void onClick(View view) {
-        if (!UserHelper.getInstance(getActivity()).isLogin()) {
-            UserAuthorizationActivity.launch(getActivity());
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.clb_credit_wrap:
-                startActivity(new Intent(getActivity(), CreditQueryActivity.class));
-                break;
-            case R.id.clb_interest_wrap:
-                startActivity(new Intent(getActivity(), HouseLoanCalculatorActivity.class));
-                break;
-            case R.id.clb_ticket_wrap:
-                startActivity(new Intent(getActivity(), TicketActivity.class));
-                break;
-            default:
-                break;
-        }
+    private void initIndicator() {
+        CommonNavigator commonNavigator = new CommonNavigator(getActivity());
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return mDataList.length;
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                final BadgePagerTitleView badgePagerTitleView = new BadgePagerTitleView(context);
+                SimplePagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
+                simplePagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.black_2));
+                simplePagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.refresh_one));
+                simplePagerTitleView.setText(mDataList[index]);
+                simplePagerTitleView.setTextSize(16);
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewpager.setCurrentItem(index);
+                        badgePagerTitleView.setBadgeView(null);
+                    }
+                });
+                badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
+
+                View badgeImageView = LayoutInflater.from(context).inflate(R.layout.layout_red_dot, null);
+                badgePagerTitleView.setBadgeView(badgeImageView);
+
+                badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -6));
+                badgePagerTitleView.setYBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_TOP, -2));
+
+                badgePagerTitleView.setAutoCancelBadge(true);
+                return badgePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setColors(ContextCompat.getColor(context, R.color.refresh_one));
+                return linePagerIndicator;
+            }
+        });
+        indicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(indicator, viewpager);
     }
 }

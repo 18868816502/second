@@ -37,13 +37,13 @@
         app:left_image="@mipmap/ic_credit"
         app:left_image_Visible="true"
         app:left_textView_color="@color/color_primary_black"
+        app:left_textView_remark_Visible="true"
         app:left_textView_style="true"
         app:left_textView_text="信用查询"
         app:left_textView_textSize="15dp"
         app:right_textView1_Visible="true"
         app:right_textView1_color="#FF5240"
-        app:right_textView1_textSize="12sp"
-        app:left_textView_remark_Visible="true"/>
+        app:right_textView1_textSize="12sp" />
 
     <com.beihui.market.view.CardLayoutBar
         android:id="@+id/clb_interest_wrap"

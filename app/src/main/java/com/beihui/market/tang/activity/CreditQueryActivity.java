@@ -145,7 +145,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (timeCounter != null){
+        if (timeCounter != null) {
             timeCounter.onFinish();
         }
     }
@@ -179,22 +179,15 @@ public class CreditQueryActivity extends BaseComponentActivity {
                 map.put("idCard", idNo);
                 map.put("phone", phoneNo);
                 map.put("verifyCode", authCode);
-
-//                Intent intent = new Intent(CreditQueryActivity.this, CreditResultActivity.class);
-//                intent.putExtra("webViewUrl", generateUrl(1));
-//                intent.putExtra("title", "信用查询");
-//                startActivity(intent);
-
                 Api.getInstance().queryCredit(map)
                         .compose(RxResponse.<BlackList>compatT())
                         .subscribe(new ApiObserver<BlackList>() {
                             @Override
                             public void onNext(@NonNull BlackList data) {
                                 Intent intent = new Intent(CreditQueryActivity.this, CreditResultActivity.class);
-                                intent.putExtra("webViewUrl", generateUrl(data.getBlackList()));
+                                intent.putExtra("webViewUrl", generateUrl(data.getBlackList()));//黑名单用户 0-否 1-是
                                 intent.putExtra("title", "信用查询");
                                 startActivity(intent);
-                                //ToastUtil.toast("是否黑名单：" + (data.getBlackList() == 1));//黑名单用户 0-否 1-是
                             }
                         });
                 break;
