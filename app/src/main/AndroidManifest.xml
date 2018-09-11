@@ -263,49 +263,49 @@
             android:name=".tang.activity.CommonDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--钱包-->
+        <!-- 钱包 -->
         <activity
             android:name=".tang.activity.WalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--提现-->
+        <!-- 提现 -->
         <activity
             android:name=".tang.activity.WithdrawActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--提现记录-->
+        <!-- 提现记录 -->
         <activity
             android:name=".tang.activity.WithdrawRecordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--绑定/编辑支付宝-->
+        <!-- 绑定/编辑支付宝 -->
         <activity
             android:name=".tang.activity.BindAlpActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--发票助手-->
+        <!-- 发票助手 -->
         <activity
             android:name=".tang.activity.TicketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--添加/编辑发票-->
+        <!-- 添加/编辑发票 -->
         <activity
             android:name=".tang.activity.AddTicketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <!--发票详情-->
+        <!-- 发票详情 -->
         <activity
             android:name=".tang.activity.TicketDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!--信用查询-->
+        <!-- 信用查询 -->
         <activity
             android:name=".tang.activity.CreditQueryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <!--信用结果查询-->
+        <!-- 信用结果查询 -->
         <activity
             android:name=".tang.activity.CreditResultActivity"
             android:launchMode="singleTop"
@@ -506,7 +506,6 @@
         <activity
             android:name=".ui.activity.GuideInviteActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.activity.HouseLoanCalculatorActivity"
             android:screenOrientation="portrait" />
@@ -516,5 +515,7 @@
         <activity
             android:name=".ui.activity.CombinationLoanResultActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.PersonalCenterActivity"></activity>
     </application>
+
 </manifest>

@@ -29,6 +29,7 @@ import com.beihui.market.ui.activity.CollectionActivity;
 import com.beihui.market.ui.activity.H5Activity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationWebActivity;
+import com.beihui.market.ui.activity.PersonalCenterActivity;
 import com.beihui.market.ui.activity.RemindActivity;
 import com.beihui.market.ui.activity.RewardPointActivity;
 import com.beihui.market.ui.activity.SettingsActivity;
@@ -242,9 +243,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 break;
             //点击头像 如果未登陆 会跳转到登陆页面
             case R.id.avatar:
-                if (!FastClickUtils.isFastClick()) {
-                    presenter.clickUserProfile();
-                }
+//                if (!FastClickUtils.isFastClick()) {
+//                    presenter.clickUserProfile();
+//                }
+                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
                 break;
             case R.id.ll_navigate_user_profile:
                 if (!FastClickUtils.isFastClick()) {

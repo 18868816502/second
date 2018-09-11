@@ -258,7 +258,7 @@
     <string name="user_protocal">《%s用户协议》</string>
 
 
-    <!--房贷部分-->
+    <!--房贷计算器-->
     <!--商贷利率-->
     <array name="loan_sd_rate_content">
         <item>基准利率(4.9%)</item>
@@ -341,10 +341,15 @@
     <string name="loan_base_rate_percent">%)</string>
     <string name="loan_year">年 (</string>
     <string name="loan_phase">期)</string>
-
-
-
     <string name="loan_year_text">%1$s年 (%2$d期)</string>
 
+    
+    <!--个人中心-->
+    <string name="personal_edit_text">编辑个人资料</string>
+    <string name="personal_publish_text">发布</string>
+    <string name="personal_attention_text">关注</string>
+    <string name="personal_fans_text">粉丝</string>
+    <string name="personal_praise_text">获赞</string>
+    <string name="personal_article_title_text">我的文章...</string>
 
 </resources>

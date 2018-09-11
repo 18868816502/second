@@ -618,9 +618,9 @@ public class MainActivity extends BaseComponentActivity {
             if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
                 //System.out.println(tabImage.getSelectedFontColor() + "  " + tabImage.getUnselectedFontColor());
                 int[] colors = new int[]{
-                        Color.parseColor(/*"#" +*/ tabImage.getSelectedFontColor()),
-                        Color.parseColor(/*"#" +*/ tabImage.getSelectedFontColor()),
-                        Color.parseColor(/*"#" +*/ tabImage.getUnselectedFontColor())
+                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
+                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
+                        Color.parseColor("#" + tabImage.getUnselectedFontColor())
                 };
                 int[][] states = new int[3][];
                 states[0] = new int[]{android.R.attr.state_selected};
