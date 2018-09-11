@@ -1,9 +1,12 @@
 package com.beihui.market.tang.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.webkit.DownloadListener;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -79,6 +82,14 @@ public class CreditResultActivity extends BaseComponentActivity {
                 .ready()
                 .go(webViewUrl);
         mWebView = mAgentWeb.getWebCreator().getWebView();
+        mWebView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivityWithoutOverride(intent);
+            }
+        });
 
     }
 

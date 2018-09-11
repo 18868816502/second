@@ -143,9 +143,11 @@ public class CreditQueryActivity extends BaseComponentActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (timeCounter != null) timeCounter.onFinish();
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timeCounter != null){
+            timeCounter.onFinish();
+        }
     }
 
     @Override
