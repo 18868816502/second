@@ -38,6 +38,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
 
     private CommunityPublishAdapter adapter;
     private PopDialog popDialog;
+    private int mPopType = 0;
 
     @Override
     public int getLayoutId() {
@@ -73,11 +74,14 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
         switch (view.getId()){
             case R.id.navigate:
                 //先判断是否有数据
-                showSaveTips();
+                mPopType = 0;
+                showDialogTips(R.layout.dialog_community_publish_save);
                 break;
             case R.id.tv_publish:
-                ToastUtil.toast("发布");
+                mPopType = 1;
+                showDialogTips(R.layout.dialog_community_publish_commit);
                 break;
+            case R.id.cancel:
             case R.id.tv_cancel:
                 popDialog.dismiss();
                 break;
@@ -85,14 +89,22 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
                 //保存
                 finish();
                 break;
+            case R.id.tv_commit:
+                //提交发布的内容
+                ToastUtil.toast("提交");
+                break;
                 default:
                     break;
         }
     }
 
-    private void showSaveTips() {
+    /**
+     * 根据布局显示弹窗
+     * @param layoutId 布局id
+     */
+    private void showDialogTips(int layoutId){
         popDialog = new PopDialog.Builder(getSupportFragmentManager(),this)
-                .setLayoutId(R.layout.dialog_community_publish_save)
+                .setLayoutId(layoutId)
                 .setWidth(270)
                 .setHeight(120)
                 .setGravity(Gravity.CENTER)
@@ -104,7 +116,16 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
 
     @Override
     public void initPop(View view, PopDialog mPopDialog) {
-        view.findViewById(R.id.tv_cancel).setOnClickListener(this);
-        view.findViewById(R.id.tv_save).setOnClickListener(this);
+        switch (mPopType){
+            case 0:
+                view.findViewById(R.id.tv_cancel).setOnClickListener(this);
+                view.findViewById(R.id.tv_save).setOnClickListener(this);
+                break;
+            case 1:
+                view.findViewById(R.id.tv_cancel).setOnClickListener(this);
+                view.findViewById(R.id.tv_commit).setOnClickListener(this);
+                break;
+        }
+
     }
 }

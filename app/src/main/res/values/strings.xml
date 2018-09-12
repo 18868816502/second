@@ -358,5 +358,7 @@
     <string name="community_publish_dialog_content">是否保存为草稿?</string>
     <string name="community_publish_dialog_cancel">取消</string>
     <string name="community_publish_dialog_save">保存</string>
+    <string name="community_publish_dialog_cimmit_content">是否提交内容给管理员审核</string>
+    <string name="community_publish_dialog_commit">提交</string>
 
 </resources>
