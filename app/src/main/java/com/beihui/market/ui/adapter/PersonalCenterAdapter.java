@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * @name loanmarket
  * @class name：com.beihui.market.ui.adapter
  * @class describe 个人中心适配器
- * @anthor chenguoguo
+ * @author chenguoguo
  * @time 2018/9/11 14:38
  */
 public class PersonalCenterAdapter extends RecyclerView.Adapter {
@@ -60,7 +60,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 装载头部用户数据
-     * @param userInfo
+     * @param userInfo 用户bean
      */
     public void setHeadData(UserInfoBean userInfo){
         this.userInfo = userInfo;
@@ -68,7 +68,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 装载刷新的文章数据
-     * @param list
+     * @param list 用户文章列表
      */
     public void setContentData(List<UserArticleBean> list){
         mList.clear();
@@ -78,7 +78,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 加载更多文章数据
-     * @param list
+     * @param list 文章列表
      */
     public void appendArticleData(List<UserArticleBean> list){
         mList.addAll(list);
@@ -118,7 +118,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 绑定头部用户数据
-     * @param holder
+     * @param holder headViewHolder
      */
     private void onBindHeadData(HeadViewHolder holder) {
         if(userInfo == null){ return; }
@@ -135,7 +135,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 绑定用户文章列表数据
-     * @param holder
+     * @param holder contentViewHolder
      */
     private void onBindArticleData(ContentViewHolder holder,int position) {
         UserArticleBean bean = mList.get(position);

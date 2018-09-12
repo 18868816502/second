@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.activity.PersonalCenterActivity"
-    android:id="@+id/parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white">
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/navigate"
@@ -22,13 +19,18 @@
             android:contentDescription="TODO"
             android:src="@mipmap/left_arrow_black" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/black_1"
-            android:textSize="17sp" />
-    </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:id="@+id/iv_more"
+            style="@style/ToolBarIconStyle"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="TODO"
+            android:layout_marginRight="@dimen/dp10"
+            android:src="@drawable/bill_more_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/dp10" />
+
+    </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
@@ -41,5 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
 </android.support.constraint.ConstraintLayout>

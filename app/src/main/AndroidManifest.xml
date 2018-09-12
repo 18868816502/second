@@ -517,6 +517,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.PersonalCenterActivity"></activity>
         <activity android:name=".ui.activity.CommunityPublishActivity"></activity>
+        <activity android:name=".ui.activity.ArticleDetailActivity"></activity>
     </application>
 
 </manifest>

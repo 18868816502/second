@@ -9,7 +9,7 @@ import dagger.Provides;
  * @name loanmarket
  * @class name：com.beihui.market.injection.module
  * @class describe
- * @anthor A
+ * @author A
  * @time 2018/9/11 17:52
  */
 @Module
