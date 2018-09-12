@@ -128,5 +128,6 @@
     <!--personal center-->
     <color name="c_fffafafa">#fffafafa</color>
     <color name="c_e7e7e7">#e7e7e7</color>
+    <color name="c_09141f">#09141f</color>
 
 </resources>

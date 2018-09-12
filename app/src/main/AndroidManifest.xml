@@ -516,6 +516,7 @@
             android:name=".ui.activity.CombinationLoanResultActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.PersonalCenterActivity"></activity>
+        <activity android:name=".ui.activity.CommunityPublishActivity"></activity>
     </application>
 
 </manifest>

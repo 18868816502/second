@@ -17,7 +17,13 @@ import android.view.WindowManager;
 import com.beihui.market.R;
 import com.beihui.market.util.DensityUtil;
 
-
+/**
+ * @name loanmarket
+ * @class name：
+ * @class describe dialog弹窗
+ * @anthor chenguoguo
+ * @time 2018/9/15 14:20
+ */
 public class PopDialog extends BaseDialog {
 
     public static final int POP_COMMON = 100;//普通对话框
@@ -165,7 +171,8 @@ public class PopDialog extends BaseDialog {
          * @return
          */
         public Builder setHeight(int mHeight){
-            mDialog.mHeight = mHeight;
+            int px = DensityUtil.dp2px(mContext,mHeight);
+            mDialog.mHeight = px;
             return this;
         }
 

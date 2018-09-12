@@ -26,6 +26,7 @@ import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.BillSummaryActivity;
 import com.beihui.market.ui.activity.CollectionActivity;
+import com.beihui.market.ui.activity.CommunityPublishActivity;
 import com.beihui.market.ui.activity.H5Activity;
 import com.beihui.market.ui.activity.HelpAndFeedActivity;
 import com.beihui.market.ui.activity.InvitationWebActivity;
@@ -246,7 +247,8 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 //                if (!FastClickUtils.isFastClick()) {
 //                    presenter.clickUserProfile();
 //                }
-                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
+//                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
+                startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 break;
             case R.id.ll_navigate_user_profile:
                 if (!FastClickUtils.isFastClick()) {

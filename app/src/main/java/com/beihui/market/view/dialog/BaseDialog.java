@@ -6,6 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * @name loanmarket
+ * @class name：
+ * @class describe baseDialog
+ * @anthor chenguoguo
+ * @time 2018/9/15 14:20
+ */
 public abstract class BaseDialog extends DialogFragment {
 
 

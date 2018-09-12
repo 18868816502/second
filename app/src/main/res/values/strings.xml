@@ -352,4 +352,11 @@
     <string name="personal_praise_text">获赞</string>
     <string name="personal_article_title_text">我的文章...</string>
 
+    <!--社区-->
+    <string name="community_publish_title_input">请输入标题...</string>
+    <string name="community_publish_content_input">请写下你的故事...</string>
+    <string name="community_publish_dialog_content">是否保存为草稿?</string>
+    <string name="community_publish_dialog_cancel">取消</string>
+    <string name="community_publish_dialog_save">保存</string>
+
 </resources>
