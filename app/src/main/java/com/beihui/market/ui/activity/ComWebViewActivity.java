@@ -14,7 +14,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,7 +25,6 @@ import com.beihui.market.util.AndroidBug5497Fix;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 合作的产品 (如; 我要借款点击按钮跳转)

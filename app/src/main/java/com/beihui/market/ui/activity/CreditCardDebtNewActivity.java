@@ -5,10 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -20,14 +17,9 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerCreditCardDebtNewComponent;
 import com.beihui.market.injection.module.CreditCardDebtNewModule;
 import com.beihui.market.ui.contract.CreditCardDebtNewContract;
-import com.beihui.market.ui.listeners.EtAmountWatcher;
-import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.CreditCardDebtNewPresenter;
 import com.beihui.market.util.AndroidBug5497Fix;
-import com.beihui.market.util.CommonUtils;
-import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
-import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 

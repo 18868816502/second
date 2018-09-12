@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -22,7 +21,6 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.CreditCardDebtDetailActivity;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
 import com.beihui.market.ui.activity.LoanDebtDetailActivity;
-import com.beihui.market.ui.adapter.BillLoanAnalysisMonthRvAdapter;
 import com.beihui.market.ui.adapter.BillLoanAnalysisWeekRvAdapter;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.FastClickUtils;

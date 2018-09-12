@@ -8,7 +8,6 @@ import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.ui.contract.PersonalCenterContact;
 import com.beihui.market.util.RxUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;

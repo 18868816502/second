@@ -20,16 +20,11 @@ import android.widget.Toast;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
-import com.beihui.market.entity.DebtChannel;
-import com.beihui.market.event.XTabAccountDialogMoxieFinishEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
-import com.beihui.market.ui.activity.DebtNewActivity;
-import com.beihui.market.ui.activity.EBankActivity;
 import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.activity.FastAddDebtActivity;
 import com.beihui.market.util.FastClickUtils;
-import com.beihui.market.util.RxUtil;
 import com.moxie.client.exception.ExceptionType;
 import com.moxie.client.exception.MoxieException;
 import com.moxie.client.manager.MoxieCallBack;
@@ -40,17 +35,11 @@ import com.moxie.client.model.MxParam;
 import com.moxie.client.model.TitleParams;
 import com.umeng.socialize.media.UMWeb;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**

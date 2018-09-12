@@ -7,9 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -21,8 +19,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * 网贷详情适配器

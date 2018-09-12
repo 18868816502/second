@@ -11,10 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -43,8 +40,6 @@ import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
-import com.beihui.market.ui.dialog.EditPayPlanDialog;
-import com.beihui.market.ui.dialog.NicknameDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
 import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.umeng.NewVersionEvents;
@@ -70,8 +65,6 @@ import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 
 import static android.text.TextUtils.isEmpty;
-import static com.beihui.market.util.CommonUtils.convertInterestRate;
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb

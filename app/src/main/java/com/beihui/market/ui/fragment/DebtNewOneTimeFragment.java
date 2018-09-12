@@ -1,16 +1,12 @@
 package com.beihui.market.ui.fragment;
 
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,32 +14,24 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.DebtChannel;
 import com.beihui.market.entity.DebtDetail;
-import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerDebtNewComponent;
 import com.beihui.market.injection.module.DebtNewModule;
-import com.beihui.market.ui.activity.DebtNewActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.ui.presenter.DebtNewPresenter;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.LogUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.EditTextUtils;
-import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.beihui.market.view.pickerview.TimePickerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;

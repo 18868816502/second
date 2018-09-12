@@ -2,7 +2,6 @@ package com.beihui.market.api;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;

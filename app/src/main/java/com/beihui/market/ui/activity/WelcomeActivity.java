@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseActivity;
-import com.beihui.market.helper.UserHelper;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.IndicatorView;
 import com.gyf.barlibrary.ImmersionBar;

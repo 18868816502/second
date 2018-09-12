@@ -8,12 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.beihui.market.R;
-import com.beihui.market.api.Api;
 import com.beihui.market.entity.ContactBean;
-import com.beihui.market.helper.UserHelper;
-import com.beihui.market.tang.rx.RxResponse;
-import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

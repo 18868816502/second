@@ -1,7 +1,6 @@
 package com.beihui.market.view.pulltoswipe;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -12,10 +11,8 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.beihui.market.R;
 import com.beihui.market.event.InsideViewPagerBus;

@@ -5,24 +5,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.contract.DebtNewContract;
-import com.beihui.market.ui.fragment.DebtNewEvenFragment;
-import com.beihui.market.ui.fragment.DebtNewOneTimeFragment;
 import com.beihui.market.ui.fragment.FastAddDebtNewEvenFragment;
 import com.beihui.market.ui.fragment.FastAddDebtOneTimeFragment;
 import com.beihui.market.util.AndroidBug5497Fix;
-import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.PagerSlidingTab;
 import com.gyf.barlibrary.ImmersionBar;
 

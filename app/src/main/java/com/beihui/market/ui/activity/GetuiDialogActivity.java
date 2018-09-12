@@ -3,22 +3,15 @@ package com.beihui.market.ui.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.GetuiBean;
-import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.util.CommonUtils;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-
-import butterknife.BindView;
 
 /**
  * Copyright: zhujia (C)2018

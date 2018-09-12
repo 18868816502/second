@@ -1,6 +1,5 @@
 package com.beihui.market.entity;
 
-import java.io.PipedReader;
 import java.io.Serializable;
 
 /**

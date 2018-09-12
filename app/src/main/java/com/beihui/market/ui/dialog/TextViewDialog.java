@@ -12,13 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
-import com.beihui.market.view.EditTextUtils;
 
 /**
  * 修改备注的对话框

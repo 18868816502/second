@@ -22,7 +22,6 @@ import com.beihui.market.tang.activity.NetLoanDetailActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.BillSummaryAdapter;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;

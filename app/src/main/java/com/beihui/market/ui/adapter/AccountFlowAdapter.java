@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,20 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beihui.market.R;
-import com.beihui.market.anim.ShakeAnimation;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AccountFlowIconBean;
-import com.beihui.market.helper.DataStatisticsHelper;
-import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.activity.AccountFlowTypeActivity;
-import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.RxUtil;
 import com.bumptech.glide.Glide;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;

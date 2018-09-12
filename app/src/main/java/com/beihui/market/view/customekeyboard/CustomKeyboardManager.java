@@ -14,16 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.beihui.market.R;
-import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.Px2DpUtils;
-import com.beihui.market.util.SPUtils;
 
 import java.lang.reflect.Method;
 

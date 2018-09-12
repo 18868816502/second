@@ -1,8 +1,6 @@
 package com.beihui.market.api;
 
 
-import android.content.pm.PackageManager;
-
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 

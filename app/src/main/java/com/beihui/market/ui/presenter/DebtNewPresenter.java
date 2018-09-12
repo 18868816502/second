@@ -3,7 +3,6 @@ package com.beihui.market.ui.presenter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;

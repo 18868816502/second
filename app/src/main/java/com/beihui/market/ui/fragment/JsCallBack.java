@@ -1,6 +1,5 @@
 package com.beihui.market.ui.fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.webkit.JavascriptInterface;

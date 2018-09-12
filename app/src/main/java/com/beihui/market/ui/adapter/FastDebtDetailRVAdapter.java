@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.DebeDetailRecord;
-import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.util.FormatNumberUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -20,8 +19,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * 快速记账详情适配器

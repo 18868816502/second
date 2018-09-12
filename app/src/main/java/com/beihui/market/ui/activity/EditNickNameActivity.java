@@ -8,8 +8,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;

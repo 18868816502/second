@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.entity.EventBean;
 import com.beihui.market.entity.PayAccount;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.helper.SlidePanelHelper;

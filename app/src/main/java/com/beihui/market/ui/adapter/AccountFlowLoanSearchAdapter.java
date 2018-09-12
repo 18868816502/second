@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.AccountFlowIconBean;
-import com.beihui.market.entity.LoanAccountIconBean;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

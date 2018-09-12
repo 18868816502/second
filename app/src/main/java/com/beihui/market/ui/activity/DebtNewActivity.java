@@ -1,9 +1,6 @@
 package com.beihui.market.ui.activity;
 
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,13 +22,10 @@ import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.fragment.DebtNewEvenFragment;
 import com.beihui.market.ui.fragment.DebtNewOneTimeFragment;
 import com.beihui.market.util.AndroidBug5497Fix;
-import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.PagerSlidingTab;
-import com.beihui.market.view.copytablayout.CopyTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * @author xhb

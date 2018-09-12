@@ -9,8 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.beihui.market.R;
-
 
 public abstract class CustomBaseKeyboard extends Keyboard implements KeyboardView.OnKeyboardActionListener {
 

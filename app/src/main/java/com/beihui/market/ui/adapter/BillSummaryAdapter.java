@@ -2,7 +2,6 @@ package com.beihui.market.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,10 +10,6 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.entity.BillSummaryBean;
 import com.beihui.market.tang.MoxieUtil;
-import com.beihui.market.tang.activity.CommonDetailActivity;
-import com.beihui.market.tang.activity.CreditDetailActivity;
-import com.beihui.market.tang.activity.NetLoanDetailActivity;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;

@@ -1,11 +1,9 @@
 package com.beihui.market.api.interceptor;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
-import com.beihui.market.util.SoundUtils;
 
 import java.io.IOException;
 import java.util.HashMap;

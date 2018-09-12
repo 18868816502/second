@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
@@ -27,7 +26,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 

@@ -17,7 +17,6 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.DebtChannelActivity;
 import com.beihui.market.ui.adapter.DebtChannelRVAdapter;
-import com.beihui.market.ui.dialog.DebtChannelNewDialog;
 import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.DebtChannelSearchItemDeco;
 import com.beihui.market.util.CommonUtils;

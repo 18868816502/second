@@ -4,7 +4,6 @@ package com.beihui.market.umeng;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;

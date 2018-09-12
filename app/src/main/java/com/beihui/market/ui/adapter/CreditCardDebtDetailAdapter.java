@@ -6,7 +6,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -29,7 +28,6 @@ import static android.text.TextUtils.isEmpty;
 import static com.beihui.market.ui.adapter.multipleentity.CreditCardDebtDetailMultiEntity.ITEM_TYPE_DETAIL;
 import static com.beihui.market.ui.adapter.multipleentity.CreditCardDebtDetailMultiEntity.ITEM_TYPE_HINT;
 import static com.beihui.market.ui.adapter.multipleentity.CreditCardDebtDetailMultiEntity.ITEM_TYPE_MONTH_ABSTRACT;
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 public class CreditCardDebtDetailAdapter extends BaseMultiItemQuickAdapter<CreditCardDebtDetailMultiEntity, BaseViewHolder> {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);

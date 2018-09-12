@@ -2,7 +2,6 @@ package com.beihui.market.tang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,10 +19,6 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.LoanBillAdapter;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.view.GlideCircleTransform;
-import com.bumptech.glide.Glide;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;

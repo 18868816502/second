@@ -6,64 +6,31 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.api.Api;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.base.Constant;
-import com.beihui.market.entity.RewardPoint;
-import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSetPwdComponent;
 import com.beihui.market.injection.module.SetPwdModule;
 import com.beihui.market.ui.activity.ResetPwdActivity;
-import com.beihui.market.ui.activity.UserAuthorizationActivity;
-import com.beihui.market.ui.activity.UserCertificationCodeActivity;
-import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.ResetPwdSetPwdContract;
-import com.beihui.market.ui.presenter.LoginPresenter;
 import com.beihui.market.ui.presenter.ResetPwdSetPwdPresenter;
-import com.beihui.market.ui.presenter.UserProfilePresenter;
-import com.beihui.market.umeng.Events;
-import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.viewutils.ToastUtils;
 import com.beihui.market.view.ClearEditText;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 忘记密码设置密码的 片段

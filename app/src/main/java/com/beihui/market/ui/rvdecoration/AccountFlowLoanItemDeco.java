@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
-import com.beihui.market.ui.adapter.DebtChannelRVAdapter;
 
 public class AccountFlowLoanItemDeco extends RecyclerView.ItemDecoration {
 

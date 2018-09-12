@@ -1,19 +1,16 @@
 package com.beihui.market.ui.dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +19,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.beihui.market.R;
-import com.beihui.market.util.CommonUtils;
-import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.flowlayout.FlowLayout;
 import com.beihui.market.view.flowlayout.TagAdapter;
 import com.beihui.market.view.flowlayout.TagFlowLayout;
-import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.HashMap;
-import java.util.Set;
-
-import butterknife.BindView;
 
 /**
  * Created by admin on 2018/6/14.

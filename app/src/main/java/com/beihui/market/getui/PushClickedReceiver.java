@@ -4,7 +4,6 @@ package com.beihui.market.getui;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.Api;
@@ -16,7 +15,6 @@ import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
 import com.beihui.market.util.RxUtil;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -3,7 +3,6 @@ package com.beihui.market.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.beihui.market.App;
 import com.beihui.market.api.Api;

@@ -2,14 +2,10 @@ package com.beihui.market.ui.activity;
 
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,16 +28,11 @@ import com.beihui.market.injection.module.MessageCenterModule;
 import com.beihui.market.ui.adapter.MessageCenterAdapter;
 import com.beihui.market.ui.contract.MessageCenterContract;
 import com.beihui.market.ui.presenter.MessageCenterPresenter;
-import com.beihui.market.ui.presenter.TabMinePresenter;
 import com.beihui.market.ui.rvdecoration.MessageCenterItemDeco;
 import com.beihui.market.util.DateFormatUtils;
 import com.beihui.market.util.RxUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;

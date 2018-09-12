@@ -10,7 +10,6 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.UsedEmail;

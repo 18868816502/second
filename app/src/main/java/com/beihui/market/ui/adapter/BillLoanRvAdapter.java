@@ -3,7 +3,6 @@ package com.beihui.market.ui.adapter;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.event.BillLoanRvAdapterEvent;
-import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.view.multiChildHistogram.SingleChartView;
 
 import org.greenrobot.eventbus.EventBus;

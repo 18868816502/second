@@ -3,8 +3,6 @@ package com.beihui.market.injection.module;
 
 import com.beihui.market.ui.contract.SysMsgDetailContract;
 
-import javax.inject.Inject;
-
 import dagger.Module;
 import dagger.Provides;
 

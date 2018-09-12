@@ -29,7 +29,6 @@ import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
 import com.beihui.market.ui.dialog.AlertDialog;
 import com.beihui.market.ui.presenter.SysMsgPresenter;
-import com.beihui.market.ui.rvdecoration.NewsItemDeco;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.StateLayout;

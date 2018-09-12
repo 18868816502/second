@@ -6,7 +6,6 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.LoanBill;
-import com.beihui.market.util.CommonUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -14,7 +13,6 @@ import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static android.text.TextUtils.isEmpty;
 

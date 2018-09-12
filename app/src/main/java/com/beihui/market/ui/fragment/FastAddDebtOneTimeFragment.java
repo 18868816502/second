@@ -14,19 +14,12 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.entity.DebtChannel;
-import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
-import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.injection.component.DaggerDebtNewComponent;
-import com.beihui.market.injection.module.DebtNewModule;
 import com.beihui.market.ui.activity.MainActivity;
-import com.beihui.market.ui.contract.DebtNewContract;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.ui.listeners.EtTextLengthWatcher;
-import com.beihui.market.ui.presenter.DebtNewPresenter;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
@@ -41,8 +34,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;

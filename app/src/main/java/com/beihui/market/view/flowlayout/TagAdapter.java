@@ -1,6 +1,5 @@
 package com.beihui.market.view.flowlayout;
 
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;

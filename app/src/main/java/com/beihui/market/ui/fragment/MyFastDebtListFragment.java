@@ -4,7 +4,6 @@ package com.beihui.market.ui.fragment;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -16,7 +15,6 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerMyLoanBillComponent;
 import com.beihui.market.injection.module.MyLoanBillModule;
 import com.beihui.market.ui.activity.FastDebtDetailActivity;
-import com.beihui.market.ui.activity.LoanDebtDetailActivity;
 import com.beihui.market.ui.activity.MyDebtActivity;
 import com.beihui.market.ui.adapter.MyLoanBillDebtAdapter;
 import com.beihui.market.ui.contract.MyLoanBillContract;

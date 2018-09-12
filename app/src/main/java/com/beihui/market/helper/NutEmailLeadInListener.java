@@ -1,7 +1,5 @@
 package com.beihui.market.helper;
 
-import android.util.Log;
-
 import com.beihui.market.App;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;

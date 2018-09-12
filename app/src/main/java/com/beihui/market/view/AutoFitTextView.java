@@ -3,11 +3,9 @@ package com.beihui.market.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.ViewTreeObserver;
 
 /**
  * 自定义TextView，文本内容自动调整字体大小以适应TextView的大小

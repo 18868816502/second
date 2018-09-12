@@ -5,8 +5,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.beihui.market.event.InsideViewPagerBus;
-import com.beihui.market.helper.DataStatisticsHelper;
-import com.beihui.market.umeng.NewVersionEvents;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import org.greenrobot.eventbus.EventBus;

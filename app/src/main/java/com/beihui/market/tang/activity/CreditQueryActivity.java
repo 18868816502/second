@@ -30,7 +30,6 @@ import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
-import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 

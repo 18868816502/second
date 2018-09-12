@@ -17,9 +17,6 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.fragment.MyCreditCardDebtListFragment;
 import com.beihui.market.ui.fragment.MyFastDebtListFragment;
 import com.beihui.market.ui.fragment.MyLoanDebtListFragment;
-import com.beihui.market.util.FastClickUtils;
-import com.beihui.market.view.PagerSlidingTab;
-import com.beihui.market.view.copytablayout.CopyTabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;

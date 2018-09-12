@@ -2,11 +2,9 @@ package com.beihui.market.ui.adapter;
 
 
 import android.content.Context;
-import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.entity.SysMsg;
-import com.beihui.market.util.OnGlobalLayoutListenerByEllipSize;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 

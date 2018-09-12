@@ -1,7 +1,6 @@
 package com.beihui.market.helper.updatehelper;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -20,11 +17,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.beihui.market.App;
-import com.beihui.market.BuildConfig;
-import com.beihui.market.Manifest;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.helper.FileProviderHelper;

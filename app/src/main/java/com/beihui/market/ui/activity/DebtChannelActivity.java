@@ -19,7 +19,6 @@ import com.beihui.market.injection.component.DaggerDebtChannelComponent;
 import com.beihui.market.injection.module.DebtChannelModule;
 import com.beihui.market.ui.adapter.DebtChannelRVAdapter;
 import com.beihui.market.ui.contract.DebtChannelContract;
-import com.beihui.market.ui.dialog.DebtChannelNewDialog;
 import com.beihui.market.ui.fragment.DebtChannelSearchFragment;
 import com.beihui.market.ui.presenter.DebtChannelPresenter;
 import com.beihui.market.ui.rvdecoration.DebtChannelItemDeco;

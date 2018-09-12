@@ -1,7 +1,6 @@
 package com.beihui.market.ui.activity;
 
 
-import android.media.Image;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;

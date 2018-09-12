@@ -1,7 +1,5 @@
 package com.beihui.market.view.pickerview.utils;
 
-import android.util.Log;
-
 import java.util.Date;
 import java.util.GregorianCalendar;
 

@@ -1,26 +1,17 @@
 package com.beihui.market.view.multiChildHistogram;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
 
-import com.beihui.market.R;
 import com.beihui.market.util.Px2DpUtils;
-
-import java.math.BigDecimal;
 
 /**
  * Created by admin on 2018/5/22.

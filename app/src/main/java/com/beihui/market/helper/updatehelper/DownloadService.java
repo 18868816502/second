@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 
-
 import com.beihui.market.helper.FileProviderHelper;
 import com.beihui.market.util.NotificationUtil;
 

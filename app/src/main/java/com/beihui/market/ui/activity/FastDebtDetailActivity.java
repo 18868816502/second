@@ -1,12 +1,10 @@
 package com.beihui.market.ui.activity;
 
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,24 +26,17 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.entity.DebeDetailRecord;
-import com.beihui.market.entity.DebtDetail;
 import com.beihui.market.entity.FastDebtDetail;
 import com.beihui.market.event.MyLoanDebtListFragmentEvent;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.injection.component.DaggerDebtDetailComponent;
-import com.beihui.market.injection.module.DebtDetailModule;
-import com.beihui.market.ui.adapter.DebtDetailRVAdapter;
 import com.beihui.market.ui.adapter.FastDebtDetailRVAdapter;
-import com.beihui.market.ui.contract.DebtDetailContract;
 import com.beihui.market.ui.dialog.BillEditAmountDialog;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.dialog.CreditCardDebtDetailDialog;
 import com.beihui.market.ui.dialog.RemarkDialog;
-import com.beihui.market.ui.fragment.TabAccountFragment;
-import com.beihui.market.ui.presenter.DebtDetailPresenter;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FormatNumberUtils;
@@ -62,15 +53,11 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 
 import static android.text.TextUtils.isEmpty;
-import static com.beihui.market.util.CommonUtils.getChaneseNum;
-import static com.beihui.market.util.CommonUtils.keep2digitsWithoutZero;
 
 /**
  * @author xhb
