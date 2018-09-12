@@ -14,13 +14,11 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/Combination_Dynamic_Mortgage_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/Combination_Mortgage_Layout2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="15dp"
@@ -60,7 +58,6 @@
                 android:background="@color/c_ffe8e8e8" />
 
             <LinearLayout
-                android:id="@+id/Combination_Mortgage_Layout1"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="15dp"
@@ -102,7 +99,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/Combination_TimeLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="15dp"
@@ -110,7 +106,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/Combination_TimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -202,7 +197,6 @@
             android:background="@color/c_ffe8e8e8" />
 
         <LinearLayout
-            android:id="@+id/Commercial_RateLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="15dp"
@@ -269,7 +263,6 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/ll_comb_payback_interest"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -291,7 +284,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_comb_payback_principal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"

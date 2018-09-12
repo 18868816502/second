@@ -22,7 +22,6 @@
 
             <ImageView
                 android:visibility="invisible"
-                android:id="@+id/iv_dynamic_unit_refresh_water"
                 android:padding="2dp"
                 android:src="@drawable/x_pull_to_refresh_loading"
                 android:layout_width="match_parent"

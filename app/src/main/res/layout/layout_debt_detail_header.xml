@@ -149,7 +149,6 @@
                             tools:text="" />
 
                         <TextView
-                            android:id="@+id/debt_detail_pay_term_text"
                             android:layout_marginTop="9dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -302,7 +301,6 @@
                 android:text="本金总计" />
 
             <TextView
-                android:id="@+id/capital_total_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -322,7 +320,6 @@
 
 
             <TextView
-                android:id="@+id/debt_platform_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -343,7 +340,6 @@
 
 
             <TextView
-                android:id="@+id/interest_rate_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -363,7 +359,6 @@
 
 
             <TextView
-                android:id="@+id/remark_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -404,7 +399,6 @@
 
 
             <TextView
-                android:id="@+id/interest_total_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -424,7 +418,6 @@
 
 
             <TextView
-                android:id="@+id/debt_life_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -444,7 +437,6 @@
 
 
             <TextView
-                android:id="@+id/debt_start_date_content"
                 style="@style/DebtDetailTextStyle.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -476,7 +468,6 @@
             android:layout_height="40dp">
 
             <RelativeLayout
-                android:id="@+id/sticky_header"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@android:color/white">

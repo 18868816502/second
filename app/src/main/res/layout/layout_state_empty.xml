@@ -26,7 +26,6 @@
 
     <!--纯占位View，除配合CoordinatorLayout滚动之外，无任何作用-->
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll_place_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

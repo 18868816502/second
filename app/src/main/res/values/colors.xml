@@ -12,21 +12,8 @@
     <color name="colorBackground">#f7f7f7</color>
 
 
-    <color name="custom_key_red">#f24957</color>
-    <color name="custom_key_red_pressed">#d9414e</color>
-
-    <color name="custom_key_blue">#4377bf</color>
-    <color name="custom_key_blue_pressed">#3a67a6</color>
-
-    <color name="custom_key_grayl">#c8cacc</color>
-    <color name="custom_key_grayl_pressed">#f58349</color>
     <!--文字-->
-    <color name="text_color_gray_6">#666666</color>
-    <color name="text_color_gray_9">#999999</color>
     <color name="text_color_white">#ffffff</color>
-    <color name="text_color_red">#f55754</color>
-    <color name="text_color_blue">#007eff</color>
-    <color name="text_color_yellow">#fffc01</color>
     <!--00000000000000000000000000000000000000000000000000000000000000000000-->
 
 
@@ -43,21 +30,16 @@
     <color name="white_7">#90ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#ff0000</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_half">#33000000</color>
-    <color name="transparent_black">#11000000</color>
 
     <color name="common_bg">#f6f6f6</color>
 
     <color name="grey_a900">#44212121</color>
     <color name="line">#f8f8f8</color>
-    <color name="c_f1eff2">#f1eff2</color>
     <color name="line_color">#e8e8e8</color>
 
     <color name="c_222222">#222222</color>
-    <color name="c_333333">#333333</color>
     <color name="c_666666">#666666</color>
     <color name="c_999999">#999999</color>
 
@@ -68,41 +50,15 @@
 
 
     <color name="login1">#528bff</color>
-    <color name="login2">#52bbff</color>
 
     <color name="c_f7f7f7">#f7f7f7</color>
-    <color name="c_2b4473">#2b4473</color>
     <color name="c_ff5240">#ff5240</color>
-
-    <integer-array name="gplus_colors">
-        <item>@color/gplus_color_1</item>
-        <item>@color/gplus_color_2</item>
-        <item>@color/gplus_color_3</item>
-        <item>@color/gplus_color_4</item>
-    </integer-array>
-
-    <color name="add_edit_bg">#808080</color>
-
-    <color name="gplus_color_1">#3e802f</color>
-    <color name="gplus_color_2">#f4b400</color>
-    <color name="gplus_color_3">#427fed</color>
-    <color name="gplus_color_4">#b23424</color>
-
-    <color name="ghost_white">#f8f8ff</color>
-    <color name="floral_white">#fff8f0</color>
 
     <color name="pickerview_timebtn_nor">#057dff</color>
     <color name="pickerview_timebtn_pre">#c2daf5</color>
-    <color name="pickerview_bg_topbar">#f5f5f5</color>
 
-    <color name="pickerview_topbar_title">#000000</color>
-    <color name="pickerview_wheelview_textcolor_out">#a8a8a8</color>
-    <color name="pickerview_wheelview_textcolor_center">#2a2a2a</color>
-    <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
     <color name="pickerview_bgColor_overlay">#60000000</color>
-    <color name="pickerview_bgColor_default">#FFFFFFFF</color>
 
-    <color name="dlb_text_color">#2a84ff</color>
     <color name="pickerview_title">#424251</color>
     <color name="pickerview_cancle">#909298</color>
     <color name="pickerview_submit">#FF5240</color>
@@ -111,12 +67,7 @@
     <color name="bill_detail_pay_color">#28b05e</color>
 
     <!-- dialog -->
-    <color name="realtime_normal_text_color">#40C371</color>
-    <color name="trans">#00000000</color>
     <color name="alertdialog_line">#f6f6f6</color>
-    <color name="actionsheet_blue">#037BFF</color>
-    <color name="actionsheet_red">#FD4A2E</color>
-    <color name="actionsheet_gray">#8F8F8F</color>
     <color name="withdraw_success">#23b448</color>
 
 

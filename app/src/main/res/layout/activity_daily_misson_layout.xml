@@ -23,7 +23,6 @@
             android:background="@color/transparent">
 
             <TextView
-                android:id="@+id/tool_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

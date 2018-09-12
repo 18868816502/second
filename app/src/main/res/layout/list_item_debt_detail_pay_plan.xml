@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:id="@+id/rl_item_debt_info_root">
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/ll_item_debt_detail_root"
@@ -29,7 +28,6 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_item_debt_pay_plan_root"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">

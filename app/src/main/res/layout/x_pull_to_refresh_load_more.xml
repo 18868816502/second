@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--自定义控件布局 PullToRefreshLayout包里面<xhb>-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/x_pull_to_load_more_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff" >

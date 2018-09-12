@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:orientation="horizontal"
@@ -157,7 +156,6 @@
                 android:layout_below="@+id/ViewPager_CapitalCombination_CommPaySum_Number_TextView"/>
 
             <TextView
-                android:id="@+id/ViewPager_CapitalCombination_PaySum_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="还款总额:"
@@ -167,7 +165,6 @@
                 android:layout_below="@+id/ViewPager_CapitalCombination_HAFPaySum_TextView"/>
 
             <TextView
-                android:id="@+id/ViewPager_CapitalCombination_PaySum_Number_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
@@ -242,7 +239,6 @@
                 android:layout_below="@+id/ViewPager_CapitalCombination_CommInterest_Number_TextView"/>
 
             <TextView
-                android:id="@+id/ViewPager_CapitalCombination_Interest_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="利息总额:"
@@ -252,7 +248,6 @@
                 android:layout_below="@+id/ViewPager_CapitalCombination_HAFInterest_TextView"/>
 
             <TextView
-                android:id="@+id/ViewPager_CapitalCombination_Interest_Number_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"

@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <ImageView
-        android:id="@+id/iv_publish_image"
         android:layout_width="@dimen/dp81"
         android:layout_height="@dimen/dp81"
         app:layout_constraintLeft_toLeftOf="parent"
