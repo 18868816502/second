@@ -5,24 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.activity.PersonalCenterActivity"
-    android:background="@color/white">
+    android:id="@+id/parent">
 
     <RelativeLayout
         android:id="@+id/tool_bar1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
         android:gravity="center_vertical"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/navigate"
             style="@style/ToolBarIconStyle"
             android:layout_centerVertical="true"
-            android:src="@mipmap/left_arrow_black"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@mipmap/left_arrow_black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +32,7 @@
             android:text="@string/loan_calculate"
             android:textColor="@color/black_1"
             android:textSize="16sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
     <android.support.v7.widget.Toolbar
@@ -49,10 +50,16 @@
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar"/>
+        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>

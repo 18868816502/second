@@ -66,6 +66,8 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
+import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
@@ -1240,4 +1242,24 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/s1/tools/credit/check")
     Observable<ResultEntity<BlackList>> queryCredit(@FieldMap Map<String, Object> map);
+
+    /**
+     * 用户主页-个人信息
+     * @param userID
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/s1/userIndex/baseInfo")
+    Observable<ResultEntity<UserInfoBean>> queryUserInfo(@Field("userId") String userID);
+
+    /**
+     * 用户主页-用户发表的文章列表
+     * @param userID 用户id
+     * @param pageNo 页码
+     * @param pageSize 每页条数
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/s1/userIndex/forumInfo")
+    Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(@Field("userId") String userID,@Field("pageNo") int pageNo,@Field("pageSize") int pageSize);
 }

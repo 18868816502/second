@@ -75,6 +75,8 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
+import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
@@ -156,7 +158,8 @@ public class Api {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NetConstants.DOMAIN)
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(RsaGsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
@@ -1655,6 +1658,26 @@ public class Api {
 
         }
         return service.uploadImg(userId, phone, imgType, activeName, imageBase64);
+    }
+
+    /**
+     * 查询用户个人信息
+     * @param userId
+     * @return
+     */
+    public Observable<ResultEntity<UserInfoBean>> queryUserInfo(String userId){
+        return service.queryUserInfo(userId);
+    }
+
+    /**
+     * 查询用户发表的文章
+     * @param userId 用户id
+     * @param pageNo 页码
+     * @param pageSize 页数
+     * @return
+     */
+    public Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(String userId,int pageNo,int pageSize){
+        return  service.queryUserArticleInfo(userId,pageNo,pageSize);
     }
 
     /*****generate method*****/

@@ -10,7 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.util.ToastUtil;
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,8 +49,45 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
      */
     private ContentViewHolder contentViewHolder;
 
+    /**
+     * 用户数据
+     */
+    private UserInfoBean userInfo;
+    /**
+     * 用户文章列表
+     */
+    private List<UserArticleBean> mList;
+
+    /**
+     * 装载头部用户数据
+     * @param userInfo
+     */
+    public void setHeadData(UserInfoBean userInfo){
+        this.userInfo = userInfo;
+    }
+
+    /**
+     * 装载刷新的文章数据
+     * @param list
+     */
+    public void setContentData(List<UserArticleBean> list){
+        mList.clear();
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 加载更多文章数据
+     * @param list
+     */
+    public void appendArticleData(List<UserArticleBean> list){
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public PersonalCenterAdapter(Context mContext) {
         this.mContext = mContext;
+        mList = new ArrayList<>();
     }
 
     @Override
@@ -56,6 +99,8 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             case CONTENT:
                 View contentView = LayoutInflater.from(mContext).inflate(R.layout.item_personal_center_article_content,parent,false);
                 return new ContentViewHolder(contentView);
+                default:
+                    break;
         }
         return null;
     }
@@ -64,11 +109,43 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(position == 0){
             headViewHolder = (HeadViewHolder) holder;
-
+//            onBindHeadData(headViewHolder);
         }else{
             contentViewHolder = (ContentViewHolder) holder;
-
+//            onBindArticleData(contentViewHolder,position-1);
         }
+    }
+
+    /**
+     * 绑定头部用户数据
+     * @param holder
+     */
+    private void onBindHeadData(HeadViewHolder holder) {
+        if(userInfo == null){ return; }
+        Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
+        holder.tvName.setText(userInfo.getUserName());
+        holder.tvSex.setText(1 == userInfo.getSex() ? "男":"女");
+        holder.tvProduce.setText(String.format("简介:",userInfo.getIntroduce()));
+        holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
+        holder.tvAttentionNum.setText(String.valueOf(userInfo.getFollowerCount()));
+        holder.tvFansNum.setText(String.valueOf(userInfo.getFansCount()));
+        holder.tvPraiseNum.setText(String.valueOf(userInfo.getPraiseCount()));
+
+    }
+
+    /**
+     * 绑定用户文章列表数据
+     * @param holder
+     */
+    private void onBindArticleData(ContentViewHolder holder,int position) {
+        UserArticleBean bean = mList.get(position);
+        Glide.with(mContext).load(bean.getUserHeadUrl()).asBitmap().into(holder.ivAuthorAvatar);
+        holder.tvAuthorName.setText(bean.getUserName());
+        holder.tvArticleContent.setText(bean.getGmtCreate());
+        holder.tvArticleDescripe.setText(bean.getTitle());
+        Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
+        holder.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
+        holder.tvCommentNum.setText(String.valueOf(bean.getCommentCount()));
     }
 
     @Override
@@ -99,12 +176,20 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         TextView tvProduce;
         @BindView(R.id.ll_publish_container)
         LinearLayout llPublishContainer;
+        @BindView(R.id.tv_publish_num)
+        TextView tvPublishNum;
         @BindView(R.id.ll_attention_container)
         LinearLayout llAttentionContainer;
+        @BindView(R.id.tv_attention_num)
+        TextView tvAttentionNum;
         @BindView(R.id.ll_fans_container)
         LinearLayout llFansContainer;
+        @BindView(R.id.tv_fans_num)
+        TextView tvFansNum;
         @BindView(R.id.ll_praise_container)
         LinearLayout llPraiseContainer;
+        @BindView(R.id.tv_praise_num)
+        TextView tvPraiseNum;
         @BindView(R.id.iv_more)
         ImageView ivMore;
 
@@ -133,6 +218,8 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         TextView tvArticleContent;
         @BindView(R.id.tv_article_descripe)
         TextView tvArticleDescripe;
+        @BindView(R.id.iv_author_content)
+        ImageView ivAuthorContent;
         @BindView(R.id.ll_article_praise_container)
         LinearLayout llArticlePraiseContainer;
         @BindView(R.id.iv_priase)
@@ -161,6 +248,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             switch (view.getId()){
                 case R.id.avatar:
                     ToastUtil.toast("用户头像");
+                    listener.onAvatarClick();
                     break;
                 case R.id.ll_edit_container:
                     ToastUtil.toast("编辑个人资料");
@@ -178,14 +266,14 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                     ToastUtil.toast("获赞");
                     break;
                 case R.id.iv_more:
-                    ToastUtil.toast("我的文章更多按钮");
-                    listener.onMoreClick();
+                    listener.onMoreClick(headViewHolder.ivMore);
                     break;
 
 
                     /*content*/
                 case R.id.iv_author_avatar:
                     ToastUtil.toast("作者头像");
+//                    listener.onAvatarClick();
                     break;
                 case R.id.ll_article_praise_container:
                     ToastUtil.toast("点赞");
@@ -193,6 +281,8 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                 case R.id.ll_article_comment_container:
                     ToastUtil.toast("评论");
                     break;
+                    default:
+                        break;
             }
         }
     }
@@ -204,6 +294,15 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnViewClickListener{
-        void onMoreClick();
+        /**
+         * 更多按钮点击事件
+         * @param ivMore 更多按钮
+         */
+        void onMoreClick(ImageView ivMore);
+
+        /**
+         * 用户头像点击
+         */
+        void onAvatarClick();
     }
 }

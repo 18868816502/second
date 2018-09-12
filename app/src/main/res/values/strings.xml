@@ -351,6 +351,8 @@
     <string name="personal_fans_text">粉丝</string>
     <string name="personal_praise_text">获赞</string>
     <string name="personal_article_title_text">我的文章...</string>
+    <string name="personal_article_drafts">草稿箱</string>
+    <string name="personal_article_subject_to_audit">待审核</string>
 
     <!--社区-->
     <string name="community_publish_title_input">请输入标题...</string>
