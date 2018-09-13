@@ -8,7 +8,6 @@ import com.beihui.market.R;
 import java.util.List;
 
 /**
- * TODO 关于链接后面拼接 + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME
  * 需要检查
  */
 public class NetConstants {
@@ -24,10 +23,8 @@ public class NetConstants {
     public static final String COMPANY_NAME = App.getInstance().getString(R.string.app_name).contains("鱼米") ? "杭州贝捷金融信息服务有限公司" : "杭州贝沃科技有限公司";
     public static final String SHORT_COMPANY_NAME = App.getInstance().getString(R.string.app_name).contains("鱼米") ? "贝捷金融" : "贝沃科技";
 
-
     public static final String BASE_PATH = "/s1";
     public static final String BASE_PATH_S_FOUR = "/s4";
-
     public static final String PRODUCT_PATH = "/s3";
 
     /**
@@ -59,41 +56,21 @@ public class NetConstants {
      * 活动的URL
      */
     public static final String H5_ACTIVITY_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/activity-h5.html";
-
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
-
     public static final String H5_INVITATION = H5_DOMAIN + "/regist_h5.html";
     public static final String H5_INVITATION_ACTIVITY = H5_DOMAIN_NEW + "/activity/page/activity-contact-invite.html";
-
-
     public static final String H5_INVITE = H5_DOMAIN + "/invite-friends.html";
-
     public static final String H5_INVITATION_CONTACTS = H5_DOMAIN_NEW + "/activity/page/activity-invite-friends.html";
-    //public static final String H5_INVITATION_CONTACTS = "http://192.168.1.63:8086/page/activity-invite-friends.html";
-
-
     public static final String H5_MISSION = H5_DOMAIN_NEW + "/activity/page/activity-invite-task.html";
-    //public static final String H5_MISSION = "http://192.168.1.63:8086/page/activity-invite-task.html";
-
     public static final String H5_CODE = H5_DOMAIN_NEW + "/activity/page/activity-input-invite.html";
-
     public static final String H5_GUIDE_INVITE = H5_DOMAIN_NEW + "/activity/page/activity-guide-task.html";
-
-
-    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
-
+    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
     public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
-
     public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
-
     public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";
-
     public static final String H5_DEBT_ANALYZE = H5_DOMAIN + "/debtAnalysis.html";
-
     public static final String H5_CREDIT_CARD_CENTER = H5_DOMAIN + "/creditIndex.html";
-
     public static final String H5_REWARD_POINTS = H5_DOMAIN + "/integral.html";
-
     /**
      * 用户协议H5
      */
@@ -118,7 +95,6 @@ public class NetConstants {
     /**
      * 账单导入帮助页面
      */
-//    public static final String H5_HELP = H5_DOMAIN + "/export/help.html";
     public static final String H5_HELP = H5_DOMAIN + "/help-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     /**
      * 办卡进度查询

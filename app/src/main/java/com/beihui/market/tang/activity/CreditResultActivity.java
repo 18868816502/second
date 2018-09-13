@@ -2,12 +2,10 @@ package com.beihui.market.tang.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.webkit.DownloadListener;
-import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,8 +13,12 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.WebViewActivity;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 
@@ -42,7 +44,6 @@ public class CreditResultActivity extends BaseComponentActivity {
 
     private String webViewUrl = "";
     private String title = "";
-    private int flag = 0;
 
     private AgentWeb mAgentWeb;
     private WebView mWebView;
@@ -76,28 +77,28 @@ public class CreditResultActivity extends BaseComponentActivity {
                 .ready()
                 .go(webViewUrl);
         mWebView = mAgentWeb.getWebCreator().getWebView();
-        mWebView.setDownloadListener(new DownloadListener() {
+        mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivityWithoutOverride(intent);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {// url拦截
+                if (url.equals(webViewUrl)) {
+                    return super.shouldOverrideUrlLoading(view, url);
+                } else {
+                    Intent intent = new Intent(view.getContext(), WebViewActivity.class);
+                    try {
+                        intent.putExtra("webViewUrl", URLDecoder.decode(url, "utf-8"));
+                        System.out.println("webview url = " + URLDecoder.decode(url, "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    startActivity(intent);
+                    // 相应完成返回true
+                    return true;
+                }
             }
         });
-
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-    }
-
-    @Override
-    public void onBackPressed() {
-        WebBackForwardList list = mWebView.copyBackForwardList();
-        if(list.getCurrentIndex() == 0){
-            finish();
-        }else {
-            mAgentWeb.back();
-        }
     }
 }

@@ -4,6 +4,7 @@ package com.beihui.market.api.interceptor;
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.NetConstants;
+import com.beihui.market.util.NetUtils;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -55,7 +56,7 @@ public class AccessHeadInterceptor implements Interceptor {
                 }
             }
             String url = httpUrl.toString();
-            url = url + "?" + "packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME;
+            url = url + "?" + "packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&userIp=" + NetUtils.getIPAddress(App.getInstance());
             StringBuilder sb = new StringBuilder();
             if (params.size() > 0) {
                 Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
@@ -77,6 +78,7 @@ public class AccessHeadInterceptor implements Interceptor {
                     .addEncoded("packageId", App.sChannelId)
                     //.addEncoded("packageId", BuildConfig.APPLICATION_ID)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
+                    .addEncoded("userIp", NetUtils.getIPAddress(App.getInstance()))
                     .build();
             request = request.newBuilder().post(formBody).build();
         }

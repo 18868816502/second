@@ -48,6 +48,8 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     RelativeLayoutBar clearCacheRel;
     @BindView(R.id.check_version)
     RelativeLayoutBar checkVersionRel;
+    @BindView(R.id.about_kaola)
+    RelativeLayoutBar about_kaola;
     //清楚缓存的大小
     private String mCacheSize;
 
@@ -91,7 +93,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        about_kaola.setLeftTextViewText(String.format(getString(R.string.about_app), getString(R.string.app_name)));
         clearCacheRel.setRightTextView1Text(mCacheSize);
     }
 

@@ -214,7 +214,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     public void setPresenter(TabMineContract.Presenter presenter) {
     }
 
-
     @OnClick({R.id.bill_summary, R.id.my_wallet,
             R.id.remind, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
             R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg})
@@ -309,7 +308,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         startActivity(new Intent(getActivity(), UserProfileActivity.class));
     }
 
-
     /**
      * 直接进入系统消息 抛弃公告的选择
      *
@@ -380,10 +378,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
      */
     @Override
     public void updateMyLoanVisible(boolean visible) {
-        // mineProductContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
-        // mineProductContainer.setVisibility(visible ? View.VISIBLE : View.VISIBLE);
     }
-
 
     /**
      * 直接进入系统消息 抛弃公告的选择

@@ -51,9 +51,7 @@ public class CommonUtils {
     static {
         decimalFormat.setMaximumFractionDigits(2);
         decimalFormat.setGroupingSize(3);
-
         rateDecimalFormat.setMaximumFractionDigits(3);
-
         amountFormat.setGroupingUsed(false);
         amountFormat.setMaximumFractionDigits(2);
     }
@@ -84,7 +82,6 @@ public class CommonUtils {
         return resultStr;
     }
 
-
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
@@ -109,7 +106,6 @@ public class CommonUtils {
         }
         return true;
     }
-
 
     /**
      * @param @param  context
@@ -172,7 +168,6 @@ public class CommonUtils {
         }
     }
 
-
     public static int getScreenMaxHeight(Context paramContext, int paramInt) {
         Object localObject = new DisplayMetrics();
         try {
@@ -187,7 +182,6 @@ public class CommonUtils {
             }
         }
     }
-
 
     /**
      * 讲电话号码中间变成*
@@ -244,21 +238,17 @@ public class CommonUtils {
         return false;
     }
 
-
     public static String getNetworkOperatorName(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getNetworkOperatorName();
-
     }
-
 
     public static int getPixColor(Bitmap src) {
         int pixelColor;
         pixelColor = src.getPixel(5, 5);
         return pixelColor;
     }
-
 
     /**
      * 获取bitmap图片的大小
@@ -272,7 +262,6 @@ public class CommonUtils {
         }
         // Pre HC-MR1
         return bitmap.getRowBytes() * bitmap.getHeight();
-
     }
 
     /**
@@ -286,7 +275,6 @@ public class CommonUtils {
         float f = (float) getBitmapsize(bitmap) / kb;
         return String.format(f > 100 ? "%.0f" : "%.1f", f);
     }
-
 
     /**
      * 安卓获取状态栏(Status Bar)高度
@@ -343,7 +331,6 @@ public class CommonUtils {
         }
     }
 
-
     /**
      * 获取 虚拟按键的高度
      *
@@ -352,9 +339,7 @@ public class CommonUtils {
      */
     public static int getBottomStatusHeight(Context context) {
         int totalHeight = getDpi(context);
-
         int contentHeight = getScreenHeight(context);
-
         return totalHeight - contentHeight;
     }
 
@@ -392,7 +377,6 @@ public class CommonUtils {
         return dpi;
     }
 
-
     /**
      * 将Edittext光标定位到最后一位
      *
@@ -405,7 +389,6 @@ public class CommonUtils {
             Selection.setSelection(spanText, text.length());
         }
     }
-
 
     /**
      * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
@@ -423,10 +406,8 @@ public class CommonUtils {
         if (gps || network) {
             return true;
         }
-
         return false;
     }
-
 
     /**
      * 强制帮用户打开GPS
@@ -480,7 +461,6 @@ public class CommonUtils {
         return pName.contains(packageName);
     }
 
-
     /**
      * 检测当的网络（WLAN、3G/2G）状态
      *
@@ -503,7 +483,6 @@ public class CommonUtils {
         return false;
     }
 
-
     /**
      * 将.0改为整数
      *
@@ -525,13 +504,11 @@ public class CommonUtils {
                     formatString = decimalFormat.format(money);//format 返回的是字符串
                 }
             }
-
         } else {
             formatString = "0";
         }
         return formatString;
     }
-
 
     /**
      * 根据图片的url路径获得Bitmap对象
@@ -561,9 +538,7 @@ public class CommonUtils {
             e.printStackTrace();
         }
         return bitmap;
-
     }
-
 
     public static String phone2Username(String phone) {
         return phone.substring(0, 3) + "****" + phone.substring(8, 11);
@@ -718,35 +693,19 @@ public class CommonUtils {
     }
 
     public static boolean isForeground(Context context, String className) {
-
         if (context == null || TextUtils.isEmpty(className)) {
-
             return false;
-
         }
-
-
         //ActivityManager的功能是与系统中所有运行着的Activity交互提供了接口
-
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
-
         if (list != null && list.size() > 0) {
-
             ComponentName cpn = list.get(0).topActivity;
-
             if (className.equals(cpn.getClassName())) {
-
                 return true;
-
             }
-
         }
-
         return false;
-
-
     }
 
     public static boolean isMobileNO(String mobileNums) {
@@ -758,7 +717,8 @@ public class CommonUtils {
          * @param str
          * @return 待检测的字符串
          */
-        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";// "[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
+        String telRegex = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
+        //String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";// "[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         if (TextUtils.isEmpty(mobileNums))
             return false;
         else
@@ -771,7 +731,6 @@ public class CommonUtils {
 
     public static boolean checkAppInstall(Context context, String app) {
         boolean isInstall = false;
-
         PackageManager packageManager = context.getPackageManager();// 获取packagemanager
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
         if (pinfo != null) {

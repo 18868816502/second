@@ -785,7 +785,6 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/accounting/queryBaseLoan")
     Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(@Field("userId") String userId, @Field("billType") int billType);
 
-
     /**
      * 查询全部记账信息
      */
@@ -901,8 +900,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/updateRedmine")
     Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("type") String type, @Field("recordId") String recordId, @Field("day") int day);
-    // channelId 账单Id     cardId  信用卡Id
-//    Observable<ResultEntity> updateDebtRemindStatus(@Field("userId") String userId, @Field("recordId") String recordId, @Field("cardId") String cardId, @Field("day") int day);
 
     /**
      * 获取首页账单信息
@@ -1007,19 +1004,15 @@ public interface ApiService {
 
 
     /****************************************************个推账号用户绑定*****************************************************/
-
     /**
      * 绑定个推用账号
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/clientUserDetail/userLinkGetui")
     Observable<ResultEntity> bindClientId(@Field("userId") String userId, @Field("clientId") String clientId);
-
     /**********************************************************************************************************/
 
-
     /****************************************************数据统计*****************************************************/
-
     /**
      * 点击第三方产品外链
      */

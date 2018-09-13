@@ -12,28 +12,7 @@ import android.widget.Toast;
 import com.beihui.market.App;
 import com.beihui.market.R;
 
-/**
- * ┏┓　　　┏┓
- * ┏┛┻━━━┛┻┓
- * ┃　　　　　　　┃
- * ┃　　　━　　　┃
- * ┃　┳┛　┗┳　┃
- * ┃　　　　　　　┃
- * ┃　　　┻　　　┃
- * ┃　　　　　　　┃
- * ┗━┓　　　┏━┛
- * ┃　　　┃   神兽保佑
- * ┃　　　┃   代码无BUG！
- * ┃　　　┗━━━┓
- * ┃　　　　　　　┣┓
- * ┃　　　　　　　┏┛
- * ┗┓┓┏━┳┓┏┛
- * ┃┫┫　┃┫┫
- * ┗┻┛　┗┻┛
- * <p>
- * Created by xhb on 2017/4/24.
- * 单例吐司
- */
+
 public class ToastUtil {
     private static Toast sToast;
     private static Context context = App.getInstance();
@@ -63,11 +42,15 @@ public class ToastUtil {
             view_gap.setVisibility(View.GONE);
             tv_content.setVisibility(View.VISIBLE);
             tv_content.setText(msg);
-        } else {
+        } else if (resTop != -1) {
             iv_image.setVisibility(View.VISIBLE);
             view_gap.setVisibility(View.GONE);
             tv_content.setVisibility(View.GONE);
             iv_image.setImageResource(resTop);
+        } else {
+            iv_image.setVisibility(View.GONE);
+            view_gap.setVisibility(View.GONE);
+            tv_content.setVisibility(View.GONE);
         }
         sToast.show();
     }

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @name
  * @class name：com.beihui.market
- * @class describe 商业和公积金放贷计算结果页面
+ * @class describe 商业和公积金房贷计算结果页面
  * @anthor chenguoguo
  * @time
  */

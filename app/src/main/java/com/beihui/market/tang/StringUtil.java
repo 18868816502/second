@@ -63,7 +63,7 @@ public class StringUtil {
     }
 
     public static boolean isPhone(String target) {
-        String phonePattern = "^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\\d{8}$";
+        String phonePattern = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
         Pattern p = Pattern.compile(phonePattern);
         Matcher m = p.matcher(target);
         return m.matches();

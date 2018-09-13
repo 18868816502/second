@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">考拉记账贷款借钱</string><!---->
+    <string name="tab_home">首页</string>
+    <string name="tab_loan">借款</string>
     <string name="tab_news">发现</string>
     <string name="tab_social">工具</string>
     <string name="operation">operation</string>
@@ -129,8 +131,7 @@
     <string name="finish_current_pay">结清\n当期</string>
     <string name="whick_period">第%d期</string>
     <string name="modify_remark">修改备注</string>
-    <string name="user_protocal">《%s用户协议》</string>
-
+    <string name="user_protocal">我已阅读并同意《%1$s用户协议》《%2$s隐私声明》《%3$s授权协议》</string>
 
     <!--房贷计算器-->
     <!--商贷利率-->
@@ -157,7 +158,18 @@
         <item>1.3折(4.225%)</item>
     </array>
 
-    <string name="loan_calculate">放贷计算器</string>
+    <array name="loan_gjj_rate">
+        <item>3.25</item>
+        <item>2.275</item>
+        <item>2.7625</item>
+        <item>2.86</item>
+        <item>2.925</item>
+        <item>3.575</item>
+        <item>3.9</item>
+        <item>4.225</item>
+    </array>
+
+    <string name="loan_calculate">房贷计算器</string>
     <string name="loan_comm">商业贷款</string>
     <string name="loan_gjj">公积金贷款</string>
     <string name="loan_comb">组合贷款</string>
@@ -192,9 +204,13 @@
     <string name="loan_base_rate_percent">%)</string>
     <string name="loan_year">年 (</string>
     <string name="loan_phase">期)</string>
-    <string name="loan_year_text">%1$s年 (%2$d期)</string>
 
-    
+
+    <string name="loan_year_text">%1$s年 (%2$d期)</string>
+    <string name="user_protocol">《%s用户协议》</string>
+    <string name="about_app">关于%s</string>
+
+
     <!--个人中心-->
     <string name="personal_edit_text">编辑个人资料</string>
     <string name="personal_publish_text">发布</string>

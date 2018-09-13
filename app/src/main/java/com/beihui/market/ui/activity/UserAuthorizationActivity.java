@@ -61,7 +61,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             intent.putExtra("phone", phone);
         }
         context.startActivity(intent);
-//        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
     }
 
     public static void launchWithPending(Activity context, AdBanner adBanner) {
@@ -70,7 +69,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             intent.putExtra("pendingAd", adBanner);
         }
         context.startActivity(intent);
-//        context.overridePendingTransition(R.anim.anim_bottom_in, R.anim.anim_bottom_out);
     }
 
     public static void launch(Activity activity) {
@@ -82,9 +80,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         super.onCreate(savedInstanceState);
         //umeng统计
         Statistic.onEvent(Events.ENTER_LOGIN);
-
         EventBus.getDefault().register(this);
-
         pendingAd = getIntent().getParcelableExtra("pendingAd");
     }
 
@@ -123,28 +119,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
                 .add(R.id.content_container, fragment, LoginMainFragment.class.getSimpleName())
                 .commit();
         SlidePanelHelper.attach(this);
-//        decoContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    decoContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                } else {
-//                    decoContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                }
-//                decoContainer.setTranslationY(decoContainer.getMeasuredHeight());
-//                decoContainer.animate()
-//                        .translationY(0)
-//                        .setDuration(1000)
-//                        .setInterpolator(new Interpolator() {
-//                            @Override
-//                            public float getInterpolation(float input) {
-//                                float factor = 0.88F;
-//                                return (float) (Math.pow(2, -10 * input) * Math.sin((input - factor / 4) * (2 * Math.PI) / factor) + 1);
-//                            }
-//                        })
-//                        .start();
-//            }
-//        });
     }
 
     @Override
@@ -158,7 +132,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //this is a DialogTheme activity, set window size here
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -250,32 +223,10 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
-    /**
-     * 返回键是否放弃注册
-     */
-//    @Override
-//    public void onBackPressed() {
-//        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-//            new CommNoneAndroidDialog()
-//                    .withMessage("是否放弃注册？")
-//                    .withNegativeBtn("放弃", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            onAuthorizationNavigation(new AuthNavigationEvent(AuthNavigationEvent.TAG_HEAD_TO_LOGIN));
-//                        }
-//                    })
-//                    .withPositiveBtn("继续注册", null)
-//                    .dimBackground(true)
-//                    .show(getSupportFragmentManager(), "CancelRegister");
-//            return;
-//        }
-//        super.onBackPressed();
-//    }
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.finish();
-//        overridePendingTransition(0, R.anim.slide_to_bottom);
     }
 
     @Override

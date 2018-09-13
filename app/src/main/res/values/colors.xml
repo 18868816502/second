@@ -75,6 +75,7 @@
     <color name="c_909298">#909298</color>
     <color name="c_fff5f5f5">#fff5f5f5</color>
     <color name="c_ffe8e8e8">#ffe8e8e8</color>
+    <color name="protocol_txt_color">#2a84ff</color>
 
     <!--personal center-->
     <color name="c_fffafafa">#fffafafa</color>

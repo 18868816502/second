@@ -50,7 +50,6 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
     private final int REQUEST_CODE_BIND_PHONE = 1;
 
-
     @Inject
     LoginPresenter presenter;
     @BindView(R.id.phone_number)
@@ -59,11 +58,10 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     TextView tvLogin;
     @BindView(R.id.iv_contract)
     ImageView ivContract;
-    /**
-     * 合同是否选中
-     */
-    private boolean isCheckContract = true;
+    @BindView(R.id.tv_contract)
+    TextView tv_contract;
 
+    private boolean isCheckContract = true;
     private Map<String, String> wechatInfo;
 
     @Override
@@ -124,7 +122,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void initDatas() {
-
+        tv_contract.setText(String.format(getString(R.string.user_protocol), getString(R.string.app_name)));
     }
 
     @Override
@@ -188,22 +186,9 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
              */
             case R.id.tv_contract:
                 startActivity(new Intent(getActivity(), UserProtocolActivity.class));
-                /**
-                 * 用下面 出现bug 用户协议点击返回应该返回登录注册页面，现在返回首页
-                 * 因为需要区分设置进入的
-                 */
-//                Intent intent = new Intent(getActivity(), ComWebViewActivity.class);
-//                String title = "用户协议";
-//                String url = NetConstants.H5_USER_AGREEMENT;
-//                intent.putExtra("title", title);
-//                intent.putExtra("url", url);
-//                startActivity(intent);
                 break;
             case R.id.iv_login_wechat:
-                /**
-                 * 判断微信是否安装
-                 */
-
+                /*判断微信是否安装*/
                 PackageManager packageManager = getActivity().getPackageManager();// 获取packagemanager
                 List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
                 if (pinfo != null) {
@@ -234,14 +219,12 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
                 wechatInfo = map;
-                //Log.e("wechatInfo", "wechatInfo.get(openid)" + wechatInfo.get("openid"));
-                //Log.e("wechatInfo", "wechatInfo.get(unionid) -- > " + wechatInfo.get("unionid"));
                 presenter.loginWithWeChat(wechatInfo.get("unionid"));
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                //Log.e("xjb", "i __ " + i + "throwble -- " + throwable.getMessage());
+                //throwable.printStackTrace();
                 ToastUtils.showShort(getContext(), "授权失败", null);
             }
 

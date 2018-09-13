@@ -92,7 +92,6 @@ public class TabOneFragment extends BaseTabFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mActivity = getActivity();
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
@@ -109,7 +108,6 @@ public class TabOneFragment extends BaseTabFragment {
             EventBus.getDefault().register(this);
         }
     }
-
 
     @Override
     public void onDestroy() {

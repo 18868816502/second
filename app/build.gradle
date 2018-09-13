@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 apply plugin: 'org.greenrobot.greendao'
 
 def ext = rootProject.ext
-def debug = rootProject.ext.debug
+def debug_mode = rootProject.ext.debug_mode
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion ext.build_version
@@ -59,7 +59,7 @@ android {
         loanmarket {
             dimension "id"
             applicationId ext.application_id
-            if (debug) {//测试环境 + 测试魔蝎appkey
+            if (debug_mode) {//测试环境 + 测试魔蝎appkey
                 buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
                 buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
                 buildConfigField("String", "H5_DOMAIN_NEW", "\"http://116.62.148.52\"")

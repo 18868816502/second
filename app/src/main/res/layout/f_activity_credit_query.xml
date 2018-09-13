@@ -103,13 +103,11 @@
                     android:textSize="17dp" />
 
                 <LinearLayout
-                    android:id="@+id/ll_protocal_wrap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center_vertical">
+                    android:layout_marginTop="20dp">
 
                     <ImageView
                         android:id="@+id/iv_agree_protocal"
@@ -118,20 +116,39 @@
                         android:src="@drawable/btn_open_rb" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="我已阅读并同意"
-                        android:textColor="@color/black_1"
-                        android:textSize="12dp" />
-
-                    <TextView
                         android:id="@+id/tv_user_protocal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="《考拉记账用户协议》"
+                        android:layout_marginLeft="8dp"
+                        android:lineSpacingExtra="3.5dp"
+                        android:text="我已阅读并同意《考拉记账用户协议》《考拉记账隐私申明》《考拉记账授权协议》"
+                        android:textColor="@color/black_1"
+                        android:textSize="12dp" />
+
+                    <!--<TextView
+                        android:id="@+id/tv_user_protocal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5.5dp"
+                        android:text=""
                         android:textColor="#2a84ff"
                         android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/tv_secret_protocal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#2a84ff"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/tv_auth_protocal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#2a84ff"
+                        android:textSize="12dp" />-->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

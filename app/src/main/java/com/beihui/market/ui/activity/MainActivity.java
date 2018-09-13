@@ -616,6 +616,7 @@ public class MainActivity extends BaseComponentActivity {
             }
             //tab字体颜色和文字
             if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
+                //System.out.println(tabImage.getSelectedFontColor() + " " + tabImage.getUnselectedFontColor());
                 int[] colors = new int[]{
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),

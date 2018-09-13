@@ -9,6 +9,8 @@ import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.entity.CreditCard;
 import com.beihui.market.injection.component.DaggerDataStatisticHelperComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
@@ -20,7 +22,7 @@ import io.reactivex.functions.Consumer;
 
 /**
  * @author xhb
- * 友盟统计事件
+ *         友盟统计事件
  */
 public class DataStatisticsHelper {
     @SuppressLint("StaticFieldLeak")
@@ -207,8 +209,6 @@ public class DataStatisticsHelper {
     public static final String ID_BILL_ENTER_CREDIT_CARD_BILL_DETAIL = "CCB0010";
 
 
-
-
     /**
      * 卡片下拉按钮点击数据
      */
@@ -226,12 +226,12 @@ public class DataStatisticsHelper {
     public static final String ID_BILL_DETAIL_PART_PAY = "DetailBtn0001";
 
     /**
-     * 	网贷记账自定义
+     * 网贷记账自定义
      */
-    public static final String ID_BILL_NET_LOAN_CUSTOM_ACCOUNT= "NetLoadBtn0001";
+    public static final String ID_BILL_NET_LOAN_CUSTOM_ACCOUNT = "NetLoadBtn0001";
 
     /**
-     * 	网贷记账tab栏分期还款点击
+     * 网贷记账tab栏分期还款点击
      */
     public static final String ID_BILL_NET_LOAN_TAB_BY_STAGES = "NetLoadBtn0002";
 
@@ -280,21 +280,19 @@ public class DataStatisticsHelper {
         } else {
             userId = SPUtils.getCacheUserId(App.getInstance());
         }
-        api.onProductClicked(userId, id).compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity resultEntity) throws Exception {
-                                   if (!resultEntity.isSuccess()) {
-                                       LogUtils.e(TAG, "product statistics error. message " + resultEntity.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "product statistics error " + throwable);
-                            }
-                        });
+        api.onProductClicked(userId, id)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.e(TAG, "internal message statistic error. message " + t.getMessage());
+                    }
+                });
     }
 
     public void onAdClicked(String id, int type) {
@@ -305,40 +303,34 @@ public class DataStatisticsHelper {
             userId = SPUtils.getCacheUserId(App.getInstance());
         }
         api.onAdClicked(id, userId, type)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity resultEntity) throws Exception {
-                                   if (!resultEntity.isSuccess()) {
-                                       LogUtils.e(TAG, "ad statistics error. message " + resultEntity.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "ad statistics error " + throwable);
-                            }
-                        });
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.e(TAG, "internal message statistic error. message " + t.getMessage());
+                    }
+                });
     }
 
     public void onInternalMessageClicked(String id) {
         api.onInternalMessageClicked(id)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity resultEntity) throws Exception {
-                                   if (!resultEntity.isSuccess()) {
-                                       LogUtils.e(TAG, "internal message statistic error. message " + resultEntity.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "internal message statistic error " + throwable);
-                            }
-                        });
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.e(TAG, "internal message statistic error. message " + t.getMessage());
+                    }
+                });
     }
 
     public void onCreditCardClicked(String id) {
@@ -367,60 +359,55 @@ public class DataStatisticsHelper {
                         });
         //推荐信用卡点击
         onCountUv(ID_CLICK_CREDIT_CARD_RECOMMEND);
-
     }
 
     /**
      * 数据统计
      *
-     * @param id 事件id
+     * @param type 事件id
      */
-    public void onCountUv(final String id) {
+    public void onCountUv(final String type) {
         String userId;
-        if (UserHelper.getInstance(context).getProfile() != null) {
-            userId = UserHelper.getInstance(context).getProfile().getId();
+        if (UserHelper.getInstance(context).isLogin()) {
+            userId = UserHelper.getInstance(context).id();
         } else {
             userId = SPUtils.getCacheUserId(context);
         }
-        api.onCountUv(id, userId)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity resultEntity) throws Exception {
-                                   if (!resultEntity.isSuccess()) {
-                                       LogUtils.e(TAG, "count uv error event id=" + id + ", message=" + resultEntity.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "count uv error event id = " + id + " " + throwable);
-                            }
-                        });
+        api.onCountUv(type, userId)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        LogUtils.e(TAG, "count uv error event id=" + type);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.e(TAG, "count uv error event id = " + type + " " + t.getMessage());
+                    }
+                });
     }
 
     /**
      * 数据统计
      *
-     * @param id 事件id
+     * @param type 事件id
      */
-    public void onCountUv(final String id, String androidId) {
-        api.onCountUv(id, androidId)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity resultEntity) throws Exception {
-                                   if (!resultEntity.isSuccess()) {
-                                       LogUtils.e(TAG, "count uv error event id=" + id + ", message=" + resultEntity.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "count uv error event id = " + id + " " + throwable);
-                            }
-                        });
+    public void onCountUv(final String type, String androidId) {
+        api.onCountUv(type, androidId)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        LogUtils.e(TAG, "count uv error event id=" + type);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.e(TAG, "count uv error event id = " + type + " " + t);
+                    }
+                });
     }
 }

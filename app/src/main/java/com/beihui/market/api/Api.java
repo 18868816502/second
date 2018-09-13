@@ -1468,11 +1468,11 @@ public class Api {
     /**
      * 数据统计，各类pv/uv
      *
-     * @param id     事件id
+     * @param type   事件id
      * @param userId 用户Id
      */
-    public Observable<ResultEntity> onCountUv(String id, String userId) {
-        return service.onCountUv(id, userId);
+    public Observable<ResultEntity> onCountUv(String type, String userId) {
+        return service.onCountUv(type, userId);
     }
 
     /**
@@ -1482,7 +1482,6 @@ public class Api {
      * return:
      * description: 账单汇总
      */
-
     public Observable<ResultEntity<BillSummaryBean>> onBillSummary(String id, String pageNo) {
         return service.onBillSummary(id, pageNo);
     }

@@ -2,7 +2,17 @@ package com.beihui.market.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -10,10 +20,15 @@ import com.beihui.market.R;
 import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.dialog.ShareDialog;
+import com.beihui.market.util.CommonUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
 
@@ -29,7 +44,7 @@ public class UserProtocolActivity extends BaseComponentActivity {
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
-    private int type;
+    private int type = 0;
     private String url = "";
 
     @Override

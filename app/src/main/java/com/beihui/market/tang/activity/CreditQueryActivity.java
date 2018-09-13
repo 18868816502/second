@@ -3,13 +3,19 @@ package com.beihui.market.tang.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.App;
@@ -75,8 +81,6 @@ public class CreditQueryActivity extends BaseComponentActivity {
     TextView tv_user_protocal;
     @BindView(R.id.iv_agree_protocal)
     ImageView iv_agree_protocal;
-    @BindView(R.id.ll_protocal_wrap)
-    LinearLayout ll_protocal_wrap;
 
     private boolean checked = true;
     private String realName, idNo, phoneNo, authCode;
@@ -133,7 +137,14 @@ public class CreditQueryActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        tv_user_protocal.setText(String.format(getString(R.string.user_protocal), getString(R.string.app_name)));
+        String appName = getString(R.string.app_name);
+        String origin = String.format(getString(R.string.user_protocal), appName, appName, appName);
+        CharSequence char1 = protocolSpan(origin, 7, 13 + appName.length(), listener1);
+        CharSequence char2 = protocolSpan(char1, 13 + appName.length(), 19 + appName.length() * 2, listener2);
+        CharSequence char3 = protocolSpan(char2, 19 + appName.length() * 2, origin.length(), listener3);
+        tv_user_protocal.setMovementMethod(LinkMovementMethod.getInstance());
+        tv_user_protocal.setText(char3);
+
         Observable<CharSequence> obName = RxTextView.textChanges(cet_query_name);
         Observable<CharSequence> obId = RxTextView.textChanges(cet_query_id);
         Observable<CharSequence> obPhone = RxTextView.textChanges(cet_query_phone);
@@ -166,11 +177,9 @@ public class CreditQueryActivity extends BaseComponentActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (timeCounter != null) {
-            timeCounter.onFinish();
-        }
+    protected void onStop() {
+        super.onStop();
+        if (timeCounter != null) timeCounter.onFinish();
     }
 
     @Override
@@ -183,7 +192,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.tv_query_auth, R.id.tv_query_start, R.id.iv_agree_protocal, R.id.ll_protocal_wrap})
+    @OnClick({R.id.tv_query_auth, R.id.tv_query_start, R.id.iv_agree_protocal})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_query_auth:
@@ -219,18 +228,42 @@ public class CreditQueryActivity extends BaseComponentActivity {
                 checked = !checked;
                 tv_query_start.setEnabled(right());
                 break;
-            case R.id.ll_protocal_wrap:
-                startActivity(new Intent(this, UserProtocolActivity.class));
-                break;
             default:
                 break;
         }
     }
 
+    private CharSequence protocolSpan(CharSequence str, int start, int end, View.OnClickListener clickListener) {
+        SpannableString result = new SpannableString(str);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.protocol_txt_color));
+        result.setSpan(new SpanClick(clickListener), start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        result.setSpan(colorSpan, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return result;
+    }
+
     private String generateUrl(int black) {
-        webViewUrl = BuildConfig.H5_DOMAIN_NEW + "/activity/page/activity-credit-query.html?userId="
-                + UserHelper.getInstance(this).id() + "&packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&title=信用查询&black=" + black;
+        webViewUrl = BuildConfig.H5_DOMAIN_NEW + "/activity/page/activity-credit-query.html" +
+                "?userId=" + UserHelper.getInstance(this).id() + "&packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&title=信用查询&black=" + black;
         return webViewUrl;
+    }
+
+    private class SpanClick extends ClickableSpan implements View.OnClickListener {
+        private View.OnClickListener clickListener;
+
+        public SpanClick(View.OnClickListener clickListener) {
+            this.clickListener = clickListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            clickListener.onClick(view);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(ds.linkColor);
+            ds.setUnderlineText(false);//去除超链接的下划线
+        }
     }
 
     private class TimeCounter extends CountDownTimer {

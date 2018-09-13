@@ -120,7 +120,7 @@ public class App extends Application {
          */
         //pv，uv统计
         String androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (UserHelper.getInstance(this).getProfile() != null && UserHelper.getInstance(this).getProfile().getId() != null) {
+        if (UserHelper.getInstance(this).isLogin()) {
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
         } else {
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
