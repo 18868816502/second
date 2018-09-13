@@ -29,7 +29,6 @@
                 android:text="@string/daily_misson"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
-
         </android.support.v7.widget.Toolbar>
     </FrameLayout>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

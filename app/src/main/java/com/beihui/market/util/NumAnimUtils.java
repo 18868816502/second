@@ -5,12 +5,8 @@ import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.Random;
 
-/**
- * Created by admin on 2018/6/28.
- */
 
 public class NumAnimUtils {
-
     //每秒刷新多少次
     private static final int COUNTPERS = 100;
 
@@ -20,15 +16,11 @@ public class NumAnimUtils {
 
     public static void startAnim(TextView textV, float num, long time) {
         if (num == 0) {
-//            textV.setText(NumberFormat(num,2));
             textV.setText(FormatNumberUtils.FormatNumberFor2(num));
             return;
         }
-
         Float[] nums = splitnum(num, (int) ((time / 1000f) * COUNTPERS));
-
         Counter counter = new Counter(textV, nums, time);
-
         textV.removeCallbacks(counter);
         textV.post(counter);
     }
@@ -53,11 +45,9 @@ public class NumAnimUtils {
     }
 
     static class Counter implements Runnable {
-
         private final TextView view;
         private Float[] nums;
         private long pertime;
-
         private int i = 0;
 
         Counter(TextView view, Float[] nums, long time) {
@@ -87,5 +77,4 @@ public class NumAnimUtils {
         String strfloat = NumberFormat(f, m);
         return Float.parseFloat(strfloat);
     }
-
 }

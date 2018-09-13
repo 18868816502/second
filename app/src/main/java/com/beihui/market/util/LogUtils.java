@@ -144,21 +144,6 @@ public class LogUtils {
         }
         StringBuilder sb = new StringBuilder();
         for (StackTraceElement st : sts) {
-//            if (st.isNativeMethod()) {
-//                continue;
-//            }
-//            if (st.getClassName().equals(Thread.class.getName())) {
-//                continue;
-//            }
-//            if (st.getFileName().equals("LogUtils.java")) {
-//                continue;
-//            }
-//            if (st.getFileName().equals("BaseRxPresenter.java")) {
-//                continue;
-//            }
-//            return "[" + Thread.currentThread().getName() + "("
-//                    + Thread.currentThread().getId() + "): " + st.getFileName()
-//                    + ":" + st.getLineNumber() + "]";
             sb.append("[")
                     .append(Thread.currentThread().getName())
                     .append("(")
@@ -175,8 +160,7 @@ public class LogUtils {
 
     private static String createMessage(String msg) {
         String functionName = getFunctionName();
-        String message = (functionName == null ? msg
-                : (functionName + " - " + msg));
+        String message = (functionName == null ? msg : (functionName + " - " + msg));
         return message;
     }
 

@@ -33,8 +33,8 @@ import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.ui.fragment.HomeFragment;
+import com.beihui.market.util.DensityUtil;
 import com.beihui.market.util.FormatNumberUtils;
-import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CustomSwipeMenuLayout;
@@ -309,8 +309,8 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                                         .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
                                             @Override
                                             public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                                marginInfo.leftMargin = rectF.centerX() - Px2DpUtils.dp2px(mActivity, 10);
-                                                marginInfo.topMargin = rectF.centerY() - Px2DpUtils.dp2px(mActivity, 5);
+                                                marginInfo.leftMargin = rectF.centerX() - DensityUtil.dp2px(mActivity, 10);
+                                                marginInfo.topMargin = rectF.centerY() - DensityUtil.dp2px(mActivity, 5);
                                             }
                                         }, new CircleLightShape())
                                         .setOnNextCallback(new HighLightInterface.OnNextCallback() {

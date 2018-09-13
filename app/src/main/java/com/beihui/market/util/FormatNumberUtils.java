@@ -5,28 +5,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 /**
- * *      ┏┓　　　┏┓
- * *    ┏┛┻━━━┛┻┓
- * *    ┃　　　　　　　┃
- * *    ┃　　　━　　　┃
- * *    ┃　┳┛　┗┳　┃
- * *    ┃　　　　　　　┃
- * *    ┃　　　┻　　　┃
- * *    ┃　　　　　　　┃
- * *    ┗━┓　　　┏━┛
- * *       ┃　　　┃   神兽保佑
- * *       ┃　　　┃   代码无BUG！
- * *       ┃　　　┗━━━┓
- * *       ┃　　　　　　　┣┓
- * *       ┃　　　　　　　┏┛
- * *       ┗┓┓┏━┳┓┏┛━━━━━┛
- * *         ┃┫┫　┃┫┫
- * *         ┗┻┛　┗┻┛
- * *
  * Created by opq on 2017/8/28.
  * 数字格式化
  */
-
 public class FormatNumberUtils {
 
     /**
@@ -218,7 +199,7 @@ public class FormatNumberUtils {
     public static boolean isTenThousand(BigDecimal money) {
         if (money.compareTo(new BigDecimal(10000)) == -1 && money.compareTo(new BigDecimal(0)) > -1) {          //[0, 10000}
             return false;
-        } else if (money.compareTo(new BigDecimal(-10000)) > 0 && money.compareTo(new BigDecimal(0)) == -1){    //{-10000, 0}
+        } else if (money.compareTo(new BigDecimal(-10000)) > 0 && money.compareTo(new BigDecimal(0)) == -1) {    //{-10000, 0}
             return false;
         } else {
             return true;                                                                                        //{-∞, -10000] && [10000, +∞}

@@ -1656,22 +1656,24 @@ public class Api {
 
     /**
      * 查询用户个人信息
+     *
      * @param userId
      * @return
      */
-    public Observable<ResultEntity<UserInfoBean>> queryUserInfo(String userId){
+    public Observable<ResultEntity<UserInfoBean>> queryUserInfo(String userId) {
         return service.queryUserInfo(userId);
     }
 
     /**
      * 查询用户发表的文章
-     * @param userId 用户id
-     * @param pageNo 页码
+     *
+     * @param userId   用户id
+     * @param pageNo   页码
      * @param pageSize 页数
      * @return
      */
-    public Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(String userId,int pageNo,int pageSize){
-        return  service.queryUserArticleInfo(userId,pageNo,pageSize);
+    public Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(String userId, int pageNo, int pageSize) {
+        return service.queryUserArticleInfo(userId, pageNo, pageSize);
     }
 
     /*****generate method*****/

@@ -2,7 +2,6 @@ package com.beihui.market.util;
 
 
 public class FastClickUtils {
-
     private static long lastClickTime = 0;
     private static long lastPressTime = 0;
 

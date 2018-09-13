@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.DensityUtil;
 
 /**
  * @author wubo on 2018/6/5 10:51
@@ -304,7 +304,7 @@ public class RelativeLayoutBar extends RelativeLayout {
      * @param left_textView_size
      */
     public void setLeftTextViewTextSize(int left_textView_size) {
-        leftTextView.setTextSize(Px2DpUtils.px2dp(context, left_textView_size));
+        leftTextView.setTextSize(DensityUtil.px2dp(context, left_textView_size));
     }
 
     /**
@@ -313,7 +313,7 @@ public class RelativeLayoutBar extends RelativeLayout {
      * @param right_textView1_size
      */
     public void setRightTextView1TextSize(int right_textView1_size) {
-        rightTextView1.setTextSize(Px2DpUtils.px2dp(context, right_textView1_size));
+        rightTextView1.setTextSize(DensityUtil.px2dp(context, right_textView1_size));
     }
 
     /**
@@ -322,7 +322,7 @@ public class RelativeLayoutBar extends RelativeLayout {
      * @param right_textView2_size
      */
     public void setRightTextView2TextSize(int right_textView2_size) {
-        rightTextView2.setTextSize(Px2DpUtils.px2dp(context, right_textView2_size));
+        rightTextView2.setTextSize(DensityUtil.px2dp(context, right_textView2_size));
     }
 
     /**
@@ -426,7 +426,7 @@ public class RelativeLayoutBar extends RelativeLayout {
      */
     public void setViewMarginRight(int view_margin_right) {
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
-        layoutParams.setMargins(Px2DpUtils.dp2px(context, view_margin_right), 0, Px2DpUtils.dp2px(context, view_margin_right), 0);
+        layoutParams.setMargins(DensityUtil.dp2px(context, view_margin_right), 0, DensityUtil.dp2px(context, view_margin_right), 0);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         view.setLayoutParams(layoutParams);
     }

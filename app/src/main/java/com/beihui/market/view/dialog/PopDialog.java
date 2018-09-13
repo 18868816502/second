@@ -55,7 +55,6 @@ public class PopDialog extends BaseDialog {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -63,7 +62,6 @@ public class PopDialog extends BaseDialog {
         super.onStart();
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.PopDialog);
         setWindowAttr();
-
     }
 
     /**
@@ -102,38 +100,20 @@ public class PopDialog extends BaseDialog {
     @Override
     public int getViewLayout() {
         return mLayoutId;
-//        if(mLayoutId != 0 ) {
-//            return mLayoutId;
-//        }else{
-//            switch (mDialogType){
-//                case POP_COMMON:
-//                    return R.layout.dialog_version_upgrde;
-//                case POP_LOADING:
-//                    return R.layout.dialog_tips;
-//                case POP_TIPS:
-//                    return 102;
-//                case POP_ADVER:
-//                    return 103;
-//                case POP_PROGRESS:
-//                    return 104;
-//                default:
-//                    return R.layout.dialog_version_upgrde;
-//            }
-//        }
     }
 
     @Override
     public void findView(View view) {
-        mPopListener.initPop(view,this);
+        mPopListener.initPop(view, this);
     }
 
-    public void show(){
+    public void show() {
         FragmentTransaction ft = fManager.beginTransaction();
         ft.add(this, "PopDialog");
         ft.commitAllowingStateLoss();
     }
 
-    public static class Builder{
+    public static class Builder {
 
         private PopDialog mDialog;
         private Context mContext;
@@ -146,125 +126,135 @@ public class PopDialog extends BaseDialog {
 
         /**
          * 设置弹窗布局文件
+         *
          * @param mLayoutId
          * @return
          */
-        public Builder setLayoutId(int mLayoutId){
+        public Builder setLayoutId(int mLayoutId) {
             mDialog.mLayoutId = mLayoutId;
             return this;
         }
 
         /**
          * 设置弹窗宽度
+         *
          * @param mWidth
          * @return
          */
-        public Builder setWidth(int mWidth){
-            int px = DensityUtil.dp2px(mContext,mWidth);
+        public Builder setWidth(int mWidth) {
+            int px = DensityUtil.dp2px(mContext, mWidth);
             mDialog.mWidth = px;
             return this;
         }
 
         /**
          * 设置弹窗高度
+         *
          * @param mHeight
          * @return
          */
-        public Builder setHeight(int mHeight){
-            int px = DensityUtil.dp2px(mContext,mHeight);
+        public Builder setHeight(int mHeight) {
+            int px = DensityUtil.dp2px(mContext, mHeight);
             mDialog.mHeight = px;
             return this;
         }
 
         /**
          * 设置弹窗标题内容
+         *
          * @param mTitle
          * @return
          */
-        public Builder setTitle(String mTitle){
+        public Builder setTitle(String mTitle) {
             mDialog.mTitle = mTitle;
             return this;
         }
 
         /**
          * 设置弹窗内容
+         *
          * @param mContent
          * @return
          */
-        public Builder setContent(String mContent){
+        public Builder setContent(String mContent) {
             mDialog.mContent = mContent;
             return this;
         }
 
         /**
          * 设置弹窗位置
+         *
          * @param mGravity
          * @return
          */
-        public Builder setGravity(int mGravity){
+        public Builder setGravity(int mGravity) {
             mDialog.mGravity = mGravity;
             return this;
         }
 
         /**
          * 设置弹窗背景透明度(默认 0.6f 半透明)
+         *
          * @param dimAmount
          * @return
          */
-        public Builder setDimAmount(float dimAmount){
+        public Builder setDimAmount(float dimAmount) {
             mDialog.mDimAmount = dimAmount;
             return this;
         }
 
         /**
          * 设置点击弹窗外是否隐藏弹窗
+         *
          * @param mIsCancel
          * @return
          */
-        public Builder setCancelableOutside(boolean mIsCancel){
+        public Builder setCancelableOutside(boolean mIsCancel) {
             mDialog.mIsCancel = mIsCancel;
             return this;
         }
 
         /**
          * 设置弹窗动画
+         *
          * @param mAnimationAnim
          * @return
          */
-        public Builder setAnimationRes(int mAnimationAnim){
+        public Builder setAnimationRes(int mAnimationAnim) {
             mDialog.mAnimationAnim = mAnimationAnim;
             return this;
         }
 
         /**
          * 设置弹窗类型(默认为普通对话框)
+         *
          * @param mDialogType 100.普通对话框   101.loading对话框   102.提示对话框   103.广告对话框   104.进度条对话框
          * @return
          */
-        public Builder setDialogType(int mDialogType){
+        public Builder setDialogType(int mDialogType) {
             mDialog.mDialogType = mDialogType;
             return this;
         }
 
         /**
          * 构造对话框
+         *
          * @return
          */
-        public PopDialog create(){
+        public PopDialog create() {
             return mDialog;
         }
 
-        public Builder setInitPopListener(OnInitPopListener mViewListener){
+        public Builder setInitPopListener(OnInitPopListener mViewListener) {
             mDialog.mPopListener = mViewListener;
             return this;
         }
 
     }
 
-    public interface OnInitPopListener{
+    public interface OnInitPopListener {
         void initPop(View view, PopDialog mPopDialog);
     }
-
 
 
 }

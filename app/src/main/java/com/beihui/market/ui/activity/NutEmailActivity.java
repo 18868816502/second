@@ -123,6 +123,7 @@ public class NutEmailActivity extends BaseComponentActivity {
         NutSDK.getDefault().getConfig();
 
         Api.getInstance().fetchNutEmail()
+
                 .compose(RxUtil.<ResultEntity<List<NutEmail>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<NutEmail>>>() {
                                @Override

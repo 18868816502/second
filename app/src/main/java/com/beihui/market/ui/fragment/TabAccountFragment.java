@@ -573,14 +573,14 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
                                         marginInfo.rightMargin = rectF.width() / 2;
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + Px2DpUtils.dp2px(mActivity, 5);
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + DensityUtil.dp2px(mActivity, 5);
                                     }
                                 }, new CircleLightShape())
                                 .addHighLight(R.id.iv_tab_account_header_bill_loan, R.layout.layout_highlight_confirm, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.leftMargin = Px2DpUtils.dp2px(mActivity, 6);
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - Px2DpUtils.dp2px(mActivity, 2);
+                                        marginInfo.leftMargin = DensityUtil.dp2px(mActivity, 6);
+                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - DensityUtil.dp2px(mActivity, 2);
                                     }
                                 }, new CircleLightShape())
                                 .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {

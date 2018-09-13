@@ -114,7 +114,6 @@ public class ImageUtils {
         return null;
     }
 
-
     /**
      * 将图片转换成Base64编码的字符串
      *
@@ -146,10 +145,7 @@ public class ImageUtils {
                     e.printStackTrace();
                 }
             }
-
         }
         return result;
     }
-
-
 }

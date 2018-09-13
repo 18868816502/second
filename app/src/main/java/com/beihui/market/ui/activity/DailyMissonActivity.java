@@ -67,7 +67,6 @@ public class DailyMissonActivity extends BaseComponentActivity {
     String path = null;
     private Bitmap image;
 
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_daily_misson_layout;
@@ -80,7 +79,6 @@ public class DailyMissonActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(false).init();
         SlidePanelHelper.attach(this);
         context = this;
-
     }
 
     @Override
@@ -105,12 +103,10 @@ public class DailyMissonActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, final Intent data) {
-
         if (resultCode == RESULT_OK && requestCode == 2) {
             agentWeb.getJsAccessEntrace().callJs("uploadPhoto()", new ValueCallback<String>() {
                 @Override
@@ -143,10 +139,8 @@ public class DailyMissonActivity extends BaseComponentActivity {
                             ToastUtils.showShort(DailyMissonActivity.this, "图片解析错误", null);
                         }
                     }
-
                 }
             });
-
         }
         if (resultCode == RESULT_OK && requestCode == 1) {
             agentWeb.getJsAccessEntrace().callJs("uploadPhotoOwn()", new ValueCallback<String>() {
@@ -180,10 +174,8 @@ public class DailyMissonActivity extends BaseComponentActivity {
                             ToastUtils.showShort(DailyMissonActivity.this, "图片解析错误", null);
                         }
                     }
-
                 }
             });
-
         }
         if (requestCode == 100 && resultCode == 100) {
             LogUtils.i("reload------------------->" + resultCode);
@@ -228,9 +220,7 @@ public class DailyMissonActivity extends BaseComponentActivity {
             public void onClick(View arg0) {
             }
         }).show();
-
     }
-
 
     @SuppressLint("InlinedApi")
     @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
@@ -269,7 +259,6 @@ public class DailyMissonActivity extends BaseComponentActivity {
         }
         return null;
     }
-
 
     class JsInterration {
         @SuppressLint("JavascriptInterface")
@@ -324,15 +313,11 @@ public class DailyMissonActivity extends BaseComponentActivity {
                 }
             }).setTitle("上传成功！").setMsg("我们会尽快审核您上传的图片，审核通过后，奖励到账！您可以至”我的-消息“处查看审核情况。").show();
         }
-
-
     }
-
 
     @Override
     protected void onResume() {
         InputMethodUtil.closeSoftKeyboard(this);
         super.onResume();
     }
-
 }

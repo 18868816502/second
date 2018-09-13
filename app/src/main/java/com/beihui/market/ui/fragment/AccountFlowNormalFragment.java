@@ -31,9 +31,9 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
+import com.beihui.market.util.DensityUtil;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.Px2DpUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
@@ -195,23 +195,23 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                 .addHighLight(R.id.ll_ac_account_flow_tab_root, R.layout.layout_highlight_guide_two, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.topMargin = rectF.height() + Px2DpUtils.dp2px(activity, 40);
-                                        marginInfo.leftMargin = Px2DpUtils.dp2px(activity, 16);
+                                        marginInfo.topMargin = rectF.height() + DensityUtil.dp2px(activity, 40);
+                                        marginInfo.leftMargin = DensityUtil.dp2px(activity, 16);
                                     }
                                 }, new RectLightShape(0, 0, 0, 100, 100))
                                 .addHighLight(R.id.rv_account_flow, R.layout.layout_highlight_guide_three, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 
-                                        marginInfo.bottomMargin = bottomMargin - rectF.height()*2/3 - Px2DpUtils.dp2px(activity, 6);
-                                        marginInfo.leftMargin = Px2DpUtils.dp2px(activity, 16);
+                                        marginInfo.bottomMargin = bottomMargin - rectF.height()*2/3 - DensityUtil.dp2px(activity, 6);
+                                        marginInfo.leftMargin = DensityUtil.dp2px(activity, 16);
                                     }
                                 }, new RectLightShape())
                                 .addHighLight(R.id.tv_amount_high_light, R.layout.layout_highlight_guide_four, new OnBaseCallback() {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 
-                                        marginInfo.bottomMargin = bottomMargin - rectF.height()*2 - Px2DpUtils.dp2px(activity, 14);
+                                        marginInfo.bottomMargin = bottomMargin - rectF.height()*2 - DensityUtil.dp2px(activity, 14);
                                         marginInfo.rightMargin = rectF.width() - rectF.width()/2 ;
                                     }
                                 }, new RectLightShape(0, 0, 0, 100, 100))
@@ -227,8 +227,8 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                                     @Override
                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
 
-                                        marginInfo.bottomMargin = bottomMargin + rectF.height() + Px2DpUtils.dp2px(activity, 4);
-                                        marginInfo.rightMargin = Px2DpUtils.dp2px(activity, 12);
+                                        marginInfo.bottomMargin = bottomMargin + rectF.height() + DensityUtil.dp2px(activity, 4);
+                                        marginInfo.rightMargin = DensityUtil.dp2px(activity, 12);
                                     }
                                 }, new RectLightShape(0, 0, 0, 100, 100))
                                 .setOnNextCallback(new HighLightInterface.OnNextCallback() {

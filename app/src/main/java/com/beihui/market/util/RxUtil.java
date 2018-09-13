@@ -9,7 +9,6 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class RxUtil {
-
     public static <T> ObservableTransformer<T, T> io2main() {
         return new ObservableTransformer<T, T>() {
             @Override
@@ -19,5 +18,4 @@ public class RxUtil {
             }
         };
     }
-
 }

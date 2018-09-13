@@ -39,7 +39,6 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.HomePageAdapter;
-import com.beihui.market.tang.fragment.SocialFragment;
 import com.beihui.market.tang.fragment.ToolFragment;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -52,7 +51,7 @@ import com.beihui.market.ui.fragment.PersonalFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.DensityUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.BottomNavigationBar;
@@ -400,8 +399,8 @@ public class MainActivity extends BaseComponentActivity {
                                                 .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
                                                     @Override
                                                     public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                                        marginInfo.leftMargin = rectF.centerX() - Px2DpUtils.dp2px(MainActivity.this, 10);
-                                                        marginInfo.topMargin = rectF.centerY() - Px2DpUtils.dp2px(MainActivity.this, 5);
+                                                        marginInfo.leftMargin = rectF.centerX() - DensityUtil.dp2px(MainActivity.this, 10);
+                                                        marginInfo.topMargin = rectF.centerY() - DensityUtil.dp2px(MainActivity.this, 5);
                                                     }
                                                 }, new CircleLightShape())
                                                 .setOnNextCallback(new HighLightInterface.OnNextCallback() {

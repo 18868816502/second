@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.DensityUtil;
 
 /**
  * Created by admin on 2018/5/22.
@@ -79,7 +79,7 @@ public class SingleChartView extends View {
         //左侧文字颜色
         textTopPaint.setColor(Color.parseColor("#B3B3B3"));
         //左侧字体为16px
-        textTopPaint.setTextSize(Px2DpUtils.dp2px(mContext, 12));
+        textTopPaint.setTextSize(DensityUtil.dp2px(mContext, 12));
         //设置文字左对齐
         textTopPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -203,9 +203,9 @@ public class SingleChartView extends View {
         this.rightHeight = rightHeight;
         this.number = number;
         if (number != null && number.length() > 7) {
-            textTopPaint.setTextSize(Px2DpUtils.dp2px(mContext, 10));
+            textTopPaint.setTextSize(DensityUtil.dp2px(mContext, 10));
         } else {
-            textTopPaint.setTextSize(Px2DpUtils.dp2px(mContext, 12));
+            textTopPaint.setTextSize(DensityUtil.dp2px(mContext, 12));
         }
         this.isSelect = isSelect;
         canvasColor = redColor;

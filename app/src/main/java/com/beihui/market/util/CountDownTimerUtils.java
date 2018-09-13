@@ -34,9 +34,6 @@ public class CountDownTimerUtils extends CountDownTimer {
         targetView.setBackgroundResource(R.drawable.round_login_btn);
         targetView.setText("重新获取");
         targetView.setEnabled(true);
-        //if (LegalInputUtils.validatePhone(phoneInput.getText().toString())) {
-        //    targetView.setEnabled(true);//重新获得点击
-        //}
     }
 
     public boolean isRunning() {

@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.beihui.market.R;
-import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.DensityUtil;
 
 import java.lang.reflect.Method;
 
@@ -167,8 +167,8 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
 //        moveHeight = 0;
 
         ViewGroup.LayoutParams layoutParams = mShowUnderView.getLayoutParams();
-        if (layoutParams.height < Px2DpUtils.dp2px(mContext, 206)) {
-            layoutParams.height += Px2DpUtils.dp2px(mContext, 206);
+        if (layoutParams.height < DensityUtil.dp2px(mContext, 206)) {
+            layoutParams.height += DensityUtil.dp2px(mContext, 206);
             mShowUnderView.setLayoutParams(layoutParams);
         }
 
@@ -192,8 +192,8 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
         }
 
         ViewGroup.LayoutParams layoutParams = mShowUnderView.getLayoutParams();
-        if (layoutParams.height > Px2DpUtils.dp2px(mContext, 206)) {
-            layoutParams.height -= Px2DpUtils.dp2px(mContext, 206);
+        if (layoutParams.height > DensityUtil.dp2px(mContext, 206)) {
+            layoutParams.height -= DensityUtil.dp2px(mContext, 206);
             mShowUnderView.setLayoutParams(layoutParams);
         }
         mRootView.removeView(mKeyboardViewContainer); //将键盘从根布局中移除.

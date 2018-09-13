@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateFormatUtils {
-
     private static SimpleDateFormat newsDateFormat;
     private static SimpleDateFormat MMddHHmmFormat;
     private static Date date;
@@ -79,5 +78,4 @@ public class DateFormatUtils {
         }
         return MMddHHmmFormat.format(new Date(timestamp));
     }
-
 }

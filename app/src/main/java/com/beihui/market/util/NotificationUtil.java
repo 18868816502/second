@@ -85,12 +85,10 @@ public class NotificationUtil {
                 }
             }
 
-
             //发起通知
             Random random = new Random(System.currentTimeMillis());
             notificationManager.notify(random.nextInt(), builder.build());
         }
-
     }
 
     /**

@@ -15,7 +15,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.DensityUtil;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class CustomKeyboardView extends KeyboardView {
         rKeyBackground = (Drawable) ReflectionUtils.getFieldValue(this, "mKeyBackground");
         rLabelTextSize = (int) ReflectionUtils.getFieldValue(this, "mLabelTextSize");
         rKeyTextSize = (int) ReflectionUtils.getFieldValue(this, "mKeyTextSize");
-        rMaxKeyTextSize = Px2DpUtils.sp2px(context, 20);
+        rMaxKeyTextSize = DensityUtil.sp2px(context, 20);
         rKeyTextColor = (int) ReflectionUtils.getFieldValue(this, "mKeyTextColor");
         rShadowColor = (int) ReflectionUtils.getFieldValue(this, "mShadowColor");
         rShadowRadius = (float) ReflectionUtils.getFieldValue(this, "mShadowRadius");

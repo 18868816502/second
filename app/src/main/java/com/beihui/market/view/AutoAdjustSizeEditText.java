@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import com.beihui.market.util.Px2DpUtils;
+import com.beihui.market.util.DensityUtil;
 
 /**
  * Created by admin on 2018/6/13.
@@ -25,15 +25,15 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
     public AutoAdjustSizeEditText(Context context) {
         super(context);
         mContext = context;
-        maxSize = Px2DpUtils.sp2px(mContext, 27);
-        minSize = Px2DpUtils.sp2px(mContext, 10);
+        maxSize = DensityUtil.sp2px(mContext, 27);
+        minSize = DensityUtil.sp2px(mContext, 10);
     }
 
     public AutoAdjustSizeEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        maxSize = Px2DpUtils.sp2px(mContext, 27);
-        minSize = Px2DpUtils.sp2px(mContext, 10);
+        maxSize = DensityUtil.sp2px(mContext, 27);
+        minSize = DensityUtil.sp2px(mContext, 10);
     }
 
     /**
@@ -63,8 +63,8 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
             Log.e("adfas", "availableTextViewWidth ---> " + availableTextViewWidth);
             Log.e("adfas", "textWidth - availableTextViewWidth ---> " + (textWidth - availableTextViewWidth));
             Log.e("adfas", "charWidth---> " + charWidth);
-            Log.e("adfas", "Px2DpUtils.sp2px(mContext, 27) ---> " + maxSize);
-            Log.e("adfas", "Px2DpUtils.sp2px(mContext, 15) ---> " + minSize);
+            Log.e("adfas", "DensityUtil.sp2px(mContext, 27) ---> " + maxSize);
+            Log.e("adfas", "DensityUtil.sp2px(mContext, 15) ---> " + minSize);
             Log.e("adfas", "mTextSize ---> " + mTextSize);*/
 
             if (textWidth > availableTextViewWidth) {
