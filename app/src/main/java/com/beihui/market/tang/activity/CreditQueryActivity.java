@@ -83,6 +83,30 @@ public class CreditQueryActivity extends BaseComponentActivity {
     private Map<String, Object> map = new HashMap<>();
     private TimeCounter timeCounter = new TimeCounter(60 * 1000, 1000);
     private String webViewUrl = "";
+    private View.OnClickListener listener1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), UserProtocolActivity.class);
+            intent.putExtra("type", 3);
+            startActivity(intent);
+        }
+    };
+    private View.OnClickListener listener2 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), UserProtocolActivity.class);
+            intent.putExtra("type", 1);
+            startActivity(intent);
+        }
+    };
+    private View.OnClickListener listener3 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), UserProtocolActivity.class);
+            intent.putExtra("type", 2);
+            startActivity(intent);
+        }
+    };
 
     @Override
     public int getLayoutId() {
@@ -204,9 +228,8 @@ public class CreditQueryActivity extends BaseComponentActivity {
     }
 
     private String generateUrl(int black) {
-        webViewUrl = "http://116.62.148.52/activity/page/activity-credit-query.html?userId="
+        webViewUrl = BuildConfig.H5_DOMAIN_NEW + "/activity/page/activity-credit-query.html?userId="
                 + UserHelper.getInstance(this).id() + "&packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&title=信用查询&black=" + black;
-        System.out.println(webViewUrl);
         return webViewUrl;
     }
 
@@ -223,7 +246,7 @@ public class CreditQueryActivity extends BaseComponentActivity {
 
         @Override
         public void onFinish() {
-            tv_query_auth.setText("重新获取");
+            tv_query_auth.setText("获取");
             tv_query_auth.setEnabled(true);
         }
     }

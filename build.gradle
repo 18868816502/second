@@ -2,9 +2,7 @@
 
 buildscript {
     repositories {
-        //google()
         jcenter()
-        //mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -17,14 +15,11 @@ buildscript {
 
 allprojects {
     repositories {
-        //google()
         jcenter()
         mavenCentral()
-        //个推
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
-        //maven { url "http://oss.jfrog.org/artifactory/oss-snapshot-local/" }
-        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }
+        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }//个推
     }
 }
 
@@ -33,8 +28,13 @@ task clean(type: Delete) {
 }
 
 ext {
+    debug = false
+    application_id = 'com.beihui.market'
     compile_sdk_version = 26
     min_sdk_version = 16
     target_sdk_version = 26
+    build_version = '26.0.2'
     support_library_version = '26.1.0'
+    version_code = 22
+    version_name = '4.2.5'
 }

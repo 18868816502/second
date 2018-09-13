@@ -40,6 +40,7 @@ import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.HomePageAdapter;
 import com.beihui.market.tang.fragment.SocialFragment;
+import com.beihui.market.tang.fragment.ToolFragment;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.busevents.NavigateNews;
@@ -353,8 +354,8 @@ public class MainActivity extends BaseComponentActivity {
 
     public HomeFragment tabHome;
     public DiscoverFragment tabDiscover;
-    //public ToolFragment tabSocial;
-    public SocialFragment tabSocial;
+    public ToolFragment tabSocial;
+    //public SocialFragment tabSocial;
     public PersonalFragment tabMine;
     public Fragment currentFragment;
 
@@ -371,7 +372,7 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
-            tabSocial = SocialFragment.newInstance();
+            tabSocial = ToolFragment.newInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
         if (tabMine == null) {
@@ -615,7 +616,6 @@ public class MainActivity extends BaseComponentActivity {
             }
             //tab字体颜色和文字
             if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
-                //System.out.println(tabImage.getSelectedFontColor() + "  " + tabImage.getUnselectedFontColor());
                 int[] colors = new int[]{
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),

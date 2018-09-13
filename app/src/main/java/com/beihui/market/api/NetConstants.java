@@ -3,6 +3,7 @@ package com.beihui.market.api;
 
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
+import com.beihui.market.R;
 
 import java.util.List;
 
@@ -19,7 +20,10 @@ public class NetConstants {
     public static final String DOMAIN = BuildConfig.DOMAIN;
 
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
-    public static final String APP_NAME = "考拉记账";
+    public static final String APP_NAME = App.getInstance().getString(R.string.app_name);
+    public static final String COMPANY_NAME = App.getInstance().getString(R.string.app_name).contains("鱼米") ? "杭州贝捷金融信息服务有限公司" : "杭州贝沃科技有限公司";
+    public static final String SHORT_COMPANY_NAME = App.getInstance().getString(R.string.app_name).contains("鱼米") ? "贝捷金融" : "贝沃科技";
+
 
     public static final String BASE_PATH = "/s1";
     public static final String BASE_PATH_S_FOUR = "/s4";
@@ -93,8 +97,10 @@ public class NetConstants {
     /**
      * 用户协议H5
      */
-    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/majiabao/regist-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version="
-            + VERSION_NAME + "&appName=" + APP_NAME;
+    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/majiabao/regist-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&appName=" + APP_NAME;
+    public static final String H5_USER_SECRET_PROTOCOL = H5_DOMAIN_NEW + "/activity/page/privacy-agreement.html" + "?shortCompanyName=" + SHORT_COMPANY_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
+    public static final String H5_USER_AUTH_PROTOCOL = H5_DOMAIN_NEW + "/activity/page/authorization-protocol.html" + "?shortCompanyName=" + SHORT_COMPANY_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
+    public static final String H5_USER_PROTOCOL = H5_DOMAIN_NEW + "/activity/page/user-protocol.html" + "?shortCompanyName=" + SHORT_COMPANY_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
 
     /**
      * 魔蝎协议
