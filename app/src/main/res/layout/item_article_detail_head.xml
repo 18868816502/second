@@ -2,6 +2,154 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_article_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp15"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingEnd="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp10"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="[新口子分享]算力钱包：唇纹重的不要够分的扣子 百闻不如一试~~"
+        android:textColor="@color/black_1"
+        android:textSize="@dimen/sp22"/>
+
+    <com.beihui.market.view.CircleImageView
+        android:id="@+id/iv_author_avatar"
+        android:layout_width="@dimen/dp34"
+        android:layout_height="@dimen/dp34"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_article_title"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mine_icon_head" />
+
+    <TextView
+        android:id="@+id/tv_author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/iv_author_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_article_title"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        tools:text="薛燕"
+        android:textSize="@dimen/sp13"
+        android:textColor="@color/black_1"/>
+
+    <TextView
+        android:id="@+id/tv_author_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/iv_author_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
+        app:layout_constraintLeft_toLeftOf="@id/tv_author_name"
+        tools:text="6分钟前"
+        android:textSize="@dimen/sp10"
+        android:textColor="@color/black_2"/>
+
+    <TextView
+        android:id="@+id/tv_article_attention"
+        android:layout_width="@dimen/dp62"
+        android:layout_height="@dimen/dp26"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginEnd="@dimen/dp15"
+        app:layout_constraintTop_toTopOf="@id/iv_author_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/iv_author_avatar"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/shape_author_attention"
+        android:gravity="center"
+        android:text="@string/article_attention"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp13"/>
+
+    <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp150"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_author_avatar"
+        app:banner_pointAutoPlayAble="true"
+        app:banner_pointContainerBackground="@color/transparent"
+        app:banner_indicatorGravity="bottom|right"
+        app:banner_isNumberIndicator="true"
+        app:banner_numberIndicatorTextSize="@dimen/sp9"
+        app:banner_numberIndicatorBackground="@color/white"/>
+
+    <TextView
+        android:id="@+id/tv_article_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp36"
+        android:drawableLeft="@drawable/btn_on"
+        android:drawableStart="@drawable/btn_on"
+        android:drawablePadding="@dimen/dp10"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingStart="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingEnd="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp26"
+        app:layout_constraintTop_toBottomOf="@id/banner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/shape_article_praise"
+        android:gravity="center"
+        android:text="@string/article_praise"/>
+
+    <View
+        android:id="@+id/indicate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp10"
+        app:layout_constraintTop_toBottomOf="@id/tv_article_praise"
+        android:layout_marginTop="@dimen/dp30"
+        android:background="@color/colorBackground"/>
+
+    <TextView
+        android:id="@+id/tv_comment_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
+        app:layout_constraintTop_toBottomOf="@id/indicate"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="评论 7"
+        android:textSize="@dimen/sp17"
+        android:textColor="@color/black_1"/>
+    
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp30"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingStart="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:paddingEnd="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginEnd="@dimen/dp15"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/indicate"
+        app:layout_constraintTop_toTopOf="@id/tv_comment_num"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comment_num"
+        android:drawableLeft="@drawable/xicon_accont_info_edit_button"
+        android:drawableStart="@drawable/xicon_accont_info_edit_button"
+        android:drawablePadding="@dimen/dp6"
+        android:gravity="center"
+        android:text="@string/article_comment"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_author_attention"/>
 
 </android.support.constraint.ConstraintLayout>

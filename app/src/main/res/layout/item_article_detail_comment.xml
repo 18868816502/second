@@ -1,7 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.beihui.market.view.CircleImageView
+        android:id="@+id/iv_commentator_avatar"
+        android:layout_width="@dimen/dp34"
+        android:layout_height="@dimen/dp34"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginStart="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mine_icon_head" />
+
+    <!--<android.support.constraint.Barrier-->
+        <!--android:id="@+id/barrier"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:constraint_referenced_ids="iv_commentator_avatar"-->
+        <!--app:barrierDirection="right"/>-->
+
+    <TextView
+        android:id="@+id/tv_commentator_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginStart="@dimen/dp10"
+        app:layout_constraintLeft_toRightOf="@id/iv_commentator_avatar"
+        app:layout_constraintTop_toTopOf="@id/iv_commentator_avatar"
+        android:text="闫伟"
+        android:textColor="@color/black_1"
+        android:textSize="@dimen/sp14"/>
+
+    <TextView
+        android:id="@+id/tv_comment_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginEnd="@dimen/dp15"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_commentator_avatar"
+        app:layout_constraintTop_toBottomOf="@id/tv_commentator_name"
+        app:layout_constraintLeft_toLeftOf="@id/tv_commentator_name"
+        android:text="离开静安寺欧尼是了圣诞节福利年历卡爱丽舍咖啡加啊我啥来的咖啡就阿里老师肯定发了"/>
+
+
+    <TextView
+        android:id="@+id/tv_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp10"
+        app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
+        app:layout_constraintLeft_toLeftOf="@id/tv_commentator_name"
+        android:text="刚刚"
+        android:textSize="@dimen/sp13"
+        android:textColor="@color/black_2"/>
+
+    <ImageView
+        android:id="@+id/iv_article_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mine_bill_icon"
+        android:layout_marginRight="@dimen/dp20"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_comment_time"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comment_time"/>
+
+    <TextView
+        android:id="@+id/tv_article_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/mine_encourage_icon"
+        android:layout_marginRight="@dimen/dp20"
+        android:drawablePadding="@dimen/dp4"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/iv_article_comment"
+        app:layout_constraintTop_toTopOf="@id/tv_comment_time"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comment_time"
+        android:gravity="center"
+        android:text="212"
+        android:textSize="@dimen/sp11"
+        android:textColor="@color/black_2"/>
+
+    <View
+        android:id="@+id/indicate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        app:layout_constraintTop_toBottomOf="@id/tv_comment_time"
+        android:layout_marginTop="@dimen/dp15"
+        android:background="@color/colorBackground"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_recycler"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp10"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/indicate"
+        app:layout_constraintLeft_toLeftOf="@id/tv_commentator_name"/>
 
 </android.support.constraint.ConstraintLayout>

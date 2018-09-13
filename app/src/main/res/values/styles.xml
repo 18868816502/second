@@ -188,4 +188,15 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="ReportTextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp55</item>
+        <item name="android:textColor">@color/black_1</item>
+        <item name="android:textSize">@dimen/sp17</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+
 </resources>

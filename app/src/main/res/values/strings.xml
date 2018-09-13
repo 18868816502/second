@@ -230,4 +230,18 @@
     <string name="community_publish_dialog_cimmit_content">是否提交内容给管理员审核</string>
     <string name="community_publish_dialog_commit">提交</string>
 
+    <!--文章-->
+    <string name="article_attention">+ 关注</string>
+    <string name="article_praise">赞</string>
+    <string name="article_comment">写评论</string>
+    <string name="article_attention_content">确定取消关注?</string>
+    <string name="article_attention_ensure">确定</string>
+    <string name="article_delete_content">确定删除该动态?</string>
+    <string name="article_more_report_title">请选择举报原因</string>
+    <string name="article_more_report_content1">色情、政治等敏感信息</string>
+    <string name="article_more_report_content2">广告信息或骚扰用户</string>
+    <string name="article_more_report_content3">侵权盗用行为</string>
+    <string name="article_more_report_content4">其它</string>
+    <string name="article_more_report_delete">删除</string>
+
 </resources>
