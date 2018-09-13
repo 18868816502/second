@@ -15,9 +15,7 @@ import com.google.gson.Gson;
 public class UserHelper {
 
     private static UserHelper sInstance;
-
     private Gson gson = new Gson();
-
     private Profile profile;
 
     private UserHelper(Context context) {

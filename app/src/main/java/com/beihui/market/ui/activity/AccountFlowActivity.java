@@ -26,6 +26,8 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.fragment.AccountFlowCreditCardFragment;
 import com.beihui.market.ui.fragment.AccountFlowLoanFragment;
 import com.beihui.market.ui.fragment.AccountFlowNormalFragment;
@@ -45,6 +47,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -93,19 +96,10 @@ public class AccountFlowActivity extends BaseComponentActivity {
     public void configViews() {
         setupToolbarBackNavigation(toolbar, R.drawable.x_delete);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-
         fragmentList.add(mNormalFragment);
         fragmentList.add(mLoanFragment);
         fragmentList.add(mCreditCardFragment);
-
         SlidePanelHelper.attach(this);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        //pv，uv统计
-//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLY);
     }
 
     @Override
@@ -113,9 +107,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
         MyFragmentViewPgaerAdapter adapter = new MyFragmentViewPgaerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
 
-        /**
-         * 是否编辑
-         */
+        /*是否编辑*/
         Intent intent = getIntent();
         String debtType = intent.getStringExtra("debt_type");
         if (!TextUtils.isEmpty(debtType)) {
@@ -147,10 +139,7 @@ public class AccountFlowActivity extends BaseComponentActivity {
             mAccountFlowNormal.setSelected(true);
         }
 
-
-        /**
-         * 监听器tab
-         */
+        /*监听器tab*/
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -198,18 +187,13 @@ public class AccountFlowActivity extends BaseComponentActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
-
     }
-
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
-
 
     @OnClick({R.id.tv_normal_account_flow, R.id.tv_loan_account_flow, R.id.tv_credit_card_flow, R.id.iv_ac_account_flow_confirm})
     public void onItemClicked(View view) {
@@ -269,62 +253,32 @@ public class AccountFlowActivity extends BaseComponentActivity {
         }
     }
 
-    /**
-     * 删除通用账单
-     */
+    /*删除通用账单*/
     private void deleteFastDebt(String debtId) {
         Api.getInstance().deleteFastDebt(UserHelper.getInstance(this).getProfile().getId(), debtId)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       createAccount(mNormalFragment.map, 0);
-                                   } else {
-                                       showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-
-
-                            }
-                        });
-
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        createAccount(mNormalFragment.map, 0);
+                    }
+                });
     }
 
-
-    /**
-     * 删除账单
-     */
+    /*删除账单*/
     public void deleteLoanDebt(String debtId) {
         Api.getInstance().deleteDebt(UserHelper.getInstance(this).getProfile().getId(), debtId)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       createAccount(mLoanFragment.map, 1);
-                                   } else {
-                                       showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                            }
-                        });
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        createAccount(mLoanFragment.map, 1);
+                    }
+                });
     }
 
-
-    /**
-     * 创建通用 网贷账单
-     */
+    /*创建通用 网贷账单*/
     private void createAccount(Map<String, Object> map, int type) {
-
         map.put("userId", UserHelper.getInstance(this).getProfile().getId());
         if (type == 0) {
             createFastAccount(map);
@@ -341,33 +295,33 @@ public class AccountFlowActivity extends BaseComponentActivity {
             return true;
         }
         if (!TextUtils.isEmpty((String) map.get("amount")) && (((String) map.get("amount")).substring(1).contains("+") || ((String) map.get("amount")).substring(1).contains("-"))) {
-            //ToastUtils.showToast(this, "请输入正确的金额");
+            //WeakRefToastUtil.showToast(this, "请输入正确的金额");
             ToastUtil.toast("请输入正确的金额");
             return true;
         }
 
         double amount = Double.parseDouble(map.get("amount") + "");
         if (amount < 0D) {
-            //ToastUtils.showToast(this, "每期金额不能小于0");
+            //WeakRefToastUtil.showToast(this, "每期金额不能小于0");
             ToastUtil.toast("每期金额不能小于0");
             return true;
         } else if (amount == 0D) {
-            //ToastUtils.showToast(this, "每期金额不能为0");
+            //WeakRefToastUtil.showToast(this, "每期金额不能为0");
             ToastUtil.toast("每期金额不能为0");
             return true;
         } else if (amount > 999999999D) {
-            //ToastUtils.showToast(this, "输入的金额太大啦");
+            //WeakRefToastUtil.showToast(this, "输入的金额太大啦");
             ToastUtil.toast("输入的金额太大啦");
             return true;
         }
 
         if (map.get("projectName") == null && type == 0) {
-            //ToastUtils.showToast(this, "账单名称不能为空");
+            //WeakRefToastUtil.showToast(this, "账单名称不能为空");
             ToastUtil.toast("账单名称不能为空");
             return true;
         }
         if (map.get("channelName") == null && type == 1) {
-            //ToastUtils.showToast(this, "账单名称不能为空");
+            //WeakRefToastUtil.showToast(this, "账单名称不能为空");
             ToastUtil.toast("账单名称不能为空");
             return true;
         }
@@ -379,40 +333,21 @@ public class AccountFlowActivity extends BaseComponentActivity {
      */
     public void createFastAccount(Map<String, Object> map) {
         Api.getInstance().createNormalAccount(map)
-                .compose(RxUtil.<ResultEntity<CreateAccountReturnIDsBean>>io2main())
-                .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
-                               @Override
-                               public void accept(ResultEntity<CreateAccountReturnIDsBean> result) throws Exception {
-//                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-
-                                   /**
-                                    * 返回详情页
-                                    */
-                                   if (result.isSuccess()) {
-                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
-
-                                       if (mNormalFragment.debtNormalDetail != null) {
-                                           //ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
-                                           ToastUtil.toast("更新成功，已默认初始还款状态");
-                                       }
-
-                                       Intent intent = new Intent();
-                                       intent.putExtra("recordId", result.getData().recordId);
-                                       intent.putExtra("billId", result.getData().billId);
-                                       setResult(1, intent);
-                                       finish();
-                                   } else {
-                                       //ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
-                                       ToastUtil.toast(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                //Log.e("exception_custom", throwable.getMessage());
-                            }
-                        });
+                .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
+                .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
+                    @Override
+                    public void onNext(@NonNull CreateAccountReturnIDsBean data) {
+                        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(0));
+                        if (mNormalFragment.debtNormalDetail != null) {
+                            ToastUtil.toast("更新成功，已默认初始还款状态");
+                        }
+                        Intent intent = new Intent();
+                        intent.putExtra("recordId", data.recordId);
+                        intent.putExtra("billId", data.billId);
+                        setResult(1, intent);
+                        finish();
+                    }
+                });
     }
 
     /**
@@ -420,45 +355,26 @@ public class AccountFlowActivity extends BaseComponentActivity {
      */
     public void createLoanAccount(Map<String, Object> map) {
         Api.getInstance().createLoanAccount(map)
-                .compose(RxUtil.<ResultEntity<CreateAccountReturnIDsBean>>io2main())
-                .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
-                               @Override
-                               public void accept(ResultEntity<CreateAccountReturnIDsBean> result) throws Exception {
-//                                   Toast.makeText(AccountFlowActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-
-                                   if (result.isSuccess()) {
-                                       EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
-
-                                       if (mLoanFragment.debtNormalDetail != null) {
-                                           //ToastUtils.showToast(AccountFlowActivity.this, "更新成功，已默认初始还款状态");
-                                           ToastUtil.toast("更新成功，已默认初始还款状态");
-                                       }
-
-                                       /**
-                                        * 返回详情页
-                                        */
-                                       Intent intent = new Intent();
-                                       intent.putExtra("recordId", result.getData().recordId);
-                                       intent.putExtra("billId", result.getData().billId);
-                                       setResult(1, intent);
-                                       finish();
-                                   } else {
-                                       //ToastUtils.showToast(AccountFlowActivity.this, result.getMsg());
-                                       ToastUtil.toast(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                //Log.e("exception_custom", throwable.getMessage());
-                            }
-                        });
+                .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
+                .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
+                    @Override
+                    public void onNext(@NonNull CreateAccountReturnIDsBean data) {
+                        EventBus.getDefault().postSticky(new MyLoanDebtListFragmentEvent(1));
+                        if (mLoanFragment.debtNormalDetail != null) {
+                            ToastUtil.toast("更新成功，已默认初始还款状态");
+                        }
+                        /*返回详情页*/
+                        Intent intent = new Intent();
+                        intent.putExtra("recordId", data.recordId);
+                        intent.putExtra("billId", data.billId);
+                        setResult(1, intent);
+                        finish();
+                    }
+                });
     }
 
 
     class MyFragmentViewPgaerAdapter extends FragmentPagerAdapter {
-
         public MyFragmentViewPgaerAdapter(FragmentManager fm) {
             super(fm);
         }

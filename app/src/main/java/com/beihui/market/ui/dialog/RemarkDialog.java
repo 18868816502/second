@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import com.beihui.market.R;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.EditTextUtils;
 
 /**
@@ -81,7 +81,7 @@ public class RemarkDialog extends DialogFragment {
                             }
                         }, 100);
                     } else {
-                        ToastUtils.showShort(getContext(), "请输入备注", null);
+                        WeakRefToastUtil.showShort(getContext(), "请输入备注", null);
                     }
                 }
             }

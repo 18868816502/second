@@ -117,7 +117,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.content_container, fragment, LoginMainFragment.class.getSimpleName())
-                .commit();
+                .commitAllowingStateLoss();
         SlidePanelHelper.attach(this);
     }
 
@@ -187,7 +187,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
             ft.attach(loginPsd);
             ft.addToBackStack(loginPsdTag);
-            ft.commit();
+            ft.commitAllowingStateLoss();
         } else if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_FAST) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -208,7 +208,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
             bundle.putString("requestPhone", event.requestPhone);
             setPsd.setArguments(bundle);
             ft.addToBackStack(setPsdTag);
-            ft.commit();
+            ft.commitAllowingStateLoss();
         } else if (event.navigationTag == AuthNavigationEvent.TAG_HEAD_TO_LOGIN) {
             getSupportFragmentManager().popBackStack();
         }

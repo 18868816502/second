@@ -2,7 +2,6 @@ package com.beihui.market.base;
 
 
 public class Constant {
-
     /***********************************小能客服**********************************/
     //企业id，即企业唯一标识。格式示例：kf_9979【必填】
     public static final String XN_SITE_ID = "kf_10075";

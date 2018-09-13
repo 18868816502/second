@@ -48,9 +48,7 @@ public class BlurDrawable extends Drawable {
         setDownSampleFactor(downSampleFactor);
         setBlurRadius(blurRadius);
         setOverlayColor(overlayColor);
-
     }
-
 
     @Override
     public void draw(@NonNull Canvas canvas) {
@@ -106,7 +104,6 @@ public class BlurDrawable extends Drawable {
                 downSampleFactor = factor;
                 downSampleFactorChanged = true;
             }
-
         }
     }
 
@@ -137,19 +134,16 @@ public class BlurDrawable extends Drawable {
                 if (bitmapToBlur == null) {
                     return false;
                 }
-
                 blurredBitmap = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
                 if (blurredBitmap == null) {
                     return false;
                 }
             }
-
             blurringCanvas = new Canvas(this.bitmapToBlur);
             blurringCanvas.scale(1.0F / (float) downSampleFactor, 1.0F / (float) this.downSampleFactor);
             blurInput = Allocation.createFromBitmap(renderScript, bitmapToBlur, Allocation.MipmapControl.MIPMAP_NONE, 1);
             blurOutput = Allocation.createTyped(renderScript, blurInput.getType());
         }
-
         return true;
     }
 

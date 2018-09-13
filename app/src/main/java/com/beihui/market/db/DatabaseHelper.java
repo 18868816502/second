@@ -10,9 +10,7 @@ public class DatabaseHelper {
     public static final String DATABASE_NAME = "loan.db";
 
     private static DatabaseHelper instance;
-
     private DaoSession daoSession;
-
 
     public static synchronized DatabaseHelper getInstance(Context context) {
         if (instance == null) {
@@ -34,5 +32,4 @@ public class DatabaseHelper {
     public DaoSession getDaoSession() {
         return daoSession;
     }
-
 }

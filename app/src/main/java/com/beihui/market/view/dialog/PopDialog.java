@@ -249,12 +249,9 @@ public class PopDialog extends BaseDialog {
             mDialog.mPopListener = mViewListener;
             return this;
         }
-
     }
 
     public interface OnInitPopListener {
         void initPop(View view, PopDialog mPopDialog);
     }
-
-
 }

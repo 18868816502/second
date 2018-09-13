@@ -120,7 +120,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         Api.getInstance().onReadAll(userId).compose(RxUtil.<ResultEntity>io2main()).subscribe(new ApiObserver<ResultEntity>() {
             @Override
             public void onNext(ResultEntity data) {
-                //ToastUtils.showToast(SysMsgActivity.this, "操作成功");
+                //WeakRefToastUtil.showToast(SysMsgActivity.this, "操作成功");
                 ToastUtil.toast("操作成功");
                 presenter.loadMeaasge();
             }
@@ -133,7 +133,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         Api.getInstance().onDeleteMessageAll(userId).compose(RxUtil.<ResultEntity>io2main()).subscribe(new ApiObserver<ResultEntity>() {
             @Override
             public void onNext(ResultEntity data) {
-                //ToastUtils.showToast(SysMsgActivity.this, "已清空消息");
+                //WeakRefToastUtil.showToast(SysMsgActivity.this, "已清空消息");
                 ToastUtil.toast("已清空消息");
                 presenter.loadMeaasge();
             }

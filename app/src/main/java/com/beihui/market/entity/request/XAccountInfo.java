@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 public class XAccountInfo implements Serializable {
 
-
     /**
      * id : 1992
      * userId : 04e361bdbe1344039aa4a4e9a7e75c10
@@ -24,8 +23,6 @@ public class XAccountInfo implements Serializable {
      * overdueTotal : null
      * lastOverdue : false
      */
-
-
 
     //主键
     private long id;

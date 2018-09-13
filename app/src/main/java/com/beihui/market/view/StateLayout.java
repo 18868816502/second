@@ -44,7 +44,6 @@ public class StateLayout extends FrameLayout {
             View child = getChildAt(0);
             stateViewArray.put(STATE_CONTENT, child);
         }
-
     }
 
     public void switchState(int newState) {
@@ -58,7 +57,6 @@ public class StateLayout extends FrameLayout {
                 throw new NullPointerException("StateViewProvider return null");
             }
             stateViewArray.put(newState, newView);
-
             switchView(newView);
         }
     }
@@ -78,7 +76,6 @@ public class StateLayout extends FrameLayout {
     }
 
     public interface StateViewProvider {
-
         View getViewByState(int newState, StateLayout container);
     }
 }

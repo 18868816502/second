@@ -15,7 +15,7 @@ import com.beihui.market.injection.component.DaggerEditProfessionComponent;
 import com.beihui.market.injection.module.EditProfessionModule;
 import com.beihui.market.ui.contract.EditProfessionContract;
 import com.beihui.market.ui.presenter.EditProfessionPresenter;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 import java.util.List;
 
@@ -108,13 +108,13 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
     @Override
     public void showErrorMsg(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
     }
 
     @Override
     public void showUpdateSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
         finish();
     }
 }

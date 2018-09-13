@@ -17,7 +17,6 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
 
     private Paint mTextPaint;
     private float mTextSize;
-
     public Context mContext;
     private int maxSize;
     private int minSize;
@@ -59,14 +58,6 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
 
 
         while (Math.abs(textWidth - availableTextViewWidth) > 1) {
-            /*Log.e("adfas", "textWidth ---> " + textWidth);
-            Log.e("adfas", "availableTextViewWidth ---> " + availableTextViewWidth);
-            Log.e("adfas", "textWidth - availableTextViewWidth ---> " + (textWidth - availableTextViewWidth));
-            Log.e("adfas", "charWidth---> " + charWidth);
-            Log.e("adfas", "DensityUtil.sp2px(mContext, 27) ---> " + maxSize);
-            Log.e("adfas", "DensityUtil.sp2px(mContext, 15) ---> " + minSize);
-            Log.e("adfas", "mTextSize ---> " + mTextSize);*/
-
             if (textWidth > availableTextViewWidth) {
                 if (mTextSize > minSize) {
                     mTextSize -= 1;
@@ -106,7 +97,6 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
             setSelection(getText().length());
         }
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

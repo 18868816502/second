@@ -94,11 +94,11 @@ public class DebtCalendarActivity extends BaseComponentActivity {
         if (isCalendar) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_container, DebtCalCalendarFragment.newInstance(dateSelectedListener, selectedDate))
-                    .commit();
+                    .commitAllowingStateLoss();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_container, new DebtCalChartFragment())
-                    .commit();
+                    .commitAllowingStateLoss();
         }
     }
 }

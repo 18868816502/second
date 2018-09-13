@@ -19,7 +19,7 @@ import com.beihui.market.injection.module.CreditCardDebtNewModule;
 import com.beihui.market.ui.contract.CreditCardDebtNewContract;
 import com.beihui.market.ui.presenter.CreditCardDebtNewPresenter;
 import com.beihui.market.util.AndroidBug5497Fix;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -198,7 +198,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void showSaveCreditCardDebtSuccess(String msg) {
-//        ToastUtils.showShort(this, msg, R.mipmap.white_success);
+//        WeakRefToastUtil.showShort(this, msg, R.mipmap.white_success);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -213,7 +213,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void showUpdateCreditCardDebtSuccess(String msg) {
-        ToastUtils.showShort(this, msg, R.mipmap.white_success);
+        WeakRefToastUtil.showShort(this, msg, R.mipmap.white_success);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {

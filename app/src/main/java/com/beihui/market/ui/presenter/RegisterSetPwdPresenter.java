@@ -168,7 +168,7 @@ public class RegisterSetPwdPresenter extends BaseRxPresenter implements Register
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(throwable);
+                                LogUtils.w(throwable);
 
                             }
                         });

@@ -32,8 +32,6 @@ public class CustomSwipeMenuLayout extends SwipeMenuLayout {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 EventBus.getDefault().postSticky(new InsideViewPagerBus(true));
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPBILLLEFTSLIDE);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:

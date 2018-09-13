@@ -76,7 +76,6 @@ public class AccessHeadInterceptor implements Interceptor {
             }
             FormBody formBody = bodyBuilder
                     .addEncoded("packageId", App.sChannelId)
-                    //.addEncoded("packageId", BuildConfig.APPLICATION_ID)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .addEncoded("userIp", NetUtils.getIPAddress(App.getInstance()))
                     .build();

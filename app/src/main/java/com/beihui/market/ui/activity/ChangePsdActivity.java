@@ -25,7 +25,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -145,7 +145,7 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     @Override
     public void showUpdateSuccess(String msg, String account) {
         dismissProgress();
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
         //发送用户退出全局事件，并要求用户重新登录
         UserLogoutEvent event = new UserLogoutEvent();
         event.pendingAction = UserLogoutEvent.ACTION_START_LOGIN;

@@ -59,7 +59,6 @@ public class BlurringDrawable extends Drawable {
         setOverlayColor(overlayColor);
     }
 
-
     @Override
     public void draw(@NonNull Canvas canvas) {
         if (blurredView != null) {
@@ -100,7 +99,6 @@ public class BlurringDrawable extends Drawable {
         return PixelFormat.TRANSLUCENT;
     }
 
-
     @SuppressLint("NewApi")
     public void setBlurRadius(int radius) {
         this.blurScript.setRadius((float) radius);
@@ -114,7 +112,6 @@ public class BlurringDrawable extends Drawable {
                 downSampleFactor = factor;
                 downSampleFactorChanged = true;
             }
-
         }
     }
 
@@ -174,7 +171,6 @@ public class BlurringDrawable extends Drawable {
             blurInput = Allocation.createFromBitmap(renderScript, bitmapToBlur, Allocation.MipmapControl.MIPMAP_NONE, 1);
             blurOutput = Allocation.createTyped(renderScript, blurInput.getType());
         }
-
         return true;
     }
 
@@ -185,5 +181,4 @@ public class BlurringDrawable extends Drawable {
         blurScript.forEach(blurOutput);
         blurOutput.copyTo(blurredBitmap);
     }
-
 }

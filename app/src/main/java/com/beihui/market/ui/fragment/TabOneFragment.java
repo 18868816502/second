@@ -38,7 +38,7 @@ import com.beihui.market.ui.busevents.UserLoginEvent;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.BusinessWebView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -331,7 +331,7 @@ public class TabOneFragment extends BaseTabFragment {
                 startActivityForResult(intent, 0);
             } catch (Exception e) {
                 //若无法正常跳转，在此进行错误处理
-                ToastUtils.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
+                WeakRefToastUtil.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
             }
         }
     }

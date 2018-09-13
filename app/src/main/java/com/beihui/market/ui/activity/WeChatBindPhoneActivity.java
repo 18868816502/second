@@ -18,7 +18,7 @@ import com.beihui.market.injection.component.DaggerWeChatBindPhoneComponent;
 import com.beihui.market.injection.module.WeChatBindPhoneModule;
 import com.beihui.market.ui.contract.WeChatBindPhoneContract;
 import com.beihui.market.ui.presenter.WeChatBindPhonePresenter;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
 import javax.inject.Inject;
@@ -127,7 +127,7 @@ public class WeChatBindPhoneActivity extends BaseComponentActivity implements We
 
     @Override
     public void showVerifyCodeSend(String msg) {
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
         countDown = new CountDown();
         countDown.start();
     }
@@ -144,7 +144,7 @@ public class WeChatBindPhoneActivity extends BaseComponentActivity implements We
 
     @Override
     public void showLoginSuccess() {
-        ToastUtils.showShort(this, "登录成功", R.mipmap.white_success);
+        WeakRefToastUtil.showShort(this, "登录成功", R.mipmap.white_success);
         setResult(RESULT_OK);
         finish();
     }

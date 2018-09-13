@@ -128,7 +128,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             if (debtAbstract != null) {
                 holder.mHeaderAccountNum.setVisibility(View.VISIBLE);
                 holder.mHeaderAccountNum.setText("共" + CommonUtils.keepWithoutZero(debtAbstract.last30DayStayStillCount) + "笔");
-//                holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? CommonUtils.keep2digitsWithoutZero(debtAbstract.getLast30DayStayStill()) : "暂无账单");
                 holder.mHeaderWaitPay.setText(dataSet.size() > 0 ? FormatNumberUtils.FormatNumberFor2(debtAbstract.getLast30DayStayStill()) : "暂无账单");
                 if (dataSet.size() > 0 && (headerAmout == null || headerAmout != debtAbstract.getLast30DayStayStill()) && debtAbstract.getLast30DayStayStill() > 1D) {
                     headerAmout = debtAbstract.getLast30DayStayStill();
@@ -192,7 +191,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         ToastUtil.toast("已显示待还账单");
                         showAll = true;
                     }
-
                     if (headerViewStatusChange != null) {
                         headerViewStatusChange.statusChange(!"全部".equals(holder.mHeaderSortType.getText().toString()));
                     }
@@ -208,15 +206,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
             //示例数据
             if (accountBill.isAnalog) {
                 holder.swipeMenuLayout.setSwipeEnable(false);
-
                 if (position == 0) {
                     holder.mAvatar.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.bill_zsyh_icon));
-
                     holder.mDateName.setText("今天");
                     holder.mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                     holder.mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                     holder.mAccountTypeTerm.setText("6月");
-
                     holder.mCountName.setVisibility(View.GONE);
                     holder.mCount.setVisibility(View.GONE);
                     holder.mCountRight.setVisibility(View.GONE);
@@ -234,12 +229,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     holder.mCountRight.setVisibility(View.GONE);
                     holder.mDot.setImageDrawable(mGrayDot);
                 }
-
                 //账单名称 网贷账单 信用卡账单
                 holder.mAccountTypeName.setText(accountBill.getTitle());
                 //当期应还
                 holder.mAccountTypeMoney.setText(FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
-
 
                 holder.mCardBg.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -252,16 +245,12 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         }
                     }
                 });
-
             } else {
                 //非示例数据
-
                 if (accountBill.getStatus() == 2) {
-//                   holder.swipeMenuLayout.setSwipeEnable(false);
                     holder.mAccountTypeName.setTextColor(Color.parseColor("#909298"));
                     holder.mAccountTypeMoney.setTextColor(Color.parseColor("#909298"));
                 } else {
-//                   holder.swipeMenuLayout.setSwipeEnable(true);
                     holder.mAccountTypeName.setTextColor(Color.parseColor("#424251"));
                     holder.mAccountTypeMoney.setTextColor(Color.parseColor("#424251"));
                 }
@@ -290,7 +279,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 //账单名称 网贷账单 信用卡账单
                 holder.mAccountTypeName.setText(accountBill.getTitle());
                 //当期应还
-//               holder.mAccountTypeMoney.setText(CommonUtils.keep2digitsWithoutZero(accountBill.getAmount()));
                 holder.mAccountTypeMoney.setText(FormatNumberUtils.FormatNumberFor2(accountBill.getAmount()));
                 //还款周期
                 StringBuilder builder = new StringBuilder();
@@ -342,7 +330,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                          */
                         getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
                     } else if (accountBill.getStatus() == 5) {
-//                       holder.mDot.setImageDrawable(mRedDot);
                         holder.mDot.setImageDrawable(mGrayDot);
                         holder.mCountName.setVisibility(View.GONE);
                         holder.mCount.setVisibility(View.GONE);
@@ -363,7 +350,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                          */
                         getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
                     } else if (accountBill.getReturnDay() <= 3) {
-//                       holder.mDot.setImageDrawable(mRedDot);
                         holder.mDot.setImageDrawable(mGrayDot);
                         holder.mCountName.setVisibility(View.GONE);
                         holder.mCount.setVisibility(View.GONE);
@@ -385,7 +371,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                         getDeteName(holder.mDateName, accountBill.getRepayTime(), accountBill.getReturnDay(), accountBill.getStatus(), accountBill.getOutBillDay(), accountBill.headerTime);
                     }
                 }
-
 
                 /**
                  * 如果是网贷 有还部分 和 已还
@@ -445,11 +430,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                     @Override
                     public void onClick(View v) {
                         /**
-                         * 埋点 	卡片还部分点击
+                         * 埋点 卡片还部分点击
                          */
                         //pv，uv统计
                         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_TAB_ACCOUNT_CARD_PART_PAY);
-
                         //pv，uv统计
                         DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPREPAYPORTION);
 
@@ -471,17 +455,13 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                        @Override
                                                                        public void accept(ResultEntity result) throws Exception {
                                                                            if (result.isSuccess()) {
-                                                                               //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                                               /**
-                                                                                * 如果还部分金额与待还金额相同 则需要回到首屏
-                                                                                */
+                                                                               /*如果还部分金额与待还金额相同 则需要回到首屏*/
                                                                                if (accountBill.getAmount() - amount < 0.01) {
                                                                                    ((TabAccountFragment) mFragment).refreshData();
                                                                                } else {
                                                                                    accountBill.setAmount(accountBill.getAmount() - amount);
                                                                                    notifyItemChanged(position + 1);
                                                                                }
-
                                                                                //获取头信息
                                                                                ((TabAccountFragment) mFragment).initHeaderData();
                                                                            } else {
@@ -497,9 +477,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                 });
                                             }
 
-                                            /**
-                                             * 是快捷记账
-                                             */
+                                            /*是快捷记账*/
                                             if (accountBill.getType() == 3) {
                                                 Api.getInstance().updateFastDebtBillStatus(UserHelper.getInstance(mActivity).getProfile().getId(), accountBill.getBillId(), accountBill.getRecordId(), 2, amount)
                                                         .compose(RxUtil.<ResultEntity>io2main())
@@ -507,10 +485,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                        @Override
                                                                        public void accept(ResultEntity result) throws Exception {
                                                                            if (result.isSuccess()) {
-                                                                               //Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
-                                                                               /**
-                                                                                * 如果还部分金额与待还金额相同 则需要回到首屏
-                                                                                */
+                                                                               /*如果还部分金额与待还金额相同 则需要回到首屏*/
                                                                                if (accountBill.getAmount() - amount < 0.01) {
                                                                                    ((TabAccountFragment) mFragment).refreshData();
                                                                                } else {
@@ -547,16 +522,10 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                 holder.mCardBg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /**
-                         * 防止重复点击
-                         */
+                        /*防止重复点击*/
                         if (FastClickUtils.isFastClick()) {
                             return;
                         }
-
-                        //pv，uv统计
-//                       DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPBILLCLICK);
-
                         if (accountBill.getType() == 1) {
                             Intent intent = new Intent(mActivity, LoanDebtDetailActivity.class);
                             intent.putExtra("debt_id", accountBill.getRecordId());
@@ -584,41 +553,7 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         }
     }
 
-
     private void getDeteName(TextView mDateName, String replyTime, int returnDay, int status, int outBillDay, String time) {
-//        if (status == 1 || status == 2 || status == 3) {
-//            if (returnDay == 0) {
-//                mDateName.setText("今天");
-//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-//            } else if (returnDay < 0) {
-//                mDateName.setText("逾期" + Math.abs(returnDay) + "天");
-//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-//            } else if (returnDay <= 30) {
-//                mDateName.setText(Math.abs(returnDay) + "天后还款");
-//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-//            } else if (returnDay > 30) {
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.add(Calendar.DAY_OF_MONTH, returnDay);
-//                int month = calendar.get(Calendar.MONTH) + 1;
-//                int day = calendar.get(Calendar.DAY_OF_MONTH);
-//                mDateName.setText(month + "月" + day + "日");
-//                mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-//                mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-//            }
-//        }
-//        if (status == 4) {
-//            mDateName.setText("已出账");
-//            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-//            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-//        }
-//        if (status == 5) {
-//            mDateName.setText(outBillDay+"天后出账");
-//            mDateName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-//            mDateName.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-//        }
         if (!TextUtils.isEmpty(time)) {
             try {
                 Date parse = dateFormat.parse(time);
@@ -748,7 +683,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
         headerAmout = null;
     }
 
-
     /**
      * 设置为未还
      * 设为已还
@@ -772,7 +706,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
                                                         * 重新回到首屏
                                                         */
@@ -787,7 +720,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                }
                                                            }, 300);
                                                        }
-//                                                     ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -807,7 +739,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
                                                         * 重新回到首屏
                                                         */
@@ -835,7 +766,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                @Override
                                                public void accept(ResultEntity result) throws Exception {
                                                    if (result.isSuccess()) {
-//                                                       Toast.makeText(mActivity, "更新成功", Toast.LENGTH_SHORT).show();
                                                        /**
                                                         * 重新回到首屏
                                                         */
@@ -850,7 +780,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
                                                                }
                                                            }, 300);
                                                        }
-//                                                     ((TabAccountFragment) mFragment).refreshData();
                                                    } else {
                                                        Toast.makeText(mActivity, result.getMsg(), Toast.LENGTH_SHORT).show();
                                                    }
@@ -905,7 +834,6 @@ public class XTabAccountRvAdapter extends RecyclerView.Adapter<XTabAccountRvAdap
      * ViewHolder
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         public int viewType;
 
         //头布局

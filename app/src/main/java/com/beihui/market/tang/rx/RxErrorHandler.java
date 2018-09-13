@@ -1,5 +1,7 @@
 package com.beihui.market.tang.rx;
 
+import android.text.TextUtils;
+
 import com.beihui.market.tang.exception.ApiException;
 import com.beihui.market.tang.exception.BaseException;
 import com.beihui.market.util.ToastUtil;
@@ -53,7 +55,7 @@ public class RxErrorHandler {
 
     public void showError(BaseException exception) {
         if (exception.getCode() != BaseException.UNKNOWN_ERROR) {
-            ToastUtil.toast(exception.getMsg());
+            if (!TextUtils.isEmpty(exception.getMsg())) ToastUtil.toast(exception.getMsg());
         }
     }
 }

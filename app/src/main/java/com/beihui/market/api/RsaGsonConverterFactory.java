@@ -13,10 +13,10 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
+ * @author chenguoguo
  * @name loanmarket
  * @class name：com.beihui.market
  * @class describe Rxjava Retrofit Gson工厂类
- * @author chenguoguo
  * @time
  */
 public class RsaGsonConverterFactory extends Converter.Factory {

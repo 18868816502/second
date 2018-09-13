@@ -19,7 +19,7 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.ProductCollectionPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.CollectionStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -129,7 +129,7 @@ public class PageCollectionProductFragment extends BaseComponentFragment impleme
     @Override
     public void showDeleteCollectionSuccess(String msg) {
         if (msg != null) {
-            ToastUtils.showShort(getContext(), msg, null);
+            WeakRefToastUtil.showShort(getContext(), msg, null);
         }
     }
 

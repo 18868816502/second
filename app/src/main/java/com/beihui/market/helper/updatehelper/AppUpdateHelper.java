@@ -26,7 +26,7 @@ import com.beihui.market.injection.component.DaggerAppUpdateHelperComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class AppUpdateHelper {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                LogUtils.e("AppUpdateHelper", throwable);
+                                LogUtils.w("AppUpdateHelper", throwable);
                             }
                         });
     }
@@ -153,7 +153,7 @@ public class AppUpdateHelper {
             weakReference.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ToastUtils.showShort(weakReference.get(), "文件读取失败，请检查应用权限", null);
+                    WeakRefToastUtil.showShort(weakReference.get(), "文件读取失败，请检查应用权限", null);
                     //重新弹窗
                     handleUpdate(app, weakReference);
                 }
@@ -270,7 +270,7 @@ public class AppUpdateHelper {
                 }
             } else {
                 if (helper != null && helper.weakReference.get() != null) {
-                    ToastUtils.showShort(helper.weakReference.get(), "下载失败，请检查网络或者应用权限", null);
+                    WeakRefToastUtil.showShort(helper.weakReference.get(), "下载失败，请检查网络或者应用权限", null);
                 }
             }
         }

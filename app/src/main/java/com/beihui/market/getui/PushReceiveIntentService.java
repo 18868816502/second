@@ -3,15 +3,13 @@ package com.beihui.market.getui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.beihui.market.App;
-import com.beihui.market.BuildConfig;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.NotificationUtil;
-import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
@@ -19,23 +17,15 @@ import com.igexin.sdk.message.GTTransmitMessage;
 
 import org.json.JSONObject;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.annotations.NonNull;
 
 public class PushReceiveIntentService extends GTIntentService {
-    private static final String TAG = PushReceiveIntentService.class.getSimpleName();
-
     @Override
     public void onReceiveServicePid(Context context, int i) {
-        if (BuildConfig.DEBUG) {
-            //Log.i(TAG, "onReceiveServicePid " + i);
-        }
     }
 
     @Override
     public void onReceiveClientId(Context context, String s) {
-        if (BuildConfig.DEBUG) {
-            //Log.i(TAG + 726, "onReceiveClintId " + s);
-        }
         if (UserHelper.getInstance(App.getInstance()).getProfile() != null) {
             String bindClientId = SPUtils.getPushBindClientId(context);
             String bindUserId = SPUtils.getPushBindUserId(context);
@@ -45,32 +35,19 @@ public class PushReceiveIntentService extends GTIntentService {
                 //记录相关id
                 SPUtils.setPushBindClientId(context, s);
                 SPUtils.setPushBindUserId(context, userId);
-
                 Api.getInstance().bindClientId(userId, s)
-                        .compose(RxUtil.<ResultEntity>io2main())
-                        .subscribe(new Consumer<ResultEntity>() {
-                                       @Override
-                                       public void accept(ResultEntity result) throws Exception {
-                                           if (!result.isSuccess()) {
-                                               Log.e(TAG, result.getMsg());
-                                           }
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        Log.e(TAG, "throwable " + throwable);
-                                    }
-                                });
+                        .compose(RxResponse.compatO())
+                        .subscribe(new ApiObserver<Object>() {
+                            @Override
+                            public void onNext(@NonNull Object data) {
+                            }
+                        });
             }
         }
     }
 
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
-        if (BuildConfig.DEBUG) {
-            //Log.i(TAG, "onReceiveMessageData " + gtTransmitMessage);
-        }
         try {
             String json = new String(gtTransmitMessage.getPayload());
             JSONObject obj = new JSONObject(json);
@@ -80,7 +57,6 @@ public class PushReceiveIntentService extends GTIntentService {
             Intent intent = new Intent("send_push_clicked_event");
             intent.putExtra("pending_json", json);
             NotificationUtil.showNotification(context, title, content, intent, context.getPackageName() + ".push_message", false);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,15 +64,9 @@ public class PushReceiveIntentService extends GTIntentService {
 
     @Override
     public void onReceiveOnlineState(Context context, boolean b) {
-        if (BuildConfig.DEBUG) {
-            //Log.i(TAG, "onReceiveOnlineState " + b);
-        }
     }
 
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage gtCmdMessage) {
-        if (BuildConfig.DEBUG) {
-            //Log.i(TAG, "onReceiveCommandResult " + gtCmdMessage);
-        }
     }
 }

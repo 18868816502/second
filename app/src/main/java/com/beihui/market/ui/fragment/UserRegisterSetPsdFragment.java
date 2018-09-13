@@ -25,7 +25,7 @@ import com.beihui.market.ui.presenter.RegisterSetPwdPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -130,13 +130,13 @@ public class UserRegisterSetPsdFragment extends BaseComponentFragment implements
     @Override
     public void showErrorMsg(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, null);
+        WeakRefToastUtil.showShort(getContext(), msg, null);
     }
 
     @Override
     public void showRegisterSuccess(String msg) {
         dismissProgress();
-//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+//        WeakRefToastUtil.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件，更新UI
         EventBus.getDefault().post(new UserLoginEvent());
         if (getView() != null) {

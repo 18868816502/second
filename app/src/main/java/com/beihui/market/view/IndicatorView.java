@@ -41,7 +41,6 @@ public class IndicatorView extends LinearLayout {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -51,7 +50,6 @@ public class IndicatorView extends LinearLayout {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

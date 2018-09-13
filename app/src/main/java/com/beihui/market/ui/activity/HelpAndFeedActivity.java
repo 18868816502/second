@@ -47,7 +47,7 @@ import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.EditTextUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
@@ -129,7 +129,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                 ivFeedImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 ivFeedImage.setImageBitmap(image);
             } else {
-                ToastUtils.showShort(this, "图片解析错误", null);
+                WeakRefToastUtil.showShort(this, "图片解析错误", null);
             }
 
         }
@@ -235,7 +235,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                    @Override
                                    public void accept(ResultEntity result) throws Exception {
                                        if (result.isSuccess()) {
-                                           ToastUtils.showShort(context, "提交成功", null);
+                                           WeakRefToastUtil.showShort(context, "提交成功", null);
                                            if (KeyBoard(etFeedContent)) {
                                                closeSoftBoard(etFeedContent);
                                            }
@@ -256,7 +256,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
 
 
                                        } else {
-                                           ToastUtils.showShort(context, result.getMsg(), null);
+                                           WeakRefToastUtil.showShort(context, result.getMsg(), null);
                                        }
                                    }
                                },
@@ -267,7 +267,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
                                 }
                             });
         } else {
-            ToastUtils.showShort(context, "请先添加反馈内容哦~", null);
+            WeakRefToastUtil.showShort(context, "请先添加反馈内容哦~", null);
         }
     }
 
@@ -363,7 +363,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
             toCamera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(toCamera, REQUEST_CODE_CAMERA);
         } else {
-            ToastUtils.showShort(this, "创建图像文件失败", null);
+            WeakRefToastUtil.showShort(this, "创建图像文件失败", null);
         }
     }
 

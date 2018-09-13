@@ -147,21 +147,16 @@ public class ShareDialog extends DialogFragment {
         new ShareAction(getActivity()).withMedia(this.umWeb).setPlatform(media).setCallback(new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
-                if (BuildConfig.DEBUG) {
-                    //Log.d(TAG, "share action start");
-                }
             }
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "share action result " + share_media);
+                if (BuildConfig.API_ENV) {
                     Api.getInstance().shareUser(UserHelper.getInstance(App.getInstance().getApplicationContext()).getProfile().getId())
                             .compose(RxResponse.compatO())
                             .subscribe(new ApiObserver<Object>() {
                                 @Override
                                 public void onNext(Object data) {
-
                                 }
                             });
                 }
@@ -169,16 +164,10 @@ public class ShareDialog extends DialogFragment {
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                if (BuildConfig.DEBUG) {
-                    Log.e(TAG, "share action error " + share_media + " throwable " + throwable);
-                }
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "share action cancel " + share_media);
-                }
             }
         }).share();
     }

@@ -48,7 +48,7 @@ import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -355,11 +355,11 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
     public void showDebtDetail(final DebtDetail debtDetail) {
         if (!debtDetail.getId().equals(SPUtils.getValue(this, debtDetail.getId()))) {
             if (debtDetail.getTerm() > 12) {
-                //com.beihui.market.util.ToastUtils.showToast(this, "账单分期大于12期，只显示最近6期");
+                //com.beihui.market.util.WeakRefToastUtil.showToast(this, "账单分期大于12期，只显示最近6期");
                 ToastUtil.toast("账单分期大于12期，只显示最近6期");
                 SPUtils.setValue(this, debtDetail.getId());
             } else if (debtDetail.getTerm() == -1) {
-                //com.beihui.market.util.ToastUtils.showToast(this, "循环账单只显示最近2期");
+                //com.beihui.market.util.WeakRefToastUtil.showToast(this, "循环账单只显示最近2期");
                 ToastUtil.toast("循环账单只显示最近2期");
                 SPUtils.setValue(this, debtDetail.getId());
             }
@@ -793,7 +793,7 @@ public class LoanDebtDetailActivity extends BaseComponentActivity implements Deb
      */
     @Override
     public void showDeleteDebtSuccess(String msg) {
-        ToastUtils.showShort(this, "删除成功", null);
+        WeakRefToastUtil.showShort(this, "删除成功", null);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {

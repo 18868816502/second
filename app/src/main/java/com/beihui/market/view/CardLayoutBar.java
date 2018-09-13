@@ -26,8 +26,6 @@ public class CardLayoutBar extends RelativeLayout {
      * rightImage 右边图片
      */
     private ImageView leftImage, rightImage;
-
-
     private Context context;
 
     /**
@@ -35,7 +33,7 @@ public class CardLayoutBar extends RelativeLayout {
      * rightTextView1 右边第二个文字
      * rightTextView2 右边第一个文字
      */
-    private TextView leftTextView,tvLeftRemark, leftTextDownView, rightTextView1, rightTextView2;
+    private TextView leftTextView, tvLeftRemark, leftTextDownView, rightTextView1, rightTextView2;
 
     /**
      * view 底部横线
@@ -75,7 +73,7 @@ public class CardLayoutBar extends RelativeLayout {
      * right_textView2_Visible 右边第一个文字是否显示
      * view_Visible 底部横线是否显示
      */
-    private boolean left_image_Visible,left_remark_Visible, right_image_Visible, left_textView_Visible, left_down_Visible,
+    private boolean left_image_Visible, left_remark_Visible, right_image_Visible, left_textView_Visible, left_down_Visible,
             right_textView1_Visible, right_textView2_Visible, view_Visible;
 
     private boolean left_textView_style, left_down_style;
@@ -364,9 +362,10 @@ public class CardLayoutBar extends RelativeLayout {
 
     /**
      * 设置左边标记是否显示
+     *
      * @param left_remard_Visible
      */
-    public void setLeftRemarkVisible(boolean left_remard_Visible){
+    public void setLeftRemarkVisible(boolean left_remard_Visible) {
         tvLeftRemark.setVisibility(left_remard_Visible ? View.VISIBLE : View.GONE);
     }
 

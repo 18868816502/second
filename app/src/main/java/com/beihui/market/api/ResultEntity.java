@@ -2,7 +2,6 @@ package com.beihui.market.api;
 
 
 public class ResultEntity<T> {
-
     private int code;
     private String msg;
     private T data;

@@ -22,7 +22,7 @@ import com.beihui.market.R;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,7 +44,7 @@ public class WeChatPublicDialog extends DialogFragment {
         ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         if (cm != null) {
             cm.setPrimaryClip(ClipData.newPlainText("loan_market", "考拉记账APP"));
-            ToastUtils.showShort(getContext(), "公众号复制成功", null);
+            WeakRefToastUtil.showShort(getContext(), "公众号复制成功", null);
         }
         return view;
     }
@@ -91,7 +91,7 @@ public class WeChatPublicDialog extends DialogFragment {
                     dismiss();
                 } catch (Exception e) {
                     //若无法正常跳转，在此进行错误处理
-                    ToastUtils.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
+                    WeakRefToastUtil.showShort(getContext(), "无法跳转到微信，请检查您是否安装了微信！", null);
                 }
                 break;
         }

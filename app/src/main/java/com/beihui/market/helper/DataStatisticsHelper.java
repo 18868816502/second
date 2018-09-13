@@ -290,7 +290,7 @@ public class DataStatisticsHelper {
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
-                        LogUtils.e(TAG, "internal message statistic error. message " + t.getMessage());
+                        LogUtils.w(TAG, "internal message statistic error. message " + t.getMessage());
                     }
                 });
     }
@@ -312,7 +312,7 @@ public class DataStatisticsHelper {
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
-                        LogUtils.e(TAG, "internal message statistic error. message " + t.getMessage());
+                        LogUtils.w(TAG, "internal message statistic error. message " + t.getMessage());
                     }
                 });
     }
@@ -328,7 +328,7 @@ public class DataStatisticsHelper {
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
-                        LogUtils.e(TAG, "internal message statistic error. message " + t.getMessage());
+                        LogUtils.w(TAG, "internal message statistic error. message " + t.getMessage());
                     }
                 });
     }
@@ -342,21 +342,18 @@ public class DataStatisticsHelper {
         }
         //信用卡详情
         api.queryCreditCardDetail(userId, id)
-                .compose(RxUtil.<ResultEntity<CreditCard.Row>>io2main())
-                .subscribe(new Consumer<ResultEntity<CreditCard.Row>>() {
-                               @Override
-                               public void accept(ResultEntity<CreditCard.Row> resultEntity) throws Exception {
-                                   if (!resultEntity.isSuccess()) {
-                                       LogUtils.e(TAG, "credit card statistic error. message " + resultEntity.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "credit card statistic error " + throwable);
-                            }
-                        });
+                .compose(RxResponse.<CreditCard.Row>compatT())
+                .subscribe(new ApiObserver<CreditCard.Row>() {
+                    @Override
+                    public void onNext(@NonNull CreditCard.Row data) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.w(TAG, "credit card statistic error " + t.getMessage());
+                    }
+                });
         //推荐信用卡点击
         onCountUv(ID_CLICK_CREDIT_CARD_RECOMMEND);
     }
@@ -378,13 +375,13 @@ public class DataStatisticsHelper {
                 .subscribe(new ApiObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object data) {
-                        LogUtils.e(TAG, "count uv error event id=" + type);
+                        LogUtils.w(TAG, "count uv error event id=" + type);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
-                        LogUtils.e(TAG, "count uv error event id = " + type + " " + t.getMessage());
+                        LogUtils.w(TAG, "count uv error event id = " + type + " " + t.getMessage());
                     }
                 });
     }
@@ -400,13 +397,13 @@ public class DataStatisticsHelper {
                 .subscribe(new ApiObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object data) {
-                        LogUtils.e(TAG, "count uv error event id=" + type);
+                        LogUtils.w(TAG, "count uv error event id=" + type);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
-                        LogUtils.e(TAG, "count uv error event id = " + type + " " + t);
+                        LogUtils.w(TAG, "count uv error event id = " + type + " " + t);
                     }
                 });
     }

@@ -25,7 +25,7 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.BusinessWebView;
 
 import java.util.LinkedList;
@@ -204,7 +204,7 @@ public class RewardPointActivity extends BaseComponentActivity {
                         @Override
                         public boolean test(ResultEntity result) throws Exception {
                             if (!result.isSuccess()) {
-                                ToastUtils.showShort(RewardPointActivity.this, result.getMsg(), null);
+                                WeakRefToastUtil.showShort(RewardPointActivity.this, result.getMsg(), null);
                             }
                             return result.isSuccess();
                         }
@@ -235,7 +235,7 @@ public class RewardPointActivity extends BaseComponentActivity {
                                                }
                                            }
 //                                           if (msg != null) {
-//                                               ToastUtils.showShort(RewardPointActivity.this, msg, R.drawable.toast_smile);
+//                                               WeakRefToastUtil.showShort(RewardPointActivity.this, msg, R.drawable.toast_smile);
 //                                           }
                                        }
                                    }

@@ -54,7 +54,7 @@ import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.SPUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.pulltoswipe.PullToRefreshListener;
 import com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout;
 import com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView;
@@ -78,34 +78,22 @@ import zhy.com.highlight.HighLight;
  */
 public class TabAccountFragment extends BaseTabFragment implements TabAccountContract.View {
 
-
     @BindView(R.id.tb_tab_account_header_tool_bar)
     Toolbar mToolBar;
     @BindView(R.id.rv_fg_tab_account_title)
     TextView mTitle;
     @BindView(R.id.srl_tab_account_refresh_root)
     SwipeRefreshLayout swipeRefreshLayout;
-//    //30天待还
-//    @BindView(R.id.tv_last_one_month_wait_pay)
-//    TextView mLastThirtyDayWaitPay;
-//    //30天待还 总笔数
-//    @BindView(R.id.tv_last_one_month_wait_pay_num)
-//    TextView mLastThirtyDayWaitPayNum;
-
     @BindView(R.id.x_load_state_tv_more_view)
     View moreView;
-
     @BindView(R.id.pull_up_to_head_view)
     RelativeLayout mRefreshRoot;
-
     @BindView(R.id.prl_fg_tab_account_list)
     PullToRefreshScrollLayout mPullContainer;
     @BindView(R.id.rv_fg_tab_account_list)
     PulledTabAccountRecyclerView mRecyclerView;
-
     @BindView(R.id.fg_tab_account_line)
     View line;
-
 
     //依附的Activity
     public Activity mActivity;
@@ -174,7 +162,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         return R.layout.xlayout_fg_tab_account;
     }
 
-
     /**
      * 返回fragment
      */
@@ -205,7 +192,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
      */
     @Override
     public void onResume() {
-
         super.onResume();
         presenter.onStart();
 
@@ -213,7 +199,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             @Override
             public void onCheckLeadInResult(boolean success) {
                 if (success) {
-                    ToastUtils.showLeadInResultToast(getContext());
+                    WeakRefToastUtil.showLeadInResultToast(getContext());
                 }
             }
         });
@@ -223,7 +209,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             SPUtils.setValue(mActivity, "showGuideButton1");
         }
     }
-
 
     /**
      * 测量控件高度
@@ -282,7 +267,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 } else {
                     mPullToRefreshListener.REFRESH_RESULT = mPullToRefreshListener.LOAD_SUCCESS;
                     mPullToRefreshListener.onLoadMore(mPullContainer);
-//                    com.beihui.market.util.ToastUtils.showToast(mActivity, "已显示全部账单");
                 }
             }
         });
@@ -295,7 +279,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                 } else {
                     mRecyclerView.setCanPullUp(false);
                 }
-//                mRecyclerView.setCanPullUp(!isShowAll);
             }
         });
 
@@ -310,8 +293,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                     presenter.onRefresh();
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    //无需进入登录页面
-//                    showNoUserLoginBlock();
                 }
             }
         });
@@ -331,7 +312,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
 
                 TextView textViewTitle = (TextView) manager.getChildAt(0).findViewById(R.id.tv_fg_tab_head_title);
                 //TitleBar背景色透明度
-//                mTitle.setBackgroundColor(Color.argb((int) (max * 255), 20, 74, 158));
                 mTitle.setAlpha(max);
                 if (max > 0.2f) {
                     mTitle.setTextColor(Color.argb((int) (max * 255), 255, 255, 255));
@@ -344,17 +324,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
                         textViewTitle.setVisibility(View.VISIBLE);
                     }
                 }
-
-
-//                int firstPosition = manager.findFirstVisibleItemPosition();
-//                if (firstPosition == 0) {
-//                    swipeRefreshLayout.setEnabled(true);
-//                } else {
-//                    swipeRefreshLayout.setEnabled(false);
-//                }
             }
         });
-
         queryNotice();
     }
 
@@ -368,9 +339,7 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     //空事件
     @Override
     public void setPresenter(TabAccountContract.Presenter presenter) {
-        //
     }
-
 
     /**
      * 销毁事件
@@ -400,8 +369,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
     @Override
     public void configViews() {
         //设置状态栏文字为黑色字体
-//        ImmersionBar.with(this).transparentBar().statusBarDarkFont(true).init();
-//        ImmersionBar.with(this).statusBarDarkFont(true).init();
         int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         //设置toolbar的高度为状态栏相同高度
         mToolBar.setPadding(mToolBar.getPaddingLeft(), statusHeight, mToolBar.getPaddingRight(), 0);
@@ -412,7 +379,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         pageNo = 2;
         total = null;
     }
-
 
     /**
      * 加载数据
@@ -451,7 +417,6 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
             infoList.add(analogCard);
 
             bean.list = infoList;
-//            list.add(bean);
             total = null;
             mAdapter.notifyUnPayChanged(list);
             line.setVisibility(View.INVISIBLE);
@@ -555,69 +520,8 @@ public class TabAccountFragment extends BaseTabFragment implements TabAccountCon
         showNoUserLoginBlock();
     }
 
-
-    /**
-     * TODO 高亮暂时隐藏
-     */
     @Override
     public void showGuide() {
-        /*infoHighLight = new HighLight(getActivity())
-                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-                    @Override
-                    public void onLayouted() {
-                        infoHighLight
-                                .autoRemove(false)
-                                .intercept(true)
-                                .enableNext()
-                                .addHighLight(R.id.iv_tab_account_header_add, R.layout.layout_highlight_guide_one, new OnBaseCallback() {
-                                    @Override
-                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.rightMargin = rectF.width() / 2;
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() + DensityUtil.dp2px(mActivity, 5);
-                                    }
-                                }, new CircleLightShape())
-                                .addHighLight(R.id.iv_tab_account_header_bill_loan, R.layout.layout_highlight_confirm, new OnBaseCallback() {
-                                    @Override
-                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                        marginInfo.leftMargin = DensityUtil.dp2px(mActivity, 6);
-                                        marginInfo.bottomMargin = bottomMargin - getResources().getDisplayMetrics().density * 90 - rectF.height() - DensityUtil.dp2px(mActivity, 2);
-                                    }
-                                }, new CircleLightShape())
-                                .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {
-                                    @Override
-                                    public void onRemove() {
-                                        //监听移除回调
-                                    }
-                                })
-                                .setOnShowCallback(new HighLightInterface.OnShowCallback() {
-                                    @Override
-                                    public void onShow(HightLightView hightLightView) {
-                                        //监听显示回调
-                                    }
-                                }).setOnNextCallback(new HighLightInterface.OnNextCallback() {
-                                    @Override
-                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                        if (targetView.getId() == R.id.iv_tab_account_header_add) {
-
-                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_one).setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        infoHighLight.next();
-                                                    }
-                                                });
-                                        } else {
-                                            infoHighLight.getHightLightView().findViewById(R.id.iv_bill_guide_two).setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    infoHighLight.remove();
-                                                }
-                                            });
-                                        }
-                                    }
-                                }).show();
-                    }
-                });*/
     }
 
     @Override

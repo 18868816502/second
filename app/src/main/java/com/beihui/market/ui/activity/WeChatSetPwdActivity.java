@@ -20,7 +20,7 @@ import com.beihui.market.ui.contract.WeChatSetPwdContract;
 import com.beihui.market.ui.presenter.WeChatSetPwdPresenter;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
 import javax.inject.Inject;
@@ -120,7 +120,7 @@ public class WeChatSetPwdActivity extends BaseComponentActivity implements WeCha
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ToastUtils.showShort(WeChatSetPwdActivity.this, msg, R.mipmap.white_success);
+                WeakRefToastUtil.showShort(WeChatSetPwdActivity.this, msg, R.mipmap.white_success);
                 setResult(RESULT_OK);
                 finish();
             }

@@ -43,7 +43,6 @@ public class RoundProgressBar extends View {
         ringPaint.setStyle(Paint.Style.STROKE);
         ringPaint.setColor(Color.parseColor("#f3f3f3"));
 
-
         arcPaint = new Paint();
         arcPaint.setAntiAlias(true);
         arcPaint.setStyle(Paint.Style.STROKE);
@@ -56,7 +55,6 @@ public class RoundProgressBar extends View {
         textPaint.setColor(getResources().getColor(R.color.black_1));
         textPaint.setTextSize(getResources().getDisplayMetrics().density * 20f);
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -89,6 +87,4 @@ public class RoundProgressBar extends View {
         this.progress = progress;
         postInvalidate();
     }
-
-
 }

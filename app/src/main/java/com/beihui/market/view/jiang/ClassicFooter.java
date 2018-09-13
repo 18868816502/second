@@ -21,7 +21,7 @@ import com.scwang.smartrefresh.layout.util.DensityUtil;
  * FileName: ClassicFooter
  * Author: jiang
  * Create on: 2018/6/29 10:23
- * Description: TODO
+ * Description:
  */
 public class ClassicFooter extends ClassicsFooter {
     public static String REFRESH_FOOTER_PULLING = null;//"上拉加载更多";
@@ -130,19 +130,8 @@ public class ClassicFooter extends ClassicsFooter {
         if (ta.hasValue(com.scwang.smartrefresh.layout.R.styleable.ClassicsFooter_srlAccentColor)) {
             setAccentColor(ta.getColor(com.scwang.smartrefresh.layout.R.styleable.ClassicsFooter_srlAccentColor, 0));
         }
-
         ta.recycle();
-
     }
-
-//    @Override
-//    protected ClassicsFooter self() {
-//        return this;
-//    }
-
-    //</editor-fold>
-
-    //<editor-fold desc="RefreshFooter">
 
     @Override
     public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
@@ -163,8 +152,9 @@ public class ClassicFooter extends ClassicsFooter {
     /**
      * ClassicsFooter 在(SpinnerStyle.FixedBehind)时才有主题色
      */
-    @Override@Deprecated
-    public void setPrimaryColors(@ColorInt int ... colors) {
+    @Override
+    @Deprecated
+    public void setPrimaryColors(@ColorInt int... colors) {
         if (mSpinnerStyle == SpinnerStyle.FixedBehind) {
             super.setPrimaryColors(colors);
         }
@@ -216,6 +206,4 @@ public class ClassicFooter extends ClassicsFooter {
             }
         }
     }
-
-
 }

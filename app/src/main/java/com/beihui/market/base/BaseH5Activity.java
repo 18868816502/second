@@ -1,5 +1,6 @@
 package com.beihui.market.base;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,18 +20,12 @@ import butterknife.BindView;
  * Description:
  */
 public abstract class BaseH5Activity extends BaseComponentActivity {
-
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-
-    private AgentWeb agentWeb;
-
     @BindView(R.id.base_h5_relative)
     RelativeLayout relativeLayout;
-
     @BindView(R.id.tool_bar_title)
     public TextView titleTv;
-
     @BindView(R.id.toolbar_sub_title)
     public TextView subTilteTv;
 
@@ -49,13 +44,12 @@ public abstract class BaseH5Activity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         AgentWeb.with(this).setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator(getResources().getColor(R.color.red), 1)
+                .useDefaultIndicator(ContextCompat.getColor(this, R.color.red), 1)
                 .createAgentWeb().ready().go(loadUrl());
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     public abstract String loadUrl();

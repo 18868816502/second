@@ -79,7 +79,6 @@ public class AlphabetIndexBar extends View {
         }
 
         gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
-
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 selectedIndex = calSelectedIndex(e);
@@ -142,7 +141,6 @@ public class AlphabetIndexBar extends View {
             } else {
                 canvas.drawText(ALPHABET[i], rect.centerX(), rect.centerY() + alphabetPaint.getTextSize() / 2.f, alphabetPaint);
             }
-
         }
     }
 

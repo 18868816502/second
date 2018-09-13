@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.beihui.market.base.Constant;
@@ -30,7 +30,6 @@ import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.umeng.analytics.AnalyticsConfig;
 
 import cn.xiaoneng.uiapi.Ntalker;
 
@@ -39,15 +38,8 @@ public class App extends Application {
 
     private static App sInstance;
     private AppComponent appComponent;
-
-    //窗口
-    public static WindowManager mWindowManager;
-    //屏幕宽度（像素）
-    public static int mWidthPixels;
-
-    /**
-     * 渠道
-     */
+    public static WindowManager mWindowManager;//窗口
+    public static int mWidthPixels;//屏幕宽度（像素）
     public static String sChannelId = "unknown";
 
     static {
@@ -56,7 +48,7 @@ public class App extends Application {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
                 layout.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white);//全局设置主题颜色
-                return new MaterialHeader(context).setColorSchemeColors(App.getInstance().getResources().getColor(R.color.c_ff5240));//指定为经典Header，默认是 贝塞尔雷达Header
+                return new MaterialHeader(context).setColorSchemeColors(ContextCompat.getColor(App.getInstance(), R.color.refresh_one));//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
         //设置全局的Footer构建器
@@ -78,46 +70,26 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        /**
-         * 用于启动首页广告
-         */
         SPUtils.setShowMainAddBanner(this, true);
-        /**
-         * 调用Application.registerActivityLifecycleCallbacks()方法，并实现ActivityLifecycleCallbacks接口
-         * Application通过此接口提供了一套回调方法，用于让开发者对Activity的生命周期事件进行集中处理
-         */
-        registerActivityLifecycleCallbacks(ActivityTracker.getInstance());
+        registerActivityLifecycleCallbacks(ActivityTracker.getInstance());//activity生命周期管理
         initComponent();
 
-        Umeng.install(this);
-
-        //初始化魔蝎
-        MoxieSDK.init(this);
+        Umeng.install(this);//初始化友盟
+        MoxieSDK.init(this);//初始化魔蝎
 
         Ntalker.getBaseInstance().initSDK(this, Constant.XN_SITE_ID, Constant.XN_SITE_KEY);
         //如果用户已登录，则登录小能客服
-        if (UserHelper.getInstance(this).getProfile() != null) {
-            Ntalker.getBaseInstance().login(UserHelper.getInstance(this).getProfile().getId(),
+        if (UserHelper.getInstance(this).isLogin()) {
+            Ntalker.getBaseInstance().login(UserHelper.getInstance(this).id(),
                     UserHelper.getInstance(this).getProfile().getUserName());
         }
         Ntalker.getBaseInstance().enableDebug(BuildConfig.DEBUG);
-
-
-        //生成发现页链接
         try {
             sChannelId = App.getInstance().getPackageManager()
                     .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+            //sChannelId = AnalyticsConfig.getChannel(this);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
         }
-
-
-        String channel = AnalyticsConfig.getChannel(this);
-        Log.e("xhb", "友盟渠道名称-----> " + channel);
-
-        /**
-         * app开启事件
-         */
         //pv，uv统计
         String androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         if (UserHelper.getInstance(this).isLogin()) {
@@ -125,7 +97,6 @@ public class App extends Application {
         } else {
             DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
         }
-
         //获取WindowManager
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         //分辨率
@@ -139,9 +110,6 @@ public class App extends Application {
         return sInstance;
     }
 
-    /**
-     * 两个module
-     */
     private void initComponent() {
         appComponent = DaggerAppComponent.builder()
                 .apiModule(new ApiModule())

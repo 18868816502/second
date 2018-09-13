@@ -15,10 +15,10 @@ import okio.Buffer;
 import retrofit2.Converter;
 
 /**
+ * @author chenguoguo
  * @name loanmarket
  * @class name：com.beihui.market
  * @class describe 请求时
- * @author chenguoguo
  * @time
  */
 final class RsaGsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
@@ -42,7 +42,5 @@ final class RsaGsonRequestBodyConverter<T> implements Converter<T, RequestBody> 
         adapter.write(jsonWriter, value);
         jsonWriter.close();
         return RequestBody.create(MEDIA_TYPE, buffer.readByteString());
-
     }
 }
-

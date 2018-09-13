@@ -18,7 +18,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.UsedEmailAdapter;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -80,7 +80,7 @@ public class UsedEmailActivity extends BaseComponentActivity {
                         intent.putExtra("extra_mail_config", config.getMailItemConfig(emailSymbol));
                         startActivityForResult(intent, 1);
                     } else {
-                        ToastUtils.showShort(UsedEmailActivity.this, "正在获取配置", null);
+                        WeakRefToastUtil.showShort(UsedEmailActivity.this, "正在获取配置", null);
                     }
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
@@ -123,7 +123,7 @@ public class UsedEmailActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        adapter.notifyUsedEmailChanged(result.getData());
                                    } else {
-                                       ToastUtils.showShort(UsedEmailActivity.this, result.getMsg(), null);
+                                       WeakRefToastUtil.showShort(UsedEmailActivity.this, result.getMsg(), null);
                                    }
                                }
                            },
@@ -131,7 +131,7 @@ public class UsedEmailActivity extends BaseComponentActivity {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
                                 Log.e("UsedEmailActivity", throwable.toString());
-                                ToastUtils.showShort(UsedEmailActivity.this, "请求出错", null);
+                                WeakRefToastUtil.showShort(UsedEmailActivity.this, "请求出错", null);
                             }
                         });
     }

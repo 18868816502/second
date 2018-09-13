@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.beihui.market.R;
 
 public class BaseActivity extends AppCompatActivity {
-
     protected boolean override = true;
 
     @Override

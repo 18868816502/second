@@ -13,7 +13,7 @@ import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.NutEmailLeadInListener;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.lang.reflect.Field;
@@ -107,7 +107,7 @@ public class EmailLeadingInResultActivity extends BaseComponentActivity {
                         intent.putExtra("extra_mail_config", config.getMailItemConfig(emailSymbol));
                         startActivityForResult(intent, 1);
                     } else {
-                        ToastUtils.showShort(EmailLeadingInResultActivity.this, "正在获取配置", null);
+                        WeakRefToastUtil.showShort(EmailLeadingInResultActivity.this, "正在获取配置", null);
                     }
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();

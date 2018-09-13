@@ -5,53 +5,37 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.beihui.market.BuildConfig;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.NetConstants;
-import com.beihui.market.api.ResultEntity;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.ComWebViewActivity;
 import com.beihui.market.ui.activity.LoanDetailActivity;
 import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.NewsDetailActivity;
-import com.beihui.market.util.RxUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.annotations.NonNull;
 
 public class PushClickedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent paramIntent) {
         try {
             JSONObject obj = new JSONObject(paramIntent.getStringExtra("pending_json"));
-
-
             String userId = null;
             if (UserHelper.getInstance(context).getProfile() != null) {
                 userId = UserHelper.getInstance(context).getProfile().getId();
             }
             Api.getInstance().sendPushClicked(userId, obj.getString("messageId"))
-                    .compose(RxUtil.<ResultEntity>io2main())
-                    .subscribe(new Consumer<ResultEntity>() {
-                                   @Override
-                                   public void accept(ResultEntity resultEntity) throws Exception {
-                                       if (BuildConfig.DEBUG) {
-                                           if (!resultEntity.isSuccess()) {
-                                               //Log.e("PushClickedReceiver", "error " + resultEntity.getMsg());
-                                           }
-                                       }
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    if (BuildConfig.DEBUG) {
-                                        //Log.e("PushClickedReceiver", "thrbowable " + throwable);
-                                    }
-                                }
-                            });
+                    .compose(RxResponse.compatO())
+                    .subscribe(new ApiObserver<Object>() {
+                        @Override
+                        public void onNext(@NonNull Object data) {
+                        }
+                    });
 
             String title = obj.getString("title") != null ? obj.getString("title") : "";
             String json = paramIntent.getStringExtra("pending_json");
@@ -90,7 +74,6 @@ public class PushClickedReceiver extends BroadcastReceiver {
                 intent.putExtra("tankuang", json);
                 intent.putExtra("istk", true);
             }
-
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

@@ -20,7 +20,7 @@ import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
@@ -80,7 +80,7 @@ public class EBankActivity extends BaseComponentActivity {
                                        eBankUrl = result.getData().getUrl();
                                        webView.loadUrl(eBankUrl);
                                    } else {
-                                       ToastUtils.showShort(EBankActivity.this, result.getMsg(), null);
+                                       WeakRefToastUtil.showShort(EBankActivity.this, result.getMsg(), null);
                                    }
                                }
                            },
@@ -88,7 +88,7 @@ public class EBankActivity extends BaseComponentActivity {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
                                 Log.e("EBank", throwable.toString());
-                                ToastUtils.showShort(EBankActivity.this, "请求出错", null);
+                                WeakRefToastUtil.showShort(EBankActivity.this, "请求出错", null);
                             }
                         });
 

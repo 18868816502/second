@@ -20,7 +20,7 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.NutEmailAdapter;
 import com.beihui.market.ui.rvdecoration.CommVerItemDeco;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -83,7 +83,7 @@ public class NutEmailActivity extends BaseComponentActivity {
                         intent.putExtra("extra_mail_config", config.getMailItemConfig(emailSymbol));
                         startActivityForResult(intent, 1);
                     } else {
-                        ToastUtils.showShort(NutEmailActivity.this, "正在获取配置", null);
+                        WeakRefToastUtil.showShort(NutEmailActivity.this, "正在获取配置", null);
                     }
 
                 } catch (NoSuchFieldException e) {
@@ -131,7 +131,7 @@ public class NutEmailActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        adapter.notifyNutEmailChanged(result.getData());
                                    } else {
-                                       ToastUtils.showShort(NutEmailActivity.this, result.getMsg(), null);
+                                       WeakRefToastUtil.showShort(NutEmailActivity.this, result.getMsg(), null);
                                    }
                                }
                            },
@@ -139,7 +139,7 @@ public class NutEmailActivity extends BaseComponentActivity {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
                                 //Log.e("NutEmailActivity", throwable.toString());
-                                ToastUtils.showShort(NutEmailActivity.this, "请求出错", null);
+                                WeakRefToastUtil.showShort(NutEmailActivity.this, "请求出错", null);
                             }
                         });
     }

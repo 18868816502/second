@@ -24,6 +24,7 @@ public class DataCleanManager {
     /**
      * 清除内部缓存
      * /data/data/com.xxx.xxx/cache
+     *
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalCache() {
@@ -34,6 +35,7 @@ public class DataCleanManager {
     public static String getInternalCache() throws Exception {
         return getSize(sContext.getCacheDir());
     }
+
     public static long getInternalCacheSize() throws Exception {
         return getFolderSize(sContext.getCacheDir());
     }
@@ -41,6 +43,7 @@ public class DataCleanManager {
     /**
      * 清除内部文件
      * /data/data/com.xxx.xxx/files
+     *
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalFiles() {
@@ -51,6 +54,7 @@ public class DataCleanManager {
     public static String getInternalFiles() throws Exception {
         return getSize(sContext.getFilesDir());
     }
+
     public static long getInternalFilesSize() throws Exception {
         return getFolderSize(sContext.getFilesDir());
     }
@@ -58,6 +62,7 @@ public class DataCleanManager {
     /**
      * 清除内部数据库
      * /data/data/com.xxx.xxx/databases
+     *
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalDbs() {
@@ -68,6 +73,7 @@ public class DataCleanManager {
     public static String getInternalDbs() throws Exception {
         return getSize(new File(sContext.getFilesDir().getParent() + File.separator + "databases"));
     }
+
     public static long getInternalDbsSize() throws Exception {
         return getFolderSize(new File(sContext.getFilesDir().getParent() + File.separator + "databases"));
     }
@@ -76,6 +82,7 @@ public class DataCleanManager {
     /**
      * 清除内部SP
      * /data/data/com.xxx.xxx/shared_prefs
+     *
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanInternalSP() {
@@ -86,6 +93,7 @@ public class DataCleanManager {
     public static String getInternalSP() throws Exception {
         return getSize(new File(sContext.getFilesDir().getParent() + File.separator + "shared_prefs"));
     }
+
     public static long getInternalSPSize() throws Exception {
         return getFolderSize(new File(sContext.getFilesDir().getParent() + File.separator + "shared_prefs"));
     }
@@ -93,6 +101,7 @@ public class DataCleanManager {
     /**
      * 清除外部缓存
      * /storage/emulated/0/android/data/com.xxx.xxx/cache
+     *
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
     public static boolean cleanExternalCache() {
@@ -103,6 +112,7 @@ public class DataCleanManager {
     public static String getExternalCache() throws Exception {
         return getSize(sContext.getExternalCacheDir());
     }
+
     public static long getExternalCacheSize() throws Exception {
         return getFolderSize(sContext.getExternalCacheDir());
     }
@@ -110,6 +120,7 @@ public class DataCleanManager {
     /**
      * 根据名称清除数据库
      * /data/data/com.xxx.xxx/databases/dbName
+     *
      * @param dbName 数据库名称
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
@@ -119,6 +130,7 @@ public class DataCleanManager {
 
     /**
      * 清除自定义目录下的文件
+     *
      * @param dirPath 目录路径
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
@@ -128,6 +140,7 @@ public class DataCleanManager {
 
     /**
      * 清除自定义目录下的文件
+     *
      * @param dir 目录
      * @return {@code true}: 清除成功<br>{@code false}: 清除失败
      */
@@ -227,27 +240,20 @@ public class DataCleanManager {
      * 格式化单位
      */
     public static String getFormatSize(double size) {
-
         double megaByte = size / 1024 / 1024;
-
         double gigaByte = megaByte / 1024;
-
         if (gigaByte < 1) {
             BigDecimal result2 = new BigDecimal(Double.toString(megaByte));
-            return result2.setScale(2, BigDecimal.ROUND_HALF_UP)
-                    .toPlainString() + "MB";
+            return result2.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "MB";
         }
 
         double teraBytes = gigaByte / 1024;
         if (teraBytes < 1) {
             BigDecimal result3 = new BigDecimal(Double.toString(gigaByte));
-            return result3.setScale(2, BigDecimal.ROUND_HALF_UP)
-                    .toPlainString() + "GB";
+            return result3.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "GB";
         }
 
         BigDecimal result4 = new BigDecimal(teraBytes);
-        return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()
-                + "TB";
+        return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
-
 }

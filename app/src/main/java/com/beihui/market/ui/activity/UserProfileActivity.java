@@ -49,7 +49,7 @@ import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -187,7 +187,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             if (avatar != null) {
                 presenter.updateAvatar(avatar);
             } else {
-                //ToastUtils.showShort(this, "头像解析错误", null);
+                //WeakRefToastUtil.showShort(this, "头像解析错误", null);
                 ToastUtil.toast("头像解析错误");
             }
         }
@@ -358,12 +358,12 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
                 Log.e("xjb", "i __ " + i + "throwble -- " + throwable.getMessage());
-                ToastUtils.showShort(UserProfileActivity.this, "授权失败", null);
+                WeakRefToastUtil.showShort(UserProfileActivity.this, "授权失败", null);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
-                ToastUtils.showShort(UserProfileActivity.this, "授权取消", null);
+                WeakRefToastUtil.showShort(UserProfileActivity.this, "授权取消", null);
             }
         };
         UMShareAPI.get(UserProfileActivity.this).getPlatformInfo((Activity) UserProfileActivity.this, SHARE_MEDIA.WEIXIN, listener);
@@ -443,10 +443,10 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 toCamera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(toCamera, 1);
             } else {
-                ToastUtils.showShort(this, "创建头像文件失败", null);
+                WeakRefToastUtil.showShort(this, "创建头像文件失败", null);
             }
         } else {
-            ToastUtils.showShort(this, "创建头像文件失败", null);
+            WeakRefToastUtil.showShort(this, "创建头像文件失败", null);
         }
     }
 
@@ -561,7 +561,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     @Override
     public void showUpdateNameSuccess(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
     }
 
     @Override
@@ -589,6 +589,6 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     @Override
     public void showHasBeenLatest(String msg) {
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
     }
 }

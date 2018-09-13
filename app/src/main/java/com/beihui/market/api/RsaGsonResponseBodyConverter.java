@@ -13,10 +13,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
 /**
+ * @author chenguoguo
  * @name loanmarket
  * @class name：com.beihui.market
  * @class describe 接收返回的json串
- * @author chenguoguo
  * @time
  */
 public class RsaGsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
@@ -28,14 +28,15 @@ public class RsaGsonResponseBodyConverter<T> implements Converter<ResponseBody, 
         this.adapter = adapter;
     }
 
-    @Override public T convert(ResponseBody value) throws IOException {
+    @Override
+    public T convert(ResponseBody value) throws IOException {
         String s = readerToString(value.charStream());
         if (s.endsWith("\r\n")) {
             s = s.replace("\r\n", "");
         }
         JsonReader jsonReader = gson.newJsonReader(new StringReader(s));
         try {
-                return adapter.read(jsonReader);
+            return adapter.read(jsonReader);
         } finally {
             value.close();
         }

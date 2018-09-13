@@ -24,7 +24,7 @@ import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.ClearEditText;
 
 import javax.inject.Inject;
@@ -147,7 +147,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
     @Override
     public void showErrorMsg(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, null);
+        WeakRefToastUtil.showShort(getContext(), msg, null);
     }
 
     /**
@@ -159,7 +159,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
          * 用户密码登录
          */
         dismissProgress();
-        //com.beihui.market.util.ToastUtils.showToast(getActivity(), msg);
+        //com.beihui.market.util.WeakRefToastUtil.showToast(getActivity(), msg);
         ToastUtil.toast(msg);
 
         new Handler().postDelayed(new Runnable() {
@@ -169,7 +169,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
                 }
             }
         }, 1200);
-//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+//        WeakRefToastUtil.showShort(getContext(), msg, R.mipmap.white_success);
 
 //        Api.getInstance().logout(UserHelper.getInstance(getActivity()).getProfile().getId())
 //                .compose(RxUtil.<ResultEntity>io2main())
@@ -233,7 +233,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     @Override
     public void showVerificationSend(String msg) {
-        ToastUtils.showShort(getContext(), msg, null);
+        WeakRefToastUtil.showShort(getContext(), msg, null);
         fetchText.setEnabled(false);
         countDownTimer = new CountDownTimerUtils(fetchText, verifyCodeEt);
         countDownTimer.start();

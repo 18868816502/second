@@ -1,7 +1,6 @@
 package com.beihui.market.api;
 
 
-import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -9,12 +8,10 @@ import android.util.Log;
 import com.beihui.market.App;
 import com.beihui.market.BuildConfig;
 import com.beihui.market.api.interceptor.AccessHeadInterceptor;
-import com.beihui.market.entity.AccountBill;
 import com.beihui.market.entity.AccountFlowIconBean;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AnalysisChartBean;
-import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.AppUpdate;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
@@ -59,7 +56,6 @@ import com.beihui.market.entity.NoticeAbstract;
 import com.beihui.market.entity.NoticeDetail;
 import com.beihui.market.entity.NutEmail;
 import com.beihui.market.entity.PayAccount;
-import com.beihui.market.entity.PayPlan;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.Profession;
 import com.beihui.market.entity.PurseBalance;
@@ -68,7 +64,6 @@ import com.beihui.market.entity.RewardPoint;
 import com.beihui.market.entity.SysMsg;
 import com.beihui.market.entity.SysMsgAbstract;
 import com.beihui.market.entity.SysMsgDetail;
-import com.beihui.market.entity.TabAccountBean;
 import com.beihui.market.entity.TabAccountNewBean;
 import com.beihui.market.entity.TabImageBean;
 import com.beihui.market.entity.ThirdAuthResult;
@@ -82,7 +77,6 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
-import com.beihui.market.entity.request.XAccountInfo;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -122,14 +116,12 @@ public class Api {
         return sInstance;
     }
 
-    /**
-     * 自定义拦截器 通过拦截器获取日志
-     */
+    /*自定义拦截器 通过拦截器获取日志*/
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            if (BuildConfig.DEBUG)
-                Log.w("OkHttp--->message: ", message);//打印日志
+            if (BuildConfig.API_ENV)
+                Log.i("OkHttp--->message: ", message);//打印日志
         }
     });
 
@@ -161,222 +153,107 @@ public class Api {
         service = retrofit.create(ApiService.class);
     }
 
-    /*************************************************新接口*****************************************/
-
-    /**
-     * 获取网贷记账图标
-     *
-     * @version 4.0.0
-     */
+    /*获取网贷记账图标*/
     public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId) {
         return service.queryLoanAccountIcon(userId);
     }
 
-    /**
-     * 获取网贷记账图标
-     *
-     * @version 4.0.0
-     */
+    /*获取网贷记账图标*/
     public Observable<ResultEntity<List<LoanAccountIconBean>>> queryLoanAccountIcon(String userId, String searchContent) {
         return service.queryLoanAccountIcon(userId, searchContent);
     }
 
-    /**
-     * 创建通用账单
-     *
-     * @version 4.0.0
-     */
+    /*创建通用账单*/
     public Observable<ResultEntity<CreateAccountReturnIDsBean>> createNormalAccount(Map<String, Object> params) {
         return service.createNormalAccount(params);
     }
 
-    /**
-     * 创建通用账单
-     *
-     * @version 4.0.0
-     */
+    /*创建通用账单*/
     public Observable<ResultEntity<CreateAccountReturnIDsBean>> createLoanAccount(Map<String, Object> params) {
         return service.createLoanAccount(params);
     }
 
-    /**
-     * 获取通用记账图标列表
-     *
-     * @version 4.0.0
-     */
+    /*获取通用记账图标列表*/
     public Observable<ResultEntity<List<AccountFlowIconBean>>> queryIconList(String userId, String type) {
         return service.queryIconList("1", userId, type);
     }
 
-    /**
-     * 删除通用记账图标
-     *
-     * @version 4.1.0
-     */
+    /*删除通用记账图标*/
     public Observable<ResultEntity> deleteLoanAccountIcon(String tallyId) {
         return service.deleteLoanAccountIcon(tallyId);
     }
 
-    /**
-     * 获取通用记账图标列表
-     *
-     * @version 4.0.0
-     */
+    /*获取通用记账图标列表*/
     public Observable<ResultEntity<List<AccountFlowIconBean>>> queryCustomIconList() {
         return service.queryCustomIconList("1", "LCustom");
     }
 
-    /**
-     * 保存自定义图标
-     *
-     * @version 4.0.0
-     */
+    /*保存自定义图标*/
     public Observable<ResultEntity> saveCustomIcon(String userId, String iconName, String iconId, String type) {
         return service.saveCustomIcon(userId, iconName, iconId, type);
     }
 
-    /**
-     * 魔蝎银行列表
-     *
-     * @version 4.0.0
-     */
+    /*魔蝎银行列表*/
     public Observable<ResultEntity<List<CreditCardBean>>> queryBankList() {
         return service.queryBankList();
     }
 
-    /**
-     * 魔蝎银行列表
-     *
-     * @version 4.0.0
-     * @type 集合类型 1-待还 2-已还 3-全部
-     */
+    /*魔蝎银行列表*/
     public Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(String userId, int collectType, int pageNo, int pageSize) {
         return service.queryTabAccountList(userId, collectType, pageNo, pageSize);
     }
 
-    /**
-     * 魔蝎银行列表
-     *
-     * @version 4.0.0
-     * @type 集合类型 1-待还 2-已还 3-全部
-     */
+    /*魔蝎银行列表*/
     public Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(String userId, int collectType) {
         return service.queryTabAccountList(userId, collectType);
     }
 
-    /**
-     * 分组贷超产品列表
-     *
-     * @version 4.0.0
-     */
+    /*分组贷超产品列表*/
     public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList() {
         return service.queryGroupProductList(SECOND_PRODUCT);
     }
 
-    /**
-     * 进入贷超产品详情
-     *
-     * @version 4.0.0
-     */
+    /*进入贷超产品详情*/
     public Observable<ResultEntity<String>> queryGroupProductSkip(String userId, String productId) {
         return service.queryGroupProductSkip(userId, productId);
     }
 
-    /**
-     * 绑定手机号
-     *
-     * @version 4.0.0
-     */
+    /*绑定手机号*/
     public Observable<ResultEntity> updateBindPhone(String account, String phone, String verifyCode) {
         return service.updateBindPhone(account, phone, verifyCode, "7");
     }
 
-    /**
-     * 绑定微信号
-     *
-     * @version 4.0.0
-     */
+    /*绑定微信号*/
     public Observable<ResultEntity> bindWXChat(String userId, String unionId) {
         return service.bindWXChat(userId, unionId);
     }
 
-    /**
-     * 解绑微信号
-     *
-     * @version 4.0.0
-     */
+    /*解绑微信号*/
     public Observable<ResultEntity> unBindWXChat(String userId) {
         return service.unBindWXChat(userId);
     }
 
-    /**
-     * @version 4.0.0
-     * 修改网贷备注
-     */
+    /*修改网贷备注*/
     public Observable<ResultEntity> updateLoanDebtBillRemark(String userId, String recordId, String remark) {
         return service.updateLoanDebtBillRemark(userId, recordId, remark);
     }
 
-    /**
-     * @version 4.0.0
-     * 修改通用备注
-     */
+    /*修改通用备注*/
     public Observable<ResultEntity> updateFastDebtBillRemark(String userId, String recordId, String remark) {
         return service.updateFastDebtBillRemark(userId, recordId, remark);
     }
 
-    /**
-     * @version 4.0.0
-     * 修改信用卡备注
-     */
+    /*修改信用卡备注*/
     public Observable<ResultEntity> updateCreditCardBillRemark(String userId, String recordId, String remark) {
         return service.updateCreditCardBillRemark(userId, recordId, remark);
     }
 
-    /*************************************************新接口*****************************************/
-
-
-    /**
-     * 获取账单信息摘要
-     *
-     * @param userId 用户id
-     * @version 3.0.0
-     */
+    /*获取账单信息摘要*/
     public Observable<ResultEntity<DebtAbstract>> queryTabAccountHeaderInfo(String userId, int billType) {
         return service.queryTabAccountHeaderInfo(userId, billType);
     }
 
-    /**
-     * 获取账单信息列表
-     *
-     * @param userId      用户Id
-     * @param billStatus  账单状态 1-待还 2-已还 3-逾期
-     * @param firstScreen 是不是首屏 true:是 false：不是
-     * @param pageSize    一页记录数
-     * @param pageNo      页码
-     * @version 3.0.0
-     */
-    public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, int billStatus, boolean firstScreen, int pageNo, int pageSize) {
-        return service.queryTabAccountListInfo(userId, billStatus, firstScreen, 6, pageNo, pageSize);
-    }
-
-    /**
-     * 获取账单信息列表
-     *
-     * @version 3.0.0
-     */
-    public Observable<ResultEntity<List<XAccountInfo>>> queryTabAccountListInfo(String userId, boolean firstScreen) {
-        return service.queryTabAccountListInfo(userId, firstScreen, 6);
-    }
-
-    /**
-     * 更新还款状态
-     *
-     * @param userId              用户id
-     * @param liabilitiesDetailId 还款项目计划id
-     * @param repayAmount         还款金额 默认全额
-     * @param status              1-待还 2-已还
-     */
+    /*更新还款状态*/
     public Observable<ResultEntity> updateDebtStatus(String userId, String liabilitiesDetailId, double repayAmount, int status) {
         return service.updateDebtStatus(userId, liabilitiesDetailId, repayAmount, status);
     }
@@ -394,125 +271,47 @@ public class Api {
         }
     }
 
-    /**
-     * 获取信用卡账单详情
-     *
-     * @param userId   用户id
-     * @param recordId 信用卡账单id
-     */
+    /*获取信用卡账单详情*/
     public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId, String billId) {
         return service.fetchCreditCardDebtDetail(userId, recordId, billId);
     }
 
-    public Observable<ResultEntity<CreditCardDebtDetail>> fetchCreditCardDebtDetail(String userId, String recordId) {
-        return service.fetchCreditCardDebtDetail(userId, recordId);
-    }
-
-
-    /**
-     * 网贷账单/信用卡备注更新
-     *
-     * @param userId   用户id
-     * @param remark   备注
-     * @param recordId 网贷账单Id/信用卡Id
-     * @param type     类型 1-网贷 2-信用卡
-     */
-    public Observable<ResultEntity> updateLoanOrCreditCardRemark(String userId, String remark, String recordId, int type) {
-        return service.updateLoanOrCreditCardRemark(userId, remark, recordId, type + "");
-    }
-
-    /**
-     * 查询消息数
-     */
+    /*查询消息数*/
     public Observable<ResultEntity<String>> queryMessage(String userId) {
         return service.queryMessage(userId);
     }
 
-    /**
-     * 删除借款
-     *
-     * @param userId   用户id
-     * @param recordId 账单Id
-     */
+    /*删除借款*/
     public Observable<ResultEntity> deleteFastDebt(String userId, String recordId) {
         return service.deleteFastDebt(userId, recordId);
     }
 
-    /**
-     * 删除借款
-     *
-     * @param userId   用户id
-     * @param recordId 账单Id
-     * @param remark   账单名称（UI显示的是备注）
-     */
-    public Observable<ResultEntity> updateFastDebtName(String userId, String recordId, String remark) {
-        return service.updateFastDebtName(userId, recordId, remark);
-    }
-
-    /**
-     * @version 3.1.0
-     * @desc 首页列表
-     */
-    public Observable<ResultEntity<TabAccountBean>> queryTabAccountList(String userId) {
-        return service.queryTabAccountList(userId);
-    }
-
-    /**
-     * @version 3.1.0
-     * @desc 网贷分析
-     */
-    public Observable<ResultEntity<AnalysisOverviewBean>> queryAnalysisOverview(String userId) {
-        return service.queryAnalysisOverview(userId);
-    }
-
-    /**
-     * @version 3.1.0
-     * @desc 网贷分析 柱状图
-     */
+    /* 网贷分析 柱状图*/
     public Observable<ResultEntity<List<AnalysisChartBean>>> queryAnalysisOverviewChart(String userId, int type, String startTime, String endTime) {
         return service.queryAnalysisOverviewChart(userId, type, startTime, endTime);
     }
 
-    /**
-     * @version 3.1.0
-     * @desc 网贷分析 列表数据
-     */
+    /*网贷分析 列表数据*/
     public Observable<ResultEntity<BillLoanAnalysisBean>> queryAnalysisOverviewList(String userId, int type, String time) {
         return service.queryAnalysisOverviewList(userId, type, time);
     }
 
-    /**
-     * 获取最新公告
-     */
+    /*获取最新公告*/
     public Observable<ResultEntity<LastNoticeBean>> getNewNotice() {
         return service.getNewNotice();
     }
 
-    /**
-     * @version 3.2.0
-     * 查询网贷账单的还款记录
-     */
+    /*查询网贷账单的还款记录*/
     public Observable<ResultEntity<List<DebeDetailRecord>>> getDebeDetailRecord(String userId, String billId) {
         return service.getDebeDetailRecord(userId, billId);
     }
 
-    /**
-     * @version 3.2.0
-     * 查询快捷账单的还款记录
-     */
+    /*查询快捷账单的还款记录*/
     public Observable<ResultEntity<List<DebeDetailRecord>>> getFastDetailRecord(String userId, String billId) {
         return service.getFastDetailRecord(userId, billId);
     }
 
-    /****************************************************************************** 分割线 **************************************************************************************/
-
-
-    /**
-     * 密码登录
-     *
-     * @param account 用户账号
-     * @param pwd     用户密码
-     */
+    /*密码登录*/
     public Observable<ResultEntity<UserProfileAbstract>> login(String account, String pwd) {
         return service.login(account, generatePwd(pwd, account), 1);
     }
@@ -525,15 +324,6 @@ public class Api {
      */
     public Observable<ResultEntity<UserProfileAbstract>> loginByCode(String account, String verifyCode) {
         return service.loginByCode(account, "2", verifyCode, 1);
-    }
-
-    /**
-     * 登录
-     *
-     * @param account 用户账号
-     */
-    public Observable<ResultEntity<UserProfileAbstract>> loginNoPwd(String account) {
-        return service.loginNoPwd(account, 1);
     }
 
     /**
@@ -787,15 +577,6 @@ public class Api {
      * @param supernatantType 查询类型
      */
     public Observable<ResultEntity<List<AdBanner>>> querySupernatant(int supernatantType) {
-        String channelId = "unknown";
-        try {
-            channelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        //注销channelID
-//        return service.querySupernatant(RequestConstants.PLATFORM, supernatantType, channelId);
         return service.querySupernatant(RequestConstants.PLATFORM, supernatantType);
     }
 
@@ -1018,12 +799,7 @@ public class Api {
         return service.queryAppUpdate(RequestConstants.PLATFORM + "");
     }
 
-    /**
-     * 提交用户反馈
-     *
-     * @param userId  用户id
-     * @param content 反馈内容
-     */
+    /*提交用户反馈*/
     public Observable<ResultEntity> submitFeedback(String userId, String content, String contactWay, byte[] image, String imageName) {
         String imageBase64 = null;
         if (image != null && image.length > 0) {
@@ -1036,22 +812,12 @@ public class Api {
         }
     }
 
-    /**
-     * 确认记账 快捷记账的api
-     */
+    /*确认记账 快捷记账的api*/
     public Observable<ResultEntity> saveFastDebt(Map<String, Object> params) {
         return service.saveFastDebt(params);
     }
 
-    /**
-     * 更新信用卡账单还款状态
-     *
-     * @param userId   用户id
-     * @param billId   分期账单Id
-     * @param recordId 账单Id
-     * @param status   还款状态，状态 0-删除, 1-待还 2-已还
-     * @param amount   还款金额
-     */
+    /*更新信用卡账单还款状态*/
     public Observable<ResultEntity> updateFastDebtBillStatus(String userId, String billId, String recordId, int status, Double amount) {
         if (amount == null) {
             return service.updateFastDebtBillStatus(userId, billId, recordId, status);
@@ -1061,114 +827,43 @@ public class Api {
     }
 
 
-    /**
-     * 更新信用卡账单还款状态
-     *
-     * @param userId   用户id
-     * @param billId   分期账单Id
-     * @param recordId 账单Id
-     */
+    /*更新信用卡账单还款状态*/
     public Observable<ResultEntity<FastDebtDetail>> queryFastDebtBillDetail(String userId, String billId, String recordId) {
         return service.updateFastDebtBillStatus(userId, billId, recordId);
     }
 
-
-    /*****************************************************记账*******************************************************/
-    /**
-     * 查询记账首页宣传图片
-     */
-    public Observable<ResultEntity<String>> queryPropaganda() {
-        return service.queryPropaganda();
-    }
-
-    /**
-     * 获取账单信息摘要
-     *
-     * @param userId 用户id
-     */
-    public Observable<ResultEntity<DebtAbstract>> fetchDebtAbstractInfo(String userId, int billType) {
-        return service.fetchDebtAbstractInfo(userId, billType);
-    }
-
-
-    /**
-     * 查询全部借款
-     *
-     * @param userId   用户id
-     * @param status   借款状态 1-待还 2-已还 3-全部
-     * @param pageNo   查询开始页数
-     * @param pageSize 查询每页大小
-     */
+    /*查询全部借款*/
     public Observable<ResultEntity<AllDebt>> queryAllDebt(String userId, int status, int pageNo, int pageSize) {
         return service.queryAllDebt(userId, status, pageNo, pageSize);
     }
 
-    /**
-     * 查询记账渠道
-     */
+    /*查询记账渠道*/
     public Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel() {
         return service.queryLoanChannel();
     }
 
-    /**
-     * 查询网贷平台渠道
-     */
-    public Observable<ResultEntity<List<DebtChannel>>> fetchDebtSourceChannel() {
-        return service.fetchDebtSourceChannel(1);
-    }
-
-    /**
-     * 确认记账，保存账单
-     */
-    public Observable<ResultEntity<PayPlan>> saveDebt(Map<String, Object> params) {
-        return service.saveDebt(params);
-    }
-
-    /**
-     * 确认记账，不返回还款计划，直接插入数据
-     */
+    /*确认记账，不返回还款计划，直接插入数据*/
     public Observable<ResultEntity> saveDebtImmediately(Map<String, Object> params) {
         return service.saveDebtImmediately(params);
     }
 
 
-    /**
-     * 获取银行列表
-     */
+    /*获取银行列表*/
     public Observable<ResultEntity<List<CreditCardBank>>> fetchCreditCardBankList() {
         return service.fetchCreditCardBankList();
     }
 
-    /**
-     * 手动添加信用卡账单
-     */
+    /*手动添加信用卡账单*/
     public Observable<ResultEntity> saveCreditCardDebt(String userId, String cardNums, long bankId, String realName, int billDay, int dueDay, double amount) {
         return service.saveCreditCardDebt(userId, cardNums, bankId, realName, billDay, dueDay, amount);
     }
 
-    /**
-     * 更新信用卡账单信息
-     *
-     * @param userId  用户id
-     * @param cardId  信用卡id
-     * @param billDay 账单日
-     * @param dueDay  还款日
-     * @param amount  账单金额
-     */
+    /*更新信用卡账单信息*/
     public Observable<ResultEntity> updateCreditCardDebt(String userId, String cardId, int billDay, int dueDay, double amount) {
         return service.updateCreditCardDebt(userId, cardId, billDay, dueDay, amount);
     }
 
-    /**
-     * 获取网贷账单详情
-     *
-     * @param userId        用户id
-     * @param liabilitiesId 网贷账单id
-     */
-    public Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(String userId, String liabilitiesId) {
-        return service.fetchLoanDebtDetail(userId, liabilitiesId);
-    }
-
+    /*获取网贷账单详情*/
     public Observable<ResultEntity<DebtDetail>> fetchLoanDebtDetail(String userId, String liabilitiesId, String billId) {
         if (billId == null) {
             return service.fetchLoanDebtDetail(userId, liabilitiesId);
@@ -1177,347 +872,171 @@ public class Api {
         }
     }
 
-
-    /**
-     * 获取信用卡详情月份账单
-     *
-     * @param userId   用户id
-     * @param recordId 信用卡账单id
-     * @param pageNo   当前查询页
-     * @param pageSize 当前页大小
-     */
+    /* 获取信用卡详情月份账单*/
     public Observable<ResultEntity<List<CreditCardDebtBill>>> fetchCreditCardDebtBill(String userId, String recordId, int pageNo, int pageSize) {
         return service.fetchCreditCardDebtBill(userId, recordId, pageNo, pageSize);
     }
 
-    /**
-     * 获取信用卡月份账单详情
-     *
-     * @param userId 用户id
-     * @param billId 月份账单id
-     */
+    /*获取信用卡月份账单详情*/
     public Observable<ResultEntity<List<BillDetail>>> fetchCreditCardBillDetail(String userId, String billId) {
         return service.fetchCreditCardBillDetail(userId, billId);
     }
 
-    /**
-     * 更新月份账单金额
-     *
-     * @param userId 用户id
-     * @param billId 月份账单id
-     * @param cardId 信用卡账单id
-     * @param amount 账单金额
-     */
+    /*更新月份账单金额*/
     public Observable<ResultEntity> updateMonthBillAmount(String userId, String billId, String cardId, double amount) {
         return service.updateMonthBillAmount(userId, cardId, billId, amount);
     }
 
-    /**
-     * 更新信用卡账单还款状态
-     *
-     * @param userId 用户id
-     * @param cardId 信用卡id
-     * @param billId 账单id
-     * @param status 还款状态，1-待还，2-已还
-     */
+    /*更新信用卡账单还款状态*/
     public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String cardId, String billId, int status) {
         return service.updateCreditCardDebtBillStatus(userId, billId, status);
     }
 
-    /**
-     * 更新信用卡账单还款状态
-     *
-     * @param userId 用户id
-     * @param billId 账单id
-     * @param status 还款状态，1-待还，2-已还
-     */
+    /*更新信用卡账单还款状态*/
     public Observable<ResultEntity> updateCreditCardBillStatus(String userId, String billId, int status) {
         return service.updateCreditCardDebtBillStatus(userId, billId, status);
     }
 
-    /**
-     * 更新账单提醒状态
-     *
-     * @param userId 用户id
-     * @param day    -1-不提醒，1-提前1天，2-提前2天
-     */
+    /*更新账单提醒状态*/
     public Observable<ResultEntity> updateRemindStatus(String userId, String type, String recordId, int day) {
         return service.updateDebtRemindStatus(userId, type, recordId, day);
     }
 
-    /**
-     * 删除信用卡账单
-     *
-     * @param userId   用户id
-     * @param recordId 账单id
-     */
+    /*删除信用卡账单*/
     public Observable<ResultEntity> deleteCreditCardDebt(String userId, String recordId) {
         return service.deleteCreditCardDebt(userId, recordId, 0);
     }
 
-    /**
-     * 删除借款
-     *
-     * @param userId        用户id
-     * @param liabilitiesId 借款项目id
-     */
+    /*删除借款*/
     public Observable<ResultEntity> deleteDebt(String userId, String liabilitiesId) {
         return service.deleteDebt(userId, liabilitiesId);
     }
 
-    /**
-     * 获取首页账单信息
-     *
-     * @param userId 用户id
-     */
-    public Observable<ResultEntity<List<AccountBill>>> fetchAccountBills(String userId) {
-        return service.fetchAccountBills(userId);
-    }
-
-    /**
-     * 更新账单是否在首页显示
-     *
-     * @param userId   用户id
-     * @param recordId 账单记录id
-     * @param type     账单类型 1-网贷，2-信用卡
-     * @param hide     是否隐藏 0-隐藏，1-不隐藏
-     */
+    /*更新账单是否在首页显示*/
     public Observable<ResultEntity> updateDebtVisibility(String userId, String recordId, int type, int hide) {
         return service.updateDebtVisibility(userId, recordId, type, hide);
     }
 
-    /**
-     * 查询日历模式账单记录月份摘要
-     *
-     * @param userId    用户id
-     * @param beginDate 查询开始日期
-     * @param endDate   查询结束日期
-     */
+    /*查询日历模式账单记录月份摘要*/
     public Observable<ResultEntity<CalendarAbstract>> fetchCalendarAbstract(String userId, String beginDate, String endDate) {
         return service.fetchCalendarAbstract(userId, beginDate, endDate);
     }
 
-    /**
-     * 查询日历模式账单记录月份趋势
-     *
-     * @param userId    用户id
-     * @param beginDate 查询开始日期
-     * @param endDate   查询结束日期
-     */
+    /*查询日历模式账单记录月份趋势*/
     public Observable<ResultEntity<Map<String, Float>>> fetchCalendarTrend(String userId, String beginDate, String endDate) {
         return service.fetchCalendarTrend(userId, beginDate, endDate);
     }
 
-    /**
-     * 查询日历模式账单记录
-     *
-     * @param userId    用户id
-     * @param beginDate 查询开始日期
-     * @param endDate   查询结束日期
-     */
+    /*查询日历模式账单记录*/
     public Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(String userId, String beginDate, String endDate) {
         return service.fetchCalendarDebt(userId, beginDate, endDate);
     }
 
 
-    /**
-     * 查询底部栏图标
-     */
+    /*查询底部栏图*/
     public Observable<ResultEntity<TabImageBean>> queryBottomImage() {
         return service.queryBottomImage("1");
     }
 
-    /**
-     * 查询积分总额
-     *
-     * @param userId 用户id
-     */
+    /*查询积分总额*/
     public Observable<ResultEntity<Integer>> queryTotalRewardPoints(String userId) {
         return service.queryTotalRewardPoints(userId);
     }
 
-    /**
-     * 查询积分任务信息
-     *
-     * @param userId   用户id
-     * @param taskName 任务名称
-     */
+    /*查询积分任务信息*/
     public Observable<ResultEntity<List<RewardPoint>>> queryRewardPoints(String userId, String taskName) {
         return service.queryRewardPoint(userId, taskName);
     }
 
-    /**
-     * 标记积分任务已读
-     *
-     * @param recordId 任务id
-     */
+    /*标记积分任务已读*/
     public Observable<ResultEntity> sendReadPointRead(String recordId) {
         return service.sendRewardPointRead(recordId, 1);
     }
 
-    /**
-     * 添加积分任务
-     *
-     * @param userId 用户id
-     * @param taskId 积分任务id
-     */
+    /*添加积分任务*/
     public Observable<ResultEntity> addRewardPoint(String userId, String taskId) {
         return service.addRewardPoint(userId, taskId);
     }
 
-    /**
-     * 获取网银导入地址
-     *
-     * @param userId 用户id
-     */
+    /*获取网银导入地址*/
     public Observable<ResultEntity<EBank>> fetchEBankUrl(String userId) {
         return service.fetchEBankUrl(userId);
     }
 
-    /**
-     * 获取用户的邮箱列表
-     *
-     * @param userId 用户id
-     */
+    /*获取用户的邮箱列表*/
     public Observable<ResultEntity<List<UsedEmail>>> fetchUsedEmail(String userId) {
         return service.fetchUsedEmail(userId);
     }
 
-    /**
-     * 获取坚果邮箱列表
-     */
+    /*获取坚果邮箱列表*/
     public Observable<ResultEntity<List<NutEmail>>> fetchNutEmail() {
         return service.fetchNutEmail();
     }
 
-    /**
-     * 查询信用卡账单采集结果
-     *
-     * @param userId 用户id
-     * @param email  采集邮箱
-     */
+    /*查询信用卡账单采集结果*/
     public Observable<ResultEntity<Boolean>> pollLeadInResult(String userId, String email) {
         return service.pollLeadInResult(userId, email);
     }
 
-    /*****+******************************************************按钮显示***********************************************+*****+*****/
-    /**
-     * 查询菜单，按钮是否显示
-     *
-     * @param flag 需要确定状态的菜单，按钮
-     */
+    /*查询菜单，按钮是否显示*/
     public Observable<ResultEntity<Boolean>> queryMenuVisible(String flag) {
         return service.queryMenuVisible(flag);
     }
 
-    /*****+******************************************************个推绑定***********************************************+*****+*****/
-
-    /**
-     * 绑定个推用户账号
-     *
-     * @param userId   用户id
-     * @param clientId 本机个推id
-     */
+    /*绑定个推用户账号*/
     public Observable<ResultEntity> bindClientId(String userId, String clientId) {
         return service.bindClientId(userId, clientId);
     }
 
-    /**
-     * 个推消息点击次数统计
-     *
-     * @param userId    用户id
-     * @param messageId 消息id
-     */
+    /*个推消息点击次数统计*/
     public Observable<ResultEntity> sendPushClicked(String userId, String messageId) {
         return service.onPushClicked(userId, messageId);
     }
 
-
-    /*****+******************************************************数据统计***********************************************+*****+*****/
-
-    /**
-     * 点击第三方产品外链
-     *
-     * @param userId 用户Id
-     * @param id     产品id
-     */
+    /*点击第三方产品外链*/
     public Observable<ResultEntity> onProductClicked(String userId, String id) {
         return service.onProductClicked(userId, id);
     }
 
-    /**
-     * 点击广告，包括启动页，弹窗，banner
-     *
-     * @param id     广告id
-     * @param userId 用户id，可为空
-     * @param type   广告类型
-     */
+    /*点击广告，包括启动页，弹窗，banner*/
     public Observable<ResultEntity> onAdClicked(String id, String userId, int type) {
         return service.onAdClicked(id, userId, type);
     }
 
-    /**
-     * 统计站内信点击次数
-     *
-     * @param id 站内信id
-     */
+    /*统计站内信点击次数*/
     public Observable<ResultEntity> onInternalMessageClicked(String id) {
         return service.onInternalMessageClicked(id);
     }
 
-    /**
-     * 数据统计，各类pv/uv
-     *
-     * @param type   事件id
-     * @param userId 用户Id
-     */
+    /*数据统计，各类pv/uv*/
     public Observable<ResultEntity> onCountUv(String type, String userId) {
         return service.onCountUv(type, userId);
     }
 
-    /**
-     * create by: jiang
-     * create on:2018/7/20 11:53
-     * params:
-     * return:
-     * description: 账单汇总
-     */
+    /*账单汇总*/
     public Observable<ResultEntity<BillSummaryBean>> onBillSummary(String id, String pageNo) {
         return service.onBillSummary(id, pageNo);
     }
 
-    /**
-     * create by: jiang
-     * create on:2018/7/23 10:58
-     * params:
-     * return:
-     * description: 消息标记为已读
-     */
+    /*消息标记为已读*/
     public Observable<ResultEntity> onReadAll(String id) {
         return service.onReadAll(id);
     }
 
-    /**
-     * 清空消息
-     */
+    /*清空消息*/
     public Observable<ResultEntity> onDeleteMessageAll(String id) {
         return service.onDeleteMessageAll(id);
     }
 
-    /**
-     * 提醒查询
-     */
+    /*提醒查询*/
     public Observable<ResultEntity<RemindBean>> onRemindInfo(String id) {
         return service.onRemindInfo(id);
     }
 
-    /**
-     * 提醒设置
-     */
+    /* 提醒设置*/
     public Observable<ResultEntity> onRemindSetting(String id, String geTui, String sms, String wechat, String day) {
         return service.onRemindSetting(id, geTui, sms, wechat, day);
     }
-
 
     /*v4.2.0首页数据*/
     public Observable<ResultEntity<HomeData>> home(String userId, int pageNo) {
@@ -1654,29 +1173,17 @@ public class Api {
         return service.uploadImg(userId, phone, imgType, activeName, imageBase64);
     }
 
-    /**
-     * 查询用户个人信息
-     *
-     * @param userId
-     * @return
-     */
+    /*查询用户个人信息*/
     public Observable<ResultEntity<UserInfoBean>> queryUserInfo(String userId) {
         return service.queryUserInfo(userId);
     }
 
-    /**
-     * 查询用户发表的文章
-     *
-     * @param userId   用户id
-     * @param pageNo   页码
-     * @param pageSize 页数
-     * @return
-     */
+    /*查询用户发表的文章*/
     public Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(String userId, int pageNo, int pageSize) {
         return service.queryUserArticleInfo(userId, pageNo, pageSize);
     }
 
-    /*****generate method*****/
+    /*generate method*/
     //加密密码
     private String generatePwd(String pwd, String account) {
         String sha = new String(Hex.encodeHex(DigestUtils.sha512(pwd)));

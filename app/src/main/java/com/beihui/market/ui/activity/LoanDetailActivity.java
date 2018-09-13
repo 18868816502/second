@@ -39,7 +39,7 @@ import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.FastClickUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.WatchableScrollView;
 import com.beihui.market.view.busineesrel.RateView;
 import com.bumptech.glide.Glide;
@@ -305,7 +305,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         //umeng统计
         Statistic.onEvent(Events.CLICK_LOAN_COLLECT);
 
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
         collectView.setActivated(true);
     }
 
@@ -314,7 +314,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         //umeng统计
         Statistic.onEvent(Events.CLICK_LOAN_DELETE_COLLECTION);
 
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
         collectView.setActivated(false);
     }
 
@@ -360,7 +360,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         }
         //注册不成功，并且有提示
         if (!success && msg != null) {
-            ToastUtils.showShort(this, msg, null);
+            WeakRefToastUtil.showShort(this, msg, null);
         }
     }
 

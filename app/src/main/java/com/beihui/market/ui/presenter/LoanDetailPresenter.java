@@ -11,6 +11,8 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.contract.LoanProductDetailContract;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
@@ -284,7 +286,6 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
                     @Override
                     public void onComplete() {
                         view.updateRegisterDialogVisibility(false);
-
                         //刷新详情数据
                         queryDetail(productDetail.getBase().getId());
                     }
@@ -293,53 +294,40 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
 
     private void addCollection(String id) {
-        Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 1)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       //置为已收藏
-                                       productDetail.getBase().setIsCollection(1);
-                                       view.showAddCollectionSuccess("收藏成功");
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(LoanDetailPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
+        api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 1)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        //置为已收藏
+                        productDetail.getBase().setIsCollection(1);
+                        view.showAddCollectionSuccess("收藏成功");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        view.showErrorMsg(generateErrorMsg(t));
+                    }
+                });
     }
 
-
     private void deleteCollection(String id) {
-        Disposable dis = api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 0)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       //置为未收藏
-                                       productDetail.getBase().setIsCollection(0);
-                                       view.showDeleteCollectionSuccess("取消收藏");
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                logError(LoanDetailPresenter.this, throwable);
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
+        api.addOrDeleteCollection(userHelper.getProfile().getId(), id, 0)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        //置为未收藏
+                        productDetail.getBase().setIsCollection(0);
+                        view.showDeleteCollectionSuccess("取消收藏");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        view.showErrorMsg(generateErrorMsg(t));
+                    }
+                });
     }
 }

@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import com.beihui.market.R;
 
 
-public class CircleImageView extends ImageView {
+public class CircleImageView extends android.support.v7.widget.AppCompatImageView {
 
 	private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
@@ -422,5 +422,4 @@ public class CircleImageView extends ImageView {
 
 		mBitmapShader.setLocalMatrix(mShaderMatrix);
 	}
-
 }

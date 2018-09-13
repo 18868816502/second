@@ -30,7 +30,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -190,7 +190,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
                     }
 
                     if (isShow) {
-                        ToastUtils.showShort(getContext(), "请安装微信", null);
+                        WeakRefToastUtil.showShort(getContext(), "请安装微信", null);
                     }
                 } else {
                     wxLogin();
@@ -213,12 +213,12 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                ToastUtils.showShort(getContext(), "授权失败", null);
+                WeakRefToastUtil.showShort(getContext(), "授权失败", null);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
-                ToastUtils.showShort(getContext(), "授权取消", null);
+                WeakRefToastUtil.showShort(getContext(), "授权取消", null);
             }
         };
         UMShareAPI.get(getContext()).getPlatformInfo((Activity) getContext(), SHARE_MEDIA.WEIXIN, listener);

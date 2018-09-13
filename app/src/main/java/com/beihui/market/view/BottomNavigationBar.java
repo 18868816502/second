@@ -9,13 +9,9 @@ import android.widget.LinearLayout;
 
 
 public class BottomNavigationBar extends LinearLayout {
-
     private int mSelectedId = -1;
-
     private OnSelectedChangedListener mListener;
-
     private OnClickListener mInternalClickListener = new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
             int clickedId = v.getId();
@@ -26,21 +22,15 @@ public class BottomNavigationBar extends LinearLayout {
     };
 
     public BottomNavigationBar(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public BottomNavigationBar(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public BottomNavigationBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
         setOrientation(HORIZONTAL);
     }
 

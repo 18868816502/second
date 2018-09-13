@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         style="@style/ToolBarStyle"
@@ -28,13 +27,10 @@
             android:minWidth="@dimen/tool_bar_height"
             android:textColor="@color/colorPrimary"
             android:textSize="13sp" />
-
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/base_h5_relative"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
 </LinearLayout>

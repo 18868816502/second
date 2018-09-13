@@ -47,7 +47,7 @@ import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.FormatNumberUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -537,7 +537,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
                                             }
                                         }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                             } else {
-                                //ToastUtils.showToast(CreditCardDebtDetailActivity.this, "本期账单已还清");
+                                //WeakRefToastUtil.showToast(CreditCardDebtDetailActivity.this, "本期账单已还清");
                                 ToastUtil.toast("本期账单已还清");
                             }
 
@@ -761,7 +761,7 @@ public class CreditCardDebtDetailActivity extends BaseComponentActivity implemen
 
     @Override
     public void showDeleteSuccess() {
-        ToastUtils.showShort(this, "删除成功", null);
+        WeakRefToastUtil.showShort(this, "删除成功", null);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {

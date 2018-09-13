@@ -23,7 +23,7 @@ import com.beihui.market.ui.listeners.EtTextLengthWatcher;
 import com.beihui.market.util.FastClickUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.RxUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.EditTextUtils;
 import com.beihui.market.view.pickerview.TimePickerView;
@@ -244,11 +244,11 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
          * 需要判断到期应还金额
          */
         if (TextUtils.isEmpty(etDebtAmount.getText().toString())) {
-            ToastUtils.showShort(getContext(), "请输入到期还款金额", null);
+            WeakRefToastUtil.showShort(getContext(), "请输入到期还款金额", null);
             return;
         } else {
             if (Double.parseDouble(etDebtAmount.getText().toString()) <= 0D) {
-                ToastUtils.showShort(getContext(), "账单金额必须大于0", null);
+                WeakRefToastUtil.showShort(getContext(), "账单金额必须大于0", null);
                 return;
             }
         }
@@ -275,7 +275,7 @@ public class FastAddDebtOneTimeFragment extends BaseComponentFragment{
                                 activity.finish();
                             }
                         } else {
-                            ToastUtils.showShort(getContext(), resultEntity.getMsg(), null);
+                            WeakRefToastUtil.showShort(getContext(), resultEntity.getMsg(), null);
                         }
                     }
                 }, new Consumer<Throwable>() {

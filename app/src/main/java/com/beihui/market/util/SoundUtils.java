@@ -12,11 +12,8 @@ import com.beihui.market.R;
  * 音效工具类
  */
 public class SoundUtils {
-
     private static SoundUtils sInstance;
-
     private SoundPool soundPool;
-
     private int addSoundId;
     private int tabSoundId;
 

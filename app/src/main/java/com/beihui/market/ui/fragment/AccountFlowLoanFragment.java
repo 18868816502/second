@@ -31,6 +31,8 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.adapter.AccountFlowLoanRvAdapter;
 import com.beihui.market.ui.adapter.AccountFlowLoanSearchAdapter;
@@ -71,6 +73,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -463,7 +466,7 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
                         }
                         String s = etCurrent.getText().toString() + (primaryCode - 48);
                         if (Double.parseDouble(s) > 999999999D) {
-                            //ToastUtils.showToast(activity, "输入的金额太大啦");
+                            //WeakRefToastUtil.showToast(activity, "输入的金额太大啦");
                             ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
@@ -639,51 +642,35 @@ public class AccountFlowLoanFragment extends BaseComponentFragment implements De
         });
     }
 
-    /**
-     * 获取自定义库
-     */
+    /*获取自定义库*/
     private void queryCustomeReporty() {
         Api.getInstance().queryCustomIconList()
-                .compose(RxUtil.<ResultEntity<List<AccountFlowIconBean>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<AccountFlowIconBean>>>() {
-                               @Override
-                               public void accept(ResultEntity<List<AccountFlowIconBean>> result) throws Exception {
-                                   if (result.isSuccess()) {
-                                       if (result.getData().size() > 0) {
-                                           /**
-                                            * 判断是否是编辑账单
-                                            */
-                                           if (debtNormalDetail == null) {
-
-                                               Glide.with(activity).load(result.getData().get(0).logo).transform(new GlideCircleTransform(activity)).into(ivCustomIcon);
-                                               //图标
-                                               map.put("iconId", result.getData().get(0).iconId);
-                                               //图标标识
-                                               map.put("channelId", result.getData().get(0).tallyId);
-                                               map.put("tallyType", "2");
-
-                                               if (!TextUtils.isEmpty(result.getData().get(0).remark)) {
-                                                   remarks = result.getData().get(0).remark.split(",");
-                                                   map.put("remark", result.getData().get(0).remark);
-                                               }
-                                           }
-
-                                           if (customReperty.size() > 0) {
-                                               customReperty.clear();
-                                           }
-                                           customReperty.addAll(result.getData());
-                                       }
-                                   } else {
-                                       Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                //Log.e("exception_custom", throwable.getMessage());
+                .compose(RxResponse.<List<AccountFlowIconBean>>compatT())
+                .subscribe(new ApiObserver<List<AccountFlowIconBean>>() {
+                    @Override
+                    public void onNext(@NonNull List<AccountFlowIconBean> data) {
+                        if (data.size() > 0) {
+                            /*判断是否是编辑账单*/
+                            if (debtNormalDetail == null) {
+                                Glide.with(activity).load(data.get(0).logo).transform(new GlideCircleTransform(activity)).into(ivCustomIcon);
+                                //图标
+                                map.put("iconId", data.get(0).iconId);
+                                //图标标识
+                                map.put("channelId", data.get(0).tallyId);
+                                map.put("tallyType", "2");
+                                if (!TextUtils.isEmpty(data.get(0).remark)) {
+                                    remarks = data.get(0).remark.split(",");
+                                    map.put("remark", data.get(0).remark);
+                                }
                             }
-                        });
+
+                            if (customReperty.size() > 0) {
+                                customReperty.clear();
+                            }
+                            customReperty.addAll(data);
+                        }
+                    }
+                });
     }
 
     private void showCustomeReporty() {

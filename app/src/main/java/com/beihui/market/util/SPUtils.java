@@ -130,7 +130,7 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(value, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static String getValue(Context context, String key) {
@@ -142,14 +142,14 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void setShowMainAddBanner(Context context, boolean isShow) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("showMainAdBanner", isShow);
-        editor.commit();
+        editor.apply();
     }
 
     public static boolean getShowMainAddBanner(Context context) {
@@ -166,6 +166,6 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("loanNumVisible", visible);
-        editor.commit();
+        editor.apply();
     }
 }

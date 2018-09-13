@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Environment;
 
 public class FileProviderHelper {
-
     public static String getFileProvider(Context context) {
         return context.getPackageName() + ".fileprovider";
     }

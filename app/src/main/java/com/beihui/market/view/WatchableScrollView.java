@@ -24,9 +24,7 @@ public class WatchableScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        if (onScrollListener != null) {
-            onScrollListener.onScrolled(t);
-        }
+        if (onScrollListener != null) onScrollListener.onScrolled(t);
     }
 
     public void setOnScrollListener(OnScrollListener listener) {
@@ -36,5 +34,4 @@ public class WatchableScrollView extends ScrollView {
     public interface OnScrollListener {
         void onScrolled(int dy);
     }
-
 }

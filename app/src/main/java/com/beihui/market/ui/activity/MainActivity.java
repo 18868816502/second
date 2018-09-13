@@ -451,7 +451,7 @@ public class MainActivity extends BaseComponentActivity {
             default:
                 break;
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     private long exitTime = 0;

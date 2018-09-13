@@ -4,10 +4,6 @@ import android.text.TextUtils;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
-/**
- * Created by admin on 2018/5/23.
- */
-
 public class OnGlobalLayoutListenerByEllipSize implements ViewTreeObserver.OnGlobalLayoutListener {
     private TextView mTextView;
     private int mMaxLines;  //最大行数

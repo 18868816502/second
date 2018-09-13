@@ -14,11 +14,9 @@ import android.view.ViewGroup;
  * @time 2018/9/15 14:20
  */
 public abstract class BaseDialog extends DialogFragment {
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getViewLayout(),container,false);
+        View view = inflater.inflate(getViewLayout(), container, false);
         findView(view);
         return view;
     }
@@ -26,5 +24,4 @@ public abstract class BaseDialog extends DialogFragment {
     public abstract int getViewLayout();
 
     public abstract void findView(View view);
-
 }

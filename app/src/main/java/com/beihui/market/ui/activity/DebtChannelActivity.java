@@ -154,11 +154,11 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
                     fragment.setPresenter(presenter);
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.debt_channel_search_container, fragment, fragment.toString())
-                            .commit();
+                            .commitAllowingStateLoss();
                 } else {
                     getSupportFragmentManager().beginTransaction()
                             .attach(fragment)
-                            .commit();
+                            .commitAllowingStateLoss();
                 }
             }
         });
@@ -254,7 +254,7 @@ public class DebtChannelActivity extends BaseComponentActivity implements DebtCh
             getSupportFragmentManager()
                     .beginTransaction()
                     .detach(fragment)
-                    .commit();
+                    .commitAllowingStateLoss();
         }
     }
 }

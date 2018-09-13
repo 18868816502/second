@@ -30,7 +30,7 @@ public class EmailLoginActivity extends BaseComponentActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_container, NutWebViewFragment.a(getIntent().getExtras()))
-                .commit();
+                .commitAllowingStateLoss();
 
         SlidePanelHelper.attach(this);
     }

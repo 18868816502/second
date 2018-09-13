@@ -332,7 +332,7 @@ public class DebtNewPresenter extends BaseRxPresenter implements DebtNewContract
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(throwable);
+                                LogUtils.w(throwable);
 
                             }
                         });

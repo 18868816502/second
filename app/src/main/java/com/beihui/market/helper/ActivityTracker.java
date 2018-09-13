@@ -8,11 +8,8 @@ import android.os.Bundle;
 import java.util.LinkedList;
 
 public class ActivityTracker implements Application.ActivityLifecycleCallbacks {
-
     private static ActivityTracker sInstance;
-
     private LinkedList<Activity> activityLink;
-
     private ActivityTracker() {
     }
 

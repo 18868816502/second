@@ -14,15 +14,13 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.dialog.CommNoneAndroidLoading;
 import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseComponentFragment extends Fragment {
-
     private Unbinder unbinder;
-
     private CommNoneAndroidLoading loading;
 
     @Override
@@ -111,6 +109,6 @@ public abstract class BaseComponentFragment extends Fragment {
      */
     public void showErrorMsg(String msg) {
         dismissProgress();
-        ToastUtils.showShort(getContext(), msg, null);
+        WeakRefToastUtil.showShort(getContext(), msg, null);
     }
 }

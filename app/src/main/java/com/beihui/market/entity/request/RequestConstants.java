@@ -2,7 +2,6 @@ package com.beihui.market.entity.request;
 
 
 public class RequestConstants {
-
     /**
      * Android平台
      */

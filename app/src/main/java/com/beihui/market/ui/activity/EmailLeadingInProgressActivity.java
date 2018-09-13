@@ -61,12 +61,10 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity implem
 
     @Override
     public void initDatas() {
-
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @OnClick({R.id.leave, R.id.help_feedback})
@@ -94,7 +92,6 @@ public class EmailLeadingInProgressActivity extends BaseComponentActivity implem
         intent.putExtra("email_symbol", getIntent().getStringExtra("email_symbol"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-
         finish();
     }
 }

@@ -1,9 +1,10 @@
-package com.beihui.market.util.viewutils;
+package com.beihui.market.util;
 
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,33 +16,28 @@ import com.beihui.market.R;
 
 import java.lang.ref.WeakReference;
 
-public class ToastUtils {
-
+public class WeakRefToastUtil {
     private static WeakReference<Toast> toast;
     private static WeakReference<Toast> leadToast;
 
     public static void showShort(Context context, String msg, @DrawableRes int drawableRes) {
-        Drawable drawable = context.getResources().getDrawable(drawableRes);
+        Drawable drawable = ContextCompat.getDrawable(context, drawableRes);
         showShort(context, msg, drawable);
     }
 
     public static void showShort(Context context, String msg, Drawable drawable) {
         cancel();
         toast = new WeakReference<>(createToast(context, msg, drawable));
-        if (toast.get() != null) {
-            toast.get().show();
-        }
+        if (toast.get() != null) toast.get().show();
     }
 
     public static void cancel() {
-        if (toast != null && toast.get() != null) {
+        if (toast != null && toast.get() != null)
             toast.get().cancel();
-        }
     }
 
     private static Toast createToast(Context context, String msg, Drawable drawable) {
-        if (context == null)
-            return null;
+        if (context == null) return null;
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.CENTER, 0, 0);
         View view = LayoutInflater.from(context).inflate(R.layout.layout_toast_as_alert, null);
@@ -62,8 +58,7 @@ public class ToastUtils {
     }
 
     public static void showLeadInResultToast(Context context) {
-        if (context == null)
-            return;
+        if (context == null) return;
         Toast toast = new Toast(context);
         toast.setGravity(Gravity.BOTTOM, 0, (int) (context.getResources().getDisplayMetrics().density * 60));
         View view = LayoutInflater.from(context).inflate(R.layout.layout_toast_lead_in_result, null);

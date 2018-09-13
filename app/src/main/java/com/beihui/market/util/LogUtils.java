@@ -37,9 +37,7 @@ public class LogUtils {
         LOG_FILE_NAME = "Log";
     }
 
-    /****************************
-     * Warn
-     *********************************/
+    /*Warn*/
     public static void w(Object msg) {
         w(LOG_TAG, msg);
     }
@@ -52,9 +50,7 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'w');
     }
 
-    /***************************
-     * Error
-     ********************************/
+    /*Error*/
     public static void e(Object msg) {
         e(LOG_TAG, msg);
     }
@@ -67,9 +63,7 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'e');
     }
 
-    /***************************
-     * Debug
-     ********************************/
+    /*Debug*/
     public static void d(Object msg) {
         d(LOG_TAG, msg);
     }
@@ -82,9 +76,7 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'd');
     }
 
-    /****************************
-     * Info
-     *********************************/
+    /*Info*/
     public static void i(Object msg) {
         i(LOG_TAG, msg);
     }
@@ -97,9 +89,7 @@ public class LogUtils {
         log(tag, msg.toString(), tr, 'i');
     }
 
-    /**************************
-     * Verbose
-     ********************************/
+    /*Verbose*/
     public static void v(Object msg) {
         v(LOG_TAG, msg);
     }
@@ -139,22 +129,20 @@ public class LogUtils {
 
     private static String getFunctionName() {
         StackTraceElement[] sts = Thread.currentThread().getStackTrace();
-        if (sts == null) {
-            return null;
-        }
+        if (sts == null) return null;
         StringBuilder sb = new StringBuilder();
+        sb.append("[")
+                .append(Thread.currentThread().getName())
+                .append("(")
+                .append(Thread.currentThread().getId())
+                .append("): ");
         for (StackTraceElement st : sts) {
-            sb.append("[")
-                    .append(Thread.currentThread().getName())
-                    .append("(")
-                    .append(Thread.currentThread().getId())
-                    .append("): ")
-                    .append(st.getFileName())
+            sb.append(st.getFileName())
                     .append(":")
                     .append(st.getLineNumber())
-                    .append("]")
-                    .append("\n");
+                    .append("\t");
         }
+        sb.append("]");
         return sb.toString();
     }
 
@@ -164,19 +152,14 @@ public class LogUtils {
         return message;
     }
 
-    /**
-     * 打开日志文件并写入日志
-     *
-     * @return
-     **/
+    /*打开日志文件并写入日志*/
     private synchronized static void log2File(String mylogtype, String tag, String text) {
         Date nowtime = new Date();
         String date = FILE_SUFFIX.format(nowtime);
         String dateLogContent = LOG_FORMAT.format(nowtime) + ":" + mylogtype + ":" + tag + ":" + text; // 日志输出格式
         File destDir = new File(LOG_FILE_PATH);
-        if (!destDir.exists()) {
-            destDir.mkdirs();
-        }
+        if (!destDir.exists()) destDir.mkdirs();
+
         File file = new File(LOG_FILE_PATH, LOG_FILE_NAME + date);
         try {
             FileWriter filerWriter = new FileWriter(file, true);
@@ -186,13 +169,10 @@ public class LogUtils {
             bufWriter.close();
             filerWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    /**
-     * 删除指定的日志文件
-     */
+    /*删除指定的日志文件*/
     public static void delFile() {// 删除日志文件
         String needDelFiel = FILE_SUFFIX.format(getDateBefore());
         File file = new File(LOG_FILE_PATH, needDelFiel + LOG_FILE_NAME);
@@ -201,11 +181,7 @@ public class LogUtils {
         }
     }
 
-    /**
-     * 得到LOG_SAVE_DAYS天前的日期
-     *
-     * @return
-     */
+    /*得到LOG_SAVE_DAYS天前的日期*/
     private static Date getDateBefore() {
         Date nowtime = new Date();
         Calendar now = Calendar.getInstance();

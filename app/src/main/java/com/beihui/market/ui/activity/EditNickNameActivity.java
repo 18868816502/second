@@ -20,7 +20,7 @@ import com.beihui.market.ui.contract.EditUserNameContract;
 import com.beihui.market.ui.presenter.EditUserNamePresenter;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.beihui.market.view.EditTextUtils;
 import com.gyf.barlibrary.ImmersionBar;
@@ -150,7 +150,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
 
 
                 if (bytes.length > 16) {
-                    //com.beihui.market.util.ToastUtils.showToast(EditNickNameActivity.this, "支持输入1~16个字符");
+                    //com.beihui.market.util.WeakRefToastUtil.showToast(EditNickNameActivity.this, "支持输入1~16个字符");
                     ToastUtil.toast("支持输入1~16个字符");
                 }
 
@@ -195,7 +195,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     @Override
     public void showErrorMsg(String msg) {
         dismissProgress();
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
     }
 
     @Override
@@ -207,7 +207,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     @Override
     public void showUpdateNameSuccess(String msg, String nickName) {
         dismissProgress();
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
         Intent intent = new Intent();
         intent.putExtra("updateNickName", nickName);
         setResult(RESULT_OK_EDIT_NICK_NAME_ACTIVITY, intent);

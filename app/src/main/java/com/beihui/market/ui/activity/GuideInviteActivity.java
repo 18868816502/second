@@ -11,8 +11,6 @@ import com.beihui.market.base.BaseH5Activity;
  * Description:
  */
 public class GuideInviteActivity extends BaseH5Activity {
-
-
     @Override
     public String loadUrl() {
         return NetConstants.guideInvite();

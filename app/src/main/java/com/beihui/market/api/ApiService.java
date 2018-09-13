@@ -717,7 +717,6 @@ public interface ApiService {
     @POST(BASE_PATH + "/clientUser/editUserCollection")
     Observable<ResultEntity> addOrDeleteCollection(@Field("userId") String userId, @Field("productId") String productId, @Field("status") int status);
 
-
     /**
      * 查询收藏的产品
      */
@@ -1104,9 +1103,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/remind")
     Observable<ResultEntity> onRemindSetting(@Field("userId") String userId, @Field("geTui") String geTui, @Field("sms") String sms, @Field("wechat") String weChat, @Field("day") String day);
-
-
-    /**********************************************************************************************************/
 
     /*v4.2.0首页数据*/
     @FormUrlEncoded

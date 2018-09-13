@@ -221,8 +221,6 @@
         <activity
             android:name=".ui.activity.AboutKaolaActivity"
             android:screenOrientation="portrait" />
-
-        <!-- 4.2.0添加账单 -->
         <!-- 4.2.0贷款账单 -->
         <activity
             android:name=".tang.activity.LoanBillActivity"

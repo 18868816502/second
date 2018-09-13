@@ -22,7 +22,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CountDownTimerUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -147,7 +147,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
 
     @Override
     public void showVerificationSend(String msg) {
-        ToastUtils.showShort(getContext(), msg, null);
+        WeakRefToastUtil.showShort(getContext(), msg, null);
         fetchText.setEnabled(false);
         countDownTimer = new CountDownTimerUtils(fetchText, phoneNumberEt);
         countDownTimer.start();
@@ -155,7 +155,7 @@ public class UserRegisterVerifyCodeFragment extends BaseComponentFragment implem
 
     @Override
     public void showErrorMsg(String msg) {
-        ToastUtils.showShort(getContext(), msg, null);
+        WeakRefToastUtil.showShort(getContext(), msg, null);
     }
 
     @Override

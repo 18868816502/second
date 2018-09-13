@@ -18,7 +18,7 @@ import com.beihui.market.util.DensityUtil;
 
 /**
  * @author wubo on 2018/6/5 10:51
- * 类说明：选项栏
+ *         类说明：选项栏
  */
 public class RelativeLayoutBar extends RelativeLayout {
     /**
@@ -26,10 +26,7 @@ public class RelativeLayoutBar extends RelativeLayout {
      * rightImage 右边图片
      */
     private ImageView leftImage, rightImage;
-
-
     private Context context;
-
     /**
      * leftTextView 左边第一个文字
      * rightTextView1 右边第二个文字

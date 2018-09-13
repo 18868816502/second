@@ -6,7 +6,6 @@ package com.beihui.market.event;
  */
 
 public class TabNewsWebViewFragmentTitleEvent {
-
     public String title;
 
     public TabNewsWebViewFragmentTitleEvent(String title) {

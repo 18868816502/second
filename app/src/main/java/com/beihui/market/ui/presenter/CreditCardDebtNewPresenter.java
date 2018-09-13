@@ -227,7 +227,7 @@ public class CreditCardDebtNewPresenter extends BaseRxPresenter implements Credi
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(throwable);
+                                LogUtils.w(throwable);
                             }
                         });
         addDisposable(dis);

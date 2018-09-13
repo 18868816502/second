@@ -31,7 +31,7 @@ public class CollectionActivity extends BaseComponentActivity {
         ImmersionBar.with(this).titleBar(toolbar).init();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_container, new PageCollectionProductFragment())
-                .commit();
+                .commitAllowingStateLoss();
 
         SlidePanelHelper.attach(this);
     }

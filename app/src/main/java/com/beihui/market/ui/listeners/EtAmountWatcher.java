@@ -5,11 +5,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 /**
- * @author xhb
- * 应还金额监听器
+ * @author xhb 应还金额监听器
  */
 public class EtAmountWatcher implements TextWatcher {
 
@@ -21,7 +20,6 @@ public class EtAmountWatcher implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
@@ -36,7 +34,7 @@ public class EtAmountWatcher implements TextWatcher {
                     }
                 }
                 if (amount > 10000000) {
-                    ToastUtils.showShort(editText.getContext(), "金额不能超过1000万", null);
+                    WeakRefToastUtil.showShort(editText.getContext(), "金额不能超过1000万", null);
                     editText.getEditableText().delete(editText.length() - 1, editText.length());
                 }
             } catch (NumberFormatException e) {
@@ -47,6 +45,5 @@ public class EtAmountWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 }

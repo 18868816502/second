@@ -240,7 +240,7 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(throwable);
+                                LogUtils.w(throwable);
 
                             }
                         });

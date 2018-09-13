@@ -5,9 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class AutoTextView extends TextView {
+public class AutoTextView extends android.support.v7.widget.AppCompatTextView {
 
     /**
      * 字幕滚动的速度 快，普通，慢

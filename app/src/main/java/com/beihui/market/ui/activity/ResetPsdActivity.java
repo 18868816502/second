@@ -55,7 +55,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.content_container, new RequireVerifyCodeFragment(), RequireVerifyCodeFragment.class.getSimpleName())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else {
             Fragment setPsd = new SetPsdFragment();
             FragmentTransaction ft = getSupportFragmentManager()
@@ -64,7 +64,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
             Bundle bundle = new Bundle();
             bundle.putString("requestPhone", UserHelper.getInstance(this).getProfile().getAccount());
             setPsd.setArguments(bundle);
-            ft.commit();
+            ft.commitAllowingStateLoss();
         }
 
         SlidePanelHelper.attach(this);
@@ -104,7 +104,7 @@ public class ResetPsdActivity extends BaseComponentActivity {
         bundle.putString("requestPhone", event.requestPhone);
         setPsd.setArguments(bundle);
         ft.addToBackStack(setPsdTag);
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
 

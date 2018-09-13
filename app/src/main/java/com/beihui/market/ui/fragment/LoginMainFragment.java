@@ -27,7 +27,7 @@ import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LegalInputUtils;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.ClearEditText;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -201,7 +201,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
                         }
                     }
                     if (isShow) {
-                        ToastUtils.showShort(getContext(), "请安装微信", null);
+                        WeakRefToastUtil.showShort(getContext(), "请安装微信", null);
                     }
                 } else {
                     wxLogin();
@@ -225,12 +225,12 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
                 //throwable.printStackTrace();
-                ToastUtils.showShort(getContext(), "授权失败", null);
+                WeakRefToastUtil.showShort(getContext(), "授权失败", null);
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
-                ToastUtils.showShort(getContext(), "授权取消", null);
+                WeakRefToastUtil.showShort(getContext(), "授权取消", null);
             }
         };
         UMShareAPI.get(getContext()).getPlatformInfo((Activity) getContext(), SHARE_MEDIA.WEIXIN, listener);
@@ -245,7 +245,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void showLoginSuccess(String msg) {
         dismissProgress();
-//        ToastUtils.showShort(getContext(), msg, R.mipmap.white_success);
+//        WeakRefToastUtil.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件,更新UI
         EventBus.getDefault().post("1");
         EventBus.getDefault().post(new UserLoginEvent());

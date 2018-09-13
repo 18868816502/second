@@ -18,7 +18,7 @@ import android.widget.EditText;
 import com.beihui.market.R;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 public class EditPayPlanDialog extends DialogFragment {
 
@@ -55,7 +55,7 @@ public class EditPayPlanDialog extends DialogFragment {
                 try {
                     double amount = Double.parseDouble(payPlanAmount.getText().toString());
                     if (amount >= 10000000) {
-                        ToastUtils.showShort(getContext(), "金额不能超过1000万", null);
+                        WeakRefToastUtil.showShort(getContext(), "金额不能超过1000万", null);
                         payPlanAmount.getEditableText().delete(payPlanAmount.length() - 1, payPlanAmount.length());
                     }
                 } catch (NumberFormatException e) {
@@ -97,7 +97,7 @@ public class EditPayPlanDialog extends DialogFragment {
                             }
                         }, 100);
                     } else {
-                        ToastUtils.showShort(getContext(), "请输入金额", null);
+                        WeakRefToastUtil.showShort(getContext(), "请输入金额", null);
                     }
                 }
             }

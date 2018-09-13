@@ -21,7 +21,7 @@ import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.SlidePanelHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.BusinessWebView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -193,7 +193,7 @@ public class WebViewActivity extends BaseComponentActivity {
 
             } catch (Exception e) {
                 //若无法正常跳转，在此进行错误处理
-                ToastUtils.showShort(WebViewActivity.this, "无法跳转到微信，请检查您是否安装了微信！", null);
+                WeakRefToastUtil.showShort(WebViewActivity.this, "无法跳转到微信，请检查您是否安装了微信！", null);
             }
         }
 

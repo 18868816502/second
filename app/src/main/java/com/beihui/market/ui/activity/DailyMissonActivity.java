@@ -34,7 +34,7 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.LogUtils;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
@@ -136,7 +136,7 @@ public class DailyMissonActivity extends BaseComponentActivity {
                             }
                             uploadImg(baos.toByteArray(), imgType, activeName);
                         } else {
-                            ToastUtils.showShort(DailyMissonActivity.this, "图片解析错误", null);
+                            WeakRefToastUtil.showShort(DailyMissonActivity.this, "图片解析错误", null);
                         }
                     }
                 }
@@ -171,7 +171,7 @@ public class DailyMissonActivity extends BaseComponentActivity {
                             }
                             uploadImg(baos.toByteArray(), imgType, activeName);
                         } else {
-                            ToastUtils.showShort(DailyMissonActivity.this, "图片解析错误", null);
+                            WeakRefToastUtil.showShort(DailyMissonActivity.this, "图片解析错误", null);
                         }
                     }
                 }

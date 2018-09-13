@@ -17,7 +17,7 @@ import android.widget.EditText;
 import com.beihui.market.R;
 import com.beihui.market.ui.listeners.EtAmountWatcher;
 import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 
 /**
  * @author xhb
@@ -64,11 +64,11 @@ public class BillEditAmountDialog extends DialogFragment {
                     final String amount = billAmount.getText().toString();
 
                     if (TextUtils.isEmpty(amount)) {
-                        ToastUtils.showShort(getContext(), "请输入金额", null);
+                        WeakRefToastUtil.showShort(getContext(), "请输入金额", null);
                     }else if (".".equals(amount)) {
-                        ToastUtils.showShort(getContext(), "请输入正确金额", null);
+                        WeakRefToastUtil.showShort(getContext(), "请输入正确金额", null);
                     } else if (Double.parseDouble(amount) <= 0D) {
-                        ToastUtils.showShort(getContext(), "金额必须大于零", null);
+                        WeakRefToastUtil.showShort(getContext(), "金额必须大于零", null);
                     }else if (amount.length() > 0) {
                         InputMethodUtil.closeSoftKeyboard(getContext(), billAmount);
                         billAmount.postDelayed(new Runnable() {
@@ -81,7 +81,7 @@ public class BillEditAmountDialog extends DialogFragment {
                             }
                         }, 100);
                     } else {
-                        ToastUtils.showShort(getContext(), "请输入金额", null);
+                        WeakRefToastUtil.showShort(getContext(), "请输入金额", null);
                     }
                 }
             }

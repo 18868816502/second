@@ -26,7 +26,7 @@ import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.ui.presenter.SettingPresenter;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.viewutils.ToastUtils;
+import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.RelativeLayoutBar;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -254,7 +254,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
 
     @Override
     public void showHasBeenLatest(String msg) {
-        ToastUtils.showShort(this, msg, null);
+        WeakRefToastUtil.showShort(this, msg, null);
     }
 }
 

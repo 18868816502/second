@@ -28,6 +28,8 @@ import com.beihui.market.event.AccountFlowTypeActivityEvent;
 import com.beihui.market.helper.KeyBoardHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.AccountFlowActivity;
 import com.beihui.market.ui.adapter.AccountFlowAdapter;
 import com.beihui.market.ui.dialog.AccountFlowRemarkDialog;
@@ -61,6 +63,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import zhy.com.highlight.HighLight;
 import zhy.com.highlight.interfaces.HighLightInterface;
@@ -400,7 +403,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                             }
                         }
                         if (Double.parseDouble(temp.toString()+(primaryCode - 48)) > 999999999D) {
-                            //ToastUtils.showToast(activity, "输入的金额太大啦");
+                            //WeakRefToastUtil.showToast(activity, "输入的金额太大啦");
                             ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
@@ -427,7 +430,7 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                         }
                         String s = etCurrent.getText().toString() + (primaryCode - 48);
                         if (Double.parseDouble(s) > 999999999D) {
-                            //ToastUtils.showToast(activity, "输入的金额太大啦");
+                            //WeakRefToastUtil.showToast(activity, "输入的金额太大啦");
                             ToastUtil.toast("输入的金额太大啦");
                             return true;
                         }
@@ -676,83 +679,73 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         /**
          * 请求通用类型列表
          */
-        Api.getInstance().queryIconList(UserHelper.getInstance(activity).getProfile().getId(), "LCommon").compose(RxUtil.<ResultEntity<List<AccountFlowIconBean>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<AccountFlowIconBean>>>() {
-                               @Override
-                               public void accept(ResultEntity<List<AccountFlowIconBean>> result)  {
-                                   if (result.isSuccess()) {
-                                       if (list.size() > 0) {
-                                           list.clear();
-                                       }
-                                       list.addAll(result.getData());
-                                       if (mAdapter != null) {
-                                           mAdapter.notifyDebtChannelChanged(list);
-                                       }
+        Api.getInstance().queryIconList(UserHelper.getInstance(activity).getProfile().getId(), "LCommon")
+                .compose(RxResponse.<List<AccountFlowIconBean>>compatT())
+                .subscribe(new ApiObserver<List<AccountFlowIconBean>>() {
+                    @Override
+                    public void onNext(@NonNull List<AccountFlowIconBean> data) {
 
-                                       /**
-                                        * 判断是否是编辑账单
-                                        */
-                                       if (debtNormalDetail != null) {
-                                           //图标
-                                           map.put("iconId", debtNormalDetail.iconId);
-                                           //图标标识
-                                           map.put("tallyId", debtNormalDetail.tallyId);
-                                           map.put("tallyType", debtNormalDetail.tallyType);
-                                           //账单名称
-                                           map.put("projectName", debtNormalDetail.getProjectName());
-                                           //默认
-                                           Date parse = null;
-                                           try {
-                                               parse = dateFormat.parse(debtNormalDetail.getFirstRepayDate());
-                                           } catch (ParseException e) {
-                                               e.printStackTrace();
-                                           }
-                                           map.put("firstRepaymentDate", saveDateFormat.format(parse));
-                                           map.put("cycleType", debtNormalDetail.cycleType);
-                                           map.put("cycle", debtNormalDetail.cycle);
-                                           map.put("term", debtNormalDetail.getTerm());
-                                           map.put("amount", debtNormalDetail.getTermPayableAmount() + "");
-                                           if (!TextUtils.isEmpty(debtNormalDetail.getRemark())) {
-                                               map.put("remark", debtNormalDetail.getRemark());
-                                           }
-                                       } else {
-                                           if (list.size() > 0) {
-                                               //图标
-                                               map.put("iconId", list.get(0).iconId);
-                                               //图标标识
-                                               map.put("tallyId", list.get(0).tallyId);
-                                               map.put("tallyType", Integer.valueOf(list.get(0).isPrivate) + 1 + "");
-                                               //账单名称
-                                               map.put("projectName", list.get(0).iconName);
-                                               //默认
-                                               map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
-                                               map.put("cycleType", "2");
-                                               map.put("cycle", "1");
-                                               map.put("term", "1");
-                                               map.put("amount", "0");
-                                               Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
-                                               if (!TextUtils.isEmpty(list.get(0).iconName)) {
-                                                   mTypeName.setText(list.get(0).iconName);
-                                               }
-                                               if (!TextUtils.isEmpty(list.get(0).remark)) {
-                                                   remarks = list.get(0).remark.split(",");
-                                               }
-                                           }
-                                       }
-                                   } else {
-                                       Toast.makeText(activity, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                //Log.e("exception_custom", throwable.getMessage());
+                        if (list.size() > 0) {
+                            list.clear();
+                        }
+                        list.addAll(data);
+                        if (mAdapter != null) {
+                            mAdapter.notifyDebtChannelChanged(list);
+                        }
+
+                        /**
+                         * 判断是否是编辑账单
+                         */
+                        if (debtNormalDetail != null) {
+                            //图标
+                            map.put("iconId", debtNormalDetail.iconId);
+                            //图标标识
+                            map.put("tallyId", debtNormalDetail.tallyId);
+                            map.put("tallyType", debtNormalDetail.tallyType);
+                            //账单名称
+                            map.put("projectName", debtNormalDetail.getProjectName());
+                            //默认
+                            Date parse = null;
+                            try {
+                                parse = dateFormat.parse(debtNormalDetail.getFirstRepayDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                        });
+                            map.put("firstRepaymentDate", saveDateFormat.format(parse));
+                            map.put("cycleType", debtNormalDetail.cycleType);
+                            map.put("cycle", debtNormalDetail.cycle);
+                            map.put("term", debtNormalDetail.getTerm());
+                            map.put("amount", debtNormalDetail.getTermPayableAmount() + "");
+                            if (!TextUtils.isEmpty(debtNormalDetail.getRemark())) {
+                                map.put("remark", debtNormalDetail.getRemark());
+                            }
+                        } else {
+                            if (list.size() > 0) {
+                                //图标
+                                map.put("iconId", list.get(0).iconId);
+                                //图标标识
+                                map.put("tallyId", list.get(0).tallyId);
+                                map.put("tallyType", Integer.valueOf(list.get(0).isPrivate) + 1 + "");
+                                //账单名称
+                                map.put("projectName", list.get(0).iconName);
+                                //默认
+                                map.put("firstRepaymentDate", saveDateFormat.format(new Date()));
+                                map.put("cycleType", "2");
+                                map.put("cycle", "1");
+                                map.put("term", "1");
+                                map.put("amount", "0");
+                                Glide.with(activity).load(list.get(0).logo).into(mTypeIcon);
+                                if (!TextUtils.isEmpty(list.get(0).iconName)) {
+                                    mTypeName.setText(list.get(0).iconName);
+                                }
+                                if (!TextUtils.isEmpty(list.get(0).remark)) {
+                                    remarks = list.get(0).remark.split(",");
+                                }
+                            }
+                        }
+                    }
+                });
     }
-
-
 
     /**
      * 控件的点击事件
@@ -762,16 +755,9 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
         InputMethodUtil.closeSoftKeyboard(activity);
         switch (view.getId()) {
             case R.id.tv_fg_first_pay_loan_date:
-
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYFIRSTPAYMENTDATE);
-
                 showFirstPayLoanDateDialog();
                 break;
             case R.id.ll_account_flow_remark:
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYREMARK);
-
                 if (dialog == null) {
                     dialog = new AccountFlowRemarkDialog();
                 }
@@ -805,8 +791,6 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 });
                 break;
             case R.id.tv_fg_first_pay_loan_times:
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.TALLYPAYMENTCYCLE);
                 showLoanTimes();
                 break;
             case R.id.auto_et_num:
@@ -814,7 +798,6 @@ public class AccountFlowNormalFragment extends BaseComponentFragment {
                 break;
         }
     }
-
 
     /**
      * 还款周期
