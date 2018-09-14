@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@drawable/shape_article_comment_list">
+    android:background="@drawable/shape_article_comment_list"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_comment_title"
-        android:layout_width="wrap_content"
-        android:layout_height="44dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:gravity="center"
-        android:text="全部5条评论"
-        android:textColor="@color/black_1"
-        android:textSize="@dimen/sp17"/>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_close"
-        android:layout_width="@dimen/dp22"
-        android:layout_height="@dimen/dp22"
-        android:src="@drawable/close_black"
-        android:layout_marginLeft="@dimen/dp10"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_comment_title"
-        app:layout_constraintBottom_toBottomOf="@id/tv_comment_title"/>
+        <TextView
+            android:id="@+id/tv_comment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="全部5条评论"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp17"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/dp22"
+            android:layout_height="@dimen/dp22"
+            android:layout_marginLeft="@dimen/dp10"
+            android:src="@drawable/close_black"
+            app:layout_constraintBottom_toBottomOf="@id/tv_comment_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_comment_title" />
+    </android.support.constraint.ConstraintLayout>
 
     <View
         android:id="@+id/indicate"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
         android:background="@color/colorBackground"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_title" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_recycler"
-        android:layout_width="0dp"
-        android:layout_height="550dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/indicate"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
