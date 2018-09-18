@@ -1,16 +1,19 @@
 package com.beihui.market.tang.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.SocialAdapter;
+import com.beihui.market.ui.activity.CommunityPublishActivity;
 import com.beihui.market.util.CommonUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -27,6 +30,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 /**
@@ -47,6 +51,8 @@ public class SocialFragment extends BaseComponentFragment {
     MagicIndicator indicator;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    @BindView(R.id.iv_publish)
+    ImageView ivPublish;
 
     private String[] mDataList = {"关注", "推荐"};
     private SocialAdapter adapter = new SocialAdapter(mDataList);
@@ -127,4 +133,16 @@ public class SocialFragment extends BaseComponentFragment {
         indicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(indicator, viewpager);
     }
+
+    @OnClick(R.id.iv_publish)
+    public void onViewClick(View view){
+        switch (view.getId()){
+            case R.id.iv_publish:
+                startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                break;
+            default:
+                break;
+        }
+    }
+
 }

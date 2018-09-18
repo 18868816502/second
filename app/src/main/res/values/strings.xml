@@ -230,6 +230,7 @@
     <string name="community_publish_dialog_save">保存</string>
     <string name="community_publish_dialog_cimmit_content">是否提交内容给管理员审核</string>
     <string name="community_publish_dialog_commit">提交</string>
+    <string name="community_publish_title_size">30/30</string>
 
     <!--文章-->
     <string name="article_attention">+ 关注</string>

@@ -10,8 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.constant.ConstantTag;
 import com.beihui.market.entity.UserArticleBean;
 import com.beihui.market.entity.UserInfoBean;
+import com.beihui.market.ui.listeners.OnItemClickListener;
+import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.util.ToastUtil;
 import com.bumptech.glide.Glide;
 
@@ -112,6 +115,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 //            onBindHeadData(headViewHolder);
         }else{
             contentViewHolder = (ContentViewHolder) holder;
+            contentViewHolder.itemView.setTag(position-1);
 //            onBindArticleData(contentViewHolder,position-1);
         }
     }
@@ -238,6 +242,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             super(itemView);
             ButterKnife.bind(this,itemView);
             setOnClick(ivAuthorAvatar,llArticlePraiseContainer,llCommentContainer);
+            setOnClick(itemView);
         }
     }
 
@@ -248,7 +253,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             switch (view.getId()){
                 case R.id.avatar:
                     ToastUtil.toast("用户头像");
-                    listener.onAvatarClick();
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_AVATAR);
                     break;
                 case R.id.ll_edit_container:
                     ToastUtil.toast("编辑个人资料");
@@ -266,7 +271,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                     ToastUtil.toast("获赞");
                     break;
                 case R.id.iv_more:
-                    listener.onMoreClick(headViewHolder.ivMore);
+                    listener.onViewClick(view,ConstantTag.TAG_PERSONAL_MORE);
                     break;
 
 
@@ -281,6 +286,9 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                 case R.id.ll_article_comment_container:
                     ToastUtil.toast("评论");
                     break;
+                case R.id.article_item:
+                    itemListener.OnItemClick((Integer) view.getTag());
+                    break;
                     default:
                         break;
             }
@@ -293,16 +301,10 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         this.listener = listener;
     }
 
-    public interface OnViewClickListener{
-        /**
-         * 更多按钮点击事件
-         * @param ivMore 更多按钮
-         */
-        void onMoreClick(ImageView ivMore);
+    private OnItemClickListener itemListener;
 
-        /**
-         * 用户头像点击
-         */
-        void onAvatarClick();
+    public void setOnItemClickListener(OnItemClickListener itemListener){
+        this.itemListener = itemListener;
     }
+
 }

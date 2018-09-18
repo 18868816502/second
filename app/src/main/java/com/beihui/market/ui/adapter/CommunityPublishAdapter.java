@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * @name loanmarket
  * @class name：com.beihui.market.ui.adapter
  * @class describe
- * @anthor A
+ * @author A
  * @time 2018/9/11 19:00
  */
 public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -22,7 +22,7 @@ import butterknife.BindView;
  * @name loanmarket
  * @class name：com.beihui.market.ui.activity
  * @class describe 社区发布页面
- * @anthor chenguoguo
+ * @author chenguoguo
  * @time 2018/9/11 18:45
  */
 public class CommunityPublishActivity extends BaseComponentActivity implements View.OnClickListener,PopDialog.OnInitPopListener {
@@ -125,6 +125,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
                 view.findViewById(R.id.tv_cancel).setOnClickListener(this);
                 view.findViewById(R.id.tv_commit).setOnClickListener(this);
                 break;
+                default:
+                    break;
         }
 
     }

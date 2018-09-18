@@ -14,6 +14,7 @@ import android.widget.PopupWindow;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.constant.ConstantTag;
 import com.beihui.market.entity.UserArticleBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.helper.UserHelper;
@@ -22,6 +23,8 @@ import com.beihui.market.injection.component.DaggerPersonalCenterComponent;
 import com.beihui.market.injection.module.PersonalCenterModule;
 import com.beihui.market.ui.adapter.PersonalCenterAdapter;
 import com.beihui.market.ui.contract.PersonalCenterContact;
+import com.beihui.market.ui.listeners.OnItemClickListener;
+import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.ui.presenter.PersonalCenterPresenter;
 import com.beihui.market.util.DensityUtil;
 import com.beihui.market.util.ToastUtil;
@@ -45,7 +48,7 @@ import butterknife.BindView;
  * @time
  */
 public class PersonalCenterActivity extends BaseComponentActivity implements PersonalCenterContact.View,
-        View.OnClickListener, PersonalCenterAdapter.OnViewClickListener, OnRefreshListener, OnLoadMoreListener {
+        View.OnClickListener, OnViewClickListener,OnItemClickListener,OnRefreshListener, OnLoadMoreListener {
 
     @BindView(R.id.parent)
     ConstraintLayout parentView;
@@ -82,7 +85,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         adapter.setOnViewClickListener(this);
-
+        adapter.setOnItemClickListener(this);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
     }
@@ -119,16 +122,6 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onMoreClick(ImageView ivMore) {
-        showPopWindow(ivMore);
-    }
-
-    @Override
-    public void onAvatarClick() {
-        startActivity(new Intent(this, UserProfileActivity.class));
     }
 
     @Override
@@ -200,5 +193,42 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
         lp.alpha = bgAlpha;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         getWindow().setAttributes(lp);
+    }
+
+    @Override
+    public void onViewClick(View view, int type) {
+        switch (type){
+            case ConstantTag.TAG_PERSONAL_AVATAR:
+                startActivity(new Intent(this, UserProfileActivity.class));
+                break;
+            case ConstantTag.TAG_PERSONAL_INFO_EDIT:
+                break;
+            case ConstantTag.TAG_PERSONAL_PUBLISH:
+                break;
+            case ConstantTag.TAG_PERSONAL_ATTENTION:
+                break;
+            case ConstantTag.TAG_PERSONAL_FANS:
+                break;
+            case ConstantTag.TAG_PERSONAL_PARISE:
+                break;
+            case ConstantTag.TAG_PERSONAL_MORE:
+                showPopWindow((ImageView) view);
+                break;
+            case ConstantTag.TAG_PERSONAL_ARTICLE_AVATAR:
+                break;
+            case ConstantTag.TAG_ARTICLE_PARISE:
+
+                break;
+            case ConstantTag.TAG_ARTICLE_COMMENT:
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        startActivity(new Intent(this,ArticleDetailActivity.class));
     }
 }

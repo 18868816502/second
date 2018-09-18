@@ -9,8 +9,55 @@ package com.beihui.market.constant;
  */
 public interface ConstantTag {
 
+    /*
+    * ******************************个人中心( 整体结构：tag + 功能 +  模块 )********************************
+    * */
 
-    /*******************************|文章( 整体结构：tag + 功能 +  模块 )|*********************************/
+    /**
+     * 用户头像
+     */
+    int TAG_PERSONAL_AVATAR = 0;
+    /**
+     * 编辑资料
+     */
+    int TAG_PERSONAL_INFO_EDIT = 1;
+    /**
+     * 发布
+     */
+    int TAG_PERSONAL_PUBLISH = 2;
+    /**
+     * 关注
+     */
+    int TAG_PERSONAL_ATTENTION = 3;
+    /**
+     * 粉丝
+     */
+    int TAG_PERSONAL_FANS = 4;
+    /**
+     * 获赞
+     */
+    int TAG_PERSONAL_PARISE = 5;
+    /**
+     * 更多
+     */
+    int TAG_PERSONAL_MORE = 6;
+    /**
+     * 文章作者头像
+     */
+    int TAG_PERSONAL_ARTICLE_AVATAR = 7;
+    /**
+     * 文章点赞
+     */
+    int TAG_ARTICLE_PARISE = 8;
+    /**
+     * 文章评论
+     */
+    int TAG_ARTICLE_COMMENT = 9;
+
+    /*
+     * *****************************|文章( 整体结构：tag + 功能 +  模块 )|********************************
+     * */
+
     /**
      * 作者关注
      */
