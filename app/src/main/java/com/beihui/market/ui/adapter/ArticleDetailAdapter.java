@@ -107,7 +107,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     R.drawable.x_account_info_header_bg,
                     R.drawable.x_account_info_header_bg,
                     R.drawable.x_account_info_header_bg);
-            setOnClick(ivAuthorAvatar,tvAttention,tvPraise);
+            setOnClick(ivAuthorAvatar,tvAttention,tvPraise,tvComment);
             tvArticleTitle.setFocusable(true);
         }
     }
@@ -159,6 +159,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         /**
          * 关注和点赞点击事件
          * @param view 点击的控件
+         * @param type 类型，用于判断点击的是哪个控件
          */
         void onViewClick(TextView view,int type);
 
@@ -173,12 +174,13 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mContext.startActivity(new Intent(mContext,PersonalCenterActivity.class));
                     break;
                 case R.id.tv_article_attention:
-                    ToastUtil.toast("关注");
                     listener.onViewClick(headViewHolder.tvAttention,0);
                     break;
                 case R.id.tv_article_praise:
-                    ToastUtil.toast("点赞");
                     listener.onViewClick(headViewHolder.tvAttention,1);
+                    break;
+                case R.id.tv_comment:
+                    listener.onViewClick(headViewHolder.tvComment,2);
                     break;
                 default:
                     break;

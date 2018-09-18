@@ -28,13 +28,34 @@ import com.beihui.market.util.DensityUtil;
  */
 public class PopDialog extends BaseDialog {
 
-    public static final int POP_COMMON = 100;//普通对话框
-    public static final int POP_LOADING = 101;//loading对话框
-    public static final int POP_TIPS = 102;//提示对话框
-    public static final int POP_ADVER = 103;//广告对话框
-    public static final int POP_PROGRESS = 104;//进度条对话框
-    public static final int POP_BOTTOM = 105;//底部相册弹出框
-    public static final int POP_LIST = 106;//列表弹出框
+    /**
+     * 普通对话框
+     */
+    public static final int POP_COMMON = 100;
+    /**
+     * loading对话框
+     */
+    public static final int POP_LOADING = 101;
+    /**
+     * 提示对话框
+     */
+    public static final int POP_TIPS = 102;
+    /**
+     * 广告对话框
+     */
+    public static final int POP_ADVER = 103;
+    /**
+     * 进度条对话框
+     */
+    public static final int POP_PROGRESS = 104;
+    /**
+     * 底部相册弹出框
+     */
+    public static final int POP_BOTTOM = 105;
+    /**
+     * 列表弹出框
+     */
+    public static final int POP_LIST = 106;
 
     private FragmentManager fManager;
     /**
@@ -58,11 +79,13 @@ public class PopDialog extends BaseDialog {
     private float mDimAmount = 0.6f;
 
     private int mAnimationAnim;
-    private static int mDialogType = 1;//默认为普通弹窗
+    /**
+     * 弹窗类型默认为普通弹窗
+     */
+    private static int mDialogType = 1;
 
     private OnInitPopListener mPopListener;
     private OnDismissListener  mDismissListener;
-    private int[] ids;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -115,7 +138,6 @@ public class PopDialog extends BaseDialog {
             //位置
             layoutParams.gravity = mGravity;
             window.setAttributes(layoutParams);
-
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
     }

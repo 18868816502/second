@@ -24,6 +24,7 @@ import com.beihui.market.ui.adapter.ArticleDetailAdapter;
 import com.beihui.market.ui.contract.ArticleDetailContact;
 import com.beihui.market.ui.presenter.ArticleDetailPresenter;
 import com.beihui.market.util.KeyBoardUtils;
+import com.beihui.market.util.PopUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -47,7 +48,7 @@ import butterknife.BindView;
  */
 public class ArticleDetailActivity extends BaseComponentActivity implements ArticleDetailContact.View,
         View.OnClickListener,OnRefreshListener, OnLoadMoreListener,ArticleDetailAdapter.OnViewClickListener,
-        PopDialog.OnInitPopListener{
+        PopDialog.OnInitPopListener,PopDialog.OnDismissListener{
 
     @BindView(R.id.tool_bar)
     RelativeLayout toolBar;
@@ -63,8 +64,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     ArticleDetailPresenter presenter;
 
     private ArticleDetailAdapter adapter;
-    private PopDialog popDialog;
-    private PopDialog commentDialog;
     private EditText etInput;
     private FragmentManager fManager;
     /**
@@ -133,15 +132,15 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 finish();
                 break;
             case R.id.iv_more:
-                mPopType = 3;
                 //判断是否是自己的文章
-//                showBottomPopWindow(R.layout.dialog_article_other_more);
-//                PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager,this,this);
-                showBottomPopWindow(R.layout.dialog_article_mine_more);
+                mPopType = 2;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager,this,this);
+
+//                mPopType = 3;
 //                PopUtils.showBottomPopWindow(R.layout.dialog_article_mine_more, fManager,this,this);
                 break;
             case R.id.tv_cancel:
-                popDialog.dismiss();
+                hideDialog();
                 break;
             case R.id.tv_save:
                 hideDialog();
@@ -150,7 +149,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case R.id.tv_delete:
                 mPopType = 1;
                 hideDialog();
-                showPopWindow(R.layout.dialog_article_delete);
+                PopUtils.showCenterPopWindow(R.layout.dialog_article_delete,fManager,this,this);
                 break;
             case R.id.report01:
                 hideDialog();
@@ -173,7 +172,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             case R.id.tv_comment:
                 mPopType = 5;
-                showCommentInputDialog(R.layout.dialog_comment_input);
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input,fManager,this,this,this);
                 break;
             case R.id.tv_send:
                 if(TextUtils.isEmpty(etInput.getText().toString())){
@@ -188,7 +187,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     }
 
     /**
-     * 确定请求
+     * 弹窗确定按钮的不同作用
      */
     private void requestEnsure(){
         switch (mPopType){
@@ -221,11 +220,15 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         switch (type){
             case 0:
                 mPopType = 0;
-                showPopWindow(R.layout.dialog_article_attention);
+                PopUtils.showCenterPopWindow(R.layout.dialog_article_attention,fManager,this,this);
                 break;
             case 1:
                 mPopType = 4;
-                showBottomPopWindow(R.layout.dialog_article_comment_list);
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list,fManager,this,this);
+                break;
+            case 2:
+                mPopType = 5;
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input,fManager,this,this,this);
                 break;
                 default:
                     break;
@@ -234,59 +237,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     }
 
     /**
-     * 显示评论输入框弹窗
-     * @param layoutId 布局id
-     */
-    private void showCommentInputDialog(int layoutId){
-        commentDialog = new PopDialog.Builder(getSupportFragmentManager(),this)
-                .setLayoutId(layoutId)
-                .setHeight(58)
-                .setGravity(Gravity.BOTTOM)
-                .setCancelableOutside(true)
-                .setInitPopListener(this)
-                .setDismissListener(new PopDialog.OnDismissListener() {
-                    @Override
-                    public void onDismiss(PopDialog mPopDialog) {
-                        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
-                    }
-                })
-                .create();
-        commentDialog.show();
-    }
-
-    /**
-     * 显示弹窗
-     * @param layoutId 布局id
-     */
-    private void showPopWindow(int layoutId){
-        popDialog = new PopDialog.Builder(getSupportFragmentManager(),this)
-                .setLayoutId(layoutId)
-                .setWidth(270)
-                .setHeight(120)
-                .setGravity(Gravity.CENTER)
-                .setCancelableOutside(false)
-                .setInitPopListener(this)
-                .create();
-        popDialog.show();
-    }
-
-    private void showBottomPopWindow(int layoutId){
-        popDialog = new PopDialog.Builder(getSupportFragmentManager(),this)
-                .setLayoutId(layoutId)
-                .setGravity(Gravity.BOTTOM)
-                .setCancelableOutside(true)
-                .setInitPopListener(this)
-                .create();
-        popDialog.show();
-    }
-
-    /**
      * 隐藏弹窗
      */
     private void hideDialog(){
-        if(popDialog != null){
-            popDialog.dismiss();
-        }
+        PopUtils.dismiss();
     }
 
     @Override
@@ -341,5 +295,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         for(View view:views){
             view.setOnClickListener(this);
         }
+    }
+
+    @Override
+    public void onDismiss(PopDialog mPopDialog) {
+        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
     }
 }

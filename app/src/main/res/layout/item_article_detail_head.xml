@@ -88,7 +88,7 @@
         app:banner_indicatorGravity="bottom|right"
         app:banner_isNumberIndicator="true"
         app:banner_numberIndicatorTextSize="@dimen/sp9"
-        app:banner_numberIndicatorBackground="@color/white"/>
+        app:banner_numberIndicatorBackground="@color/transparent"/>
 
     <TextView
         android:id="@+id/tv_article_praise"
