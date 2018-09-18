@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.constant.ConstantTag;
+import com.beihui.market.ui.listeners.OnViewClickListener;
+import com.beihui.market.util.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,13 +33,15 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment,null,false);
+        View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment,parent,false);
         return new ViewHolder(commentView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.tvCommentPraise.setTag(position);
+        viewHolder.ivArticleComment.setTag(position);
     }
 
     @Override
@@ -54,8 +59,8 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         TextView tvCommentContent;
         @BindView(R.id.tv_comment_time)
         TextView tvCommentTime;
-        @BindView(R.id.tv_article_praise)
-        TextView tvArticlePraise;
+        @BindView(R.id.tv_comment_praise)
+        TextView tvCommentPraise;
         @BindView(R.id.iv_article_comment)
         ImageView ivArticleComment;
         @BindView(R.id.item_recycler)
@@ -65,6 +70,43 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             super(itemView);
             ButterKnife.bind(this,itemView);
             itemRecyclerView.setVisibility(View.GONE);
+            setOnClick(tvCommentPraise,ivArticleComment);
+        }
+    }
+
+    private void setOnClick(View... views){
+        for(View view:views){
+            view.setOnClickListener(new OnClickListener());
+        }
+    }
+
+    private OnViewClickListener listener;
+
+    public void setOnViewClickListener(OnViewClickListener listener){
+        this.listener = listener;
+    }
+
+
+    class OnClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                //评论点赞
+                case R.id.tv_comment_praise:
+                    int position = (int) v.getTag();
+                    ToastUtil.toast("子点赞第"+(position + 1) + "条");
+                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT);
+                    break;
+                //评论回复
+                case R.id.iv_article_comment:
+                    int comPosition = (int) v.getTag();
+                    ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
+                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

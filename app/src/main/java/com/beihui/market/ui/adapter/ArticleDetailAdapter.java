@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.constant.ConstantTag;
 import com.beihui.market.ui.activity.PersonalCenterActivity;
+import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.CircleImageView;
 
@@ -24,7 +26,7 @@ import cn.bingoogolapple.bgabanner.BGALocalImageSize;
  * @author chenguoguo
  * @name loanmarket
  * @class name：com.beihui.market.ui.adapter
- * @class describe
+ * @class describe 文章详情页面
  * @time 2018/9/12 19:27
  */
 public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -32,8 +34,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context mContext;
     private static final int HEAD = 0;
     private static final int COMMENT = 1;
-    private HeadViewHolder headViewHolder;
-    private CommmentViewHolder commmentViewHolder;
+    private static final int FOOT = 2;
 
     public ArticleDetailAdapter(Context mContext) {
         this.mContext = mContext;
@@ -48,6 +49,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             case COMMENT:
                 View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment,parent,false);
                 return new CommmentViewHolder(commentView);
+            case FOOT:
+                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot,parent,false);
+                return new FootViewHolder(footView);
             default:
                 break;
 
@@ -58,9 +62,11 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(position == 0){
-            headViewHolder = (HeadViewHolder) holder;
-        }else{
-            commmentViewHolder = (CommmentViewHolder) holder;
+            HeadViewHolder headViewHolder = (HeadViewHolder) holder;
+        }else if(position != getItemCount() - 1){
+            CommmentViewHolder commmentViewHolder = (CommmentViewHolder) holder;
+            commmentViewHolder.tvCommentPraise.setTag(R.id.tag_praise,position-1);
+            commmentViewHolder.ivArticleComment.setTag(R.id.tag_comment,position-1);
         }
     }
 
@@ -73,6 +79,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     public int getItemViewType(int position) {
         if(position == 0){
             return  HEAD;
+        }else if(position == getItemCount() - 1){
+            return FOOT;
         }else{
             return COMMENT;
         }
@@ -99,7 +107,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.tv_comment)
         TextView tvComment;
 
-        public HeadViewHolder(View itemView) {
+        HeadViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             BGALocalImageSize localImageSize = new BGALocalImageSize(720, 1280, 320, 640);
@@ -122,14 +130,14 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView tvCommentContent;
         @BindView(R.id.tv_comment_time)
         TextView tvCommentTime;
-        @BindView(R.id.tv_article_praise)
-        TextView tvArticlePraise;
+        @BindView(R.id.tv_comment_praise)
+        TextView tvCommentPraise;
         @BindView(R.id.iv_article_comment)
         ImageView ivArticleComment;
         @BindView(R.id.item_recycler)
         RecyclerView itemRecyclerView;
 
-        public CommmentViewHolder(View itemView) {
+        CommmentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -138,7 +146,34 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             itemRecyclerView.setLayoutManager(manager);
             itemRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            adapter.setOnViewClickListener(new OnViewClickListener() {
+                @Override
+                public void onViewClick(View view, int type) {
+                    listener.onViewClick(view,type);
+                    switch (type){
+                        //子评论点赞
+                        case ConstantTag.TAG_CHILD_PARISE_COMMENT:
+                            break;
+                        //子评论回复
+                        case ConstantTag.TAG_CHILD_REPLY_COMMENT:
 
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+            setOnClick(tvCommentPraise,ivArticleComment);
+        }
+    }
+
+    class FootViewHolder extends RecyclerView.ViewHolder {
+
+
+        FootViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(new OnClickListener());
         }
     }
 
@@ -154,17 +189,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.listener = listener;
     }
 
-    public interface OnViewClickListener{
-
-        /**
-         * 关注和点赞点击事件
-         * @param view 点击的控件
-         * @param type 类型，用于判断点击的是哪个控件
-         */
-        void onViewClick(TextView view,int type);
-
-    }
-
     class OnClickListener implements View.OnClickListener{
 
         @Override
@@ -174,13 +198,31 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mContext.startActivity(new Intent(mContext,PersonalCenterActivity.class));
                     break;
                 case R.id.tv_article_attention:
-                    listener.onViewClick(headViewHolder.tvAttention,0);
+                    listener.onViewClick(v,ConstantTag.TAG_ATTENTION);
                     break;
                 case R.id.tv_article_praise:
-                    listener.onViewClick(headViewHolder.tvAttention,1);
+                    listener.onViewClick(v,ConstantTag.TAG_PARISE_ARTICLE);
                     break;
+                    //追加文章评论
                 case R.id.tv_comment:
-                    listener.onViewClick(headViewHolder.tvComment,2);
+                    listener.onViewClick(v,ConstantTag.TAG_COMMENT_ARTICLE);
+                    break;
+
+                    //评论点赞
+                case R.id.tv_comment_praise:
+                    int position = (int) v.getTag(R.id.tag_praise);
+                    ToastUtil.toast("点赞第"+(position + 1) + "条");
+                    listener.onViewClick(v,ConstantTag.TAG_PRAISE_COMMENT);
+                    break;
+                    //评论回复
+                case R.id.iv_article_comment:
+                    int comPosition = (int) v.getTag(R.id.tag_comment);
+                    ToastUtil.toast("回复第"+(comPosition + 1) + "条");
+                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT);
+                    break;
+
+                case R.id.foot:
+                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE);
                     break;
                 default:
                     break;

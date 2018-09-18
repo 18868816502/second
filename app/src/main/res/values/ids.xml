@@ -9,4 +9,9 @@
     <item name="numIndicatorInside" type="id"/>
     <item name="indicatorInside" type="id"/>
     <item name="bannerDefaultImage" type="id"/>
+
+
+
+    <item name="tag_praise" type="id"/>
+    <item name="tag_comment" type="id"/>
 </resources>

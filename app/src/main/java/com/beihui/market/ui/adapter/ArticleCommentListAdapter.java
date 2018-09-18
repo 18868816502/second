@@ -1,7 +1,6 @@
 package com.beihui.market.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,14 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
-import com.beihui.market.ui.activity.PersonalCenterActivity;
+import com.beihui.market.constant.ConstantTag;
+import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.util.ToastUtil;
-import com.beihui.market.view.CircleImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bingoogolapple.bgabanner.BGABanner;
-import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 
 /**
  * @author chenguoguo
@@ -43,12 +40,14 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        CommmentViewHolder commmentViewHolder = (CommmentViewHolder) holder;
+        commmentViewHolder.tvCommentPraise.setTag(position);
+        commmentViewHolder.ivArticleComment.setTag(position);
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 
 
@@ -62,14 +61,14 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         TextView tvCommentContent;
         @BindView(R.id.tv_comment_time)
         TextView tvCommentTime;
-        @BindView(R.id.tv_article_praise)
-        TextView tvArticlePraise;
+        @BindView(R.id.tv_comment_praise)
+        TextView tvCommentPraise;
         @BindView(R.id.iv_article_comment)
         ImageView ivArticleComment;
         @BindView(R.id.item_recycler)
         RecyclerView itemRecyclerView;
 
-        public CommmentViewHolder(View itemView) {
+        CommmentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -78,7 +77,13 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             itemRecyclerView.setLayoutManager(manager);
             itemRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-
+            adapter.setOnViewClickListener(new OnViewClickListener() {
+                @Override
+                public void onViewClick(View view, int type) {
+                    listener.onViewClick(view,type);
+                }
+            });
+            setOnClick(tvCommentPraise,ivArticleComment);
         }
     }
 
@@ -94,29 +99,20 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         this.listener = listener;
     }
 
-    public interface OnViewClickListener {
-
-        /**
-         * 关注和点赞点击事件
-         *
-         * @param view 点击的控件
-         */
-        void onViewClick(TextView view, int type);
-
-    }
-
     class OnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.iv_commentator_avatar:
+                //点赞
+                case R.id.tv_comment_praise:
+                    ToastUtil.toast("点赞第"+ v.getTag()+"条");
+                    listener.onViewClick(v, ConstantTag.TAG_PRAISE_COMMENT);
                     break;
-                case R.id.tv_article_attention:
-                    ToastUtil.toast("关注");
-                    break;
-                case R.id.tv_article_praise:
-                    ToastUtil.toast("点赞");
+                //评论
+                case R.id.iv_article_comment:
+                    ToastUtil.toast("评论第"+ v.getTag()+"条");
+                    listener.onViewClick(v,ConstantTag.TAG_REPLY_COMMENT);
                     break;
                 default:
                     break;

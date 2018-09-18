@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.constant.ConstantTag;
 import com.beihui.market.entity.UserArticleBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.injection.component.AppComponent;
@@ -22,6 +22,7 @@ import com.beihui.market.injection.module.ArticleDetailModule;
 import com.beihui.market.ui.adapter.ArticleCommentListAdapter;
 import com.beihui.market.ui.adapter.ArticleDetailAdapter;
 import com.beihui.market.ui.contract.ArticleDetailContact;
+import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.ui.presenter.ArticleDetailPresenter;
 import com.beihui.market.util.KeyBoardUtils;
 import com.beihui.market.util.PopUtils;
@@ -47,8 +48,8 @@ import butterknife.BindView;
  * @time 2018/9/12 18:55
  */
 public class ArticleDetailActivity extends BaseComponentActivity implements ArticleDetailContact.View,
-        View.OnClickListener,OnRefreshListener, OnLoadMoreListener,ArticleDetailAdapter.OnViewClickListener,
-        PopDialog.OnInitPopListener,PopDialog.OnDismissListener{
+        View.OnClickListener,OnRefreshListener, OnLoadMoreListener,
+        PopDialog.OnInitPopListener,PopDialog.OnDismissListener,OnViewClickListener {
 
     @BindView(R.id.tool_bar)
     RelativeLayout toolBar;
@@ -216,19 +217,41 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     }
 
     @Override
-    public void onViewClick(TextView view,int type) {
+    public void onViewClick(View view,int type) {
         switch (type){
-            case 0:
+            //关注
+            case ConstantTag.TAG_ATTENTION:
                 mPopType = 0;
                 PopUtils.showCenterPopWindow(R.layout.dialog_article_attention,fManager,this,this);
                 break;
-            case 1:
-                mPopType = 4;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list,fManager,this,this);
+            //文章点赞
+            case ConstantTag.TAG_PARISE_ARTICLE:
+
                 break;
-            case 2:
+            //文章评论
+            case ConstantTag.TAG_COMMENT_ARTICLE:
                 mPopType = 5;
                 PopUtils.showCommentPopWindow(R.layout.dialog_comment_input,fManager,this,this,this);
+                break;
+            //评论给点赞
+            case ConstantTag.TAG_PRAISE_COMMENT:
+
+                break;
+            //评论回复
+            case ConstantTag.TAG_REPLY_COMMENT:
+                mPopType = 5;
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input,fManager,this,this,this);
+                break;
+
+            //子评论点赞
+            case ConstantTag.TAG_CHILD_PARISE_COMMENT:
+                break;
+            //子评论回复
+            case ConstantTag.TAG_CHILD_REPLY_COMMENT:
+                break;
+            case ConstantTag.TAG_COMMENT_MORE:
+                mPopType = 4;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list,fManager,this,this);
                 break;
                 default:
                     break;
@@ -264,15 +287,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
                 /*评论列表弹出框*/
             case 4:
-                setOnClick(view.findViewById(R.id.iv_close),view.findViewById(R.id.tv_comment));
-                tvCommentTitle = view.findViewById(R.id.tv_comment_title);
-                RecyclerView itemRecycler = view.findViewById(R.id.comment_recycler);
-                LinearLayoutManager manager = new LinearLayoutManager(this);
-                manager.setOrientation(LinearLayoutManager.VERTICAL);
-                itemRecycler.setLayoutManager(manager);
-                ArticleCommentListAdapter adapter = new ArticleCommentListAdapter(this);
-                itemRecycler.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                initCommentListPop(view);
                 break;
                 /*评论输入框*/
             case 5:
@@ -289,6 +304,19 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                     break;
         }
 
+    }
+
+    private void initCommentListPop(View view) {
+        setOnClick(view.findViewById(R.id.iv_close),view.findViewById(R.id.tv_comment));
+        tvCommentTitle = view.findViewById(R.id.tv_comment_title);
+        RecyclerView itemRecycler = view.findViewById(R.id.comment_recycler);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        itemRecycler.setLayoutManager(manager);
+        ArticleCommentListAdapter adapter = new ArticleCommentListAdapter(this);
+        itemRecycler.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        adapter.setOnViewClickListener(this);
     }
 
     private void setOnClick(View ...views){

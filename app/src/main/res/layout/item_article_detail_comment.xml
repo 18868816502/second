@@ -74,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_comment_time"/>
 
     <TextView
-        android:id="@+id/tv_article_praise"
+        android:id="@+id/tv_comment_praise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/mine_encourage_icon"
