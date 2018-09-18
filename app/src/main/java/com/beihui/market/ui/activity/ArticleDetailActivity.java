@@ -1,10 +1,13 @@
 package com.beihui.market.ui.activity;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import com.beihui.market.ui.adapter.ArticleCommentListAdapter;
 import com.beihui.market.ui.adapter.ArticleDetailAdapter;
 import com.beihui.market.ui.contract.ArticleDetailContact;
 import com.beihui.market.ui.presenter.ArticleDetailPresenter;
+import com.beihui.market.util.KeyBoardUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -60,8 +64,11 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     private ArticleDetailAdapter adapter;
     private PopDialog popDialog;
+    private PopDialog commentDialog;
+    private EditText etInput;
+    private FragmentManager fManager;
     /**
-     * 0:关注 1:删除 2:其它用户更多（举报）3：自己用户更多（删除） 4:评论弹窗列表
+     * 0:关注 1:删除 2:其它用户更多（举报）3：自己用户更多（删除） 4:评论弹窗列表  5.评论输入框弹窗
      */
     private int mPopType = 0;
     private TextView tvCommentTitle;
@@ -74,6 +81,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolBar).statusBarDarkFont(true).init();
+        fManager = getSupportFragmentManager();
 
         adapter = new ArticleDetailAdapter(this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -128,7 +136,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 mPopType = 3;
                 //判断是否是自己的文章
 //                showBottomPopWindow(R.layout.dialog_article_other_more);
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager,this,this);
                 showBottomPopWindow(R.layout.dialog_article_mine_more);
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_mine_more, fManager,this,this);
                 break;
             case R.id.tv_cancel:
                 popDialog.dismiss();
@@ -160,6 +170,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             case R.id.iv_close:
                 hideDialog();
+                break;
+            case R.id.tv_comment:
+                mPopType = 5;
+                showCommentInputDialog(R.layout.dialog_comment_input);
+                break;
+            case R.id.tv_send:
+                if(TextUtils.isEmpty(etInput.getText().toString())){
+                    ToastUtil.toast(getString(R.string.article_comment_input_tips));
+                    return;
+                }
+                ToastUtil.toast(etInput.getText().toString());
                 break;
                 default:
                     break;
@@ -210,6 +231,27 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                     break;
         }
 
+    }
+
+    /**
+     * 显示评论输入框弹窗
+     * @param layoutId 布局id
+     */
+    private void showCommentInputDialog(int layoutId){
+        commentDialog = new PopDialog.Builder(getSupportFragmentManager(),this)
+                .setLayoutId(layoutId)
+                .setHeight(58)
+                .setGravity(Gravity.BOTTOM)
+                .setCancelableOutside(true)
+                .setInitPopListener(this)
+                .setDismissListener(new PopDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopDialog mPopDialog) {
+                        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+                    }
+                })
+                .create();
+        commentDialog.show();
     }
 
     /**
@@ -266,8 +308,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case 3:
                 setOnClick(view.findViewById(R.id.tv_delete),view.findViewById(R.id.tv_cancel));
                 break;
+                /*评论列表弹出框*/
             case 4:
-                setOnClick(view.findViewById(R.id.iv_close));
+                setOnClick(view.findViewById(R.id.iv_close),view.findViewById(R.id.tv_comment));
                 tvCommentTitle = view.findViewById(R.id.tv_comment_title);
                 RecyclerView itemRecycler = view.findViewById(R.id.comment_recycler);
                 LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -276,6 +319,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 ArticleCommentListAdapter adapter = new ArticleCommentListAdapter(this);
                 itemRecycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                break;
+                /*评论输入框*/
+            case 5:
+                etInput = view.findViewById(R.id.et_comment);
+                etInput.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        KeyBoardUtils.toggleKeybord(etInput);
+                    }
+                },300);
+                setOnClick(view.findViewById(R.id.tv_send));
                 break;
                 default:
                     break;

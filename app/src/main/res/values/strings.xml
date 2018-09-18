@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">考拉记账贷款借钱</string><!---->
+    <string name="app_content_description">TODO</string><!---->
     <string name="tab_home">首页</string>
     <string name="tab_loan">借款</string>
     <string name="tab_news">发现</string>
@@ -243,5 +244,8 @@
     <string name="article_more_report_content3">侵权盗用行为</string>
     <string name="article_more_report_content4">其它</string>
     <string name="article_more_report_delete">删除</string>
+    <string name="article_comment_input_tips">评论不能为空</string>
+    <string name="article_comment_send_text">发送</string>
+    <string name="article_comment_input_text">在这里畅所欲言吧</string>
 
 </resources>

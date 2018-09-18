@@ -16,7 +16,7 @@
             android:id="@+id/navigate"
             style="@style/ToolBarIconStyle"
             android:layout_centerVertical="true"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/app_content_description"
             android:src="@mipmap/left_arrow_black" />
 
         <ImageView
@@ -35,13 +35,15 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tool_bar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:descendantFocusability = "beforeDescendants"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 

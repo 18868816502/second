@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp58"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/tv_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginEnd="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginStart="@dimen/dp15"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/article_comment_send_text"
+        android:textSize="@dimen/sp17"
+        android:textColor="@color/c_ff5240"/>
+    <EditText
+        android:id="@+id/et_comment"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp40"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_send"
+        android:layout_marginRight="@dimen/dp15"
+        app:layout_constrainedWidth="true"
+        android:layout_marginLeft="@dimen/dp15"
+        android:background="@drawable/shape_article_comment_input"
+        android:paddingLeft="@dimen/dp12"
+        android:paddingRight="@dimen/dp12"
+        android:inputType="text"
+        android:hint="@string/article_comment_input_text"
+        android:textSize="@dimen/sp12"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.beihui.market.view.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.beihui.market.R;
 import com.beihui.market.util.DensityUtil;
@@ -35,9 +37,18 @@ public class PopDialog extends BaseDialog {
     public static final int POP_LIST = 106;//列表弹出框
 
     private FragmentManager fManager;
-    private int mLayoutId = 0;//自定义弹窗布局
-    private int mWidth;//弹窗高度，单位dp
-    private int mHeight;//弹窗高度，单位dp
+    /**
+     * 自定义弹窗布局
+     */
+    private int mLayoutId = 0;
+    /**
+     * 弹窗高度，单位dp
+     */
+    private int mWidth;
+    /**
+     * 弹窗高度，单位dp
+     */
+    private int mHeight;
 
     private String mTitle;
     private String mContent;
@@ -50,6 +61,7 @@ public class PopDialog extends BaseDialog {
     private static int mDialogType = 1;//默认为普通弹窗
 
     private OnInitPopListener mPopListener;
+    private OnDismissListener  mDismissListener;
     private int[] ids;
 
     @Override
@@ -70,6 +82,15 @@ public class PopDialog extends BaseDialog {
     private void setWindowAttr() {
         Window window = getDialog().getWindow();
         getDialog().setCanceledOnTouchOutside(mIsCancel);
+        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if(mDismissListener != null) {
+                    mDismissListener.onDismiss(PopDialog.this);
+                }
+            }
+        });
+
         if (window != null) {
             //设置弹窗背景色透明
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -94,6 +115,8 @@ public class PopDialog extends BaseDialog {
             //位置
             layoutParams.gravity = mGravity;
             window.setAttributes(layoutParams);
+
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
     }
 
@@ -106,6 +129,8 @@ public class PopDialog extends BaseDialog {
     public void findView(View view) {
         mPopListener.initPop(view, this);
     }
+
+
 
     public void show() {
         FragmentTransaction ft = fManager.beginTransaction();
@@ -214,6 +239,11 @@ public class PopDialog extends BaseDialog {
             return this;
         }
 
+        public Builder setDismissListener(OnDismissListener listener){
+            mDialog.mDismissListener = listener;
+            return this;
+        }
+
         /**
          * 设置弹窗动画
          *
@@ -232,7 +262,7 @@ public class PopDialog extends BaseDialog {
          * @return
          */
         public Builder setDialogType(int mDialogType) {
-            mDialog.mDialogType = mDialogType;
+//            mDialog.mDialogType = mDialogType;
             return this;
         }
 
@@ -253,5 +283,9 @@ public class PopDialog extends BaseDialog {
 
     public interface OnInitPopListener {
         void initPop(View view, PopDialog mPopDialog);
+    }
+
+    public interface OnDismissListener{
+        void onDismiss(PopDialog mPopDialog);
     }
 }

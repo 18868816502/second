@@ -108,6 +108,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     R.drawable.x_account_info_header_bg,
                     R.drawable.x_account_info_header_bg);
             setOnClick(ivAuthorAvatar,tvAttention,tvPraise);
+            tvArticleTitle.setFocusable(true);
         }
     }
 

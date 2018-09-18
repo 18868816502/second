@@ -22,6 +22,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+/**
+ * @author A
+ */
 public class InputMethodUtil {
     /**
      * 打开软键盘
