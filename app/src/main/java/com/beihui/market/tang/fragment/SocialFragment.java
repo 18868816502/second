@@ -2,18 +2,22 @@ package com.beihui.market.tang.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.SocialAdapter;
 import com.beihui.market.ui.activity.CommunityPublishActivity;
+import com.beihui.market.ui.fragment.SocialAttentionFragment;
+import com.beihui.market.ui.fragment.SocialRecommendFragment;
 import com.beihui.market.util.CommonUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -28,6 +32,9 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeAnchor;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +52,8 @@ import butterknife.OnClick;
  */
 
 public class SocialFragment extends BaseComponentFragment {
+    @BindView(R.id.root)
+    RelativeLayout root;
     @BindView(R.id.hold_view)
     View hold_view;
     @BindView(R.id.indicator)
@@ -55,7 +64,6 @@ public class SocialFragment extends BaseComponentFragment {
     ImageView ivPublish;
 
     private String[] mDataList = {"关注", "推荐"};
-    private SocialAdapter adapter = new SocialAdapter(mDataList);
 
     public static SocialFragment newInstance() {
         return new SocialFragment();
@@ -68,6 +76,13 @@ public class SocialFragment extends BaseComponentFragment {
 
     @Override
     public void configViews() {
+        List<Fragment> fragments = new ArrayList<>();
+        Fragment attFragment = SocialAttentionFragment.getInstance();
+        Fragment recFragment = SocialRecommendFragment.getInstance();
+        fragments.add(attFragment);
+        fragments.add(recFragment);
+        SocialAdapter adapter = new SocialAdapter(getActivity().getSupportFragmentManager());
+        adapter.setDatas(fragments);
         int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         ViewGroup.LayoutParams params = hold_view.getLayoutParams();
         params.height = statusHeight;
@@ -112,7 +127,7 @@ public class SocialFragment extends BaseComponentFragment {
                 });
                 badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
 
-                View badgeImageView = LayoutInflater.from(context).inflate(R.layout.layout_red_dot, null);
+                View badgeImageView = LayoutInflater.from(context).inflate(R.layout.layout_red_dot, root,false);
                 badgePagerTitleView.setBadgeView(badgeImageView);
 
                 badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -6));

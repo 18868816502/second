@@ -515,13 +515,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.PersonalCenterActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.CommunityPublishActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.SocialTopicDetailActivity"></activity>
     </application>
 
 </manifest>

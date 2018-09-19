@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/root">
 
     <View
         android:id="@+id/hold_view"
@@ -14,7 +14,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/hold_view">
+        android:layout_below="@id/hold_view"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +31,8 @@
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/toolbar"/>
+        android:layout_below="@id/toolbar"
+        android:background="@color/white"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

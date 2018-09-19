@@ -128,6 +128,7 @@
     <dimen name="dp99">99dp</dimen>
     <dimen name="dp100">100dp</dimen>
     <dimen name="dp110">110dp</dimen>
+    <dimen name="dp114">114dp</dimen>
     <dimen name="dp115">115dp</dimen>
     <dimen name="dp120">120dp</dimen>
     <dimen name="dp127">127dp</dimen>
@@ -157,6 +158,7 @@
     <dimen name="dp265">265dp</dimen>
     <dimen name="dp280">280dp</dimen>
     <dimen name="dp300">300dp</dimen>
+    <dimen name="dp302">302dp</dimen>
     <dimen name="dp340">340dp</dimen>
 
 
