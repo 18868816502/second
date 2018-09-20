@@ -62,7 +62,6 @@
         android:text="爱的木头,波罗申科说，“我们开始肘手是什么这下一个不走”种植《伍鳄..."/>
 
     <TextView
-        android:id="@+id/tv_view_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dp10"

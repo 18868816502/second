@@ -60,9 +60,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.WorthTestActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.LoanDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -79,15 +76,7 @@
             android:name=".ui.activity.ResetPsdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.MessageCenterActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.SysMsgActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.NoticeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -116,22 +105,13 @@
             android:name=".ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.NoticeDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.SysMsgDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.CollectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ChoiceProductActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.RecommendProductActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.MyProductActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ThirdAuthorizationActivity"
@@ -156,9 +136,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RewardPointActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.LoanProductActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.DebtSourceActivity"
@@ -214,9 +191,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.UserProtocolActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.TabNewsWebViewSecordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutKaolaActivity"
@@ -317,9 +291,6 @@
             android:name=".ui.activity.FastDebtDetailActivity"
             android:screenOrientation="portrait" />
         <!-- 输入新手机号码 -->
-        <activity
-            android:name=".ui.activity.InputNewMobileActivity"
-            android:screenOrientation="portrait" />
         <!-- 记账流程 -->
         <activity
             android:name=".ui.activity.AccountFlowActivity"
@@ -332,10 +303,6 @@
             android:name=".ui.activity.AccountFlowTypeActivity"
             android:screenOrientation="portrait" />
         <!-- 个人中心 账单类型选择 -->
-        <activity
-            android:name=".ui.activity.TabMineActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!-- WebViewActivity -->
         <activity
             android:name=".ui.activity.WebViewActivity"

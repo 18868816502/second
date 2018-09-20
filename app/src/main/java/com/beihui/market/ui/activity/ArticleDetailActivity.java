@@ -134,11 +134,11 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             case R.id.iv_more:
                 //判断是否是自己的文章
-                mPopType = 2;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager,this,this);
+//                mPopType = 2;
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager,this,this);
 
-//                mPopType = 3;
-//                PopUtils.showBottomPopWindow(R.layout.dialog_article_mine_more, fManager,this,this);
+                mPopType = 3;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_mine_more, fManager,this,this);
                 break;
             case R.id.tv_cancel:
                 hideDialog();

@@ -113,7 +113,6 @@
 
                 <TextView
                     android:visibility="gone"
-                    android:id="@+id/set_status"
                     android:layout_width="70dp"
                     android:layout_height="28dp"
                     android:layout_gravity="bottom|right"

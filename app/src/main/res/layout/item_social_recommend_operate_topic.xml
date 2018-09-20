@@ -55,7 +55,6 @@
         android:text="爱的木头"/>
 
     <TextView
-        android:id="@+id/tv_parise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/star_icon_black"

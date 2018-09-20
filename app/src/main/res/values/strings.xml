@@ -159,17 +159,6 @@
         <item>1.3折(4.225%)</item>
     </array>
 
-    <array name="loan_gjj_rate">
-        <item>3.25</item>
-        <item>2.275</item>
-        <item>2.7625</item>
-        <item>2.86</item>
-        <item>2.925</item>
-        <item>3.575</item>
-        <item>3.9</item>
-        <item>4.225</item>
-    </array>
-
     <string name="loan_calculate">房贷计算器</string>
     <string name="loan_comm">商业贷款</string>
     <string name="loan_gjj">公积金贷款</string>
