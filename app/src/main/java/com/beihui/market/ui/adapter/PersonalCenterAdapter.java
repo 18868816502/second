@@ -287,7 +287,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                     ToastUtil.toast("评论");
                     break;
                 case R.id.article_item:
-                    itemListener.OnItemClick((Integer) view.getTag());
+                    itemListener.onItemClick((Integer) view.getTag());
                     break;
                     default:
                         break;
