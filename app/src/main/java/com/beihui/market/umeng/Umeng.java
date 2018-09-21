@@ -20,11 +20,11 @@ import com.umeng.socialize.UMShareConfig;
 public class Umeng {
     public static void install(Context context) {
         /*微信开放平台申请的账号*/
-        PlatformConfig.setWeixin("wx85ba05e3d5eca8a5", "ed4bfef7288e94df20e2b3a4ef92d792");
+        PlatformConfig.setWeixin(BuildConfig.WECHAT_APP_ID, BuildConfig.WECHAT_APP_SECRET);
         /*QQ开放平台申请的账号*/
-        PlatformConfig.setQQZone("1106217443", "UiOL1Ct0h3tGOirD");
+        PlatformConfig.setQQZone(BuildConfig.QQ_APP_ID, BuildConfig.QQ_APP_SECRET);
         /*新浪开放平台申请的账号*/
-        PlatformConfig.setSinaWeibo("2037274409", "ad8ac41cb179ffcb92f28b312a055074", "http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo(BuildConfig.SINA_APP_ID, BuildConfig.SINA_APP_SECRET, BuildConfig.SINA_APP_SHARE_URL);
 
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);

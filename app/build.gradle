@@ -18,16 +18,17 @@ android {
 
         multiDexEnabled true
         buildConfigField("boolean", "API_ENV", "$debug_mode")
+        buildConfigField("String", "UMENG_APP_KEY", "$umeng_app_key")
+        buildConfigField("String", "WECHAT_APP_ID", "$wechat_app_id")
+        buildConfigField("String", "WECHAT_APP_SECRET", "$wechat_app_secret")
+        buildConfigField("String", "QQ_APP_ID", "$qq_app_id")
+        buildConfigField("String", "QQ_APP_SECRET", "$qq_app_secret")
+        buildConfigField("String", "SINA_APP_ID", "$sina_app_id")
+        buildConfigField("String", "SINA_APP_SECRET", "$sina_app_secret")
+        buildConfigField("String", "SINA_APP_SHARE_URL", "$sina_app_share_url")
     }
 
     signingConfigs {
-        loanmarkettest {
-            storeFile file('../loanmarkettest.jks')
-            storePassword "123456"
-            keyAlias "loanmarkettest"
-            keyPassword "123456"
-        }
-
         loanmarket {
             storeFile file('../loanMarket.jks')
             storePassword "123456"
@@ -61,51 +62,30 @@ android {
             dimension "id"
             applicationId ext.application_id
             if (debug_mode) {//测试环境 + 测试魔蝎appkey
-                buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-                buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-                buildConfigField("String", "H5_DOMAIN_NEW", "\"http://116.62.148.52\"")
-                buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
+                buildConfigField("String", "DOMAIN", "$debug_domain")
+                //buildConfigField("String", "DOMAIN", "$debug_native")
+                buildConfigField("String", "H5_DOMAIN", "$debug_h5_domain")
+                buildConfigField("String", "H5_DOMAIN_NEW", "$debug_h5_domain")
+                buildConfigField("String", "MOXIE_APP_KEY", "$debug_moxie_app_key")
             } else {//生产环境 + 正式环境魔蝎appkey
-                buildConfigField("String", "DOMAIN", "\"https://api.kaolabill.com\"")
-                buildConfigField("String", "H5_DOMAIN", "\"https://h5.kaolabill.com\"")
-                buildConfigField("String", "H5_DOMAIN_NEW", "\"https://tg.kaolabill.com\"")
-                buildConfigField("String", "MOXIE_APP_KEY", "\"a6f026655d5a4acb91b915172fd13be2\"")
+                buildConfigField("String", "DOMAIN", "$release_domain")
+                buildConfigField("String", "H5_DOMAIN", "$release_h5_domain")
+                buildConfigField("String", "H5_DOMAIN_NEW", "$release_h5_new_domain")
+                buildConfigField("String", "MOXIE_APP_KEY", "$release_moxie_app_key")
             }
             manifestPlaceholders = [
-                    GETUI_APP_ID    : "$getui_app_id",
-                    GETUI_APP_SECRET: "$getui_app_secret",
-                    GETUI_APP_KEY   : "$getui_app_key",
+                    GETUI_APP_ID    : debug_mode ? "$debug_getui_app_id" : "$release_getui_app_id",
+                    GETUI_APP_SECRET: debug_mode ? "$debug_getui_app_secret" : "$release_getui_app_secret",
+                    GETUI_APP_KEY   : debug_mode ? "$debug_getui_app_key" : "$release_getui_app_key",
                     UMENG_APP_KEY   : "$umeng_app_key",
-                    qqappid         : "1106280475",
+                    qqappid         : "$qq_app_id",
                     PACKAGE_NAME    : applicationId
             ]
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill-v2.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
+            buildConfigField("String", "PATH_USER_AGREEMENT", "$path_user_agreement")
+            buildConfigField("String", "PATH_ABOUT_US", "$path_about_us")
+            buildConfigField("String", "PATH_HELPER_CENTER", "$path_helper_center")
             signingConfig signingConfigs.loanmarket
         }
-
-        /*loanmarkettest {
-            dimension "id"
-            applicationId "com.beihui.market.test"
-            //测试使用的魔蝎appkey
-            buildConfigField("String", "MOXIE_APP_KEY", "\"d1e1ee2c1ca54ec48eec64ad4ae80de6\"")
-            buildConfigField("String", "DOMAIN", "\"http://116.62.134.207:8082\"")
-            buildConfigField("String", "H5_DOMAIN_NEW", "\"https://tg.kaolabill.com\"")
-            buildConfigField("String", "H5_DOMAIN", "\"http://116.62.148.52\"")
-            manifestPlaceholders = [
-                    GETUI_APP_ID    : "5GNOPXpt1I81kncNuJ6ZHA",
-                    GETUI_APP_KEY   : "7ugBoN62pZ9rdovITlwDc",
-                    GETUI_APP_SECRET: "scvWVg5Eu28sNWrEkJ9db1",
-                    UMENG_APP_KEY   : "596c4b3dbbea83542c001b01",
-                    qqappid         : "1106280475",
-                    PACKAGE_NAME    : applicationId
-            ]
-            buildConfigField("String", "PATH_USER_AGREEMENT", "\"/registrationProtocol.html\"")
-            buildConfigField("String", "PATH_ABOUT_US", "\"/understand-kaolabill.html\"")
-            buildConfigField("String", "PATH_HELPER_CENTER", "\"/helpcenter.html\"")
-            signingConfig signingConfigs.loanmarkettest
-        }*/
 
         kaolajizhang_baidu { dimension "channel" }
         kaolajizhang_360 { dimension "channel" }
@@ -233,7 +213,6 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-7'
     //magic indicator
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
-
     /*banner*/
     compile 'cn.bingoogolapple:bga-banner:2.2.4@aar'
 }
