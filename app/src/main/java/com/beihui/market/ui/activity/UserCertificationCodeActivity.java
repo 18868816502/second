@@ -154,53 +154,51 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                 if (TextUtils.isEmpty(intent.getStringExtra("bindPhone"))) {
                     Api.getInstance().loginByCode(pendingPhone, verifyCode.getText().toString()).compose(RxUtil.<ResultEntity<UserProfileAbstract>>io2main())
                             .subscribe(new Consumer<ResultEntity<UserProfileAbstract>>() {
-                                           @Override
-                                           public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
-                                               if (result.isSuccess()) {
-                                                   //umeng统计
-                                                   Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
-                                                   EventBus.getDefault().post("1");
-                                                   EventBus.getDefault().post(new UserLoginEvent());
-                                                   //登录之后，将用户信息注册到本地
-                                                   UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
-                                                   //保存用户id,缓存
-                                                   SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
-                                                   /**
-                                                    * 调用登录接口
-                                                    */
-                                                   loginNoPwd(result.getData());
-                                               } else {
-                                                   //umeng统计
-                                                   Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
-                                                   showErrorMsg(result.getMsg());
-                                               }
-                                           }
-                                       },
-                                    new Consumer<Throwable>() {
-                                        @Override
-                                        public void accept(@NonNull Throwable throwable) throws Exception {
-                                            showErrorMsg("网络错误");
-                                        }
-                                    });
+                                @Override
+                                public void accept(@NonNull ResultEntity<UserProfileAbstract> result) throws Exception {
+                                    if (result.isSuccess()) {
+                                        //umeng统计
+                                        Statistic.onEvent(Events.REGISTER_VERIFICATION_SUCCESS);
+                                        EventBus.getDefault().post("1");
+                                        EventBus.getDefault().post(new UserLoginEvent());
+                                        //登录之后，将用户信息注册到本地
+                                        UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
+                                        //保存用户id,缓存
+                                        SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
+                                        /**
+                                         * 调用登录接口
+                                         */
+                                        loginNoPwd(result.getData());
+                                    } else {
+                                        //umeng统计
+                                        Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
+                                        showErrorMsg(result.getMsg());
+                                    }
+                                }
+                            }, new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    showErrorMsg("网络错误");
+                                }
+                            });
                 } else {
                     Api.getInstance().updateBindPhone(UserHelper.getInstance(this).getProfile().getAccount(), pendingPhone, verifyCode.getText().toString()).compose(RxUtil.<ResultEntity>io2main())
                             .subscribe(new Consumer<ResultEntity>() {
-                                           @Override
-                                           public void accept(@NonNull ResultEntity result) throws Exception {
-                                               if (result.isSuccess()) {
-                                                   UserHelper.getInstance(UserCertificationCodeActivity.this).updateBindPhone(pendingPhone, UserCertificationCodeActivity.this);
-                                               } else {
-                                                   showErrorMsg(result.getMsg());
-                                               }
-                                               finish();
-                                           }
-                                       },
-                                    new Consumer<Throwable>() {
-                                        @Override
-                                        public void accept(@NonNull Throwable throwable) throws Exception {
-                                            showErrorMsg("网络错误");
-                                        }
-                                    });
+                                @Override
+                                public void accept(@NonNull ResultEntity result) throws Exception {
+                                    if (result.isSuccess()) {
+                                        UserHelper.getInstance(UserCertificationCodeActivity.this).updateBindPhone(pendingPhone, UserCertificationCodeActivity.this);
+                                    } else {
+                                        showErrorMsg(result.getMsg());
+                                    }
+                                    finish();
+                                }
+                            }, new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    showErrorMsg("网络错误");
+                                }
+                            });
                 }
                 break;
         }
@@ -219,26 +217,25 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
         Api.getInstance().requestPhoneLogin(pendingPhone)
                 .compose(RxUtil.<ResultEntity<Phone>>io2main())
                 .subscribe(new Consumer<ResultEntity<Phone>>() {
-                               @Override
-                               public void accept(ResultEntity<Phone> result) throws Exception {
-                                   fetchText.setEnabled(true);
-                                   if (result.isSuccess()) {
-                                       //umeng统计
-                                       Statistic.onEvent(Events.REGISTER_GET_VERIFY_SUCCESS);
-                                   } else {
-                                       //umeng统计
-                                       Statistic.onEvent(Events.REGISTER_GET_VERIFY_FAILED);
-                                       showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                fetchText.setEnabled(true);
-                                showErrorMsg("网络错误");
-                            }
-                        });
+                    @Override
+                    public void accept(ResultEntity<Phone> result) throws Exception {
+                        fetchText.setEnabled(true);
+                        if (result.isSuccess()) {
+                            //umeng统计
+                            Statistic.onEvent(Events.REGISTER_GET_VERIFY_SUCCESS);
+                        } else {
+                            //umeng统计
+                            Statistic.onEvent(Events.REGISTER_GET_VERIFY_FAILED);
+                            showErrorMsg(result.getMsg());
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        fetchText.setEnabled(true);
+                        showErrorMsg("网络错误");
+                    }
+                });
     }
 
 
@@ -246,19 +243,12 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
      * 免密码登录
      */
     private void loginNoPwd(UserProfileAbstract result) {
+        EventBus.getDefault().post(new UserLoginEvent());
         if (result.isNewUser()) {
             UserPsdEditActivity.launch(UserCertificationCodeActivity.this, 1, pendingPhone);
-
             //umeng统计
             Statistic.onEvent(Events.LOGIN_REGISTER);
         } else {
-            /**
-             * 进入账单模块首页
-             */
-            /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("account", true);
-            startActivity(intent);*/
-
             Statistic.login(result.getId());
             //登录之后，将用户信息注册到本地
             UserHelper.getInstance(getApplicationContext()).update(result, pendingPhone, getApplicationContext());
@@ -267,7 +257,6 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
             finish();
         }
     }
-
 
     /**
      * 跳转输入验证码页面
@@ -296,5 +285,4 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
         context.finish();
     }
-
 }
