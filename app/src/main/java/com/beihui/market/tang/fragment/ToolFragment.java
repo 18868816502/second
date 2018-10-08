@@ -59,18 +59,22 @@ public class ToolFragment extends BaseComponentFragment {
 
     @OnClick({R.id.clb_credit_wrap, R.id.clb_interest_wrap, R.id.clb_ticket_wrap})
     public void onClick(View view) {
-        if (!UserHelper.getInstance(getActivity()).isLogin()) {
-            UserAuthorizationActivity.launch(getActivity());
-            return;
-        }
         switch (view.getId()) {
             case R.id.clb_credit_wrap:
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    UserAuthorizationActivity.launch(getActivity());
+                    return;
+                }
                 startActivity(new Intent(getActivity(), CreditQueryActivity.class));
                 break;
             case R.id.clb_interest_wrap:
                 startActivity(new Intent(getActivity(), HouseLoanCalculatorActivity.class));
                 break;
             case R.id.clb_ticket_wrap:
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    UserAuthorizationActivity.launch(getActivity());
+                    return;
+                }
                 startActivity(new Intent(getActivity(), TicketActivity.class));
                 break;
             default:

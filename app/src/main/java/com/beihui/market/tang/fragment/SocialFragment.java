@@ -127,7 +127,7 @@ public class SocialFragment extends BaseComponentFragment {
                 });
                 badgePagerTitleView.setInnerPagerTitleView(simplePagerTitleView);
 
-                View badgeImageView = LayoutInflater.from(context).inflate(R.layout.layout_red_dot, root,false);
+                View badgeImageView = LayoutInflater.from(context).inflate(R.layout.layout_red_dot, root, false);
                 badgePagerTitleView.setBadgeView(badgeImageView);
 
                 badgePagerTitleView.setXBadgeRule(new BadgeRule(BadgeAnchor.CONTENT_RIGHT, -6));
@@ -150,8 +150,8 @@ public class SocialFragment extends BaseComponentFragment {
     }
 
     @OnClick(R.id.iv_publish)
-    public void onViewClick(View view){
-        switch (view.getId()){
+    public void onViewClick(View view) {
+        switch (view.getId()) {
             case R.id.iv_publish:
                 startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 break;

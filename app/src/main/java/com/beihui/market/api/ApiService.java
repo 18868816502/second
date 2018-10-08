@@ -7,6 +7,7 @@ import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.entity.AnalysisOverviewBean;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.entity.Audit;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
@@ -1234,6 +1235,7 @@ public interface ApiService {
 
     /**
      * 用户主页-个人信息
+     *
      * @param userID
      * @return
      */
@@ -1243,12 +1245,16 @@ public interface ApiService {
 
     /**
      * 用户主页-用户发表的文章列表
-     * @param userID 用户id
-     * @param pageNo 页码
+     *
+     * @param userID   用户id
+     * @param pageNo   页码
      * @param pageSize 每页条数
      * @return
      */
     @FormUrlEncoded
     @POST("/s1/userIndex/forumInfo")
-    Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(@Field("userId") String userID,@Field("pageNo") int pageNo,@Field("pageSize") int pageSize);
+    Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    @POST("s1/version/audit/land")
+    Observable<ResultEntity<Audit>> audit();
 }

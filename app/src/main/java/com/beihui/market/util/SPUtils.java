@@ -3,6 +3,8 @@ package com.beihui.market.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.beihui.market.helper.DataStatisticsHelper;
+
 public class SPUtils {
     private static final String TAG = "Info";
 
@@ -41,6 +43,19 @@ public class SPUtils {
         editor.putString("lastNoticeId", lastNoticeId);
         editor.apply();
     }
+
+    public static boolean getFirstInstall(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getBoolean(DataStatisticsHelper.ID_FIRST_INSTALL, true);
+    }
+
+    public static void setFirstInstall(Context context, boolean first) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(DataStatisticsHelper.ID_FIRST_INSTALL, first);
+        editor.apply();
+    }
+
 
     public static boolean getNoticeClosed(Context context) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);

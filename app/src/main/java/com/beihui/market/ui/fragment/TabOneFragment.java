@@ -52,7 +52,7 @@ import butterknife.BindView;
 
 /**
  * @author xhb
- * 发现 模块 使用WebView页面 (非资讯详情页)
+ *         发现 模块 使用WebView页面 (非资讯详情页)
  * @version 2.1.1
  * @date 20180419
  */
@@ -152,7 +152,6 @@ public class TabOneFragment extends BaseTabFragment {
                     if (swipeRefreshLayout != null) {
                         swipeRefreshLayout.setEnabled(scrollView.getScrollY() == 0);
                     }
-                    mScrollY = scrollView.getScrollY() + "";
                 }
             });
         }
@@ -166,14 +165,6 @@ public class TabOneFragment extends BaseTabFragment {
             }
         });
         webView.addJavascriptInterface(new mobileJsMethod(), "android");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if ("0".equals(mScrollY)) {
-            swipeRefreshLayout.setEnabled(true);
-        }
     }
 
     private void initWebView() {
@@ -193,7 +184,6 @@ public class TabOneFragment extends BaseTabFragment {
 
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setSavePassword(false);
-
 
         webSettings.setDomStorageEnabled(true);
         webSettings.setDatabaseEnabled(true);
@@ -335,11 +325,6 @@ public class TabOneFragment extends BaseTabFragment {
             }
         }
     }
-
-    /**
-     * HTML Y轴坐标
-     */
-    public String mScrollY = "0";
 
     @Override
     protected void configureComponent(AppComponent appComponent) {

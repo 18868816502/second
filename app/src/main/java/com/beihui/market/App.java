@@ -1,15 +1,19 @@
 package com.beihui.market;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.beihui.market.api.Api;
 import com.beihui.market.base.Constant;
+import com.beihui.market.entity.Audit;
 import com.beihui.market.helper.ActivityTracker;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
@@ -17,6 +21,8 @@ import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerAppComponent;
 import com.beihui.market.injection.module.ApiModule;
 import com.beihui.market.injection.module.AppModule;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.umeng.Umeng;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.view.jiang.ClassicFooter;
@@ -31,6 +37,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 
+import java.util.List;
+
 import cn.xiaoneng.uiapi.Ntalker;
 
 
@@ -41,6 +49,7 @@ public class App extends Application {
     public static WindowManager mWindowManager;//窗口
     public static int mWidthPixels;//屏幕宽度（像素）
     public static String sChannelId = "unknown";
+    public static int audit = 1;//是否审核中
 
     static {
         //设置全局的Header构建器
@@ -90,12 +99,31 @@ public class App extends Application {
             //sChannelId = AnalyticsConfig.getChannel(this);
         } catch (PackageManager.NameNotFoundException e) {
         }
-        //pv，uv统计
-        String androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (UserHelper.getInstance(this).isLogin()) {
-            DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
-        } else {
-            DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
+        if (TextUtils.equals(getProcessName(this), getPackageName())) {
+            //pv，uv统计
+            String androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            if (UserHelper.getInstance(this).isLogin()) {
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
+            } else {
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
+            }
+            if (SPUtils.getFirstInstall(this)) {
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
+                SPUtils.setFirstInstall(this, false);
+            }
+            /*是否审核状态*/
+            Api.getInstance().audit()
+                    .compose(RxResponse.<Audit>compatT())
+                    .subscribe(new ApiObserver<Audit>() {
+                        @Override
+                        public void onNext(Audit data) {
+                            try {
+                                audit = data.audit;
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+
         }
         //获取WindowManager
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -119,5 +147,17 @@ public class App extends Application {
 
     public AppComponent getAppComponent() {
         return appComponent;
+    }
+
+    private String getProcessName(Context cxt) {
+        ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) return null;
+        for (ActivityManager.RunningAppProcessInfo procInfo : runningApps) {
+            if (procInfo.pid == android.os.Process.myPid()) {
+                return procInfo.processName;
+            }
+        }
+        return null;
     }
 }

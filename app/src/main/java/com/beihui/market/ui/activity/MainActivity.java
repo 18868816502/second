@@ -112,6 +112,11 @@ public class MainActivity extends BaseComponentActivity {
     ImageView tabMineIcon;
     @BindView(R.id.tab_mine_text)
     TextView tabMineText;
+    //第三个tab
+    @BindView(R.id.tab_three_icon)
+    ImageView tabThreeIcon;
+    @BindView(R.id.tab_three_text)
+    TextView tabThreeText;
 
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
@@ -259,13 +264,10 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabSocialIcon, tabMineIcon};
-        textView = new TextView[]{tabBillText, tabDiscoverText, tabSocialText, tabMineText};
+        iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabThreeIcon, tabSocialIcon, tabMineIcon};
+        textView = new TextView[]{tabBillText, tabDiscoverText, tabThreeText, tabSocialText, tabMineText};
         activity = this;
-
-        EventBus.getDefault().register(this);
-        //ImmersionBar.with(this).fitsSystemWindows(false).statusBarColor(R.color.transparent).init();
-
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
@@ -352,11 +354,11 @@ public class MainActivity extends BaseComponentActivity {
         }, 400);
     }
 
-    public HomeFragment tabHome;
-    public DiscoverFragment tabDiscover;
-//    public ToolFragment tabSocial;
-    public SocialFragment tabSocial;
-    public PersonalFragment tabMine;
+    private HomeFragment tabHome;
+    private DiscoverFragment tabDiscover;
+    private ToolFragment tabTool;
+    private SocialFragment tabSocial;
+    private PersonalFragment tabMine;
     public Fragment currentFragment;
 
     private void selectTab(int id) {
@@ -372,9 +374,12 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
-//            tabSocial = ToolFragment.newInstance();
             tabSocial = SocialFragment.newInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
+        }
+        if (tabTool == null) {
+            tabTool = ToolFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabTool).hide(tabTool);
         }
         if (tabMine == null) {
             tabMine = PersonalFragment.newInstance();
@@ -382,7 +387,7 @@ public class MainActivity extends BaseComponentActivity {
         }
         switch (id) {
             case R.id.tab_bill_root://账单
-                ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome);
+                ft.hide(tabDiscover).hide(tabTool).hide(tabMine).show(tabHome).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
@@ -424,7 +429,16 @@ public class MainActivity extends BaseComponentActivity {
                 }
                 break;
             case R.id.tab_discover_root://发现
-                ft.show(tabDiscover).hide(tabHome).hide(tabSocial).hide(tabMine);
+                ft.show(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine).hide(tabSocial);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                currentFragment = tabDiscover;
+                if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);
+                break;
+            case R.id.tab_three_root://社区
+                ft.show(tabSocial).hide(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
@@ -433,7 +447,7 @@ public class MainActivity extends BaseComponentActivity {
                     tabHome.recycler().smoothScrollToPosition(0);
                 break;
             case R.id.tab_social_root://工具
-                ft.show(tabSocial).hide(tabHome).hide(tabDiscover).hide(tabMine);
+                ft.show(tabTool).hide(tabHome).hide(tabDiscover).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
@@ -442,7 +456,7 @@ public class MainActivity extends BaseComponentActivity {
                     tabHome.recycler().smoothScrollToPosition(0);
                 break;
             case R.id.tab_mine_root://个人
-                ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabSocial);
+                ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabTool).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
@@ -544,17 +558,20 @@ public class MainActivity extends BaseComponentActivity {
         List<String> tabTxt = new ArrayList<>();
         tabTxt.add("账单");
         tabTxt.add("发现");
+        tabTxt.add("社区");
         tabTxt.add("工具");
         tabTxt.add("我的");
         List<Drawable[]> drawables = new ArrayList<>();
         Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_normal)};
         Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
-        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_normal)};
-        Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
+        Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_normal)};
+        Drawable[] bitmaps4 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
         drawables.add(bitmaps0);
         drawables.add(bitmaps1);
         drawables.add(bitmaps2);
         drawables.add(bitmaps3);
+        drawables.add(bitmaps4);
         for (int i = 0; i < tabTxt.size(); i++) {
             textView[i].setTextColor(colorStateList);
             textView[i].setText(tabTxt.get(i));

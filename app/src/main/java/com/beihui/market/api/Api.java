@@ -13,6 +13,7 @@ import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.AllDebt;
 import com.beihui.market.entity.AnalysisChartBean;
 import com.beihui.market.entity.AppUpdate;
+import com.beihui.market.entity.Audit;
 import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.BillDetail;
 import com.beihui.market.entity.BillLoanAnalysisBean;
@@ -1189,5 +1190,9 @@ public class Api {
         String sha = new String(Hex.encodeHex(DigestUtils.sha512(pwd)));
         String md5 = new String(Hex.encodeHex(DigestUtils.md5(sha + account)));
         return md5.toUpperCase();
+    }
+
+    public Observable<ResultEntity<Audit>> audit() {
+        return service.audit();
     }
 }

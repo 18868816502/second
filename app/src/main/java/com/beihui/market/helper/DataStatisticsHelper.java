@@ -239,6 +239,7 @@ public class DataStatisticsHelper {
      * APP开启事件
      */
     public static final String ID_OPEN_APP = "OPEN_APP";
+    public static final String ID_FIRST_INSTALL = "FirstInstall";
 
     /**
      * 快捷记账按钮

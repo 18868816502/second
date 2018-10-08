@@ -29,13 +29,13 @@ task clean(type: Delete) {
 }
 
 ext {
-    debug_mode = false
+    debug_mode = true
     application_id = 'com.beihui.market'
     compile_sdk_version = 26
     min_sdk_version = 16
     target_sdk_version = 26
     build_version = '26.0.2'
     support_library_version = '26.1.0'
-    version_code = 23
-    version_name = '4.2.6'
+    version_code = 24
+    version_name = '4.2.7'
 }

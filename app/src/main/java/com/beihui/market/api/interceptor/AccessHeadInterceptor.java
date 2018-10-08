@@ -56,7 +56,7 @@ public class AccessHeadInterceptor implements Interceptor {
                 }
             }
             String url = httpUrl.toString();
-            url = url + "?" + "packageId=" + App.sChannelId + "&version=" + BuildConfig.VERSION_NAME + "&userIp=" + NetUtils.getIPAddress(App.getInstance());
+            url = url + "?" + "packageId=" + App.sChannelId + "&terminal=1&version=" + BuildConfig.VERSION_NAME + "&userIp=" + NetUtils.getIPAddress(App.getInstance());
             StringBuilder sb = new StringBuilder();
             if (params.size() > 0) {
                 Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
@@ -78,6 +78,7 @@ public class AccessHeadInterceptor implements Interceptor {
                     .addEncoded("packageId", App.sChannelId)
                     .addEncoded("version", BuildConfig.VERSION_NAME)
                     .addEncoded("userIp", NetUtils.getIPAddress(App.getInstance()))
+                    .addEncoded("terminal", "1")
                     .build();
             request = request.newBuilder().post(formBody).build();
         }
