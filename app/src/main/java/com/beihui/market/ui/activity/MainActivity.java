@@ -49,6 +49,7 @@ import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.DiscoverFragment;
 import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.ui.fragment.PersonalFragment;
+import com.beihui.market.ui.fragment.SocialRecommendFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
@@ -355,7 +356,8 @@ public class MainActivity extends BaseComponentActivity {
     public HomeFragment tabHome;
     public DiscoverFragment tabDiscover;
 //    public ToolFragment tabSocial;
-    public SocialFragment tabSocial;
+//    public SocialFragment tabSocial;
+    public SocialRecommendFragment tabSocial;
     public PersonalFragment tabMine;
     public Fragment currentFragment;
 
@@ -372,8 +374,7 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
-//            tabSocial = ToolFragment.newInstance();
-            tabSocial = SocialFragment.newInstance();
+            tabSocial = SocialRecommendFragment.getInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
         if (tabMine == null) {
