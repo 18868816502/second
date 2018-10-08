@@ -1,6 +1,7 @@
 package com.beihui.market.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -12,6 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.ui.listeners.OnItemClickListener;
+import com.beihui.market.ui.listeners.TextWatcherListener;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +36,15 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private HeadViewHolder headViewHolder;
     private ContentViewHolder contentViewHolder;
+    private CommunityPublishHeadAdapter adapter;
 
     public CommunityPublishAdapter(Context mContext) {
         this.mContext = mContext;
+    }
+
+    public void setHeadData(List<Uri> mList){
+        adapter.setData(mList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -74,20 +85,26 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    class HeadViewHolder extends RecyclerView.ViewHolder {
+    class HeadViewHolder extends RecyclerView.ViewHolder implements OnItemClickListener {
 
         @BindView(R.id.recycler_publish)
         RecyclerView publishRecycler;
 
-        public HeadViewHolder(View itemView) {
+        HeadViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            CommunityPublishHeadAdapter adapter = new CommunityPublishHeadAdapter(mContext);
+            adapter = new CommunityPublishHeadAdapter(mContext);
             GridLayoutManager manager = new GridLayoutManager(mContext,4);
             manager.setSpanCount(4);
             publishRecycler.setLayoutManager(manager);
             publishRecycler.setAdapter(adapter);
+            adapter.setOnItemClickListener(this);
             adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onItemClick(int position) {
+            listener.onItemClick(position);
         }
     }
 
@@ -109,23 +126,16 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    class TextWatcher implements android.text.TextWatcher{
-
-
-
+    class TextWatcher extends TextWatcherListener{
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            contentViewHolder.tvPublishTitleNum.setText((30-s.length()) + "/30");
         }
+    }
 
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            contentViewHolder.tvPublishTitleNum.setText((30-charSequence.length()) + "/30");
-        }
+    private OnItemClickListener listener;
 
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }

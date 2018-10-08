@@ -1,7 +1,10 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,9 +15,13 @@ import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.adapter.CommunityPublishAdapter;
+import com.beihui.market.ui.listeners.OnItemClickListener;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
+import com.zhihu.matisse.Matisse;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -25,7 +32,9 @@ import butterknife.BindView;
  * @author chenguoguo
  * @time 2018/9/11 18:45
  */
-public class CommunityPublishActivity extends BaseComponentActivity implements View.OnClickListener,PopDialog.OnInitPopListener {
+public class CommunityPublishActivity extends BaseComponentActivity implements View.OnClickListener,PopDialog.OnInitPopListener,OnItemClickListener {
+
+    public static final int REQUEST_CODE_CHOOSE = 23;
 
     @BindView(R.id.tool_bar)
     RelativeLayout rlTitleBar;
@@ -39,6 +48,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
     private CommunityPublishAdapter adapter;
     private PopDialog popDialog;
     private int mPopType = 0;
+    private List<Uri> uriList;
 
     @Override
     public int getLayoutId() {
@@ -54,6 +64,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        adapter.setOnItemClickListener(this);
 
         ivNavigate.setOnClickListener(this);
         tvPublish.setOnClickListener(this);
@@ -129,5 +140,23 @@ public class CommunityPublishActivity extends BaseComponentActivity implements V
                     break;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+//            adapter.setHeadData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+            uriList = Matisse.obtainResult(data);
+            adapter.setHeadData(uriList);
+        }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        if(uriList != null) {
+            uriList.remove(position);
+            adapter.setHeadData(uriList);
+        }
     }
 }

@@ -13,6 +13,6 @@ public interface OnItemClickListener {
      * 点击事件回调方法
      * @param position 点击item的位置
      */
-    void OnItemClick(int position);
+    void onItemClick(int position);
 
 }

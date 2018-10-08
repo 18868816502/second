@@ -228,7 +228,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     }
 
     @Override
-    public void OnItemClick(int position) {
+    public void onItemClick(int position) {
         startActivity(new Intent(this,ArticleDetailActivity.class));
     }
 }

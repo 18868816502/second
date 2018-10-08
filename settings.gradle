@@ -1,1 +1,1 @@
-include ':app', ':xiaonengchat'
+include ':app', ':xiaonengchat',':matisse'
