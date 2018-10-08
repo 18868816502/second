@@ -39,7 +39,6 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.adapter.HomePageAdapter;
-import com.beihui.market.tang.fragment.SocialFragment;
 import com.beihui.market.tang.fragment.ToolFragment;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -49,6 +48,7 @@ import com.beihui.market.ui.dialog.AdDialog;
 import com.beihui.market.ui.fragment.DiscoverFragment;
 import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.ui.fragment.PersonalFragment;
+import com.beihui.market.ui.fragment.SocialRecommendFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
@@ -357,7 +357,8 @@ public class MainActivity extends BaseComponentActivity {
     private HomeFragment tabHome;
     private DiscoverFragment tabDiscover;
     private ToolFragment tabTool;
-    private SocialFragment tabSocial;
+    //private SocialFragment tabSocial;
+    public SocialRecommendFragment tabSocial;
     private PersonalFragment tabMine;
     public Fragment currentFragment;
 
@@ -374,7 +375,7 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
-            tabSocial = SocialFragment.newInstance();
+            tabSocial = SocialRecommendFragment.getInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
         if (tabTool == null) {
@@ -387,7 +388,7 @@ public class MainActivity extends BaseComponentActivity {
         }
         switch (id) {
             case R.id.tab_bill_root://账单
-                ft.hide(tabDiscover).hide(tabTool).hide(tabMine).show(tabHome).hide(tabSocial);
+                ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);

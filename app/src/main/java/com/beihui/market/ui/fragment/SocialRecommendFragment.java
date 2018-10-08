@@ -1,14 +1,18 @@
 package com.beihui.market.ui.fragment;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.SocialTopicBean;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.CommunityPublishActivity;
 import com.beihui.market.ui.adapter.social.SocialRecommendAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author chenguoguo
@@ -34,9 +39,11 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.iv_publish)
+    ImageView ivPublish;
     private SocialRecommendAdapter adapter;
 
-    public static Fragment getInstance(){
+    public static SocialRecommendFragment getInstance(){
         return new SocialRecommendFragment();
     }
 
@@ -79,5 +86,16 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
 
+    }
+
+    @OnClick(R.id.iv_publish)
+    public void onViewClick(View view){
+        switch (view.getId()){
+            case R.id.iv_publish:
+                startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                break;
+            default:
+                break;
+        }
     }
 }
