@@ -38,6 +38,8 @@ import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.loan.TabHomeFragment;
+import com.beihui.market.loan.TabLoanFragment;
 import com.beihui.market.tang.adapter.HomePageAdapter;
 import com.beihui.market.tang.fragment.ToolFragment;
 import com.beihui.market.tang.rx.RxResponse;
@@ -354,10 +356,11 @@ public class MainActivity extends BaseComponentActivity {
         }, 400);
     }
 
-    private HomeFragment tabHome;
-    private DiscoverFragment tabDiscover;
+    //private HomeFragment tabHome;
+    //private DiscoverFragment tabDiscover;
+    private TabHomeFragment tabHome;
+    private TabLoanFragment tabDiscover;
     private ToolFragment tabTool;
-    //private SocialFragment tabSocial;
     public SocialRecommendFragment tabSocial;
     private PersonalFragment tabMine;
     public Fragment currentFragment;
@@ -367,11 +370,11 @@ public class MainActivity extends BaseComponentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (tabHome == null) {
-            tabHome = HomeFragment.newInstance();
+            tabHome = TabHomeFragment.newInstance();
             ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
         if (tabDiscover == null) {
-            tabDiscover = DiscoverFragment.newInstance();
+            tabDiscover = TabLoanFragment.newInstance();
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
@@ -394,7 +397,7 @@ public class MainActivity extends BaseComponentActivity {
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
                 currentFragment = tabHome;
 
-                if (!"showGuideMainActivity".equals(SPUtils.getValue(this, "showGuideMainActivity"))) {
+                /*if (!"showGuideMainActivity".equals(SPUtils.getValue(this, "showGuideMainActivity"))) {
                     if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter != null &&
                             tabHome.pageAdapter.getItemCount() > 1 && tabHome.pageAdapter.getItemViewType(1) == HomePageAdapter.VIEW_NORMAL) {
                         infoHighLight = new HighLight(this)
@@ -427,7 +430,7 @@ public class MainActivity extends BaseComponentActivity {
                                     }
                                 });
                     }
-                }
+                }*/
                 break;
             case R.id.tab_discover_root://发现
                 ft.show(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine).hide(tabSocial);
@@ -435,8 +438,8 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);
+                /*if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             case R.id.tab_three_root://社区
                 ft.show(tabSocial).hide(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine);
@@ -444,8 +447,8 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);
+                /*if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             case R.id.tab_social_root://工具
                 ft.show(tabTool).hide(tabHome).hide(tabDiscover).hide(tabMine).hide(tabSocial);
@@ -453,8 +456,8 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);
+                /*if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             case R.id.tab_mine_root://个人
                 ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabTool).hide(tabSocial);
@@ -462,8 +465,8 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 currentFragment = tabMine;
-                if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);
+                /*if (tabHome != null && tabHome.recycler() != null)
+                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             default:
                 break;

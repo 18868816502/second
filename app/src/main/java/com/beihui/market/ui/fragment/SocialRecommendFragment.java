@@ -43,7 +43,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     ImageView ivPublish;
     private SocialRecommendAdapter adapter;
 
-    public static SocialRecommendFragment getInstance(){
+    public static SocialRecommendFragment getInstance() {
         return new SocialRecommendFragment();
     }
 
@@ -55,7 +55,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void configViews() {
         adapter = new SocialRecommendAdapter(getActivity());
-        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -66,7 +66,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void initDatas() {
         List<SocialTopicBean> mList = new ArrayList<>();
-        for(int i = 0 ; i < 10 ; i++){
+        for (int i = 0; i < 10; i++) {
             SocialTopicBean bean = new SocialTopicBean();
             mList.add(bean);
         }
@@ -89,8 +89,8 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     }
 
     @OnClick(R.id.iv_publish)
-    public void onViewClick(View view){
-        switch (view.getId()){
+    public void onViewClick(View view) {
+        switch (view.getId()) {
             case R.id.iv_publish:
                 startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 break;
