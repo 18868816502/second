@@ -1,11 +1,9 @@
 package com.beihui.market.ui.adapter.social;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.SocialTopicBean;
+import com.beihui.market.social.bean.SocialTopicBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -32,12 +30,12 @@ public class SocialAttentionAdapter extends BaseQuickAdapter<SocialTopicBean,Bas
 
     @Override
     protected void convert(BaseViewHolder helper, SocialTopicBean item) {
-        helper.setText(R.id.tv_author_name,item.getName())
-                .setText(R.id.tv_author_publish_time,item.getTime())
-                .setText(R.id.tv_article_content,item.getTitle())
-                .setText(R.id.tv_article_descripe,item.getContent())
-                .setText(R.id.tv_praise,item.getPariseNum())
-                .setText(R.id.tv_comment_num,item.getCommentNum());
+//        helper.setText(R.id.tv_author_name,item.getName())
+//                .setText(R.id.tv_author_publish_time,item.getTime())
+//                .setText(R.id.tv_article_content,item.getTitle())
+//                .setText(R.id.tv_article_descripe,item.getContent())
+//                .setText(R.id.tv_praise,item.getPariseNum())
+//                .setText(R.id.tv_comment_num,item.getCommentNum());
     }
 
     public void notifySocialTopicChanged(List<SocialTopicBean> list) {

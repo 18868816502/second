@@ -112,12 +112,12 @@
         "source": "C:\\Users\\A\\.android\\build-cache\\ccaa3b806d69bba4b7145cebbf0d3fdc0f4752be\\output\\res\\drawable\\abc_ratingbar_small_material.xml"
     },
     {
-        "merged": "D:\\wp_andr\\loan\\matisse\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_colored_material.xml",
-        "source": "C:\\Users\\A\\.android\\build-cache\\ccaa3b806d69bba4b7145cebbf0d3fdc0f4752be\\output\\res\\drawable\\abc_btn_colored_material.xml"
-    },
-    {
         "merged": "D:\\wp_andr\\loan\\matisse\\build\\intermediates\\res\\merged\\release\\drawable\\abc_vector_test.xml",
         "source": "C:\\Users\\A\\.android\\build-cache\\ccaa3b806d69bba4b7145cebbf0d3fdc0f4752be\\output\\res\\drawable\\abc_vector_test.xml"
+    },
+    {
+        "merged": "D:\\wp_andr\\loan\\matisse\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\A\\.android\\build-cache\\ccaa3b806d69bba4b7145cebbf0d3fdc0f4752be\\output\\res\\drawable\\abc_btn_colored_material.xml"
     },
     {
         "merged": "D:\\wp_andr\\loan\\matisse\\build\\intermediates\\res\\merged\\release\\drawable\\abc_tab_indicator_material.xml",

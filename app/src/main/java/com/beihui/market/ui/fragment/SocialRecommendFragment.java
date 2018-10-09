@@ -2,7 +2,6 @@ package com.beihui.market.ui.fragment;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -10,8 +9,8 @@ import android.widget.ImageView;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.entity.SocialTopicBean;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.ui.activity.CommunityPublishActivity;
 import com.beihui.market.ui.adapter.social.SocialRecommendAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -65,9 +64,9 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void initDatas() {
-        List<SocialTopicBean> mList = new ArrayList<>();
+        List<SocialTopicBean.ForumBean> mList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            SocialTopicBean bean = new SocialTopicBean();
+            SocialTopicBean.ForumBean bean = new SocialTopicBean.ForumBean();
             mList.add(bean);
         }
         adapter.setDatas(mList);

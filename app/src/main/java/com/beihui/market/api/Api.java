@@ -78,6 +78,7 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.social.bean.SocialTopicBean;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -1192,7 +1193,35 @@ public class Api {
         return md5.toUpperCase();
     }
 
+
     public Observable<ResultEntity<Audit>> audit() {
         return service.audit();
+    }
+
+    /************************************社区************************************/
+    /*查询推荐话题*/
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(int pageNo, int pageSize) {
+        return service.queryRecommendTopic(pageNo, pageSize);
+    }
+
+    /*图片上传*/
+    public Observable<ResultEntity<String>> uploadFourmImg(String base64) {
+        return service.uploadFourmImg(base64);
+    }
+
+    /**
+     * 发布话题
+     * @param userId
+     * @param imgKey
+     * @param forumTitle
+     * @param forumContent
+     * @param status
+     * @param topicId
+     * @return
+     */
+    public Observable<ResultEntity> publicForumInfo(String userId,String imgKey, String forumTitle,
+                                                    String forumContent, String status,String topicId){
+        return service.publicForumInfo(userId,imgKey, forumTitle,forumContent, status,topicId);
+
     }
 }

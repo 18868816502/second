@@ -63,7 +63,7 @@ android {
             applicationId ext.application_id
             if (debug_mode) {//测试环境 + 测试魔蝎appkey
                 buildConfigField("String", "DOMAIN", "$debug_domain")
-                //buildConfigField("String", "DOMAIN", "$debug_native")
+//                buildConfigField("String", "DOMAIN", "$debug_native")
                 buildConfigField("String", "H5_DOMAIN", "$debug_h5_domain")
                 buildConfigField("String", "H5_DOMAIN_NEW", "$debug_h5_domain")
                 buildConfigField("String", "MOXIE_APP_KEY", "$debug_moxie_app_key")
@@ -145,7 +145,7 @@ dependencies {
 
     //noinspection GradleCompatible
 //    compile "com.android.support:appcompat-v7:$support_library_version"
-//    compile "com.android.support:recyclerview-v7:$support_library_version"
+    //compile "com.android.support:recyclerview-v7:$support_library_version"
     compile "com.android.support:cardview-v7:$support_library_version"
     compile "com.android.support:design:$support_library_version"
     compile 'com.android.support.constraint:constraint-layout:1.1.2'

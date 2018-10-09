@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentFragment;
-import com.beihui.market.entity.SocialTopicBean;
+import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.SocialTopicDetailActivity;
 import com.beihui.market.ui.adapter.social.SocialAttentionAdapter;
@@ -67,12 +67,12 @@ public class SocialAttentionFragment extends BaseComponentFragment implements On
         List<SocialTopicBean> mList = new ArrayList<>();
         for(int i = 0 ; i < 10 ; i++){
             SocialTopicBean bean = new SocialTopicBean();
-            bean.setName("高军");
-            bean.setTime("刚刚");
-            bean.setTitle("论坛获取积分、禁言、打赏、提问规则-贷款...");
-            bean.setContent("书内机柜变一变个月续租西。产局共可在没法度越发便面贴牌。轮成都管管徐昂要领不研祥中增加。菜之一星级已审理资源十层华人下富源");
-            bean.setPariseNum(3*i+"");
-            bean.setCommentNum(8*i+"");
+//            bean.setName("高军");
+//            bean.setTime("刚刚");
+//            bean.setTitle("论坛获取积分、禁言、打赏、提问规则-贷款...");
+//            bean.setContent("书内机柜变一变个月续租西。产局共可在没法度越发便面贴牌。轮成都管管徐昂要领不研祥中增加。菜之一星级已审理资源十层华人下富源");
+//            bean.setPariseNum(3*i+"");
+//            bean.setCommentNum(8*i+"");
             mList.add(bean);
         }
         adapter.notifySocialTopicChanged(mList);
