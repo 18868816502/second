@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beihui.market.R;
-import com.beihui.market.entity.SocialTopicBean;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.beihui.market.social.bean.SocialTopicBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,7 @@ import butterknife.ButterKnife;
  */
 public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<SocialTopicBean> datas;
+    private List<SocialTopicBean.ForumBean> datas;
     private Context mContext;
     private static final int ADVANTAGE = 0;
     private static final int OPERATE_TOPIC = 1;
@@ -36,7 +34,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         datas = new ArrayList<>();
     }
 
-    public void setDatas(List<SocialTopicBean> mList){
+    public void setDatas(List<SocialTopicBean.ForumBean> mList){
         datas.clear();
         datas.addAll(mList);
     }

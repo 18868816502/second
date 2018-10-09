@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.ui.listeners.OnItemClickListener;
+import com.beihui.market.ui.listeners.OnSaveEditListener;
 import com.beihui.market.ui.listeners.TextWatcherListener;
 
 import java.util.List;
@@ -120,16 +121,40 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
         public ContentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            etPublishTitle.addTextChangedListener(new TextWatcher());
+            etPublishTitle.addTextChangedListener(new TextWatcher(1));
+            etPublishContent.addTextChangedListener(new TextWatcher(2));
             etPublishTitle.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
             etPublishContent.setFilters(new InputFilter[]{new InputFilter.LengthFilter(150)});
+
         }
     }
 
     class TextWatcher extends TextWatcherListener{
+
+        /**
+         * flag 1:标题 2:内容
+         */
+        private int flag = 1;
+
+        public TextWatcher(int flag) {
+            this.flag = flag;
+        }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            contentViewHolder.tvPublishTitleNum.setText((30-s.length()) + "/30");
+            if(flag == 1) {
+                contentViewHolder.tvPublishTitleNum.setText((30 - s.length()) + "/30");
+            }else{
+//                contentViewHolder.tvPublishTitleNum.setText((30 - s.length()) + "/30");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(saveListener == null){
+                saveListener = (OnSaveEditListener) mContext;
+            }
+            saveListener.onSaveEdit(flag,s.toString());
         }
     }
 
@@ -138,4 +163,6 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
+
+    private OnSaveEditListener saveListener;
 }

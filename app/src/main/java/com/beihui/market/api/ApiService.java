@@ -74,6 +74,7 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.social.bean.SocialTopicBean;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -1245,9 +1246,8 @@ public interface ApiService {
 
     /**
      * 用户主页-用户发表的文章列表
-     *
-     * @param userID   用户id
-     * @param pageNo   页码
+     * @param userID 用户id
+     * @param pageNo 页码
      * @param pageSize 每页条数
      * @return
      */
@@ -1257,4 +1257,42 @@ public interface ApiService {
 
     @POST("s1/version/audit/land")
     Observable<ResultEntity<Audit>> audit();
+
+    /************************************社区************************************/
+    /**
+     * 社区推荐列表
+     * @param pageNo 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/s5/forumQueryController/queryRecommend")
+    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /**
+     * 图片上传
+     * @param base64 图片base64
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/s5/forumController/uploadFourmImg")
+    Observable<ResultEntity<String>> uploadFourmImg(@Field("base64") String base64);
+
+    /**
+     * 发布动态
+     * @param userId 用户id
+     * @param imgKey 图片上传对应的key，多张用#分隔
+     * @param forumTitle 动态标题
+     * @param forumContent 动态内容
+     * @param status 是否提交草稿箱 0 提交 3 未提交
+     * @param topicId 话题id，必传
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/s5/forumController/publicForumInfo")
+    Observable<ResultEntity> publicForumInfo(@Field("base64") String userId,@Field("imgKey") String imgKey,
+                                             @Field("forumTitle") String forumTitle,@Field("forumContent") String forumContent,
+                                             @Field("status") String status,@Field("topicId") String topicId);
+
+
 }
