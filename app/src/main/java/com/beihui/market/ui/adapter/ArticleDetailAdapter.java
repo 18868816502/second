@@ -62,9 +62,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(position == 0){
-            if(forumBean == null){
-                return;
-            }
+//            if(forumBean == null){
+//                return;
+//            }
             HeadViewHolder headViewHolder = (HeadViewHolder) holder;
         }else if(position != getItemCount() - 1){
             CommmentViewHolder commmentViewHolder = (CommmentViewHolder) holder;

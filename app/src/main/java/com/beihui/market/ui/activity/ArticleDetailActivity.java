@@ -339,7 +339,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
-        adapter.setDatas(list,forumBean);
+        //adapter.setDatas(list,forumBean);
     }
 
     @Override

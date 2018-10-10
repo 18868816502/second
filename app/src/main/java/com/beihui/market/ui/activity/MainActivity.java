@@ -391,7 +391,7 @@ public class MainActivity extends BaseComponentActivity {
         }
         switch (id) {
             case R.id.tab_bill_root://账单
-                ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome);
+                ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome).hide(tabTool);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
@@ -560,8 +560,8 @@ public class MainActivity extends BaseComponentActivity {
         states[2] = new int[]{};
         ColorStateList colorStateList = new ColorStateList(states, colors);
         List<String> tabTxt = new ArrayList<>();
-        tabTxt.add("账单");
-        tabTxt.add("发现");
+        tabTxt.add("首页");
+        tabTxt.add("贷款");
         tabTxt.add("社区");
         tabTxt.add("工具");
         tabTxt.add("我的");
