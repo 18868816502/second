@@ -91,6 +91,8 @@ public class TabLoanFragment extends BaseComponentFragment {
                             public void onClick(View v) {
                                 TextView textView = (TextView) v;
                                 dtv_money.setText(textView.getText().toString());
+                                dtv_kind.setText("分类");
+                                dtv_sort.setText("排序");
                                 popup.dismiss();
                                 switch (v.getId()) {
                                     case R.id.tv_money_all:
@@ -129,6 +131,8 @@ public class TabLoanFragment extends BaseComponentFragment {
                             public void onClick(View v) {
                                 TextView textView = (TextView) v;
                                 dtv_kind.setText(textView.getText().toString());
+                                dtv_money.setText("金额");
+                                dtv_sort.setText("排序");
                                 popup.dismiss();
                                 switch (v.getId()) {
                                     case R.id.tv_kind_1:
@@ -164,6 +168,8 @@ public class TabLoanFragment extends BaseComponentFragment {
                             public void onClick(View v) {
                                 TextView textView = (TextView) v;
                                 dtv_sort.setText(textView.getText().toString());
+                                dtv_money.setText("金额");
+                                dtv_kind.setText("分类");
                                 popup.dismiss();
                                 switch (v.getId()) {
                                     case R.id.tv_sort_1:
