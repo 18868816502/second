@@ -79,6 +79,8 @@ import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.loan.Product;
+import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
 import org.apache.commons.codec.binary.Hex;
@@ -98,9 +100,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -1215,7 +1214,6 @@ public class Api {
 
     /**
      * 发布话题
-     *
      * @param userId
      * @param imgKey
      * @param forumTitle
@@ -1224,13 +1222,91 @@ public class Api {
      * @param topicId
      * @return
      */
-    public Observable<ResultEntity> publicForumInfo(String userId, String imgKey, String forumTitle,
-                                                    String forumContent, String status, String topicId) {
-        return service.publicForumInfo(userId, imgKey, forumTitle, forumContent, status, topicId);
+    public Observable<ResultEntity> publicForumInfo(String userId,String imgKey, String forumTitle,
+                                                    String forumContent, String status,String topicId){
+        return service.publicForumInfo(userId,imgKey, forumTitle,forumContent, status,topicId);
+
     }
 
     /*产品列表查询*/
     public Observable<ResultEntity<List<Product>>> products(Map<String, Object> map) {
         return service.products(map);
+    }
+
+    /**
+     * 查询评论回复列表
+     * @param forumId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(String forumId,int pageNo, int pageSize) {
+        return service.queryCommentList(forumId,pageNo+"", pageSize+"");
+    }
+
+    /**
+     * 评论回复
+     * @param userId
+     * @param commentType
+     * @param commentContent
+     * @param forumId
+     * @param toUserId
+     * @param selfId
+     * @return
+     */
+    public Observable<ResultEntity> fetchReplyForumInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId) {
+        return service.fetchReplyForumInfo(userId, commentType, commentContent, forumId, toUserId, selfId);
+    }
+
+    /**
+     * 提交举报信息
+     * @param userId
+     * @param linkId
+     * @param reportType
+     * @param reportContent
+     * @return
+     */
+    public Observable<ResultEntity> fetchSaveReport(String userId, String linkId, String reportType, String reportContent) {
+        return service.fetchSaveReport(userId, linkId, reportType, reportContent);
+    }
+
+    /**
+     * 删除动态
+     * @param forumId
+     * @return
+     */
+    public Observable<ResultEntity> fetchCancelForum(String forumId) {
+        return service.fetchCancelForum(forumId);
+    }
+
+    /**
+     * 删除评论回复
+     * @param replyId
+     * @return
+     */
+    public Observable<ResultEntity> fetchCancelReply(String replyId) {
+        return service.fetchCancelReply(replyId);
+    }
+
+    /**
+     * 社区评论回复点赞
+     * @param praiseType
+     * @param forumReplyId
+     * @param userId
+     * @return
+     */
+    public Observable<ResultEntity<PraiseBean>> fetchClickPraise(int praiseType, String forumReplyId, String userId) {
+        return service.fetchClickPraise(praiseType,forumReplyId,userId);
+    }
+
+    /**
+     * 社区评论回复取消点赞
+     * @param praiseType
+     * @param forumReplyId
+     * @param userId
+     * @return
+     */
+    public Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId) {
+        return service.fetchCancelPraise(praiseType,forumReplyId,userId);
     }
 }

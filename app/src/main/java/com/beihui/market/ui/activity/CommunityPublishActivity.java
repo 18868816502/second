@@ -83,6 +83,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private String mTopicTitle;
     private String mTopicContent;
     private StringBuilder sb;
+    private String status = "0";
 
     @Override
     public int getLayoutId() {
@@ -139,7 +140,13 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.tv_save:
                 //保存
-                finish();
+//                finish();
+                status = "0";
+                if(uriList == null){
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"");
+                }else{
+                    uploadImg();
+                }
                 break;
             case R.id.tv_commit:
                 //提交发布的内容
@@ -151,8 +158,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     ToastUtil.toast("请填写内容");
                     return;
                 }
+                status = "3";
                 if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,"0","");
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"");
                 }else{
                     uploadImg();
                 }

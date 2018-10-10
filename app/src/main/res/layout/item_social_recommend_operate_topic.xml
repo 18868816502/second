@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp168"
-    android:layout_height="@dimen/dp210"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
@@ -13,7 +13,6 @@
         android:id="@+id/iv_topic"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp114"
-        android:src="@drawable/x_tab_account_toolbar_bg"
         android:contentDescription="@string/app_content_description"/>
 
     <TextView
@@ -33,6 +32,25 @@
         android:textColor="@color/black_1"
         android:text="法官被撤或者将再次推出审判，张莹莹律师啊撒旦克"/>
 
+    <TextView
+        android:id="@+id/tv_topic_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_topic_title"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginStart="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginEnd="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:maxEms="50"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:textSize="@dimen/sp14"
+        android:textColor="@color/black_1"
+        android:text="法官被撤或者将再次推出审判，张莹莹律师啊撒旦克"
+        android:visibility="gone"/>
+
+
     <com.beihui.market.view.CircleImageView
         android:id="@+id/iv_avatar"
         android:layout_width="@dimen/dp20"
@@ -42,7 +60,7 @@
         android:layout_marginStart="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp10"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_topic_title"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_topic_content"/>
 
     <TextView
         android:id="@+id/tv_name"
@@ -58,10 +76,11 @@
         android:text="爱的木头"/>
 
     <TextView
+        android:id="@+id/tv_praise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/star_icon_black"
-        android:drawableStart="@drawable/star_icon_black"
+        android:drawableLeft="@drawable/icon_social_topic_praise_select"
+        android:drawableStart="@drawable/icon_social_topic_praise_select"
         app:layout_constraintTop_toTopOf="@id/iv_avatar"
         app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
         app:layout_constraintRight_toRightOf="parent"
@@ -74,7 +93,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp10"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/dp10"
+        app:layout_constraintTop_toBottomOf="@+id/tv_praise"
         android:background="@color/colorBackground"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.beihui.market.ui.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,8 @@ import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerArticleDetailComponent;
 import com.beihui.market.injection.module.ArticleDetailModule;
+import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.ui.adapter.ArticleCommentListAdapter;
 import com.beihui.market.ui.adapter.ArticleDetailAdapter;
 import com.beihui.market.ui.contract.ArticleDetailContact;
@@ -72,6 +75,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
      */
     private int mPopType = 0;
     private TextView tvCommentTitle;
+    private SocialTopicBean.ForumBean forumBean;
+    private int pageNo = 1;
+    private int pageSize = 30;
 
     @Override
     public int getLayoutId() {
@@ -99,7 +105,11 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void initDatas() {
-
+        Intent intent = getIntent();
+        if(intent != null){
+            forumBean = (SocialTopicBean.ForumBean) intent.getSerializableExtra("topic");
+            presenter.queryCommentList(forumBean.getForumId(),pageNo,pageSize);
+        }
     }
 
     @Override
@@ -111,15 +121,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 .inject(this);
     }
 
-    @Override
-    public void onQueryArticleDetailSucceed(UserInfoBean userInfoBean) {
-
-    }
-
-    @Override
-    public void onQueryArticleCommentSucceed(List<UserArticleBean> list) {
-
-    }
 
     @Override
     public void setPresenter(ArticleDetailContact.Presenter presenter) {
@@ -154,19 +155,23 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             case R.id.report01:
                 hideDialog();
+                presenter.fetchSaveReport("",forumBean.getForumId(),"1",getString(R.string.article_more_report_content1));
                 ToastUtil.toast(getString(R.string.article_more_report_content1));
                 break;
             case R.id.report02:
                 hideDialog();
                 ToastUtil.toast(getString(R.string.article_more_report_content2));
+                presenter.fetchSaveReport("",forumBean.getForumId(),"1",getString(R.string.article_more_report_content2));
                 break;
             case R.id.report03:
                 hideDialog();
                 ToastUtil.toast(getString(R.string.article_more_report_content3));
+                presenter.fetchSaveReport("",forumBean.getForumId(),"1",getString(R.string.article_more_report_content3));
                 break;
             case R.id.report04:
                 hideDialog();
                 ToastUtil.toast(getString(R.string.article_more_report_content4));
+                presenter.fetchSaveReport("",forumBean.getForumId(),"1",getString(R.string.article_more_report_content4));
                 break;
             case R.id.iv_close:
                 hideDialog();
@@ -181,6 +186,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                     return;
                 }
                 ToastUtil.toast(etInput.getText().toString());
+
                 break;
                 default:
                     break;
@@ -197,6 +203,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             case 1:
                 ToastUtil.toast("删除");
+                presenter.fetchCancelForum(forumBean.getForumId());
                 break;
             case 2:
 
@@ -328,5 +335,40 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onDismiss(PopDialog mPopDialog) {
         KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+    }
+
+    @Override
+    public void onQueryCommentSucceed(List<CommentReplyBean> list) {
+        adapter.setDatas(list,forumBean);
+    }
+
+    @Override
+    public void onReplyCommentSucceed() {
+        ToastUtil.toast("回复成功");
+    }
+
+    @Override
+    public void onSaveReportSucceed() {
+
+    }
+
+    @Override
+    public void onCancelForumSucceed() {
+
+    }
+
+    @Override
+    public void onCancelReplySucceed() {
+
+    }
+
+    @Override
+    public void onPraiseSucceed() {
+
+    }
+
+    @Override
+    public void OnCancelPraiseSucceed() {
+
     }
 }

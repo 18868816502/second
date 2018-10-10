@@ -2,8 +2,7 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
-import com.beihui.market.entity.UserArticleBean;
-import com.beihui.market.entity.UserInfoBean;
+import com.beihui.market.social.bean.CommentReplyBean;
 
 import java.util.List;
 
@@ -19,33 +18,100 @@ public interface ArticleDetailContact {
     interface Presenter extends BasePresenter {
 
         /**
-         * 获取文章详情
-         * @param userId 用户id
+         * 获取文章评论列表
+         * @param forumId 动态id
+         * @param pageNo 页码
+         * @param pageSize 每页记录数
          */
-        void fetchArticleDetailInfo(String userId);
+        void queryCommentList(String forumId,int pageNo,int pageSize);
 
         /**
-         * 获取文章评论列表
+         * 发表评论回复
+         * @param userId 用户名
+         * @param commentType 1 评论 2 回复
+         * @param commentContent 评论回复内容
+         * @param forumId 动态id
+         * @param toUserId 回复用户id
+         * @param selfId 对应的评论回复id
          */
-        void fetchArticleComment();
+        void fetchReplyForumInfo(String userId,String commentType,String commentContent,
+                                 String forumId,String toUserId,String selfId);
+
+        /**
+         * 提交举报信息
+         * @param userId
+         * @param linkId
+         * @param reportType
+         * @param reportContent
+         */
+        void fetchSaveReport(String userId,String linkId,String reportType,String reportContent);
+
+        /**
+         * 删除动态
+         * @param forumId
+         */
+        void fetchCancelForum(String forumId);
+
+        /**
+         * 删除评论回复
+         * @param replyId
+         */
+        void fetchCancelReply(String replyId);
+
+        /**
+         * 社区动态评论回复点赞
+         * @param praiseType
+         * @param forumReplyId
+         * @param userId
+         */
+        void fetchClickPraise(int praiseType,String forumReplyId,String userId);
+
+        /**
+         * 社区动态评论回复取消点赞
+         * @param praiseType
+         * @param forumReplyId
+         * @param userId
+         */
+        void fetchCancelPraise(int praiseType,String forumReplyId,String userId);
     }
 
     interface View extends BaseView<Presenter> {
 
         /**
-         * 文章详情
-         *
-         * @param userInfoBean 用户个人信息
+         * 获取话题评论列表成功
+         * @param list
          */
-        void onQueryArticleDetailSucceed(UserInfoBean userInfoBean);
+        void onQueryCommentSucceed(List<CommentReplyBean> list);
 
         /**
-         * 文章评论列表
-         * @param list 文章列表
+         * 评论回复成功
          */
-        void onQueryArticleCommentSucceed(List<UserArticleBean> list);
+        void onReplyCommentSucceed();
 
+        /**
+         * 举报成功
+         */
+        void onSaveReportSucceed();
 
+        /**
+         * 删除动态成功
+         */
+        void onCancelForumSucceed();
+
+        /**
+         * 删除评论回复成功
+         */
+        void onCancelReplySucceed();
+
+        /**
+         * 社区动态评论回复点赞成功
+         */
+        void onPraiseSucceed();
+
+        /**
+         * 社区动态评论回复取消点赞成功
+         */
+        void OnCancelPraiseSucceed();
     }
 
 }

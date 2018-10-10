@@ -103,12 +103,14 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+        pageNo ++;
+        fetchData();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+        pageNo = 1;
+        fetchData();
     }
 
     @OnClick(R.id.iv_publish)
@@ -130,7 +132,11 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                                @Override
                                public void accept(ResultEntity<SocialTopicBean> result){
                                    if (result.isSuccess()) {
-                                       adapter.setDatas(result.getData().getForum());
+                                       if(1 == pageNo){
+                                           adapter.setDatas(result.getData().getForum());
+                                       }else{
+                                           adapter.appendDatas(result.getData().getForum());
+                                       }
                                    } else {
                                        ToastUtil.toast(result.getMsg());
                                    }

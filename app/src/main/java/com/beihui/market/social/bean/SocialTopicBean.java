@@ -1,5 +1,6 @@
 package com.beihui.market.social.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @descripe
  * @time 2018/9/19 10:13
  */
-public class SocialTopicBean {
+public class SocialTopicBean implements Serializable{
 
 
     /**
@@ -148,7 +149,7 @@ public class SocialTopicBean {
         }
     }
 
-    public static class ForumBean {
+    public static class ForumBean implements Serializable {
         /**
          * userId : 19e86f82c2b24f958ae03c6c010b842e
          * userName : 136****1224
