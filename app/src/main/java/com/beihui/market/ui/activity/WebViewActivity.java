@@ -93,7 +93,8 @@ public class WebViewActivity extends BaseComponentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-
+        //h5打开空白
+        webSettings.setDomStorageEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
         webView.setDownloadListener(new DownloadListener() {

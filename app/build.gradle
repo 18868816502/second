@@ -62,8 +62,8 @@ android {
             dimension "id"
             applicationId ext.application_id
             if (debug_mode) {//测试环境 + 测试魔蝎appkey
-                buildConfigField("String", "DOMAIN", "$debug_domain")
-//                buildConfigField("String", "DOMAIN", "$debug_native")
+                //buildConfigField("String", "DOMAIN", "$debug_domain")
+                buildConfigField("String", "DOMAIN", "$debug_native")
                 buildConfigField("String", "H5_DOMAIN", "$debug_h5_domain")
                 buildConfigField("String", "H5_DOMAIN_NEW", "$debug_h5_domain")
                 buildConfigField("String", "MOXIE_APP_KEY", "$debug_moxie_app_key")
