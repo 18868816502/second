@@ -7,14 +7,23 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.beihui.market.App;
 import com.beihui.market.R;
+import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.util.CommonUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
 
 
 /**
@@ -42,6 +51,15 @@ public class TabLoanFragment extends BaseComponentFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
+    private Map<String, Object> map = new HashMap<>();
+    private int pageNo = 1;
+    private int pageSize = 10;
+    private int checking = 0;//是否为审核产品 0：否 1：是
+    private int type = 1;//排序 1 默认排序 2 贷款额度 3 贷款利率 4 放款速度
+    private int borrowingLow;//金额区别 低值
+    private int borrowingHigh;//金额区间 高值
+    private int productType = 0;//产品属性 0 所有分类 1 高通过率 2 闪电到账 3 大额低息 4 不查征信
+
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_tab_loan;
@@ -64,10 +82,24 @@ public class TabLoanFragment extends BaseComponentFragment {
         dtv_kind.setImg(R.drawable.icon_come);
         dtv_sort.setImg(R.drawable.icon_come);
         initRecycler();
+        request();
     }
 
     private void initRecycler() {
 
+    }
+
+    private void request() {
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        Api.getInstance().products(map)
+                .compose(RxResponse.<List<Product>>compatT())
+                .subscribe(new ApiObserver<List<Product>>() {
+                    @Override
+                    public void onNext(@NonNull List<Product> data) {
+
+                    }
+                });
     }
 
     @Override

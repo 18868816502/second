@@ -78,6 +78,7 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.SocialTopicBean;
 
 import org.apache.commons.codec.binary.Hex;
@@ -97,6 +98,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -1211,6 +1215,7 @@ public class Api {
 
     /**
      * 发布话题
+     *
      * @param userId
      * @param imgKey
      * @param forumTitle
@@ -1219,9 +1224,13 @@ public class Api {
      * @param topicId
      * @return
      */
-    public Observable<ResultEntity> publicForumInfo(String userId,String imgKey, String forumTitle,
-                                                    String forumContent, String status,String topicId){
-        return service.publicForumInfo(userId,imgKey, forumTitle,forumContent, status,topicId);
+    public Observable<ResultEntity> publicForumInfo(String userId, String imgKey, String forumTitle,
+                                                    String forumContent, String status, String topicId) {
+        return service.publicForumInfo(userId, imgKey, forumTitle, forumContent, status, topicId);
+    }
 
+    /*产品列表查询*/
+    public Observable<ResultEntity<List<Product>>> products(Map<String, Object> map) {
+        return service.products(map);
     }
 }
