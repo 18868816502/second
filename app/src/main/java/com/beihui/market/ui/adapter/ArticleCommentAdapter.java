@@ -10,8 +10,12 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.constant.ConstantTag;
+import com.beihui.market.social.bean.CommentReplyBean;
 import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.util.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,8 +31,17 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
 
+    private List<CommentReplyBean.ReplyDtoListBean> datas;
+
     public ArticleCommentAdapter(Context mContext) {
         this.mContext = mContext;
+        datas = new ArrayList<>();
+    }
+
+    public void setDatas(List<CommentReplyBean.ReplyDtoListBean> datas){
+        this.datas.clear();
+        this.datas.addAll(datas);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -42,11 +55,14 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
+
+        viewHolder.tvCommentContent.setText(datas.get(position).getContent());
+        viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return datas.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

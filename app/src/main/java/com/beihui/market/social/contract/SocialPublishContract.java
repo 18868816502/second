@@ -1,6 +1,8 @@
 package com.beihui.market.social.contract;
 
 
+import android.graphics.Bitmap;
+
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
 
@@ -19,13 +21,13 @@ public interface SocialPublishContract {
          * 发布话题
          */
         void fetchPublishTopic(String imgKey, String forumTitle,
-                               String forumContent, String status,String topicId);
+                               String forumContent, String status,String topicId,String forumId);
 
         /**
          * 上传图片
-         * @param base64
+         * @param bitmap
          */
-        void uploadForumImg(int index,String base64);
+        void uploadForumImg(Bitmap bitmap);
     }
 
     interface View extends BaseView<Presenter> {

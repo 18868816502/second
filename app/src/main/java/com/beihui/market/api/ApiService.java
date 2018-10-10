@@ -1269,7 +1269,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s5/forumQueryController/queryRecommend")
+    @POST("/s6/forumQueryController/queryRecommend")
     Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     /**
@@ -1278,7 +1278,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s5/forumController/uploadFourmImg")
+    @POST("/s6/forumController/uploadFourmImg")
     Observable<ResultEntity<String>> uploadFourmImg(@Field("base64") String base64);
 
     /**
@@ -1292,10 +1292,10 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s5/forumController/publicForumInfo")
-    Observable<ResultEntity> publicForumInfo(@Field("base64") String userId,@Field("imgKey") String imgKey,
+    @POST("/s6/forumController/publicForumInfo")
+    Observable<ResultEntity> publicForumInfo(@Field("userId") String userId,@Field("imgKey") String imgKey,
                                              @Field("forumTitle") String forumTitle,@Field("forumContent") String forumContent,
-                                             @Field("status") String status,@Field("topicId") String topicId);
+                                             @Field("status") String status,@Field("topicId") String topicId,@Field("forumId")String forumId);
 
 
     /**
@@ -1306,12 +1306,12 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s5/forumQueryController/queryCommentList")
+    @POST("/s6/forumQueryController/queryCommentList")
     Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(@Field("forumId") String forumId,@Field("pageNo") String pageNo,@Field("pageSize") String pageSize);
 
     /*产品列表查询*/
     @FormUrlEncoded
-    @POST("/s3/product/productListForNative")
+    @POST("/s6/product/productListForNative")
     Observable<ResultEntity<List<Product>>> products(@FieldMap Map<String, Object> map);
     /**
      * 发表评论回复
@@ -1324,7 +1324,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s5/forumController/replyForumInfo")
+    @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@Field("userId") String userId, @Field("commentType") String commentType, @Field("commentContent") String commentContent,
                                                  @Field("forumId") String forumId, @Field("toUserId") String toUserId, @Field("selfId") String selfId);
 
@@ -1337,7 +1337,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s5/forumController/saveReport")
+    @POST("/s6/forumController/saveReport")
     Observable<ResultEntity> fetchSaveReport(String userId, String linkId, String reportType, String reportContent);
 
     /**
@@ -1346,7 +1346,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("s5/forumController/cancelForum")
+    @POST("s6/forumController/cancelForum")
     Observable<ResultEntity> fetchCancelForum(String forumId);
 
     /**
@@ -1355,7 +1355,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("s5/forumController/cancelReply")
+    @POST("s6/forumController/cancelReply")
     Observable<ResultEntity> fetchCancelReply(String replyId);
 
     /**
@@ -1366,7 +1366,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("s5/forumController/clickPraise")
+    @POST("s6/forumController/clickPraise")
     Observable<ResultEntity<PraiseBean>> fetchClickPraise(int praiseType, String forumReplyId, String userId);
 
     /**
@@ -1377,6 +1377,6 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("s5/forumController/cancelPraise")
+    @POST("s6/forumController/cancelPraise")
     Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId);
 }

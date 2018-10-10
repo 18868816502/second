@@ -1207,8 +1207,15 @@ public class Api {
         return service.queryRecommendTopic(pageNo, pageSize);
     }
 
+//    /*图片上传*/
+//    public Observable<ResultEntity<String>> uploadFourmImg(String base64) {
+//        String avatarBase64 = Base64.encodeToString(avatar, Base64.DEFAULT);
+//        return service.uploadFourmImg(base64);
+//    }
+
     /*图片上传*/
-    public Observable<ResultEntity<String>> uploadFourmImg(String base64) {
+    public Observable<ResultEntity<String>> uploadFourmImg(byte[] bytes) {
+        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
         return service.uploadFourmImg(base64);
     }
 
@@ -1223,8 +1230,8 @@ public class Api {
      * @return
      */
     public Observable<ResultEntity> publicForumInfo(String userId,String imgKey, String forumTitle,
-                                                    String forumContent, String status,String topicId){
-        return service.publicForumInfo(userId,imgKey, forumTitle,forumContent, status,topicId);
+                                                    String forumContent, String status,String topicId,String forumId){
+        return service.publicForumInfo(userId,imgKey, forumTitle,forumContent, status,topicId,forumId);
 
     }
 

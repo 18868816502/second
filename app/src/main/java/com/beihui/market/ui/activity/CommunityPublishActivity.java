@@ -1,10 +1,12 @@
 package com.beihui.market.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.beihui.market.ui.adapter.CommunityPublishAdapter;
 import com.beihui.market.ui.listeners.OnItemClickListener;
 import com.beihui.market.ui.listeners.OnSaveEditListener;
 import com.beihui.market.util.FileUtils;
+import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -66,6 +69,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private PopDialog popDialog;
     private int mPopType = 0;
     private List<Uri> uriList;
+    private List<String> pathList;
     /**
      * 记录上传失败的base64
      */
@@ -77,7 +81,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     /**
      * 选中的图片base64
      */
-    private List<String> base64List;
+    private List<Bitmap> base64List;
     private List<String> imgKeys;
 
     private String mTopicTitle;
@@ -111,6 +115,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         failList = new ArrayList<>();
         base64List = new ArrayList<>();
         imgKeys = new ArrayList<>();
+        pathList = new ArrayList<>();
     }
 
     @Override
@@ -143,13 +148,14 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 //                finish();
                 status = "0";
                 if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"");
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
                 }else{
                     uploadImg();
                 }
                 break;
             case R.id.tv_commit:
                 //提交发布的内容
+                popDialog.dismiss();
                 if(TextUtils.isEmpty(mTopicTitle)){
                     ToastUtil.toast("请填写标题");
                     return;
@@ -160,11 +166,10 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 }
                 status = "3";
                 if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"");
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
                 }else{
                     uploadImg();
                 }
-
                 break;
                 default:
                     break;
@@ -175,18 +180,12 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
      * 提交图片
      */
     private void uploadImg() {
-        int size = uriList.size();
-        for(int i = 0; i <size ; i++ ){
-            try {
-                File file = new File(new URI(uriList.get(i).toString()));
-                base64List.add(FileUtils.fileToBase64(file));
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+        int size = pathList.size();
+        for(int i = 0 ; i < size ; i++){
+            Bitmap bitmap = ImageUtils.getFixedBitmap(pathList.get(i), 512);
+            base64List.add(bitmap);
         }
-
-        //提交图片
-        mPresenter.uploadForumImg(uploadIndex,base64List.get(uploadIndex));
+        mPresenter.uploadForumImg(base64List.get(uploadIndex));
     }
 
     /**
@@ -228,6 +227,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
 //            adapter.setHeadData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
             uriList = Matisse.obtainResult(data);
+            pathList = Matisse.obtainPathResult(data);
             adapter.setHeadData(uriList);
         }
     }
@@ -247,16 +247,17 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onPublishTopicSucceed() {
-
-
+        ToastUtil.toast("发布成功");
+        finish();
     }
 
     @Override
     public void onUploadImgSucceed(String imgKey) {
+        uploadIndex ++;
+        imgKeys.add(imgKey);
         if(uploadIndex < base64List.size()){
-            uploadIndex ++;
-            mPresenter.uploadForumImg(uploadIndex,base64List.get(uploadIndex));
-            imgKeys.add(imgKey);
+            mPresenter.uploadForumImg(base64List.get(uploadIndex));
+            return;
         }
 
         //所有图片上传完毕
@@ -269,7 +270,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     sb.append(imgKeys.get(i));
                 }
             }
-            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,"0","");
+            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,status,"","");
         }
 
     }
@@ -279,7 +280,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 //        failList.add(base64List.get(uploadIndex));
 //        uploadIndex ++;
         //如果上传失败则重新上传
-        mPresenter.uploadForumImg(uploadIndex,base64List.get(uploadIndex));
+        mPresenter.uploadForumImg(base64List.get(uploadIndex));
     }
 
     @Override
