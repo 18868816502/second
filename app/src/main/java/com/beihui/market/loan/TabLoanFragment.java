@@ -156,11 +156,14 @@ public class TabLoanFragment extends BaseComponentFragment {
                     public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         refresh_layout.finishLoadMore();
-                        if (data != null && data.size() > 0) {
-                            if (pageNo == 1) adapter.setNewData(data);
-                            else adapter.addData(data);
+                        if (pageNo == 1) {
+                            if (data == null || data.size() < 1) {
+                                empty();
+                            } else {
+                                adapter.setNewData(data);
+                            }
                         } else {
-                            empty();
+                            adapter.addData(data);
                         }
                     }
 

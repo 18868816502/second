@@ -8,7 +8,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -40,21 +39,17 @@ import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.loan.TabHomeFragment;
 import com.beihui.market.loan.TabLoanFragment;
-import com.beihui.market.tang.adapter.HomePageAdapter;
 import com.beihui.market.tang.fragment.ToolFragment;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.busevents.NavigateNews;
 import com.beihui.market.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beihui.market.ui.dialog.AdDialog;
-import com.beihui.market.ui.fragment.DiscoverFragment;
-import com.beihui.market.ui.fragment.HomeFragment;
 import com.beihui.market.ui.fragment.PersonalFragment;
 import com.beihui.market.ui.fragment.SocialRecommendFragment;
 import com.beihui.market.umeng.Events;
 import com.beihui.market.umeng.NewVersionEvents;
 import com.beihui.market.umeng.Statistic;
-import com.beihui.market.util.DensityUtil;
 import com.beihui.market.util.SPUtils;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.BottomNavigationBar;
@@ -79,11 +74,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBaseCallback;
-import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.view.HightLightView;
 
 public class MainActivity extends BaseComponentActivity {
 
@@ -93,7 +83,6 @@ public class MainActivity extends BaseComponentActivity {
     //导航栏跟布局
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
-
     //账单
     @BindView(R.id.tab_bill_icon)
     ImageView tabBillIcon;
@@ -135,13 +124,7 @@ public class MainActivity extends BaseComponentActivity {
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    /**
-     * 最新公告ID
-     */
     private MainActivity activity;
-
-    //高亮
-    private HighLight infoHighLight;
     private Bundle extras;
     private Bundle extras1;
 
@@ -172,7 +155,6 @@ public class MainActivity extends BaseComponentActivity {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
                     tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
                     startActivity(tkIntent);
-
                 }
             }
         }
@@ -192,7 +174,6 @@ public class MainActivity extends BaseComponentActivity {
                     startActivity(tkIntent);
                 }
             }
-
         }
     }
 
@@ -273,7 +254,6 @@ public class MainActivity extends BaseComponentActivity {
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
-                //SoundUtils.getInstance().playTab();//点击音效
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
                 }
@@ -356,8 +336,6 @@ public class MainActivity extends BaseComponentActivity {
         }, 400);
     }
 
-    //private HomeFragment tabHome;
-    //private DiscoverFragment tabDiscover;
     private TabHomeFragment tabHome;
     private TabLoanFragment tabDiscover;
     private ToolFragment tabTool;
@@ -396,41 +374,6 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
                 currentFragment = tabHome;
-
-                /*if (!"showGuideMainActivity".equals(SPUtils.getValue(this, "showGuideMainActivity"))) {
-                    if (UserHelper.getInstance(this).isLogin() && tabHome.pageAdapter != null &&
-                            tabHome.pageAdapter.getItemCount() > 1 && tabHome.pageAdapter.getItemViewType(1) == HomePageAdapter.VIEW_NORMAL) {
-                        infoHighLight = new HighLight(this)
-                                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-                                    @Override
-                                    public void onLayouted() {
-                                        infoHighLight.autoRemove(false)
-                                                .intercept(true)
-                                                .enableNext()
-                                                .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
-                                                    @Override
-                                                    public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                                        marginInfo.leftMargin = rectF.centerX() - DensityUtil.dp2px(MainActivity.this, 10);
-                                                        marginInfo.topMargin = rectF.centerY() - DensityUtil.dp2px(MainActivity.this, 5);
-                                                    }
-                                                }, new CircleLightShape())
-                                                .setOnNextCallback(new HighLightInterface.OnNextCallback() {
-                                                    @Override
-                                                    public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-                                                        // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                                        infoHighLight.getHightLightView().findViewById(R.id.iv_guide).setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                infoHighLight.remove();
-                                                                SPUtils.setValue(MainActivity.this, "showGuideMainActivity");
-                                                            }
-                                                        });
-                                                    }
-                                                }).show();
-                                    }
-                                });
-                    }
-                }*/
                 break;
             case R.id.tab_discover_root://发现
                 ft.show(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine).hide(tabSocial);
@@ -438,8 +381,6 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                /*if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             case R.id.tab_three_root://社区
                 ft.show(tabSocial).hide(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine);
@@ -447,8 +388,6 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                /*if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             case R.id.tab_social_root://工具
                 ft.show(tabTool).hide(tabHome).hide(tabDiscover).hide(tabMine).hide(tabSocial);
@@ -456,8 +395,6 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
-                /*if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             case R.id.tab_mine_root://个人
                 ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabTool).hide(tabSocial);
@@ -465,8 +402,6 @@ public class MainActivity extends BaseComponentActivity {
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 currentFragment = tabMine;
-                /*if (tabHome != null && tabHome.recycler() != null)
-                    tabHome.recycler().smoothScrollToPosition(0);*/
                 break;
             default:
                 break;
@@ -638,7 +573,6 @@ public class MainActivity extends BaseComponentActivity {
             }
             //tab字体颜色和文字
             if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
-                //System.out.println(tabImage.getSelectedFontColor() + " " + tabImage.getUnselectedFontColor());
                 int[] colors = new int[]{
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),
                         Color.parseColor("#" + tabImage.getSelectedFontColor()),
