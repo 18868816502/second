@@ -1203,8 +1203,14 @@ public class Api {
 
     /************************************社区************************************/
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(int pageNo, int pageSize) {
-        return service.queryRecommendTopic(pageNo, pageSize);
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId,int pageNo, int pageSize) {
+//        return service.queryRecommendTopic(pageNo, pageSize);
+        return service.queryRecommendTopic(userId,pageNo, pageSize);
+    }
+
+    /*查询推荐话题*/
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String,Object> mMap) {
+        return service.queryRecommendTopic(mMap);
     }
 
 //    /*图片上传*/
@@ -1266,6 +1272,15 @@ public class Api {
      */
     public Observable<ResultEntity> fetchReplyForumInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId) {
         return service.fetchReplyForumInfo(userId, commentType, commentContent, forumId, toUserId, selfId);
+    }
+
+    /**
+     * 评论回复
+     * @param mMap
+     * @return
+     */
+    public Observable<ResultEntity> fetchReplyForumInfo(Map<String,Object> mMap) {
+        return service.fetchReplyForumInfo(mMap);
     }
 
     /**
