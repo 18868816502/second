@@ -11,6 +11,8 @@ import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.social.contract.SocialPublishContract;
+import com.beihui.market.tang.rx.RxResponse;
+import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.contract.ResetPwdSetPwdContract;
 import com.beihui.market.ui.presenter.UserProfilePresenter;
 import com.beihui.market.umeng.Events;
@@ -54,12 +56,12 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
 
     @Override
     public void fetchPublishTopic(String imgKey, String forumTitle,
-                                  String forumContent, String status,String topicId,String forumId) {
-        Disposable dis = mApi.publicForumInfo(mUserHelper.getProfile().getId(),imgKey, forumTitle, forumContent, status,topicId,forumId)
+                                  String forumContent, String status, String topicId, String forumId) {
+        /*Disposable dis = mApi.publicForumInfo(mUserHelper.getProfile().getId(), imgKey, forumTitle, forumContent, status, topicId, forumId)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
-                               public void accept(@NonNull ResultEntity result){
+                               public void accept(@NonNull ResultEntity result) {
                                    if (result.isSuccess()) {
                                        mView.onPublishTopicSucceed();
                                    } else {
@@ -69,12 +71,27 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
                            },
                         new Consumer<Throwable>() {
                             @Override
-                            public void accept(@NonNull Throwable throwable){
+                            public void accept(@NonNull Throwable throwable) {
                                 logError(SocialPublishPresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
-        addDisposable(dis);
+        addDisposable(dis);*/
+        mApi.publicForumInfo(mUserHelper.getProfile().getId(), imgKey, forumTitle, forumContent, status, topicId, forumId)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        mView.onPublishTopicSucceed();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        logError(SocialPublishPresenter.this, t);
+                        mView.showErrorMsg(generateErrorMsg(t));
+                    }
+                });
     }
 
     @Override

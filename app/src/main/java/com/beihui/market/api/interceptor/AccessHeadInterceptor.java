@@ -123,9 +123,14 @@ public class AccessHeadInterceptor implements Interceptor {
                     String[] keyvalue = pairs[i].split("=");
                     String keyDecode = URLDecoder.decode(keyvalue[0], "utf-8");
                     keys[i] = keyDecode;
+                    if (keyvalue.length != 2) {
+                        keyValue.put(keyDecode, "");
+                        continue;
+                    }
                     keyValue.put(keyDecode, URLDecoder.decode(keyvalue[1], "utf-8"));
                 }
-                Arrays.sort(keys, keyComparator);
+                //Arrays.sort(keys, keyComparator);
+                Arrays.sort(keys);
                 for (String key : keys) {
                     sb.append(key).append(keyValue.get(key));
                 }
