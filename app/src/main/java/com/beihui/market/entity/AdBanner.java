@@ -8,7 +8,6 @@ public class AdBanner implements Parcelable {
     /**
      * 广告类型，1 跳转url， 2跳转产品详情页
      */
-
     private String id;
     private String userId;
     private String title;

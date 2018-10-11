@@ -1249,8 +1249,9 @@ public interface ApiService {
 
     /**
      * 用户主页-用户发表的文章列表
-     * @param userID 用户id
-     * @param pageNo 页码
+     *
+     * @param userID   用户id
+     * @param pageNo   页码
      * @param pageSize 每页条数
      * @return
      */
@@ -1264,7 +1265,8 @@ public interface ApiService {
     /************************************社区************************************/
     /**
      * 社区推荐列表
-     * @param pageNo 页码
+     *
+     * @param pageNo   页码
      * @param pageSize 每页记录数
      * @return
      */
@@ -1274,6 +1276,7 @@ public interface ApiService {
 
     /**
      * 图片上传
+     *
      * @param base64 图片base64
      * @return
      */
@@ -1283,23 +1286,25 @@ public interface ApiService {
 
     /**
      * 发布动态
-     * @param userId 用户id
-     * @param imgKey 图片上传对应的key，多张用#分隔
-     * @param forumTitle 动态标题
+     *
+     * @param userId       用户id
+     * @param imgKey       图片上传对应的key，多张用#分隔
+     * @param forumTitle   动态标题
      * @param forumContent 动态内容
-     * @param status 是否提交草稿箱 0 提交 3 未提交
-     * @param topicId 话题id，必传
+     * @param status       是否提交草稿箱 0 提交 3 未提交
+     * @param topicId      话题id，必传
      * @return
      */
     @FormUrlEncoded
     @POST("/s6/forumController/publicForumInfo")
-    Observable<ResultEntity> publicForumInfo(@Field("userId") String userId,@Field("imgKey") String imgKey, @Field("forumTitle") String forumTitle,
-                                             @Field("forumContent") String forumContent, @Field("status") String status,@Field("topicId") String topicId,
-                                             @Field("forumId")String forumId);
+    Observable<ResultEntity> publicForumInfo(@Field("userId") String userId, @Field("imgKey") String imgKey, @Field("forumTitle") String forumTitle,
+                                             @Field("forumContent") String forumContent, @Field("status") String status, @Field("topicId") String topicId,
+                                             @Field("forumId") String forumId);
 
 
     /**
      * 查询评论列表
+     *
      * @param forumId
      * @param pageNo
      * @param pageSize
@@ -1307,14 +1312,16 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryCommentList")
-    Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(@Field("forumId") String forumId,@Field("pageNo") String pageNo,@Field("pageSize") String pageSize);
+    Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(@Field("forumId") String forumId, @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
 
     /*产品列表查询*/
     @FormUrlEncoded
-    @POST("/s6/product/productListForNative")
+    @POST("/s3/product/productListForNative")
     Observable<ResultEntity<List<Product>>> products(@FieldMap Map<String, Object> map);
+
     /**
      * 发表评论回复
+     *
      * @param userId
      * @param commentType
      * @param commentContent
@@ -1330,6 +1337,7 @@ public interface ApiService {
 
     /**
      * 提交举报信息
+     *
      * @param userId
      * @param linkId
      * @param reportType
@@ -1342,6 +1350,7 @@ public interface ApiService {
 
     /**
      * 删除动态
+     *
      * @param forumId
      * @return
      */
@@ -1351,6 +1360,7 @@ public interface ApiService {
 
     /**
      * 删除评论回复
+     *
      * @param replyId
      * @return
      */
@@ -1360,6 +1370,7 @@ public interface ApiService {
 
     /**
      * 社区评论回复点赞
+     *
      * @param praiseType
      * @param forumReplyId
      * @param userId
@@ -1371,6 +1382,7 @@ public interface ApiService {
 
     /**
      * 社区评论回复取消点赞
+     *
      * @param praiseType
      * @param forumReplyId
      * @param userId

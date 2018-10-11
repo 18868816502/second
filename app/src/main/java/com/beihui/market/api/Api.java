@@ -1221,6 +1221,7 @@ public class Api {
 
     /**
      * 发布话题
+     *
      * @param userId
      * @param imgKey
      * @param forumTitle
@@ -1229,9 +1230,9 @@ public class Api {
      * @param topicId
      * @return
      */
-    public Observable<ResultEntity> publicForumInfo(String userId,String imgKey, String forumTitle,
-                                                    String forumContent, String status,String topicId,String forumId){
-        return service.publicForumInfo(userId,imgKey, forumTitle,forumContent, status,topicId,forumId);
+    public Observable<ResultEntity> publicForumInfo(String userId, String imgKey, String forumTitle,
+                                                    String forumContent, String status, String topicId, String forumId) {
+        return service.publicForumInfo(userId, imgKey, forumTitle, forumContent, status, topicId, forumId);
 
     }
 
@@ -1242,17 +1243,19 @@ public class Api {
 
     /**
      * 查询评论回复列表
+     *
      * @param forumId
      * @param pageNo
      * @param pageSize
      * @return
      */
-    public Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(String forumId,int pageNo, int pageSize) {
-        return service.queryCommentList(forumId,pageNo+"", pageSize+"");
+    public Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(String forumId, int pageNo, int pageSize) {
+        return service.queryCommentList(forumId, pageNo + "", pageSize + "");
     }
 
     /**
      * 评论回复
+     *
      * @param userId
      * @param commentType
      * @param commentContent
@@ -1267,6 +1270,7 @@ public class Api {
 
     /**
      * 提交举报信息
+     *
      * @param userId
      * @param linkId
      * @param reportType
@@ -1279,6 +1283,7 @@ public class Api {
 
     /**
      * 删除动态
+     *
      * @param forumId
      * @return
      */
@@ -1288,6 +1293,7 @@ public class Api {
 
     /**
      * 删除评论回复
+     *
      * @param replyId
      * @return
      */
@@ -1297,23 +1303,25 @@ public class Api {
 
     /**
      * 社区评论回复点赞
+     *
      * @param praiseType
      * @param forumReplyId
      * @param userId
      * @return
      */
     public Observable<ResultEntity<PraiseBean>> fetchClickPraise(int praiseType, String forumReplyId, String userId) {
-        return service.fetchClickPraise(praiseType,forumReplyId,userId);
+        return service.fetchClickPraise(praiseType, forumReplyId, userId);
     }
 
     /**
      * 社区评论回复取消点赞
+     *
      * @param praiseType
      * @param forumReplyId
      * @param userId
      * @return
      */
     public Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId) {
-        return service.fetchCancelPraise(praiseType,forumReplyId,userId);
+        return service.fetchCancelPraise(praiseType, forumReplyId, userId);
     }
 }
