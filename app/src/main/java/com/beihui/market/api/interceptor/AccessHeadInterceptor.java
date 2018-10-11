@@ -129,7 +129,7 @@ public class AccessHeadInterceptor implements Interceptor {
                     }
                     keyValue.put(keyDecode, URLDecoder.decode(keyvalue[1], "utf-8"));
                 }
-                //Arrays.sort(keys, keyComparator);
+//                Arrays.sort(keys, keyComparator);
                 Arrays.sort(keys);
                 for (String key : keys) {
                     sb.append(key).append(keyValue.get(key));

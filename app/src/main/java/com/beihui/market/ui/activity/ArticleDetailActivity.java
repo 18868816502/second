@@ -78,6 +78,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     private SocialTopicBean.ForumBean forumBean;
     private int pageNo = 1;
     private int pageSize = 30;
+    private List<CommentReplyBean> datas;
     private CommentReplyBean replyBean;
     private CommentReplyBean.ReplyDtoListBean replyDtoListBean;
 
@@ -188,7 +189,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                     return;
                 }
                 ToastUtil.toast(etInput.getText().toString());
-
+                //分两种情况，评论和回复
+                //评论：
+                presenter.fetchReplyForumInfo("","1",etInput.getText().toString(),forumBean.getForumId(),"","");
+                //回复：
+//                presenter.fetchReplyForumInfo("","2",etInput.getText().toString(),forumBean.getForumId(),replyBean.getUserId(),replyBean.getId());
+//                presenter.fetchReplyForumInfo("","2",etInput.getText().toString(),forumBean.getForumId(),replyDtoListBean.getToUserId(),replyDtoListBean.getUserId());
                 break;
                 default:
                     break;
@@ -226,7 +232,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     }
 
     @Override
-    public void onViewClick(View view,int type) {
+    public void onViewClick(View view,int type,int position) {
         switch (type){
             //关注
             case ConstantTag.TAG_ATTENTION:
@@ -235,7 +241,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             //文章点赞
             case ConstantTag.TAG_PARISE_ARTICLE:
-
+                presenter.fetchClickPraise(0,forumBean.getUserId(),"");
                 break;
             //文章评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
@@ -244,19 +250,28 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:
-
+                replyBean = datas.get(position);
+                presenter.fetchClickPraise(2,replyBean.getId(),"");
                 break;
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
+                replyBean = datas.get(position);
                 mPopType = 5;
                 PopUtils.showCommentPopWindow(R.layout.dialog_comment_input,fManager,this,this,this);
                 break;
 
             //子评论点赞
             case ConstantTag.TAG_CHILD_PARISE_COMMENT:
+                int praisePosition = (int) view.getTag();
+                replyDtoListBean = datas.get(praisePosition).getReplyDtoList().get(position);
+                presenter.fetchClickPraise(2,replyDtoListBean.getId(),"");
+                ToastUtil.toast("点赞第"+ praisePosition+"条");
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
+                int comPosition = (int) view.getTag();
+                replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
+                ToastUtil.toast("评论第"+ comPosition+"条");
                 break;
             case ConstantTag.TAG_COMMENT_MORE:
                 mPopType = 4;
@@ -341,6 +356,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
+        this.datas = list;
         adapter.setDatas(list,forumBean);
     }
 

@@ -134,8 +134,10 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                                public void accept(ResultEntity<SocialTopicBean> result){
                                    if (result.isSuccess()) {
                                        if(1 == pageNo){
+                                           refreshLayout.finishRefresh();
                                            adapter.setDatas(result.getData().getForum());
                                        }else{
+                                           refreshLayout.finishLoadMore();
                                            adapter.appendDatas(result.getData().getForum());
                                        }
                                    } else {
@@ -146,6 +148,8 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable){
+                                refreshLayout.finishRefresh();
+                                refreshLayout.finishLoadMore();
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });

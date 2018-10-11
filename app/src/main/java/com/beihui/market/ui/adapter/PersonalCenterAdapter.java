@@ -253,7 +253,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             switch (view.getId()){
                 case R.id.avatar:
                     ToastUtil.toast("用户头像");
-                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_AVATAR);
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_AVATAR,0);
                     break;
                 case R.id.ll_edit_container:
                     ToastUtil.toast("编辑个人资料");
@@ -271,7 +271,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                     ToastUtil.toast("获赞");
                     break;
                 case R.id.iv_more:
-                    listener.onViewClick(view,ConstantTag.TAG_PERSONAL_MORE);
+                    listener.onViewClick(view,ConstantTag.TAG_PERSONAL_MORE,0);
                     break;
 
 

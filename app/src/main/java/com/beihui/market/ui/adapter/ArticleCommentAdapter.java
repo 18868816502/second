@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.constant.ConstantTag;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -95,9 +96,9 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private ArticleDetailAdapter.OnViewClickListener listener;
+    private OnViewClickListener listener;
 
-    public void setOnViewClickListener(ArticleDetailAdapter.OnViewClickListener listener){
+    public void setOnViewClickListener(OnViewClickListener listener){
         this.listener = listener;
     }
 
