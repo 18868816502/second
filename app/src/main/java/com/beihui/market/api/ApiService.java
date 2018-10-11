@@ -203,6 +203,11 @@ public interface ApiService {
     @POST(PRODUCT_PATH + "/product/skip")
     Observable<ResultEntity<String>> queryGroupProductSkip(@Field("userId") String userId, @Field("productId") String productId);
 
+    /*贷超产品页面跳转（原生)*/
+    @FormUrlEncoded
+    @POST("/s3/product/productSkipForNative")
+    Observable<ResultEntity> proSkip(@Field("productId") String productId);
+
     /**
      * 查询快捷账单还款详情
      */

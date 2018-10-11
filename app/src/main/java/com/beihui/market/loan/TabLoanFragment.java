@@ -9,15 +9,18 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentFragment;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.MainActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
+import com.beihui.market.ui.activity.WebViewActivity;
 import com.beihui.market.util.CommonUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -127,6 +130,28 @@ public class TabLoanFragment extends BaseComponentFragment {
                         break;
                 }
                 request(map);
+            }
+        });
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter a, View view, int position) {
+                final Product product = adapter.getData().get(position);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    startActivity(new Intent(getActivity(), UserAuthorizationActivity.class));
+                    return;
+                }
+                Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(getActivity()).id(), product.getId())
+                        .compose(RxResponse.<String>compatT())
+                        .subscribe(new ApiObserver<String>() {
+                            @Override
+                            public void onNext(@NonNull String data) {
+                                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                                intent.putExtra("webViewUrl", data);
+                                //intent.putExtra("title", ""/*product.getProductName()*/);
+                                intent.putExtra("webViewTitleName", product.getProductName());
+                                startActivity(intent);
+                            }
+                        });
             }
         });
     }

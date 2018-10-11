@@ -68,6 +68,9 @@ public class CreditResultActivity extends BaseComponentActivity {
             toolbar.setBackgroundResource(R.color.refresh_one);
             setupToolbarBackNavigation(toolbar, R.drawable.back_white);
             titleTv.setTextColor(Color.WHITE);
+        } else {
+            toolbar.setBackgroundResource(R.color.transparent);
+            setupToolbarBackNavigation(toolbar, R.drawable.back_white);
         }
         titleTv.setText(title);
 

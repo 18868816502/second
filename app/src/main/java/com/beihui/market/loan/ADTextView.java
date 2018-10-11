@@ -84,6 +84,9 @@ public class ADTextView extends TextSwitcher {
         if (mAnimationOut != -1) {
             setOutAnimation(AnimationUtils.loadAnimation(mContext, mAnimationOut));
         }
+        if (getChildCount() > 0) {
+            return;
+        }
         //设置Factory
         setFactory(new ViewFactory() {
             @Override

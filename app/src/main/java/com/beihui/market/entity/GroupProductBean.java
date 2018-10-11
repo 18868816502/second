@@ -21,6 +21,7 @@ public class GroupProductBean implements Serializable {
     public String id;
     public String productName;
     public String logoUrl;
+    public String borrowingHighText;
 
     public String getExplains() {
         return explains;

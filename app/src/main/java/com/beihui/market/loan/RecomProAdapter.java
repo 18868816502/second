@@ -22,13 +22,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
 public class RecomProAdapter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
     public RecomProAdapter() {
         super(R.layout.layout_recom_pro);
+        openLoadAnimation(ALPHAIN);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, GroupProductBean item) {
         ImageView iv_icon = helper.getView(R.id.iv_icon);
         Glide.with(iv_icon.getContext()).load(item.logoUrl).error(R.color.white).into(iv_icon);
-        helper.setText(R.id.tv_name, "name")
-                .setText(R.id.tv_content, "content");
+        helper.setText(R.id.tv_name, item.getProductName())
+                .setText(R.id.tv_content, item.borrowingHighText);
     }
 }

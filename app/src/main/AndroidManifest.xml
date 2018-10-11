@@ -60,6 +60,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".loan.ProTypeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.LoanDetailActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -493,13 +497,13 @@
 
 
         <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="com.beihui.market"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/file_paths_public"></meta-data>-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="com.beihui.market"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/file_paths_public"></meta-data>-->
         <!--</provider>-->
     </application>
 

@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/bga_banner"
+    <!--<LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:gravity="center_vertical">
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/bga_banner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
 
-        <TextView
-            android:id="@+id/tv_pro_1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
-            android:gravity="center_horizontal"
-            android:text="高通过率" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tv_pro_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
-            android:gravity="center_horizontal"
-            android:text="闪电到账" />
+            <TextView
+                android:id="@+id/tv_pro_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="3dp"
+                android:drawableTop="@mipmap/ic_logo_yiren"
+                android:gravity="center_horizontal"
+                android:text="高通过率" />
 
-        <TextView
-            android:id="@+id/tv_pro_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
-            android:gravity="center_horizontal"
-            android:text="不查征信" />
+            <TextView
+                android:id="@+id/tv_pro_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="3dp"
+                android:drawableTop="@mipmap/ic_logo_yiren"
+                android:gravity="center_horizontal"
+                android:text="闪电到账" />
 
-        <TextView
-            android:id="@+id/tv_pro_4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
-            android:gravity="center_horizontal"
-            android:text="办信用卡" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_pro_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="3dp"
+                android:drawableTop="@mipmap/ic_logo_yiren"
+                android:gravity="center_horizontal"
+                android:text="不查征信" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+            <TextView
+                android:id="@+id/tv_pro_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="3dp"
+                android:drawableTop="@mipmap/ic_logo_yiren"
+                android:gravity="center_horizontal"
+                android:text="办信用卡" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="考拉\n头条" />
+
+            <com.beihui.market.loan.ADTextView
+                android:id="@+id/adt_looper"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="12dp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/state_container"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="考拉\n头条" />
+            android:layout_marginLeft="15dp"
+            android:text="爆款推荐" />
+    </LinearLayout>-->
 
-        <com.beihui.market.loan.ADTextView
-            android:id="@+id/adt_looper"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginLeft="12dp" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/state_container"
-        android:layout_width="match_parent"
-        android:layout_height="180dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:text="爆款推荐" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+            android:layout_height="match_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</FrameLayout>

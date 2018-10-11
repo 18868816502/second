@@ -100,6 +100,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.Field;
 
 import static com.beihui.market.api.NetConstants.SECOND_PRODUCT;
 
@@ -221,6 +222,11 @@ public class Api {
     /*进入贷超产品详情*/
     public Observable<ResultEntity<String>> queryGroupProductSkip(String userId, String productId) {
         return service.queryGroupProductSkip(userId, productId);
+    }
+
+    /*贷超产品页面跳转（原生)*/
+    public Observable<ResultEntity> proSkip(@Field("productId") String productId) {
+        return service.proSkip(productId);
     }
 
     /*绑定手机号*/
