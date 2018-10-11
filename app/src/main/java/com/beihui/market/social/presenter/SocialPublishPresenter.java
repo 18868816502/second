@@ -55,11 +55,11 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
     @Override
     public void fetchPublishTopic(String imgKey, String forumTitle,
                                   String forumContent, String status,String topicId,String forumId) {
-        Disposable dis = mApi.publicForumInfo(mUserHelper.getProfile().getId(),imgKey, forumTitle,
-                forumContent, status,topicId,forumId).compose(RxUtil.<ResultEntity>io2main())
+        Disposable dis = mApi.publicForumInfo(mUserHelper.getProfile().getId(),imgKey, forumTitle, forumContent, status,topicId,forumId)
+                .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
-                               public void accept(@NonNull ResultEntity result) throws Exception {
+                               public void accept(@NonNull ResultEntity result){
                                    if (result.isSuccess()) {
                                        mView.onPublishTopicSucceed();
                                    } else {
@@ -69,7 +69,7 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
                            },
                         new Consumer<Throwable>() {
                             @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
+                            public void accept(@NonNull Throwable throwable){
                                 logError(SocialPublishPresenter.this, throwable);
                                 mView.showErrorMsg(generateErrorMsg(throwable));
                             }

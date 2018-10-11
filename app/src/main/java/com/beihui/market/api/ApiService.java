@@ -1293,9 +1293,9 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/s6/forumController/publicForumInfo")
-    Observable<ResultEntity> publicForumInfo(@Field("userId") String userId,@Field("imgKey") String imgKey,
-                                             @Field("forumTitle") String forumTitle,@Field("forumContent") String forumContent,
-                                             @Field("status") String status,@Field("topicId") String topicId,@Field("forumId")String forumId);
+    Observable<ResultEntity> publicForumInfo(@Field("userId") String userId,@Field("imgKey") String imgKey, @Field("forumTitle") String forumTitle,
+                                             @Field("forumContent") String forumContent, @Field("status") String status,@Field("topicId") String topicId,
+                                             @Field("forumId")String forumId);
 
 
     /**
