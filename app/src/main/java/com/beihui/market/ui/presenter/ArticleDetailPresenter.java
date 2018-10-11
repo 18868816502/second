@@ -10,6 +10,7 @@ import com.beihui.market.social.bean.CommentReplyBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.ui.contract.ArticleDetailContact;
 import com.beihui.market.ui.contract.PersonalCenterContact;
+import com.beihui.market.util.ParamsUtils;
 import com.beihui.market.util.RxUtil;
 
 import java.util.List;
@@ -66,7 +67,9 @@ public class ArticleDetailPresenter extends BaseRxPresenter implements ArticleDe
 
     @Override
     public void fetchReplyForumInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId) {
-        Disposable dis = api.fetchReplyForumInfo(userHelper.getProfile().getId(),commentType, commentContent, forumId, toUserId, selfId)
+
+//        Disposable dis = api.fetchReplyForumInfo(userHelper.getProfile().getId(),commentType, commentContent, forumId, toUserId, selfId)
+        Disposable dis = api.fetchReplyForumInfo(ParamsUtils.generateCommentParams(userHelper.getProfile().getId(),commentType, commentContent, forumId, toUserId, selfId))
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

@@ -91,4 +91,13 @@ public interface ConstantTag {
      * 查看更多评论
      */
     int TAG_COMMENT_MORE = 7;
+
+    /**
+     * 删除评论
+     */
+    int TAG_COMMENT_DELETE = 8;
+    /**
+     * 子评论删除
+     */
+    int TAG_CHILD_COMMENT_DELETE = 9;
 }

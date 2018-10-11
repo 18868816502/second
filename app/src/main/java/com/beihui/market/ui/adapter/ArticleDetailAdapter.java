@@ -2,16 +2,21 @@ package com.beihui.market.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.constant.ConstantTag;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.social.bean.CommentReplyBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.ui.activity.PersonalCenterActivity;
@@ -87,14 +92,37 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             headViewHolder.tvAuthorName.setText(forumBean.getUserName());
             headViewHolder.tvAuthorTime.setText(forumBean.getGmtCreate());
             headViewHolder.bgaBanner.setData(forumBean.getPicUrl(),null);
+            headViewHolder.bgaBanner.setAdapter(new BGABanner.Adapter<ImageView,String>() {
+                @Override
+                public void fillBannerItem(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
+                    Glide.with(mContext).load(model).into(itemView);
+                }
+            });
             headViewHolder.tvArticleContent.setText(forumBean.getContent());
-            headViewHolder.tvCommentNum.setText(String.valueOf(datas.size()+""));
-        }else if(position == getItemCount() - 1){
+            headViewHolder.tvCommentNum.setText(String.valueOf("评论"+datas.size()));
+            if(forumBean.getIsPraise() == 0){
+                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
+                dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
+                headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+            }else{
+                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
+                dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
+                headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+            }
 
+        }else if(position == getItemCount() - 1){
+            FootViewHolder footViewHolder = (FootViewHolder) holder;
+            if(datas.size() > 3){
+                footViewHolder.setVisibility(true);
+                footViewHolder.tvCommentNum.setText(String.format(mContext.getString(R.string.article_comment_total_num),datas.size()));
+            }else{
+                footViewHolder.setVisibility(false);
+            }
         }else{
             CommmentViewHolder commmentViewHolder = (CommmentViewHolder) holder;
             commmentViewHolder.tvCommentPraise.setTag(R.id.tag_praise,position-1);
             commmentViewHolder.ivArticleComment.setTag(R.id.tag_comment,position-1);
+            commmentViewHolder.tvCommentDelete.setTag(R.id.tag_delete,position-1);
             commmentViewHolder.itemView.setTag(position-1);
 
             Glide.with(mContext).load(datas.get(position-1).getUserHeadUrl()).into(commmentViewHolder.ivCommentatorAcatar);
@@ -102,12 +130,23 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commmentViewHolder.tvCommentContent.setText(datas.get(position-1).getContent());
             commmentViewHolder.tvCommentTime.setText(String.valueOf(datas.get(position-1).getGmtCreate()+""));
             commmentViewHolder.commentAdapter.setDatas(datas.get(position-1).getReplyDtoList());
+
+            if(TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(),datas.get(position-1).getUserId())){
+                commmentViewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+            }else{
+                commmentViewHolder.tvCommentDelete.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return datas.size() + 2;
+        if(datas.size() > 3){
+            return 5;
+        }else{
+            return datas.size() + 2;
+        }
+//        return datas.size() + 2;
     }
 
     @Override
@@ -147,13 +186,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         HeadViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-//            BGALocalImageSize localImageSize = new BGALocalImageSize(720, 1280, 320, 640);
-//            bgaBanner.setData(localImageSize, ImageView.ScaleType.CENTER_CROP,
-//                    R.drawable.x_account_info_header_bg,
-//                    R.drawable.x_account_info_header_bg,
-//                    R.drawable.x_account_info_header_bg);
-//            setOnClick(ivAuthorAvatar,tvAttention,tvPraise,tvComment);
             tvArticleTitle.setFocusable(true);
+            setOnClick(tvComment,tvPraise);
         }
     }
 
@@ -167,6 +201,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView tvCommentContent;
         @BindView(R.id.tv_comment_time)
         TextView tvCommentTime;
+        @BindView(R.id.tv_comment_delete)
+        TextView tvCommentDelete;
         @BindView(R.id.tv_comment_praise)
         TextView tvCommentPraise;
         @BindView(R.id.iv_article_comment)
@@ -203,17 +239,33 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 //                    }
                 }
             });
-            setOnClick(tvCommentPraise,ivArticleComment);
+            setOnClick(tvCommentPraise,ivArticleComment,tvCommentDelete);
         }
     }
 
     class FootViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.tv_comment_num_title)
+        TextView tvCommentNum;
 
         FootViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(new OnClickListener());
+        }
+
+        public void setVisibility(boolean isVisible) {
+            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+            if (isVisible) {
+                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                itemView.setVisibility(View.VISIBLE);
+            } else {
+                itemView.setVisibility(View.GONE);
+                param.height = 0;
+                param.width = 0;
+            }
+            itemView.setLayoutParams(param);
         }
     }
 
@@ -259,6 +311,12 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     int comPosition = (int) v.getTag(R.id.tag_comment);
                     ToastUtil.toast("回复第"+(comPosition + 1) + "条");
                     listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT,comPosition);
+                    break;
+                    //评论删除
+                case R.id.tv_comment_delete:
+                    int delPosition = (int) v.getTag(R.id.tag_delete);
+                    ToastUtil.toast("删除第"+(delPosition + 1) + "条");
+                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_DELETE,delPosition);
                     break;
 
                 case R.id.foot:

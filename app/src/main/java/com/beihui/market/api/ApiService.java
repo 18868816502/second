@@ -1279,6 +1279,15 @@ public interface ApiService {
     @POST("/s6/forumQueryController/queryRecommend")
     Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
+    @FormUrlEncoded
+    @POST("/s6/forumQueryController/queryRecommend")
+    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId,@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    @FormUrlEncoded
+    @POST("/s6/forumQueryController/queryRecommend")
+    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@FieldMap Map<String, Object> map);
+
+
     /**
      * 图片上传
      *
@@ -1339,6 +1348,9 @@ public interface ApiService {
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@Field("userId") String userId, @Field("commentType") String commentType, @Field("commentContent") String commentContent,
                                                  @Field("forumId") String forumId, @Field("toUserId") String toUserId, @Field("selfId") String selfId);
+    @FormUrlEncoded
+    @POST("/s6/forumController/replyForumInfo")
+    Observable<ResultEntity> fetchReplyForumInfo(@FieldMap Map<String, Object> map);
 
     /**
      * 提交举报信息
@@ -1351,7 +1363,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/s6/forumController/saveReport")
-    Observable<ResultEntity> fetchSaveReport(String userId, String linkId, String reportType, String reportContent);
+    Observable<ResultEntity> fetchSaveReport(@Field("userId") String userId, @Field("linkId") String linkId,
+                                             @Field("reportType") String reportType, @Field("reportContent") String reportContent);
 
     /**
      * 删除动态
@@ -1361,7 +1374,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("s6/forumController/cancelForum")
-    Observable<ResultEntity> fetchCancelForum(String forumId);
+    Observable<ResultEntity> fetchCancelForum(@Field("forumId") String forumId);
 
     /**
      * 删除评论回复
@@ -1371,7 +1384,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("s6/forumController/cancelReply")
-    Observable<ResultEntity> fetchCancelReply(String replyId);
+    Observable<ResultEntity> fetchCancelReply(@Field("replyId") String replyId);
 
     /**
      * 社区评论回复点赞
@@ -1383,7 +1396,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("s6/forumController/clickPraise")
-    Observable<ResultEntity<PraiseBean>> fetchClickPraise(int praiseType, String forumReplyId, String userId);
+    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType,@Field("forumReplayId") String forumReplyId,@Field("userId") String userId);
 
     /**
      * 社区评论回复取消点赞
@@ -1395,5 +1408,5 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("s6/forumController/cancelPraise")
-    Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId);
+    Observable<ResultEntity> fetchCancelPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
 }
