@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.constant.ConstantTag;
 import com.beihui.market.social.bean.CommentReplyBean;
-import com.beihui.market.ui.listeners.OnViewClickListener;
 import com.beihui.market.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -96,9 +95,9 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private OnViewClickListener listener;
+    private ArticleDetailAdapter.OnViewClickListener listener;
 
-    public void setOnViewClickListener(OnViewClickListener listener){
+    public void setOnViewClickListener(ArticleDetailAdapter.OnViewClickListener listener){
         this.listener = listener;
     }
 
@@ -112,13 +111,13 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
                 case R.id.tv_comment_praise:
                     int position = (int) v.getTag();
                     ToastUtil.toast("子点赞第"+(position + 1) + "条");
-                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT);
+                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT,position);
                     break;
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag();
                     ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
-                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT);
+                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT,comPosition);
                     break;
                 default:
                     break;

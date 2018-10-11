@@ -78,6 +78,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     private SocialTopicBean.ForumBean forumBean;
     private int pageNo = 1;
     private int pageSize = 30;
+    private CommentReplyBean replyBean;
+    private CommentReplyBean.ReplyDtoListBean replyDtoListBean;
 
     @Override
     public int getLayoutId() {
@@ -339,7 +341,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
-        //adapter.setDatas(list,forumBean);
+        adapter.setDatas(list,forumBean);
     }
 
     @Override
