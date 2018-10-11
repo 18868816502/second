@@ -16,6 +16,6 @@ public interface OnViewClickListener {
      * @param view 点击的控件
      * @param type 类型，用于判断点击的是哪个控件
      */
-    void onViewClick(View view, int type);
+    void onViewClick(View view, int type,int position);
 
 }

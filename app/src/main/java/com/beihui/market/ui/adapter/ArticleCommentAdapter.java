@@ -112,13 +112,13 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
                 case R.id.tv_comment_praise:
                     int position = (int) v.getTag();
                     ToastUtil.toast("子点赞第"+(position + 1) + "条");
-                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT);
+                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT,position);
                     break;
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag();
                     ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
-                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT);
+                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT,comPosition);
                     break;
                 default:
                     break;

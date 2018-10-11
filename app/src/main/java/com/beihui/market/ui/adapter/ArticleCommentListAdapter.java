@@ -79,8 +79,8 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             adapter.notifyDataSetChanged();
             adapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
-                public void onViewClick(View view, int type) {
-                    listener.onViewClick(view,type);
+                public void onViewClick(View view, int type,int position) {
+                    listener.onViewClick(view,type,position);
                 }
             });
             setOnClick(tvCommentPraise,ivArticleComment);
@@ -106,13 +106,13 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             switch (v.getId()) {
                 //点赞
                 case R.id.tv_comment_praise:
-                    ToastUtil.toast("点赞第"+ v.getTag()+"条");
-                    listener.onViewClick(v, ConstantTag.TAG_PRAISE_COMMENT);
+//                    ToastUtil.toast("点赞第"+ v.getTag()+"条");
+                    listener.onViewClick(v, ConstantTag.TAG_PRAISE_COMMENT, (Integer) v.getTag());
                     break;
                 //评论
                 case R.id.iv_article_comment:
-                    ToastUtil.toast("评论第"+ v.getTag()+"条");
-                    listener.onViewClick(v,ConstantTag.TAG_REPLY_COMMENT);
+//                    ToastUtil.toast("评论第"+ v.getTag()+"条");
+                    listener.onViewClick(v,ConstantTag.TAG_REPLY_COMMENT, (Integer) v.getTag());
                     break;
                 default:
                     break;

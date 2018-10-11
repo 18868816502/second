@@ -196,7 +196,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     }
 
     @Override
-    public void onViewClick(View view, int type) {
+    public void onViewClick(View view, int type,int position) {
         switch (type){
             case ConstantTag.TAG_PERSONAL_AVATAR:
                 startActivity(new Intent(this, UserProfileActivity.class));

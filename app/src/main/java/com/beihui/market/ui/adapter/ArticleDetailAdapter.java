@@ -78,9 +78,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(position == 0){
-//            if(forumBean == null){
-//                return;
-//            }
+            if(forumBean == null){
+                return;
+            }
             HeadViewHolder headViewHolder = (HeadViewHolder) holder;
             headViewHolder.tvArticleTitle.setText(forumBean.getTitle());
             Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
@@ -95,6 +95,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             CommmentViewHolder commmentViewHolder = (CommmentViewHolder) holder;
             commmentViewHolder.tvCommentPraise.setTag(R.id.tag_praise,position-1);
             commmentViewHolder.ivArticleComment.setTag(R.id.tag_comment,position-1);
+            commmentViewHolder.itemView.setTag(position-1);
 
             Glide.with(mContext).load(datas.get(position-1).getUserHeadUrl()).into(commmentViewHolder.ivCommentatorAcatar);
             commmentViewHolder.tvCommentatorName.setText(datas.get(position-1).getUserName());
@@ -174,7 +175,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         RecyclerView itemRecyclerView;
         ArticleCommentAdapter commentAdapter;
 
-        CommmentViewHolder(View itemView) {
+        CommmentViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -185,19 +186,21 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commentAdapter.notifyDataSetChanged();
             commentAdapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
-                public void onViewClick(View view, int type) {
-                    listener.onViewClick(view,type);
-                    switch (type){
-                        //子评论点赞
-                        case ConstantTag.TAG_CHILD_PARISE_COMMENT:
-                            break;
-                        //子评论回复
-                        case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-
-                            break;
-                        default:
-                            break;
-                    }
+                public void onViewClick(View view, int type,int position) {
+                    view.setTag(itemView.getTag());
+                    listener.onViewClick(view,type,position);
+//                    switch (type){
+//                        //子评论点赞
+//                        case ConstantTag.TAG_CHILD_PARISE_COMMENT:
+//
+//                            break;
+//                        //子评论回复
+//                        case ConstantTag.TAG_CHILD_REPLY_COMMENT:
+//
+//                            break;
+//                        default:
+//                            break;
+//                    }
                 }
             });
             setOnClick(tvCommentPraise,ivArticleComment);
@@ -235,31 +238,31 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mContext.startActivity(new Intent(mContext,PersonalCenterActivity.class));
                     break;
                 case R.id.tv_article_attention:
-                    listener.onViewClick(v,ConstantTag.TAG_ATTENTION);
+//                    listener.onViewClick(v,ConstantTag.TAG_ATTENTION);
                     break;
                 case R.id.tv_article_praise:
-                    listener.onViewClick(v,ConstantTag.TAG_PARISE_ARTICLE);
+                    listener.onViewClick(v,ConstantTag.TAG_PARISE_ARTICLE,0);
                     break;
                 //追加文章评论
                 case R.id.tv_comment:
-                    listener.onViewClick(v,ConstantTag.TAG_COMMENT_ARTICLE);
+                    listener.onViewClick(v,ConstantTag.TAG_COMMENT_ARTICLE,0);
                     break;
 
                 //评论点赞
                 case R.id.tv_comment_praise:
                     int position = (int) v.getTag(R.id.tag_praise);
                     ToastUtil.toast("点赞第"+(position + 1) + "条");
-                    listener.onViewClick(v,ConstantTag.TAG_PRAISE_COMMENT);
+                    listener.onViewClick(v,ConstantTag.TAG_PRAISE_COMMENT,position);
                     break;
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag(R.id.tag_comment);
                     ToastUtil.toast("回复第"+(comPosition + 1) + "条");
-                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT);
+                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT,comPosition);
                     break;
 
                 case R.id.foot:
-                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE);
+                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE,0);
                     break;
                 default:
                     break;
