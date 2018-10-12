@@ -3,6 +3,7 @@ package com.beihui.market.loan;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.tang.Decoration;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -45,6 +47,7 @@ import io.reactivex.annotations.NonNull;
 public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHolder> implements View.OnClickListener {
     private static final int TYPE_HEADER = R.layout.layout_tab_head;
     private static final int TYPE_NORMAL = R.layout.temlapte_recycler;
+    private static final int TYPE_FOOT = R.layout.layout_home_footview;
 
     private Activity context;
     private List<String> imgs = new ArrayList<>();
@@ -124,7 +127,9 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             }
         }
         if (holder.viewType == TYPE_NORMAL) {
-            holder.recycler.setPadding(DensityUtil.dp2px(context, 15f), 0, DensityUtil.dp2px(context, 15f), 0);
+            holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
+            holder.recycler.setItemAnimator(new DefaultItemAnimator());
+            holder.recycler.addItemDecoration(new Decoration(20, 2));
             holder.recycler.setLayoutManager(new GridLayoutManager(context, 2) {
                 @Override
                 public boolean canScrollVertically() {
@@ -148,7 +153,6 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                                 public void onNext(@NonNull String data) {
                                     Intent intent = new Intent(context, WebViewActivity.class);
                                     intent.putExtra("webViewUrl", data);
-                                    //intent.putExtra("title", ""/*product.getProductName()*/);
                                     intent.putExtra("webViewTitleName", product.getProductName());
                                     context.startActivity(intent);
                                 }
@@ -191,12 +195,13 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return TYPE_HEADER;
+        else if (position == 2) return TYPE_FOOT;
         else return TYPE_NORMAL;
     }
 

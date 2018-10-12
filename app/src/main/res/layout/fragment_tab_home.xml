@@ -14,4 +14,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_toolbar_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/hold_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="考拉记账"
+                android:textColor="@color/black_1"
+                android:textSize="17dp" />
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
 </FrameLayout>

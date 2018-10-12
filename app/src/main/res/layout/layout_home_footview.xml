@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:gravity="center"
+    android:paddingTop="5dp">
+
+    <View
+        android:layout_width="18dp"
+        android:layout_height="0.8dp"
+        android:background="#d3d4d5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="考拉记账 · 专业贷款"
+        android:textColor="#d3d4d5"
+        android:textSize="10dp" />
+
+    <View
+        android:layout_width="18dp"
+        android:layout_height="0.8dp"
+        android:background="#d3d4d5" />
+</LinearLayout>

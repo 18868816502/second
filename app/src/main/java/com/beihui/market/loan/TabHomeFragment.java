@@ -4,6 +4,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -16,6 +18,9 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
+import com.beihui.market.util.CommonUtils;
+import com.beihui.market.util.DensityUtil;
+import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -43,11 +48,16 @@ public class TabHomeFragment extends BaseComponentFragment {
     SmartRefreshLayout refresh_layout;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.ll_toolbar_wrap)
+    LinearLayout ll_toolbar_wrap;
+    @BindView(R.id.hold_view)
+    View hold_view;
 
     private List<String> imgs = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private TabHomeAdapter homeAdapter = new TabHomeAdapter();
+    private int dyTranslate;
 
     @Override
     public int getLayoutResId() {
@@ -56,6 +66,11 @@ public class TabHomeFragment extends BaseComponentFragment {
 
     @Override
     public void configViews() {
+        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+        ViewGroup.LayoutParams params = hold_view.getLayoutParams();
+        params.height = statusHeight;
+        hold_view.setLayoutParams(params);
+
         initRecycler();
         refresh_layout.setEnableLoadMore(false);
         request();
@@ -65,6 +80,20 @@ public class TabHomeFragment extends BaseComponentFragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setItemAnimator(new DefaultItemAnimator());
         recycler.setAdapter(homeAdapter);
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                dyTranslate += dy;
+                if (dyTranslate > DensityUtil.dp2px(getActivity(), 170f)) {
+                    ll_toolbar_wrap.setVisibility(View.VISIBLE);
+                    ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(true).init();
+                } else {
+                    ll_toolbar_wrap.setVisibility(View.GONE);
+                    ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(false).init();
+                }
+            }
+        });
     }
 
     private void request() {
@@ -141,7 +170,6 @@ public class TabHomeFragment extends BaseComponentFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        System.out.println("hidden : " + hidden);
         if (!hidden) recycler.smoothScrollToPosition(0);
     }
 

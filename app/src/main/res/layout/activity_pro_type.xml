@@ -9,8 +9,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@android:color/white">
+        android:layout_height="@dimen/tool_bar_height">
 
         <TextView
             android:id="@+id/tv_toolbar_title"
@@ -18,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="添加信用卡" />
+            tools:text="添加信用卡" />
     </android.support.v7.widget.Toolbar>
 
     <TextView
@@ -36,6 +35,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#fafafa" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

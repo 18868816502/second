@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <cn.bingoogolapple.bgabanner.BGABanner
@@ -11,16 +12,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:gravity="bottom">
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingTop="3dp">
 
         <TextView
             android:id="@+id/tv_pro_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
+            android:drawableTop="@mipmap/ic_home_btn1"
             android:gravity="center_horizontal"
             android:text="高通过率" />
 
@@ -29,8 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
+            android:drawableTop="@mipmap/ic_home_btn2"
             android:gravity="center_horizontal"
             android:text="闪电到账" />
 
@@ -39,8 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
+            android:drawableTop="@mipmap/ic_home_btn3"
             android:gravity="center_horizontal"
             android:text="不查征信" />
 
@@ -49,11 +48,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_logo_yiren"
+            android:drawableTop="@mipmap/ic_home_btn4"
             android:gravity="center_horizontal"
             android:text="大额低息" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/c_f7f7f7" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,27 +67,60 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="考拉\n头条" />
+            android:src="@mipmap/ic_home_loop_left" />
 
         <com.beihui.market.loan.ADTextView
             android:id="@+id/adt_looper"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginLeft="12dp" />
-
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#fafafa" />
 
     <FrameLayout
         android:id="@+id/state_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:text="爆款推荐" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#fafafa" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_bill_over_red" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="爆款推荐"
+            android:textColor="@color/black_1"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Hot Product"
+            android:textColor="@color/c_e7e7e7"
+            android:textSize="16dp" />
+    </LinearLayout>
 </LinearLayout>
