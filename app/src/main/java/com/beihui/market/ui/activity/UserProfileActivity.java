@@ -38,6 +38,7 @@ import com.beihui.market.helper.updatehelper.AppUpdateHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerUserProfileComponent;
 import com.beihui.market.injection.module.UserProfileModule;
+import com.beihui.market.social.activity.EditProduceActivity;
 import com.beihui.market.ui.busevents.UserLogoutEvent;
 import com.beihui.market.ui.contract.UserProfileContract;
 import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
@@ -47,10 +48,12 @@ import com.beihui.market.umeng.Statistic;
 import com.beihui.market.util.CommonUtils;
 import com.beihui.market.util.ImageUtils;
 import com.beihui.market.util.LogUtils;
+import com.beihui.market.util.PopUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.util.WeakRefToastUtil;
 import com.beihui.market.view.CircleImageView;
+import com.beihui.market.view.dialog.PopDialog;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMAuthListener;
@@ -71,11 +74,13 @@ import io.reactivex.functions.Consumer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.beihui.market.ui.activity.EditNickNameActivity.RESULT_OK_EDIT_NICK_NAME_ACTIVITY;
+
 /**
  * 个人中心页面
  */
 @RuntimePermissions
-public class UserProfileActivity extends BaseComponentActivity implements UserProfileContract.View, View.OnClickListener {
+public class UserProfileActivity extends BaseComponentActivity implements UserProfileContract.View, View.OnClickListener, PopDialog.OnInitPopListener {
 
     public static final int REQUEST_EDIT_NICK_NAME_ACTIVITY = 0;
 
@@ -98,6 +103,15 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     @BindView(R.id.view_bottom)
     View btomView;
 
+    @BindView(R.id.fl_sex)
+    FrameLayout flSex;
+    @BindView(R.id.tv_sex)
+    TextView tvSex;
+    @BindView(R.id.fl_produce)
+    FrameLayout flProduce;
+    @BindView(R.id.tv_produce)
+    TextView tvProduce;
+
     @Inject
     UserProfilePresenter presenter;
 
@@ -109,6 +123,8 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     private String mCacheSize;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
+
+    private int mSex = 1;
 
     @Override
     protected void onResume() {
@@ -155,6 +171,13 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         }
 
         cacheSize.setText(mCacheSize);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            tvProduce.setText(intent.getStringExtra("introduce"));
+            mSex = intent.getIntExtra("sex", 1);
+            tvSex.setText(mSex == 1 ? "男" : "女");
+        }
     }
 
     @Override
@@ -168,9 +191,17 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 10 && requestCode == REQUEST_EDIT_NICK_NAME_ACTIVITY && data != null) {
+        if (resultCode == RESULT_OK_EDIT_NICK_NAME_ACTIVITY && requestCode == REQUEST_EDIT_NICK_NAME_ACTIVITY && data != null) {
             nickNameTv.setText(data.getStringExtra("updateNickName"));
+            return;
         }
+        if (requestCode == EditProduceActivity.RESULT_OK_EDIT_PRODUCE_ACTIVITY && resultCode == RESULT_OK) {
+            if (data != null) {
+                tvProduce.setText(data.getStringExtra("introduce"));
+                return;
+            }
+        }
+
         if (resultCode == RESULT_OK) {
             Bitmap avatar = null;
             String path = null;
@@ -200,7 +231,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     }
 
     @OnClick({R.id.avatar, R.id.avatar_item, R.id.fl_navigate_nick_name, R.id.fl_navigate_revise_pwd, R.id.tv_user_profile_exit,
-            R.id.fl_version_code, R.id.fl_clear_cache, R.id.fl_about_us})
+            R.id.fl_version_code, R.id.fl_clear_cache, R.id.fl_about_us, R.id.fl_produce, R.id.fl_sex})
     void OnItemsClicked(View view) {
         switch (view.getId()) {
             //编辑昵称
@@ -315,6 +346,16 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 //pv，uv统计
 //                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIHEADPORTRAIT);
                 break;
+            case R.id.fl_sex:
+                PopUtils.showBottomPopWindow(R.layout.dialog_user_choose_sex, getSupportFragmentManager(), this, this);
+                break;
+            case R.id.fl_produce:
+                Intent intent = new Intent(this, EditProduceActivity.class);
+                intent.putExtra("sex", mSex);
+                startActivityForResult(intent, EditProduceActivity.RESULT_OK_EDIT_PRODUCE_ACTIVITY);
+                break;
+            default:
+                break;
         }
     }
 
@@ -402,6 +443,21 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 break;
             case R.id.from_album:
                 UserProfileActivityPermissionsDispatcher.openAlbumWithCheck(this);
+                break;
+            case R.id.tv_man:
+                PopUtils.dismiss();
+                mSex = 1;
+                presenter.fetchSaveUserInfo(mSex);
+                break;
+            case R.id.tv_woman:
+                PopUtils.dismiss();
+                mSex = 2;
+                presenter.fetchSaveUserInfo(mSex);
+                break;
+            case R.id.tv_cancel:
+                PopUtils.dismiss();
+                break;
+            default:
                 break;
         }
     }
@@ -588,7 +644,23 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     }
 
     @Override
+    public void onUpdateSexSucceed() {
+        if (mSex == 1) {
+            tvSex.setText("男");
+        } else {
+            tvSex.setText("女");
+        }
+    }
+
+    @Override
     public void showHasBeenLatest(String msg) {
         WeakRefToastUtil.showShort(this, msg, null);
+    }
+
+    @Override
+    public void initPop(View view, PopDialog mPopDialog) {
+        view.findViewById(R.id.tv_man).setOnClickListener(this);
+        view.findViewById(R.id.tv_woman).setOnClickListener(this);
+        view.findViewById(R.id.tv_cancel).setOnClickListener(this);
     }
 }

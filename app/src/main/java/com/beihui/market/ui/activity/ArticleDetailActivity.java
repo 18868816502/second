@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.constant.ConstantTag;
-import com.beihui.market.entity.UserArticleBean;
-import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerArticleDetailComponent;

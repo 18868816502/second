@@ -15,6 +15,7 @@ import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.ui.contract.UserProfileContract;
 import com.beihui.market.umeng.Statistic;
+import com.beihui.market.util.ParamsUtils;
 import com.beihui.market.util.RxUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -165,6 +166,30 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
                             });
             addDisposable(disposable);
         }
+    }
+
+    @Override
+    public void fetchSaveUserInfo(int sex) {
+        Disposable dis = mApi.fetchSaveUserInfo(ParamsUtils.generateUserInfoParams(mUserHelper.getProfile().getId(),sex,""))
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       mView.onUpdateSexSucceed();
+                                   } else {
+                                       mView.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(UserProfilePresenter.this, throwable);
+                                mView.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     @Override

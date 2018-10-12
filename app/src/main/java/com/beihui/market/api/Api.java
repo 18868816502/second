@@ -71,7 +71,7 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
@@ -1190,8 +1190,8 @@ public class Api {
     }
 
     /*查询用户发表的文章*/
-    public Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(String userId, int pageNo, int pageSize) {
-        return service.queryUserArticleInfo(userId, pageNo, pageSize);
+    public Observable<ResultEntity<List<UserTopicBean>>> queryUserTopicInfo(String userId, int pageNo, int pageSize) {
+        return service.queryUserTopicInfo(userId, pageNo, pageSize);
     }
 
     /*generate method*/
@@ -1344,5 +1344,24 @@ public class Api {
      */
     public Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId) {
         return service.fetchCancelPraise(praiseType, forumReplyId, userId);
+    }
+
+
+    /**
+     * 保存用户信息
+     * @param mMap
+     * @return
+     */
+    public Observable<ResultEntity> fetchSaveUserInfo(Map<String,Object> mMap) {
+        return service.fetchSaveUserInfo(mMap);
+    }
+
+    /**
+     * 保存用户信息
+     * @param
+     * @return
+     */
+    public Observable<ResultEntity> fetchSaveUserInfo(String userId,String sex,String introduce) {
+        return service.fetchSaveUserInfo(userId,sex,introduce);
     }
 }

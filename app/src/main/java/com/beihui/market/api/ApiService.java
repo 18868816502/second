@@ -67,7 +67,7 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
@@ -1249,11 +1249,11 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s1/userIndex/baseInfo")
+    @POST("/s6/userIndex/baseInfo")
     Observable<ResultEntity<UserInfoBean>> queryUserInfo(@Field("userId") String userID);
 
     /**
-     * 用户主页-用户发表的文章列表
+     * 用户主页-用户发表的话题列表
      *
      * @param userID   用户id
      * @param pageNo   页码
@@ -1261,8 +1261,8 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s1/userIndex/forumInfo")
-    Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    @POST("/s6/userIndex/forumInfo")
+    Observable<ResultEntity<List<UserTopicBean>>> queryUserTopicInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @POST("s1/version/audit/land")
     Observable<ResultEntity<Audit>> audit();
@@ -1409,4 +1409,18 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("s6/forumController/cancelPraise")
     Observable<ResultEntity> fetchCancelPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
+
+    /**
+     * 保存用户信息
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/userIndex/saveUserDetailInfo")
+    Observable<ResultEntity> fetchSaveUserInfo(@FieldMap Map<String, Object> map);
+
+    @FormUrlEncoded
+    @POST("s6/userIndex/saveUserDetailInfo")
+    Observable<ResultEntity> fetchSaveUserInfo(@Field("userId") String userId,@Field("sex") String sex,@Field("introduce") String introduce);
+
 }

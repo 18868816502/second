@@ -56,4 +56,15 @@ public class ParamsUtils {
         return mMap;
     }
 
+
+    public static Map<String,Object> generateUserInfoParams(String userId, int sex, String introduce){
+        Map<String,Object> mMap = new HashMap<>();
+        mMap.put("userId", userId);
+        mMap.put("sex", sex);
+        if(!TextUtils.isEmpty(introduce)) {
+            mMap.put("introduce", introduce);
+        }
+        return mMap;
+    }
+
 }

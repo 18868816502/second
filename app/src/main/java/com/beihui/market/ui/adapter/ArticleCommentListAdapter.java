@@ -139,7 +139,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
                 //评论
                 case R.id.iv_article_comment:
 //                    ToastUtil.toast("评论第"+ v.getTag()+"条");
-                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT, (Integer) v.getTag());
+                    listener.onViewClick(v,ConstantTag.TAG_REPLY_COMMENT, (Integer) v.getTag());
                     break;
                 case R.id.tv_comment_delete:
                     listener.onViewClick(v,ConstantTag.TAG_COMMENT_DELETE, (Integer) v.getTag());

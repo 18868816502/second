@@ -3,7 +3,7 @@ package com.beihui.market.ui.presenter;
 import com.beihui.market.api.Api;
 import com.beihui.market.api.ResultEntity;
 import com.beihui.market.base.BaseRxPresenter;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.ui.contract.PersonalCenterContact;
 import com.beihui.market.util.RxUtil;
@@ -58,14 +58,14 @@ public class PersonalCenterPresenter extends BaseRxPresenter implements Personal
     }
 
     @Override
-    public void fetchPersonalArticle(String userId,int pageNo,int pageSize) {
-        Disposable dis = api.queryUserArticleInfo(userId,pageNo,pageSize)
-                .compose(RxUtil.<ResultEntity<List<UserArticleBean>>>io2main())
-                .subscribe(new Consumer<ResultEntity<List<UserArticleBean>>>() {
+    public void fetchPersonalTopic(String userId,int pageNo,int pageSize) {
+        Disposable dis = api.queryUserTopicInfo(userId,pageNo,pageSize)
+                .compose(RxUtil.<ResultEntity<List<UserTopicBean>>>io2main())
+                .subscribe(new Consumer<ResultEntity<List<UserTopicBean>>>() {
                                @Override
-                               public void accept(ResultEntity<List<UserArticleBean>> resultEntity){
+                               public void accept(ResultEntity<List<UserTopicBean>> resultEntity){
                                    if (resultEntity.isSuccess()) {
-                                       view.onQueryUserArticleSucceed(resultEntity.getData());
+                                       view.onQueryUserTopicSucceed(resultEntity.getData());
                                    } else {
                                        view.showErrorMsg(resultEntity.getMsg());
                                    }

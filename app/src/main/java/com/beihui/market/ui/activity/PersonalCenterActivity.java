@@ -15,12 +15,15 @@ import android.widget.PopupWindow;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.constant.ConstantTag;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerPersonalCenterComponent;
 import com.beihui.market.injection.module.PersonalCenterModule;
+import com.beihui.market.social.activity.MyAuditedTopicActivity;
+import com.beihui.market.social.activity.MyDraftsActivity;
+import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.ui.adapter.PersonalCenterAdapter;
 import com.beihui.market.ui.contract.PersonalCenterContact;
 import com.beihui.market.ui.listeners.OnItemClickListener;
@@ -34,6 +37,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,10 +67,12 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Inject
     PersonalCenterPresenter presenter;
 
+    private UserInfoBean userInfoBean;
     private PersonalCenterAdapter adapter;
     private PopupWindow popWindow;
     private int pageNo = 0;
     private int pageSize = 10;
+    private List<UserTopicBean> datas;
 
     @Override
     public int getLayoutId() {
@@ -92,8 +98,9 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void initDatas() {
+        datas = new ArrayList<>();
         presenter.fetchPersonalInfo(UserHelper.getInstance(this).getProfile().getId());
-        presenter.fetchPersonalArticle(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
+//        presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
     }
 
     @Override
@@ -114,10 +121,12 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
             case R.id.tv_drafts:
                 ToastUtil.toast("草稿箱");
                 popWindow.dismiss();
+                startActivity(new Intent(this, MyDraftsActivity.class));
                 break;
             case R.id.tv_audits:
                 ToastUtil.toast("待审核");
                 popWindow.dismiss();
+                startActivity(new Intent(this, MyAuditedTopicActivity.class));
                 break;
             default:
                 break;
@@ -126,17 +135,22 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void onQueryUserInfoSucceed(UserInfoBean userInfoBean) {
-        refreshLayout.setEnableRefresh(false);
-        adapter.setHeadData(userInfoBean);
+//        refreshLayout.setEnableRefresh(false);
+//        adapter.setHeadData(userInfoBean);
+        this.userInfoBean = userInfoBean;
+        presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
     }
 
     @Override
-    public void onQueryUserArticleSucceed(List<UserArticleBean> list) {
+    public void onQueryUserTopicSucceed(List<UserTopicBean> list) {
         refreshLayout.setEnableLoadMore(false);
         if (pageNo == 0) {
-            adapter.setContentData(list);
+            adapter.setDatas(userInfoBean,list);
+            datas.clear();
+            datas.addAll(list);
         } else {
-            adapter.appendArticleData(list);
+            adapter.appendTopicData(list);
+            datas.addAll(list);
         }
     }
 
@@ -147,16 +161,16 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        pageNo = 1;
         refreshLayout.setEnableRefresh(true);
         presenter.fetchPersonalInfo(UserHelper.getInstance(this).getProfile().getId());
-        presenter.fetchPersonalArticle(UserHelper.getInstance(this).getProfile().getId(), 0, pageSize);
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         pageNo++;
         refreshLayout.setEnableLoadMore(true);
-        presenter.fetchPersonalArticle(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
+        presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
     }
 
     /**
@@ -199,11 +213,14 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     public void onViewClick(View view, int type,int position) {
         switch (type){
             case ConstantTag.TAG_PERSONAL_AVATAR:
-                startActivity(new Intent(this, UserProfileActivity.class));
-                break;
             case ConstantTag.TAG_PERSONAL_INFO_EDIT:
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                intent.putExtra("introduce",userInfoBean.getIntroduce());
+                intent.putExtra("sex",userInfoBean.getSex());
+                startActivity(intent);
                 break;
             case ConstantTag.TAG_PERSONAL_PUBLISH:
+
                 break;
             case ConstantTag.TAG_PERSONAL_ATTENTION:
                 break;
@@ -229,6 +246,17 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void onItemClick(int position) {
-        startActivity(new Intent(this,ArticleDetailActivity.class));
+        Intent intent = new Intent(this,ArticleDetailActivity.class);
+        SocialTopicBean.ForumBean forumBean = new SocialTopicBean.ForumBean();
+        forumBean.setForumId(datas.get(position).getForumId());
+        forumBean.setUserId(datas.get(position).getUserId());
+        forumBean.setTitle(datas.get(position).getTitle());
+        forumBean.setUserHeadUrl(datas.get(position).getUserHeadUrl());
+        forumBean.setUserName(datas.get(position).getUserName());
+        forumBean.setGmtCreate(datas.get(position).getGmtCreate());
+        forumBean.setPicUrl(datas.get(position).getPicUrl());
+        forumBean.setContent(datas.get(position).getContent());
+        intent.putExtra("topic",forumBean);
+        startActivity(intent);
     }
 }
