@@ -948,10 +948,9 @@ public class Api {
         return service.fetchCalendarDebt(userId, beginDate, endDate);
     }
 
-
     /*查询底部栏图*/
     public Observable<ResultEntity<TabImageBean>> queryBottomImage() {
-        return service.queryBottomImage("1");
+        return service.queryBottomImage();
     }
 
     /*查询积分总额*/
@@ -1214,13 +1213,13 @@ public class Api {
 
     /************************************社区************************************/
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId,int pageNo, int pageSize) {
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId, int pageNo, int pageSize) {
 //        return service.queryRecommendTopic(pageNo, pageSize);
-        return service.queryRecommendTopic(userId,pageNo, pageSize);
+        return service.queryRecommendTopic(userId, pageNo, pageSize);
     }
 
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String,Object> mMap) {
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String, Object> mMap) {
         return service.queryRecommendTopic(mMap);
     }
 
@@ -1287,10 +1286,11 @@ public class Api {
 
     /**
      * 评论回复
+     *
      * @param mMap
      * @return
      */
-    public Observable<ResultEntity> fetchReplyForumInfo(Map<String,Object> mMap) {
+    public Observable<ResultEntity> fetchReplyForumInfo(Map<String, Object> mMap) {
         return service.fetchReplyForumInfo(mMap);
     }
 
@@ -1354,29 +1354,32 @@ public class Api {
 
     /**
      * 保存用户信息
+     *
      * @param mMap
      * @return
      */
-    public Observable<ResultEntity> fetchSaveUserInfo(Map<String,Object> mMap) {
+    public Observable<ResultEntity> fetchSaveUserInfo(Map<String, Object> mMap) {
         return service.fetchSaveUserInfo(mMap);
     }
 
 
     /**
      * 查询草稿箱
+     *
      * @param mMap
      * @return
      */
-    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(Map<String,Object> mMap) {
+    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(Map<String, Object> mMap) {
         return service.queryCenterForum(mMap);
     }
 
     /**
      * 查询待审核
+     *
      * @param mMap
      * @return
      */
-    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(Map<String,Object> mMap) {
+    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(Map<String, Object> mMap) {
         return service.queryCenterForumAudit(mMap);
     }
 
