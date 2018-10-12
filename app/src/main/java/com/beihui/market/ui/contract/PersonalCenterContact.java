@@ -2,7 +2,7 @@ package com.beihui.market.ui.contract;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 
 import java.util.List;
@@ -24,12 +24,12 @@ public interface PersonalCenterContact {
         void fetchPersonalInfo(String userId);
 
         /**
-         * 获取个人发布的文章
+         * 获取个人发布的话题
          * @param userId 用户id
          * @param pageNo 页码
          * @param pageSize 每页条数
          */
-        void fetchPersonalArticle(String userId,int pageNo,int pageSize);
+        void fetchPersonalTopic(String userId,int pageNo,int pageSize);
     }
 
     interface View extends BaseView<Presenter> {
@@ -44,7 +44,7 @@ public interface PersonalCenterContact {
          * 用户发表文章列表
          * @param list 文章列表
          */
-        void onQueryUserArticleSucceed(List<UserArticleBean> list);
+        void onQueryUserTopicSucceed(List<UserTopicBean> list);
 
 
     }

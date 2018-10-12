@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_man"
+        style="@style/ReportTextStyle"
+        android:text="男"
+        android:textColor="@color/black_1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:background="@color/colorBackground"/>
+
+    <TextView
+        android:id="@+id/tv_woman"
+        style="@style/ReportTextStyle"
+        android:text="女"
+        android:textColor="@color/black_1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp10"
+        android:background="@color/colorBackground"/>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        style="@style/ReportTextStyle"
+        android:textColor="@color/black_2"
+        android:text="取消"/>
+</LinearLayout>

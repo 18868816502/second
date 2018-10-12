@@ -71,7 +71,7 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
@@ -84,6 +84,7 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
@@ -947,9 +948,10 @@ public class Api {
         return service.fetchCalendarDebt(userId, beginDate, endDate);
     }
 
+
     /*查询底部栏图*/
     public Observable<ResultEntity<TabImageBean>> queryBottomImage() {
-        return service.queryBottomImage();
+        return service.queryBottomImage("1");
     }
 
     /*查询积分总额*/
@@ -1193,8 +1195,8 @@ public class Api {
     }
 
     /*查询用户发表的文章*/
-    public Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(String userId, int pageNo, int pageSize) {
-        return service.queryUserArticleInfo(userId, pageNo, pageSize);
+    public Observable<ResultEntity<List<UserTopicBean>>> queryUserTopicInfo(String userId, int pageNo, int pageSize) {
+        return service.queryUserTopicInfo(userId, pageNo, pageSize);
     }
 
     /*generate method*/
@@ -1212,13 +1214,13 @@ public class Api {
 
     /************************************社区************************************/
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId, int pageNo, int pageSize) {
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId,int pageNo, int pageSize) {
 //        return service.queryRecommendTopic(pageNo, pageSize);
-        return service.queryRecommendTopic(userId, pageNo, pageSize);
+        return service.queryRecommendTopic(userId,pageNo, pageSize);
     }
 
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String, Object> mMap) {
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String,Object> mMap) {
         return service.queryRecommendTopic(mMap);
     }
 
@@ -1285,11 +1287,10 @@ public class Api {
 
     /**
      * 评论回复
-     *
      * @param mMap
      * @return
      */
-    public Observable<ResultEntity> fetchReplyForumInfo(Map<String, Object> mMap) {
+    public Observable<ResultEntity> fetchReplyForumInfo(Map<String,Object> mMap) {
         return service.fetchReplyForumInfo(mMap);
     }
 
@@ -1348,6 +1349,35 @@ public class Api {
      */
     public Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId) {
         return service.fetchCancelPraise(praiseType, forumReplyId, userId);
+    }
+
+
+    /**
+     * 保存用户信息
+     * @param mMap
+     * @return
+     */
+    public Observable<ResultEntity> fetchSaveUserInfo(Map<String,Object> mMap) {
+        return service.fetchSaveUserInfo(mMap);
+    }
+
+
+    /**
+     * 查询草稿箱
+     * @param mMap
+     * @return
+     */
+    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(Map<String,Object> mMap) {
+        return service.queryCenterForum(mMap);
+    }
+
+    /**
+     * 查询待审核
+     * @param mMap
+     * @return
+     */
+    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(Map<String,Object> mMap) {
+        return service.queryCenterForumAudit(mMap);
     }
 
     /*用户认证信息查询*/

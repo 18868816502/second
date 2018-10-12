@@ -19,6 +19,8 @@ public interface UserProfileContract {
         void logout();
 
         void checkVersion();
+
+        void fetchSaveUserInfo(int sex);
     }
 
     interface View extends BaseView<Presenter> {
@@ -37,5 +39,7 @@ public interface UserProfileContract {
         void showHasBeenLatest(String msg);
 
         void showUpdate(AppUpdate appUpdate);
+
+        void onUpdateSexSucceed();
     }
 }

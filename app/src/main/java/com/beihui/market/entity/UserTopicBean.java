@@ -9,7 +9,7 @@ import java.util.List;
  * @author chenguoguo
  * @time 2018/9/12 11:57
  */
-public class UserArticleBean {
+public class UserTopicBean {
 
 
     /**

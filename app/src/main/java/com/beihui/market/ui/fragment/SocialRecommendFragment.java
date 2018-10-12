@@ -131,7 +131,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @SuppressLint("CheckResult")
     private void fetchData(){
         String userId = "";
-;        if(UserHelper.getInstance(getActivity()) != null){
+;        if(UserHelper.getInstance(getActivity()).isLogin()){
             userId = UserHelper.getInstance(getActivity()).getProfile().getId();
         }
         Api.getInstance().queryRecommendTopic(userId,pageNo,pageSize)

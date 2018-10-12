@@ -27,7 +27,7 @@ public class UserInfoBean {
     private String account;
     private String userId;
     private String headPortrait;
-    private Object introduce;
+    private String introduce;
     private int sex;
     private int forumCount;
     private int followerCount;
@@ -66,11 +66,11 @@ public class UserInfoBean {
         this.headPortrait = headPortrait;
     }
 
-    public Object getIntroduce() {
+    public String getIntroduce() {
         return introduce;
     }
 
-    public void setIntroduce(Object introduce) {
+    public void setIntroduce(String introduce) {
         this.introduce = introduce;
     }
 

@@ -99,7 +99,8 @@
         <ImageView
             android:id="@+id/iv_priase"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_social_topic_praise_unselect"/>
         <TextView
             android:id="@+id/tv_praise"
             android:layout_width="wrap_content"
@@ -123,7 +124,8 @@
         <ImageView
             android:id="@+id/iv_comment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_social_topic_praise_unselect"/>
         <TextView
             android:id="@+id/tv_comment_num"
             android:layout_width="wrap_content"

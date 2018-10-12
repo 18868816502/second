@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.constant.ConstantTag;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.ui.listeners.OnItemClickListener;
 import com.beihui.market.ui.listeners.OnViewClickListener;
@@ -59,7 +59,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
     /**
      * 用户文章列表
      */
-    private List<UserArticleBean> mList;
+    private List<UserTopicBean> mList;
 
     /**
      * 装载头部用户数据
@@ -71,11 +71,13 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 装载刷新的文章数据
-     * @param list 用户文章列表
+     * @param userInfoBean 用户bean
+     * @param list 用户话题列表
      */
-    public void setContentData(List<UserArticleBean> list){
+    public void setDatas(UserInfoBean userInfoBean,List<UserTopicBean> list){
         mList.clear();
         mList.addAll(list);
+        this.userInfo = userInfoBean;
         notifyDataSetChanged();
     }
 
@@ -83,7 +85,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
      * 加载更多文章数据
      * @param list 文章列表
      */
-    public void appendArticleData(List<UserArticleBean> list){
+    public void appendTopicData(List<UserTopicBean> list){
         mList.addAll(list);
         notifyDataSetChanged();
     }
@@ -112,11 +114,11 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(position == 0){
             headViewHolder = (HeadViewHolder) holder;
-//            onBindHeadData(headViewHolder);
+            onBindHeadData(headViewHolder);
         }else{
             contentViewHolder = (ContentViewHolder) holder;
             contentViewHolder.itemView.setTag(position-1);
-//            onBindArticleData(contentViewHolder,position-1);
+            onBindArticleData(contentViewHolder,position-1);
         }
     }
 
@@ -131,8 +133,8 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         holder.tvSex.setText(1 == userInfo.getSex() ? "男":"女");
         holder.tvProduce.setText(String.format("简介:",userInfo.getIntroduce()));
         holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
-        holder.tvAttentionNum.setText(String.valueOf(userInfo.getFollowerCount()));
-        holder.tvFansNum.setText(String.valueOf(userInfo.getFansCount()));
+//        holder.tvAttentionNum.setText(String.valueOf(userInfo.getFollowerCount()));
+//        holder.tvFansNum.setText(String.valueOf(userInfo.getFansCount()));
         holder.tvPraiseNum.setText(String.valueOf(userInfo.getPraiseCount()));
 
     }
@@ -142,11 +144,12 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
      * @param holder contentViewHolder
      */
     private void onBindArticleData(ContentViewHolder holder,int position) {
-        UserArticleBean bean = mList.get(position);
+        UserTopicBean bean = mList.get(position);
         Glide.with(mContext).load(bean.getUserHeadUrl()).asBitmap().into(holder.ivAuthorAvatar);
         holder.tvAuthorName.setText(bean.getUserName());
-        holder.tvArticleContent.setText(bean.getGmtCreate());
-        holder.tvArticleDescripe.setText(bean.getTitle());
+        holder.tvPublishTime.setText(String.valueOf(bean.getGmtCreate()));
+        holder.tvArticleContent.setText(bean.getTitle());
+        holder.tvArticleDescripe.setText(bean.getContent());
         Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
         holder.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
         holder.tvCommentNum.setText(String.valueOf(bean.getCommentCount()));
@@ -154,7 +157,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 5;
+        return mList.size() + 1;
     }
 
     @Override
@@ -252,23 +255,28 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.avatar:
-                    ToastUtil.toast("用户头像");
+//                    ToastUtil.toast("用户头像");
                     listener.onViewClick(view, ConstantTag.TAG_PERSONAL_AVATAR,0);
                     break;
                 case R.id.ll_edit_container:
-                    ToastUtil.toast("编辑个人资料");
+//                    ToastUtil.toast("编辑个人资料");
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT,0);
                     break;
                 case R.id.ll_publish_container:
                     ToastUtil.toast("发布");
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PUBLISH,0);
                     break;
                 case R.id.ll_attention_container:
-                    ToastUtil.toast("关注");
+//                    ToastUtil.toast("关注");
+//                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT,0);
                     break;
                 case R.id.ll_fans_container:
-                    ToastUtil.toast("粉丝");
+//                    ToastUtil.toast("粉丝");
+//                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT,0);
                     break;
                 case R.id.ll_praise_container:
                     ToastUtil.toast("获赞");
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PARISE,0);
                     break;
                 case R.id.iv_more:
                     listener.onViewClick(view,ConstantTag.TAG_PERSONAL_MORE,0);

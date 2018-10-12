@@ -135,6 +135,47 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/line"
+                android:visibility="visible" />
+
+            <!--性别-->
+            <FrameLayout
+                android:id="@+id/fl_sex"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/icon_come"
+                    android:gravity="center_vertical"
+                    android:text="性别"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="20dp"
+                    android:text="男"
+                    android:textColor="#ff909298"
+                    android:textSize="13sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/line"
                 android:visibility="gone" />
 
             <!--修改密码-->
@@ -241,12 +282,55 @@
 
             <View
                 android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/line"
+                android:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/fl_produce"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/icon_come"
+                    android:gravity="center_vertical"
+                    android:text="个人简介"
+                    android:textColor="@color/black_1"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_produce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="15dp"
+                    android:gravity="right"
+                    android:text="介绍一下你自己"
+                    android:singleLine="true"
+                    android:ems="16"
+                    android:ellipsize="end"
+                    android:textColor="#ff909298"
+                    android:textSize="13sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/line"
                 android:visibility="gone" />
+
 
             <!--关于我们-->
             <FrameLayout

@@ -67,7 +67,7 @@ import com.beihui.market.entity.ThirdAuthResult;
 import com.beihui.market.entity.ThirdAuthorization;
 import com.beihui.market.entity.Ticket;
 import com.beihui.market.entity.UsedEmail;
-import com.beihui.market.entity.UserArticleBean;
+import com.beihui.market.entity.UserTopicBean;
 import com.beihui.market.entity.UserInfoBean;
 import com.beihui.market.entity.UserProfile;
 import com.beihui.market.entity.UserProfileAbstract;
@@ -80,6 +80,7 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
@@ -952,8 +953,9 @@ public interface ApiService {
     /**
      * 查询底部栏图标
      */
+    @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/auditList")
-    Observable<ResultEntity<TabImageBean>> queryBottomImage();
+    Observable<ResultEntity<TabImageBean>> queryBottomImage(@Field("platform") String platform);
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/sum")
@@ -1013,6 +1015,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/collection/task/status/nutSdkEmailCollection")
     Observable<ResultEntity<Boolean>> pollLeadInResult(@Field("userId") String userId, @Field("email") String email);
+
 
     /****************************************************个推账号用户绑定*****************************************************/
     /**
@@ -1264,7 +1267,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("/s1/userIndex/forumInfo")
-    Observable<ResultEntity<List<UserArticleBean>>> queryUserArticleInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<List<UserTopicBean>>> queryUserTopicInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @POST("s1/version/audit/land")
     Observable<ResultEntity<Audit>> audit();
@@ -1283,7 +1286,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryRecommend")
-    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId,@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryRecommend")
@@ -1317,7 +1320,15 @@ public interface ApiService {
                                              @Field("forumContent") String forumContent, @Field("status") String status, @Field("topicId") String topicId,
                                              @Field("forumId") String forumId);
 
-    /*查询评论列表*/
+
+    /**
+     * 查询评论列表
+     *
+     * @param forumId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryCommentList")
     Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(@Field("forumId") String forumId, @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
@@ -1327,41 +1338,110 @@ public interface ApiService {
     @POST("/s3/product/productListForNative")
     Observable<ResultEntity<List<Product>>> products(@FieldMap Map<String, Object> map);
 
-    /*发表评论回复*/
+    /**
+     * 发表评论回复
+     *
+     * @param userId
+     * @param commentType
+     * @param commentContent
+     * @param forumId
+     * @param toUserId
+     * @param selfId
+     * @return
+     */
     @FormUrlEncoded
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@Field("userId") String userId, @Field("commentType") String commentType, @Field("commentContent") String commentContent,
                                                  @Field("forumId") String forumId, @Field("toUserId") String toUserId, @Field("selfId") String selfId);
-
     @FormUrlEncoded
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@FieldMap Map<String, Object> map);
 
-    /*提交举报信息*/
+    /**
+     * 提交举报信息
+     *
+     * @param userId
+     * @param linkId
+     * @param reportType
+     * @param reportContent
+     * @return
+     */
     @FormUrlEncoded
     @POST("/s6/forumController/saveReport")
     Observable<ResultEntity> fetchSaveReport(@Field("userId") String userId, @Field("linkId") String linkId,
                                              @Field("reportType") String reportType, @Field("reportContent") String reportContent);
 
-    /*删除动态*/
+    /**
+     * 删除动态
+     *
+     * @param forumId
+     * @return
+     */
     @FormUrlEncoded
     @POST("s6/forumController/cancelForum")
     Observable<ResultEntity> fetchCancelForum(@Field("forumId") String forumId);
 
-    /*删除评论回复*/
+    /**
+     * 删除评论回复
+     *
+     * @param replyId
+     * @return
+     */
     @FormUrlEncoded
     @POST("s6/forumController/cancelReply")
     Observable<ResultEntity> fetchCancelReply(@Field("replyId") String replyId);
 
-    /*社区评论回复点赞*/
+    /**
+     * 社区评论回复点赞
+     *
+     * @param praiseType
+     * @param forumReplyId
+     * @param userId
+     * @return
+     */
     @FormUrlEncoded
     @POST("s6/forumController/clickPraise")
-    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
+    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType,@Field("forumReplayId") String forumReplyId,@Field("userId") String userId);
 
-    /*社区评论回复取消点赞*/
+    /**
+     * 社区评论回复取消点赞
+     *
+     * @param praiseType
+     * @param forumReplyId
+     * @param userId
+     * @return
+     */
     @FormUrlEncoded
     @POST("s6/forumController/cancelPraise")
     Observable<ResultEntity> fetchCancelPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
+
+    /**
+     * 保存用户信息
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/userIndex/saveUserDetailInfo")
+    Observable<ResultEntity> fetchSaveUserInfo(@FieldMap Map<String, Object> map);
+
+    /**
+     * 保存用户信息
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/userIndex/queryCenterForum")
+    Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(@FieldMap Map<String, Object> map);
+
+    /**
+     * 保存用户信息
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/userIndex/queryCenterForumAudit")
+    Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(@FieldMap Map<String, Object> map);
+
 
     /*用户认证信息查询*/
     @FormUrlEncoded
