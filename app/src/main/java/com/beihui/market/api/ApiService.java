@@ -74,6 +74,10 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.jjd.bean.BankCard;
+import com.beihui.market.jjd.bean.BankName;
+import com.beihui.market.jjd.bean.CashOrder;
+import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
 import com.beihui.market.social.bean.PraiseBean;
@@ -948,9 +952,8 @@ public interface ApiService {
     /**
      * 查询底部栏图标
      */
-    @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/auditList")
-    Observable<ResultEntity<TabImageBean>> queryBottomImage(@Field("platform") String platform);
+    Observable<ResultEntity<TabImageBean>> queryBottomImage();
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/sum")
@@ -1010,7 +1013,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH + "/collection/task/status/nutSdkEmailCollection")
     Observable<ResultEntity<Boolean>> pollLeadInResult(@Field("userId") String userId, @Field("email") String email);
-
 
     /****************************************************个推账号用户绑定*****************************************************/
     /**
@@ -1281,7 +1283,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryRecommend")
-    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId,@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryRecommend")
@@ -1315,15 +1317,7 @@ public interface ApiService {
                                              @Field("forumContent") String forumContent, @Field("status") String status, @Field("topicId") String topicId,
                                              @Field("forumId") String forumId);
 
-
-    /**
-     * 查询评论列表
-     *
-     * @param forumId
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
+    /*查询评论列表*/
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryCommentList")
     Observable<ResultEntity<List<CommentReplyBean>>> queryCommentList(@Field("forumId") String forumId, @Field("pageNo") String pageNo, @Field("pageSize") String pageSize);
@@ -1333,80 +1327,74 @@ public interface ApiService {
     @POST("/s3/product/productListForNative")
     Observable<ResultEntity<List<Product>>> products(@FieldMap Map<String, Object> map);
 
-    /**
-     * 发表评论回复
-     *
-     * @param userId
-     * @param commentType
-     * @param commentContent
-     * @param forumId
-     * @param toUserId
-     * @param selfId
-     * @return
-     */
+    /*发表评论回复*/
     @FormUrlEncoded
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@Field("userId") String userId, @Field("commentType") String commentType, @Field("commentContent") String commentContent,
                                                  @Field("forumId") String forumId, @Field("toUserId") String toUserId, @Field("selfId") String selfId);
+
     @FormUrlEncoded
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@FieldMap Map<String, Object> map);
 
-    /**
-     * 提交举报信息
-     *
-     * @param userId
-     * @param linkId
-     * @param reportType
-     * @param reportContent
-     * @return
-     */
+    /*提交举报信息*/
     @FormUrlEncoded
     @POST("/s6/forumController/saveReport")
     Observable<ResultEntity> fetchSaveReport(@Field("userId") String userId, @Field("linkId") String linkId,
                                              @Field("reportType") String reportType, @Field("reportContent") String reportContent);
 
-    /**
-     * 删除动态
-     *
-     * @param forumId
-     * @return
-     */
+    /*删除动态*/
     @FormUrlEncoded
     @POST("s6/forumController/cancelForum")
     Observable<ResultEntity> fetchCancelForum(@Field("forumId") String forumId);
 
-    /**
-     * 删除评论回复
-     *
-     * @param replyId
-     * @return
-     */
+    /*删除评论回复*/
     @FormUrlEncoded
     @POST("s6/forumController/cancelReply")
     Observable<ResultEntity> fetchCancelReply(@Field("replyId") String replyId);
 
-    /**
-     * 社区评论回复点赞
-     *
-     * @param praiseType
-     * @param forumReplyId
-     * @param userId
-     * @return
-     */
+    /*社区评论回复点赞*/
     @FormUrlEncoded
     @POST("s6/forumController/clickPraise")
-    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType,@Field("forumReplayId") String forumReplyId,@Field("userId") String userId);
+    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
 
-    /**
-     * 社区评论回复取消点赞
-     *
-     * @param praiseType
-     * @param forumReplyId
-     * @param userId
-     * @return
-     */
+    /*社区评论回复取消点赞*/
     @FormUrlEncoded
     @POST("s6/forumController/cancelPraise")
     Observable<ResultEntity> fetchCancelPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
+
+    /*用户认证信息查询*/
+    @FormUrlEncoded
+    @POST("s1/cashUserController/queryCashUserInfo")
+    Observable<ResultEntity<CashUserInfo>> userAuth(@Field("userId") String userId);
+
+    /*用户订单状态检查*/
+    @FormUrlEncoded
+    @POST("s1/cashOrderController/checkCashOrder")
+    Observable<ResultEntity<CashOrder>> cashOrder(@Field("userId") String userId);
+
+    /*银行卡列表*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/cardList")
+    Observable<ResultEntity<List<BankCard>>> cardList(@Field("userId") String userId);
+
+    /*卡号获取银行名称*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/bankName")
+    Observable<ResultEntity<BankName>> bankName(@Field("bankCardno") String cardNo);
+
+    /*保存更新银行卡*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/saveCard")
+    Observable<ResultEntity> saveCard(@FieldMap Map<String, Object> map);
+
+    /*查询银行卡(重新编辑)*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/queryCard")
+    Observable<ResultEntity<BankCard>> queryCard(@Field("userId") String userId, @Field("cardId") String cardId);
+
+    /*保存借款订单*/
+    @FormUrlEncoded
+    @POST("s1/cashOrderController/saveCashOrder")
+    Observable<ResultEntity<CashOrder>> saveCashOrder(@FieldMap Map<String, Object> map);
 }

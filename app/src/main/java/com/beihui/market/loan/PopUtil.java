@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-import com.beihui.market.util.DensityUtil;
+import com.beihui.market.R;
+
 
 /**
  * https://gitee.com/tangbuzhi
@@ -24,10 +25,11 @@ import com.beihui.market.util.DensityUtil;
 public class PopUtil {
     public static void pop(Context context, int layoutRes, View anchor, PopViewClickListener listener) {
         View contentView = LayoutInflater.from(context).inflate(layoutRes, null);
-        PopupWindow popup = new PopupWindow(contentView, DensityUtil.dp2px(context, 120f), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        PopupWindow popup = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         listener.popClick(popup);
+        popup.setAnimationStyle(R.style.popup_anim_style);
         popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popup.setOutsideTouchable(true);
+        popup.setOutsideTouchable(false);
         popup.setTouchable(true);
         popup.showAsDropDown(anchor, 0, 0);
     }

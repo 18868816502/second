@@ -68,4 +68,31 @@ public class StringUtil {
         Matcher m = p.matcher(target);
         return m.matches();
     }
+
+    public static long time2NowSecond(String time) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_Y_M_D_H_M_S);
+            Date date = dateFormat.parse(time);
+            long dateTime = date.getTime();
+            long nowTime = System.currentTimeMillis();
+            long second = (nowTime - dateTime) / 1000;//秒
+            return second;
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    public static long timeGapSecond(String last, String previous) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_Y_M_D_H_M_S);
+            Date lastDate = dateFormat.parse(last);
+            Date previousDate = dateFormat.parse(previous);
+            long lastTime = lastDate.getTime();
+            long preTime = previousDate.getTime();
+            long second = Math.abs(lastTime - preTime) / 1000;//秒
+            return second;
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
 }

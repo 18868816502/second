@@ -25,6 +25,6 @@
             android:id="@+id/tv_text_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="@drawable/icon_come" />
+            tools:src="@mipmap/ic_down" />
     </LinearLayout>
 </RelativeLayout>

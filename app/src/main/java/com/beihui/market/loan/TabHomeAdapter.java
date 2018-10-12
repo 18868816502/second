@@ -53,6 +53,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private List<String> looperTexts = new ArrayList<>();
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
+    private int state;//1 正常状态 2 审核中 3 审核失败
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles) {
         this.imgs = imgs;
@@ -63,6 +64,11 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     public void setHeadLoopText(List<String> texts) {
         this.looperTexts = texts;
+        notifyItemChanged(0);
+    }
+
+    public void setState(int state) {
+        this.state = state;
         notifyItemChanged(0);
     }
 
@@ -106,10 +112,20 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             holder.tv_pro_3.setOnClickListener(this);
             holder.tv_pro_4.setOnClickListener(this);
             holder.adt_looper.init(looperTexts, null);
+            if (holder.state_container.getChildCount() > 0) {
+                holder.state_container.removeAllViews();
+            } else {
+                if (state == 1)
+                    holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
+                if (state == 2)
+                    holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
+                if (state == 3)
+                    holder.state_container.addView(initState1(R.layout.layout_state_3, 3));
+            }
         }
         if (holder.viewType == TYPE_NORMAL) {
             holder.recycler.setPadding(DensityUtil.dp2px(context, 15f), 0, DensityUtil.dp2px(context, 15f), 0);
-            holder.recycler.setLayoutManager(new GridLayoutManager(context, 3) {
+            holder.recycler.setLayoutManager(new GridLayoutManager(context, 2) {
                 @Override
                 public boolean canScrollVertically() {
                     return false;
@@ -142,6 +158,37 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         }
     }
 
+    //state 1
+    private TextView tv_seekbar_progress;
+    private ImageView iv_edit_money;
+    private TextView tv_service_charge;
+    private ImageView iv_question;
+    private TextView tv_go_loan;
+    //state 2
+    //state 3
+
+    private View initState1(int layoutRes, int state) {
+        View view = LayoutInflater.from(context).inflate(layoutRes, null);
+        if (state == 1) {//正常状态
+            tv_seekbar_progress = view.findViewById(R.id.tv_seekbar_progress);
+            iv_edit_money = view.findViewById(R.id.iv_edit_money);
+            tv_service_charge = view.findViewById(R.id.tv_service_charge);
+            iv_question = view.findViewById(R.id.iv_question);
+            tv_go_loan = view.findViewById(R.id.tv_go_loan);
+
+            iv_edit_money.setOnClickListener(this);
+            iv_question.setOnClickListener(this);
+            tv_go_loan.setOnClickListener(this);
+        }
+        if (state == 2) {//审核中
+
+        }
+        if (state == 3) {//审核失败
+
+        }
+        return view;
+    }
+
     @Override
     public int getItemCount() {
         return 2;
@@ -170,7 +217,17 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 context.startActivity(intent);
                 break;
             case R.id.tv_pro_4:
-                ToastUtil.toast("办信用卡");
+                intent.putExtra("productType", 3);
+                context.startActivity(intent);
+                break;
+            case R.id.iv_edit_money:
+                ToastUtil.toast("编辑金钱");
+                break;
+            case R.id.iv_question:
+                ToastUtil.toast("问号");
+                break;
+            case R.id.tv_go_loan:
+                ToastUtil.toast("贷款");
                 break;
             default:
                 break;

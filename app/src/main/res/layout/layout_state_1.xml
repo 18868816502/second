@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:text="借款金额(元)"
+        android:textColor="#a5a9b2"
+        android:textSize="13dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/tv_seekbar_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="2000"
+            android:textColor="#2f3133"
+            android:textSize="35dp" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/iv_edit_money"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:padding="5.5dp"
+            android:src="@mipmap/ic_ticket" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="借款10天"
+            android:textColor="#A5A9B2"
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="服务费"
+            android:textColor="#A5A9B2"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_service_charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="58.8元"
+            android:textColor="#ff6232"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/iv_question"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="7dp"
+            android:paddingRight="5dp"
+            android:src="@mipmap/ic_bill_dout" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_go_loan"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:background="@mipmap/ic_bg_btn"
+        android:gravity="center"
+        android:text="立即借钱"
+        android:textColor="@color/white"
+        android:textSize="17dp" />
+</LinearLayout>

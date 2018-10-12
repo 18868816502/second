@@ -1,88 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="wrap_content"
-    android:background="@color/black_2"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_money_all"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="所有金额"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/tv_money_all"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="所有金额"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <!--<View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color" />-->
+
+        <TextView
+            android:id="@+id/tv_money_2k_down"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="2000以下"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_money_2k_5k"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="2000-5000"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_money_5k_1w"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="5000-10000"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_money_1w_3w"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="10000-30000"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_money_3w_above"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="30000以上"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+    </LinearLayout>
 
     <View
+        android:id="@+id/view_part"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_money_2k_down"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="2000以下"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_money_2k_5k"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="2000-5000"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_money_5k_1w"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="5000-10000"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_money_1w_3w"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="10000-30000"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_money_3w_above"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="30000以上"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
+        android:layout_height="match_parent"
+        android:background="@color/transparent_half" />
 </LinearLayout>

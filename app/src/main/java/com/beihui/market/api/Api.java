@@ -78,6 +78,10 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
+import com.beihui.market.jjd.bean.BankCard;
+import com.beihui.market.jjd.bean.BankName;
+import com.beihui.market.jjd.bean.CashOrder;
+import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
 import com.beihui.market.social.bean.PraiseBean;
@@ -943,10 +947,9 @@ public class Api {
         return service.fetchCalendarDebt(userId, beginDate, endDate);
     }
 
-
     /*查询底部栏图*/
     public Observable<ResultEntity<TabImageBean>> queryBottomImage() {
-        return service.queryBottomImage("1");
+        return service.queryBottomImage();
     }
 
     /*查询积分总额*/
@@ -1209,13 +1212,13 @@ public class Api {
 
     /************************************社区************************************/
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId,int pageNo, int pageSize) {
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(String userId, int pageNo, int pageSize) {
 //        return service.queryRecommendTopic(pageNo, pageSize);
-        return service.queryRecommendTopic(userId,pageNo, pageSize);
+        return service.queryRecommendTopic(userId, pageNo, pageSize);
     }
 
     /*查询推荐话题*/
-    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String,Object> mMap) {
+    public Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(Map<String, Object> mMap) {
         return service.queryRecommendTopic(mMap);
     }
 
@@ -1282,10 +1285,11 @@ public class Api {
 
     /**
      * 评论回复
+     *
      * @param mMap
      * @return
      */
-    public Observable<ResultEntity> fetchReplyForumInfo(Map<String,Object> mMap) {
+    public Observable<ResultEntity> fetchReplyForumInfo(Map<String, Object> mMap) {
         return service.fetchReplyForumInfo(mMap);
     }
 
@@ -1344,5 +1348,40 @@ public class Api {
      */
     public Observable<ResultEntity> fetchCancelPraise(int praiseType, String forumReplyId, String userId) {
         return service.fetchCancelPraise(praiseType, forumReplyId, userId);
+    }
+
+    /*用户认证信息查询*/
+    public Observable<ResultEntity<CashUserInfo>> userAuth(String userId) {
+        return service.userAuth(userId);
+    }
+
+    /*用户订单状态检查*/
+    public Observable<ResultEntity<CashOrder>> cashOrder(String userId) {
+        return service.cashOrder(userId);
+    }
+
+    /*银行卡列表*/
+    public Observable<ResultEntity<List<BankCard>>> cardList(String userId) {
+        return service.cardList(userId);
+    }
+
+    /*卡号获取银行名称*/
+    public Observable<ResultEntity<BankName>> bankName(String cardNo) {
+        return service.bankName(cardNo);
+    }
+
+    /*保存更新银行卡*/
+    public Observable<ResultEntity> saveCard(Map<String, Object> map) {
+        return service.saveCard(map);
+    }
+
+    /*查询银行卡(重新编辑)*/
+    public Observable<ResultEntity<BankCard>> queryCard(String userId, String cardId) {
+        return service.queryCard(userId, cardId);
+    }
+
+    /*保存借款订单*/
+    public Observable<ResultEntity<CashOrder>> saveCashOrder(Map<String, Object> map) {
+        return service.saveCashOrder(map);
     }
 }

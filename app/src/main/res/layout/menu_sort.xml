@@ -1,60 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="wrap_content"
-    android:background="@color/black_2"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_sort_1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="默认排序"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/tv_sort_1"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="默认排序"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_sort_2"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="贷款额度高"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_sort_3"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="贷款利率低"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_sort_4"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:text="放款速度快"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+    </LinearLayout>
 
     <View
+        android:id="@+id/view_part"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_sort_2"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="贷款额度高"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_sort_3"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="贷款利率低"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line_color" />
-
-    <TextView
-        android:id="@+id/tv_sort_4"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center"
-        android:text="放款速度快"
-        android:textColor="@color/black_1"
-        android:textSize="12dp" />
+        android:layout_height="match_parent"
+        android:background="@color/transparent_half" />
 </LinearLayout>
