@@ -74,6 +74,10 @@ import com.beihui.market.entity.UserProfileAbstract;
 import com.beihui.market.entity.Withdraw;
 import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.XAccountInfo;
+import com.beihui.market.jjd.bean.BankCard;
+import com.beihui.market.jjd.bean.BankName;
+import com.beihui.market.jjd.bean.CashOrder;
+import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
 import com.beihui.market.social.bean.DraftsBean;
@@ -1250,11 +1254,11 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s6/userIndex/baseInfo")
+    @POST("/s1/userIndex/baseInfo")
     Observable<ResultEntity<UserInfoBean>> queryUserInfo(@Field("userId") String userID);
 
     /**
-     * 用户主页-用户发表的话题列表
+     * 用户主页-用户发表的文章列表
      *
      * @param userID   用户id
      * @param pageNo   页码
@@ -1262,7 +1266,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s6/userIndex/forumInfo")
+    @POST("/s1/userIndex/forumInfo")
     Observable<ResultEntity<List<UserTopicBean>>> queryUserTopicInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @POST("s1/version/audit/land")
@@ -1438,4 +1442,39 @@ public interface ApiService {
     @POST("s6/userIndex/queryCenterForumAudit")
     Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(@FieldMap Map<String, Object> map);
 
+
+    /*用户认证信息查询*/
+    @FormUrlEncoded
+    @POST("s1/cashUserController/queryCashUserInfo")
+    Observable<ResultEntity<CashUserInfo>> userAuth(@Field("userId") String userId);
+
+    /*用户订单状态检查*/
+    @FormUrlEncoded
+    @POST("s1/cashOrderController/checkCashOrder")
+    Observable<ResultEntity<CashOrder>> cashOrder(@Field("userId") String userId);
+
+    /*银行卡列表*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/cardList")
+    Observable<ResultEntity<List<BankCard>>> cardList(@Field("userId") String userId);
+
+    /*卡号获取银行名称*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/bankName")
+    Observable<ResultEntity<BankName>> bankName(@Field("bankCardno") String cardNo);
+
+    /*保存更新银行卡*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/saveCard")
+    Observable<ResultEntity> saveCard(@FieldMap Map<String, Object> map);
+
+    /*查询银行卡(重新编辑)*/
+    @FormUrlEncoded
+    @POST("s1/cashBankController/queryCard")
+    Observable<ResultEntity<BankCard>> queryCard(@Field("userId") String userId, @Field("cardId") String cardId);
+
+    /*保存借款订单*/
+    @FormUrlEncoded
+    @POST("s1/cashOrderController/saveCashOrder")
+    Observable<ResultEntity<CashOrder>> saveCashOrder(@FieldMap Map<String, Object> map);
 }

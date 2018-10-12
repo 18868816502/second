@@ -94,7 +94,7 @@ public class ADTextView extends TextSwitcher {
                 mDefaultTextView = new TextView(mContext);
                 LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mDefaultTextView.setLayoutParams(layoutParams);
-                mDefaultTextView.setTextSize(10);
+                mDefaultTextView.setTextSize(11);
                 mDefaultTextView.setSingleLine();
                 mDefaultTextView.setEllipsize(TextUtils.TruncateAt.END);
                 mDefaultTextView.setGravity(Gravity.CENTER_VERTICAL);
@@ -105,7 +105,7 @@ public class ADTextView extends TextSwitcher {
         });
         //开始滚动
         //设置文字
-        setText(mTexts.get(mCurrentIndex));
+        setText("恭喜！" + mTexts.get(mCurrentIndex));
         if (mChangeListener != null)
             mChangeListener.diyTextView((TextView) getCurrentView(), mCurrentIndex);
         mHandler.postDelayed(new Runnable() {
@@ -117,7 +117,7 @@ public class ADTextView extends TextSwitcher {
                     mCurrentIndex = 0;
                 }
                 //设置i文字
-                setText(mTexts.get(mCurrentIndex));
+                setText("恭喜！" + mTexts.get(mCurrentIndex));
                 if (mChangeListener != null)
                     mChangeListener.diyTextView((TextView) getCurrentView(), mCurrentIndex);
                 //进行下一次

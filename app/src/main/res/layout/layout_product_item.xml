@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:background="@color/white"
     android:orientation="vertical"
     android:paddingBottom="12dp"
     android:paddingTop="12dp">
@@ -10,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
@@ -17,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_product_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
@@ -26,12 +29,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:textColor="@color/black_1"
+            android:textSize="14dp"
             tools:text="马上贷" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
@@ -40,6 +46,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/refresh_one"
+            android:textSize="13dp"
             tools:text="2000-4000元" />
 
         <TextView
@@ -47,6 +55,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/black_1"
+            android:textSize="13dp"
             tools:text="0.03%" />
 
         <TextView
@@ -54,12 +65,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/black_1"
+            android:textSize="13dp"
             tools:text="3,213人" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
@@ -67,18 +83,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="额度(元)" />
+            android:text="额度"
+            android:textColor="@color/black_2"
+            android:textSize="10dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="日利率" />
+            android:gravity="center"
+            android:text="日利率"
+            android:textColor="@color/black_2"
+            android:textSize="10dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="已申请" />
+            android:gravity="right"
+            android:paddingRight="3dp"
+            android:text="已申请"
+            android:textColor="@color/black_2"
+            android:textSize="10dp" />
     </LinearLayout>
 </LinearLayout>

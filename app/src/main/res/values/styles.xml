@@ -21,7 +21,10 @@
 
 
     <!-- popup由下到上动画 -->
-
+    <style name="popup_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popumenu_animation_show</item>
+        <item name="android:windowExitAnimation">@anim/popumenu_animation_hide</item>
+    </style>
 
     <style name="MyDialogStyleTop" parent="android:Theme.Dialog">
         <!-- <item name="android:windowAnimationStyle">@style/AnimTop2</item> -->

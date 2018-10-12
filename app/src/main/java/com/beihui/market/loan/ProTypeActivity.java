@@ -60,6 +60,7 @@ public class ProTypeActivity extends BaseComponentActivity {
     private int productType;
     private String type1str = "超多新口子   下款就通过";
     private String type2str = "快借极速贷   热门口子秒过";
+    private String type3str = "大额低息超   分分秒秒正品";
     private String type4str = "手机微额贷   无视黑白户";
     private Map<String, Object> map = new HashMap<>();
     private int pageNo = 1;
@@ -85,6 +86,10 @@ public class ProTypeActivity extends BaseComponentActivity {
         if (productType == 2) {
             tv_toolbar_title.setText("闪电到账专区");
             tv_head_txt.setText(type2str);
+        }
+        if (productType == 3) {
+            tv_toolbar_title.setText("大额低息专区");
+            tv_head_txt.setText(type3str);
         }
         if (productType == 4) {
             tv_toolbar_title.setText("不查征信专区");

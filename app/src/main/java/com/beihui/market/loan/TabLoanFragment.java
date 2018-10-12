@@ -2,8 +2,11 @@ package com.beihui.market.loan;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.TtsSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -65,11 +68,14 @@ public class TabLoanFragment extends BaseComponentFragment {
     private int pageSize = 10;
     private int checking = 0;//是否为审核产品 0：否 1：是
     private int type = 0;//排序 2 贷款额度 3 贷款利率 4 放款速度
+    private int moneyType = 0;
     private int borrowingLow = -1;//金额区别 低值
     private int borrowingHigh = -1;//金额区间 高值
     private int productType = 0;//产品属性 1 高通过率 2 闪电到账 3 大额低息 4 不查征信
     private int tag = 0;//标识第几个tab被选中状态
     private ProductAdapter adapter = new ProductAdapter();
+    private Drawable right;
+    private int selectColor;
 
     @Override
     public int getLayoutResId() {
@@ -89,12 +95,16 @@ public class TabLoanFragment extends BaseComponentFragment {
         dtv_money.setText("金额");
         dtv_kind.setText("分类");
         dtv_sort.setText("排序");
-        dtv_money.setImg(R.drawable.icon_come);
-        dtv_kind.setImg(R.drawable.icon_come);
-        dtv_sort.setImg(R.drawable.icon_come);
+        dtv_money.setImg(R.mipmap.ic_down);
+        dtv_kind.setImg(R.mipmap.ic_down);
+        dtv_sort.setImg(R.mipmap.ic_down);
 
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
+
+        right = ContextCompat.getDrawable(getActivity(), R.drawable.loan_selected);
+        right.setBounds(0, 0, right.getMinimumWidth(), right.getMinimumHeight());
+        selectColor = ContextCompat.getColor(getContext(), R.color.refresh_one);
 
         initRecycler();
         request(map);
@@ -160,6 +170,7 @@ public class TabLoanFragment extends BaseComponentFragment {
         tag = 0;
         pageNo = 1;
         type = 0;
+        moneyType = 0;
         borrowingLow = -1;
         borrowingHigh = -1;
         productType = 0;
@@ -236,10 +247,12 @@ public class TabLoanFragment extends BaseComponentFragment {
                         View.OnClickListener listener = new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                TextView textView = (TextView) v;
-                                dtv_money.setText(textView.getText().toString());
-                                dtv_kind.setText("分类");
-                                dtv_sort.setText("排序");
+                                if (v instanceof TextView) {
+                                    TextView textView = (TextView) v;
+                                    dtv_money.setText(textView.getText().toString());
+                                    dtv_kind.setText("分类");
+                                    dtv_sort.setText("排序");
+                                }
                                 popup.dismiss();
                                 tag = 1;
                                 pageNo = 1;
@@ -248,42 +261,82 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 map.put("pageSize", pageSize);
                                 switch (v.getId()) {
                                     case R.id.tv_money_all:
+                                        moneyType = 0;
                                         borrowingLow = borrowingHigh = -1;
                                         break;
                                     case R.id.tv_money_2k_down:
+                                        moneyType = 1;
                                         borrowingLow = -1;
                                         borrowingHigh = 1999;
                                         break;
                                     case R.id.tv_money_2k_5k:
+                                        moneyType = 2;
                                         borrowingLow = 2000;
                                         borrowingHigh = 4999;
                                         break;
                                     case R.id.tv_money_5k_1w:
+                                        moneyType = 3;
                                         borrowingLow = 5000;
                                         borrowingHigh = 9999;
                                         break;
                                     case R.id.tv_money_1w_3w:
+                                        moneyType = 4;
                                         borrowingLow = 10000;
                                         borrowingHigh = 29999;
                                         break;
                                     case R.id.tv_money_3w_above:
+                                        moneyType = 5;
                                         borrowingLow = 30000;
                                         borrowingHigh = -1;
                                         break;
                                     default:
+                                        popup.dismiss();
                                         break;
                                 }
                                 if (borrowingLow != -1) map.put("borrowingLow", borrowingLow);
                                 if (borrowingHigh != -1) map.put("borrowingHigh", borrowingHigh);
-                                request(map);
+                                if (v.getId() != R.id.view_part) request(map);
                             }
                         };
-                        contentView.findViewById(R.id.tv_money_all).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_money_2k_down).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_money_2k_5k).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_money_5k_1w).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_money_1w_3w).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_money_3w_above).setOnClickListener(listener);
+                        TextView tv_money_all = contentView.findViewById(R.id.tv_money_all);
+                        TextView tv_money_2k_down = contentView.findViewById(R.id.tv_money_2k_down);
+                        TextView tv_money_2k_5k = contentView.findViewById(R.id.tv_money_2k_5k);
+                        TextView tv_money_5k_1w = contentView.findViewById(R.id.tv_money_5k_1w);
+                        TextView tv_money_1w_3w = contentView.findViewById(R.id.tv_money_1w_3w);
+                        TextView tv_money_3w_above = contentView.findViewById(R.id.tv_money_3w_above);
+                        switch (moneyType) {
+                            case 1:
+                                tv_money_2k_down.setCompoundDrawables(null, null, right, null);
+                                tv_money_2k_down.setTextColor(selectColor);
+                                break;
+                            case 2:
+                                tv_money_2k_5k.setCompoundDrawables(null, null, right, null);
+                                tv_money_2k_5k.setTextColor(selectColor);
+                                break;
+                            case 3:
+                                tv_money_5k_1w.setCompoundDrawables(null, null, right, null);
+                                tv_money_5k_1w.setTextColor(selectColor);
+                                break;
+                            case 4:
+                                tv_money_1w_3w.setCompoundDrawables(null, null, right, null);
+                                tv_money_1w_3w.setTextColor(selectColor);
+                                break;
+                            case 5:
+                                tv_money_3w_above.setCompoundDrawables(null, null, right, null);
+                                tv_money_3w_above.setTextColor(selectColor);
+                                break;
+                            default:
+                                tv_money_all.setCompoundDrawables(null, null, right, null);
+                                tv_money_all.setTextColor(selectColor);
+                                break;
+                        }
+                        tv_money_all.setOnClickListener(listener);
+                        tv_money_2k_down.setOnClickListener(listener);
+                        tv_money_2k_5k.setOnClickListener(listener);
+                        tv_money_5k_1w.setOnClickListener(listener);
+                        tv_money_1w_3w.setOnClickListener(listener);
+                        tv_money_3w_above.setOnClickListener(listener);
+                        contentView.findViewById(R.id.view_part).setOnClickListener(listener);
                     }
                 });
                 break;
@@ -295,10 +348,12 @@ public class TabLoanFragment extends BaseComponentFragment {
                         View.OnClickListener listener = new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                TextView textView = (TextView) v;
-                                dtv_kind.setText(textView.getText().toString());
-                                dtv_money.setText("金额");
-                                dtv_sort.setText("排序");
+                                if (v instanceof TextView) {
+                                    TextView textView = (TextView) v;
+                                    dtv_kind.setText(textView.getText().toString());
+                                    dtv_money.setText("金额");
+                                    dtv_sort.setText("排序");
+                                }
                                 popup.dismiss();
                                 tag = 2;
                                 pageNo = 1;
@@ -322,17 +377,46 @@ public class TabLoanFragment extends BaseComponentFragment {
                                         productType = 4;
                                         break;
                                     default:
+                                        popup.dismiss();
                                         break;
                                 }
                                 if (productType != 0) map.put("productType", productType);
-                                request(map);
+                                if (v.getId() != R.id.view_part) request(map);
                             }
                         };
-                        contentView.findViewById(R.id.tv_kind_1).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_kind_2).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_kind_3).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_kind_4).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_kind_5).setOnClickListener(listener);
+                        TextView tv_kind_1 = contentView.findViewById(R.id.tv_kind_1);
+                        TextView tv_kind_2 = contentView.findViewById(R.id.tv_kind_2);
+                        TextView tv_kind_3 = contentView.findViewById(R.id.tv_kind_3);
+                        TextView tv_kind_4 = contentView.findViewById(R.id.tv_kind_4);
+                        TextView tv_kind_5 = contentView.findViewById(R.id.tv_kind_5);
+                        switch (productType) {
+                            case 1:
+                                tv_kind_2.setCompoundDrawables(null, null, right, null);
+                                tv_kind_2.setTextColor(selectColor);
+                                break;
+                            case 2:
+                                tv_kind_3.setCompoundDrawables(null, null, right, null);
+                                tv_kind_3.setTextColor(selectColor);
+                                break;
+                            case 3:
+                                tv_kind_4.setCompoundDrawables(null, null, right, null);
+                                tv_kind_4.setTextColor(selectColor);
+                                break;
+                            case 4:
+                                tv_kind_5.setCompoundDrawables(null, null, right, null);
+                                tv_kind_5.setTextColor(selectColor);
+                                break;
+                            default:
+                                tv_kind_1.setCompoundDrawables(null, null, right, null);
+                                tv_kind_1.setTextColor(selectColor);
+                                break;
+                        }
+                        tv_kind_1.setOnClickListener(listener);
+                        tv_kind_2.setOnClickListener(listener);
+                        tv_kind_3.setOnClickListener(listener);
+                        tv_kind_4.setOnClickListener(listener);
+                        tv_kind_5.setOnClickListener(listener);
+                        contentView.findViewById(R.id.view_part).setOnClickListener(listener);
                     }
                 });
                 break;
@@ -344,10 +428,12 @@ public class TabLoanFragment extends BaseComponentFragment {
                         View.OnClickListener listener = new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                TextView textView = (TextView) v;
-                                dtv_sort.setText(textView.getText().toString());
-                                dtv_money.setText("金额");
-                                dtv_kind.setText("分类");
+                                if (v instanceof TextView) {
+                                    TextView textView = (TextView) v;
+                                    dtv_sort.setText(textView.getText().toString());
+                                    dtv_money.setText("金额");
+                                    dtv_kind.setText("分类");
+                                }
                                 popup.dismiss();
                                 tag = 3;
                                 pageNo = 1;
@@ -368,16 +454,40 @@ public class TabLoanFragment extends BaseComponentFragment {
                                         type = 4;
                                         break;
                                     default:
+                                        popup.dismiss();
                                         break;
                                 }
                                 if (type != 0) map.put("type", type);
-                                request(map);
+                                if (v.getId() != R.id.view_part) request(map);
                             }
                         };
-                        contentView.findViewById(R.id.tv_sort_1).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_sort_2).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_sort_3).setOnClickListener(listener);
-                        contentView.findViewById(R.id.tv_sort_4).setOnClickListener(listener);
+                        TextView tv_sort_1 = contentView.findViewById(R.id.tv_sort_1);
+                        TextView tv_sort_2 = contentView.findViewById(R.id.tv_sort_2);
+                        TextView tv_sort_3 = contentView.findViewById(R.id.tv_sort_3);
+                        TextView tv_sort_4 = contentView.findViewById(R.id.tv_sort_4);
+                        switch (type) {
+                            case 2:
+                                tv_sort_2.setCompoundDrawables(null, null, right, null);
+                                tv_sort_2.setTextColor(selectColor);
+                                break;
+                            case 3:
+                                tv_sort_3.setCompoundDrawables(null, null, right, null);
+                                tv_sort_3.setTextColor(selectColor);
+                                break;
+                            case 4:
+                                tv_sort_4.setCompoundDrawables(null, null, right, null);
+                                tv_sort_4.setTextColor(selectColor);
+                                break;
+                            default:
+                                tv_sort_1.setCompoundDrawables(null, null, right, null);
+                                tv_sort_1.setTextColor(selectColor);
+                                break;
+                        }
+                        tv_sort_1.setOnClickListener(listener);
+                        tv_sort_2.setOnClickListener(listener);
+                        tv_sort_3.setOnClickListener(listener);
+                        tv_sort_4.setOnClickListener(listener);
+                        contentView.findViewById(R.id.view_part).setOnClickListener(listener);
                     }
                 });
                 break;

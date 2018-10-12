@@ -3,13 +3,17 @@ package com.beihui.market.loan;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.base.BaseComponentFragment;
 import com.beihui.market.entity.AdBanner;
 import com.beihui.market.entity.GroupProductBean;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.jjd.bean.CashOrder;
+import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -91,6 +95,37 @@ public class TabHomeFragment extends BaseComponentFragment {
                         homeAdapter.setHeadLoopText(data);
                     }
                 });
+        //check state
+        if (UserHelper.getInstance(getActivity()).isLogin()) {
+            Api.getInstance().cashOrder(UserHelper.getInstance(getActivity()).id())
+                    .compose(RxResponse.<CashOrder>compatT())
+                    .subscribe(new ApiObserver<CashOrder>() {
+                        @Override
+                        public void onNext(@NonNull CashOrder data) {
+                            if (data != null) {
+                                if ("1".equals(data.getOrderStatus())) {//审核被拒
+                                    long current = StringUtil.time2NowSecond(data.getGmtCreate());//目前
+                                    long gap = StringUtil.timeGapSecond(data.getOverDate(), data.getGmtCreate());//设定
+                                    if (current >= gap) {//超过设定时间
+                                        homeAdapter.setState(1);
+                                    } else {//未超过设定时间
+                                        homeAdapter.setState(3);
+                                    }
+                                } else {//审核中
+                                    homeAdapter.setState(2);
+                                }
+                            } else {
+                                homeAdapter.setState(1);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable t) {
+                            super.onError(t);
+                            homeAdapter.setState(1);
+                        }
+                    });
+        } else homeAdapter.setState(1);
         //recommond product
         Api.getInstance().queryGroupProductList()
                 .compose(RxResponse.<List<GroupProductBean>>compatT())
@@ -101,6 +136,13 @@ public class TabHomeFragment extends BaseComponentFragment {
                         homeAdapter.setNormalData(data);
                     }
                 });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        System.out.println("hidden : " + hidden);
+        if (!hidden) recycler.smoothScrollToPosition(0);
     }
 
     @Override
