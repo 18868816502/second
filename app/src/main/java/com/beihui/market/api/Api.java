@@ -80,6 +80,7 @@ import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
@@ -1356,12 +1357,13 @@ public class Api {
         return service.fetchSaveUserInfo(mMap);
     }
 
+
     /**
      * 保存用户信息
-     * @param
+     * @param mMap
      * @return
      */
-    public Observable<ResultEntity> fetchSaveUserInfo(String userId,String sex,String introduce) {
-        return service.fetchSaveUserInfo(userId,sex,introduce);
+    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(Map<String,Object> mMap) {
+        return service.queryCenterForum(mMap);
     }
 }

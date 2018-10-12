@@ -76,6 +76,7 @@ import com.beihui.market.entity.WithdrawRecord;
 import com.beihui.market.entity.request.XAccountInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
@@ -1419,8 +1420,13 @@ public interface ApiService {
     @POST("s6/userIndex/saveUserDetailInfo")
     Observable<ResultEntity> fetchSaveUserInfo(@FieldMap Map<String, Object> map);
 
+    /**
+     * 保存用户信息
+     * @param map
+     * @return
+     */
     @FormUrlEncoded
-    @POST("s6/userIndex/saveUserDetailInfo")
-    Observable<ResultEntity> fetchSaveUserInfo(@Field("userId") String userId,@Field("sex") String sex,@Field("introduce") String introduce);
+    @POST("s6/userIndex/queryCenterForum")
+    Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(@FieldMap Map<String, Object> map);
 
 }

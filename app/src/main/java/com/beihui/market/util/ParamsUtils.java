@@ -57,6 +57,13 @@ public class ParamsUtils {
     }
 
 
+    /**
+     * 获取保存用户参数
+     * @param userId
+     * @param sex
+     * @param introduce
+     * @return
+     */
     public static Map<String,Object> generateUserInfoParams(String userId, int sex, String introduce){
         Map<String,Object> mMap = new HashMap<>();
         mMap.put("userId", userId);
@@ -64,6 +71,23 @@ public class ParamsUtils {
         if(!TextUtils.isEmpty(introduce)) {
             mMap.put("introduce", introduce);
         }
+        return mMap;
+    }
+
+    /**
+     * 获取草稿箱-待审核列表参数
+     * @param userId
+     * @param forumStatus
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public static Map<String,Object> generateDraftsParams(String userId,String forumStatus, int pageNo, int pageSize){
+        Map<String,Object> mMap = new HashMap<>();
+        mMap.put("userId", userId);
+        mMap.put("forumStatus", forumStatus);
+        mMap.put("pageNo", pageNo);
+        mMap.put("pageSize", pageSize);
         return mMap;
     }
 
