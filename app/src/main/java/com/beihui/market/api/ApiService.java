@@ -1253,7 +1253,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s1/userIndex/baseInfo")
+    @POST("/s6/userIndex/baseInfo")
     Observable<ResultEntity<UserInfoBean>> queryUserInfo(@Field("userId") String userID);
 
     /**
@@ -1265,7 +1265,7 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/s1/userIndex/forumInfo")
+    @POST("/s6/userIndex/forumInfo")
     Observable<ResultEntity<List<UserTopicBean>>> queryUserTopicInfo(@Field("userId") String userID, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @POST("s1/version/audit/land")
