@@ -21,6 +21,7 @@ import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.util.ParamsUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
+import com.beihui.market.view.SlideRecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -41,12 +42,13 @@ import io.reactivex.functions.Consumer;
  * @descripe
  * @time 2018/10/12 10:40
  */
-public class MyAuditedTopicActivity extends BaseComponentActivity implements OnRefreshListener, OnLoadMoreListener,BaseQuickAdapter.OnItemClickListener {
+public class MyAuditedTopicActivity extends BaseComponentActivity implements OnRefreshListener,
+        OnLoadMoreListener,BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener{
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.recycler)
-    RecyclerView recyclerView;
+    SlideRecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.ll_no_data)
@@ -68,13 +70,14 @@ public class MyAuditedTopicActivity extends BaseComponentActivity implements OnR
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
         datas = new ArrayList<>();
-        adapter = new AuditedTopicAdapter();
+        adapter = new AuditedTopicAdapter(2);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
+        adapter.setOnItemChildClickListener(this);
     }
 
     @Override
@@ -96,11 +99,12 @@ public class MyAuditedTopicActivity extends BaseComponentActivity implements OnR
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
+        fetchData();
     }
 
     @SuppressLint("CheckResult")
     private void fetchData(){
-        Api.getInstance().queryCenterForum(ParamsUtils.generateDraftsParams(UserHelper.getInstance(this).getProfile().getId(),"2#3",pageNo,pageSize))
+        Api.getInstance().queryCenterForumAudit(ParamsUtils.generateDraftsParams(UserHelper.getInstance(this).getProfile().getId(),pageNo,pageSize))
                 .compose(RxUtil.<ResultEntity<List<DraftsBean>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<DraftsBean>>>() {
                                @Override
@@ -140,6 +144,40 @@ public class MyAuditedTopicActivity extends BaseComponentActivity implements OnR
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        ToastUtil.toast("正在审核中");
+    }
 
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()){
+            case R.id.tv_delete:
+                deleteForum(datas.get(position).getForumId());
+                break;
+                default:
+                    break;
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    private void deleteForum(String forumId){
+        Api.getInstance().fetchCancelForum(forumId)
+                .compose(RxUtil.<ResultEntity>io2main())
+                .subscribe(new Consumer<ResultEntity>() {
+                               @Override
+                               public void accept(ResultEntity result){
+                                   if (result.isSuccess()) {
+                                       ToastUtil.toast("删除成功");
+                                       fetchData();
+                                   } else {
+                                       ToastUtil.toast(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable){
+                                Log.e("exception_custom", throwable.getMessage());
+                            }
+                        });
     }
 }

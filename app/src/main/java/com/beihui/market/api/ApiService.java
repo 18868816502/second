@@ -1429,4 +1429,13 @@ public interface ApiService {
     @POST("s6/userIndex/queryCenterForum")
     Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(@FieldMap Map<String, Object> map);
 
+    /**
+     * 保存用户信息
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/userIndex/queryCenterForumAudit")
+    Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(@FieldMap Map<String, Object> map);
+
 }

@@ -119,12 +119,10 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
                 finish();
                 break;
             case R.id.tv_drafts:
-                ToastUtil.toast("草稿箱");
                 popWindow.dismiss();
                 startActivity(new Intent(this, MyDraftsActivity.class));
                 break;
             case R.id.tv_audits:
-                ToastUtil.toast("待审核");
                 popWindow.dismiss();
                 startActivity(new Intent(this, MyAuditedTopicActivity.class));
                 break;
@@ -135,8 +133,6 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void onQueryUserInfoSucceed(UserInfoBean userInfoBean) {
-//        refreshLayout.setEnableRefresh(false);
-//        adapter.setHeadData(userInfoBean);
         this.userInfoBean = userInfoBean;
         presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
     }

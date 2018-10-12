@@ -1359,11 +1359,20 @@ public class Api {
 
 
     /**
-     * 保存用户信息
+     * 查询草稿箱
      * @param mMap
      * @return
      */
     public Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(Map<String,Object> mMap) {
         return service.queryCenterForum(mMap);
+    }
+
+    /**
+     * 查询待审核
+     * @param mMap
+     * @return
+     */
+    public Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(Map<String,Object> mMap) {
+        return service.queryCenterForumAudit(mMap);
     }
 }
