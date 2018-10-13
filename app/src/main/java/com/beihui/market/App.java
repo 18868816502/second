@@ -49,6 +49,7 @@ public class App extends Application {
     public static WindowManager mWindowManager;//窗口
     public static int mWidthPixels;//屏幕宽度（像素）
     public static String sChannelId = "unknown";
+    public static int step = 0;//认证步骤
     public static int audit = 1;//是否审核中
 
     static {

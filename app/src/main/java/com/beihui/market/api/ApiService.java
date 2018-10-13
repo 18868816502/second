@@ -1287,7 +1287,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryRecommend")
-    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId,@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+    Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@Field("userId") String userId, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
     @FormUrlEncoded
     @POST("/s6/forumQueryController/queryRecommend")
@@ -1322,6 +1322,7 @@ public interface ApiService {
 
     /**
      * 草稿箱动态编辑接口
+     *
      * @param forumId
      * @return
      */
@@ -1362,6 +1363,7 @@ public interface ApiService {
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@Field("userId") String userId, @Field("commentType") String commentType, @Field("commentContent") String commentContent,
                                                  @Field("forumId") String forumId, @Field("toUserId") String toUserId, @Field("selfId") String selfId);
+
     @FormUrlEncoded
     @POST("/s6/forumController/replyForumInfo")
     Observable<ResultEntity> fetchReplyForumInfo(@FieldMap Map<String, Object> map);
@@ -1410,7 +1412,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("s6/forumController/clickPraise")
-    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType,@Field("forumReplayId") String forumReplyId,@Field("userId") String userId);
+    Observable<ResultEntity<PraiseBean>> fetchClickPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
 
     /**
      * 社区评论回复取消点赞
@@ -1426,6 +1428,7 @@ public interface ApiService {
 
     /**
      * 保存用户信息
+     *
      * @param map
      * @return
      */
@@ -1435,6 +1438,7 @@ public interface ApiService {
 
     /**
      * 保存用户信息
+     *
      * @param map
      * @return
      */
@@ -1444,6 +1448,7 @@ public interface ApiService {
 
     /**
      * 查询点赞列表
+     *
      * @param map
      * @return
      */
@@ -1453,6 +1458,7 @@ public interface ApiService {
 
     /**
      * 查询点赞列表
+     *
      * @param map
      * @return
      */
@@ -1463,6 +1469,7 @@ public interface ApiService {
 
     /**
      * 保存用户信息
+     *
      * @param map
      * @return
      */
@@ -1505,4 +1512,15 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("s1/cashOrderController/saveCashOrder")
     Observable<ResultEntity<CashOrder>> saveCashOrder(@FieldMap Map<String, Object> map);
+
+    /*实名认证*/
+    @FormUrlEncoded
+    @POST("s1/cashUserController/saveCashUser")
+    Observable<ResultEntity> fetchVertifyIDCard(@Field("userId") String userID, @Field("userName") String userName, @Field("idCard") String idCard);
+
+    /*保存联系人*/
+    @FormUrlEncoded
+    @POST("s1/cashUserController/saveCashUserContact")
+    Observable<ResultEntity> fetchSaveContact(@Field("userId") String userID, @Field("userContact") String userContact,
+                                              @Field("userRelate") String userRelate, @Field("mobileNum") String mobileNum);
 }

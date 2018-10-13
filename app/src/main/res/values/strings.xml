@@ -71,7 +71,6 @@
     <string name="tab_account">账单</string>
     <string name="reward_points">我的积分</string>
 
-
     <string-array name="calendar_week">
         <item>日</item>
         <item>一</item>
@@ -200,7 +199,6 @@
     <string name="user_protocol">《%s用户协议》</string>
     <string name="about_app">关于%s</string>
 
-
     <!--个人中心-->
     <string name="personal_edit_text">编辑个人资料</string>
     <string name="personal_publish_text">发布</string>
@@ -221,6 +219,29 @@
     <string name="community_publish_dialog_commit">提交</string>
     <string name="community_publish_title_size">30/30</string>
     <string name="community_attention_tips">已更新%d条内容</string>
+
+    <!--急借贷-->
+    <string name="jjd_verticy_id_title">验证身份信息</string>
+    <string name="jjd_truth_name">真实姓名</string>
+    <string name="jjd_truth_name_input">请填写姓名</string>
+    <string name="jjd_idcard_no">身份证号</string>
+    <string name="jjd_idcard_no_input">请填写身份证号</string>
+    <string name="jjd_start_vertify_text">开始认证</string>
+    <string name="jjd_contact_relative">与本人关系</string>
+    <string name="jjd_contact_relative_input">请填写关系</string>
+    <string name="jjd_contact_name">姓名</string>
+    <string name="jjd_contact_phone">手机号</string>
+    <string name="jjd_contact_phone_input">请选择联系人手机号</string>
+    <string name="jjd_contact_phone_tips">请从手机通讯录中选择</string>
+    <string name="jjd_contact_tips">温馨提示：请提供真实有效的联系信息，否则将导致借款失败</string>
+    <string name="jjd_vertify_next_text">下一步</string>
+    <string name="jjd_vertify_start_auth">开始授权</string>
+    <string name="jjd_vertify_auth_zhima">请授权您的芝麻信用</string>
+    <string name="jjd_vertify_auth_ing">正在授权中...</string>
+    <string name="jjd_vertify_auth_back_time_tips">%1$ds后返回首页</string>
+    <string name="jjd_vertify_zhima_auth_via">芝麻信用认证通过</string>
+    <string name="app_contentdescription">TODO</string>
+    <string name="loan_protocol">《%s借款协议》</string>
 
     <!--文章-->
     <string name="article_attention">+ 关注</string>

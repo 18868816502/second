@@ -190,4 +190,8 @@ public class NetConstants {
         }
         return H5_ONE_KEY_LOAN + "?isApp=1&pids=" + sb.toString() + "&userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
+
+    public static String sufPublicParam(String userId) {
+        return "&version=" + BuildConfig.VERSION_NAME + "&packageId=" + App.sChannelId + "&userId=" + userId;
+    }
 }

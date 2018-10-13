@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.activity.VerticyIDActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/relative_container"
+        android:layout_width="368dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/tv_contact_relative"
+            android:layout_width="110dp"
+            android:layout_height="34dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingStart="@dimen/dp15"
+            android:text="@string/jjd_contact_relative"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <EditText
+            android:id="@+id/et_contact_relative"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:background="@null"
+            android:gravity="center_vertical|start"
+            android:hint="@string/jjd_contact_relative_input"
+            android:inputType="text"
+            android:maxLength="8"
+            android:singleLine="true"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_contact_relative"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/indicate"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
+        android:background="@color/colorBackground"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relative_container" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/name_container"
+        android:layout_width="368dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/indicate"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/tv_contact_name"
+            android:layout_width="110dp"
+            android:layout_height="34dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingStart="@dimen/dp15"
+            android:text="@string/jjd_contact_name"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <TextView
+            android:id="@+id/et_contact_name"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_marginRight="15dp"
+            android:background="@null"
+            android:drawableEnd="@drawable/icon_come"
+            android:drawableRight="@drawable/icon_come"
+            android:gravity="center_vertical|start"
+            android:hint="@string/jjd_truth_name_input"
+            android:inputType="text"
+            android:maxLength="8"
+            android:paddingEnd="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:singleLine="true"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_contact_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/indicate2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
+        android:background="@color/colorBackground"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_container" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/phone_container"
+        android:layout_width="368dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/indicate2"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/tv_contact_phone_title"
+            android:layout_width="110dp"
+            android:layout_height="34dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp15"
+            android:text="@string/jjd_contact_phone"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <TextView
+            android:id="@+id/tv_contact_phone"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_marginRight="15dp"
+            android:background="@null"
+            android:gravity="center_vertical|start"
+            android:hint="@string/jjd_contact_phone_tips"
+            android:paddingEnd="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/sp15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_contact_phone_title"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="8dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_contact_tips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp18"
+        android:layout_marginEnd="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp18"
+        android:text="@string/jjd_contact_tips"
+        android:textColor="@color/c_a5a9b2"
+        android:textSize="@dimen/sp12"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone_container" />
+</android.support.constraint.ConstraintLayout>

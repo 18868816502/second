@@ -20,18 +20,22 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.beihui.market.App;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
 import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.jjd.activity.LoanActivity;
+import com.beihui.market.jjd.activity.VerticyIDActivity;
+import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.tang.Decoration;
 import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.activity.WebViewActivity;
+import com.beihui.market.ui.dialog.CommNoneAndroidDialog;
 import com.beihui.market.util.DensityUtil;
-import com.beihui.market.util.ToastUtil;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -301,7 +305,42 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 });
                 break;
             case R.id.tv_go_loan:
-                ToastUtil.toast("贷款");
+                /*用户认证信息查询*/
+                if (UserHelper.getInstance(context).isLogin()) {
+                    Api.getInstance().userAuth(UserHelper.getInstance(context).id())
+                            .compose(RxResponse.<CashUserInfo>compatT())
+                            .subscribe(new ApiObserver<CashUserInfo>() {
+                                @Override
+                                public void onNext(@NonNull CashUserInfo data) {
+                                    Intent verifyIntent = new Intent(context, VerticyIDActivity.class);
+                                    if (data == null || data.getCashUser() == null) {
+                                        verifyIntent.putExtra("mVertifyState", 1);
+                                        context.startActivity(verifyIntent);
+                                    } else if (data.getCashContact() == null || App.step == 1) {
+                                        verifyIntent.putExtra("mVertifyState", 2);
+                                        context.startActivity(verifyIntent);
+                                    } else if (App.step == 2) {
+                                        verifyIntent.putExtra("mVertifyState", 3);
+                                        context.startActivity(verifyIntent);
+                                    } else {
+                                        Intent intent = new Intent(context, LoanActivity.class);
+                                        intent.putExtra("money", progress);
+                                        intent.putExtra("charge", progress * 1.0f / 100);
+                                        context.startActivity(intent);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable t) {
+                                    super.onError(t);
+                                    Intent intent = new Intent(context, VerticyIDActivity.class);
+                                    intent.putExtra("mVertifyState", 1);
+                                    context.startActivity(intent);
+                                }
+                            });
+                } else {
+                    context.startActivity(new Intent(context, UserAuthorizationActivity.class));
+                }
                 break;
             default:
                 break;

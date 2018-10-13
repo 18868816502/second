@@ -1441,4 +1441,14 @@ public class Api {
     public Observable<ResultEntity<CashOrder>> saveCashOrder(Map<String, Object> map) {
         return service.saveCashOrder(map);
     }
+
+    /*实名认证*/
+    public Observable<ResultEntity> fetchVertifyIDCard(String userId, String userName, String idCard) {
+        return service.fetchVertifyIDCard(userId, userName, idCard);
+    }
+
+    /*保存联系人*/
+    public Observable<ResultEntity> fetchSaveContact(String userId, String userContact, String userRelate, String mobileNum) {
+        return service.fetchSaveContact(userId, userContact, userRelate, mobileNum);
+    }
 }

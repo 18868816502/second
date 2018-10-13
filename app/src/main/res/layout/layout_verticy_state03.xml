@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/verticyContainer03"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp10"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.activity.VerticyIDActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.beihui.market.jjd.CircleProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:direction="top"
+            app:max_progress="100"
+            app:outside_color="@color/c_3586ff"
+            app:outside_radius="60dp"
+            app:progress="0"
+            app:progress_width="6dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/vertify_zhima"
+            android:contentDescription="@string/app_contentdescription" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_auth_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp23"
+        android:text="@string/jjd_vertify_auth_zhima"
+        android:textColor="@color/black_1"
+        android:textSize="@dimen/sp17" />
+
+    <TextView
+        android:id="@+id/tv_back_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp10"
+        android:text="@string/jjd_vertify_auth_back_time_tips"
+        android:textColor="@color/c_bfbfbf"
+        android:textSize="@dimen/sp12"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp20" />
+</LinearLayout>

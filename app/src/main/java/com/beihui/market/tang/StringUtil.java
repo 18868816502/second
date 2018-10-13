@@ -2,6 +2,7 @@ package com.beihui.market.tang;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,8 +26,8 @@ public class StringUtil {
         return m.matches();
     }
 
-    private static final String FORMAT_Y_M_D = "yyyy-MM-dd";
-    private static final String FORMAT_Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
+    public static final String FORMAT_Y_M_D = "yyyy-MM-dd";
+    public static final String FORMAT_Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
 
     public static String time2Str(String time) {
         try {
@@ -94,5 +95,37 @@ public class StringUtil {
         } catch (ParseException e) {
             return 0;
         }
+    }
+
+    public static String stamp2Str(long stamp) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_Y_M_D_H_M_S);
+            return dateFormat.format(stamp);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public static String stamp2Str(long stamp, String format) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+            return dateFormat.format(stamp);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public static String date2Now(int distanceDay) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_Y_M_D);
+            Date today = new Date(System.currentTimeMillis());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(today);
+            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + distanceDay);
+            Date distanceDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+            return dateFormat.format(distanceDate);
+        } catch (Exception e) {
+        }
+        return "";
     }
 }
