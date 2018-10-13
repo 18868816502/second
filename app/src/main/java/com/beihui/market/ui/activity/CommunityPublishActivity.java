@@ -150,8 +150,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         switch (view.getId()){
             case R.id.navigate:
                 //先判断是否有数据
-                mPopType = 0;
-                showDialogTips(R.layout.dialog_community_publish_save);
+                showSaveDraftDialog();
                 break;
             case R.id.tv_publish:
                 mPopType = 1;
@@ -325,6 +324,20 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             mTopicTitle = strEdit;
         }else{
             mTopicContent = strEdit;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+       showSaveDraftDialog();
+    }
+
+    private void showSaveDraftDialog(){
+        if(pathList.size() != 0 || !TextUtils.isEmpty(mTopicTitle) || !TextUtils.isEmpty(mTopicContent)){
+            mPopType = 0;
+            showDialogTips(R.layout.dialog_community_publish_save);
+        }else{
+            finish();
         }
     }
 }
