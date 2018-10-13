@@ -133,6 +133,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp72"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/ll_loan"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_loan_my"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp10"
+                            android:textSize="@dimen/sp15"
+                            android:textColor="@color/color_primary_black"
+                            android:text="我的借款"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_bank"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_bank_my"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp10"
+                            android:textSize="@dimen/sp15"
+                            android:textColor="@color/color_primary_black"
+                            android:text="我的银行卡"/>
+                    </LinearLayout>
+                </LinearLayout>
+
                 <com.beihui.market.view.CardLayoutBar
                     android:id="@+id/invite_friend"
                     android:layout_width="match_parent"

@@ -73,6 +73,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     TextView loginTv;
     @BindView(R.id.tv_message_num)
     TextView tvMessageNum;
+    @BindView(R.id.ll_loan)
+    View loanContainer;
+    @BindView(R.id.ll_bank)
+    View bankContainer;
     @Inject
     TabMinePresenter presenter;
 
@@ -217,7 +221,8 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @OnClick({R.id.bill_summary, R.id.my_wallet,
             R.id.remind, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
-            R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg})
+            R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg,
+            R.id.ll_loan,R.id.ll_bank})
     public void onViewClicked(View view) {
         if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
             UserAuthorizationActivity.launch(getActivity(), null);
@@ -280,6 +285,12 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             case R.id.my_wallet://我的钱包
                 if (!FastClickUtils.isFastClick())
                     startActivity(new Intent(getActivity(), WalletActivity.class));
+                break;
+            case R.id.ll_loan:
+
+                break;
+            case R.id.ll_bank:
+
                 break;
             default:
                 break;
