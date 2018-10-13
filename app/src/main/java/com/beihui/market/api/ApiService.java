@@ -80,6 +80,7 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftEditForumBean;
 import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.PraiseListBean;
@@ -1319,6 +1320,15 @@ public interface ApiService {
     Observable<ResultEntity> publicForumInfo(@Field("userId") String userId, @Field("imgKey") String imgKey, @Field("forumTitle") String forumTitle,
                                              @Field("forumContent") String forumContent, @Field("status") String status, @Field("topicId") String topicId,
                                              @Field("forumId") String forumId);
+
+    /**
+     * 草稿箱动态编辑接口
+     * @param forumId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/forumQueryController/editForum")
+    Observable<ResultEntity<DraftEditForumBean>> fetchEditForum(@Field("forumId") String forumId);
 
 
     /**

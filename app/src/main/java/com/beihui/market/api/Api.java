@@ -84,6 +84,7 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftEditForumBean;
 import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
 import com.beihui.market.social.bean.PraiseListBean;
@@ -1252,6 +1253,17 @@ public class Api {
         return service.publicForumInfo(userId, imgKey, forumTitle, forumContent, status, topicId, forumId);
 
     }
+
+    /**
+     * 获取草稿箱动态编辑
+     *
+     * @param forumId
+     * @return
+     */
+    public Observable<ResultEntity<DraftEditForumBean>> fetchEditForum(String forumId) {
+        return service.fetchEditForum(forumId);
+    }
+
 
     /*产品列表查询*/
     public Observable<ResultEntity<List<Product>>> products(Map<String, Object> map) {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import com.beihui.market.base.BasePresenter;
 import com.beihui.market.base.BaseView;
+import com.beihui.market.social.bean.DraftEditForumBean;
 
 public interface SocialPublishContract {
 
@@ -28,6 +29,12 @@ public interface SocialPublishContract {
          * @param bitmap
          */
         void uploadForumImg(Bitmap bitmap);
+
+        /**
+         * 获取草稿编辑信息
+         * @param forumId
+         */
+        void fetchEditForum(String forumId);
     }
 
     interface View extends BaseView<Presenter> {
@@ -52,6 +59,11 @@ public interface SocialPublishContract {
          * 上传图片失败
          */
         void onUploadImgFailed();
+
+        /**
+         * 获取草稿箱信息成功
+         */
+        void onEditForumSucceed(DraftEditForumBean forumBean);
     }
 
 }

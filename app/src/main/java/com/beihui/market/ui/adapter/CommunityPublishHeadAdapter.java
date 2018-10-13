@@ -43,17 +43,19 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
     private Context mContext;
     private static final int CONTENT = 1;
     private static final int FOOT = 2;
-    private List<Uri> mList;
+    private List<String> mList;
 
     private ContentViewHolder contentViewHolder;
     private FootViewHolder footViewHolder;
+
+
 
     public CommunityPublishHeadAdapter(Context mContext) {
         this.mContext = mContext;
         mList = new ArrayList<>();
     }
 
-    public void setData(List<Uri> mList){
+    public void setData(List<String> mList){
         this.mList.clear();
         this.mList.addAll(mList);
         if(mList.size() >= 9){
@@ -61,6 +63,15 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
         }else{
             footViewHolder.itemView.setVisibility(View.VISIBLE);
         }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 设置草稿箱数据
+     */
+    public void setDraftData(List<String> mList){
+        this.mList.clear();
+        this.mList.addAll(mList);
         notifyDataSetChanged();
     }
 
@@ -151,7 +162,8 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
                 .countable(true)
                 .capture(true)
                 .captureStrategy(new CaptureStrategy(true, "com.beihui.market.fileprovider","kaola"))
-                .maxSelectable(9)
+//                .maxSelectable(9)
+                .maxSelectable(9 - mList.size())
                 .gridExpectedSize(mContext.getResources().getDimensionPixelSize(R.dimen.dp120))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)

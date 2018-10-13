@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.beihui.market.R;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.social.bean.DraftEditForumBean;
 import com.beihui.market.social.component.DaggerSocialPublishComponent;
 import com.beihui.market.social.contract.SocialPublishContract;
 import com.beihui.market.social.module.SocialPublishModule;
@@ -88,6 +89,10 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private String mTopicContent;
     private StringBuilder sb;
     private String status = "0";
+    private String forumId;
+
+    private List<String> httpUrls;
+    private List<String> httpImgKeys;
 
     @Override
     public int getLayoutId() {
@@ -108,6 +113,16 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         ivNavigate.setOnClickListener(this);
         tvPublish.setOnClickListener(this);
         sb = new StringBuilder();
+        getIntentData();
+    }
+
+    private void getIntentData() {
+        if(getIntent()!=null){
+            forumId = getIntent().getStringExtra("forumId");
+            if(!TextUtils.isEmpty(forumId)){
+                mPresenter.fetchEditForum(forumId);
+            }
+        }
     }
 
     @Override
@@ -116,6 +131,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         base64List = new ArrayList<>();
         imgKeys = new ArrayList<>();
         pathList = new ArrayList<>();
+
+        httpUrls = new ArrayList<>();
+        httpImgKeys = new ArrayList<>();
     }
 
     @Override
@@ -145,7 +163,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.tv_save:
                 //保存
-//                finish();
                 status = "0";
                 if(uriList == null){
                     mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
@@ -226,17 +243,18 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
 //            adapter.setHeadData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
-            uriList = Matisse.obtainResult(data);
-            pathList = Matisse.obtainPathResult(data);
-            adapter.setHeadData(uriList);
+//            uriList = Matisse.obtainResult(data);
+//            pathList = Matisse.obtainPathResult(data);
+            pathList.addAll(Matisse.obtainPathResult(data));
+            adapter.setHeadData(pathList);
         }
     }
 
     @Override
     public void onItemClick(int position) {
-        if(uriList != null) {
-            uriList.remove(position);
-            adapter.setHeadData(uriList);
+        if(pathList != null) {
+            pathList.remove(position);
+            adapter.setHeadData(pathList);
         }
     }
 
@@ -281,6 +299,19 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 //        uploadIndex ++;
         //如果上传失败则重新上传
         mPresenter.uploadForumImg(base64List.get(uploadIndex));
+    }
+
+    @Override
+    public void onEditForumSucceed(DraftEditForumBean forumBean) {
+        if(forumBean!=null) {
+            if(forumBean.getImgKey()!=null&&forumBean.getImgKey().size()!=0){
+                for(int i = 0 ; i < forumBean.getImgKey().size() ; i ++ ){
+                    httpImgKeys.add(forumBean.getImgKey().get(i).getId());
+                    httpUrls.add(forumBean.getImgKey().get(i).getImgUrl());
+                }
+            }
+            adapter.setData(httpUrls,forumBean.getTitle(),forumBean.getContent());
+        }
     }
 
     @Override

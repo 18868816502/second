@@ -1,6 +1,7 @@
 package com.beihui.market.social.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.social.adapter.AuditedTopicAdapter;
 import com.beihui.market.social.bean.DraftsBean;
+import com.beihui.market.ui.activity.CommunityPublishActivity;
 import com.beihui.market.util.ParamsUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
@@ -122,7 +124,9 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        Intent intent = new Intent(this, CommunityPublishActivity.class);
+        intent.putExtra("forumId",datas.get(position).getForumId());
+        startActivity(intent);
     }
 
     @Override

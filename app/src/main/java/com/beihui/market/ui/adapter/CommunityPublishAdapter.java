@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +40,26 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
     private ContentViewHolder contentViewHolder;
     private CommunityPublishHeadAdapter adapter;
 
+    private String mTitle = "";
+    private String mContent = "";
+
     public CommunityPublishAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setHeadData(List<Uri> mList){
+    public void setHeadData(List<String> mList){
         adapter.setData(mList);
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<String> mList,String mTitle,String mContent){
+        adapter.setDraftData(mList);
+        if(!TextUtils.isEmpty(mTitle)){
+            this.mTitle = mTitle;
+        }
+        if(!TextUtils.isEmpty(mContent)) {
+            this.mContent = mContent;
+        }
         notifyDataSetChanged();
     }
 
@@ -69,6 +84,8 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             headViewHolder = (HeadViewHolder) holder;
         }else{
             contentViewHolder = (ContentViewHolder) holder;
+            contentViewHolder.etPublishTitle.setText(mTitle);
+            contentViewHolder.etPublishContent.setText(mContent);
         }
     }
 
