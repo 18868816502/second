@@ -21,6 +21,8 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerTabMineComponent;
 import com.beihui.market.injection.module.TabMineModule;
+import com.beihui.market.jjd.activity.MyBankCardActivity;
+import com.beihui.market.jjd.activity.MyLoanActivity;
 import com.beihui.market.tang.activity.WalletActivity;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -287,10 +289,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     startActivity(new Intent(getActivity(), WalletActivity.class));
                 break;
             case R.id.ll_loan:
-
+                startActivity(new Intent(getActivity(), MyLoanActivity.class));
                 break;
             case R.id.ll_bank:
-
+                startActivity(new Intent(getActivity(), MyBankCardActivity.class));
                 break;
             default:
                 break;

@@ -128,11 +128,6 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_deploy_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp72"
@@ -176,6 +171,11 @@
                             android:text="我的银行卡"/>
                     </LinearLayout>
                 </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/activity_deploy_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <com.beihui.market.view.CardLayoutBar
                     android:id="@+id/invite_friend"
