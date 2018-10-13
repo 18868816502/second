@@ -80,8 +80,10 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftEditForumBean;
 import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
+import com.beihui.market.social.bean.PraiseListBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
 import java.util.ArrayList;
@@ -1318,6 +1320,15 @@ public interface ApiService {
                                              @Field("forumContent") String forumContent, @Field("status") String status, @Field("topicId") String topicId,
                                              @Field("forumId") String forumId);
 
+    /**
+     * 草稿箱动态编辑接口
+     * @param forumId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/forumQueryController/editForum")
+    Observable<ResultEntity<DraftEditForumBean>> fetchEditForum(@Field("forumId") String forumId);
+
 
     /**
      * 查询评论列表
@@ -1430,6 +1441,25 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("s6/userIndex/queryCenterForum")
     Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(@FieldMap Map<String, Object> map);
+
+    /**
+     * 查询点赞列表
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/forumQueryController/praiseList")
+    Observable<ResultEntity<List<PraiseListBean>>> queryPraiseList(@FieldMap Map<String, Object> map);
+
+    /**
+     * 查询点赞列表
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("s6/forumQueryController/commentList")
+    Observable<ResultEntity<List<PraiseListBean>>> queryCommentList(@FieldMap Map<String, Object> map);
+
 
     /**
      * 保存用户信息

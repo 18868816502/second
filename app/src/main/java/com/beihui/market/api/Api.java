@@ -84,8 +84,10 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.jjd.bean.CashUserInfo;
 import com.beihui.market.loan.Product;
 import com.beihui.market.social.bean.CommentReplyBean;
+import com.beihui.market.social.bean.DraftEditForumBean;
 import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.social.bean.PraiseBean;
+import com.beihui.market.social.bean.PraiseListBean;
 import com.beihui.market.social.bean.SocialTopicBean;
 
 import org.apache.commons.codec.binary.Hex;
@@ -1252,6 +1254,17 @@ public class Api {
 
     }
 
+    /**
+     * 获取草稿箱动态编辑
+     *
+     * @param forumId
+     * @return
+     */
+    public Observable<ResultEntity<DraftEditForumBean>> fetchEditForum(String forumId) {
+        return service.fetchEditForum(forumId);
+    }
+
+
     /*产品列表查询*/
     public Observable<ResultEntity<List<Product>>> products(Map<String, Object> map) {
         return service.products(map);
@@ -1382,6 +1395,17 @@ public class Api {
     public Observable<ResultEntity<List<DraftsBean>>> queryCenterForumAudit(Map<String, Object> mMap) {
         return service.queryCenterForumAudit(mMap);
     }
+
+    /*** 查询点赞列表 */
+    public Observable<ResultEntity<List<PraiseListBean>>> queryPraiseList(Map<String, Object> mMap) {
+        return service.queryPraiseList(mMap);
+    }
+
+    /*** 查询评论列表 */
+    public Observable<ResultEntity<List<PraiseListBean>>> queryCommentList(Map<String, Object> mMap) {
+        return service.queryCommentList(mMap);
+    }
+
 
     /*用户认证信息查询*/
     public Observable<ResultEntity<CashUserInfo>> userAuth(String userId) {

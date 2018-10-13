@@ -41,6 +41,7 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
         } else {
             helper.setTextColor(R.id.title, context.getResources().getColor(R.color.black_2));
         }
+        helper.addOnClickListener(R.id.tv_delete);
 
 
     }

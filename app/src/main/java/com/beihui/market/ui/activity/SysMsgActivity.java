@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSysMsgComponent;
 import com.beihui.market.injection.module.SysMsgModule;
+import com.beihui.market.social.activity.PraiseListActivity;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
@@ -31,6 +33,7 @@ import com.beihui.market.ui.dialog.AlertDialog;
 import com.beihui.market.ui.presenter.SysMsgPresenter;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
+import com.beihui.market.view.SlideRecyclerView;
 import com.beihui.market.view.StateLayout;
 import com.beihui.market.view.stateprovider.MessageStateViewProvider;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -46,7 +49,7 @@ import butterknife.OnClick;
 /**
  * 系统消息
  */
-public class SysMsgActivity extends BaseComponentActivity implements SysMsgContract.View, View.OnClickListener {
+public class SysMsgActivity extends BaseComponentActivity implements SysMsgContract.View, View.OnClickListener,BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.state_layout)
@@ -54,9 +57,13 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    SlideRecyclerView recyclerView;
     @BindView(R.id.message_more)
     ImageView messaheMore;
+    @BindView(R.id.praise_container)
+    View praiseContainer;
+    @BindView(R.id.comment_container)
+    View commentContainer;
 
     private SysMsgAdapter adapter;
 
@@ -64,6 +71,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     SysMsgPresenter presenter;
 
     private Dialog messageSelector;
+    private List<SysMsg.Row> datas;
 
     @Override
     protected void onDestroy() {
@@ -84,6 +92,8 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
             case R.id.from_delete:
                 showAlertDialog();
                 break;
+                default:
+                    break;
         }
 
     }
@@ -179,6 +189,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                 presenter.loadMore();
             }
         }, recyclerView);
+        adapter.setOnItemChildClickListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -194,6 +205,17 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         stateLayout.setStateViewProvider(new MessageStateViewProvider());
 
         SlidePanelHelper.attach(this);
+
+//        loadHeadView();
+    }
+
+    private void loadHeadView() {
+
+        View headerView=getLayoutInflater().inflate(R.layout.layout_header_system_message, null);
+
+        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        adapter.addHeaderView(headerView);
     }
 
     @Override
@@ -202,9 +224,26 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         presenter.onStart();
     }
 
-    @OnClick(R.id.message_more)
-    void OnViewClick() {
-        showMessageEdit();
+    @OnClick({R.id.message_more,R.id.praise_container,R.id.comment_container})
+    void OnViewClick(View view) {
+        switch (view.getId()){
+            case R.id.message_more:
+                showMessageEdit();
+                break;
+            case R.id.praise_container:
+                Intent pariaseIntent = new Intent(this, PraiseListActivity.class);
+                pariaseIntent.putExtra("type",1);
+                startActivity(pariaseIntent);
+                break;
+            case R.id.comment_container:
+                Intent commentIntent = new Intent(this, PraiseListActivity.class);
+                commentIntent.putExtra("type",2);
+                startActivity(commentIntent);
+                break;
+                default:
+                    break;
+        }
+
     }
 
     private void showMessageEdit() {
@@ -249,6 +288,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         if (adapter.isLoading()) {
             adapter.loadMoreComplete();
         }
+        datas = sysMsg;
         adapter.notifySysMsgChanged(sysMsg);
     }
 
@@ -275,4 +315,21 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
             refreshLayout.setRefreshing(false);
         }
     }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()){
+            case R.id.tv_delete:
+                deleteMessage(datas.get(position).getId());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void deleteMessage(String messageId) {
+
+    }
+
+
 }

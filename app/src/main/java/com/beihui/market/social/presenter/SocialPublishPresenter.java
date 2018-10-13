@@ -10,6 +10,7 @@ import com.beihui.market.entity.Avatar;
 import com.beihui.market.entity.Phone;
 import com.beihui.market.entity.request.RequestConstants;
 import com.beihui.market.helper.UserHelper;
+import com.beihui.market.social.bean.DraftEditForumBean;
 import com.beihui.market.social.contract.SocialPublishContract;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
@@ -57,26 +58,6 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
     @Override
     public void fetchPublishTopic(String imgKey, String forumTitle,
                                   String forumContent, String status, String topicId, String forumId) {
-        /*Disposable dis = mApi.publicForumInfo(mUserHelper.getProfile().getId(), imgKey, forumTitle, forumContent, status, topicId, forumId)
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity result) {
-                                   if (result.isSuccess()) {
-                                       mView.onPublishTopicSucceed();
-                                   } else {
-                                       mView.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) {
-                                logError(SocialPublishPresenter.this, throwable);
-                                mView.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);*/
         mApi.publicForumInfo(mUserHelper.getProfile().getId(), imgKey, forumTitle, forumContent, status, topicId, forumId)
                 .compose(RxResponse.compatO())
                 .subscribe(new ApiObserver<Object>() {
@@ -96,26 +77,6 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
 
     @Override
     public void uploadForumImg(Bitmap bitmap) {
-//        Disposable dis = mApi.uploadFourmImg(base64).compose(RxUtil.<ResultEntity<String>>io2main())
-//                .subscribe(new Consumer<ResultEntity<String>>() {
-//                               @Override
-//                               public void accept(@NonNull ResultEntity<String> result) throws Exception {
-//                                   if (result.isSuccess()) {
-//                                       mView.onUploadImgSucceed(result.getData());
-//                                   } else {
-//                                       mView.showErrorMsg(result.getMsg());
-//                                   }
-//                               }
-//                           },
-//                        new Consumer<Throwable>() {
-//                            @Override
-//                            public void accept(@NonNull Throwable throwable) throws Exception {
-//                                logError(SocialPublishPresenter.this, throwable);
-//                                mView.showErrorMsg(generateErrorMsg(throwable));
-//                            }
-//                        });
-//        addDisposable(dis);
-
         Disposable dis = Observable.just(bitmap)
                 .observeOn(Schedulers.io())
                 .map(new Function<Bitmap, byte[]>() {
@@ -159,7 +120,30 @@ public class SocialPublishPresenter extends BaseRxPresenter implements SocialPub
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-//                                logError(UserProfilePresenter.this, throwable);
+                                mView.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
+
+    @Override
+    public void fetchEditForum(String forumId) {
+        Disposable dis = mApi.fetchEditForum(forumId)
+                .compose(RxUtil.<ResultEntity<DraftEditForumBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<DraftEditForumBean>>() {
+                               @Override
+                               public void accept(ResultEntity<DraftEditForumBean> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                      mView.onEditForumSucceed(result.getData());
+                                   } else {
+                                       mView.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+
                                 mView.showErrorMsg(generateErrorMsg(throwable));
                             }
                         });
