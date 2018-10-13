@@ -493,8 +493,9 @@
         <activity
             android:name=".ui.activity.ArticleDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.SocialTopicDetailActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.SocialTopicDetailActivity"
+            android:screenOrientation="portrait" />
 
         <!-- <provider -->
         <!-- android:name="android.support.v4.content.FileProvider" -->
@@ -505,12 +506,16 @@
         <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
         <!-- android:resource="@xml/file_paths_public"></meta-data> -->
         <!-- </provider> -->
-        <activity android:name=".social.activity.MyDraftsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".social.activity.MyAuditedTopicActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".social.activity.EditProduceActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".social.activity.MyDraftsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".social.activity.MyAuditedTopicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".social.activity.EditProduceActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".social.activity.PraiseListActivity"></activity>
     </application>
 
 </manifest>
