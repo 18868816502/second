@@ -25,6 +25,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.injection.component.DaggerSysMsgComponent;
 import com.beihui.market.injection.module.SysMsgModule;
+import com.beihui.market.social.activity.PraiseListActivity;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.adapter.SysMsgAdapter;
 import com.beihui.market.ui.contract.SysMsgContract;
@@ -223,17 +224,21 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         presenter.onStart();
     }
 
-    @OnClick(R.id.message_more)
+    @OnClick({R.id.message_more,R.id.praise_container,R.id.comment_container})
     void OnViewClick(View view) {
         switch (view.getId()){
             case R.id.message_more:
                 showMessageEdit();
                 break;
             case R.id.praise_container:
-
+                Intent pariaseIntent = new Intent(this, PraiseListActivity.class);
+                pariaseIntent.putExtra("type",1);
+                startActivity(pariaseIntent);
                 break;
             case R.id.comment_container:
-
+                Intent commentIntent = new Intent(this, PraiseListActivity.class);
+                commentIntent.putExtra("type",2);
+                startActivity(commentIntent);
                 break;
                 default:
                     break;

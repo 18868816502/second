@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="消息中心"
+            android:text="赞"
             android:textColor="@color/black_1"
             android:textSize="17dp" />
 
@@ -40,12 +40,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </com.beihui.market.view.StateLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp90"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_data"/>
+        <TextView
+            android:id="@+id/tv_empty_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="还未收到赞哦~"/>
+    </LinearLayout>
 
 </LinearLayout>
