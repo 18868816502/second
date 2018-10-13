@@ -14,7 +14,8 @@
             android:id="@+id/tv_text_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textColor="@color/black_1"
+            android:textSize="14dp"
             tools:text="小蚊子" />
 
         <android.support.v4.widget.Space

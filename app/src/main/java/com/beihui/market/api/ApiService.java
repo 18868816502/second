@@ -1291,7 +1291,6 @@ public interface ApiService {
     @POST("/s6/forumQueryController/queryRecommend")
     Observable<ResultEntity<SocialTopicBean>> queryRecommendTopic(@FieldMap Map<String, Object> map);
 
-
     /**
      * 图片上传
      *

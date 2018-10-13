@@ -1,16 +1,23 @@
 package com.beihui.market.loan;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.beihui.market.R;
@@ -18,6 +25,7 @@ import com.beihui.market.api.Api;
 import com.beihui.market.entity.GroupProductBean;
 import com.beihui.market.helper.UserHelper;
 import com.beihui.market.tang.Decoration;
+import com.beihui.market.tang.DlgUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
@@ -57,6 +65,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
     private int state;//1 正常状态 2 审核中 3 审核失败
+    private int progress = 500;
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles) {
         this.imgs = imgs;
@@ -115,16 +124,13 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             holder.tv_pro_3.setOnClickListener(this);
             holder.tv_pro_4.setOnClickListener(this);
             holder.adt_looper.init(looperTexts, null);
-            if (holder.state_container.getChildCount() > 0) {
-                holder.state_container.removeAllViews();
-            } else {
-                if (state == 1)
-                    holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
-                if (state == 2)
-                    holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
-                if (state == 3)
-                    holder.state_container.addView(initState1(R.layout.layout_state_3, 3));
-            }
+
+            if (state == 1)
+                holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
+            if (state == 2)
+                holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
+            if (state == 3)
+                holder.state_container.addView(initState1(R.layout.layout_state_3, 3));
         }
         if (holder.viewType == TYPE_NORMAL) {
             holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
@@ -180,6 +186,13 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             iv_question = view.findViewById(R.id.iv_question);
             tv_go_loan = view.findViewById(R.id.tv_go_loan);
 
+            tv_seekbar_progress.setText(progress + "");
+            float charge = progress / 100;
+            SpannableString ss = new SpannableString(String.format("%.2f元", charge));
+            ForegroundColorSpan span = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.refresh_one));
+            ss.setSpan(span, 0, ss.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_service_charge.setText(ss);
+
             iv_edit_money.setOnClickListener(this);
             iv_question.setOnClickListener(this);
             tv_go_loan.setOnClickListener(this);
@@ -226,10 +239,66 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 context.startActivity(intent);
                 break;
             case R.id.iv_edit_money:
-                ToastUtil.toast("编辑金钱");
+                DlgUtil.createDlg(context, R.layout.dlg_set_loan_money, DlgUtil.DlgLocation.BOTTOM, new DlgUtil.OnDlgViewClickListener() {
+                    @Override
+                    public void onViewClick(final Dialog dialog, final View dlgView) {
+                        final SeekBar seekbar = dlgView.findViewById(R.id.seekbar);
+                        final TextView tv_seekbar_progress = dlgView.findViewById(R.id.tv_seekbar_progress);
+                        //8.0适配
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            seekbar.setMax(2000);
+                            seekbar.setMin(0);
+                        }
+                        seekbar.setProgress((int) ((progress - 500) * 2000 / 1500));
+
+                        tv_seekbar_progress.setText(progress + "");
+                        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                tv_seekbar_progress.setText(seekbarProgress(seekbar) + "");
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                            }
+                        });
+                        dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dlgView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                progress = seekbarProgress(seekbar);
+                                notifyItemChanged(0);
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                });
                 break;
             case R.id.iv_question:
-                ToastUtil.toast("问号");
+                DlgUtil.createDlg(context, R.layout.f_dlg_apl_fail, new DlgUtil.OnDlgViewClickListener() {
+                    @Override
+                    public void onViewClick(final Dialog dialog, View dlgView) {
+                        TextView content = dlgView.findViewById(R.id.content);
+                        TextView title = dlgView.findViewById(R.id.dlg_title);
+                        title.setText("提示");
+                        content.setText("服务费按日息0.1%收取");
+                        dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                });
                 break;
             case R.id.tv_go_loan:
                 ToastUtil.toast("贷款");
@@ -237,6 +306,10 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             default:
                 break;
         }
+    }
+
+    private int seekbarProgress(SeekBar seekbar) {
+        return 500 + (int) (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

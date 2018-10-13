@@ -92,12 +92,7 @@ public class TabLoanFragment extends BaseComponentFragment {
 
     @Override
     public void initDatas() {
-        dtv_money.setText("金额");
-        dtv_kind.setText("分类");
-        dtv_sort.setText("排序");
-        dtv_money.setImg(R.mipmap.ic_down);
-        dtv_kind.setImg(R.mipmap.ic_down);
-        dtv_sort.setImg(R.mipmap.ic_down);
+        initFieldVar();
 
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
@@ -157,7 +152,6 @@ public class TabLoanFragment extends BaseComponentFragment {
                             public void onNext(@NonNull String data) {
                                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
                                 intent.putExtra("webViewUrl", data);
-                                //intent.putExtra("title", ""/*product.getProductName()*/);
                                 intent.putExtra("webViewTitleName", product.getProductName());
                                 startActivity(intent);
                             }
@@ -177,6 +171,9 @@ public class TabLoanFragment extends BaseComponentFragment {
         dtv_money.setText("金额");
         dtv_kind.setText("分类");
         dtv_sort.setText("排序");
+        dtv_money.setImg(R.mipmap.ic_down);
+        dtv_kind.setImg(R.mipmap.ic_down);
+        dtv_sort.setImg(R.mipmap.ic_down);
     }
 
     private void initRecycler() {
@@ -240,9 +237,18 @@ public class TabLoanFragment extends BaseComponentFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dtv_money:
+                dtv_money.setImg(R.mipmap.ic_up);
+                dtv_money.setTextHighLight(true);
                 PopUtil.pop(getActivity(), R.layout.menu_money, dtv_money, new PopUtil.PopViewClickListener() {
                     @Override
                     public void popClick(final PopupWindow popup) {
+                        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                dtv_money.setImg(R.mipmap.ic_down);
+                                dtv_money.setTextHighLight(false);
+                            }
+                        });
                         View contentView = popup.getContentView();
                         View.OnClickListener listener = new View.OnClickListener() {
                             @Override
@@ -341,9 +347,18 @@ public class TabLoanFragment extends BaseComponentFragment {
                 });
                 break;
             case R.id.dtv_kind:
+                dtv_kind.setImg(R.mipmap.ic_up);
+                dtv_kind.setTextHighLight(true);
                 PopUtil.pop(getActivity(), R.layout.menu_kind, dtv_kind, new PopUtil.PopViewClickListener() {
                     @Override
                     public void popClick(final PopupWindow popup) {
+                        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                dtv_kind.setImg(R.mipmap.ic_down);
+                                dtv_kind.setTextHighLight(false);
+                            }
+                        });
                         View contentView = popup.getContentView();
                         View.OnClickListener listener = new View.OnClickListener() {
                             @Override
@@ -421,9 +436,18 @@ public class TabLoanFragment extends BaseComponentFragment {
                 });
                 break;
             case R.id.dtv_sort:
+                dtv_sort.setImg(R.mipmap.ic_up);
+                dtv_sort.setTextHighLight(true);
                 PopUtil.pop(getActivity(), R.layout.menu_sort, dtv_sort, new PopUtil.PopViewClickListener() {
                     @Override
                     public void popClick(final PopupWindow popup) {
+                        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                dtv_sort.setImg(R.mipmap.ic_down);
+                                dtv_sort.setTextHighLight(false);
+                            }
+                        });
                         View contentView = popup.getContentView();
                         View.OnClickListener listener = new View.OnClickListener() {
                             @Override

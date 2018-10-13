@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.beihui.market.R;
+
 /**
  * https://gitee.com/tangbuzhi
  *
@@ -41,9 +43,11 @@ public class DlgUtil {
                     break;
                 case TOP:
                     window.setGravity(Gravity.TOP);
+                    window.setWindowAnimations(R.style.anim_style_top2bottom);
                     break;
                 case BOTTOM:
                     window.setGravity(Gravity.BOTTOM);
+                    window.setWindowAnimations(R.style.anim_style_bottom2top);
                     break;
                 default:
                     break;
@@ -60,8 +64,6 @@ public class DlgUtil {
     }
 
     public enum DlgLocation {
-        TOP,
-        CENTER,
-        BOTTOM
+        TOP, CENTER, BOTTOM
     }
 }

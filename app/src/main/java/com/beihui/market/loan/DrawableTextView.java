@@ -1,6 +1,8 @@
 package com.beihui.market.loan;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.util.DensityUtil;
+import com.scwang.smartrefresh.layout.util.DesignUtil;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -43,6 +47,20 @@ public class DrawableTextView extends RelativeLayout {
 
     public void setText(String text) {
         textView.setText(text);
+    }
+
+    public void setTextHighLight(boolean highLight) {
+        if (highLight) {
+            textView.setTypeface(Typeface.DEFAULT_BOLD);
+            textView.setTextSize(15f);
+        } else {
+            textView.setTypeface(Typeface.DEFAULT);
+            textView.setTextSize(14f);
+        }
+    }
+
+    public void setTextColor(int color) {
+        textView.setTextColor(ContextCompat.getColor(getContext(), color));
     }
 
     public void setImg(int res) {

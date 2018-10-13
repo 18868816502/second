@@ -27,9 +27,10 @@ public class PopUtil {
         View contentView = LayoutInflater.from(context).inflate(layoutRes, null);
         PopupWindow popup = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         listener.popClick(popup);
-        popup.setAnimationStyle(R.style.popup_anim_style);
+        popup.setAnimationStyle(R.style.anim_style_top2bottom);
         popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popup.setOutsideTouchable(false);
+        popup.setOutsideTouchable(true);
+        //popup.setFocusable(false);
         popup.setTouchable(true);
         popup.showAsDropDown(anchor, 0, 0);
     }
