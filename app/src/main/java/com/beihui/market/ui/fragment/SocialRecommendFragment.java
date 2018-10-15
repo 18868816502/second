@@ -17,6 +17,7 @@ import com.beihui.market.helper.UserHelper;
 import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.injection.component.AppComponent;
 import com.beihui.market.ui.activity.CommunityPublishActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.ui.adapter.social.SocialRecommendAdapter;
 import com.beihui.market.util.ParamsUtils;
 import com.beihui.market.util.RxUtil;
@@ -76,12 +77,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void initDatas() {
-//        List<SocialTopicBean.ForumBean> mList = new ArrayList<>();
-//        for(int i = 0 ; i < 10 ; i++){
-//            SocialTopicBean.ForumBean bean = new SocialTopicBean.ForumBean();
-//            mList.add(bean);
-//        }
-//        adapter.setDatas(mList);
         initListener();
         fetchData();
     }
@@ -121,7 +116,11 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void onViewClick(View view){
         switch (view.getId()){
             case R.id.iv_publish:
-                startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                if(UserHelper.getInstance(getActivity()).isLogin()) {
+                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                }else{
+                    UserAuthorizationActivity.launch(getActivity());
+                }
                 break;
             default:
                 break;

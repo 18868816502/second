@@ -134,17 +134,17 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
         curPosition = position;
         switch (datas.get(position).getForumStatus()){
             case "1":
-                Intent intent = new Intent(this, CommunityPublishActivity.class);
-                intent.putExtra("forumId",datas.get(position).getForumId());
-                startActivity(intent);
+                mPopType = 3;
+                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
                 break;
             case "2":
                 mPopType = 2;
                 PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
                 break;
             case "3":
-                mPopType = 3;
-                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+                Intent intent = new Intent(this, CommunityPublishActivity.class);
+                intent.putExtra("forumId",datas.get(position).getForumId());
+                startActivity(intent);
                 break;
                 default:
                     break;

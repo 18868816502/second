@@ -158,11 +158,15 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.cancel:
             case R.id.tv_cancel:
-                popDialog.dismiss();
+                if(mPopType == 0){
+                    finish();
+                }else {
+                    popDialog.dismiss();
+                }
                 break;
             case R.id.tv_save:
                 //保存
-                status = "0";
+                status = "3";
                 if(uriList == null){
                     mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
                 }else{
@@ -180,7 +184,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     ToastUtil.toast("请填写内容");
                     return;
                 }
-                status = "3";
+                status = "0";
                 if(uriList == null){
                     mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
                 }else{
