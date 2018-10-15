@@ -263,7 +263,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                     listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT,0);
                     break;
                 case R.id.ll_publish_container:
-                    ToastUtil.toast("发布");
+//                    ToastUtil.toast("发布");
                     listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PUBLISH,0);
                     break;
                 case R.id.ll_attention_container:
@@ -275,7 +275,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 //                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT,0);
                     break;
                 case R.id.ll_praise_container:
-                    ToastUtil.toast("获赞");
+//                    ToastUtil.toast("获赞");
                     listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PARISE,0);
                     break;
                 case R.id.iv_more:
@@ -285,14 +285,14 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
                     /*content*/
                 case R.id.iv_author_avatar:
-                    ToastUtil.toast("作者头像");
+//                    ToastUtil.toast("作者头像");
 //                    listener.onAvatarClick();
                     break;
                 case R.id.ll_article_praise_container:
-                    ToastUtil.toast("点赞");
+//                    ToastUtil.toast("点赞");
                     break;
                 case R.id.ll_article_comment_container:
-                    ToastUtil.toast("评论");
+//                    ToastUtil.toast("评论");
                     break;
                 case R.id.article_item:
                     itemListener.onItemClick((Integer) view.getTag());

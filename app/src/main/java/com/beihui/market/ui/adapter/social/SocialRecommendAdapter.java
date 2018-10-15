@@ -1,5 +1,6 @@
 package com.beihui.market.ui.adapter.social;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beihui.market.R;
+import com.beihui.market.helper.UserHelper;
 import com.beihui.market.social.bean.SocialTopicBean;
 import com.beihui.market.ui.activity.ArticleDetailActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.view.CircleImageView;
 import com.bumptech.glide.Glide;
 
@@ -145,9 +148,13 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ArticleDetailActivity.class);
-                    intent.putExtra("topic",datas.get((Integer) v.getTag()));
-                    mContext.startActivity(intent);
+                    if(UserHelper.getInstance(mContext).isLogin()) {
+                        Intent intent = new Intent(mContext, ArticleDetailActivity.class);
+                        intent.putExtra("topic", datas.get((Integer) v.getTag()));
+                        mContext.startActivity(intent);
+                    }else{
+                        UserAuthorizationActivity.launch((Activity) mContext, null);
+                    }
                 }
             });
         }

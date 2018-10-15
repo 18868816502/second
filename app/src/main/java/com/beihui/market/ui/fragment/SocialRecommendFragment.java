@@ -82,7 +82,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 //            mList.add(bean);
 //        }
 //        adapter.setDatas(mList);
-//        initListener();
+        initListener();
         fetchData();
     }
 

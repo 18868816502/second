@@ -533,6 +533,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".jjd.activity.MyBankCardActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".jjd.activity.AddCardActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
