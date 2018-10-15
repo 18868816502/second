@@ -39,8 +39,8 @@ import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.AutoAdjustSizeEditText;
 import com.beiwo.klyjaz.view.customekeyboard.CustomBaseKeyboard;
 import com.beiwo.klyjaz.view.customekeyboard.CustomKeyboardManager;
-import com.beiwo.klyjaz.view.pickerview.OptionsPickerView;
-import com.beiwo.klyjaz.view.pickerview.TimePickerView;
+import com.bigkoo.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;

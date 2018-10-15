@@ -213,4 +213,6 @@ dependencies {
     /*banner*/
     compile 'cn.bingoogolapple:bga-banner:2.2.4@aar'
     compile project(':matisse')
+    //pickview
+    compile 'com.contrarywind:Android-PickerView:3.2.6'
 }

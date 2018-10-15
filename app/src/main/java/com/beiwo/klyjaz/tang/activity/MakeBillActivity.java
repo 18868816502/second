@@ -31,8 +31,8 @@ import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.ClearEditText;
-import com.beiwo.klyjaz.view.pickerview.OptionsPickerView;
-import com.beiwo.klyjaz.view.pickerview.TimePickerView;
+import com.bigkoo.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.TimePickerView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jakewharton.rxbinding2.view.RxView;
 

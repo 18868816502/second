@@ -26,7 +26,7 @@ import com.beiwo.klyjaz.util.FastClickUtils;
 import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.view.ClearEditText;
 import com.beiwo.klyjaz.view.EditTextUtils;
-import com.beiwo.klyjaz.view.pickerview.TimePickerView;
+import com.bigkoo.pickerview.TimePickerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

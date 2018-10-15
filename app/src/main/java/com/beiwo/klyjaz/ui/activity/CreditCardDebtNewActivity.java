@@ -20,7 +20,7 @@ import com.beiwo.klyjaz.ui.contract.CreditCardDebtNewContract;
 import com.beiwo.klyjaz.ui.presenter.CreditCardDebtNewPresenter;
 import com.beiwo.klyjaz.util.AndroidBug5497Fix;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
-import com.beiwo.klyjaz.view.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;

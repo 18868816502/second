@@ -24,7 +24,7 @@ import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.FastClickUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
-import com.beiwo.klyjaz.view.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;

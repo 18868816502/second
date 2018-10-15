@@ -51,8 +51,8 @@ import com.beiwo.klyjaz.view.EditTextUtils;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.beiwo.klyjaz.view.customekeyboard.CustomBaseKeyboard;
 import com.beiwo.klyjaz.view.customekeyboard.CustomKeyboardManager;
-import com.beiwo.klyjaz.view.pickerview.OptionsPickerView;
-import com.beiwo.klyjaz.view.pickerview.TimePickerView;
+import com.bigkoo.pickerview.OptionsPickerView;
+import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
