@@ -38,11 +38,13 @@ public class AuditedTopicAdapter extends BaseQuickAdapter<DraftsBean, BaseViewHo
         helper.addOnClickListener(R.id.tv_delete);
         if(flag == 1){
             helper.setVisible(R.id.tv_audit_state,true);
-//            if(TextUtils.equals("2",item.getForumStatus())){
-//                helper.setText(R.id.tv_audit_state,"审核失败");
-//            }else{
-//                helper.setText(R.id.tv_audit_state,"未提交");
-//            }
+            if(TextUtils.equals("2",item.getForumStatus())){
+                helper.setText(R.id.tv_audit_state,"审核失败");
+            }else if(TextUtils.equals("3",item.getForumStatus())){
+                helper.setText(R.id.tv_audit_state,"未提交");
+            }else{
+                helper.setText(R.id.tv_audit_state,"未上线");
+            }
 
         }else{
             helper.setVisible(R.id.tv_audit_state,false);

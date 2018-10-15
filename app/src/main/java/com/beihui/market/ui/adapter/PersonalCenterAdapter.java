@@ -244,7 +244,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         ContentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-            setOnClick(ivAuthorAvatar,llArticlePraiseContainer,llCommentContainer);
+//            setOnClick(ivAuthorAvatar,llArticlePraiseContainer,llCommentContainer);
             setOnClick(itemView);
         }
     }

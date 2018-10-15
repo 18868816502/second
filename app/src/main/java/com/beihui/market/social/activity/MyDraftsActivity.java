@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
@@ -19,9 +20,11 @@ import com.beihui.market.social.adapter.AuditedTopicAdapter;
 import com.beihui.market.social.bean.DraftsBean;
 import com.beihui.market.ui.activity.CommunityPublishActivity;
 import com.beihui.market.util.ParamsUtils;
+import com.beihui.market.util.PopUtils;
 import com.beihui.market.util.RxUtil;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.SlideRecyclerView;
+import com.beihui.market.view.dialog.PopDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -35,7 +38,8 @@ import io.reactivex.functions.Consumer;
 /**
  * 我的草稿箱
  */
-public class MyDraftsActivity extends BaseComponentActivity implements BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener  {
+public class MyDraftsActivity extends BaseComponentActivity implements BaseQuickAdapter.OnItemClickListener,
+        BaseQuickAdapter.OnItemChildClickListener,PopDialog.OnInitPopListener,View.OnClickListener  {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -47,9 +51,12 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
     LinearLayout llNoData;
     private AuditedTopicAdapter adapter;
     private List<DraftsBean> datas;
+    private int mPopType = 1;
 
     private int pageNo = 1;
     private int pageSize = 30;
+    private String forumId;
+    private int curPosition = 0;
 
     @Override
     public int getLayoutId() {
@@ -124,21 +131,95 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, CommunityPublishActivity.class);
-        intent.putExtra("forumId",datas.get(position).getForumId());
-        startActivity(intent);
+        curPosition = position;
+        switch (datas.get(position).getForumStatus()){
+            case "1":
+                Intent intent = new Intent(this, CommunityPublishActivity.class);
+                intent.putExtra("forumId",datas.get(position).getForumId());
+                startActivity(intent);
+                break;
+            case "2":
+                mPopType = 2;
+                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+                break;
+            case "3":
+                mPopType = 3;
+                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+                break;
+                default:
+                    break;
+        }
+
     }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()){
             case R.id.tv_delete:
-                deleteForum(datas.get(position).getForumId());
+                mPopType = 1;
+                forumId = datas.get(position).getForumId();
+                PopUtils.showCenterPopWindow(R.layout.dialog_article_delete, getSupportFragmentManager(), this, this);
                 break;
                 default:
                     break;
         }
     }
+
+    @Override
+    public void initPop(View view, PopDialog mPopDialog) {
+        switch (mPopType){
+            case 1:
+                ((TextView)view.findViewById(R.id.content)).setText("确定删除吗？");
+                view.findViewById(R.id.tv_cancel).setOnClickListener(this);
+                view.findViewById(R.id.tv_save).setOnClickListener(this);
+                break;
+            case 2:
+                ((TextView)view.findViewById(R.id.title)).setText("未通过原因");
+                ((TextView)view.findViewById(R.id.content)).setText(datas.get(curPosition).getForumAuditContent());
+                view.findViewById(R.id.tv_save).setOnClickListener(this);
+                break;
+            case 3:
+                ((TextView)view.findViewById(R.id.title)).setText("下线原因");
+                ((TextView)view.findViewById(R.id.content)).setText(datas.get(curPosition).getForumAuditContent());
+                view.findViewById(R.id.tv_save).setOnClickListener(this);
+                break;
+                default:
+                    break;
+        }
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_cancel:
+                PopUtils.dismiss();
+                break;
+            case R.id.tv_save:
+                onClickSave();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void onClickSave(){
+        switch (mPopType){
+            case 1:
+                deleteForum(forumId);
+                break;
+            case 2:
+                PopUtils.dismiss();
+                break;
+            case 3:
+                PopUtils.dismiss();
+                break;
+            default:
+                break;
+        }
+    }
+
 
     @SuppressLint("CheckResult")
     private void deleteForum(String forumId){
