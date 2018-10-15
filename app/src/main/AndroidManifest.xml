@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.beihui.market">
+    package="com.beiwo.klyjaz">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
-        android:name=".App"
+        android:name="com.beiwo.klyjaz.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,7 +29,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashStyle">
             <intent-filter>
@@ -39,10 +39,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.WelcomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
@@ -60,275 +60,275 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".loan.ProTypeActivity"
+            android:name="com.beiwo.klyjaz.loan.ProTypeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".jjd.activity.LoanActivity"
+            android:name="com.beiwo.klyjaz.jjd.activity.LoanActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".jjd.activity.VerticyIDActivity"
+            android:name="com.beiwo.klyjaz.jjd.activity.VerticyIDActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".jjd.activity.ContactsActivity"
+            android:name="com.beiwo.klyjaz.jjd.activity.ContactsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.LoanDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.LoanDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserProfileActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.UserProfileActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EditNickNameActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EditNickNameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EditJobGroupActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EditJobGroupActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ResetPsdActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ResetPsdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.SysMsgActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.SysMsgActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ComWebViewActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ComWebViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ChangePsdActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ChangePsdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.SettingsActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.AboutUsActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.AboutUsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.RemindActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.RemindActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserAuthorizationActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.InvitationActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.InvitationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.NewsDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.SysMsgDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.SysMsgDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CollectionActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CollectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.RecommendProductActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.RecommendProductActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ThirdAuthorizationActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ThirdAuthorizationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CreditCardWebActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CreditCardWebActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.AllDebtActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.AllDebtActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DebtChannelActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.DebtChannelActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.LoanDebtDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.LoanDebtDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DebtCalendarActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.DebtCalendarActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DebtAnalyzeActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.DebtAnalyzeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.RewardPointActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.RewardPointActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DebtSourceActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.DebtSourceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DebtNewActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.DebtNewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CreditCardDebtNewActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CreditCardDebtNewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CreditCardBankActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CreditCardBankActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.HelpAndFeedActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.HelpAndFeedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.activity.WeChatBindPhoneActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.WeChatBindPhoneActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.WeChatSetPwdActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.WeChatSetPwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CreditCardDebtDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CreditCardDebtDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.MyDebtActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.MyDebtActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EBankActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EBankActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UsedEmailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.UsedEmailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.NutEmailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.NutEmailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EmailLoginActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EmailLoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EmailLeadingInProgressActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EmailLeadingInProgressActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EmailLeadingInResultActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EmailLeadingInResultActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserCertificationCodeActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.UserCertificationCodeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserPsdEditActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.UserPsdEditActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserProtocolActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.UserProtocolActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.AboutKaolaActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.AboutKaolaActivity"
             android:screenOrientation="portrait" />
         <!-- 4.2.0贷款账单 -->
         <activity
-            android:name=".tang.activity.LoanBillActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.LoanBillActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 信用卡账单 -->
         <activity
-            android:name=".tang.activity.CreditBillActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.CreditBillActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 创建账单 -->
         <activity
-            android:name=".tang.activity.MakeBillActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.MakeBillActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 搜索 -->
         <activity
-            android:name=".tang.activity.SearchActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.SearchActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 账单详情 -->
         <activity
-            android:name=".tang.activity.NetLoanDetailActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.NetLoanDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 添加备注 -->
         <activity
-            android:name=".tang.activity.RemarkActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.RemarkActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 信用卡详情 -->
         <activity
-            android:name=".tang.activity.CreditDetailActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.CreditDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 通用账单 -->
         <activity
-            android:name=".tang.activity.CommonDetailActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.CommonDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 钱包 -->
         <activity
-            android:name=".tang.activity.WalletActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.WalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 提现 -->
         <activity
-            android:name=".tang.activity.WithdrawActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.WithdrawActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 提现记录 -->
         <activity
-            android:name=".tang.activity.WithdrawRecordActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.WithdrawRecordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 绑定/编辑支付宝 -->
         <activity
-            android:name=".tang.activity.BindAlpActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.BindAlpActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 发票助手 -->
         <activity
-            android:name=".tang.activity.TicketActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.TicketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 添加/编辑发票 -->
         <activity
-            android:name=".tang.activity.AddTicketActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.AddTicketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <!-- 发票详情 -->
         <activity
-            android:name=".tang.activity.TicketDetailActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.TicketDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 信用查询 -->
         <activity
-            android:name=".tang.activity.CreditQueryActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.CreditQueryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <!-- 信用结果查询 -->
         <activity
-            android:name=".tang.activity.CreditResultActivity"
+            android:name="com.beiwo.klyjaz.tang.activity.CreditResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 快速记账页面 -->
         <activity
-            android:name=".ui.activity.FastAddDebtActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.FastAddDebtActivity"
             android:screenOrientation="portrait" />
         <!-- 快速记账详情页面 -->
         <activity
-            android:name=".ui.activity.FastDebtDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.FastDebtDetailActivity"
             android:screenOrientation="portrait" />
         <!-- 输入新手机号码 -->
         <!-- 记账流程 -->
         <activity
-            android:name=".ui.activity.AccountFlowActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.AccountFlowActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <!-- 记账流程 账单类型选择 -->
         <activity
-            android:name=".ui.activity.AccountFlowTypeActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.AccountFlowTypeActivity"
             android:screenOrientation="portrait" />
         <!-- 个人中心 账单类型选择 -->
         <!-- WebViewActivity -->
         <activity
-            android:name=".ui.activity.WebViewActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.WebViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <service android:name=".helper.updatehelper.DownloadService" />
+        <service android:name="com.beiwo.klyjaz.helper.updatehelper.DownloadService" />
 
         <receiver
-            android:name=".getui.PushClickedReceiver"
+            android:name="com.beiwo.klyjaz.getui.PushClickedReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="send_push_clicked_event" />
@@ -347,16 +347,16 @@
         </provider>
 
         <!-- getui setting -->
-        <service android:name=".getui.PushReceiveIntentService" />
+        <service android:name="com.beiwo.klyjaz.getui.PushReceiveIntentService" />
         <service
-            android:name=".getui.PushService"
+            android:name="com.beiwo.klyjaz.getui.PushService"
             android:exported="true"
             android:label="PushService"
             android:process=":pushservice" />
 
         <!-- share setting -->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.beiwo.klyjaz.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -453,60 +453,60 @@
         </service>
 
         <activity
-            android:name=".ui.activity.BillSummaryActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.BillSummaryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.GetuiDialogActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.GetuiDialogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleTop" />
         <activity
-            android:name=".ui.activity.H5Activity"
+            android:name="com.beiwo.klyjaz.ui.activity.H5Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.InvitationWebActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.InvitationWebActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.WeChatBindFirstActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.WeChatBindFirstActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.WechatBindDoneActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.WechatBindDoneActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ResetPwdActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ResetPwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ContactsActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ContactsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.DailyMissonActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.DailyMissonActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EnterInviteCodeActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.EnterInviteCodeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.GuideInviteActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.GuideInviteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.HouseLoanCalculatorActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.HouseLoanCalculatorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CommerceLoanResultActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CommerceLoanResultActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CombinationLoanResultActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CombinationLoanResultActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.PersonalCenterActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.PersonalCenterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CommunityPublishActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.CommunityPublishActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ArticleDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.ArticleDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.SocialTopicDetailActivity"
+            android:name="com.beiwo.klyjaz.ui.activity.SocialTopicDetailActivity"
             android:screenOrientation="portrait" />
 
         <!-- <provider -->
@@ -519,24 +519,24 @@
         <!-- android:resource="@xml/file_paths_public"></meta-data> -->
         <!-- </provider> -->
         <activity
-            android:name=".social.activity.MyDraftsActivity"
+            android:name="com.beiwo.klyjaz.social.activity.MyDraftsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".social.activity.MyAuditedTopicActivity"
+            android:name="com.beiwo.klyjaz.social.activity.MyAuditedTopicActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".social.activity.EditProduceActivity"
+            android:name="com.beiwo.klyjaz.social.activity.EditProduceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".social.activity.PraiseListActivity" />
+        <activity android:name="com.beiwo.klyjaz.social.activity.PraiseListActivity" />
 
         <activity
-            android:name=".jjd.activity.MyLoanActivity"
+            android:name="com.beiwo.klyjaz.jjd.activity.MyLoanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".jjd.activity.MyBankCardActivity"
+            android:name="com.beiwo.klyjaz.jjd.activity.MyBankCardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".jjd.activity.AddCardActivity"
+            android:name="com.beiwo.klyjaz.jjd.activity.AddCardActivity"
             android:screenOrientation="portrait" />
     </application>
 

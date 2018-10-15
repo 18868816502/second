@@ -29,7 +29,7 @@
         android:layout_height="@dimen/tool_bar_height">
 
 
-        <com.beihui.market.view.PagerSlidingTab
+        <com.beiwo.klyjaz.view.PagerSlidingTab
             android:id="@+id/copy_tab_layout"
             android:layout_width="0dp"
             android:layout_weight="3"

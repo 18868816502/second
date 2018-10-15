@@ -35,7 +35,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="12sp" />
 
-                <com.beihui.market.view.ClearEditText
+                <com.beiwo.klyjaz.view.ClearEditText
                     android:maxLength="8"
                     android:id="@+id/cet_even_debt_account_name"
                     android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                 android:textColor="@color/black_1"
                 android:textSize="12sp" />
 
-            <com.beihui.market.view.ClearEditText
+            <com.beiwo.klyjaz.view.ClearEditText
                 android:id="@+id/cet_even_debt_pay_money"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -162,7 +162,7 @@
                 android:textColor="@color/black_1"
                 android:textSize="12sp" />
 
-            <com.beihui.market.view.ClearEditText
+            <com.beiwo.klyjaz.view.ClearEditText
                 android:id="@+id/cet_even_debt_remark"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"

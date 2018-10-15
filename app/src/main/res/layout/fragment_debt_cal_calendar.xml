@@ -112,13 +112,13 @@
         android:layout_above="@id/bottom_bar"
         android:orientation="vertical">
 
-        <com.beihui.market.view.calendar.WeekBarView
+        <com.beiwo.klyjaz.view.calendar.WeekBarView
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:background="@android:color/white"
             app:week_text_color="@color/black_1" />
 
-        <com.beihui.market.view.calendar.CalendarView
+        <com.beiwo.klyjaz.view.calendar.CalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -130,7 +130,7 @@
             app:tagNegativeColor="#FC3D61"
             app:tagPositiveColor="@color/colorPrimary">
 
-            <com.beihui.market.view.pullreboundlayout.NestScrollFrameLayout
+            <com.beiwo.klyjaz.view.pullreboundlayout.NestScrollFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/common_bg">
@@ -162,10 +162,10 @@
                         android:textSize="15sp" />
                 </LinearLayout>
 
-            </com.beihui.market.view.pullreboundlayout.NestScrollFrameLayout>
+            </com.beiwo.klyjaz.view.pullreboundlayout.NestScrollFrameLayout>
 
 
-        </com.beihui.market.view.calendar.CalendarView>
+        </com.beiwo.klyjaz.view.calendar.CalendarView>
 
     </LinearLayout>
 </RelativeLayout>

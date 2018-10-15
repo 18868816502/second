@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.beihui.market.view.CircleImageView
+                <com.beiwo.klyjaz.view.CircleImageView
                     android:id="@+id/debt_image"
                     android:layout_width="30dp"
                     android:layout_height="30dp"

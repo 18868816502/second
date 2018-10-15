@@ -1,8 +1,8 @@
-package com.beihui.market.component;
+package com.beiwo.klyjaz.component;
 
 
-import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.ui.activity.SplashActivity;
+import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.ui.activity.SplashActivity;
 
 import dagger.Component;
 

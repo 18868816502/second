@@ -7,7 +7,7 @@
     android:paddingLeft="15dp"
     tools:background="@android:color/white">
 
-    <com.beihui.market.view.CircleImageView
+    <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/debt_channel_image"
         android:layout_width="35dp"
         android:layout_height="35dp"

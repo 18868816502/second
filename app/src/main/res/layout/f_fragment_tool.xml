@@ -34,8 +34,47 @@
             android:id="@+id/ll_head_warp"
             android:layout_width="match_parent"
             android:layout_height="180dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3.5dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10月待还(元)"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@mipmap/ic_eye_open" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1.5dp"
+                android:text="8,350.16"
+                android:textColor="@color/white"
+                android:textSize="44dp" />
+
+            <TextView
+                android:id="@+id/tv_bill_detail"
+                android:layout_width="112dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_white_r18"
+                android:gravity="center"
+                android:text="查看详情"
+                android:textColor="@color/refresh_one"
+                android:textSize="14dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +94,7 @@
                 android:textColor="@color/black_1"
                 android:textSize="17dp" />
 
-            <com.beihui.market.view.CardLayoutBar
+            <com.beiwo.klyjaz.view.CardLayoutBar
                 android:id="@+id/clb_credit_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +114,7 @@
                 app:right_textView1_color="#FF5240"
                 app:right_textView1_textSize="12sp" />
 
-            <com.beihui.market.view.CardLayoutBar
+            <com.beiwo.klyjaz.view.CardLayoutBar
                 android:id="@+id/clb_interest_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +133,7 @@
                 app:right_textView1_color="#FF5240"
                 app:right_textView1_textSize="12sp" />
 
-            <com.beihui.market.view.CardLayoutBar
+            <com.beiwo.klyjaz.view.CardLayoutBar
                 android:id="@+id/clb_ticket_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,6 +162,7 @@
             android:background="@mipmap/bg_bill_item">
 
             <FrameLayout
+                android:id="@+id/fl_add_bill_wrap"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -145,6 +185,7 @@
                 android:background="#08000000" />
 
             <FrameLayout
+                android:id="@+id/fl_credit_wrap"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">

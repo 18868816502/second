@@ -73,7 +73,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.beihui.market.view.ClearEditText
+                <com.beiwo.klyjaz.view.ClearEditText
                     android:id="@+id/verify_code"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

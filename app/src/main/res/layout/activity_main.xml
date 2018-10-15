@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white" />
 
-            <com.beihui.market.view.BottomNavigationBar
+            <com.beiwo.klyjaz.view.BottomNavigationBar
                 android:id="@+id/navigation_bar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -179,7 +179,7 @@
                         android:textColor="@color/black_2"
                         android:textSize="10dp" />
                 </RelativeLayout>
-            </com.beihui.market.view.BottomNavigationBar>
+            </com.beiwo.klyjaz.view.BottomNavigationBar>
         </FrameLayout>
 
         <View

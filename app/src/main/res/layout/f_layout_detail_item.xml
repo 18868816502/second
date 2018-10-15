@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.beihui.market.view.CustomSwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.beiwo.klyjaz.view.CustomSwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/csm_bill_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -43,7 +43,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <com.beihui.market.tang.widget.CustomNumTextView
+            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
                 android:id="@+id/tv_term_pay_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
-            <com.beihui.market.tang.widget.CustomNumTextView
+            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
                 android:id="@+id/tv_term_repay_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,4 +102,4 @@
         android:text="设为\n未还"
         android:textColor="@color/white"
         android:textSize="12dp" />
-</com.beihui.market.view.CustomSwipeMenuLayout>
+</com.beiwo.klyjaz.view.CustomSwipeMenuLayout>

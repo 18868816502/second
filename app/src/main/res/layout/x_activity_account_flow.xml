@@ -84,7 +84,7 @@
         android:layout_height="0.5dp"
         android:background="@color/line" />
 
-    <com.beihui.market.view.NoScrollViewPager
+    <com.beiwo.klyjaz.view.NoScrollViewPager
         android:id="@+id/fl_ac_account_flow_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

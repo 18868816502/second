@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout
+        <com.beiwo.klyjaz.view.pulltoswipe.PullToRefreshScrollLayout
             android:id="@+id/prl_fg_tab_account_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -47,7 +47,7 @@
 
             <include layout="@layout/x_pull_to_refresh_head" />
 
-            <com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView
+            <com.beiwo.klyjaz.view.pulltoswipe.PulledTabAccountRecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -56,7 +56,7 @@
                 android:splitMotionEvents="false" />
 
             <include layout="@layout/x_pull_to_refresh_load_more" />
-        </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
+        </com.beiwo.klyjaz.view.pulltoswipe.PullToRefreshScrollLayout>
 
         <LinearLayout
             android:id="@+id/ll_finish_all"

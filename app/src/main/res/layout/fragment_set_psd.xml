@@ -63,7 +63,7 @@
                 android:orientation="horizontal">
 
 
-                <com.beihui.market.view.ClearEditText
+                <com.beiwo.klyjaz.view.ClearEditText
                     android:id="@+id/verify_code"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -105,7 +105,7 @@
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-                <com.beihui.market.view.ClearEditText
+                <com.beiwo.klyjaz.view.ClearEditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

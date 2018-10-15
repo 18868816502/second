@@ -34,7 +34,7 @@
             android:orientation="horizontal">
 
 
-            <com.beihui.market.view.ClearEditText
+            <com.beiwo.klyjaz.view.ClearEditText
                 android:id="@+id/phone_number"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

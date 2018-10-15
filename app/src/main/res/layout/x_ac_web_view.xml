@@ -30,7 +30,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <com.beihui.market.view.BusinessWebView
+    <com.beiwo.klyjaz.view.BusinessWebView
         android:id="@+id/bwv_news_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

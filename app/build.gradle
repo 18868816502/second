@@ -29,10 +29,10 @@ android {
     }
 
     signingConfigs {
-        loanmarket {
-            storeFile file('../loanMarket.jks')
+        kl5 {
+            storeFile file('../kl5.jks')
             storePassword "123456"
-            keyAlias "loanMarket"
+            keyAlias "kl5"
             keyPassword "123456"
         }
     }
@@ -58,7 +58,7 @@ android {
     flavorDimensions "id", "channel"
     //维度
     productFlavors {
-        loanmarket {
+        kl5 {
             dimension "id"
             applicationId ext.application_id
             if (debug_mode) {//测试环境 + 测试魔蝎appkey
@@ -84,22 +84,22 @@ android {
             buildConfigField("String", "PATH_USER_AGREEMENT", "$path_user_agreement")
             buildConfigField("String", "PATH_ABOUT_US", "$path_about_us")
             buildConfigField("String", "PATH_HELPER_CENTER", "$path_helper_center")
-            signingConfig signingConfigs.loanmarket
+            signingConfig signingConfigs.kl5
         }
 
-        kaolajizhang_baidu { dimension "channel" }
-        kaolajizhang_360 { dimension "channel" }
-        kaolajizhang_yingyongbao { dimension "channel" }
-        kaolajizhang_xiaomi { dimension "channel" }
-        kaolajizhang_huawei { dimension "channel" }
-        kaolajizhang_vivo { dimension "channel" }
-        kaolajizhang_oppo { dimension "channel" }
-        kaolajizhang_meizu { dimension "channel" }
-        kaolajizhang_chuizi { dimension "channel" }
-        kaolajizhang_sanxing { dimension "channel" }
-        kaolajizhang_jifeng { dimension "channel" }
-        kaolajizhang_mumayi { dimension "channel" }
-        kaolajizhang_guanfang { dimension "channel" }
+        klyjaz_baidu { dimension "channel" }
+        klyjaz_360 { dimension "channel" }
+        klyjaz_yingyongbao { dimension "channel" }
+        klyjaz_xiaomi { dimension "channel" }
+        klyjaz_huawei { dimension "channel" }
+        klyjaz_vivo { dimension "channel" }
+        klyjaz_oppo { dimension "channel" }
+        klyjaz_meizu { dimension "channel" }
+        klyjaz_chuizi { dimension "channel" }
+        klyjaz_sanxing { dimension "channel" }
+        klyjaz_jifeng { dimension "channel" }
+        klyjaz_mumayi { dimension "channel" }
+        klyjaz_guanfang { dimension "channel" }
 
         productFlavors.all { flavor ->
             manifestPlaceholders.putAll([
@@ -136,21 +136,15 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':xiaonengchat')
-
     //魔蝎信用
     compile(name: 'moxie-client-2.2.1', ext: 'aar')
-
     //坚果信用
     compile(name: 'newnutsdk', ext: 'aar')
-
     //noinspection GradleCompatible
-//    compile "com.android.support:appcompat-v7:$support_library_version"
-    //compile "com.android.support:recyclerview-v7:$support_library_version"
     compile "com.android.support:cardview-v7:$support_library_version"
     compile "com.android.support:design:$support_library_version"
     compile 'com.android.support.constraint:constraint-layout:1.1.2'
     compile 'com.android.support:multidex:1.0.1'
-
     //Retrofit
     compile('com.squareup.retrofit2:retrofit:2.3.0', {
         exclude module: 'okhttp'
@@ -158,87 +152,62 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
-
     //OkHttp
-//    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-
     //添加拦截日志
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-
     //RxJava
     compile 'io.reactivex.rxjava2:rxjava:2.1.3'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
     //Dagger2
     compile 'com.google.dagger:dagger:2.9'
     apt 'com.google.dagger:dagger-compiler:2.9'
     compile 'org.glassfish:javax.annotation:10.0-b28'
-
     //ButterKnife
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
     //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
-
     //Glide Image Loader
     compile 'com.github.bumptech.glide:glide:3.8.0'
-
     //个推
     compile 'com.getui:sdk:2.10.2.0'
-
     //umeng统计
     compile 'com.umeng.sdk:common:1.5.0'
     compile 'com.umeng.sdk:analytics:7.5.0'
-
     //umeng分享，微信，QQ，微博
     compile 'com.umeng.sdk:share-core:6.9.0'
     compile 'com.umeng.sdk:share-qq:6.9.0'
     compile 'com.umeng.sdk:share-wechat:6.9.0'
     compile 'com.umeng.sdk:share-sina:6.9.0'
-
     //database-greeodao
     compile 'org.greenrobot:greendao:3.2.2'
-
     //MarqueeView
     compile 'com.sunfusheng:marqueeview:1.3.2'
-
     //StatusBar
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'
-
     //RecyclerView Adapter Helper
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
-
     //round image view
     compile 'com.makeramen:roundedimageview:2.3.0'
-
     //shaped image view
     compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.4'
-
     //swipe menu
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
-
     //rxbinding
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-
     //hightlight
     compile 'com.isanwenyu.highlight:highlight:1.8.0'
-
     //chart
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
     //Permission
     compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
     apt "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
-
     //webview
     compile 'com.just.agentweb:agentweb:4.0.2'
-
     //refresh
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-7'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-7'
-
     //magic indicator
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
     /*banner*/

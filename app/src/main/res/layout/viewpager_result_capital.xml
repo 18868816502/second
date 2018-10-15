@@ -96,9 +96,9 @@
         android:layout_height="1dp"
         android:background="@color/colorBackground"/>
 
-    <com.beihui.market.view.dialog.LoanListView
+    <com.beiwo.klyjaz.view.dialog.LoanListView
         android:id="@+id/listTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.beihui.market.view.dialog.LoanListView>
+    </com.beiwo.klyjaz.view.dialog.LoanListView>
 </LinearLayout>

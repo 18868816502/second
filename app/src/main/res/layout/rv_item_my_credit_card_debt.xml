@@ -25,7 +25,7 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
-                <com.beihui.market.view.CircleImageView
+                <com.beiwo.klyjaz.view.CircleImageView
                     android:id="@+id/bank_logo"
                     android:layout_width="22dp"
                     android:layout_height="22dp"

@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.beihui.market.view.WatchableScrollView
+            <com.beiwo.klyjaz.view.WatchableScrollView
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -146,7 +146,7 @@
                                 android:textColor="@color/black_1"
                                 android:textSize="12sp" />
 
-                            <com.beihui.market.view.busineesrel.RateView
+                            <com.beiwo.klyjaz.view.busineesrel.RateView
                                 android:id="@+id/rate_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -304,7 +304,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </com.beihui.market.view.WatchableScrollView>
+            </com.beiwo.klyjaz.view.WatchableScrollView>
 
             <TextView
                 android:id="@+id/apply"

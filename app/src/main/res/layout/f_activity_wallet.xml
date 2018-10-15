@@ -51,7 +51,7 @@
             android:textColor="@color/black_1"
             android:textSize="15dp" />
 
-        <com.beihui.market.tang.widget.CustomNumTextView
+        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_amount_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

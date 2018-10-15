@@ -45,7 +45,7 @@
             android:orientation="horizontal">
 
 
-            <com.beihui.market.view.ClearEditText
+            <com.beiwo.klyjaz.view.ClearEditText
                 android:id="@+id/wechat_phone_edit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

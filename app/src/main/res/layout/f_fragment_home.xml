@@ -29,14 +29,14 @@
                 android:layout_marginTop="215dp"
                 android:background="@color/transparent" />
 
-            <com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout
+            <com.beiwo.klyjaz.view.pulltoswipe.PullToRefreshScrollLayout
                 android:id="@+id/prl_fg_tab_account_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <include layout="@layout/x_pull_to_refresh_head" />
 
-                <com.beihui.market.view.pulltoswipe.PulledTabAccountRecyclerView
+                <com.beiwo.klyjaz.view.pulltoswipe.PulledTabAccountRecyclerView
                     android:id="@+id/rv_fg_tab_account_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,7 +45,7 @@
                     android:splitMotionEvents="false" />
 
                 <include layout="@layout/x_pull_to_refresh_load_more" />
-            </com.beihui.market.view.pulltoswipe.PullToRefreshScrollLayout>
+            </com.beiwo.klyjaz.view.pulltoswipe.PullToRefreshScrollLayout>
 
             <FrameLayout
                 android:id="@+id/fl_top_wrap"
@@ -67,7 +67,7 @@
                     android:textColor="@color/white"
                     android:textSize="15dp" />
 
-                <com.beihui.market.tang.widget.CustomNumTextView
+                <com.beiwo.klyjaz.tang.widget.CustomNumTextView
                     android:id="@+id/tv_top_loan_num"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"

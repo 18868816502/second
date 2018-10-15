@@ -1,12 +1,12 @@
-package com.beihui.market.ui.activity;
+package com.beiwo.klyjaz.ui.activity;
 
 
 import android.content.Intent;
 import android.view.ViewGroup;
 
-import com.beihui.market.R;
-import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.injection.component.AppComponent;
+import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.injection.component.AppComponent;
 
 import butterknife.BindView;
 

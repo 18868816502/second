@@ -1,7 +1,7 @@
 /**
  * Automatically generated file. DO NOT MODIFY
  */
-package com.beihui.market.socialshare;
+package com.beiwo.klyjaz.socialshare;
 
 public final class BuildConfig {
   public static final boolean DEBUG = false;

@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.beihui.market.socialshare.test;
+package com.beiwo.klyjaz.socialshare.test;
 
 public final class R {
     public static final class anim {
@@ -2877,7 +2877,7 @@ containing a value of this type.
             0x7f010063
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#background}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#background}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2887,7 +2887,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_background = 10;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#backgroundSplit}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#backgroundSplit}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2899,7 +2899,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_backgroundSplit = 12;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#backgroundStacked}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#backgroundStacked}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2911,7 +2911,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_backgroundStacked = 11;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetEnd}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetEnd}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2927,7 +2927,7 @@ containing a value of this type.
         */
         public static final int ActionBar_contentInsetEnd = 21;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetEndWithActions}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetEndWithActions}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2943,7 +2943,7 @@ containing a value of this type.
         */
         public static final int ActionBar_contentInsetEndWithActions = 25;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetLeft}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetLeft}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2959,7 +2959,7 @@ containing a value of this type.
         */
         public static final int ActionBar_contentInsetLeft = 22;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetRight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetRight}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2975,7 +2975,7 @@ containing a value of this type.
         */
         public static final int ActionBar_contentInsetRight = 23;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetStart}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetStart}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -2991,7 +2991,7 @@ containing a value of this type.
         */
         public static final int ActionBar_contentInsetStart = 20;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetStartWithNavigation}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetStartWithNavigation}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3007,7 +3007,7 @@ containing a value of this type.
         */
         public static final int ActionBar_contentInsetStartWithNavigation = 24;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#customNavigationLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#customNavigationLayout}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3017,7 +3017,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_customNavigationLayout = 13;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#displayOptions}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#displayOptions}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3039,7 +3039,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_displayOptions = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#divider}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#divider}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3049,7 +3049,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_divider = 9;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#elevation}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3065,7 +3065,7 @@ containing a value of this type.
         */
         public static final int ActionBar_elevation = 26;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#height}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#height}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3081,7 +3081,7 @@ containing a value of this type.
         */
         public static final int ActionBar_height = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#hideOnContentScroll}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#hideOnContentScroll}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3095,7 +3095,7 @@ containing a value of this type.
         */
         public static final int ActionBar_hideOnContentScroll = 19;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#homeAsUpIndicator}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#homeAsUpIndicator}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3105,7 +3105,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_homeAsUpIndicator = 28;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#homeLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#homeLayout}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3115,7 +3115,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_homeLayout = 14;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#icon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#icon}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3125,7 +3125,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_icon = 7;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#indeterminateProgressStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#indeterminateProgressStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3135,7 +3135,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_indeterminateProgressStyle = 16;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#itemPadding}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#itemPadding}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3151,7 +3151,7 @@ containing a value of this type.
         */
         public static final int ActionBar_itemPadding = 18;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#logo}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#logo}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3161,7 +3161,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_logo = 8;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#navigationMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#navigationMode}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3179,7 +3179,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_navigationMode = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#popupTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#popupTheme}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3189,7 +3189,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_popupTheme = 27;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#progressBarPadding}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#progressBarPadding}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3205,7 +3205,7 @@ containing a value of this type.
         */
         public static final int ActionBar_progressBarPadding = 17;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#progressBarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#progressBarStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3215,7 +3215,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_progressBarStyle = 15;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subtitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subtitle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3229,7 +3229,7 @@ containing a value of this type.
         */
         public static final int ActionBar_subtitle = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subtitleTextStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subtitleTextStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3239,7 +3239,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionBar_subtitleTextStyle = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#title}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#title}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3253,7 +3253,7 @@ containing a value of this type.
         */
         public static final int ActionBar_title = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleTextStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleTextStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -3330,7 +3330,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f01000e, 0x7f01001e
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#background}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#background}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -3340,7 +3340,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionMode_background = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#backgroundSplit}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#backgroundSplit}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -3352,7 +3352,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionMode_backgroundSplit = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#closeItemLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#closeItemLayout}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -3362,7 +3362,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionMode_closeItemLayout = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#height}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#height}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -3378,7 +3378,7 @@ containing a value of this type.
         */
         public static final int ActionMode_height = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subtitleTextStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subtitleTextStyle}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -3388,7 +3388,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActionMode_subtitleTextStyle = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleTextStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleTextStyle}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -3413,7 +3413,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f01001f, 0x7f010020
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#expandActivityOverflowButtonDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#expandActivityOverflowButtonDrawable}
           attribute's value can be found in the {@link #ActivityChooserView} array.
 
 
@@ -3423,7 +3423,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ActivityChooserView_expandActivityOverflowButtonDrawable = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#initialActivityCount}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#initialActivityCount}
           attribute's value can be found in the {@link #ActivityChooserView} array.
 
 
@@ -3469,7 +3469,7 @@ containing a value of this type.
         */
         public static final int AlertDialog_android_layout = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonPanelSideLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonPanelSideLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -3479,7 +3479,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AlertDialog_buttonPanelSideLayout = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listItemLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listItemLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -3489,7 +3489,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AlertDialog_listItemLayout = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -3499,7 +3499,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AlertDialog_listLayout = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#multiChoiceItemLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#multiChoiceItemLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -3509,7 +3509,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AlertDialog_multiChoiceItemLayout = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#showTitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#showTitle}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -3523,7 +3523,7 @@ containing a value of this type.
         */
         public static final int AlertDialog_showTitle = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#singleChoiceItemLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#singleChoiceItemLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -3558,7 +3558,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatImageView_android_src = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#srcCompat}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#srcCompat}
           attribute's value can be found in the {@link #AppCompatImageView} array.
 
 
@@ -3568,7 +3568,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatImageView_srcCompat = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tint}
           attribute's value can be found in the {@link #AppCompatImageView} array.
 
 
@@ -3583,7 +3583,7 @@ containing a value of this type.
         */
         public static final int AppCompatImageView_tint = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tintMode}
           attribute's value can be found in the {@link #AppCompatImageView} array.
 
 
@@ -3628,7 +3628,7 @@ containing a value of this type.
         */
         public static final int AppCompatSeekBar_android_thumb = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tickMark}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tickMark}
           attribute's value can be found in the {@link #AppCompatSeekBar} array.
 
 
@@ -3638,7 +3638,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatSeekBar_tickMark = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tickMarkTint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tickMarkTint}
           attribute's value can be found in the {@link #AppCompatSeekBar} array.
 
 
@@ -3653,7 +3653,7 @@ containing a value of this type.
         */
         public static final int AppCompatSeekBar_tickMarkTint = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tickMarkTintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tickMarkTintMode}
           attribute's value can be found in the {@link #AppCompatSeekBar} array.
 
 
@@ -3776,7 +3776,7 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_android_textAppearance = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#autoSizeMaxTextSize}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#autoSizeMaxTextSize}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -3792,7 +3792,7 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_autoSizeMaxTextSize = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#autoSizeMinTextSize}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#autoSizeMinTextSize}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -3808,7 +3808,7 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_autoSizeMinTextSize = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#autoSizePresetSizes}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#autoSizePresetSizes}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -3818,7 +3818,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTextView_autoSizePresetSizes = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#autoSizeStepGranularity}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#autoSizeStepGranularity}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -3834,7 +3834,7 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_autoSizeStepGranularity = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#autoSizeTextType}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#autoSizeTextType}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -3851,7 +3851,7 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_autoSizeTextType = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontFamily}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontFamily}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -3865,7 +3865,7 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_fontFamily = 7;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAllCaps}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAllCaps}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
@@ -4154,7 +4154,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f0100a6, 0x7f0100a7, 0x7f0100a8
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarDivider}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarDivider}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4164,7 +4164,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarDivider = 23;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarItemBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarItemBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4174,7 +4174,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarItemBackground = 24;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarPopupTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarPopupTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4184,7 +4184,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarPopupTheme = 17;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarSize}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarSize}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4208,7 +4208,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_actionBarSize = 22;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarSplitStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarSplitStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4218,7 +4218,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarSplitStyle = 19;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4228,7 +4228,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarStyle = 18;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarTabBarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarTabBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4238,7 +4238,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarTabBarStyle = 13;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarTabStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarTabStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4248,7 +4248,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarTabStyle = 12;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarTabTextStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarTabTextStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4258,7 +4258,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarTabTextStyle = 14;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4268,7 +4268,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarTheme = 20;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionBarWidgetTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionBarWidgetTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4278,7 +4278,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionBarWidgetTheme = 21;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4288,7 +4288,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionButtonStyle = 50;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionDropDownStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionDropDownStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4298,7 +4298,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionDropDownStyle = 46;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionMenuTextAppearance}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionMenuTextAppearance}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4308,7 +4308,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionMenuTextAppearance = 25;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionMenuTextColor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionMenuTextColor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4320,7 +4320,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionMenuTextColor = 26;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4330,7 +4330,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeBackground = 29;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeCloseButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeCloseButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4340,7 +4340,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeCloseButtonStyle = 28;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeCloseDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeCloseDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4350,7 +4350,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeCloseDrawable = 31;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeCopyDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeCopyDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4360,7 +4360,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeCopyDrawable = 33;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeCutDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeCutDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4370,7 +4370,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeCutDrawable = 32;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeFindDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeFindDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4380,7 +4380,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeFindDrawable = 37;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModePasteDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModePasteDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4390,7 +4390,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModePasteDrawable = 34;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModePopupWindowStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModePopupWindowStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4400,7 +4400,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModePopupWindowStyle = 39;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeSelectAllDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeSelectAllDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4410,7 +4410,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeSelectAllDrawable = 35;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeShareDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeShareDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4420,7 +4420,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeShareDrawable = 36;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeSplitBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeSplitBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4430,7 +4430,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeSplitBackground = 30;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4440,7 +4440,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeStyle = 27;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionModeWebSearchDrawable}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionModeWebSearchDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4450,7 +4450,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionModeWebSearchDrawable = 38;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionOverflowButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionOverflowButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4460,7 +4460,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionOverflowButtonStyle = 15;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionOverflowMenuStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionOverflowMenuStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4470,7 +4470,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_actionOverflowMenuStyle = 16;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#activityChooserViewStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#activityChooserViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4480,7 +4480,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_activityChooserViewStyle = 58;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#alertDialogButtonGroupStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#alertDialogButtonGroupStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4490,7 +4490,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_alertDialogButtonGroupStyle = 95;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#alertDialogCenterButtons}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#alertDialogCenterButtons}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4504,7 +4504,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_alertDialogCenterButtons = 96;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#alertDialogStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#alertDialogStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4514,7 +4514,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_alertDialogStyle = 94;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#alertDialogTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#alertDialogTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4536,7 +4536,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_android_windowIsFloating = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#autoCompleteTextViewStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#autoCompleteTextViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4546,7 +4546,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_autoCompleteTextViewStyle = 102;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#borderlessButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#borderlessButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4556,7 +4556,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_borderlessButtonStyle = 55;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonBarButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonBarButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4566,7 +4566,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonBarButtonStyle = 52;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonBarNegativeButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonBarNegativeButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4576,7 +4576,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonBarNegativeButtonStyle = 100;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonBarNeutralButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonBarNeutralButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4586,7 +4586,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonBarNeutralButtonStyle = 101;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonBarPositiveButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonBarPositiveButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4596,7 +4596,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonBarPositiveButtonStyle = 99;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonBarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4606,7 +4606,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonBarStyle = 51;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4616,7 +4616,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonStyle = 103;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonStyleSmall}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonStyleSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4626,7 +4626,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_buttonStyleSmall = 104;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#checkboxStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#checkboxStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4636,7 +4636,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_checkboxStyle = 105;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#checkedTextViewStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#checkedTextViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4646,7 +4646,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_checkedTextViewStyle = 106;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorAccent}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorAccent}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4661,7 +4661,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorAccent = 86;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorBackgroundFloating}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorBackgroundFloating}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4676,7 +4676,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorBackgroundFloating = 93;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorButtonNormal}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorButtonNormal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4691,7 +4691,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorButtonNormal = 90;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorControlActivated}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorControlActivated}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4706,7 +4706,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorControlActivated = 88;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorControlHighlight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorControlHighlight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4721,7 +4721,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorControlHighlight = 89;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorControlNormal}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorControlNormal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4736,7 +4736,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorControlNormal = 87;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorError}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorError}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4748,7 +4748,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_colorError = 118;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorPrimary}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorPrimary}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4763,7 +4763,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorPrimary = 84;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorPrimaryDark}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorPrimaryDark}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4778,7 +4778,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorPrimaryDark = 85;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#colorSwitchThumbNormal}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#colorSwitchThumbNormal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4793,7 +4793,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_colorSwitchThumbNormal = 91;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#controlBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#controlBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4803,7 +4803,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_controlBackground = 92;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dialogPreferredPadding}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dialogPreferredPadding}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4819,7 +4819,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_dialogPreferredPadding = 44;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dialogTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dialogTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4829,7 +4829,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_dialogTheme = 43;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dividerHorizontal}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dividerHorizontal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4839,7 +4839,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_dividerHorizontal = 57;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dividerVertical}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dividerVertical}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4849,7 +4849,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_dividerVertical = 56;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dropDownListViewStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dropDownListViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4859,7 +4859,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_dropDownListViewStyle = 75;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dropdownListPreferredItemHeight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dropdownListPreferredItemHeight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4875,7 +4875,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_dropdownListPreferredItemHeight = 47;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#editTextBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#editTextBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4885,7 +4885,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_editTextBackground = 64;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#editTextColor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#editTextColor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4897,7 +4897,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_editTextColor = 63;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#editTextStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#editTextStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4907,7 +4907,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_editTextStyle = 107;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#homeAsUpIndicator}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#homeAsUpIndicator}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4917,7 +4917,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_homeAsUpIndicator = 49;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#imageButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#imageButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4927,7 +4927,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_imageButtonStyle = 65;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listChoiceBackgroundIndicator}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listChoiceBackgroundIndicator}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4937,7 +4937,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_listChoiceBackgroundIndicator = 83;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listDividerAlertDialog}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listDividerAlertDialog}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4947,7 +4947,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_listDividerAlertDialog = 45;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listMenuViewStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listMenuViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4957,7 +4957,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_listMenuViewStyle = 115;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listPopupWindowStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listPopupWindowStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4967,7 +4967,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_listPopupWindowStyle = 76;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listPreferredItemHeight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listPreferredItemHeight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4983,7 +4983,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_listPreferredItemHeight = 70;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listPreferredItemHeightLarge}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listPreferredItemHeightLarge}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -4999,7 +4999,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_listPreferredItemHeightLarge = 72;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listPreferredItemHeightSmall}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listPreferredItemHeightSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5015,7 +5015,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_listPreferredItemHeightSmall = 71;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listPreferredItemPaddingLeft}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listPreferredItemPaddingLeft}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5031,7 +5031,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_listPreferredItemPaddingLeft = 73;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#listPreferredItemPaddingRight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#listPreferredItemPaddingRight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5047,7 +5047,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_listPreferredItemPaddingRight = 74;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#panelBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#panelBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5057,7 +5057,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_panelBackground = 80;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#panelMenuListTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#panelMenuListTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5067,7 +5067,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_panelMenuListTheme = 82;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#panelMenuListWidth}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#panelMenuListWidth}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5083,7 +5083,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_panelMenuListWidth = 81;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#popupMenuStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#popupMenuStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5093,7 +5093,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_popupMenuStyle = 61;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#popupWindowStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#popupWindowStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5103,7 +5103,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_popupWindowStyle = 62;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#radioButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#radioButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5113,7 +5113,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_radioButtonStyle = 108;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#ratingBarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#ratingBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5123,7 +5123,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_ratingBarStyle = 109;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#ratingBarStyleIndicator}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#ratingBarStyleIndicator}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5133,7 +5133,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_ratingBarStyleIndicator = 110;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#ratingBarStyleSmall}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#ratingBarStyleSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5143,7 +5143,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_ratingBarStyleSmall = 111;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#searchViewStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#searchViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5153,7 +5153,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_searchViewStyle = 69;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#seekBarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#seekBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5163,7 +5163,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_seekBarStyle = 112;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#selectableItemBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#selectableItemBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5173,7 +5173,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_selectableItemBackground = 53;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#selectableItemBackgroundBorderless}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#selectableItemBackgroundBorderless}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5183,7 +5183,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_selectableItemBackgroundBorderless = 54;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#spinnerDropDownItemStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#spinnerDropDownItemStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5193,7 +5193,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_spinnerDropDownItemStyle = 48;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#spinnerStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#spinnerStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5203,7 +5203,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_spinnerStyle = 113;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#switchStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#switchStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5213,7 +5213,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_switchStyle = 114;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceLargePopupMenu}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceLargePopupMenu}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5223,7 +5223,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceLargePopupMenu = 40;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceListItem}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceListItem}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5233,7 +5233,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceListItem = 77;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceListItemSecondary}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceListItemSecondary}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5243,7 +5243,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceListItemSecondary = 78;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceListItemSmall}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceListItemSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5253,7 +5253,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceListItemSmall = 79;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearancePopupMenuHeader}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearancePopupMenuHeader}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5263,7 +5263,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearancePopupMenuHeader = 42;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceSearchResultSubtitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceSearchResultSubtitle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5273,7 +5273,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceSearchResultSubtitle = 67;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceSearchResultTitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceSearchResultTitle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5283,7 +5283,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceSearchResultTitle = 66;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAppearanceSmallPopupMenu}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAppearanceSmallPopupMenu}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5293,7 +5293,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textAppearanceSmallPopupMenu = 41;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textColorAlertDialogListItem}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textColorAlertDialogListItem}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5305,7 +5305,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textColorAlertDialogListItem = 98;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textColorSearchUrl}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textColorSearchUrl}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5317,7 +5317,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_textColorSearchUrl = 68;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#toolbarNavigationButtonStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#toolbarNavigationButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5327,7 +5327,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_toolbarNavigationButtonStyle = 60;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#toolbarStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#toolbarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5337,7 +5337,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_toolbarStyle = 59;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tooltipForegroundColor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tooltipForegroundColor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5349,7 +5349,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_tooltipForegroundColor = 117;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tooltipFrameBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tooltipFrameBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5359,7 +5359,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_tooltipFrameBackground = 116;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowActionBar}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowActionBar}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5373,7 +5373,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowActionBar = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowActionBarOverlay}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowActionBarOverlay}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5387,7 +5387,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowActionBarOverlay = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowActionModeOverlay}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowActionModeOverlay}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5401,7 +5401,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowActionModeOverlay = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowFixedHeightMajor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowFixedHeightMajor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5420,7 +5420,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowFixedHeightMajor = 9;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowFixedHeightMinor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowFixedHeightMinor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5439,7 +5439,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowFixedHeightMinor = 7;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowFixedWidthMajor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowFixedWidthMajor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5458,7 +5458,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowFixedWidthMajor = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowFixedWidthMinor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowFixedWidthMinor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5477,7 +5477,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowFixedWidthMinor = 8;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowMinWidthMajor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowMinWidthMajor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5496,7 +5496,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowMinWidthMajor = 10;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowMinWidthMinor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowMinWidthMinor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5515,7 +5515,7 @@ containing a value of this type.
         */
         public static final int AppCompatTheme_windowMinWidthMinor = 11;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#windowNoTitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#windowNoTitle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5542,7 +5542,7 @@ containing a value of this type.
             0x7f0100a9
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#allowStacking}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#allowStacking}
           attribute's value can be found in the {@link #ButtonBarLayout} array.
 
 
@@ -5573,7 +5573,7 @@ containing a value of this type.
             0x010101a5, 0x0101031f, 0x7f0100aa
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#alpha}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#alpha}
           attribute's value can be found in the {@link #ColorStateListItem} array.
 
 
@@ -5622,7 +5622,7 @@ containing a value of this type.
         */
         public static final int CompoundButton_android_button = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonTint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonTint}
           attribute's value can be found in the {@link #CompoundButton} array.
 
 
@@ -5637,7 +5637,7 @@ containing a value of this type.
         */
         public static final int CompoundButton_buttonTint = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonTintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonTintMode}
           attribute's value can be found in the {@link #CompoundButton} array.
 
 
@@ -5685,7 +5685,7 @@ containing a value of this type.
             0x7f0100b1, 0x7f0100b2, 0x7f0100b3, 0x7f0100b4
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#arrowHeadLength}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#arrowHeadLength}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5701,7 +5701,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_arrowHeadLength = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#arrowShaftLength}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#arrowShaftLength}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5717,7 +5717,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_arrowShaftLength = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#barLength}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#barLength}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5733,7 +5733,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_barLength = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#color}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#color}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5748,7 +5748,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_color = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#drawableSize}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#drawableSize}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5764,7 +5764,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_drawableSize = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#gapBetweenBars}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#gapBetweenBars}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5780,7 +5780,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_gapBetweenBars = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#spinBars}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#spinBars}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5794,7 +5794,7 @@ containing a value of this type.
         */
         public static final int DrawerArrowToggle_spinBars = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#thickness}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#thickness}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -5834,7 +5834,7 @@ containing a value of this type.
             0x7f0100b9, 0x7f0100ba
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontProviderAuthority}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontProviderAuthority}
           attribute's value can be found in the {@link #FontFamily} array.
 
 
@@ -5848,7 +5848,7 @@ containing a value of this type.
         */
         public static final int FontFamily_fontProviderAuthority = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontProviderCerts}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontProviderCerts}
           attribute's value can be found in the {@link #FontFamily} array.
 
 
@@ -5858,7 +5858,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int FontFamily_fontProviderCerts = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontProviderFetchStrategy}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontProviderFetchStrategy}
           attribute's value can be found in the {@link #FontFamily} array.
 
 
@@ -5875,7 +5875,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int FontFamily_fontProviderFetchStrategy = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontProviderFetchTimeout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontProviderFetchTimeout}
           attribute's value can be found in the {@link #FontFamily} array.
 
 
@@ -5897,7 +5897,7 @@ containing a value of this type.
         */
         public static final int FontFamily_fontProviderFetchTimeout = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontProviderPackage}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontProviderPackage}
           attribute's value can be found in the {@link #FontFamily} array.
 
 
@@ -5911,7 +5911,7 @@ containing a value of this type.
         */
         public static final int FontFamily_fontProviderPackage = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontProviderQuery}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontProviderQuery}
           attribute's value can be found in the {@link #FontFamily} array.
 
 
@@ -5942,7 +5942,7 @@ containing a value of this type.
             0x7f0100bb, 0x7f0100bc, 0x7f0100bd
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#font}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#font}
           attribute's value can be found in the {@link #FontFamilyFont} array.
 
 
@@ -5952,7 +5952,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int FontFamilyFont_font = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontStyle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontStyle}
           attribute's value can be found in the {@link #FontFamilyFont} array.
 
 
@@ -5969,7 +5969,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int FontFamilyFont_fontStyle = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontWeight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontWeight}
           attribute's value can be found in the {@link #FontFamilyFont} array.
 
 
@@ -6044,7 +6044,7 @@ containing a value of this type.
         */
         public static final int LinearLayoutCompat_android_weightSum = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#divider}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#divider}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -6054,7 +6054,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int LinearLayoutCompat_divider = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#dividerPadding}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#dividerPadding}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -6070,7 +6070,7 @@ containing a value of this type.
         */
         public static final int LinearLayoutCompat_dividerPadding = 8;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#measureWithLargestChild}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#measureWithLargestChild}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -6084,7 +6084,7 @@ containing a value of this type.
         */
         public static final int LinearLayoutCompat_measureWithLargestChild = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#showDividers}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#showDividers}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -6295,7 +6295,7 @@ containing a value of this type.
             0x7f0100c8, 0x7f0100c9, 0x7f0100ca
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionLayout}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6305,7 +6305,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int MenuItem_actionLayout = 16;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionProviderClass}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionProviderClass}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6319,7 +6319,7 @@ containing a value of this type.
         */
         public static final int MenuItem_actionProviderClass = 18;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#actionViewClass}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#actionViewClass}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6333,7 +6333,7 @@ containing a value of this type.
         */
         public static final int MenuItem_actionViewClass = 17;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#alphabeticModifiers}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#alphabeticModifiers}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6432,7 +6432,7 @@ containing a value of this type.
         */
         public static final int MenuItem_android_visible = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentDescription}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentDescription}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6446,7 +6446,7 @@ containing a value of this type.
         */
         public static final int MenuItem_contentDescription = 19;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#iconTint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#iconTint}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6461,7 +6461,7 @@ containing a value of this type.
         */
         public static final int MenuItem_iconTint = 21;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#iconTintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#iconTintMode}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6482,7 +6482,7 @@ containing a value of this type.
         */
         public static final int MenuItem_iconTintMode = 22;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#numericModifiers}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#numericModifiers}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6503,7 +6503,7 @@ containing a value of this type.
         */
         public static final int MenuItem_numericModifiers = 14;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#showAsAction}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#showAsAction}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6523,7 +6523,7 @@ containing a value of this type.
         */
         public static final int MenuItem_showAsAction = 15;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#tooltipText}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#tooltipText}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -6610,7 +6610,7 @@ containing a value of this type.
         */
         public static final int MenuView_android_windowAnimationStyle = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#preserveIconSpacing}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#preserveIconSpacing}
           attribute's value can be found in the {@link #MenuView} array.
 
 
@@ -6624,7 +6624,7 @@ containing a value of this type.
         */
         public static final int MenuView_preserveIconSpacing = 7;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subMenuArrow}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subMenuArrow}
           attribute's value can be found in the {@link #MenuView} array.
 
 
@@ -6663,7 +6663,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int PopupWindow_android_popupBackground = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#overlapAnchor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#overlapAnchor}
           attribute's value can be found in the {@link #PopupWindow} array.
 
 
@@ -6690,7 +6690,7 @@ containing a value of this type.
             0x7f0100ce
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#state_above_anchor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#state_above_anchor}
           attribute's value can be found in the {@link #PopupWindowBackgroundState} array.
 
 
@@ -6719,7 +6719,7 @@ containing a value of this type.
             0x7f0100cf, 0x7f0100d0
         };
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#paddingBottomNoButtons}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#paddingBottomNoButtons}
           attribute's value can be found in the {@link #RecycleListView} array.
 
 
@@ -6735,7 +6735,7 @@ containing a value of this type.
         */
         public static final int RecycleListView_paddingBottomNoButtons = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#paddingTopNoTitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#paddingTopNoTitle}
           attribute's value can be found in the {@link #RecycleListView} array.
 
 
@@ -6824,7 +6824,7 @@ containing a value of this type.
         */
         public static final int SearchView_android_maxWidth = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#closeIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#closeIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6834,7 +6834,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_closeIcon = 8;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#commitIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#commitIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6844,7 +6844,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_commitIcon = 13;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#defaultQueryHint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#defaultQueryHint}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6858,7 +6858,7 @@ containing a value of this type.
         */
         public static final int SearchView_defaultQueryHint = 7;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#goIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#goIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6868,7 +6868,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_goIcon = 9;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#iconifiedByDefault}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#iconifiedByDefault}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6882,7 +6882,7 @@ containing a value of this type.
         */
         public static final int SearchView_iconifiedByDefault = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#layout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#layout}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6892,7 +6892,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_layout = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#queryBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#queryBackground}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6902,7 +6902,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_queryBackground = 15;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#queryHint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#queryHint}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6916,7 +6916,7 @@ containing a value of this type.
         */
         public static final int SearchView_queryHint = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#searchHintIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#searchHintIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6926,7 +6926,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_searchHintIcon = 11;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#searchIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#searchIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6936,7 +6936,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_searchIcon = 10;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#submitBackground}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#submitBackground}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6946,7 +6946,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_submitBackground = 16;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#suggestionRowLayout}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#suggestionRowLayout}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -6956,7 +6956,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SearchView_suggestionRowLayout = 14;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#voiceIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#voiceIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -7012,7 +7012,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Spinner_android_prompt = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#popupTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#popupTheme}
           attribute's value can be found in the {@link #Spinner} array.
 
 
@@ -7082,7 +7082,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SwitchCompat_android_thumb = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#showText}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#showText}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7096,7 +7096,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_showText = 13;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#splitTrack}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#splitTrack}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7110,7 +7110,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_splitTrack = 12;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#switchMinWidth}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#switchMinWidth}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7126,7 +7126,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_switchMinWidth = 10;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#switchPadding}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#switchPadding}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7142,7 +7142,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_switchPadding = 11;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#switchTextAppearance}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#switchTextAppearance}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7152,7 +7152,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SwitchCompat_switchTextAppearance = 9;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#thumbTextPadding}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#thumbTextPadding}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7168,7 +7168,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_thumbTextPadding = 8;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#thumbTint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#thumbTint}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7183,7 +7183,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_thumbTint = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#thumbTintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#thumbTintMode}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7204,7 +7204,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_thumbTintMode = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#track}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#track}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7214,7 +7214,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SwitchCompat_track = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#trackTint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#trackTint}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7229,7 +7229,7 @@ containing a value of this type.
         */
         public static final int SwitchCompat_trackTint = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#trackTintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#trackTintMode}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -7356,7 +7356,7 @@ containing a value of this type.
         */
         public static final int TextAppearance_android_typeface = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#fontFamily}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#fontFamily}
           attribute's value can be found in the {@link #TextAppearance} array.
 
 
@@ -7370,7 +7370,7 @@ containing a value of this type.
         */
         public static final int TextAppearance_fontFamily = 12;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#textAllCaps}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#textAllCaps}
           attribute's value can be found in the {@link #TextAppearance} array.
 
 
@@ -7469,7 +7469,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_android_minHeight = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#buttonGravity}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#buttonGravity}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7486,7 +7486,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_buttonGravity = 21;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#collapseContentDescription}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#collapseContentDescription}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7500,7 +7500,7 @@ containing a value of this type.
         */
         public static final int Toolbar_collapseContentDescription = 23;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#collapseIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#collapseIcon}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7510,7 +7510,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_collapseIcon = 22;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetEnd}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetEnd}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7526,7 +7526,7 @@ containing a value of this type.
         */
         public static final int Toolbar_contentInsetEnd = 6;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetEndWithActions}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetEndWithActions}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7542,7 +7542,7 @@ containing a value of this type.
         */
         public static final int Toolbar_contentInsetEndWithActions = 10;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetLeft}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetLeft}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7558,7 +7558,7 @@ containing a value of this type.
         */
         public static final int Toolbar_contentInsetLeft = 7;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetRight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetRight}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7574,7 +7574,7 @@ containing a value of this type.
         */
         public static final int Toolbar_contentInsetRight = 8;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetStart}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetStart}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7590,7 +7590,7 @@ containing a value of this type.
         */
         public static final int Toolbar_contentInsetStart = 5;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#contentInsetStartWithNavigation}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#contentInsetStartWithNavigation}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7606,7 +7606,7 @@ containing a value of this type.
         */
         public static final int Toolbar_contentInsetStartWithNavigation = 9;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#logo}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#logo}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7616,7 +7616,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_logo = 4;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#logoDescription}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#logoDescription}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7630,7 +7630,7 @@ containing a value of this type.
         */
         public static final int Toolbar_logoDescription = 26;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#maxButtonHeight}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#maxButtonHeight}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7646,7 +7646,7 @@ containing a value of this type.
         */
         public static final int Toolbar_maxButtonHeight = 20;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#navigationContentDescription}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#navigationContentDescription}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7660,7 +7660,7 @@ containing a value of this type.
         */
         public static final int Toolbar_navigationContentDescription = 25;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#navigationIcon}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#navigationIcon}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7670,7 +7670,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_navigationIcon = 24;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#popupTheme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#popupTheme}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7680,7 +7680,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_popupTheme = 11;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subtitle}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subtitle}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7694,7 +7694,7 @@ containing a value of this type.
         */
         public static final int Toolbar_subtitle = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subtitleTextAppearance}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subtitleTextAppearance}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7704,7 +7704,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_subtitleTextAppearance = 13;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#subtitleTextColor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#subtitleTextColor}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7719,7 +7719,7 @@ containing a value of this type.
         */
         public static final int Toolbar_subtitleTextColor = 28;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#title}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#title}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7733,7 +7733,7 @@ containing a value of this type.
         */
         public static final int Toolbar_title = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleMargin}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleMargin}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7749,7 +7749,7 @@ containing a value of this type.
         */
         public static final int Toolbar_titleMargin = 14;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleMarginBottom}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleMarginBottom}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7765,7 +7765,7 @@ containing a value of this type.
         */
         public static final int Toolbar_titleMarginBottom = 18;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleMarginEnd}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleMarginEnd}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7781,7 +7781,7 @@ containing a value of this type.
         */
         public static final int Toolbar_titleMarginEnd = 16;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleMarginStart}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleMarginStart}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7797,7 +7797,7 @@ containing a value of this type.
         */
         public static final int Toolbar_titleMarginStart = 15;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleMarginTop}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleMarginTop}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7813,7 +7813,7 @@ containing a value of this type.
         */
         public static final int Toolbar_titleMarginTop = 17;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleMargins}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleMargins}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7829,7 +7829,7 @@ containing a value of this type.
         */
         public static final int Toolbar_titleMargins = 19;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleTextAppearance}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleTextAppearance}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7839,7 +7839,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int Toolbar_titleTextAppearance = 12;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#titleTextColor}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#titleTextColor}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -7888,7 +7888,7 @@ containing a value of this type.
         */
         public static final int View_android_theme = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#paddingEnd}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#paddingEnd}
           attribute's value can be found in the {@link #View} array.
 
 
@@ -7904,7 +7904,7 @@ containing a value of this type.
         */
         public static final int View_paddingEnd = 3;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#paddingStart}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#paddingStart}
           attribute's value can be found in the {@link #View} array.
 
 
@@ -7920,7 +7920,7 @@ containing a value of this type.
         */
         public static final int View_paddingStart = 2;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#theme}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#theme}
           attribute's value can be found in the {@link #View} array.
 
 
@@ -7953,7 +7953,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ViewBackgroundHelper_android_background = 0;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#backgroundTint}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#backgroundTint}
           attribute's value can be found in the {@link #ViewBackgroundHelper} array.
 
 
@@ -7968,7 +7968,7 @@ containing a value of this type.
         */
         public static final int ViewBackgroundHelper_backgroundTint = 1;
         /**
-          <p>This symbol is the offset where the {@link com.beihui.market.socialshare.test.R.attr#backgroundTintMode}
+          <p>This symbol is the offset where the {@link com.beiwo.klyjaz.socialshare.test.R.attr#backgroundTintMode}
           attribute's value can be found in the {@link #ViewBackgroundHelper} array.
 
 

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <com.beihui.market.view.CircleImageView
+    <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_commentator_avatar"
         android:layout_width="@dimen/dp34"
         android:layout_height="@dimen/dp34"

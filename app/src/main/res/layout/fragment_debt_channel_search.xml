@@ -82,7 +82,7 @@
             android:layout_height="match_parent"
             android:background="#99696969" />
 
-        <com.beihui.market.view.StateLayout
+        <com.beiwo.klyjaz.view.StateLayout
             android:id="@+id/state_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -93,7 +93,7 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </com.beihui.market.view.StateLayout>
+        </com.beiwo.klyjaz.view.StateLayout>
     </FrameLayout>
 
 

@@ -14,7 +14,7 @@
         android:paddingRight="15dp"
         android:paddingTop="15dp">
 
-        <com.beihui.market.view.CircleImageView
+        <com.beiwo.klyjaz.view.CircleImageView
             android:id="@+id/debt_image"
             android:layout_width="32dp"
             android:layout_height="32dp"

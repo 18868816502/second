@@ -42,7 +42,7 @@
         android:paddingRight="10dp"
         android:background="@android:color/white">
 
-        <com.beihui.market.view.ClearEditText
+        <com.beiwo.klyjaz.view.ClearEditText
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

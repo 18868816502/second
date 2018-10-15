@@ -30,7 +30,7 @@
             android:textSize="14sp" />
     </android.support.v7.widget.Toolbar>
 
-    <com.beihui.market.view.RoundProgressBar
+    <com.beiwo.klyjaz.view.RoundProgressBar
         android:id="@+id/round_progress_bar"
         android:layout_width="125dp"
         android:layout_height="125dp"

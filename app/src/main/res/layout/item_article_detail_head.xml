@@ -22,7 +22,7 @@
         android:textSize="@dimen/sp22"
         tools:layout_editor_absoluteX="8dp" />
 
-    <com.beihui.market.view.CircleImageView
+    <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_author_avatar"
         android:layout_width="34dp"
         android:layout_height="34dp"

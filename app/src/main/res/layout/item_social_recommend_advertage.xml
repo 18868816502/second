@@ -30,7 +30,7 @@
         android:textColor="@color/black_1"
         tools:text="邀请好友奖励 每邀请1"/>
 
-    <com.beihui.market.view.CircleImageView
+    <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_user_avatar"
         android:layout_width="@dimen/dp20"
         android:layout_height="@dimen/dp20"

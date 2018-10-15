@@ -10,7 +10,7 @@
         android:name="android.support.test.runner.AndroidJUnitRunner"
         android:functionalTest="false"
         android:handleProfiling="false"
-        android:label="Tests for com.beihui.market.socialshare.test"
+        android:label="Tests for com.beiwo.klyjaz.socialshare.test"
         android:targetPackage="com.beihui.market.socialshare.test" />
 
     <application

@@ -52,7 +52,7 @@
                 android:layout_height="60dp"
                 android:orientation="horizontal">
 
-                <com.beihui.market.view.ClearEditText
+                <com.beiwo.klyjaz.view.ClearEditText
                     android:id="@+id/password_reset"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

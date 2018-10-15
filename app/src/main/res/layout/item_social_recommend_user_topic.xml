@@ -9,7 +9,7 @@
     android:layout_marginLeft="@dimen/dp5"
     android:layout_marginRight="@dimen/dp5">
     
-    <com.beihui.market.view.CircleImageView
+    <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_user_avatar"
         android:layout_width="@dimen/dp20"
         android:layout_height="@dimen/dp20"

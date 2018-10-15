@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <com.beihui.market.view.AutoAdjustSizeEditText
+                <com.beiwo.klyjaz.view.AutoAdjustSizeEditText
                     android:id="@+id/auto_et_num"
                     android:gravity="right"
                     android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.beihui.market.view.AlphabetIndexBar
+            <com.beiwo.klyjaz.view.AlphabetIndexBar
                 android:id="@+id/alphabet_fg_account_flow_loan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

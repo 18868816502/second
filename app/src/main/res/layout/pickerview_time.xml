@@ -16,38 +16,38 @@
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <com.beihui.market.view.pickerview.lib.WheelView
+        <com.beiwo.klyjaz.view.pickerview.lib.WheelView
             android:id="@+id/second"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <com.beihui.market.view.pickerview.lib.WheelView
+        <com.beiwo.klyjaz.view.pickerview.lib.WheelView
             android:id="@+id/min"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
 
-        <com.beihui.market.view.pickerview.lib.WheelView
+        <com.beiwo.klyjaz.view.pickerview.lib.WheelView
             android:id="@+id/hour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <com.beihui.market.view.pickerview.lib.WheelView
+        <com.beiwo.klyjaz.view.pickerview.lib.WheelView
             android:id="@+id/year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.96" />
 
-        <com.beihui.market.view.pickerview.lib.WheelView
+        <com.beiwo.klyjaz.view.pickerview.lib.WheelView
             android:id="@+id/month"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <com.beihui.market.view.pickerview.lib.WheelView
+        <com.beiwo.klyjaz.view.pickerview.lib.WheelView
             android:id="@+id/day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

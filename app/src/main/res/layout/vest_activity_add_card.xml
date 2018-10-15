@@ -42,7 +42,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beihui.market.view.ClearEditText
+        <com.beiwo.klyjaz.view.ClearEditText
             android:id="@+id/cet_holder_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beihui.market.view.ClearEditText
+        <com.beiwo.klyjaz.view.ClearEditText
             android:id="@+id/cet_card_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beihui.market.view.ClearEditText
+        <com.beiwo.klyjaz.view.ClearEditText
             android:id="@+id/cet_bank_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beihui.market.view.ClearEditText
+        <com.beiwo.klyjaz.view.ClearEditText
             android:id="@+id/cet_phone_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

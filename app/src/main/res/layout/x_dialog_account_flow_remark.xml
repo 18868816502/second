@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="90dp">
 
-                <com.beihui.market.view.flowlayout.TagFlowLayout
+                <com.beiwo.klyjaz.view.flowlayout.TagFlowLayout
                     android:id="@+id/id_flowlayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
