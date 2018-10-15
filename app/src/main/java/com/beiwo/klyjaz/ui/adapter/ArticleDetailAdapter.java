@@ -186,7 +186,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(itemView);
             ButterKnife.bind(this,itemView);
             tvArticleTitle.setFocusable(true);
-            setOnClick(tvComment,tvPraise);
+            setOnClick(ivAuthorAvatar,tvComment,tvPraise);
         }
     }
 
@@ -285,6 +285,11 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         @Override
         public void onClick(View v) {
             switch (v.getId()){
+                case R.id.iv_author_avatar:
+                    Intent intent = new Intent(mContext, PersonalCenterActivity.class);
+                    intent.putExtra("userId",forumBean.getUserId());
+                    mContext.startActivity(intent);
+                    break;
                 case R.id.iv_commentator_avatar:
                     mContext.startActivity(new Intent(mContext,PersonalCenterActivity.class));
                     break;

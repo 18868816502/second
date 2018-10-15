@@ -257,7 +257,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 //                if (!FastClickUtils.isFastClick()) {
 //                    presenter.clickUserProfile();
 //                }
-                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
+                Intent intent = new Intent(getActivity(), PersonalCenterActivity.class);
+                intent.putExtra("userId",UserHelper.getInstance(getActivity()).getProfile().getId());
+                startActivity(intent);
                 break;
             case R.id.invite_friend:
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);

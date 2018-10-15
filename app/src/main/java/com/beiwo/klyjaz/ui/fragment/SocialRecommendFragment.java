@@ -74,6 +74,12 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void initDatas() {
         initListener();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         fetchData();
     }
 

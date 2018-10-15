@@ -130,7 +130,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
         holder.tvName.setText(userInfo.getUserName());
         holder.tvSex.setText(1 == userInfo.getSex() ? "男":"女");
-        holder.tvProduce.setText(String.format("简介:",userInfo.getIntroduce()));
+        holder.tvProduce.setText("简介:"+userInfo.getIntroduce());
         holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
 //        holder.tvAttentionNum.setText(String.valueOf(userInfo.getFollowerCount()));
 //        holder.tvFansNum.setText(String.valueOf(userInfo.getFansCount()));
@@ -149,7 +149,11 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         holder.tvPublishTime.setText(String.valueOf(bean.getGmtCreate()));
         holder.tvArticleContent.setText(bean.getTitle());
         holder.tvArticleDescripe.setText(bean.getContent());
-        Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
+        if(bean.getPicUrl()!=null&&bean.getPicUrl().size()!=0) {
+            Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
+        }else{
+            holder.ivAuthorContent.setVisibility(View.GONE);
+        }
         holder.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
         holder.tvCommentNum.setText(String.valueOf(bean.getCommentCount()));
     }

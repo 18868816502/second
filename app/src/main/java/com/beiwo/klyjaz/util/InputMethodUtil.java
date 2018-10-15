@@ -22,6 +22,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * @author A
  */
@@ -75,10 +78,13 @@ public class InputMethodUtil {
      *
      * @param context
      */
-    public static void toggleSoftKeyboardState(Context context) {
-        ((InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE)).toggleSoftInput(
-                InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+    public static void toggleSoftKeyboardState(Activity context) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null && inputMethodManager.isActive() && context.getCurrentFocus() != null) {
+            ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**
@@ -102,5 +108,28 @@ public class InputMethodUtil {
             return false;
             //软键盘未弹出
         }
+    }
+
+    //强制显示或者关闭系统键盘
+    public static void keyBoard(final EditText txtSearchKey,final String status)
+    {
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask(){
+            @Override
+            public void run()
+            {
+                InputMethodManager m = (InputMethodManager)
+                        txtSearchKey.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(status.equals("open"))
+                {
+                    m.showSoftInput(txtSearchKey,InputMethodManager.SHOW_FORCED);
+                }
+                else
+                {
+                    m.hideSoftInputFromWindow(txtSearchKey.getWindowToken(), 0);
+                }
+            }
+        }, 300);
     }
 }

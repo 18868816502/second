@@ -84,13 +84,13 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             }
         }else {
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.tvCommentPraise.setTag(position-1);
-            viewHolder.ivArticleComment.setTag(position-1);
-            viewHolder.tvDelete.setTag(position-1);
+            viewHolder.tvCommentPraise.setTag(position);
+            viewHolder.ivArticleComment.setTag(position);
+            viewHolder.tvDelete.setTag(position);
 
-            viewHolder.tvCommentContent.setText(datas.get(position-1).getContent());
-            viewHolder.tvCommentatorName.setText(datas.get(position-1).getUserName());
-            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position-1).getUserId())) {
+            viewHolder.tvCommentContent.setText(datas.get(position).getContent());
+            viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
+            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
                 viewHolder.tvDelete.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.tvDelete.setVisibility(View.GONE);

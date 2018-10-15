@@ -81,6 +81,12 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
 
     @Override
     public void initDatas() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         fetchData();
     }
 
