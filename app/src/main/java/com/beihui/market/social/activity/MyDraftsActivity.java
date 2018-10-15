@@ -143,7 +143,7 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
                 PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
                 break;
             case "3":
-                mPopType = 2;
+                mPopType = 3;
                 PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
                 break;
                 default:
