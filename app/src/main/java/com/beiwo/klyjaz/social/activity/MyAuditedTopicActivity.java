@@ -201,6 +201,7 @@ public class MyAuditedTopicActivity extends BaseComponentActivity implements OnR
                 PopUtils.dismiss();
                 break;
             case R.id.tv_save:
+                PopUtils.dismiss();
                 deleteForum(forumId);
                 break;
                 default:

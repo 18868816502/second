@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.beiwo.klyjaz.R;
@@ -54,7 +55,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
         View.OnClickListener, OnViewClickListener,OnItemClickListener,OnRefreshListener, OnLoadMoreListener {
 
     @BindView(R.id.parent)
-    ConstraintLayout parentView;
+    LinearLayout parentView;
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.navigate)
@@ -72,6 +73,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     private int pageNo = 0;
     private int pageSize = 10;
     private List<UserTopicBean> datas;
+    private String userId;
 
     @Override
     public int getLayoutId() {
@@ -98,8 +100,15 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void initDatas() {
         datas = new ArrayList<>();
-        presenter.fetchPersonalInfo(UserHelper.getInstance(this).getProfile().getId());
-//        presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
+        if(getIntent()!=null){
+            userId = getIntent().getStringExtra("userId");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.fetchPersonalInfo(userId);
     }
 
     @Override
@@ -138,12 +147,13 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void onQueryUserTopicSucceed(List<UserTopicBean> list) {
-        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.finishRefresh();
         if (pageNo == 0) {
             adapter.setDatas(userInfoBean,list);
             datas.clear();
             datas.addAll(list);
         } else {
+            refreshLayout.finishLoadMore();
             adapter.appendTopicData(list);
             datas.addAll(list);
         }
@@ -157,14 +167,12 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        refreshLayout.setEnableRefresh(true);
         presenter.fetchPersonalInfo(UserHelper.getInstance(this).getProfile().getId());
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         pageNo++;
-        refreshLayout.setEnableLoadMore(true);
         presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
     }
 

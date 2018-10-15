@@ -24,6 +24,7 @@ import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.ui.adapter.ArticleCommentListAdapter;
 import com.beiwo.klyjaz.ui.adapter.ArticleDetailAdapter;
 import com.beiwo.klyjaz.ui.contract.ArticleDetailContact;
+import com.beiwo.klyjaz.ui.listeners.LengthTextWatcherListener;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.beiwo.klyjaz.ui.presenter.ArticleDetailPresenter;
 import com.beiwo.klyjaz.util.KeyBoardUtils;
@@ -185,6 +186,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             case R.id.tv_comment:
                 mPopType = 5;
+                tag = ConstantTag.TAG_COMMENT_ARTICLE;
                 PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
             case R.id.tv_send:
@@ -192,7 +194,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                     ToastUtil.toast(getString(R.string.article_comment_input_tips));
                     return;
                 }
-                ToastUtil.toast(etInput.getText().toString());
                 reply();
                 PopUtils.dismissComment();
                 break;
@@ -359,6 +360,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                         KeyBoardUtils.toggleKeybord(etInput);
                     }
                 }, 300);
+                etInput.addTextChangedListener(new LengthTextWatcherListener(etInput,100));
                 setOnClick(view.findViewById(R.id.tv_send));
                 break;
             default:

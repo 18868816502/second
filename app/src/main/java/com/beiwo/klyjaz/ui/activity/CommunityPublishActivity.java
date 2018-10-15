@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.InputMethodUtil;
+import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -88,6 +90,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     private List<String> httpUrls;
     private List<String> httpImgKeys;
+
+    private EditText etTitle;
+    private EditText etContent;
 
     @Override
     public int getLayoutId() {
@@ -154,8 +159,13 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             case R.id.cancel:
             case R.id.tv_cancel:
                 if (mPopType == 0) {
+                    InputMethodUtil.toggleSoftKeyboardState(this);
+//                    if(etTitle!=null){
+//                        InputMethodUtil.keyBoard(etTitle,"close");
+//                    }else if(etContent!=null){
+//                        InputMethodUtil.keyBoard(etContent,"close");
+//                    }
 
-                    InputMethodUtil.closeSoftKeyboard(this);
                     finish();
                 } else {
                     popDialog.dismiss();
@@ -164,7 +174,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             case R.id.tv_save:
                 //保存
                 status = "3";
-                if (pathList == null) {
+                if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
                 } else {
                     uploadImg();
@@ -182,9 +192,10 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     return;
                 }
                 status = "0";
-                if (pathList == null) {
+                if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
                 } else {
+                    showProgress();
                     uploadImg();
                 }
                 break;
@@ -215,6 +226,23 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 .setLayoutId(layoutId)
                 .setWidth(270)
                 .setHeight(120)
+                .setGravity(Gravity.CENTER)
+                .setCancelableOutside(false)
+                .setInitPopListener(this)
+                .create();
+        popDialog.show();
+    }
+
+    /**
+     * 根据布局显示弹窗
+     *
+     * @param layoutId 布局id
+     */
+    private void showUploadDialog(int layoutId) {
+        popDialog = new PopDialog.Builder(getSupportFragmentManager(), this)
+                .setLayoutId(layoutId)
+                .setWidth(100)
+                .setHeight(100)
                 .setGravity(Gravity.CENTER)
                 .setCancelableOutside(false)
                 .setInitPopListener(this)
@@ -266,7 +294,17 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onPublishTopicSucceed() {
-        ToastUtil.toast("发布成功");
+        switch (status){
+            case "0":
+                ToastUtil.toast("发布成功");
+                break;
+            case "3":
+                ToastUtil.toast("保存成功");
+                break;
+                default:
+                    break;
+        }
+
         finish();
     }
 
@@ -289,6 +327,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     sb.append(imgKeys.get(i));
                 }
             }
+            dismissProgress();
             mPresenter.fetchPublishTopic(sb.toString(), mTopicTitle, mTopicContent, status, "", forumId);
         }
 
@@ -321,10 +360,12 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     @Override
-    public void onSaveEdit(int flag, String strEdit) {
+    public void onSaveEdit(EditText editText,int flag, String strEdit) {
         if (flag == 1) {
+            this.etTitle = editText;
             mTopicTitle = strEdit;
         } else {
+            this.etContent = editText;
             mTopicContent = strEdit;
         }
     }

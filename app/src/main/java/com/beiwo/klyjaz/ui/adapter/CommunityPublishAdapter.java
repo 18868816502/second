@@ -140,7 +140,7 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             etPublishTitle.addTextChangedListener(new TextWatcher(1));
             etPublishContent.addTextChangedListener(new TextWatcher(2));
             etPublishTitle.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
-            etPublishContent.setFilters(new InputFilter[]{new InputFilter.LengthFilter(150)});
+            etPublishContent.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1500)});
 
         }
     }
@@ -170,7 +170,12 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(saveListener == null){
                 saveListener = (OnSaveEditListener) mContext;
             }
-            saveListener.onSaveEdit(flag,s.toString());
+            if(flag == 1){
+                saveListener.onSaveEdit(contentViewHolder.etPublishTitle,flag,s.toString());
+            }else{
+                saveListener.onSaveEdit(contentViewHolder.etPublishContent,flag,s.toString());
+            }
+
         }
     }
 

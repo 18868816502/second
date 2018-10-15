@@ -153,7 +153,7 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
                 .choose(MimeType.ofAll(), false)
                 .countable(true)
                 .capture(true)
-                .captureStrategy(new CaptureStrategy(true, "com.beihui.market.fileprovider","kaola"))
+                .captureStrategy(new CaptureStrategy(true, "com.beihui.klyjaz.fileprovider","kaola"))
 //                .maxSelectable(9)
                 .maxSelectable(9 - mList.size())
                 .gridExpectedSize(mContext.getResources().getDimensionPixelSize(R.dimen.dp120))
