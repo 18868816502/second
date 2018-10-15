@@ -86,6 +86,10 @@ public class UserProtocolActivity extends BaseComponentActivity {
         } else if (type == 3) {//用户协议
             tvTitle.setText("用户协议");
             url = NetConstants.H5_USER_PROTOCOL;
+        } else if (type == 4) {//借款协议
+            tvTitle.setText("借款协议");
+            String sufUrl = getIntent().getStringExtra("url");
+            url = NetConstants.generateLoanProtocol(UserHelper.getInstance(this).id()) + sufUrl;
         } else {//用户协议
             tvTitle.setText("注册协议");
             url = NetConstants.H5_USER_REGISTRATION_PROTOCOL;

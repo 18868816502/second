@@ -1,8 +1,11 @@
 package com.beihui.market.loan;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -24,6 +27,10 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +132,20 @@ public class TabHomeFragment extends BaseComponentFragment {
                     }
                 });
         //check state
+        checkUserState();
+        //recommond product
+        Api.getInstance().queryGroupProductList()
+                .compose(RxResponse.<List<GroupProductBean>>compatT())
+                .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                    @Override
+                    public void onNext(@NonNull List<GroupProductBean> data) {
+                        refresh_layout.finishRefresh();
+                        homeAdapter.setNormalData(data);
+                    }
+                });
+    }
+
+    private void checkUserState() {
         if (UserHelper.getInstance(getActivity()).isLogin()) {
             Api.getInstance().cashOrder(UserHelper.getInstance(getActivity()).id())
                     .compose(RxResponse.<CashOrder>compatT())
@@ -155,16 +176,6 @@ public class TabHomeFragment extends BaseComponentFragment {
                         }
                     });
         } else homeAdapter.setState(1);
-        //recommond product
-        Api.getInstance().queryGroupProductList()
-                .compose(RxResponse.<List<GroupProductBean>>compatT())
-                .subscribe(new ApiObserver<List<GroupProductBean>>() {
-                    @Override
-                    public void onNext(@NonNull List<GroupProductBean> data) {
-                        refresh_layout.finishRefresh();
-                        homeAdapter.setNormalData(data);
-                    }
-                });
     }
 
     @Override
@@ -189,5 +200,24 @@ public class TabHomeFragment extends BaseComponentFragment {
 
     public static TabHomeFragment newInstance() {
         return new TabHomeFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recieve(String msg) {
+        if (TextUtils.equals("1", msg)) checkUserState();
     }
 }

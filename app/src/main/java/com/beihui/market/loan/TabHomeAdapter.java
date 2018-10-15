@@ -128,7 +128,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             holder.tv_pro_3.setOnClickListener(this);
             holder.tv_pro_4.setOnClickListener(this);
             holder.adt_looper.init(looperTexts, null);
-
+            if (holder.state_container.getChildCount() > 0) holder.state_container.removeAllViews();
             if (state == 1)
                 holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
             if (state == 2)

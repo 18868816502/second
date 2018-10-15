@@ -24,25 +24,25 @@ public class BankInfoUtil {
     private static final Map<String, Integer> bankNameMap = new HashMap<>();
 
     public static Map<String, Integer> bankNameMap() {
-        bankNameMap.put("ABC#中国农业银行", R.mipmap.bank_logo_nonghang);
-        bankNameMap.put("BOC#中国银行", R.mipmap.bank_logo_zhongguo);
-        bankNameMap.put("CITIC#中信银行", R.mipmap.bank_logo_zhongxin);
-        bankNameMap.put("CEB#中国光大银行", R.mipmap.bank_logo_guangda);
-        bankNameMap.put("CIB#兴业银行", R.mipmap.bank_logo_xingye);
-        bankNameMap.put("GDB#广发银行", R.mipmap.bank_logo_guangfa);
-        bankNameMap.put("HXBANK#华夏银行", R.mipmap.bank_logo_huaxia);
-        bankNameMap.put("ICBC#中国工商银行", R.mipmap.bank_logo_gonghang);
-        bankNameMap.put("CMBC#中国民生银行", R.mipmap.bank_logo_minsheng);
-        bankNameMap.put("CCB#中国建设银行", R.mipmap.bank_logo_jianhang);
-        bankNameMap.put("PSBC#中国邮政储蓄银行", R.mipmap.bank_logo_youzheng);
-        bankNameMap.put("SPABANK#平安银行", R.mipmap.bank_logo_pingan);
-        bankNameMap.put("SPDB#浦发银行", R.mipmap.bank_logo_pufa);
-        bankNameMap.put("BJCN#北京银行", R.mipmap.bank_logo_beijing);
-        bankNameMap.put("CMB#招商银行", R.mipmap.bank_logo_zhaoshang);
-        bankNameMap.put("COMM#中国交通银行", R.mipmap.bank_logo_jiaohang);
-        bankNameMap.put("EGBANK#恒丰银行", R.mipmap.bank_logo_hengfeng);
-        bankNameMap.put("BOHAIB#渤海银行", R.mipmap.bank_logo_bohai);
-        bankNameMap.put("CZBANK#浙商银行", R.mipmap.bank_logo_zheshang);
+        bankNameMap.put("3ABC#中国农业银行", R.mipmap.bank_logo_nonghang);
+        bankNameMap.put("3PSBC#中国邮政储蓄银行", R.mipmap.bank_logo_youzheng);
+        bankNameMap.put("2CIB#兴业银行", R.mipmap.bank_logo_xingye);
+        bankNameMap.put("2CMBC#中国民生银行", R.mipmap.bank_logo_minsheng);
+        bankNameMap.put("2CCB#中国建设银行", R.mipmap.bank_logo_jianhang);
+        bankNameMap.put("2SPDB#浦发银行", R.mipmap.bank_logo_pufa);
+        bankNameMap.put("2COMM#中国交通银行", R.mipmap.bank_logo_jiaohang);
+        bankNameMap.put("2EGBANK#恒丰银行", R.mipmap.bank_logo_hengfeng);
+        bankNameMap.put("2BOHAIB#渤海银行", R.mipmap.bank_logo_bohai);
+        bankNameMap.put("4SPABANK#平安银行", R.mipmap.bank_logo_pingan);
+        bankNameMap.put("4CEB#中国光大银行", R.mipmap.bank_logo_guangda);
+        bankNameMap.put("1BOC#中国银行", R.mipmap.bank_logo_zhongguo);
+        bankNameMap.put("1CITIC#中信银行", R.mipmap.bank_logo_zhongxin);
+        bankNameMap.put("1GDB#广发银行", R.mipmap.bank_logo_guangfa);
+        bankNameMap.put("1HXBANK#华夏银行", R.mipmap.bank_logo_huaxia);
+        bankNameMap.put("1ICBC#中国工商银行", R.mipmap.bank_logo_gonghang);
+        bankNameMap.put("1BJCN#北京银行", R.mipmap.bank_logo_beijing);
+        bankNameMap.put("1CMB#招商银行", R.mipmap.bank_logo_zhaoshang);
+        bankNameMap.put("1CZBANK#浙商银行", R.mipmap.bank_logo_zheshang);
         return bankNameMap;
     }
 
@@ -58,6 +58,7 @@ public class BankInfoUtil {
             String name = codesAndNames[1];
             if (TextUtils.equals(name, bankName)) {
                 result.put("bankLogo", entry.getValue());
+                result.put("bg", Integer.valueOf(code.substring(0, 1)));
                 return result;
             }
         }

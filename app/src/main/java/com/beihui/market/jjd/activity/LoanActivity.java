@@ -1,17 +1,13 @@
 package com.beihui.market.jjd.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beihui.market.App;
-import com.beihui.market.BuildConfig;
 import com.beihui.market.R;
 import com.beihui.market.api.Api;
-import com.beihui.market.api.NetConstants;
 import com.beihui.market.base.BaseComponentActivity;
 import com.beihui.market.helper.DataStatisticsHelper;
 import com.beihui.market.helper.SlidePanelHelper;
@@ -21,9 +17,10 @@ import com.beihui.market.jjd.bean.CashOrder;
 import com.beihui.market.tang.StringUtil;
 import com.beihui.market.tang.rx.RxResponse;
 import com.beihui.market.tang.rx.observer.ApiObserver;
-import com.beihui.market.ui.activity.MainActivity;
 import com.beihui.market.ui.activity.UserProtocolActivity;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +66,6 @@ public class LoanActivity extends BaseComponentActivity {
     private int money;
     private float charge;
     private boolean checked = true;
-    private Activity activity;
     private Map<String, Object> map = new HashMap<>();
 
     @Override
@@ -79,7 +75,6 @@ public class LoanActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        activity = this;
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
@@ -133,29 +128,14 @@ public class LoanActivity extends BaseComponentActivity {
                         .subscribe(new ApiObserver<CashOrder>() {
                             @Override
                             public void onNext(@NonNull CashOrder data) {
-                                url = generateUrl(data.getOrderStatus(), data.getOverDate(), data.getAuditDate());
-                                main();
+                                EventBus.getDefault().post("1");
+                                finish();
                             }
                         });
                 break;
             default:
                 break;
         }
-    }
-
-    private String url;
-
-    private void main() {
-        Intent intent = new Intent(activity, MainActivity.class);
-        intent.putExtra("home", true);
-        intent.putExtra("webViewUrl", url);
-        startActivity(intent);
-        finish();
-    }
-
-    private String generateUrl(String status, String overDate, String auditDate) {
-        return BuildConfig.H5_DOMAIN_NEW + "/activity/page/activity-loan-review.html?status=" + status
-                + "&overDate=" + overDate + "&auditDate=" + auditDate + "&audit=" + App.audit + NetConstants.sufPublicParam(UserHelper.getInstance(this).id());
     }
 
     private String sufUrl() {
