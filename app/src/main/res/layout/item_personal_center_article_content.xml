@@ -62,8 +62,11 @@
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
             android:gravity="center|left"
-            tools:text="论坛获取积分、禁言、打赏、提问规则-贷款..."
+            tools:text="论坛获取积分、禁言、打赏、提问规则-贷款论坛获取"
             android:textSize="@dimen/sp17"
+            android:maxEms="10"
+            android:maxLines="3"
+            android:ellipsize="end"
             android:textColor="@color/black_1"/>
         <ImageView
             android:id="@+id/iv_author_content"
@@ -83,6 +86,8 @@
         app:layout_constraintTop_toBottomOf="@id/ll_article_content"
         tools:text="按时发局手动阀聂亚我阿up哦一发哦哦我阿US噢范增圣斗士已经这样了"
         android:textColor="@color/black_2"
+        android:maxEms="80"
+        android:ellipsize="end"
         android:textSize="@dimen/sp11"/>
 
     <LinearLayout
