@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_tool_fragment"
     android:orientation="vertical">
 
     <View
@@ -20,66 +21,143 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="工具"
-            android:textColor="@color/black_1"
+            android:textColor="@color/white"
             android:textSize="17dp"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
-    <com.beihui.market.view.CardLayoutBar
-        android:id="@+id/clb_credit_wrap"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:left_down_Visible="true"
-        app:left_down_color="@color/black_2"
-        app:left_down_style="true"
-        app:left_down_text="快速、安全、准确..."
-        app:left_down_textSize="11dp"
-        app:left_image="@mipmap/ic_credit"
-        app:left_image_Visible="true"
-        app:left_textView_color="@color/color_primary_black"
-        app:left_textView_remark_Visible="true"
-        app:left_textView_style="true"
-        app:left_textView_text="信用查询"
-        app:left_textView_textSize="15dp"
-        app:right_textView1_Visible="true"
-        app:right_textView1_color="#FF5240"
-        app:right_textView1_textSize="12sp" />
+        android:layout_height="match_parent">
 
-    <com.beihui.market.view.CardLayoutBar
-        android:id="@+id/clb_interest_wrap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:left_down_Visible="true"
-        app:left_down_color="@color/black_2"
-        app:left_down_style="true"
-        app:left_down_text="一键帮你算清每月还款"
-        app:left_down_textSize="11dp"
-        app:left_image="@mipmap/ic_house_interest"
-        app:left_image_Visible="true"
-        app:left_textView_color="@color/color_primary_black"
-        app:left_textView_style="true"
-        app:left_textView_text="房贷计算器"
-        app:left_textView_textSize="15sp"
-        app:right_textView1_Visible="true"
-        app:right_textView1_color="#FF5240"
-        app:right_textView1_textSize="12sp" />
+        <FrameLayout
+            android:id="@+id/ll_head_warp"
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
 
-    <com.beihui.market.view.CardLayoutBar
-        android:id="@+id/clb_ticket_wrap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:left_down_Visible="true"
-        app:left_down_color="@color/black_2"
-        app:left_down_style="true"
-        app:left_down_text="发票再多也不怕"
-        app:left_down_textSize="11dp"
-        app:left_image="@mipmap/ic_ticket"
-        app:left_image_Visible="true"
-        app:left_textView_color="@color/color_primary_black"
-        app:left_textView_style="true"
-        app:left_textView_text="发票助手"
-        app:left_textView_textSize="15sp"
-        app:right_textView1_Visible="true"
-        app:right_textView1_color="#FF5240"
-        app:right_textView1_textSize="12sp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_head_warp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="55dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="常用工具"
+                android:textColor="@color/black_1"
+                android:textSize="17dp" />
+
+            <com.beihui.market.view.CardLayoutBar
+                android:id="@+id/clb_credit_wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_down_Visible="true"
+                app:left_down_color="@color/black_2"
+                app:left_down_style="true"
+                app:left_down_text="快速、安全、准确..."
+                app:left_down_textSize="11dp"
+                app:left_image="@mipmap/ic_credit"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_remark_Visible="true"
+                app:left_textView_style="true"
+                app:left_textView_text="信用查询"
+                app:left_textView_textSize="15dp"
+                app:right_textView1_Visible="true"
+                app:right_textView1_color="#FF5240"
+                app:right_textView1_textSize="12sp" />
+
+            <com.beihui.market.view.CardLayoutBar
+                android:id="@+id/clb_interest_wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_down_Visible="true"
+                app:left_down_color="@color/black_2"
+                app:left_down_style="true"
+                app:left_down_text="一键帮你算清每月还款"
+                app:left_down_textSize="11dp"
+                app:left_image="@mipmap/ic_house_interest"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_style="true"
+                app:left_textView_text="房贷计算器"
+                app:left_textView_textSize="15sp"
+                app:right_textView1_Visible="true"
+                app:right_textView1_color="#FF5240"
+                app:right_textView1_textSize="12sp" />
+
+            <com.beihui.market.view.CardLayoutBar
+                android:id="@+id/clb_ticket_wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_down_Visible="true"
+                app:left_down_color="@color/black_2"
+                app:left_down_style="true"
+                app:left_down_text="发票再多也不怕"
+                app:left_down_textSize="11dp"
+                app:left_image="@mipmap/ic_ticket"
+                app:left_image_Visible="true"
+                app:left_textView_color="@color/color_primary_black"
+                app:left_textView_style="true"
+                app:left_textView_text="发票助手"
+                app:left_textView_textSize="15sp"
+                app:right_textView1_Visible="true"
+                app:right_textView1_color="#FF5240"
+                app:right_textView1_textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="140dp"
+            android:background="@mipmap/bg_bill_item">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@mipmap/ic_bill_left"
+                    android:drawablePadding="5dp"
+                    android:text="记一笔账单"
+                    android:textColor="@color/black_1"
+                    android:textSize="15dp" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="0.8dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:background="#08000000" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@mipmap/ic_credit_left"
+                    android:drawablePadding="5dp"
+                    android:text="导入信用卡"
+                    android:textColor="@color/black_1"
+                    android:textSize="15dp" />
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

@@ -391,7 +391,7 @@ public class MainActivity extends BaseComponentActivity {
                 break;
             case R.id.tab_social_root://工具
                 ft.show(tabTool).hide(tabHome).hide(tabDiscover).hide(tabMine).hide(tabSocial);
-                ImmersionBar.with(this).statusBarDarkFont(true).init();
+                ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;

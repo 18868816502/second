@@ -13,6 +13,7 @@ import com.beihui.market.tang.activity.TicketActivity;
 import com.beihui.market.ui.activity.HouseLoanCalculatorActivity;
 import com.beihui.market.ui.activity.UserAuthorizationActivity;
 import com.beihui.market.util.CommonUtils;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,6 +47,7 @@ public class ToolFragment extends BaseComponentFragment {
         int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
         ViewGroup.LayoutParams params = hold_view.getLayoutParams();
         params.height = statusHeight;
+        hold_view.setBackgroundResource(R.color.refresh_one);
         hold_view.setLayoutParams(params);
     }
 
