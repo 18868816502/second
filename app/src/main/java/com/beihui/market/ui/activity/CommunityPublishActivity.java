@@ -27,6 +27,7 @@ import com.beihui.market.ui.listeners.OnItemClickListener;
 import com.beihui.market.ui.listeners.OnSaveEditListener;
 import com.beihui.market.util.FileUtils;
 import com.beihui.market.util.ImageUtils;
+import com.beihui.market.util.InputMethodUtil;
 import com.beihui.market.util.ToastUtil;
 import com.beihui.market.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -37,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
@@ -89,7 +91,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private String mTopicContent;
     private StringBuilder sb;
     private String status = "0";
-    private String forumId;
+    private String forumId = "";
 
     private List<String> httpUrls;
     private List<String> httpImgKeys;
@@ -159,6 +161,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             case R.id.cancel:
             case R.id.tv_cancel:
                 if(mPopType == 0){
+
+                    InputMethodUtil.closeSoftKeyboard(this);
                     finish();
                 }else {
                     popDialog.dismiss();
@@ -167,8 +171,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             case R.id.tv_save:
                 //保存
                 status = "3";
-                if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
+                if(pathList == null){
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"",forumId);
                 }else{
                     uploadImg();
                 }
@@ -185,8 +189,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     return;
                 }
                 status = "0";
-                if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
+                if(pathList == null){
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"",forumId);
                 }else{
                     uploadImg();
                 }
@@ -291,7 +295,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     sb.append(imgKeys.get(i));
                 }
             }
-            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,status,"","");
+            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,status,"",forumId);
         }
 
     }
