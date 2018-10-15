@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = SocialPublishModule.class)
 public interface SocialPublishComponent {
-
     void inject(CommunityPublishActivity activity);
 }

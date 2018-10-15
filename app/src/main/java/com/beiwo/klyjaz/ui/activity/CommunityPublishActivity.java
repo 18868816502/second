@@ -1,4 +1,4 @@
-package com.beihui.market.ui.activity;
+package com.beiwo.klyjaz.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,53 +6,46 @@ import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beihui.market.R;
-import com.beihui.market.base.BaseComponentActivity;
-import com.beihui.market.injection.component.AppComponent;
-import com.beihui.market.social.bean.DraftEditForumBean;
-import com.beihui.market.social.component.DaggerSocialPublishComponent;
-import com.beihui.market.social.contract.SocialPublishContract;
-import com.beihui.market.social.module.SocialPublishModule;
-import com.beihui.market.social.presenter.SocialPublishPresenter;
-import com.beihui.market.ui.adapter.CommunityPublishAdapter;
-import com.beihui.market.ui.listeners.OnItemClickListener;
-import com.beihui.market.ui.listeners.OnSaveEditListener;
-import com.beihui.market.util.FileUtils;
-import com.beihui.market.util.ImageUtils;
-import com.beihui.market.util.InputMethodUtil;
-import com.beihui.market.util.ToastUtil;
-import com.beihui.market.view.dialog.PopDialog;
+import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
+import com.beiwo.klyjaz.social.component.DaggerSocialPublishComponent;
+import com.beiwo.klyjaz.social.contract.SocialPublishContract;
+import com.beiwo.klyjaz.social.module.SocialPublishModule;
+import com.beiwo.klyjaz.social.presenter.SocialPublishPresenter;
+import com.beiwo.klyjaz.ui.adapter.CommunityPublishAdapter;
+import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
+import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
+import com.beiwo.klyjaz.util.ImageUtils;
+import com.beiwo.klyjaz.util.InputMethodUtil;
+import com.beiwo.klyjaz.util.ToastUtil;
+import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
 /**
+ * @author chenguoguo
  * @name loanmarket
  * @class name：com.beihui.market.ui.activity
  * @class describe 社区发布页面
- * @author chenguoguo
  * @time 2018/9/11 18:45
  */
 public class CommunityPublishActivity extends BaseComponentActivity implements SocialPublishContract.View,
-        View.OnClickListener,PopDialog.OnInitPopListener,OnItemClickListener,OnSaveEditListener {
+        View.OnClickListener, PopDialog.OnInitPopListener, OnItemClickListener, OnSaveEditListener {
 
     public static final int REQUEST_CODE_CHOOSE = 23;
 
@@ -119,9 +112,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     private void getIntentData() {
-        if(getIntent()!=null){
+        if (getIntent() != null) {
             forumId = getIntent().getStringExtra("forumId");
-            if(!TextUtils.isEmpty(forumId)){
+            if (!TextUtils.isEmpty(forumId)) {
                 mPresenter.fetchEditForum(forumId);
             }
         }
@@ -149,7 +142,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navigate:
                 //先判断是否有数据
                 showSaveDraftDialog();
@@ -160,43 +153,43 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.cancel:
             case R.id.tv_cancel:
-                if(mPopType == 0){
+                if (mPopType == 0) {
 
                     InputMethodUtil.closeSoftKeyboard(this);
                     finish();
-                }else {
+                } else {
                     popDialog.dismiss();
                 }
                 break;
             case R.id.tv_save:
                 //保存
                 status = "3";
-                if(pathList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"",forumId);
-                }else{
+                if (pathList == null) {
+                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
+                } else {
                     uploadImg();
                 }
                 break;
             case R.id.tv_commit:
                 //提交发布的内容
                 popDialog.dismiss();
-                if(TextUtils.isEmpty(mTopicTitle)){
+                if (TextUtils.isEmpty(mTopicTitle)) {
                     ToastUtil.toast("请填写标题");
                     return;
                 }
-                if(TextUtils.isEmpty(mTopicContent)){
+                if (TextUtils.isEmpty(mTopicContent)) {
                     ToastUtil.toast("请填写内容");
                     return;
                 }
                 status = "0";
-                if(pathList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"",forumId);
-                }else{
+                if (pathList == null) {
+                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
+                } else {
                     uploadImg();
                 }
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -205,7 +198,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
      */
     private void uploadImg() {
         int size = pathList.size();
-        for(int i = 0 ; i < size ; i++){
+        for (int i = 0; i < size; i++) {
             Bitmap bitmap = ImageUtils.getFixedBitmap(pathList.get(i), 512);
             base64List.add(bitmap);
         }
@@ -214,10 +207,11 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     /**
      * 根据布局显示弹窗
+     *
      * @param layoutId 布局id
      */
-    private void showDialogTips(int layoutId){
-        popDialog = new PopDialog.Builder(getSupportFragmentManager(),this)
+    private void showDialogTips(int layoutId) {
+        popDialog = new PopDialog.Builder(getSupportFragmentManager(), this)
                 .setLayoutId(layoutId)
                 .setWidth(270)
                 .setHeight(120)
@@ -230,7 +224,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void initPop(View view, PopDialog mPopDialog) {
-        switch (mPopType){
+        switch (mPopType) {
             case 0:
                 view.findViewById(R.id.tv_cancel).setOnClickListener(this);
                 view.findViewById(R.id.tv_save).setOnClickListener(this);
@@ -239,8 +233,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 view.findViewById(R.id.tv_cancel).setOnClickListener(this);
                 view.findViewById(R.id.tv_commit).setOnClickListener(this);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
 
     }
@@ -259,7 +253,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onItemClick(int position) {
-        if(pathList != null) {
+        if (pathList != null) {
             pathList.remove(position);
             adapter.setHeadData(pathList);
         }
@@ -278,24 +272,24 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onUploadImgSucceed(String imgKey) {
-        uploadIndex ++;
+        uploadIndex++;
         imgKeys.add(imgKey);
-        if(uploadIndex < base64List.size()){
+        if (uploadIndex < base64List.size()) {
             mPresenter.uploadForumImg(base64List.get(uploadIndex));
             return;
         }
 
         //所有图片上传完毕
-        if(imgKeys.size() == base64List.size()){
+        if (imgKeys.size() == base64List.size()) {
             int size = imgKeys.size();
-            for(int i = 0 ; i < size ; i++){
-                if(i != size - 1){
-                    sb.append(imgKeys.get(i)+"#");
-                }else{
+            for (int i = 0; i < size; i++) {
+                if (i != size - 1) {
+                    sb.append(imgKeys.get(i) + "#");
+                } else {
                     sb.append(imgKeys.get(i));
                 }
             }
-            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,status,"",forumId);
+            mPresenter.fetchPublishTopic(sb.toString(), mTopicTitle, mTopicContent, status, "", forumId);
         }
 
     }
@@ -310,14 +304,14 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onEditForumSucceed(DraftEditForumBean forumBean) {
-        if(forumBean!=null) {
-            if(forumBean.getImgKey()!=null&&forumBean.getImgKey().size()!=0){
-                for(int i = 0 ; i < forumBean.getImgKey().size() ; i ++ ){
+        if (forumBean != null) {
+            if (forumBean.getImgKey() != null && forumBean.getImgKey().size() != 0) {
+                for (int i = 0; i < forumBean.getImgKey().size(); i++) {
                     httpImgKeys.add(forumBean.getImgKey().get(i).getId());
                     httpUrls.add(forumBean.getImgKey().get(i).getImgUrl());
                 }
             }
-            adapter.setData(httpUrls,forumBean.getTitle(),forumBean.getContent());
+            adapter.setData(httpUrls, forumBean.getTitle(), forumBean.getContent());
         }
     }
 
@@ -328,23 +322,23 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onSaveEdit(int flag, String strEdit) {
-        if(flag == 1){
+        if (flag == 1) {
             mTopicTitle = strEdit;
-        }else{
+        } else {
             mTopicContent = strEdit;
         }
     }
 
     @Override
     public void onBackPressed() {
-       showSaveDraftDialog();
+        showSaveDraftDialog();
     }
 
-    private void showSaveDraftDialog(){
-        if(pathList.size() != 0 || !TextUtils.isEmpty(mTopicTitle) || !TextUtils.isEmpty(mTopicContent)){
+    private void showSaveDraftDialog() {
+        if (pathList.size() != 0 || !TextUtils.isEmpty(mTopicTitle) || !TextUtils.isEmpty(mTopicContent)) {
             mPopType = 0;
             showDialogTips(R.layout.dialog_community_publish_save);
-        }else{
+        } else {
             finish();
         }
     }
