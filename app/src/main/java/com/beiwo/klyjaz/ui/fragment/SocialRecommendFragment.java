@@ -1,4 +1,4 @@
-package com.beiwo.klyjaz.ui.fragment;
+package com.beihui.market.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,22 +9,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.api.Api;
-import com.beiwo.klyjaz.api.ResultEntity;
-import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
-import com.beiwo.klyjaz.ui.adapter.social.SocialRecommendAdapter;
-import com.beiwo.klyjaz.util.ParamsUtils;
-import com.beiwo.klyjaz.util.RxUtil;
-import com.beiwo.klyjaz.util.ToastUtil;
+import com.beihui.market.R;
+import com.beihui.market.api.Api;
+import com.beihui.market.api.ResultEntity;
+import com.beihui.market.base.BaseComponentFragment;
+import com.beihui.market.helper.UserHelper;
+import com.beihui.market.social.bean.SocialTopicBean;
+import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.ui.activity.CommunityPublishActivity;
+import com.beihui.market.ui.activity.UserAuthorizationActivity;
+import com.beihui.market.ui.adapter.social.SocialRecommendAdapter;
+import com.beihui.market.util.ParamsUtils;
+import com.beihui.market.util.RxUtil;
+import com.beihui.market.util.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -72,12 +77,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void initDatas() {
-//        List<SocialTopicBean.ForumBean> mList = new ArrayList<>();
-//        for(int i = 0 ; i < 10 ; i++){
-//            SocialTopicBean.ForumBean bean = new SocialTopicBean.ForumBean();
-//            mList.add(bean);
-//        }
-//        adapter.setDatas(mList);
         initListener();
         fetchData();
     }
@@ -117,7 +116,11 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void onViewClick(View view){
         switch (view.getId()){
             case R.id.iv_publish:
-                startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                if(UserHelper.getInstance(getActivity()).isLogin()) {
+                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                }else{
+                    UserAuthorizationActivity.launch(getActivity());
+                }
                 break;
             default:
                 break;

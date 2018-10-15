@@ -1,4 +1,4 @@
-package com.beiwo.klyjaz.ui.activity;
+package com.beihui.market.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,31 +6,39 @@ import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
-import com.beiwo.klyjaz.social.component.DaggerSocialPublishComponent;
-import com.beiwo.klyjaz.social.contract.SocialPublishContract;
-import com.beiwo.klyjaz.social.module.SocialPublishModule;
-import com.beiwo.klyjaz.social.presenter.SocialPublishPresenter;
-import com.beiwo.klyjaz.ui.adapter.CommunityPublishAdapter;
-import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
-import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
-import com.beiwo.klyjaz.util.ImageUtils;
-import com.beiwo.klyjaz.util.ToastUtil;
-import com.beiwo.klyjaz.view.dialog.PopDialog;
+import com.beihui.market.R;
+import com.beihui.market.base.BaseComponentActivity;
+import com.beihui.market.injection.component.AppComponent;
+import com.beihui.market.social.bean.DraftEditForumBean;
+import com.beihui.market.social.component.DaggerSocialPublishComponent;
+import com.beihui.market.social.contract.SocialPublishContract;
+import com.beihui.market.social.module.SocialPublishModule;
+import com.beihui.market.social.presenter.SocialPublishPresenter;
+import com.beihui.market.ui.adapter.CommunityPublishAdapter;
+import com.beihui.market.ui.listeners.OnItemClickListener;
+import com.beihui.market.ui.listeners.OnSaveEditListener;
+import com.beihui.market.util.FileUtils;
+import com.beihui.market.util.ImageUtils;
+import com.beihui.market.util.InputMethodUtil;
+import com.beihui.market.util.ToastUtil;
+import com.beihui.market.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
@@ -83,7 +91,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private String mTopicContent;
     private StringBuilder sb;
     private String status = "0";
-    private String forumId;
+    private String forumId = "";
 
     private List<String> httpUrls;
     private List<String> httpImgKeys;
@@ -152,13 +160,19 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.cancel:
             case R.id.tv_cancel:
-                popDialog.dismiss();
+                if(mPopType == 0){
+
+                    InputMethodUtil.closeSoftKeyboard(this);
+                    finish();
+                }else {
+                    popDialog.dismiss();
+                }
                 break;
             case R.id.tv_save:
                 //保存
-                status = "0";
-                if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
+                status = "3";
+                if(pathList == null){
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"",forumId);
                 }else{
                     uploadImg();
                 }
@@ -174,9 +188,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     ToastUtil.toast("请填写内容");
                     return;
                 }
-                status = "3";
-                if(uriList == null){
-                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"","");
+                status = "0";
+                if(pathList == null){
+                    mPresenter.fetchPublishTopic("",mTopicTitle,mTopicContent,status,"",forumId);
                 }else{
                     uploadImg();
                 }
@@ -281,7 +295,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     sb.append(imgKeys.get(i));
                 }
             }
-            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,status,"","");
+            mPresenter.fetchPublishTopic(sb.toString(),mTopicTitle,mTopicContent,status,"",forumId);
         }
 
     }
