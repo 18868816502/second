@@ -30,12 +30,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/ll_head_warp"
             android:layout_width="match_parent"
-            android:layout_height="180dp">
+            android:layout_height="180dp"
+            android:orientation="vertical">
 
-        </FrameLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,7 +110,7 @@
                 app:left_textView_text="发票助手"
                 app:left_textView_textSize="15sp"
                 app:right_textView1_Visible="true"
-                app:right_textView1_color="#FF5240"
+                app:right_textView1_color="#ff5240"
                 app:right_textView1_textSize="12sp" />
         </LinearLayout>
 

@@ -68,7 +68,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private List<String> looperTexts = new ArrayList<>();
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
-    private int state;//1 正常状态 2 审核中 3 审核失败
+    private int state = 1;//1 正常状态 2 审核中 3 审核失败
     private int progress = 500;
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles) {
@@ -202,7 +202,6 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             tv_go_loan.setOnClickListener(this);
         }
         if (state == 2) {//审核中
-
         }
         if (state == 3) {//审核失败
 
