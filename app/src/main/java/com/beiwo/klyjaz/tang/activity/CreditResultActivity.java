@@ -89,9 +89,7 @@ public class CreditResultActivity extends BaseComponentActivity {
                     Intent intent = new Intent(view.getContext(), WebViewActivity.class);
                     try {
                         intent.putExtra("webViewUrl", URLDecoder.decode(url, "utf-8"));
-                        System.out.println("webview url = " + URLDecoder.decode(url, "utf-8"));
                     } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
                     }
                     startActivity(intent);
                     // 相应完成返回true

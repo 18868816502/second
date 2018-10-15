@@ -6,30 +6,38 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@mipmap/ic_ticket" />
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="12dp"
+        android:src="@mipmap/home_pic_big02" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="审核失败"
         android:textColor="@color/black_1"
-        android:textSize="21dp" />
+        android:textSize="16dp" />
 
     <TextView
+        android:id="@+id/tv_time_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="倒计时 79:59:59"
+        android:layout_marginTop="3dp"
+        android:text="79:59:59"
         android:textColor="@color/black_1"
-        android:textSize="12dp" />
+        android:textSize="11dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="1.5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:text="非常抱歉，本次贷款申请未通过，请三天后再次提交系统审核或选择其它产品！"
+        android:text="非常抱歉，本次贷款申请未通过，\n请三天后再次提交系统审核或选择其它产品！"
         android:textColor="@color/black_2"
-        android:textSize="12dp" />
+        android:textSize="10dp" />
 </LinearLayout>

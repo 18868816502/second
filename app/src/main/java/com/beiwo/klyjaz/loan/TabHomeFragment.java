@@ -156,17 +156,10 @@ public class TabHomeFragment extends BaseComponentFragment {
                                 if ("1".equals(data.getOrderStatus())) {//审核被拒
                                     long current = StringUtil.time2NowSecond(data.getGmtCreate());//目前
                                     long gap = StringUtil.timeGapSecond(data.getOverDate(), data.getGmtCreate());//设定
-                                    if (current >= gap) {//超过设定时间
-                                        homeAdapter.setState(1);
-                                    } else {//未超过设定时间
-                                        homeAdapter.setState(3);
-                                    }
-                                } else {//审核中
-                                    homeAdapter.setState(2);
-                                }
-                            } else {
-                                homeAdapter.setState(1);
-                            }
+                                    if (current >= gap) homeAdapter.setState(1);//超过设定时间
+                                    else homeAdapter.setState(3, data.getOverDate());//未超过设定时间
+                                } else homeAdapter.setState(2);//审核中
+                            } else homeAdapter.setState(1);
                         }
 
                         @Override

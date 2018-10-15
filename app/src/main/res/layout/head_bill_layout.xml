@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/refresh_one" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="25dp"
+        android:background="@mipmap/bg_bill_item">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="28dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/head_month_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_2"
+                android:textSize="12dp"
+                tools:text="10月待还(元)" />
+
+            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+                android:id="@+id/head_bill_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_1"
+                android:textSize="32dp"
+                tools:text="8,350.16" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/head_add_bill"
+            android:layout_width="72dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="28dp"
+            android:background="@drawable/bg_ff5240_r16"
+            android:gravity="center"
+            android:text="记一笔"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+    </FrameLayout>
+</RelativeLayout>

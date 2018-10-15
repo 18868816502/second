@@ -115,6 +115,16 @@ public class StringUtil {
         }
     }
 
+    public static long str2Stamp(String time) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_Y_M_D_H_M_S);
+            Date date = dateFormat.parse(time);
+            return date.getTime();
+        } catch (ParseException e) {
+        }
+        return 0;
+    }
+
     public static String date2Now(int distanceDay) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_Y_M_D);
@@ -127,5 +137,13 @@ public class StringUtil {
         } catch (Exception e) {
         }
         return "";
+    }
+
+    public static String getFormatHMS(long time) {
+        time = time / 1000;//总秒数
+        int s = (int) (time % 60);//秒
+        int m = (int) ((time / 60) % 60);//分
+        int h = (int) (time / 3600);//时
+        return String.format("%02d:%02d:%02d", h, m, s);
     }
 }

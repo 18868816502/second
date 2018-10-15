@@ -957,7 +957,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/auditList")
-    Observable<ResultEntity<TabImageBean>> queryBottomImage(@Field("platform")int platform);
+    Observable<ResultEntity<TabImageBean>> queryBottomImage(@Field("platform") int platform);
 
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/sum")

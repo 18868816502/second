@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -30,6 +33,7 @@ import com.beiwo.klyjaz.jjd.activity.VerticyIDActivity;
 import com.beiwo.klyjaz.jjd.bean.CashUserInfo;
 import com.beiwo.klyjaz.tang.Decoration;
 import com.beiwo.klyjaz.tang.DlgUtil;
+import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
@@ -68,7 +72,23 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
     private int state = 1;//1 正常状态 2 审核中 3 审核失败
+    private String overDate;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private long currentMillSecond = 0;//当前毫秒数
+    private Runnable timeRunable = new Runnable() {
+        @Override
+        public void run() {
+            currentMillSecond = currentMillSecond - 1000;
+            if (currentMillSecond / 1000 <= 0) {
+                setState(1);
+                return;
+            }
+            tv_time_counter.setText(StringUtil.getFormatHMS(currentMillSecond));
+            handler.postDelayed(this, 1000);
+        }
+    };
     private int progress = 500;
+    private PopAdapter popAdapter = new PopAdapter();
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles) {
         this.imgs = imgs;
@@ -84,6 +104,12 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     public void setState(int state) {
         this.state = state;
+        notifyItemChanged(0);
+    }
+
+    public void setState(int state, String overDate) {
+        this.state = state;
+        this.overDate = overDate;
         notifyItemChanged(0);
     }
 
@@ -107,8 +133,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 public void fillBannerItem(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
                     Glide.with(context)
                             .load(model)
-                            .placeholder(R.color.transparent)
-                            .error(R.color.transparent)
+                            .placeholder(R.drawable.no_banner)
+                            .error(R.drawable.no_banner)
                             .fitCenter()
                             .into(itemView);
                 }
@@ -130,10 +156,44 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             if (holder.state_container.getChildCount() > 0) holder.state_container.removeAllViews();
             if (state == 1)
                 holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
-            if (state == 2)
+            if (state == 2) {
                 holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
-            if (state == 3)
+                Api.getInstance().queryGroupProductList()
+                        .compose(RxResponse.<List<GroupProductBean>>compatT())
+                        .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                            @Override
+                            public void onNext(@NonNull List<GroupProductBean> data) {
+                                popAdapter.setNewData(data);
+                            }
+                        });
+                DlgUtil.createDlg(context, R.layout.dlg_checking, new DlgUtil.OnDlgViewClickListener() {
+                    @Override
+                    public void onViewClick(final Dialog dialog, View dlgView) {
+                        RecyclerView recycler = dlgView.findViewById(R.id.recycler);
+                        recycler.setLayoutManager(new GridLayoutManager(context, 3) {
+                            @Override
+                            public boolean canScrollVertically() {
+                                return false;
+                            }
+                        });
+                        recycler.setAdapter(popAdapter);
+                        DlgUtil.cancelClick(dialog, dlgView);
+                        popAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                productItemClick(popAdapter.getData().get(position));
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                });
+            }
+            if (state == 3) {
                 holder.state_container.addView(initState1(R.layout.layout_state_3, 3));
+                long nowStamp = System.currentTimeMillis();
+                currentMillSecond = StringUtil.timeGapSecond(overDate, StringUtil.stamp2Str(nowStamp)) * 1000;
+                handler.post(timeRunable);
+            }
         }
         if (holder.viewType == TYPE_NORMAL) {
             holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
@@ -150,25 +210,29 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                    final GroupProductBean product = adapter.getData().get(position);
-                    if (!UserHelper.getInstance(context).isLogin()) {
-                        context.startActivity(new Intent(context, UserAuthorizationActivity.class));
-                        return;
-                    }
-                    Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(context).id(), product.getId())
-                            .compose(RxResponse.<String>compatT())
-                            .subscribe(new ApiObserver<String>() {
-                                @Override
-                                public void onNext(@NonNull String data) {
-                                    Intent intent = new Intent(context, WebViewActivity.class);
-                                    intent.putExtra("webViewUrl", data);
-                                    intent.putExtra("webViewTitleName", product.getProductName());
-                                    context.startActivity(intent);
-                                }
-                            });
+                    GroupProductBean product = adapter.getData().get(position);
+                    productItemClick(product);
                 }
             });
         }
+    }
+
+    private void productItemClick(final GroupProductBean product) {
+        if (!UserHelper.getInstance(context).isLogin()) {
+            context.startActivity(new Intent(context, UserAuthorizationActivity.class));
+            return;
+        }
+        Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(context).id(), product.getId())
+                .compose(RxResponse.<String>compatT())
+                .subscribe(new ApiObserver<String>() {
+                    @Override
+                    public void onNext(@NonNull String data) {
+                        Intent intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra("webViewUrl", data);
+                        intent.putExtra("webViewTitleName", product.getProductName());
+                        context.startActivity(intent);
+                    }
+                });
     }
 
     //state 1
@@ -179,6 +243,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private TextView tv_go_loan;
     //state 2
     //state 3
+    private TextView tv_time_counter;
 
     private View initState1(int layoutRes, int state) {
         View view = LayoutInflater.from(context).inflate(layoutRes, null);
@@ -203,7 +268,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         if (state == 2) {//审核中
         }
         if (state == 3) {//审核失败
-
+            tv_time_counter = view.findViewById(R.id.tv_time_counter);
         }
         return view;
     }

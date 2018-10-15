@@ -63,6 +63,16 @@ public class DlgUtil {
         void onViewClick(Dialog dialog, View dlgView);
     }
 
+    /*取消按钮*/
+    public static void cancelClick(final Dialog dialog, View dlgView) {
+        dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
     public enum DlgLocation {
         TOP, CENTER, BOTTOM
     }

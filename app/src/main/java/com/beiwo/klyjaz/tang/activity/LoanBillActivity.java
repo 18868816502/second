@@ -60,7 +60,6 @@ public class LoanBillActivity extends BaseComponentActivity {
     ImageView iv_car_icon;
 
     private LoanBillAdapter loanBillAdapter;
-    private Activity activity;
     private LoanAccountIconBean houseBean = null;
     private LoanAccountIconBean carBean = null;
     private LoanAccountIconBean customBean = null;
@@ -76,7 +75,6 @@ public class LoanBillActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
         setupToolbarBackNavigation(mToolbar, R.mipmap.finish_icon);
-        activity = this;
     }
 
     @Override
