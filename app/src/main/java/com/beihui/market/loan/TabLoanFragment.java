@@ -96,6 +96,7 @@ public class TabLoanFragment extends BaseComponentFragment {
 
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
+        map.put("platform", 1);
 
         right = ContextCompat.getDrawable(getActivity(), R.drawable.loan_selected);
         right.setBounds(0, 0, right.getMinimumWidth(), right.getMinimumHeight());
@@ -110,6 +111,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                 map.clear();
                 map.put("pageNo", pageNo);
                 map.put("pageSize", pageSize);
+                map.put("platform", 1);
                 request(map);
             }
         });
@@ -118,8 +120,9 @@ public class TabLoanFragment extends BaseComponentFragment {
             public void onLoadMore(@android.support.annotation.NonNull RefreshLayout refreshLayout) {
                 pageNo++;
                 map.clear();
-                map.put("pageSize", pageSize);
                 map.put("pageNo", pageNo);
+                map.put("pageSize", pageSize);
+                map.put("platform", 1);
                 switch (tag) {
                     case 1:
                         if (borrowingLow != -1) map.put("borrowingLow", borrowingLow);
@@ -265,6 +268,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 map.clear();
                                 map.put("pageNo", pageNo);
                                 map.put("pageSize", pageSize);
+                                map.put("platform", 1);
                                 switch (v.getId()) {
                                     case R.id.tv_money_all:
                                         moneyType = 0;
@@ -375,6 +379,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 map.clear();
                                 map.put("pageNo", pageNo);
                                 map.put("pageSize", pageSize);
+                                map.put("platform", 1);
                                 switch (v.getId()) {
                                     case R.id.tv_kind_1:
                                         productType = 0;
@@ -464,6 +469,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 map.clear();
                                 map.put("pageNo", pageNo);
                                 map.put("pageSize", pageSize);
+                                map.put("platform", 1);
                                 switch (v.getId()) {
                                     case R.id.tv_sort_1:
                                         type = 0;

@@ -952,7 +952,7 @@ public class Api {
 
     /*查询底部栏图*/
     public Observable<ResultEntity<TabImageBean>> queryBottomImage() {
-        return service.queryBottomImage();
+        return service.queryBottomImage(1);
     }
 
     /*查询积分总额*/
