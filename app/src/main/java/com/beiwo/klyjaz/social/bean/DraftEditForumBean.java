@@ -60,8 +60,8 @@ public class DraftEditForumBean {
         private String imgUrl;
         private String imgType;
         private String forumTopicId;
-        private long gmtCreate;
-        private long gmtModify;
+        private String gmtCreate;
+        private String gmtModify;
 
         public String getId() {
             return id;
@@ -95,19 +95,19 @@ public class DraftEditForumBean {
             this.forumTopicId = forumTopicId;
         }
 
-        public long getGmtCreate() {
+        public String getGmtCreate() {
             return gmtCreate;
         }
 
-        public void setGmtCreate(long gmtCreate) {
+        public void setGmtCreate(String gmtCreate) {
             this.gmtCreate = gmtCreate;
         }
 
-        public long getGmtModify() {
+        public String getGmtModify() {
             return gmtModify;
         }
 
-        public void setGmtModify(long gmtModify) {
+        public void setGmtModify(String gmtModify) {
             this.gmtModify = gmtModify;
         }
     }

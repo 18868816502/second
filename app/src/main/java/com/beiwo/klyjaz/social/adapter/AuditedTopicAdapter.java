@@ -33,6 +33,7 @@ public class AuditedTopicAdapter extends BaseQuickAdapter<DraftsBean, BaseViewHo
         helper.setText(R.id.tv_title,item.getTitle())
         .setText(R.id.tv_date,item.getGmtCreate());
         helper.addOnClickListener(R.id.tv_delete);
+        helper.addOnClickListener(R.id.tv_audit_state);
         if(flag == 1){
             helper.setVisible(R.id.tv_audit_state,true);
             if(TextUtils.equals("2",item.getForumStatus())){

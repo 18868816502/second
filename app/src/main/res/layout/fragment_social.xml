@@ -33,10 +33,10 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dp10"
-            android:layout_marginStart="@dimen/dp10"
-            android:layout_marginRight="@dimen/dp10"
-            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginStart="@dimen/dp5"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginEnd="@dimen/dp5"
             android:paddingTop="@dimen/dp10"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

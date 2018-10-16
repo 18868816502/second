@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,8 +88,12 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             viewHolder.tvCommentPraise.setTag(position);
             viewHolder.ivArticleComment.setTag(position);
             viewHolder.tvDelete.setTag(position);
+            String content = "回复<font color='#2a84ff'>"
+                    + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
+                    + "</font>:"
+                    + (TextUtils.isEmpty(datas.get(position).getContent())?"":datas.get(position).getContent());
 
-            viewHolder.tvCommentContent.setText(datas.get(position).getContent());
+            viewHolder.tvCommentContent.setText(Html.fromHtml(content));
             viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
             if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
                 viewHolder.tvDelete.setVisibility(View.VISIBLE);
@@ -101,7 +106,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         if(isOpen){
-            return datas.size();
+            return datas.size() + 1;
         }else{
             if(datas.size() > 1){
                 return 2;

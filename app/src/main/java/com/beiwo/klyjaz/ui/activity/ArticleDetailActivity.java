@@ -30,6 +30,7 @@ import com.beiwo.klyjaz.ui.presenter.ArticleDetailPresenter;
 import com.beiwo.klyjaz.util.KeyBoardUtils;
 import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.beiwo.klyjaz.view.ClearEditText;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -69,7 +70,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     ArticleDetailPresenter presenter;
 
     private ArticleDetailAdapter adapter;
-    private EditText etInput;
+    private ClearEditText etInput;
     private FragmentManager fManager;
     /**
      * 0:关注 1:删除 2:其它用户更多（举报）3：自己用户更多（删除） 4:评论弹窗列表  5.评论输入框弹窗
@@ -173,21 +174,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case R.id.report01:
                 hideDialog();
                 presenter.fetchSaveReport("", forumBean.getForumId(), "1", getString(R.string.article_more_report_content1));
-                ToastUtil.toast(getString(R.string.article_more_report_content1));
                 break;
             case R.id.report02:
                 hideDialog();
-                ToastUtil.toast(getString(R.string.article_more_report_content2));
                 presenter.fetchSaveReport("", forumBean.getForumId(), "1", getString(R.string.article_more_report_content2));
                 break;
             case R.id.report03:
                 hideDialog();
-                ToastUtil.toast(getString(R.string.article_more_report_content3));
                 presenter.fetchSaveReport("", forumBean.getForumId(), "1", getString(R.string.article_more_report_content3));
                 break;
             case R.id.report04:
                 hideDialog();
-                ToastUtil.toast(getString(R.string.article_more_report_content4));
                 presenter.fetchSaveReport("", forumBean.getForumId(), "1", getString(R.string.article_more_report_content4));
                 break;
             case R.id.iv_close:
@@ -218,15 +215,18 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         switch (tag) {
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
-                presenter.fetchReplyForumInfo("", "1", etInput.getText().toString(), forumBean.getForumId(), "", "");
+                presenter.fetchReplyForumInfo("", "1",
+                        etInput.getText().toString(), forumBean.getForumId(), "", "");
                 break;
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
-                presenter.fetchReplyForumInfo("", "2", etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId());
+                presenter.fetchReplyForumInfo("", "2",
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId());
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-                presenter.fetchReplyForumInfo("", "2", etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getToUserId(), replyDtoListBean.getId());
+                presenter.fetchReplyForumInfo("", "2",
+                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId());
                 break;
             default:
                 break;
@@ -309,8 +309,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 int comPosition = (int) view.getTag();
+                replyBean = datas.get(comPosition);
                 replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
-                ToastUtil.toast("评论第" + comPosition + "条");
+//                reply();
+//                ToastUtil.toast("评论第" + comPosition + "条");
+                mPopType = 5;
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
                 //删除评论
             case ConstantTag.TAG_COMMENT_DELETE:
@@ -424,20 +428,20 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onReplyCommentSucceed() {
-        ToastUtil.toast("回复成功");
         switch (tag) {
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
+                ToastUtil.toast("评论成功");
                 break;
 
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
-
+                ToastUtil.toast("回复成功");
                 break;
 
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-
+                ToastUtil.toast("回复成功");
                 break;
             default:
                 break;
@@ -446,7 +450,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onSaveReportSucceed() {
-        ToastUtil.toast("举报成功");
+        ToastUtil.toast("举报成功，我们尽快处理！");
     }
 
     @Override
