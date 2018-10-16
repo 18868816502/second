@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
+import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
@@ -120,18 +122,18 @@ public class ProTypeActivity extends BaseComponentActivity {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
                 final Product product = adapter.getData().get(position);
-                if (!UserHelper.getInstance(context).isLogin()) {
+                if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
                     startActivity(new Intent(context, UserAuthorizationActivity.class));
                     return;
                 }
-                Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(context).id(), product.getId())
+                String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
+                Api.getInstance().queryGroupProductSkip(id, product.getId())
                         .compose(RxResponse.<String>compatT())
                         .subscribe(new ApiObserver<String>() {
                             @Override
                             public void onNext(@NonNull String data) {
                                 Intent intent = new Intent(context, WebViewActivity.class);
                                 intent.putExtra("webViewUrl", data);
-                                //intent.putExtra("title", ""/*product.getProductName()*/);
                                 intent.putExtra("webViewTitleName", product.getProductName());
                                 startActivity(intent);
                             }

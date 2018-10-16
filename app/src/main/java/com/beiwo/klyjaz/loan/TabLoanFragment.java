@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.loan;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
+import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
@@ -62,6 +65,7 @@ public class TabLoanFragment extends BaseComponentFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
+    private Context context;
     private Map<String, Object> map = new HashMap<>();
     private int pageNo = 1;
     private int pageSize = 10;
@@ -83,7 +87,8 @@ public class TabLoanFragment extends BaseComponentFragment {
 
     @Override
     public void configViews() {
-        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+        context = getActivity();
+        int statusHeight = CommonUtils.getStatusBarHeight(context);
         ViewGroup.LayoutParams params = hold_view.getLayoutParams();
         params.height = statusHeight;
         hold_view.setLayoutParams(params);
@@ -97,7 +102,7 @@ public class TabLoanFragment extends BaseComponentFragment {
         map.put("pageSize", pageSize);
         map.put("platform", 1);
 
-        right = ContextCompat.getDrawable(getActivity(), R.drawable.loan_selected);
+        right = ContextCompat.getDrawable(context, R.drawable.loan_selected);
         right.setBounds(0, 0, right.getMinimumWidth(), right.getMinimumHeight());
         selectColor = ContextCompat.getColor(getContext(), R.color.refresh_one);
 
@@ -143,16 +148,18 @@ public class TabLoanFragment extends BaseComponentFragment {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
                 final Product product = adapter.getData().get(position);
-                if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    startActivity(new Intent(getActivity(), UserAuthorizationActivity.class));
+                //product.setSuccessCount(product.getSuccessCount() + 1);
+                if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
+                    startActivity(new Intent(context, UserAuthorizationActivity.class));
                     return;
                 }
-                Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(getActivity()).id(), product.getId())
+                String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
+                Api.getInstance().queryGroupProductSkip(id, product.getId())
                         .compose(RxResponse.<String>compatT())
                         .subscribe(new ApiObserver<String>() {
                             @Override
                             public void onNext(@NonNull String data) {
-                                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                                Intent intent = new Intent(context, WebViewActivity.class);
                                 intent.putExtra("webViewUrl", data);
                                 intent.putExtra("webViewTitleName", product.getProductName());
                                 startActivity(intent);
@@ -179,7 +186,7 @@ public class TabLoanFragment extends BaseComponentFragment {
     }
 
     private void initRecycler() {
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler.setLayoutManager(new LinearLayoutManager(context));
         recycler.setAdapter(adapter);
     }
 
@@ -220,7 +227,7 @@ public class TabLoanFragment extends BaseComponentFragment {
         tv_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtra("home", true);
                 startActivity(intent);
             }
@@ -241,7 +248,7 @@ public class TabLoanFragment extends BaseComponentFragment {
             case R.id.dtv_money:
                 dtv_money.setImg(R.mipmap.ic_up);
                 dtv_money.setTextHighLight(true);
-                PopUtil.pop(getActivity(), R.layout.menu_money, dtv_money, new PopUtil.PopViewClickListener() {
+                PopUtil.pop(context, R.layout.menu_money, dtv_money, new PopUtil.PopViewClickListener() {
                     @Override
                     public void popClick(final PopupWindow popup) {
                         popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -352,7 +359,7 @@ public class TabLoanFragment extends BaseComponentFragment {
             case R.id.dtv_kind:
                 dtv_kind.setImg(R.mipmap.ic_up);
                 dtv_kind.setTextHighLight(true);
-                PopUtil.pop(getActivity(), R.layout.menu_kind, dtv_kind, new PopUtil.PopViewClickListener() {
+                PopUtil.pop(context, R.layout.menu_kind, dtv_kind, new PopUtil.PopViewClickListener() {
                     @Override
                     public void popClick(final PopupWindow popup) {
                         popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -442,7 +449,7 @@ public class TabLoanFragment extends BaseComponentFragment {
             case R.id.dtv_sort:
                 dtv_sort.setImg(R.mipmap.ic_up);
                 dtv_sort.setTextHighLight(true);
-                PopUtil.pop(getActivity(), R.layout.menu_sort, dtv_sort, new PopUtil.PopViewClickListener() {
+                PopUtil.pop(context, R.layout.menu_sort, dtv_sort, new PopUtil.PopViewClickListener() {
                     @Override
                     public void popClick(final PopupWindow popup) {
                         popup.setOnDismissListener(new PopupWindow.OnDismissListener() {

@@ -24,6 +24,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.App;
+import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
@@ -81,8 +82,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         public void run() {
             currentMillSecond = currentMillSecond - 1000;
             if (currentMillSecond / 1000 <= 0) {
-                if (state == 3) setState(1);//审核失败 => 可重新提交审核
-                if (state == 2) setState(3);//
+                if (state == 3) setState(1);//审核失败 => 普通状态
+                if (state == 2) setState(3);//审核中 => 审核失败
                 return;
             }
             if (state == 3) tv_time_counter.setText(StringUtil.getFormatHMS(currentMillSecond));
@@ -225,11 +226,12 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     }
 
     private void productItemClick(final GroupProductBean product) {
-        if (!UserHelper.getInstance(context).isLogin()) {
+        if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
             context.startActivity(new Intent(context, UserAuthorizationActivity.class));
             return;
         }
-        Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(context).id(), product.getId())
+        String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
+        Api.getInstance().queryGroupProductSkip(id, product.getId())
                 .compose(RxResponse.<String>compatT())
                 .subscribe(new ApiObserver<String>() {
                     @Override
@@ -340,12 +342,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                             public void onStopTrackingTouch(SeekBar seekBar) {
                             }
                         });
-                        dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
+                        DlgUtil.cancelClick(dialog, dlgView);
                         dlgView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

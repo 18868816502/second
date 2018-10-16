@@ -4,6 +4,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 def ext = rootProject.ext
 def debug_mode = rootProject.ext.debug_mode
+def product_click_force_login = ext.product_click_force_login
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion ext.build_version
@@ -18,6 +19,7 @@ android {
 
         multiDexEnabled true
         buildConfigField("boolean", "API_ENV", "$debug_mode")
+        buildConfigField("boolean", "FORCE_LOGIN", "$product_click_force_login")
         buildConfigField("String", "UMENG_APP_KEY", "$umeng_app_key")
         buildConfigField("String", "WECHAT_APP_ID", "$wechat_app_id")
         buildConfigField("String", "WECHAT_APP_SECRET", "$wechat_app_secret")
