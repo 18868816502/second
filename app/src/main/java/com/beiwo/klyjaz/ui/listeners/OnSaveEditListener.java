@@ -2,6 +2,8 @@ package com.beiwo.klyjaz.ui.listeners;
 
 import android.widget.EditText;
 
+import com.beiwo.klyjaz.view.ClearEditText;
+
 /**
  * @author chenguoguo
  * @name loanmarket
@@ -16,6 +18,6 @@ public interface OnSaveEditListener {
      * @param flag
      * @param strEdit
      */
-    void onSaveEdit(EditText editText,int flag, String strEdit);
+    void onSaveEdit(ClearEditText editText, int flag, String strEdit);
 
 }

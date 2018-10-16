@@ -28,6 +28,7 @@ import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.beiwo.klyjaz.view.ClearEditText;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
@@ -91,8 +92,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private List<String> httpUrls;
     private List<String> httpImgKeys;
 
-    private EditText etTitle;
-    private EditText etContent;
+    private ClearEditText etTitle;
+    private ClearEditText etContent;
 
     @Override
     public int getLayoutId() {
@@ -360,7 +361,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     @Override
-    public void onSaveEdit(EditText editText,int flag, String strEdit) {
+    public void onSaveEdit(ClearEditText editText, int flag, String strEdit) {
         if (flag == 1) {
             this.etTitle = editText;
             mTopicTitle = strEdit;

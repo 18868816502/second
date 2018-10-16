@@ -88,11 +88,11 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             viewHolder.tvCommentPraise.setTag(position);
             viewHolder.ivArticleComment.setTag(position);
             viewHolder.tvDelete.setTag(position);
+//            if(TextUtils.isEmpty(datas.get(position).ge))
             String content = "回复<font color='#2a84ff'>"
                     + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
                     + "</font>:"
                     + (TextUtils.isEmpty(datas.get(position).getContent())?"":datas.get(position).getContent());
-
             viewHolder.tvCommentContent.setText(Html.fromHtml(content));
             viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
             if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {

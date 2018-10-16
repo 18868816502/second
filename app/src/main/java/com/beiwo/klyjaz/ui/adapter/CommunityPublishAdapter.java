@@ -16,6 +16,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
 import com.beiwo.klyjaz.ui.listeners.TextWatcherListener;
+import com.beiwo.klyjaz.view.ClearEditText;
 
 import java.util.List;
 
@@ -132,11 +133,11 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
     class ContentViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.et_publish_title)
-        EditText etPublishTitle;
+        ClearEditText etPublishTitle;
         @BindView(R.id.tv_publish_title_num)
         TextView tvPublishTitleNum;
         @BindView(R.id.et_publish_content)
-        EditText etPublishContent;
+        ClearEditText etPublishContent;
 
         public ContentViewHolder(View itemView) {
             super(itemView);
