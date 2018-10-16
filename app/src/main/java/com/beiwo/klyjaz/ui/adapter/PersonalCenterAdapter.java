@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,10 +128,16 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
      */
     private void onBindHeadData(HeadViewHolder holder) {
         if(userInfo == null){ return; }
-        Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
+        if(!TextUtils.isEmpty(userInfo.getHeadPortrait())) {
+            Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
+        }
         holder.tvName.setText(userInfo.getUserName());
         holder.tvSex.setText(1 == userInfo.getSex() ? "男":"女");
-        holder.tvProduce.setText("简介:"+userInfo.getIntroduce());
+        if(!TextUtils.isEmpty(userInfo.getIntroduce())){
+            holder.tvProduce.setText("简介:"+userInfo.getIntroduce());
+        }else{
+            holder.tvProduce.setText("简介:");
+        }
         holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
 //        holder.tvAttentionNum.setText(String.valueOf(userInfo.getFollowerCount()));
 //        holder.tvFansNum.setText(String.valueOf(userInfo.getFansCount()));

@@ -159,7 +159,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             case R.id.cancel:
             case R.id.tv_cancel:
                 if (mPopType == 0) {
-                    InputMethodUtil.toggleSoftKeyboardState(this);
+//                    InputMethodUtil.toggleSoftKeyboardState(this);
 //                    if(etTitle!=null){
 //                        InputMethodUtil.keyBoard(etTitle,"close");
 //                    }else if(etContent!=null){
@@ -376,6 +376,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     private void showSaveDraftDialog() {
+        InputMethodUtil.toggleSoftKeyboardState(this);
         if (pathList.size() != 0 || !TextUtils.isEmpty(mTopicTitle) || !TextUtils.isEmpty(mTopicContent)) {
             mPopType = 0;
             showDialogTips(R.layout.dialog_community_publish_save);

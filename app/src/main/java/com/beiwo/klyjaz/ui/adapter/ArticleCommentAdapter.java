@@ -101,7 +101,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         if(isOpen){
-            return datas.size();
+            return datas.size() + 1;
         }else{
             if(datas.size() > 1){
                 return 2;

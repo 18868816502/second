@@ -223,7 +223,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-                presenter.fetchReplyForumInfo("", "2", etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getToUserId(), replyDtoListBean.getId());
+                presenter.fetchReplyForumInfo("", "2", etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyDtoListBean.getId());
                 break;
             default:
                 break;
@@ -307,7 +307,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 int comPosition = (int) view.getTag();
                 replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
-                ToastUtil.toast("评论第" + comPosition + "条");
+//                reply();
+//                ToastUtil.toast("评论第" + comPosition + "条");
+                mPopType = 5;
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
                 //删除评论
             case ConstantTag.TAG_COMMENT_DELETE:
@@ -421,7 +424,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onReplyCommentSucceed() {
-
         switch (tag) {
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:

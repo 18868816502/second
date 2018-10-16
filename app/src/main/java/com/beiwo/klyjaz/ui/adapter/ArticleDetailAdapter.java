@@ -145,7 +145,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         }else{
             return datas.size() + 2;
         }
-//        return datas.size() + 2;
     }
 
     @Override
@@ -313,7 +312,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag(R.id.tag_comment);
-                    ToastUtil.toast("回复第"+(comPosition + 1) + "条");
+//                    ToastUtil.toast("回复第"+(comPosition + 1) + "条");
                     listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT,comPosition);
                     break;
                     //评论删除
