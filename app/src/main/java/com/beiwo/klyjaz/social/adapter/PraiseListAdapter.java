@@ -19,8 +19,7 @@ import java.util.List;
  * @descripe
  * @time 2018/10/13 11:54
  */
-public class PraiseListAdapter extends BaseQuickAdapter<PraiseListBean,BaseViewHolder> {
-
+public class PraiseListAdapter extends BaseQuickAdapter<PraiseListBean, BaseViewHolder> {
     private List<PraiseListBean> dataSet = new ArrayList<>();
     private int type = 1;
 
@@ -32,15 +31,15 @@ public class PraiseListAdapter extends BaseQuickAdapter<PraiseListBean,BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, PraiseListBean item) {
         Glide.with(mContext).load(item.getHeadPortrait()).into((ImageView) helper.getView(R.id.iv_avatar));
-        if(item.getImageList()!=null&&item.getImageList().size() != 0){
+        if (item.getImageList() != null && item.getImageList().size() != 0) {
             Glide.with(mContext).load(item.getImageList().get(0).getImgUrl()).into((ImageView) helper.getView(R.id.iv_avatar));
-        }else{
-            helper.setVisible(R.id.iv_content,false);
+        } else {
+            helper.setVisible(R.id.iv_content, false);
         }
-        helper.setText(R.id.tv_name,item.getUserName())
-                .setText(R.id.tv_date,item.getCreateText())
-                .setText(R.id.tv_praise_type,"赞了你的"+ (TextUtils.equals(item.getCommentType(),"1")?"评论":"回复"))
-                .setText(R.id.tv_content,item.getCommentContent());
+        helper.setText(R.id.tv_name, item.getUserName())
+                .setText(R.id.tv_date, item.getCreateText())
+                .setText(R.id.tv_praise_type, "赞了你的" + (TextUtils.equals(item.getCommentType(), "1") ? "评论" : "回复"))
+                .setText(R.id.tv_content, item.getCommentContent());
     }
 
     public void notifyPraiseChanged(List<PraiseListBean> list) {
