@@ -39,6 +39,8 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int OPERATE_TOPIC = 1;
     private static final int USER_TOPIC = 2;
 
+    private int mLastPosition = 0;
+
     public SocialRecommendAdapter(Context mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
@@ -51,8 +53,10 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void appendDatas(List<SocialTopicBean.ForumBean> mList){
+        mLastPosition = datas.size();
         datas.addAll(mList);
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
+        notifyItemInserted(mLastPosition);
     }
 
     @Override
