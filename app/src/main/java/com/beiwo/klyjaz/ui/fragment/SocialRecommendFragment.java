@@ -63,7 +63,8 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void configViews() {
         adapter = new SocialRecommendAdapter(getActivity());
-        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

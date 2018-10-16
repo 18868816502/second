@@ -70,7 +70,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     private UserInfoBean userInfoBean;
     private PersonalCenterAdapter adapter;
     private PopupWindow popWindow;
-    private int pageNo = 0;
+    private int pageNo = 1;
     private int pageSize = 10;
     private List<UserTopicBean> datas;
     private String userId;

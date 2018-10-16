@@ -131,8 +131,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 .inject(this);
     }
 
-    private void fetchData(){
-        if(forumBean != null){
+    private void fetchData() {
+        if (forumBean != null) {
             presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
         }
     }
@@ -216,17 +216,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 presenter.fetchReplyForumInfo("", "1",
-                        etInput.getText().toString(), forumBean.getForumId(), "", "");
+                        etInput.getText().toString(), forumBean.getForumId(), "", "","");
                 break;
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId());
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"");
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId());
+                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId());
                 break;
             default:
                 break;
@@ -255,7 +255,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        pageNo ++;
+        pageNo++;
         fetchData();
     }
 
@@ -311,16 +311,14 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 int comPosition = (int) view.getTag();
                 replyBean = datas.get(comPosition);
                 replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
-//                reply();
-//                ToastUtil.toast("评论第" + comPosition + "条");
                 mPopType = 5;
                 PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
-                //删除评论
+            //删除评论
             case ConstantTag.TAG_COMMENT_DELETE:
                 presenter.fetchCancelReply(datas.get(position).getId());
                 break;
-                //删除子评论
+            //删除子评论
             case ConstantTag.TAG_CHILD_COMMENT_DELETE:
                 int delPosition = (int) view.getTag();
                 replyDtoListBean = datas.get(delPosition).getReplyDtoList().get(position);
@@ -375,7 +373,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                         KeyBoardUtils.toggleKeybord(etInput);
                     }
                 }, 300);
-                etInput.addTextChangedListener(new LengthTextWatcherListener(etInput,100));
+                etInput.addTextChangedListener(new LengthTextWatcherListener(etInput, 100));
                 setOnClick(view.findViewById(R.id.tv_send));
                 break;
             default:
@@ -393,7 +391,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         itemRecycler.setLayoutManager(manager);
         childAdapter = new ArticleCommentListAdapter(this);
         itemRecycler.setAdapter(childAdapter);
-        tvCommentTitle.setText(String.valueOf("全部"+datas.size()+"条评论"));
+        tvCommentTitle.setText(String.valueOf("全部" + datas.size() + "条评论"));
         childAdapter.setDatas(datas);
         childAdapter.notifyDataSetChanged();
         childAdapter.setOnViewClickListener(this);
@@ -412,15 +410,15 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
-        if(pageNo == 1){
+        if (pageNo == 1) {
             refreshLayout.finishRefresh();
             this.datas.clear();
             this.datas = list;
             adapter.setDatas(datas, forumBean);
-        }else{
+        } else {
             refreshLayout.finishLoadMore();
             this.datas.addAll(list);
-            adapter.setDatas(datas,forumBean);
+            adapter.setDatas(datas, forumBean);
         }
 //        this.datas = list;
 //        adapter.setDatas(list, forumBean);
@@ -462,7 +460,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onCancelReplySucceed() {
         ToastUtil.toast("删除成功");
-        presenter.queryCommentList(forumBean.getForumId(),pageNo,pageSize);
+        presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
     }
 
     @Override
