@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:text="所有分类"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_kind_2"
@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:text="高通过率"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_kind_3"
@@ -37,7 +37,7 @@
             android:gravity="center_vertical"
             android:text="闪电到账"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_kind_4"
@@ -46,7 +46,7 @@
             android:gravity="center_vertical"
             android:text="大额低息"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_kind_5"
@@ -55,7 +55,7 @@
             android:gravity="center_vertical"
             android:text="不查征信"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
     </LinearLayout>
 
     <View

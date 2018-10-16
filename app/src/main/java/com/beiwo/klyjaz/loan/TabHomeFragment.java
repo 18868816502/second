@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
+import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.GroupProductBean;
@@ -134,7 +135,7 @@ public class TabHomeFragment extends BaseComponentFragment {
         //check state
         checkUserState();
         //recommond product
-        Api.getInstance().queryGroupProductList()
+        Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT)
                 .compose(RxResponse.<List<GroupProductBean>>compatT())
                 .subscribe(new ApiObserver<List<GroupProductBean>>() {
                     @Override
@@ -158,7 +159,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                                     long gap = StringUtil.timeGapSecond(data.getOverDate(), data.getGmtCreate());//设定
                                     if (current >= gap) homeAdapter.setState(1);//超过设定时间
                                     else homeAdapter.setState(3, data.getOverDate());//未超过设定时间
-                                } else homeAdapter.setState(2);//审核中
+                                } else homeAdapter.setState(2, data.getAuditDate());//审核中
                             } else homeAdapter.setState(1);
                         }
 

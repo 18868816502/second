@@ -88,6 +88,11 @@ public class BillListActivity extends BaseComponentActivity {
         userHelper = UserHelper.getInstance(this);
         headView();
         initRecycler();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         request();
     }
 
@@ -164,9 +169,19 @@ public class BillListActivity extends BaseComponentActivity {
 
     private void empty() {
         listAdapter.setNewData(null);
-        listAdapter.setEmptyView(R.layout.empty_sys_layout, recycler);
-        TextView tv_content = listAdapter.getEmptyView().findViewById(R.id.tv_content);
-        tv_content.setText("好信用从记账开始，快去记一笔吧~");
+        listAdapter.setEmptyView(R.layout.empty_bill_list, recycler);
+
+        View emptyView = listAdapter.getEmptyView();
+        TextView head_month_num = emptyView.findViewById(R.id.head_month_num);
+        TextView head_bill_num = emptyView.findViewById(R.id.head_bill_num);
+        head_month_num.setText(String.format(getString(R.string.x_month_repay), currentMonth));
+        head_bill_num.setText(FormatNumberUtils.FormatNumberFor2(num));
+        emptyView.findViewById(R.id.head_add_bill).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LoanBillActivity.class));
+            }
+        });
     }
 
     private void headView() {

@@ -7,8 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/white"
+        android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:text="默认排序"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_sort_2"
@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:text="贷款额度高"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_sort_3"
@@ -37,7 +37,7 @@
             android:gravity="center_vertical"
             android:text="贷款利率低"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_sort_4"
@@ -46,7 +46,7 @@
             android:gravity="center_vertical"
             android:text="放款速度快"
             android:textColor="@color/black_1"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
     </LinearLayout>
 
     <View

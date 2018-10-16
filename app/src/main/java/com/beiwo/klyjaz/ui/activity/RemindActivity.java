@@ -46,15 +46,12 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-
     @BindView(R.id.select_time_tv)
     TextView selectTv;
-
     @BindView(R.id.push_switch)
     Switch pushSwitch;
     @BindView(R.id.message_switch)
     Switch messageSwitch;
-
     @Inject
     RemindPresenter presenter;
 
@@ -93,7 +90,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 remindSetting();
             }
         });
-
         messageSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +103,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 remindSetting();
             }
         });
-
     }
-
 
     private void getRemindInfo() {
         String userId = UserHelper.getInstance(this).getProfile().getId();
@@ -181,10 +175,8 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                     @Override
                     public void onNext(ResultEntity data) {
                         if (type == 0 && pushSwitch.isChecked()) {
-                            //WeakRefToastUtil.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
                             ToastUtil.toast("开启成功");
                         } else if (type == 1 && messageSwitch.isChecked()) {
-                            //WeakRefToastUtil.showToast(RemindActivity.this, "开启成功,考拉将" + CommonUtils.getDay(remindDay - 1) + "提醒你哦~");
                             ToastUtil.toast("开启成功");
                         }
                     }
@@ -193,17 +185,14 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
 
     @Override
     public void selectPushRemindType() {
-
     }
 
     @Override
     public void selectmessageRemindType() {
-
     }
 
     @Override
     public void setPresenter(RemindContract.Presenter presenter) {
-
     }
 
     @OnClick({R.id.time_layout})
@@ -216,6 +205,4 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 break;
         }
     }
-
-
 }
