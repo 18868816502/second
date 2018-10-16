@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/loan.iml" filepath="$PROJECT_DIR$/loan.iml" />
       <module fileurl="file://$PROJECT_DIR$/loanmarket_social.iml" filepath="$PROJECT_DIR$/loanmarket_social.iml" />
       <module fileurl="file://$PROJECT_DIR$/matisse/matisse.iml" filepath="$PROJECT_DIR$/matisse/matisse.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaonengchat/xiaonengchat.iml" filepath="$PROJECT_DIR$/xiaonengchat/xiaonengchat.iml" />
