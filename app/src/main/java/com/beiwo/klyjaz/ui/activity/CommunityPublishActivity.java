@@ -82,8 +82,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private List<Bitmap> base64List;
     private List<String> imgKeys;
 
-    private String mTopicTitle;
-    private String mTopicContent;
+    private String mTopicTitle = "";
+    private String mTopicContent = "";
     private StringBuilder sb;
     private String status = "0";
     private String forumId = "";
@@ -275,7 +275,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 //            uriList = Matisse.obtainResult(data);
 //            pathList = Matisse.obtainPathResult(data);
             pathList.addAll(Matisse.obtainPathResult(data));
-            adapter.setHeadData(pathList);
+            adapter.setHeadData(pathList,mTopicTitle,mTopicContent);
         }
     }
 
@@ -283,7 +283,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     public void onItemClick(int position) {
         if (pathList != null) {
             pathList.remove(position);
-            adapter.setHeadData(pathList);
+            adapter.setHeadData(pathList,mTopicTitle,mTopicContent);
         }
     }
 

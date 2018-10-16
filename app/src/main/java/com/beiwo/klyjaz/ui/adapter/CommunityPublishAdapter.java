@@ -46,10 +46,14 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.mContext = mContext;
     }
 
-    public void setHeadData(List<String> mList){
+    public void setHeadData(List<String> mList,String mTopicTitle,String mTopicContent){
         adapter.setData(mList);
+//        notifyItemChanged(0);
+        this.mTitle = mTopicTitle;
+        this.mContent = mTopicContent;
         notifyDataSetChanged();
     }
+
 
     public void setData(List<String> mList,String mTitle,String mContent){
         adapter.setDraftData(mList);

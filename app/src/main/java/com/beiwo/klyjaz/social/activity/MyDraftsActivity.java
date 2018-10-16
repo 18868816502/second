@@ -145,23 +145,26 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         curPosition = position;
-        switch (datas.get(position).getForumStatus()){
-            case "1":
-                mPopType = 3;
-                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
-                break;
-            case "2":
-                mPopType = 2;
-                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
-                break;
-            case "3":
-                Intent intent = new Intent(this, CommunityPublishActivity.class);
-                intent.putExtra("forumId",datas.get(position).getForumId());
-                startActivity(intent);
-                break;
-                default:
-                    break;
-        }
+        Intent intent = new Intent(this, CommunityPublishActivity.class);
+        intent.putExtra("forumId",datas.get(position).getForumId());
+        startActivity(intent);
+//        switch (datas.get(position).getForumStatus()){
+//            case "1":
+//                mPopType = 3;
+//                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+//                break;
+//            case "2":
+//                mPopType = 2;
+//                PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+//                break;
+//            case "3":
+//                Intent intent = new Intent(this, CommunityPublishActivity.class);
+//                intent.putExtra("forumId",datas.get(position).getForumId());
+//                startActivity(intent);
+//                break;
+//                default:
+//                    break;
+//        }
 
     }
 
@@ -172,6 +175,20 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
                 mPopType = 1;
                 forumId = datas.get(position).getForumId();
                 PopUtils.showCenterPopWindow(R.layout.dialog_article_delete, getSupportFragmentManager(), this, this);
+                break;
+            case R.id.tv_audit_state:
+                switch (datas.get(position).getForumStatus()){
+                    case "1":
+                        mPopType = 3;
+                        PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+                        break;
+                    case "2":
+                        mPopType = 2;
+                        PopUtils.showCenterPopWindow(R.layout.dialog_tips, getSupportFragmentManager(), this, this);
+                        break;
+                    default:
+                        break;
+                }
                 break;
                 default:
                     break;
@@ -220,6 +237,7 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
     private void onClickSave(){
         switch (mPopType){
             case 1:
+                PopUtils.dismiss();
                 deleteForum(forumId);
                 break;
             case 2:

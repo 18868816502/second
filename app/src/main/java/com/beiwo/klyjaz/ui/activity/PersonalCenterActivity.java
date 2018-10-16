@@ -142,7 +142,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onQueryUserInfoSucceed(UserInfoBean userInfoBean) {
         this.userInfoBean = userInfoBean;
-        presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
+        presenter.fetchPersonalTopic(userId, pageNo, pageSize);
     }
 
     @Override
@@ -173,7 +173,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         pageNo++;
-        presenter.fetchPersonalTopic(UserHelper.getInstance(this).getProfile().getId(), pageNo, pageSize);
+        presenter.fetchPersonalTopic(userId, pageNo, pageSize);
     }
 
     /**
