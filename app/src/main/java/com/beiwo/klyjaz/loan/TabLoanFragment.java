@@ -75,7 +75,6 @@ public class TabLoanFragment extends BaseComponentFragment {
     private int borrowingLow = -1;//金额区别 低值
     private int borrowingHigh = -1;//金额区间 高值
     private int productType = 0;//产品属性 1 高通过率 2 闪电到账 3 大额低息 4 不查征信
-    private int tag = 0;//标识第几个tab被选中状态
     private ProductAdapter adapter = new ProductAdapter();
     private Drawable right;
     private int selectColor;
@@ -123,24 +122,7 @@ public class TabLoanFragment extends BaseComponentFragment {
             @Override
             public void onLoadMore(@android.support.annotation.NonNull RefreshLayout refreshLayout) {
                 pageNo++;
-                map.clear();
                 map.put("pageNo", pageNo);
-                map.put("pageSize", pageSize);
-                map.put("platform", 1);
-                switch (tag) {
-                    case 1:
-                        if (borrowingLow != -1) map.put("borrowingLow", borrowingLow);
-                        if (borrowingHigh != -1) map.put("borrowingHigh", borrowingHigh);
-                        break;
-                    case 2:
-                        if (productType != 0) map.put("productType", productType);
-                        break;
-                    case 3:
-                        if (type != 0) map.put("type", type);
-                        break;
-                    default:
-                        break;
-                }
                 request(map);
             }
         });
@@ -148,7 +130,6 @@ public class TabLoanFragment extends BaseComponentFragment {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
                 final Product product = adapter.getData().get(position);
-                //product.setSuccessCount(product.getSuccessCount() + 1);
                 if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
                     startActivity(new Intent(context, UserAuthorizationActivity.class));
                     return;
@@ -170,7 +151,6 @@ public class TabLoanFragment extends BaseComponentFragment {
     }
 
     private void initFieldVar() {
-        tag = 0;
         pageNo = 1;
         type = 0;
         moneyType = 0;
@@ -221,7 +201,7 @@ public class TabLoanFragment extends BaseComponentFragment {
 
     private void empty() {
         adapter.setNewData(null);
-        adapter.setEmptyView(R.layout.empty_sys_layout, recycler);
+        adapter.setEmptyView(R.layout.empty_layout, recycler);
         TextView tv_content = adapter.getEmptyView().findViewById(R.id.tv_content);
         tv_content.setText("服务器开小差，去首页 >");
         tv_content.setOnClickListener(new View.OnClickListener() {
@@ -265,16 +245,10 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 if (v instanceof TextView) {
                                     TextView textView = (TextView) v;
                                     dtv_money.setText(textView.getText().toString());
-                                    dtv_kind.setText("分类");
-                                    dtv_sort.setText("排序");
                                 }
                                 popup.dismiss();
-                                tag = 1;
                                 pageNo = 1;
-                                map.clear();
                                 map.put("pageNo", pageNo);
-                                map.put("pageSize", pageSize);
-                                map.put("platform", 1);
                                 switch (v.getId()) {
                                     case R.id.tv_money_all:
                                         moneyType = 0;
@@ -309,8 +283,10 @@ public class TabLoanFragment extends BaseComponentFragment {
                                         popup.dismiss();
                                         break;
                                 }
-                                if (borrowingLow != -1) map.put("borrowingLow", borrowingLow);
-                                if (borrowingHigh != -1) map.put("borrowingHigh", borrowingHigh);
+                                if (borrowingLow == -1) map.remove("borrowingLow");
+                                else map.put("borrowingLow", borrowingLow);
+                                if (borrowingHigh == -1) map.remove("borrowingHigh");
+                                else map.put("borrowingHigh", borrowingHigh);
                                 if (v.getId() != R.id.view_part) request(map);
                             }
                         };
@@ -376,16 +352,10 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 if (v instanceof TextView) {
                                     TextView textView = (TextView) v;
                                     dtv_kind.setText(textView.getText().toString());
-                                    dtv_money.setText("金额");
-                                    dtv_sort.setText("排序");
                                 }
                                 popup.dismiss();
-                                tag = 2;
                                 pageNo = 1;
-                                map.clear();
                                 map.put("pageNo", pageNo);
-                                map.put("pageSize", pageSize);
-                                map.put("platform", 1);
                                 switch (v.getId()) {
                                     case R.id.tv_kind_1:
                                         productType = 0;
@@ -406,7 +376,8 @@ public class TabLoanFragment extends BaseComponentFragment {
                                         popup.dismiss();
                                         break;
                                 }
-                                if (productType != 0) map.put("productType", productType);
+                                if (productType == 0) map.remove("productType");
+                                else map.put("productType", productType);
                                 if (v.getId() != R.id.view_part) request(map);
                             }
                         };
@@ -466,16 +437,10 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 if (v instanceof TextView) {
                                     TextView textView = (TextView) v;
                                     dtv_sort.setText(textView.getText().toString());
-                                    dtv_money.setText("金额");
-                                    dtv_kind.setText("分类");
                                 }
                                 popup.dismiss();
-                                tag = 3;
                                 pageNo = 1;
-                                map.clear();
                                 map.put("pageNo", pageNo);
-                                map.put("pageSize", pageSize);
-                                map.put("platform", 1);
                                 switch (v.getId()) {
                                     case R.id.tv_sort_1:
                                         type = 0;
@@ -493,7 +458,8 @@ public class TabLoanFragment extends BaseComponentFragment {
                                         popup.dismiss();
                                         break;
                                 }
-                                if (type != 0) map.put("type", type);
+                                if (type == 0) map.remove("type");
+                                else map.put("type", type);
                                 if (v.getId() != R.id.view_part) request(map);
                             }
                         };

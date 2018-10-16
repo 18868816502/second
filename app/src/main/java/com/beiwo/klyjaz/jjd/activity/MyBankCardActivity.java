@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -122,8 +123,11 @@ public class MyBankCardActivity extends BaseComponentActivity {
 
     private void empty() {
         adapter.setEmptyView(R.layout.vest_empty_layout, recycler);
-        TextView tv_error_msg = adapter.getEmptyView().findViewById(R.id.tv_error_msg);
-        TextView tv_retry_btn = adapter.getEmptyView().findViewById(R.id.tv_retry_btn);
+        View emptyView = adapter.getEmptyView();
+        TextView tv_error_msg = emptyView.findViewById(R.id.tv_error_msg);
+        TextView tv_retry_btn = emptyView.findViewById(R.id.tv_retry_btn);
+        ImageView iv_empty_img = emptyView.findViewById(R.id.iv_empty_img);
+        iv_empty_img.setImageResource(R.mipmap.no_data_card);
         tv_error_msg.setText("您还没有添加银行卡");
         tv_retry_btn.setText("立即添加");
         tv_retry_btn.setOnClickListener(new View.OnClickListener() {

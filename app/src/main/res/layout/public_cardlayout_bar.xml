@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/mine_list_bg">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/left_image"
@@ -24,26 +23,27 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/left_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="爱的色放" />
+
             <TextView
                 android:id="@+id/left_remark"
                 android:layout_width="32dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/shape_tools_free"
-                android:visibility="gone"
                 android:gravity="center"
-                android:textSize="10sp"
+                android:text="免费"
                 android:textColor="@color/white"
-                android:text="免费" />
+                android:textSize="10sp"
+                android:visibility="gone" />
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/left_text_down"
@@ -52,7 +52,6 @@
             android:paddingTop="3dp"
             tools:text="爱的色放" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -90,5 +89,4 @@
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
         android:background="@color/colorHintTextColor" />
-
 </RelativeLayout>

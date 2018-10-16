@@ -74,9 +74,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     TextView loginTv;
     @BindView(R.id.tv_message_num)
     TextView tvMessageNum;
-    @BindView(R.id.ll_loan)
+    @BindView(R.id.dctv_loan)
     View loanContainer;
-    @BindView(R.id.ll_bank)
+    @BindView(R.id.dctv_bank)
     View bankContainer;
     @Inject
     TabMinePresenter presenter;
@@ -220,10 +220,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     public void setPresenter(TabMineContract.Presenter presenter) {
     }
 
-    @OnClick({R.id.bill_summary, R.id.my_wallet,
-            R.id.remind, R.id.login, R.id.avatar, R.id.ll_navigate_user_profile,
-            R.id.invite_friend, R.id.help_center, R.id.settings, R.id.mine_msg,
-            R.id.ll_loan,R.id.ll_bank})
+    @OnClick({R.id.bill_summary, R.id.my_wallet, R.id.remind, R.id.login,
+            R.id.avatar, R.id.ll_navigate_user_profile, R.id.invite_friend,
+            R.id.help_center, R.id.settings, R.id.mine_msg, R.id.dctv_loan, R.id.dctv_bank})
     public void onViewClicked(View view) {
         if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
             UserAuthorizationActivity.launch(getActivity(), null);
@@ -248,17 +247,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 break;
             //点击头像 如果未登陆 会跳转到登陆页面
             case R.id.avatar:
-//                if (!FastClickUtils.isFastClick()) {
-//                    presenter.clickUserProfile();
-//                }
-//                startActivity(new Intent(getActivity(), PersonalCenterActivity.class));
-//                break;
             case R.id.ll_navigate_user_profile:
-//                if (!FastClickUtils.isFastClick()) {
-//                    presenter.clickUserProfile();
-//                }
                 Intent intent = new Intent(getActivity(), PersonalCenterActivity.class);
-                intent.putExtra("userId",UserHelper.getInstance(getActivity()).getProfile().getId());
+                intent.putExtra("userId", UserHelper.getInstance(getActivity()).getProfile().getId());
                 startActivity(intent);
                 break;
             case R.id.invite_friend:
@@ -289,10 +280,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                 if (!FastClickUtils.isFastClick())
                     startActivity(new Intent(getActivity(), WalletActivity.class));
                 break;
-            case R.id.ll_loan:
+            case R.id.dctv_loan:
                 startActivity(new Intent(getActivity(), MyLoanActivity.class));
                 break;
-            case R.id.ll_bank:
+            case R.id.dctv_bank:
                 startActivity(new Intent(getActivity(), MyBankCardActivity.class));
                 break;
             default:

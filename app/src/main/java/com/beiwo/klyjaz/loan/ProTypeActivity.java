@@ -181,7 +181,7 @@ public class ProTypeActivity extends BaseComponentActivity {
 
     private void empty() {
         adapter.setNewData(null);
-        adapter.setEmptyView(R.layout.empty_sys_layout, recycler);
+        adapter.setEmptyView(R.layout.empty_layout, recycler);
         TextView tv_content = adapter.getEmptyView().findViewById(R.id.tv_content);
         tv_content.setText("服务器开小差，去首页 >");
         tv_content.setOnClickListener(new View.OnClickListener() {

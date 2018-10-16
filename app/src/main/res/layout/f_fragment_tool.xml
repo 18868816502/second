@@ -110,13 +110,20 @@
                 app:left_image="@mipmap/ic_credit"
                 app:left_image_Visible="true"
                 app:left_textView_color="@color/color_primary_black"
-                app:left_textView_remark_Visible="true"
+                app:left_textView_remark_Visible="false"
                 app:left_textView_style="true"
                 app:left_textView_text="信用查询"
                 app:left_textView_textSize="15dp"
                 app:right_textView1_Visible="true"
-                app:right_textView1_color="#FF5240"
+                app:right_textView1_color="#ff5240"
                 app:right_textView1_textSize="12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="85dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/line_color" />
 
             <com.beiwo.klyjaz.view.CardLayoutBar
                 android:id="@+id/clb_interest_wrap"
@@ -136,6 +143,13 @@
                 app:right_textView1_Visible="true"
                 app:right_textView1_color="#FF5240"
                 app:right_textView1_textSize="12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="85dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/line_color" />
 
             <com.beiwo.klyjaz.view.CardLayoutBar
                 android:id="@+id/clb_ticket_wrap"
