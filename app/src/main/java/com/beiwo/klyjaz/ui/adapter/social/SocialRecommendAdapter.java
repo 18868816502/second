@@ -79,9 +79,10 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         OperateTopicViewHolder viewHoler = (OperateTopicViewHolder) holder;
 
         if(datas.get(position).getPicUrl()!=null&&datas.get(position).getPicUrl().size()!=0) {
+            viewHoler.ivTopic.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(datas.get(position).getPicUrl().get(0)).into(viewHoler.ivTopic);
         }else{
-//            viewHoler.ivTopic.setVisibility(View.GONE);
+            viewHoler.ivTopic.setVisibility(View.GONE);
         }
         viewHoler.tvTopicTitle.setText(datas.get(position).getTitle());
         viewHoler.tvTopicContent.setText(datas.get(position).getContent());

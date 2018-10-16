@@ -49,10 +49,7 @@ public class AuditedTopicAdapter extends BaseQuickAdapter<DraftsBean, BaseViewHo
     }
 
     public void notifyDraftsChanged(List<DraftsBean> list) {
-        if (list != null && list.size() > 0) {
-            datas.addAll(list);
-        }
-        setNewData(datas);
+        setNewData(list);
     }
 
 }
