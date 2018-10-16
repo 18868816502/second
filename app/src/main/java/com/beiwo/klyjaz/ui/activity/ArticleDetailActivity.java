@@ -20,6 +20,7 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerArticleDetailComponent;
 import com.beiwo.klyjaz.injection.module.ArticleDetailModule;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.ui.adapter.ArticleCommentListAdapter;
 import com.beiwo.klyjaz.ui.adapter.ArticleDetailAdapter;
@@ -77,9 +78,13 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
      */
     private int mPopType = 0;
     private TextView tvCommentTitle;
-    private SocialTopicBean.ForumBean forumBean;
+//    private SocialTopicBean.ForumBean forumBean;
+    private ForumInfoBean.ForumBean forumBean;
+    private String userId;
+    private String forumId;
     private int pageNo = 1;
     private int pageSize = 30;
+
     private List<CommentReplyBean> datas;
     private CommentReplyBean replyBean;
     private CommentReplyBean.ReplyDtoListBean replyDtoListBean;
@@ -116,9 +121,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         datas = new ArrayList<>();
         Intent intent = getIntent();
         if (intent != null) {
-            forumBean = (SocialTopicBean.ForumBean) intent.getSerializableExtra("topic");
-//            presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
-            fetchData();
+            this.userId = intent.getStringExtra("userId");
+            this.forumId = intent.getStringExtra("forumId");
+            if(!TextUtils.isEmpty(userId)&&!TextUtils.isEmpty(forumId)){
+                presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+            }
+
         }
     }
 
@@ -262,7 +270,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        fetchData();
+        presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+//        fetchData();
     }
 
     @Override
@@ -406,6 +415,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onDismiss(PopDialog mPopDialog) {
         KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+    }
+
+    @Override
+    public void onQueryForumInfoSucceed(ForumInfoBean forumBean) {
+        this.forumBean = forumBean.getForum();
+        fetchData();
     }
 
     @Override

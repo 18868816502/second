@@ -8,6 +8,7 @@ import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseRxPresenter;
 import com.beiwo.klyjaz.entity.SysMsg;
 import com.beiwo.klyjaz.helper.UserHelper;
+import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.ui.contract.SysMsgContract;
 import com.beiwo.klyjaz.util.RxUtil;
 
@@ -42,7 +43,31 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
     @Override
     public void onStart() {
         super.onStart();
+        queryCountView();
         loadMeaasge();
+    }
+
+    public void queryCountView(){
+        Disposable dis = mApi.queryCountView(mUserHelper.getProfile().getId())
+                .compose(RxUtil.<ResultEntity<SocialMessageBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<SocialMessageBean>>() {
+                               @Override
+                               public void accept(@NonNull ResultEntity<SocialMessageBean> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       mView.onCountViewSucceed(result.getData());
+                                   } else {
+                                       mView.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                logError(SysMsgPresenter.this, throwable);
+                                mView.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
     }
 
     public void loadMeaasge() {

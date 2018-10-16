@@ -25,6 +25,7 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerSysMsgComponent;
 import com.beiwo.klyjaz.injection.module.SysMsgModule;
 import com.beiwo.klyjaz.social.activity.PraiseListActivity;
+import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.adapter.SysMsgAdapter;
 import com.beiwo.klyjaz.ui.contract.SysMsgContract;
@@ -63,6 +64,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     View praiseContainer;
     @BindView(R.id.comment_container)
     View commentContainer;
+
 
     private SysMsgAdapter adapter;
 
@@ -302,6 +304,11 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     @Override
     public void showNoMoreSysMsg() {
         adapter.loadMoreEnd(true);
+    }
+
+    @Override
+    public void onCountViewSucceed(SocialMessageBean msgBean) {
+
     }
 
     @Override

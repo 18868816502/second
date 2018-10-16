@@ -158,7 +158,9 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 public void onClick(View v) {
                     if(UserHelper.getInstance(mContext).isLogin()) {
                         Intent intent = new Intent(mContext, ArticleDetailActivity.class);
-                        intent.putExtra("topic", datas.get((Integer) v.getTag()));
+//                        intent.putExtra("topic", datas.get((Integer) v.getTag()));
+                        intent.putExtra("userId", datas.get((Integer) v.getTag()).getUserId());
+                        intent.putExtra("forumId", datas.get((Integer) v.getTag()).getForumId());
                         mContext.startActivity(intent);
                     }else{
                         UserAuthorizationActivity.launch((Activity) mContext, null);

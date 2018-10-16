@@ -82,8 +82,10 @@ import com.beiwo.klyjaz.loan.Product;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
+import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 
 import java.util.ArrayList;
@@ -1517,4 +1519,15 @@ public interface ApiService {
     @POST("s1/cashUserController/saveCashUserContact")
     Observable<ResultEntity> fetchSaveContact(@Field("userId") String userID, @Field("userContact") String userContact,
                                               @Field("userRelate") String userRelate, @Field("mobileNum") String mobileNum);
+
+    /*动态详情加载*/
+    @FormUrlEncoded
+    @POST("s6/forumQueryController/queryForumInfo")
+    Observable<ResultEntity<ForumInfoBean>> queryForumInfo(@Field("userId") String userID, @Field("forumId") String forumId,
+                                                           @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /*消息-社区数量*/
+    @FormUrlEncoded
+    @POST("s6/message/countView")
+    Observable<ResultEntity<SocialMessageBean>> queryCountView(@Field("userId") String userID);
 }

@@ -86,8 +86,10 @@ import com.beiwo.klyjaz.loan.Product;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
+import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 
 import org.apache.commons.codec.binary.Hex;
@@ -1448,5 +1450,15 @@ public class Api {
     /*保存联系人*/
     public Observable<ResultEntity> fetchSaveContact(String userId, String userContact, String userRelate, String mobileNum) {
         return service.fetchSaveContact(userId, userContact, userRelate, mobileNum);
+    }
+
+    /*动态详情加载*/
+    public Observable<ResultEntity<ForumInfoBean>> queryForumInfo(String userId, String forumId, int pageNo, int pageSize) {
+        return service.queryForumInfo(userId, forumId, pageNo, pageSize);
+    }
+
+    /*消息-社区消息数量*/
+    public Observable<ResultEntity<SocialMessageBean>> queryCountView(String userId) {
+        return service.queryCountView(userId);
     }
 }

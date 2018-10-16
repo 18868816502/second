@@ -18,6 +18,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
@@ -46,14 +47,14 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int COMMENT = 1;
     private static final int FOOT = 2;
     private List<CommentReplyBean> datas;
-    private SocialTopicBean.ForumBean forumBean;
+    private ForumInfoBean.ForumBean forumBean;
 
     public ArticleDetailAdapter(Context mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
     }
 
-    public void setDatas(List<CommentReplyBean> datas, SocialTopicBean.ForumBean forumBean) {
+    public void setDatas(List<CommentReplyBean> datas, ForumInfoBean.ForumBean forumBean) {
         this.datas.clear();
         this.datas.addAll(datas);
         this.forumBean = forumBean;

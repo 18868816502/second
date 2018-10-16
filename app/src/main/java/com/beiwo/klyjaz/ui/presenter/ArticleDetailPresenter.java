@@ -7,6 +7,7 @@ import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseRxPresenter;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.ui.contract.ArticleDetailContact;
 import com.beiwo.klyjaz.util.ParamsUtils;
@@ -40,6 +41,29 @@ public class ArticleDetailPresenter extends BaseRxPresenter implements ArticleDe
         userHelper = UserHelper.getInstance(context);
     }
 
+
+    @Override
+    public void queryForumInfo(String userId, String forumId, int pageNo, int pageSize) {
+        Disposable dis = api.queryForumInfo(userId, forumId, pageNo, pageSize)
+                .compose(RxUtil.<ResultEntity<ForumInfoBean>>io2main())
+                .subscribe(new Consumer<ResultEntity<ForumInfoBean>>() {
+                               @Override
+                               public void accept(ResultEntity<ForumInfoBean> result) throws Exception {
+                                   if (result.isSuccess()) {
+                                       view.onQueryForumInfoSucceed(result.getData());
+                                   } else {
+                                       view.showErrorMsg(result.getMsg());
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                view.showErrorMsg(generateErrorMsg(throwable));
+                            }
+                        });
+        addDisposable(dis);
+    }
 
     @Override
     public void queryCommentList(String forumId, int pageNo, int pageSize) {

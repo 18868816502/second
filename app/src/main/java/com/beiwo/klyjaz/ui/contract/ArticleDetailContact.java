@@ -3,6 +3,7 @@ package com.beiwo.klyjaz.ui.contract;
 import com.beiwo.klyjaz.base.BasePresenter;
 import com.beiwo.klyjaz.base.BaseView;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 
 import java.util.List;
 
@@ -16,6 +17,15 @@ import java.util.List;
 public interface ArticleDetailContact {
 
     interface Presenter extends BasePresenter {
+
+        /**
+         * 动态详情加载
+         * @param userId
+         * @param forumId
+         * @param pageNo
+         * @param pageSize
+         */
+        void queryForumInfo(String userId, String forumId, int pageNo, int pageSize);
 
         /**
          * 获取文章评论列表
@@ -76,6 +86,12 @@ public interface ArticleDetailContact {
     }
 
     interface View extends BaseView<Presenter> {
+
+        /**
+         * 动态详情加载成功
+         * @param forumBean
+         */
+        void onQueryForumInfoSucceed(ForumInfoBean forumBean);
 
         /**
          * 获取话题评论列表成功
