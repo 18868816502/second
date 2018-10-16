@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackground">
@@ -9,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/tool_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tool_bar_height"
-            android:background="@color/white">
+            android:layout_width="368dp"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="25dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -27,173 +29,162 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/time_layout"
-            android:layout_width="match_parent"
+            android:layout_width="368dp"
             android:layout_height="55dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/relativebar_selector_bg"
             android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/remind_tv_2">
-
+            app:layout_constraintTop_toBottomOf="@+id/remind_tv_2"
+            tools:layout_editor_absoluteX="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:text="还款提醒时间"
                 android:textColor="@color/black_1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="16dp" />
 
             <TextView
                 android:id="@+id/select_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:text="提前三天"
                 android:textColor="@color/black_2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/right_icon"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="298dp" />
 
             <ImageView
                 android:id="@+id/right_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_come" />
+                app:srcCompat="@drawable/icon_come"
+                tools:layout_editor_absoluteX="362dp" />
         </android.support.constraint.ConstraintLayout>
 
         <TextView
             android:id="@+id/title_remind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="设置提醒方式"
             android:textColor="@color/black_2"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/time_layout"
+            tools:layout_editor_absoluteX="16dp" />
 
         <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="368dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
             android:layout_marginTop="8dp"
             android:background="@color/white"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_remind">
-
+            app:layout_constraintTop_toBottomOf="@+id/title_remind"
+            tools:layout_editor_absoluteX="8dp">
 
             <TextView
                 android:id="@+id/push_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="个推提醒"
                 android:textColor="@color/black_1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="16dp" />
 
             <TextView
                 android:id="@+id/message_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="短信提醒"
                 android:textColor="@color/black_1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                tools:layout_editor_absoluteX="16dp" />
 
             <TextView
                 android:id="@+id/wechat_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="微信提醒"
                 android:textColor="@color/black_1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                tools:layout_editor_absoluteX="16dp" />
 
             <Switch
                 android:id="@+id/push_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/push_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/push_tv" />
+                app:layout_constraintTop_toTopOf="@+id/push_tv"
+                tools:layout_editor_absoluteX="328dp" />
 
             <Switch
                 android:id="@+id/message_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/message_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/message_tv" />
+                app:layout_constraintTop_toTopOf="@+id/message_tv"
+                tools:layout_editor_absoluteX="328dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:text="即将开放"
                 android:textColor="@color/black_2"
                 app:layout_constraintBottom_toBottomOf="@+id/wechat_tv"
                 app:layout_constraintEnd_toEndOf="@+id/message_switch"
-                app:layout_constraintTop_toTopOf="@+id/wechat_tv" />
+                app:layout_constraintTop_toTopOf="@+id/wechat_tv"
+                tools:layout_editor_absoluteX="304dp" />
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="352dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/push_tv"
-                app:srcCompat="@color/colorHintTextColor" />
+                app:srcCompat="@color/colorHintTextColor"
+                tools:layout_editor_absoluteX="8dp" />
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="352dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/message_tv"
-                app:srcCompat="@color/colorHintTextColor" />
-
+                app:srcCompat="@color/colorHintTextColor"
+                tools:layout_editor_absoluteX="8dp" />
         </android.support.constraint.ConstraintLayout>
 
         <ImageView
@@ -204,7 +195,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-            app:srcCompat="@drawable/remind_icon" />
+            app:srcCompat="@drawable/remind_icon"
+            tools:layout_editor_absoluteX="156dp" />
 
         <TextView
             android:id="@+id/remind_tv_1"
@@ -217,7 +209,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/remind_img" />
+            app:layout_constraintTop_toBottomOf="@+id/remind_img"
+            tools:layout_editor_absoluteX="159dp" />
 
         <TextView
             android:id="@+id/remind_tv_2"
@@ -229,7 +222,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/remind_tv_1" />
-
+            app:layout_constraintTop_toBottomOf="@+id/remind_tv_1"
+            tools:layout_editor_absoluteX="87dp" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

@@ -109,8 +109,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Field;
 
-import static com.beiwo.klyjaz.api.NetConstants.SECOND_PRODUCT;
-
 public class Api {
 
     private static final String PLATFORM = "Android";
@@ -222,8 +220,8 @@ public class Api {
     }
 
     /*分组贷超产品列表*/
-    public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList() {
-        return service.queryGroupProductList(SECOND_PRODUCT);
+    public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(String groupId) {
+        return service.queryGroupProductList(groupId);
     }
 
     /*进入贷超产品详情*/

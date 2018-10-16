@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
+import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.entity.GroupProductBean;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.LoanActivity;
@@ -71,7 +72,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private List<String> looperTexts = new ArrayList<>();
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
-    private int state = 1;//1 正常状态 2 审核中 3 审核失败
+    private int state = 0;//1 正常状态 2 审核中 3 审核失败
     private String overDate;
     private Handler handler = new Handler(Looper.getMainLooper());
     private long currentMillSecond = 0;//当前毫秒数
@@ -80,10 +81,11 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         public void run() {
             currentMillSecond = currentMillSecond - 1000;
             if (currentMillSecond / 1000 <= 0) {
-                setState(1);
+                if (state == 3) setState(1);//审核失败 => 可重新提交审核
+                if (state == 2) setState(3);//
                 return;
             }
-            tv_time_counter.setText(StringUtil.getFormatHMS(currentMillSecond));
+            if (state == 3) tv_time_counter.setText(StringUtil.getFormatHMS(currentMillSecond));
             handler.postDelayed(this, 1000);
         }
     };
@@ -158,7 +160,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
             if (state == 2) {
                 holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
-                Api.getInstance().queryGroupProductList()
+                Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT_CHECKING1)
                         .compose(RxResponse.<List<GroupProductBean>>compatT())
                         .subscribe(new ApiObserver<List<GroupProductBean>>() {
                             @Override
@@ -187,11 +189,16 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                         });
                     }
                 });
+                long nowStamp = System.currentTimeMillis();
+                currentMillSecond = StringUtil.timeGapSecond(overDate, StringUtil.stamp2Str(nowStamp)) * 1000;
+                handler.removeCallbacksAndMessages(null);
+                handler.post(timeRunable);
             }
             if (state == 3) {
                 holder.state_container.addView(initState1(R.layout.layout_state_3, 3));
                 long nowStamp = System.currentTimeMillis();
                 currentMillSecond = StringUtil.timeGapSecond(overDate, StringUtil.stamp2Str(nowStamp)) * 1000;
+                handler.removeCallbacksAndMessages(null);
                 handler.post(timeRunable);
             }
         }

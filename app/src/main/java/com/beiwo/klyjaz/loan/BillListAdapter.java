@@ -169,7 +169,7 @@ public class BillListAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
                                                 @Override
                                                 public void onNext(@NonNull Object data) {
                                                     notifyItemRemoved(position);
-                                                    dataSet.remove(position);
+                                                    //dataSet.remove(position);
                                                     handler.postDelayed(task, 500);
                                                 }
                                             });
@@ -180,7 +180,7 @@ public class BillListAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
                                                 @Override
                                                 public void onNext(@NonNull BillState data) {
                                                     notifyItemRemoved(position);
-                                                    dataSet.remove(position);
+                                                    //dataSet.remove(position);
                                                     handler.postDelayed(task, 500);
                                                     if (data.status == 2) {
                                                         ToastUtil.toast(data.message);
@@ -194,7 +194,7 @@ public class BillListAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
                                                 @Override
                                                 public void onNext(@NonNull BillState data) {
                                                     notifyItemRemoved(position);
-                                                    dataSet.remove(position);
+                                                    //dataSet.remove(position);
                                                     handler.postDelayed(task, 500);
                                                     if (data.status == 2) {
                                                         ToastUtil.toast(data.message);

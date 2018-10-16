@@ -65,7 +65,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.beiwo.klyjaz.loan.BillListActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.beiwo.klyjaz.jjd.activity.LoanActivity"

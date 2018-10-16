@@ -23,6 +23,7 @@ import com.beiwo.klyjaz.entity.RemindBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.loan.BillListActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -259,9 +260,6 @@ public class MakeBillActivity extends BaseComponentActivity {
     public void onViewClicked(View view) {
         InputMethodUtil.closeSoftKeyboard(this);//收起软键盘
         switch (view.getId()) {
-            /*case R.id.tv_save_bill:
-                createBill();
-                break;*/
             case R.id.tv_alert_dlg:
                 DlgUtil.createDlg(MakeBillActivity.this, R.layout.dlg_info_dout, new DlgUtil.OnDlgViewClickListener() {
                     @Override
@@ -363,19 +361,6 @@ public class MakeBillActivity extends BaseComponentActivity {
         if (remark != null && !remark.isEmpty()) map.put("remark", remark);
         //提前x天提醒
         map.put("remind", remind_day);
-
-        /*Api.getInstance().createLoanAccount(map)
-                .compose(RxResponse.<CreateAccountReturnIDsBean>compatT())
-                .subscribe(new ApiObserver<CreateAccountReturnIDsBean>() {
-                    @Override
-                    public void onNext(@NonNull CreateAccountReturnIDsBean data) {
-                        ToastUtil.toast("保存成功");
-                        Intent intent = new Intent(MakeBillActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        EventBus.getDefault().post("1");
-                        finish();
-                    }
-                });*/
         Api.getInstance().createLoanAccount(map)
                 .compose(RxUtil.<ResultEntity<CreateAccountReturnIDsBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<CreateAccountReturnIDsBean>>() {
@@ -383,15 +368,11 @@ public class MakeBillActivity extends BaseComponentActivity {
                     public void accept(ResultEntity<CreateAccountReturnIDsBean> resultEntity) throws Exception {
                         if (resultEntity.isSuccess()) {
                             ToastUtil.toast(resultEntity.getMsg());
-                            Intent intent = new Intent(MakeBillActivity.this, MainActivity.class);
+                            Intent intent = new Intent(MakeBillActivity.this, BillListActivity.class);
                             startActivity(intent);
                             EventBus.getDefault().post("1");
                             finish();
                         }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
                     }
                 });
     }

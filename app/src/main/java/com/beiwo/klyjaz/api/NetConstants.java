@@ -16,6 +16,8 @@ public class NetConstants {
      */
     //public static final String SECOND_PRODUCT = "599c7594aaa7453c8d8b52c35b865adf";
     public static final String SECOND_PRODUCT = "b1c82ecf234241a6bded788a585383da";
+    public static final String SECOND_PRODUCT_CHECKING1 = "0f7e2d4f8674487591571166318459e2";
+    public static final String SECOND_PRODUCT_CHECKING2 = "2735e029dbf04585baadb750e5faa42f";
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
 
@@ -28,11 +30,8 @@ public class NetConstants {
     public static final String BASE_PATH_S_FOUR = "/s4";
     public static final String PRODUCT_PATH = "/s3";
 
-    /**
-     * 一下两个是网络请求Request的两个字段
-     */
+    /*网络请求Request的两个字段*/
     public static final String SECRET_KEY = "0bca3e8e2baa42218040c5dbf6978f315e104e5c";
-
     public static final String ACCESS_KEY = "699b9305418757ef9a26e5a32ca9dbfb";
 
     /**********H5 static field********/
