@@ -48,6 +48,7 @@ public class App extends Application {
     private AppComponent appComponent;
     public static WindowManager mWindowManager;//窗口
     public static int mWidthPixels;//屏幕宽度（像素）
+    public static String androidId;//设备Id
     public static String sChannelId = "unknown";
     public static int step = 0;//认证步骤
     public static int audit = 1;//是否审核中
@@ -102,7 +103,7 @@ public class App extends Application {
         }
         if (TextUtils.equals(getProcessName(this), getPackageName())) {
             //pv，uv统计
-            String androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             if (UserHelper.getInstance(this).isLogin()) {
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
             } else {
@@ -124,7 +125,6 @@ public class App extends Application {
                             }
                         }
                     });
-
         }
         //获取WindowManager
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);

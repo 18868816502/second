@@ -13,7 +13,6 @@ import com.google.gson.Gson;
  *         存储用户信息
  */
 public class UserHelper {
-
     private static UserHelper sInstance;
     private Gson gson = new Gson();
     private Profile profile;
@@ -49,7 +48,6 @@ public class UserHelper {
             profile.setHeadPortrait(param.getHeadPortrait());
             profile.setAccount(param.getAccount());
             profile.setProfession(param.getProfession());
-
 
             profile.setBingPhone(param.getBingPhone());
             profile.setWxUnionId(param.getWxUnionId());

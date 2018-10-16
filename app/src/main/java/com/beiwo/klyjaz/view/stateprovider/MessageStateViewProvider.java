@@ -12,7 +12,7 @@ public class MessageStateViewProvider implements StateLayout.StateViewProvider {
     public View getViewByState(int newState, StateLayout container) {
         if (newState == StateLayout.STATE_EMPTY) {
             return LayoutInflater.from(container.getContext())
-                    .inflate(R.layout.empty_sys_layout, container, false);
+                    .inflate(R.layout.empty_layout, container, false);
         }
         return null;
     }

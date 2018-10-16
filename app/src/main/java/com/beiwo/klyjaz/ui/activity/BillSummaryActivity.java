@@ -93,7 +93,10 @@ public class BillSummaryActivity extends BaseComponentActivity {
             }
         });
         view = View.inflate(this, R.layout.bill_summary_header, null);
-        emptyView = View.inflate(this, R.layout.empty_bill_summary_layout, null);
+        emptyView = View.inflate(this, R.layout.empty_layout, null);
+        TextView tv_content = emptyView.findViewById(R.id.tv_content);
+        tv_content.setText("你还没有账单哦~");
+
         toatlLiMoney = view.findViewById(R.id.totalliamount);
         toatlOverMoney = view.findViewById(R.id.totalover_amount);
         totalTile = view.findViewById(R.id.total_title);
