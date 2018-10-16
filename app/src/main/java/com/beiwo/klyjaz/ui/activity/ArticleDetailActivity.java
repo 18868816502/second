@@ -215,15 +215,18 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         switch (tag) {
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
-                presenter.fetchReplyForumInfo("", "1", etInput.getText().toString(), forumBean.getForumId(), "", "");
+                presenter.fetchReplyForumInfo("", "1",
+                        etInput.getText().toString(), forumBean.getForumId(), "", "");
                 break;
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
-                presenter.fetchReplyForumInfo("", "2", etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId());
+                presenter.fetchReplyForumInfo("", "2",
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId());
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-                presenter.fetchReplyForumInfo("", "2", etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyDtoListBean.getId());
+                presenter.fetchReplyForumInfo("", "2",
+                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId());
                 break;
             default:
                 break;
@@ -306,6 +309,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 int comPosition = (int) view.getTag();
+                replyBean = datas.get(comPosition);
                 replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
 //                reply();
 //                ToastUtil.toast("评论第" + comPosition + "条");

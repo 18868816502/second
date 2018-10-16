@@ -137,7 +137,7 @@ public class ArticleDetailPresenter extends BaseRxPresenter implements ArticleDe
 
     @Override
     public void fetchCancelReply(String replyId) {
-        Disposable dis = api.fetchCancelReply(userHelper.getProfile().getId())
+        Disposable dis = api.fetchCancelReply(replyId)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

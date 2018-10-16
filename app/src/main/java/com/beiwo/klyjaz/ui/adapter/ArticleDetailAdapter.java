@@ -98,7 +98,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             });
             headViewHolder.tvArticleContent.setText(forumBean.getContent());
-            headViewHolder.tvCommentNum.setText(String.valueOf("评论"+datas.size()));
+            headViewHolder.tvCommentNum.setText(String.valueOf("评论 "+datas.size()));
             if(forumBean.getIsPraise() == 0){
                 Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
