@@ -28,7 +28,7 @@ public class CommentReplyBean {
     private String userHeadUrl;
     private int praiseCount;
     private String content;
-    private long gmtCreate;
+    private String gmtCreate;
     private String id;
     private List<ReplyDtoListBean> replyDtoList;
 
@@ -72,11 +72,11 @@ public class CommentReplyBean {
         this.content = content;
     }
 
-    public long getGmtCreate() {
+    public String getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(long gmtCreate) {
+    public void setGmtCreate(String gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 

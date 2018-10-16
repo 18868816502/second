@@ -17,7 +17,7 @@
         android:paddingEnd="@dimen/dp15"
         android:layout_marginTop="@dimen/dp10"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="[新口子分享]算力钱包：唇纹重的不要够分的扣子 百闻不如一试~~"
+        tools:text="[新口子分享]算力钱包：唇纹重的不要够分的扣子 百闻不如一试~~"
         android:textColor="@color/black_1"
         android:textSize="@dimen/sp22"
         tools:layout_editor_absoluteX="8dp" />
@@ -52,8 +52,9 @@
         android:id="@+id/tv_author_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/iv_author_avatar"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_author_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
+        android:layout_marginTop="@dimen/dp6"
         tools:text="6分钟前"
         android:textSize="@dimen/sp10"
         android:textColor="@color/black_2"/>
@@ -145,7 +146,7 @@
         android:layout_marginStart="@dimen/dp15"
         app:layout_constraintTop_toBottomOf="@+id/indicate"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="评论 7"
+        tools:text="评论 7"
         android:textSize="@dimen/sp17"
         android:textColor="@color/black_1"/>
 

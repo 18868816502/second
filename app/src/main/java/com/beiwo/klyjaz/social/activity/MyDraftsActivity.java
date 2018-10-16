@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.social.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,6 +29,9 @@ import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +43,8 @@ import io.reactivex.functions.Consumer;
  * 我的草稿箱
  */
 public class MyDraftsActivity extends BaseComponentActivity implements BaseQuickAdapter.OnItemClickListener,
-        BaseQuickAdapter.OnItemChildClickListener,PopDialog.OnInitPopListener,View.OnClickListener  {
+        BaseQuickAdapter.OnItemChildClickListener,PopDialog.OnInitPopListener,View.OnClickListener,
+        OnRefreshListener, OnLoadMoreListener {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -77,6 +82,8 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
 
         adapter.setOnItemClickListener(this);
         adapter.setOnItemChildClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setOnLoadMoreListener(this);
     }
 
     @Override
@@ -248,5 +255,17 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        pageNo ++;
+        fetchData();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        pageNo = 1;
+        fetchData();
     }
 }

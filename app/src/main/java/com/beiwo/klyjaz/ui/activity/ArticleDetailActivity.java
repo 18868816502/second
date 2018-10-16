@@ -37,6 +37,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -111,10 +112,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void initDatas() {
+        datas = new ArrayList<>();
         Intent intent = getIntent();
         if (intent != null) {
             forumBean = (SocialTopicBean.ForumBean) intent.getSerializableExtra("topic");
-            presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
+//            presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
+            fetchData();
         }
     }
 
@@ -125,6 +128,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 .articleDetailModule(new ArticleDetailModule(this))
                 .build()
                 .inject(this);
+    }
+
+    private void fetchData(){
+        if(forumBean != null){
+            presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
+        }
     }
 
 
@@ -246,12 +255,14 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+        pageNo ++;
+        fetchData();
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+        pageNo = 1;
+        fetchData();
     }
 
     @Override
@@ -397,8 +408,18 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
-        this.datas = list;
-        adapter.setDatas(list, forumBean);
+        if(pageNo == 1){
+            refreshLayout.finishRefresh();
+            this.datas.clear();
+            this.datas = list;
+            adapter.setDatas(datas, forumBean);
+        }else{
+            refreshLayout.finishLoadMore();
+            this.datas.addAll(list);
+            adapter.setDatas(datas,forumBean);
+        }
+//        this.datas = list;
+//        adapter.setDatas(list, forumBean);
     }
 
     @Override
