@@ -71,10 +71,10 @@ import com.beiwo.klyjaz.entity.ThirdAuthResult;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
 import com.beiwo.klyjaz.entity.Ticket;
 import com.beiwo.klyjaz.entity.UsedEmail;
-import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.entity.UserInfoBean;
 import com.beiwo.klyjaz.entity.UserProfile;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.entity.Withdraw;
 import com.beiwo.klyjaz.entity.WithdrawRecord;
 import com.beiwo.klyjaz.entity.request.RequestConstants;
@@ -82,7 +82,6 @@ import com.beiwo.klyjaz.jjd.bean.BankCard;
 import com.beiwo.klyjaz.jjd.bean.BankName;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
 import com.beiwo.klyjaz.jjd.bean.CashUserInfo;
-import com.beiwo.klyjaz.loan.Product;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
@@ -1266,7 +1265,7 @@ public class Api {
 
 
     /*产品列表查询*/
-    public Observable<ResultEntity<List<Product>>> products(Map<String, Object> map) {
+    public Observable<ResultEntity<List<GroupProductBean>>> products(Map<String, Object> map) {
         return service.products(map);
     }
 

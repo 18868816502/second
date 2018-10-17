@@ -30,6 +30,6 @@ public class RecomProAdapter extends BaseQuickAdapter<GroupProductBean, BaseView
         ImageView iv_icon = helper.getView(R.id.iv_icon);
         Glide.with(iv_icon.getContext()).load(item.logoUrl).error(R.color.white).into(iv_icon);
         helper.setText(R.id.tv_name, item.getProductName())
-                .setText(R.id.tv_content, item.borrowingHighText);
+                .setText(R.id.tv_content, item.borrowingLowText.substring(0, item.borrowingLowText.length() - 1) + "-" + item.borrowingHighText);
     }
 }

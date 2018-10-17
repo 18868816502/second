@@ -74,6 +74,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
     private int state = 0;//1 正常状态 2 审核中 3 审核失败
+    private String auditDate;
     private String overDate;
     private Handler handler = new Handler(Looper.getMainLooper());
     private long currentMillSecond = 0;//当前毫秒数
@@ -82,15 +83,15 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         public void run() {
             currentMillSecond = currentMillSecond - 1000;
             if (currentMillSecond / 1000 <= 0) {
-                if (state == 3) setState(1);//审核失败 => 普通状态
-                if (state == 2) setState(3);//审核中 => 审核失败
+                if (state == 3) setStateNormal();//审核失败 => 普通状态
+                if (state == 2) setStateFail(overDate);//审核中 => 审核失败
                 return;
             }
             if (state == 3) tv_time_counter.setText(StringUtil.getFormatHMS(currentMillSecond));
             handler.postDelayed(this, 1000);
         }
     };
-    private int progress = 500;
+    private int progress = 2000;
     private PopAdapter popAdapter = new PopAdapter();
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles) {
@@ -105,13 +106,20 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         notifyItemChanged(0);
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setStateNormal() {
+        this.state = 1;
         notifyItemChanged(0);
     }
 
-    public void setState(int state, String overDate) {
-        this.state = state;
+    public void setStateChecking(String auditDate, String overDate) {
+        this.state = 2;
+        this.auditDate = auditDate;
+        this.overDate = overDate;
+        notifyItemChanged(0);
+    }
+
+    public void setStateFail(String overDate) {
+        this.state = 3;
         this.overDate = overDate;
         notifyItemChanged(0);
     }
@@ -191,7 +199,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     }
                 });
                 long nowStamp = System.currentTimeMillis();
-                currentMillSecond = StringUtil.timeGapSecond(overDate, StringUtil.stamp2Str(nowStamp)) * 1000;
+                currentMillSecond = StringUtil.timeGapSecond(auditDate, StringUtil.stamp2Str(nowStamp)) * 1000;
                 handler.removeCallbacksAndMessages(null);
                 handler.post(timeRunable);
             }

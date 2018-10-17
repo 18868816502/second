@@ -13,6 +13,7 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.entity.GroupProductBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
@@ -82,7 +83,7 @@ public class ProTypeActivity extends BaseComponentActivity {
         SlidePanelHelper.attach(this);
         productType = getIntent().getIntExtra("productType", -1);
         if (productType == 1) {
-            tv_toolbar_title.setText("高通过率专区");
+            tv_toolbar_title.setText("新品推荐专区");
             tv_head_txt.setText(type1str);
         }
         if (productType == 2) {
@@ -121,7 +122,7 @@ public class ProTypeActivity extends BaseComponentActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                final Product product = adapter.getData().get(position);
+                final GroupProductBean product = adapter.getData().get(position);
                 if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
                     startActivity(new Intent(context, UserAuthorizationActivity.class));
                     return;
@@ -153,10 +154,10 @@ public class ProTypeActivity extends BaseComponentActivity {
         map.put("platform", 1);
         map.put("productType", productType);
         Api.getInstance().products(map)
-                .compose(RxResponse.<List<Product>>compatT())
-                .subscribe(new ApiObserver<List<Product>>() {
+                .compose(RxResponse.<List<GroupProductBean>>compatT())
+                .subscribe(new ApiObserver<List<GroupProductBean>>() {
                     @Override
-                    public void onNext(@NonNull List<Product> data) {
+                    public void onNext(@NonNull List<GroupProductBean> data) {
                         refresh_layout.finishRefresh();
                         refresh_layout.finishLoadMore();
                         if (pageNo == 1) {

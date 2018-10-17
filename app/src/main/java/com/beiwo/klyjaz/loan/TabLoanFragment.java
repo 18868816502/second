@@ -17,6 +17,7 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
+import com.beiwo.klyjaz.entity.GroupProductBean;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -74,7 +75,7 @@ public class TabLoanFragment extends BaseComponentFragment {
     private int moneyType = 0;
     private int borrowingLow = -1;//金额区别 低值
     private int borrowingHigh = -1;//金额区间 高值
-    private int productType = 0;//产品属性 1 高通过率 2 闪电到账 3 大额低息 4 不查征信
+    private int productType = 0;//产品属性 1 新品推荐 2 闪电到账 3 大额低息 4 不查征信
     private ProductAdapter adapter = new ProductAdapter();
     private Drawable right;
     private int selectColor;
@@ -129,7 +130,7 @@ public class TabLoanFragment extends BaseComponentFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                final Product product = adapter.getData().get(position);
+                final GroupProductBean product = adapter.getData().get(position);
                 if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
                     startActivity(new Intent(context, UserAuthorizationActivity.class));
                     return;
@@ -172,10 +173,10 @@ public class TabLoanFragment extends BaseComponentFragment {
 
     private void request(Map<String, Object> map) {
         Api.getInstance().products(map)
-                .compose(RxResponse.<List<Product>>compatT())
-                .subscribe(new ApiObserver<List<Product>>() {
+                .compose(RxResponse.<List<GroupProductBean>>compatT())
+                .subscribe(new ApiObserver<List<GroupProductBean>>() {
                     @Override
-                    public void onNext(@NonNull List<Product> data) {
+                    public void onNext(@NonNull List<GroupProductBean> data) {
                         refresh_layout.finishRefresh();
                         refresh_layout.finishLoadMore();
                         if (pageNo == 1) {
