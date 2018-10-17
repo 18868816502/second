@@ -125,6 +125,12 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             publishRecycler.setLayoutManager(manager);
             publishRecycler.setAdapter(adapter);
             adapter.setOnItemClickListener(this);
+            adapter.setOnChoosePickListener(new CommunityPublishHeadAdapter.OnChoosePickListener() {
+                @Override
+                public void onPickClick(int size) {
+                    pickListener.onPickClick(size);
+                }
+            });
             adapter.notifyDataSetChanged();
         }
 
@@ -187,7 +193,6 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(flag == 1) {
                 contentViewHolder.tvPublishTitleNum.setText((30 - s.length()) + "/30");
             }else{
-//                contentViewHolder.tvPublishTitleNum.setText((30 - s.length()) + "/30");
             }
         }
 
@@ -212,4 +217,14 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private OnSaveEditListener saveListener;
+
+    private OnChoosePickListener pickListener;
+
+    public void setOnChoosePickListener(OnChoosePickListener listener){
+        this.pickListener = listener;
+    }
+
+    public interface OnChoosePickListener{
+        void onPickClick(int remainSize);
+    }
 }

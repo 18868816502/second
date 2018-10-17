@@ -342,7 +342,7 @@
         <!-- file provider, N feature -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${PACKAGE_NAME}.fileprovider"
+            android:authorities="com.beiwo.klyjaz.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -514,15 +514,15 @@
             android:name="com.beiwo.klyjaz.ui.activity.SocialTopicDetailActivity"
             android:screenOrientation="portrait" />
 
-        <!-- <provider -->
-        <!-- android:name="android.support.v4.content.FileProvider" -->
-        <!-- android:authorities="com.beihui.market" -->
-        <!-- android:exported="false" -->
-        <!-- android:grantUriPermissions="true"> -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
-        <!-- android:resource="@xml/file_paths_public"></meta-data> -->
-        <!-- </provider> -->
+         <!--<provider-->
+         <!--android:name="android.support.v4.content.FileProvider"-->
+         <!--android:authorities="com.beihui.market"-->
+         <!--android:exported="false"-->
+         <!--android:grantUriPermissions="true">-->
+         <!--<meta-data-->
+         <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+         <!--android:resource="@xml/file_paths_public"></meta-data>-->
+         <!--</provider>-->
         <activity
             android:name="com.beiwo.klyjaz.social.activity.MyDraftsActivity"
             android:screenOrientation="portrait" />
