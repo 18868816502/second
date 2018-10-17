@@ -150,6 +150,7 @@ public class ProTypeActivity extends BaseComponentActivity {
     private void request() {
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
+        map.put("platform", 1);
         map.put("productType", productType);
         Api.getInstance().products(map)
                 .compose(RxResponse.<List<Product>>compatT())
