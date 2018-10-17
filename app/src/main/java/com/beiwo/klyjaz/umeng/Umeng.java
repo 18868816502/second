@@ -2,8 +2,6 @@ package com.beiwo.klyjaz.umeng;
 
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.BuildConfig;
@@ -31,18 +29,6 @@ public class Umeng {
         config.isOpenShareEditActivity(false);
         config.setSinaAuthType(UMShareConfig.AUTH_TYPE_SSO);
         UMShareAPI.get(context).setShareConfig(config);
-
-        String umengChannel = null;
-        try {
-            ApplicationInfo applicationInfo = App.getInstance().getApplicationContext().getPackageManager().getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA);
-            if (applicationInfo != null) {
-                if (applicationInfo.metaData != null) {
-                    umengChannel = applicationInfo.metaData.getString("UMENG_CHANNEL");
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-
         /**
          * 参数1:上下文，不能为空
          * 参数2:友盟 app key
@@ -50,7 +36,7 @@ public class Umeng {
          * 参数4:设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子，默认为手机
          * 参数5:Push推送业务的secret
          */
-        UMConfigure.init(context, "596c4b3dbbea83542c001b01", umengChannel, UMConfigure.DEVICE_TYPE_PHONE, "");
+        UMConfigure.init(context, BuildConfig.UMENG_APP_KEY, App.sChannelId, UMConfigure.DEVICE_TYPE_PHONE, "");
         //统计使用
         MobclickAgent.setScenarioType(context, MobclickAgent.EScenarioType.E_UM_NORMAL);
         //统计错误

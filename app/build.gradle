@@ -92,6 +92,7 @@ android {
         klyjaz_baidu { dimension "channel" }
         klyjaz_360 { dimension "channel" }
         klyjaz_yingyongbao { dimension "channel" }
+        klyjaz_yingyongbaocpd { dimension "channel" }
         klyjaz_xiaomi { dimension "channel" }
         klyjaz_huawei { dimension "channel" }
         klyjaz_vivo { dimension "channel" }
@@ -101,13 +102,11 @@ android {
         klyjaz_sanxing { dimension "channel" }
         klyjaz_jifeng { dimension "channel" }
         klyjaz_mumayi { dimension "channel" }
+        klyjaz_anzhi { dimension "channel" }
         klyjaz_guanfang { dimension "channel" }
 
         productFlavors.all { flavor ->
-            manifestPlaceholders.putAll([
-                    UMENG_CHANNEL: name,
-                    CHANNEL_ID   : name,
-            ])
+            manifestPlaceholders.putAll([UMENG_CHANNEL: name, CHANNEL_ID: name])
         }
     }
 
