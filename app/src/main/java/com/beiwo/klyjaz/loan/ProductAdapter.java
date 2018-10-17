@@ -6,6 +6,7 @@ import android.text.style.RelativeSizeSpan;
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.entity.GroupProductBean;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -21,16 +22,16 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * @date: 2018/10/10
  */
 
-public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
+public class ProductAdapter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
     public ProductAdapter() {
         super(R.layout.layout_product_item);
         openLoadAnimation(ALPHAIN);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Product item) {
+    protected void convert(BaseViewHolder helper, GroupProductBean item) {
         helper.setText(R.id.tv_product_name, item.getProductName())
-                .setText(R.id.tv_product_money, span(item.getBorrowingHighText()))
+                .setText(R.id.tv_product_money, span(item.borrowingLowText.substring(0, item.borrowingLowText.length() - 1) + "-" + item.borrowingHighText))
                 .setText(R.id.tv_product_rate, span(item.getInterestLowText()))
                 .setText(R.id.tv_product_count, span(item.getSuccessCount() + "人"));
         ImageView iv_product_icon = helper.getView(R.id.iv_product_icon);

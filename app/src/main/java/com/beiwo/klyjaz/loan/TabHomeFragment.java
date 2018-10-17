@@ -157,19 +157,20 @@ public class TabHomeFragment extends BaseComponentFragment {
                                 if ("1".equals(data.getOrderStatus())) {//审核被拒
                                     long current = StringUtil.time2NowSecond(data.getGmtCreate());//目前
                                     long gap = StringUtil.timeGapSecond(data.getOverDate(), data.getGmtCreate());//设定
-                                    if (current >= gap) homeAdapter.setState(1);//超过设定时间
-                                    else homeAdapter.setState(3, data.getOverDate());//未超过设定时间
-                                } else homeAdapter.setState(2, data.getAuditDate());//审核中
-                            } else homeAdapter.setState(1);
+                                    if (current >= gap) homeAdapter.setStateNormal();//超过设定时间
+                                    else homeAdapter.setStateFail(data.getOverDate());//未超过设定时间
+                                } else
+                                    homeAdapter.setStateChecking(data.getAuditDate(), data.getOverDate());//审核中
+                            } else homeAdapter.setStateNormal();
                         }
 
                         @Override
                         public void onError(@NonNull Throwable t) {
                             super.onError(t);
-                            homeAdapter.setState(1);
+                            homeAdapter.setStateNormal();
                         }
                     });
-        } else homeAdapter.setState(1);
+        } else homeAdapter.setStateNormal();
     }
 
     @Override

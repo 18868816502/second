@@ -8,20 +8,14 @@ import java.io.Serializable;
  */
 
 public class GroupProductBean implements Serializable {
-
-
-    /**
-     * explains : 1231
-     * id : 2131
-     * productName : 31231231
-     * logoUrl : 31231231
-     */
-
     public String explains;
     public String id;
     public String productName;
     public String logoUrl;
+    private String interestLowText;
+    private int successCount;
     public String borrowingHighText;
+    public String borrowingLowText;
 
     public String getExplains() {
         return explains;
@@ -53,5 +47,21 @@ public class GroupProductBean implements Serializable {
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    public String getInterestLowText() {
+        return interestLowText;
+    }
+
+    public void setInterestLowText(String interestLowText) {
+        this.interestLowText = interestLowText;
+    }
+
+    public int getSuccessCount() {
+        return successCount;
+    }
+
+    public void setSuccessCount(int successCount) {
+        this.successCount = successCount;
     }
 }
