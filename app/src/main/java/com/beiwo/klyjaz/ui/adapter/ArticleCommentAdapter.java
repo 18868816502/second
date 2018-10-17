@@ -17,6 +17,7 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,10 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             viewHolder.tvCommentPraise.setTag(position);
             viewHolder.ivArticleComment.setTag(position);
             viewHolder.tvDelete.setTag(position);
-//            if(TextUtils.isEmpty(datas.get(position).ge))
+            if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())){
+                Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
+            }
+            viewHolder.tvCommentTime.setText(datas.get(position).getGmtCreate());
             String content = "回复<font color='#2a84ff'>"
                     + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
                     + "</font>:"
@@ -108,7 +112,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         if(isOpen){
             return datas.size() + 1;
         }else{
-            if(datas.size() > 1){
+            if(datas.size() > 0){
                 return 2;
             }else{
                 return 0;

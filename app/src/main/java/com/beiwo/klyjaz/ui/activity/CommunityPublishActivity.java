@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,9 +28,7 @@ import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.InputMethodUtil;
-import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
-import com.beiwo.klyjaz.view.ClearEditText;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
@@ -92,8 +92,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private List<String> httpUrls;
     private List<String> httpImgKeys;
 
-    private ClearEditText etTitle;
-    private ClearEditText etContent;
+    private EditText etTitle;
+    private EditText etContent;
 
     @Override
     public int getLayoutId() {
@@ -167,6 +167,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 //                        InputMethodUtil.keyBoard(etContent,"close");
 //                    }
 
+                    popDialog.dismiss();
                     finish();
                 } else {
                     popDialog.dismiss();
@@ -174,10 +175,12 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.tv_save:
                 //保存
+                popDialog.dismiss();
                 status = "3";
                 if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
                 } else {
+                    showProgress();
                     uploadImg();
                 }
                 break;
@@ -227,23 +230,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 .setLayoutId(layoutId)
                 .setWidth(270)
                 .setHeight(120)
-                .setGravity(Gravity.CENTER)
-                .setCancelableOutside(false)
-                .setInitPopListener(this)
-                .create();
-        popDialog.show();
-    }
-
-    /**
-     * 根据布局显示弹窗
-     *
-     * @param layoutId 布局id
-     */
-    private void showUploadDialog(int layoutId) {
-        popDialog = new PopDialog.Builder(getSupportFragmentManager(), this)
-                .setLayoutId(layoutId)
-                .setWidth(100)
-                .setHeight(100)
                 .setGravity(Gravity.CENTER)
                 .setCancelableOutside(false)
                 .setInitPopListener(this)
@@ -361,7 +347,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     @Override
-    public void onSaveEdit(ClearEditText editText, int flag, String strEdit) {
+    public void onSaveEdit(EditText editText, int flag, String strEdit) {
         if (flag == 1) {
             this.etTitle = editText;
             mTopicTitle = strEdit;
@@ -377,7 +363,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     private void showSaveDraftDialog() {
-        InputMethodUtil.toggleSoftKeyboardState(this);
+//        InputMethodUtil.toggleSoftKeyboardState(this);
         if (pathList.size() != 0 || !TextUtils.isEmpty(mTopicTitle) || !TextUtils.isEmpty(mTopicContent)) {
             mPopType = 0;
             showDialogTips(R.layout.dialog_community_publish_save);

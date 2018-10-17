@@ -3,6 +3,7 @@ package com.beiwo.klyjaz.ui.adapter.social;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,6 +97,15 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHoler.ivAvatar);
         viewHoler.tvName.setText(datas.get(position).getUserName());
         viewHoler.tvPraise.setText(String.valueOf(datas.get(position).getPraiseCount()+""));
+        if (datas.get(position).getIsPraise() == 0) {
+            Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
+            dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
+            viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+        } else {
+            Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
+            dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
+            viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+        }
         viewHoler.itemView.setTag(position);
         viewHoler.tvPraise.setTag(position);
     }

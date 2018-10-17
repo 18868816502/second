@@ -123,8 +123,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         if (intent != null) {
             this.userId = intent.getStringExtra("userId");
             this.forumId = intent.getStringExtra("forumId");
-            if(!TextUtils.isEmpty(userId)&&!TextUtils.isEmpty(forumId)){
-                presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+            if(!TextUtils.isEmpty(forumId)){
+                presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),forumId,pageNo,pageSize);
             }
 
         }

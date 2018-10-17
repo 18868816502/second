@@ -18,6 +18,6 @@ public interface OnSaveEditListener {
      * @param flag
      * @param strEdit
      */
-    void onSaveEdit(ClearEditText editText, int flag, String strEdit);
+    void onSaveEdit(EditText editText, int flag, String strEdit);
 
 }

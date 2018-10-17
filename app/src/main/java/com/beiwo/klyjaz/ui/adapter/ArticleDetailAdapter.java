@@ -88,8 +88,10 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
             HeadViewHolder headViewHolder = (HeadViewHolder) holder;
             headViewHolder.tvArticleTitle.setText(forumBean.getTitle());
-            Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
-            headViewHolder.tvAuthorName.setText(forumBean.getUserName());
+            if(!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
+                Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
+            }
+            headViewHolder.tvAuthorName.setText(TextUtils.isEmpty(forumBean.getUserName())?"未知":forumBean.getUserName());
             headViewHolder.tvAuthorTime.setText(forumBean.getGmtCreate());
             if (forumBean.getPicUrl() != null && forumBean.getPicUrl().size() != 0) {
                 headViewHolder.bgaBanner.setVisibility(View.VISIBLE);
@@ -130,7 +132,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commmentViewHolder.tvCommentDelete.setTag(R.id.tag_delete, position - 1);
             commmentViewHolder.itemView.setTag(position - 1);
 
-            Glide.with(mContext).load(datas.get(position - 1).getUserHeadUrl()).into(commmentViewHolder.ivCommentatorAcatar);
+            if(!TextUtils.isEmpty(datas.get(position - 1).getUserHeadUrl())) {
+                Glide.with(mContext).load(datas.get(position - 1).getUserHeadUrl()).into(commmentViewHolder.ivCommentatorAcatar);
+            }
             commmentViewHolder.tvCommentatorName.setText(datas.get(position - 1).getUserName());
             commmentViewHolder.tvCommentContent.setText(datas.get(position - 1).getContent());
             commmentViewHolder.tvCommentTime.setText(String.valueOf(datas.get(position - 1).getGmtCreate() + ""));

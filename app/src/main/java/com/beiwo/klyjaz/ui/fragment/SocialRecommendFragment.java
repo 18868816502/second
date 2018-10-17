@@ -105,7 +105,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        pageNo++;
+//        pageNo++;
         fetchData();
     }
 
@@ -148,6 +148,9 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                                        } else {
                                            refreshLayout.finishLoadMore();
                                            adapter.appendDatas(result.getData().getForum());
+                                       }
+                                       if (result.getData().getForum() != null && result.getData().getForum().size() != 0) {
+                                           pageNo++;
                                        }
                                    } else {
                                        ToastUtil.toast(result.getMsg());
