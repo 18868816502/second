@@ -2,6 +2,8 @@ package com.beiwo.klyjaz.jjd.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
@@ -10,6 +12,7 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.jjd.BankInfoUtil;
 import com.beiwo.klyjaz.jjd.bean.BankCard;
 import com.beiwo.klyjaz.jjd.bean.BankName;
 import com.beiwo.klyjaz.tang.StringUtil;
@@ -29,6 +32,7 @@ import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function3;
 import io.reactivex.functions.Function4;
 
 /**
@@ -50,12 +54,21 @@ public class AddCardActivity extends BaseComponentActivity {
     ClearEditText cet_card_no;
     @BindView(R.id.cet_bank_name)
     ClearEditText cet_bank_name;
-    @BindView(R.id.cet_phone_no)
-    ClearEditText cet_phone_no;
     @BindView(R.id.tv_add_card)
     TextView tv_add_card;
 
-    private String holderName, cardNo, bankName, phoneNo;
+    @BindView(R.id.ll_card_wrap)
+    LinearLayout ll_card_wrap;
+    @BindView(R.id.iv_card_icon)
+    ImageView iv_card_icon;
+    @BindView(R.id.tv_card_name)
+    TextView tv_card_name;
+    @BindView(R.id.tv_card_num)
+    TextView tv_card_num;
+    @BindView(R.id.tv_holder_name)
+    TextView tv_holder_name;
+
+    private String holderName, cardNo, bankName;
     private Map<String, Object> map = new HashMap<>();
     private String cardId = "";
 
@@ -77,7 +90,6 @@ public class AddCardActivity extends BaseComponentActivity {
         cet_holder_name.setMaxLenght(20);
         cet_card_no.setMaxLenght(20);
         cet_bank_name.setMaxLenght(20);
-        cet_phone_no.setMaxLenght(11);
 
         try {
             cardId = getIntent().getStringExtra("cardId");
@@ -92,7 +104,6 @@ public class AddCardActivity extends BaseComponentActivity {
                             cet_holder_name.setText(data.getCardholder());
                             cet_card_no.setText(data.getBankCardno());
                             cet_bank_name.setText(data.getBankName());
-                            cet_phone_no.setText(data.getReservePhone());
                         }
                     });
         }
@@ -100,15 +111,12 @@ public class AddCardActivity extends BaseComponentActivity {
         Observable<CharSequence> obName = RxTextView.textChanges(cet_holder_name);
         Observable<CharSequence> obCardId = RxTextView.textChanges(cet_card_no);
         Observable<CharSequence> obBankName = RxTextView.textChanges(cet_bank_name);
-        Observable<CharSequence> obPhone = RxTextView.textChanges(cet_phone_no);
-        Observable.combineLatest(obName, obCardId, obBankName, obPhone, new Function4<CharSequence, CharSequence, CharSequence, CharSequence, Boolean>() {
+        Observable.combineLatest(obName, obCardId, obBankName, new Function3<CharSequence, CharSequence, CharSequence, Boolean>() {
             @Override
-            public Boolean apply(@NonNull CharSequence name, @NonNull CharSequence card,
-                                 @NonNull CharSequence bank, @NonNull CharSequence phone) throws Exception {
+            public Boolean apply(@NonNull CharSequence name, @NonNull CharSequence card, @NonNull CharSequence bank) throws Exception {
                 holderName = name.toString().trim();
                 cardNo = card.toString().trim();
                 bankName = bank.toString().trim();
-                phoneNo = phone.toString().trim();
                 return right();
             }
         }).subscribe(new Consumer<Boolean>() {
@@ -117,10 +125,24 @@ public class AddCardActivity extends BaseComponentActivity {
                 RxView.enabled(tv_add_card).accept(aBoolean);
             }
         });
+        RxTextView.textChanges(cet_holder_name).subscribe(new Consumer<CharSequence>() {
+            @Override
+            public void accept(CharSequence holder) throws Exception {
+                tv_holder_name.setText(TextUtils.isEmpty(holder) ? "持卡人：xxx" : "持卡人：" + holder);
+            }
+        });
         RxTextView.textChanges(cet_card_no)
                 .subscribe(new Consumer<CharSequence>() {
                     @Override
                     public void accept(CharSequence card) throws Exception {
+                        if (!TextUtils.isEmpty(card)) {
+                            if (card.length() > 15) tv_card_num.setTextSize(23);
+                            else tv_card_num.setTextSize(25);
+                            setCardNum(card);
+                        } else {
+                            cardBank();
+                            tv_card_num.setText(getString(R.string.card_num_default));
+                        }
                         if (isBankCard(cardNo)) {
                             Api.getInstance().bankName(cardNo)
                                     .compose(RxResponse.<BankName>compatT())
@@ -129,14 +151,26 @@ public class AddCardActivity extends BaseComponentActivity {
                                         public void onNext(@NonNull BankName data) {
                                             if (!TextUtils.isEmpty(data.getBankName())) {
                                                 cet_bank_name.setEnabled(false);
-                                                cet_bank_name.setText(data.getBankName());
-                                            } else cet_bank_name.setEnabled(true);
+                                                String bankName = data.getBankName();
+                                                cet_bank_name.setText(bankName);
+                                                tv_card_name.setText(bankName);
+                                                Map<String, Integer> nameAndLogo = BankInfoUtil.bankNameAndLogo(bankName);
+                                                Integer bankLogo = nameAndLogo.get("bankLogo");
+                                                Integer bg = nameAndLogo.get("bg");
+                                                iv_card_icon.setImageResource(bankLogo);
+                                                iv_card_icon.setBackgroundResource(R.drawable.bg_oval_white);
+                                                ll_card_wrap.setBackgroundResource(BankInfoUtil.bgResource(bg));
+                                            } else {
+                                                cet_bank_name.setEnabled(true);
+                                                cardBank();
+                                            }
                                         }
 
                                         @Override
                                         public void onError(@NonNull Throwable t) {
                                             super.onError(t);
                                             cet_bank_name.setEnabled(true);
+                                            cardBank();
                                         }
                                     });
                         }
@@ -149,15 +183,19 @@ public class AddCardActivity extends BaseComponentActivity {
                     public void accept(Object o) throws Exception {
                         if (!TextUtils.isEmpty(cardId)) map.put("cardId", cardId);
                         map.put("bankCardno", cardNo);
-                        map.put("reservePhone", phoneNo);
                         map.put("bankName", bankName);
+                        map.put("reservePhone", "15072442326");
                         map.put("cardholder", holderName);
                         Api.getInstance().saveCard(map)
                                 .compose(RxResponse.compatO())
                                 .subscribe(new ApiObserver<Object>() {
                                     @Override
                                     public void onNext(@NonNull Object data) {
-                                        ToastUtil.toast("添加银行卡成功");
+                                        if (TextUtils.isEmpty(cardId)) {
+                                            ToastUtil.toast("添加银行卡成功");
+                                        } else {
+                                            ToastUtil.toast("更改银行卡成功");
+                                        }
                                         finish();
                                     }
                                 });
@@ -165,11 +203,44 @@ public class AddCardActivity extends BaseComponentActivity {
                 });
     }
 
+    private void setCardNum(CharSequence cardNum) {
+        StringBuffer sb = new StringBuffer();
+        CharSequence[] arr = new CharSequence[]{"xxxx", "xxxx", "xxxx", "xxxx", "xxx"};
+        int i = cardNum.length() / 4;
+        if (cardNum.length() >= 4 * i) {
+            for (int k = 0; k < i; k++) {
+                arr[k] = cardNum.subSequence(4 * k, 4 * (k + 1));
+            }
+            CharSequence ccc = cardNum.subSequence(4 * i, cardNum.length());
+            arr[i] = ccc;
+            /*if (i == 4) {
+                if (ccc.length() == 1) arr[i] = ccc + "xx";
+                if (ccc.length() == 2) arr[i] = ccc + "x";
+                if (ccc.length() == 3) arr[i] = ccc;
+            } else {
+                if (ccc.length() == 1) arr[i] = ccc + "xxx";
+                if (ccc.length() == 2) arr[i] = ccc + "xx";
+                if (ccc.length() == 3) arr[i] = ccc + "x";
+                if (ccc.length() == 4) arr[i] = ccc;
+            }*/
+        }
+        for (int j = 0; j <= i; j++) {
+            sb.append(" ").append(arr[j]);
+        }
+        tv_card_num.setText(sb.toString().trim());
+    }
+
+    private void cardBank() {
+        tv_card_name.setText("");
+        iv_card_icon.setImageResource(R.color.transparent);
+        iv_card_icon.setBackgroundResource(R.color.transparent);
+        ll_card_wrap.setBackgroundResource(R.drawable.bg_card1);
+    }
+
     private boolean right() {
         boolean isName = !TextUtils.isEmpty(holderName);
         boolean isBank = !TextUtils.isEmpty(bankName);
-        boolean isPhone = StringUtil.isPhone(phoneNo);
-        return isName && isBankCard(cardNo) && isPhone && isBank;
+        return isName && isBankCard(cardNo) && isBank;
     }
 
     private boolean isBankCard(String cardNo) {

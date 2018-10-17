@@ -260,5 +260,9 @@
     <string name="article_comment_send_text">发送</string>
     <string name="article_comment_input_text">在这里畅所欲言吧</string>
     <string name="article_comment_total_num">查看全部%d条评论</string>
+    <!--银行卡-->
+    <string name="card_num_default">xxxx \txxxx \t xxxx \t xxxx</string>
+    <string name="card_num_16">%1$s \t%2$s \t %3$s \t %4$s</string>
+    <string name="card_num_19">%1$s \t%2$s \t %3$s \t %4$s \t %5$s</string>
 
 </resources>
