@@ -30,8 +30,8 @@
         tools:text="西村小飞"
         android:textSize="23sp"/>
 
-    <TextView
-        android:id="@+id/tv_sex"
+    <ImageView
+        android:id="@+id/iv_sex"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_name"
@@ -39,7 +39,7 @@
         app:layout_constraintLeft_toLeftOf="@id/tv_name"
         android:gravity="center"
         tools:text="♀"
-        android:background="#ffff2064"/>
+        android:background="@drawable/icon_social_boy"/>
 
     <LinearLayout
         android:id="@+id/ll_edit_container"

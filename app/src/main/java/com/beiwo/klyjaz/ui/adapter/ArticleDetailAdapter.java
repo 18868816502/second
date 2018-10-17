@@ -3,7 +3,9 @@ package com.beiwo.klyjaz.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -80,6 +82,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
@@ -111,10 +114,14 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
                 headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+                headViewHolder.tvPraise.setText("赞");
+                headViewHolder.tvPraise.setTextColor(mContext.getColor(R.color.black_2));
             } else {
                 Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
                 headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+                headViewHolder.tvPraise.setText(String.valueOf(forumBean.getPraiseCount()));
+                headViewHolder.tvPraise.setTextColor(mContext.getColor(R.color.c_ff5240));
             }
 
         } else if (position == getItemCount() - 1) {
@@ -131,6 +138,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commmentViewHolder.ivArticleComment.setTag(R.id.tag_comment, position - 1);
             commmentViewHolder.tvCommentDelete.setTag(R.id.tag_delete, position - 1);
             commmentViewHolder.itemView.setTag(position - 1);
+            commmentViewHolder.ivCommentatorAcatar.setTag(R.id.comment_user_avatar,position - 1);
 
             if(!TextUtils.isEmpty(datas.get(position - 1).getUserHeadUrl())) {
                 Glide.with(mContext).load(datas.get(position - 1).getUserHeadUrl()).into(commmentViewHolder.ivCommentatorAcatar);
@@ -233,21 +241,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onViewClick(View view, int type, int position) {
                     view.setTag(itemView.getTag());
                     listener.onViewClick(view, type, position);
-//                    switch (type){
-//                        //子评论点赞
-//                        case ConstantTag.TAG_CHILD_PARISE_COMMENT:
-//
-//                            break;
-//                        //子评论回复
-//                        case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-//
-//                            break;
-//                        default:
-//                            break;
-//                    }
                 }
             });
-            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete);
+            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete,ivCommentatorAcatar);
         }
     }
 
@@ -300,7 +296,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mContext.startActivity(intent);
                     break;
                 case R.id.iv_commentator_avatar:
-                    mContext.startActivity(new Intent(mContext, PersonalCenterActivity.class));
+                    Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
+                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.comment_user_avatar)).getUserId());
+                    mContext.startActivity(pIntent);
                     break;
                 case R.id.tv_article_attention:
 //                    listener.onViewClick(v,ConstantTag.TAG_ATTENTION);
@@ -312,6 +310,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 case R.id.tv_comment:
                     listener.onViewClick(v, ConstantTag.TAG_COMMENT_ARTICLE, 0);
                     break;
+
 
                 //评论点赞
                 case R.id.tv_comment_praise:

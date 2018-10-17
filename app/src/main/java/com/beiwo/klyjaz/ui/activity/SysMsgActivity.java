@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
@@ -64,7 +65,10 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     View praiseContainer;
     @BindView(R.id.comment_container)
     View commentContainer;
-
+    @BindView(R.id.tv_praise_num)
+    TextView tvPraiseNum;
+    @BindView(R.id.tv_comment_num)
+    TextView tvCommentNum;
 
     private SysMsgAdapter adapter;
 
@@ -225,6 +229,12 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         presenter.onStart();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.queryCountView();
+    }
+
     @OnClick({R.id.message_more,R.id.praise_container,R.id.comment_container})
     void OnViewClick(View view) {
         switch (view.getId()){
@@ -308,7 +318,18 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void onCountViewSucceed(SocialMessageBean msgBean) {
-
+        if(msgBean != null){
+            if(msgBean.getPraiseCount()>999){
+                tvPraiseNum.setText("999+");
+            }else{
+                tvPraiseNum.setText(String.valueOf(msgBean.getPraiseCount()));
+            }
+            if(msgBean.getCommentCount()>999){
+                tvCommentNum.setText("999+");
+            }else{
+                tvCommentNum.setText(String.valueOf(msgBean.getCommentCount()));
+            }
+        }
     }
 
     @Override

@@ -67,6 +67,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
      */
     public void setHeadData(UserInfoBean userInfo){
         this.userInfo = userInfo;
+        notifyDataSetChanged();
     }
 
     /**
@@ -132,7 +133,11 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
         }
         holder.tvName.setText(userInfo.getUserName());
-        holder.tvSex.setText(1 == userInfo.getSex() ? "男":"女");
+        if(1 == userInfo.getSex()){
+            holder.ivSex.setBackgroundResource(R.drawable.icon_social_boy);
+        }else{
+            holder.ivSex.setBackgroundResource(R.drawable.icon_social_girl);
+        }
         if(!TextUtils.isEmpty(userInfo.getIntroduce())){
             holder.tvProduce.setText("简介:"+userInfo.getIntroduce());
         }else{
@@ -185,8 +190,8 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         ImageView ivAvatar;
         @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_sex)
-        TextView tvSex;
+        @BindView(R.id.iv_sex)
+        ImageView ivSex;
         @BindView(R.id.ll_edit_container)
         LinearLayout llEditContainer;
         @BindView(R.id.tv_produce)

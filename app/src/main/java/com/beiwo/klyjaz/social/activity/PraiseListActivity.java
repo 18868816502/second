@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.social.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.PraiseListAdapter;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
+import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -97,7 +99,10 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        Intent intent = new Intent(this, ArticleDetailActivity.class);
+        intent.putExtra("forumId",datas.get(position).getForumId());
+        intent.putExtra("userId",datas.get(position).getUserId());
+        startActivity(intent);
     }
 
     @Override
@@ -138,6 +143,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                                public void accept(ResultEntity<List<PraiseListBean>> result){
                                    if (result.isSuccess()) {
                                        if(1 == pageNo){
+                                           refreshLayout.setRefreshing(false);
                                            if(result.getData() == null || result.getData().size() == 0){
                                                stateLayout.setVisibility(View.GONE);
                                                emptyContainer.setVisibility(View.VISIBLE);
@@ -160,6 +166,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable){
+                                refreshLayout.setRefreshing(false);
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });
@@ -177,6 +184,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                                public void accept(ResultEntity<List<PraiseListBean>> result){
                                    if (result.isSuccess()) {
                                        if(1 == pageNo){
+                                           refreshLayout.setRefreshing(false);
                                            if(result.getData() == null || result.getData().size() == 0){
                                                stateLayout.setVisibility(View.GONE);
                                                emptyContainer.setVisibility(View.VISIBLE);
@@ -199,6 +207,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable){
+                                refreshLayout.setRefreshing(false);
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });

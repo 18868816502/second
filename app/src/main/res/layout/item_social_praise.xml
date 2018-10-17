@@ -73,7 +73,7 @@
             android:layout_width="@dimen/dp47"
             android:layout_height="@dimen/dp47"
             android:layout_marginLeft="@dimen/dp8"
-            android:src="@mipmap/ic_launcher" />
+            android:background="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_content"

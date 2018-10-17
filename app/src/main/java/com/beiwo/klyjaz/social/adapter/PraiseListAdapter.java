@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.social.adapter;
 
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
@@ -30,16 +31,40 @@ public class PraiseListAdapter extends BaseQuickAdapter<PraiseListBean, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, PraiseListBean item) {
-        Glide.with(mContext).load(item.getHeadPortrait()).into((ImageView) helper.getView(R.id.iv_avatar));
+        if(!TextUtils.isEmpty(item.getHeadPortrait())) {
+            Glide.with(mContext).load(item.getHeadPortrait()).into((ImageView) helper.getView(R.id.iv_avatar));
+        }
         if (item.getImageList() != null && item.getImageList().size() != 0) {
             Glide.with(mContext).load(item.getImageList().get(0).getImgUrl()).into((ImageView) helper.getView(R.id.iv_avatar));
         } else {
             helper.setVisible(R.id.iv_content, false);
         }
         helper.setText(R.id.tv_name, item.getUserName())
-                .setText(R.id.tv_date, item.getCreateText())
-                .setText(R.id.tv_praise_type, "赞了你的" + (TextUtils.equals(item.getCommentType(), "1") ? "评论" : "回复"))
-                .setText(R.id.tv_content, item.getCommentContent());
+                .setText(R.id.tv_date, item.getGmtCreate())
+                .setText(R.id.tv_content, item.getForumTitle());
+
+        if(type == 1){
+            String mPraiseStr = "";
+            switch (item.getPraiseType()){
+                case "0":
+                    mPraiseStr = "动态";
+                    break;
+                case "1":
+                    mPraiseStr = "评论";
+                    break;
+                case "2":
+                    mPraiseStr = "回复";
+                    break;
+                default:
+                    break;
+            }
+            helper.setText(R.id.tv_praise_type, "赞了你的" + mPraiseStr);
+
+        }else{
+            helper.setText(R.id.tv_praise_type, (TextUtils.equals(item.getCommentType(), "1") ? "评论" : "回复")
+                    + "我:"
+                    + (TextUtils.isEmpty(item.getCommentContent())?"暂无":item.getCommentContent()));
+        }
     }
 
     public void notifyPraiseChanged(List<PraiseListBean> list) {

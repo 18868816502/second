@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.bumptech.glide.Glide;
 
@@ -58,6 +60,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         CommmentViewHolder viewHolder = (CommmentViewHolder) holder;
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
+        viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar,position);
 
         if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
             Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
@@ -118,7 +121,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
                     listener.onViewClick(view, type, position);
                 }
             });
-            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete);
+            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete,ivCommentatorAcatar);
         }
     }
 
@@ -139,6 +142,11 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.iv_commentator_avatar:
+                    Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
+                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.comment_list_avatar)).getUserId());
+                    mContext.startActivity(pIntent);
+                    break;
                 //点赞
                 case R.id.tv_comment_praise:
                     listener.onViewClick(v, ConstantTag.TAG_PRAISE_COMMENT, (Integer) v.getTag());

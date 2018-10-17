@@ -169,6 +169,19 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.tv_publish:
                 mPopType = 1;
+                if (TextUtils.isEmpty(mTopicTitle)) {
+                    ToastUtil.toast("请填写标题");
+                    return;
+                }
+                if (TextUtils.isEmpty(mTopicContent)) {
+                    ToastUtil.toast("请填写内容");
+                    return;
+                }
+
+                if(mTopicContent.length()<10){
+                    ToastUtil.toast("正文内容不能少于10个字");
+                    return;
+                }
                 showDialogTips(R.layout.dialog_community_publish_commit);
                 break;
             case R.id.cancel:
@@ -194,14 +207,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             case R.id.tv_commit:
                 //提交发布的内容
                 popDialog.dismiss();
-                if (TextUtils.isEmpty(mTopicTitle)) {
-                    ToastUtil.toast("请填写标题");
-                    return;
-                }
-                if (TextUtils.isEmpty(mTopicContent)) {
-                    ToastUtil.toast("请填写内容");
-                    return;
-                }
                 status = "0";
                 if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);

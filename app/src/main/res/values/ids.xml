@@ -9,6 +9,9 @@
     <item name="numIndicatorInside" type="id"/>
     <item name="indicatorInside" type="id"/>
     <item name="bannerDefaultImage" type="id"/>
+    <item name="user_avatar" type="id"/>
+    <item name="comment_user_avatar" type="id"/>
+    <item name="comment_list_avatar" type="id"/>
 
 
 
