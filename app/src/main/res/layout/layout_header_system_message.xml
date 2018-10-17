@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp136"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -30,13 +31,16 @@
                 android:id="@+id/iv_praise"
                 android:layout_width="@dimen/dp44"
                 android:layout_height="@dimen/dp44"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/icon_message_praise"
                 android:layout_centerHorizontal="true"/>
             <TextView
                 android:id="@+id/tv_praise_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="999+"
+                tools:text="9"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp6"
+                android:paddingRight="@dimen/dp6"
                 android:textSize="@dimen/sp10"
                 android:textColor="@color/white"
                 android:layout_alignParentRight="true"
@@ -76,13 +80,16 @@
                 android:id="@+id/iv_comment"
                 android:layout_width="@dimen/dp44"
                 android:layout_height="@dimen/dp44"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/icon_message_comment"
                 android:layout_centerHorizontal="true"/>
             <TextView
                 android:id="@+id/tv_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="999+"
+                android:paddingLeft="@dimen/dp6"
+                android:paddingRight="@dimen/dp6"
+                tools:text="999+"
+                android:gravity="center"
                 android:textSize="@dimen/sp10"
                 android:textColor="@color/white"
                 android:layout_alignParentRight="true"

@@ -1,17 +1,25 @@
 package com.beiwo.klyjaz.ui.activity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
@@ -26,12 +34,13 @@ import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.InputMethodUtil;
-import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
-import com.beiwo.klyjaz.view.ClearEditText;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +48,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * @author chenguoguo
@@ -48,7 +60,7 @@ import butterknife.BindView;
  * @time 2018/9/11 18:45
  */
 public class CommunityPublishActivity extends BaseComponentActivity implements SocialPublishContract.View,
-        View.OnClickListener, PopDialog.OnInitPopListener, OnItemClickListener, OnSaveEditListener {
+        View.OnClickListener, PopDialog.OnInitPopListener, OnItemClickListener, OnSaveEditListener,CommunityPublishAdapter.OnChoosePickListener {
 
     public static final int REQUEST_CODE_CHOOSE = 23;
 
@@ -92,8 +104,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     private List<String> httpUrls;
     private List<String> httpImgKeys;
 
-    private ClearEditText etTitle;
-    private ClearEditText etContent;
+    private EditText etTitle;
+    private EditText etContent;
+    private int remainSize;//剩余选择
 
     @Override
     public int getLayoutId() {
@@ -110,6 +123,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         adapter.setOnItemClickListener(this);
+        adapter.setOnChoosePickListener(this);
 
         ivNavigate.setOnClickListener(this);
         tvPublish.setOnClickListener(this);
@@ -155,35 +169,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             case R.id.tv_publish:
                 mPopType = 1;
-                showDialogTips(R.layout.dialog_community_publish_commit);
-                break;
-            case R.id.cancel:
-            case R.id.tv_cancel:
-                if (mPopType == 0) {
-//                    InputMethodUtil.toggleSoftKeyboardState(this);
-//                    if(etTitle!=null){
-//                        InputMethodUtil.keyBoard(etTitle,"close");
-//                    }else if(etContent!=null){
-//                        InputMethodUtil.keyBoard(etContent,"close");
-//                    }
-
-                    finish();
-                } else {
-                    popDialog.dismiss();
-                }
-                break;
-            case R.id.tv_save:
-                //保存
-                status = "3";
-                if (pathList == null || pathList.size() == 0) {
-                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
-                } else {
-                    uploadImg();
-                }
-                break;
-            case R.id.tv_commit:
-                //提交发布的内容
-                popDialog.dismiss();
                 if (TextUtils.isEmpty(mTopicTitle)) {
                     ToastUtil.toast("请填写标题");
                     return;
@@ -192,6 +177,36 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     ToastUtil.toast("请填写内容");
                     return;
                 }
+
+                if(mTopicContent.length()<10){
+                    ToastUtil.toast("正文内容不能少于10个字");
+                    return;
+                }
+                showDialogTips(R.layout.dialog_community_publish_commit);
+                break;
+            case R.id.cancel:
+            case R.id.tv_cancel:
+                if (mPopType == 0) {
+                    popDialog.dismiss();
+                    finish();
+                } else {
+                    popDialog.dismiss();
+                }
+                break;
+            case R.id.tv_save:
+                //保存
+                popDialog.dismiss();
+                status = "3";
+                if (pathList == null || pathList.size() == 0) {
+                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
+                } else {
+                    showProgress();
+                    uploadImg();
+                }
+                break;
+            case R.id.tv_commit:
+                //提交发布的内容
+                popDialog.dismiss();
                 status = "0";
                 if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
@@ -227,23 +242,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 .setLayoutId(layoutId)
                 .setWidth(270)
                 .setHeight(120)
-                .setGravity(Gravity.CENTER)
-                .setCancelableOutside(false)
-                .setInitPopListener(this)
-                .create();
-        popDialog.show();
-    }
-
-    /**
-     * 根据布局显示弹窗
-     *
-     * @param layoutId 布局id
-     */
-    private void showUploadDialog(int layoutId) {
-        popDialog = new PopDialog.Builder(getSupportFragmentManager(), this)
-                .setLayoutId(layoutId)
-                .setWidth(100)
-                .setHeight(100)
                 .setGravity(Gravity.CENTER)
                 .setCancelableOutside(false)
                 .setInitPopListener(this)
@@ -361,7 +359,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     @Override
-    public void onSaveEdit(ClearEditText editText, int flag, String strEdit) {
+    public void onSaveEdit(EditText editText, int flag, String strEdit) {
         if (flag == 1) {
             this.etTitle = editText;
             mTopicTitle = strEdit;
@@ -377,7 +375,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     }
 
     private void showSaveDraftDialog() {
-        InputMethodUtil.toggleSoftKeyboardState(this);
         if (pathList.size() != 0 || !TextUtils.isEmpty(mTopicTitle) || !TextUtils.isEmpty(mTopicContent)) {
             mPopType = 0;
             showDialogTips(R.layout.dialog_community_publish_save);
@@ -385,4 +382,54 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             finish();
         }
     }
+
+    @Override
+    public void onPickClick(int remainSize) {
+        this.remainSize = remainSize;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    1);
+        }else{
+            openPick();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        doNext(requestCode, grantResults);
+    }
+
+    private void doNext(int requestCode, int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission Granted
+            openPick();
+            } else {
+                // Permission Denied
+                Toast.makeText(this, "请在应用管理中打开“相机”访问权限！", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+    }
+
+    private void openPick(){
+        Matisse.from(this)
+                .choose(MimeType.ofAll(), false)
+                .countable(true)
+                .capture(true)
+                .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider","kaola"))
+                .maxSelectable(remainSize)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                .thumbnailScale(0.85f)
+                .imageEngine(new GlideEngine())
+                .originalEnable(true)
+                .maxOriginalSize(10)
+                .autoHideToolbarOnSingleTap(true)
+                .forResult(CommunityPublishActivity.REQUEST_CODE_CHOOSE);
+    }
+
 }

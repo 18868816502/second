@@ -142,13 +142,14 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onQueryUserInfoSucceed(UserInfoBean userInfoBean) {
         this.userInfoBean = userInfoBean;
+        adapter.setHeadData(userInfoBean);
         presenter.fetchPersonalTopic(userId, pageNo, pageSize);
     }
 
     @Override
     public void onQueryUserTopicSucceed(List<UserTopicBean> list) {
         refreshLayout.finishRefresh();
-        if (pageNo == 0) {
+        if (pageNo == 1) {
             adapter.setDatas(userInfoBean,list);
             datas.clear();
             datas.addAll(list);
@@ -250,16 +251,6 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(this,ArticleDetailActivity.class);
-//        SocialTopicBean.ForumBean forumBean = new SocialTopicBean.ForumBean();
-//        forumBean.setForumId(datas.get(position).getForumId());
-//        forumBean.setUserId(datas.get(position).getUserId());
-//        forumBean.setTitle(datas.get(position).getTitle());
-//        forumBean.setUserHeadUrl(datas.get(position).getUserHeadUrl());
-//        forumBean.setUserName(datas.get(position).getUserName());
-//        forumBean.setGmtCreate(datas.get(position).getGmtCreate());
-//        forumBean.setPicUrl(datas.get(position).getPicUrl());
-//        forumBean.setContent(datas.get(position).getContent());
-//        intent.putExtra("topic",forumBean);
         intent.putExtra("userId",datas.get(position).getUserId());
         intent.putExtra("forumId",datas.get(position).getForumId());
         startActivity(intent);

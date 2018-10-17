@@ -74,11 +74,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     private ClearEditText etInput;
     private FragmentManager fManager;
     /**
-     * 0:关注 1:删除 2:其它用户更多（举报）3：自己用户更多（删除） 4:评论弹窗列表  5.评论输入框弹窗
+     * 0:关注 1:删除 2:其它用户更多（举报）3：自己用户更多（删除） 4:评论弹窗列表  5.评论输入框弹窗  6.评论审核提示框
      */
     private int mPopType = 0;
     private TextView tvCommentTitle;
-//    private SocialTopicBean.ForumBean forumBean;
     private ForumInfoBean.ForumBean forumBean;
     private String userId;
     private String forumId;
@@ -123,8 +122,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         if (intent != null) {
             this.userId = intent.getStringExtra("userId");
             this.forumId = intent.getStringExtra("forumId");
-            if(!TextUtils.isEmpty(userId)&&!TextUtils.isEmpty(forumId)){
-                presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+            if(!TextUtils.isEmpty(forumId)){
+                presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),forumId,pageNo,pageSize);
             }
 
         }
@@ -208,8 +207,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                     ToastUtil.toast(getString(R.string.article_comment_input_tips));
                     return;
                 }
-                reply();
-                PopUtils.dismissComment();
+                mPopType = 6;
+                PopUtils.showCenterPopWindow(R.layout.dialog_article_comment_audit, fManager, this, this);
+//                reply();
+//                PopUtils.dismissComment();
                 break;
             default:
                 break;
@@ -256,6 +257,11 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case 2:
 
                 break;
+            case 6:
+                PopUtils.dismiss();
+                reply();
+                PopUtils.dismissComment();
+                break;
             default:
                 break;
         }
@@ -271,7 +277,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
         presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
-//        fetchData();
     }
 
     @Override
@@ -293,8 +298,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             //文章评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
-                mPopType = 5;
-                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+//                mPopType = 5;
+//                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+                mPopType = 4;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:
@@ -304,8 +311,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
                 replyBean = datas.get(position);
-                mPopType = 5;
-                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+//                mPopType = 5;
+//                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+                mPopType = 4;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
 
             //子评论点赞
@@ -313,15 +322,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 int praisePosition = (int) view.getTag();
                 replyDtoListBean = datas.get(praisePosition).getReplyDtoList().get(position);
                 presenter.fetchClickPraise(2, replyDtoListBean.getId(), "");
-                ToastUtil.toast("点赞第" + praisePosition + "条");
+//                ToastUtil.toast("点赞第" + praisePosition + "条");
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 int comPosition = (int) view.getTag();
                 replyBean = datas.get(comPosition);
                 replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
-                mPopType = 5;
-                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+                mPopType = 4;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+//                mPopType = 5;
+//                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
             //删除评论
             case ConstantTag.TAG_COMMENT_DELETE:
@@ -385,6 +396,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 etInput.addTextChangedListener(new LengthTextWatcherListener(etInput, 100));
                 setOnClick(view.findViewById(R.id.tv_send));
                 break;
+            case 6:
+                setOnClick(view.findViewById(R.id.tv_cancel), view.findViewById(R.id.tv_save));
+                break;
             default:
                 break;
         }
@@ -435,8 +449,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             this.datas.addAll(list);
             adapter.setDatas(datas, forumBean);
         }
-//        this.datas = list;
-//        adapter.setDatas(list, forumBean);
     }
 
     @Override
@@ -459,6 +471,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             default:
                 break;
         }
+        fetchData();
     }
 
     @Override
@@ -484,6 +497,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //话题点赞
             case ConstantTag.TAG_PARISE_ARTICLE:
                 forumBean.setIsPraise(1);
+                forumBean.setPraiseCount(forumBean.getPraiseCount()+1);
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:
@@ -503,6 +517,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //话题点赞
             case ConstantTag.TAG_PARISE_ARTICLE:
                 forumBean.setIsPraise(0);
+                forumBean.setPraiseCount(forumBean.getPraiseCount()-1);
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:

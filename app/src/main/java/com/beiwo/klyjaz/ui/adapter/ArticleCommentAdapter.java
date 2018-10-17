@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -15,8 +16,10 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +89,13 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         }else {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.tvCommentPraise.setTag(position);
+            viewHolder.ivCommentatorAcatar.setTag(R.id.user_avatar,position);
             viewHolder.ivArticleComment.setTag(position);
             viewHolder.tvDelete.setTag(position);
-//            if(TextUtils.isEmpty(datas.get(position).ge))
+            if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())){
+                Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
+            }
+            viewHolder.tvCommentTime.setText(datas.get(position).getGmtCreate());
             String content = "回复<font color='#2a84ff'>"
                     + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
                     + "</font>:"
@@ -108,7 +115,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         if(isOpen){
             return datas.size() + 1;
         }else{
-            if(datas.size() > 1){
+            if(datas.size() > 0){
                 return 2;
             }else{
                 return 0;
@@ -148,7 +155,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             super(itemView);
             ButterKnife.bind(this,itemView);
             itemRecyclerView.setVisibility(View.GONE);
-            setOnClick(tvCommentPraise,ivArticleComment,tvDelete);
+            setOnClick(tvCommentPraise,ivArticleComment,tvDelete,ivCommentatorAcatar);
         }
     }
 
@@ -198,21 +205,26 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
+                case R.id.iv_commentator_avatar:
+                    Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
+                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.user_avatar)).getUserId());
+                    mContext.startActivity(pIntent);
+                    break;
                 //评论点赞
                 case R.id.tv_comment_praise:
                     int position = (int) v.getTag();
-                    ToastUtil.toast("子点赞第"+(position + 1) + "条");
+//                    ToastUtil.toast("子点赞第"+(position + 1) + "条");
                     listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT,position);
                     break;
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag();
-                    ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
+//                    ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
                     listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT,comPosition);
                     break;
                 case R.id.tv_comment_delete:
                     int delPosition = (int) v.getTag();
-                    ToastUtil.toast("删除第"+(delPosition + 1) + "条");
+//                    ToastUtil.toast("删除第"+(delPosition + 1) + "条");
                     listener.onViewClick(v, ConstantTag.TAG_CHILD_COMMENT_DELETE,delPosition);
                     break;
                 case R.id.foot:

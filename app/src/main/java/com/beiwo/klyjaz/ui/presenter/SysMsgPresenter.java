@@ -43,7 +43,6 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
     @Override
     public void onStart() {
         super.onStart();
-        queryCountView();
         loadMeaasge();
     }
 

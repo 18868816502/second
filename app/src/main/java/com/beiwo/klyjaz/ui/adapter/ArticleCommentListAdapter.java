@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.bumptech.glide.Glide;
 
@@ -35,14 +37,16 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
     private Context mContext;
     private List<CommentReplyBean> datas;
 
+
     public ArticleCommentListAdapter(Context mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
     }
 
-    public void setDatas(List<CommentReplyBean> list){
+    public void setDatas(List<CommentReplyBean> list) {
         this.datas.clear();
         this.datas.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,17 +60,24 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         CommmentViewHolder viewHolder = (CommmentViewHolder) holder;
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
+        viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar,position);
 
-        Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
+        if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
+            Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
+        }
         viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
         viewHolder.tvCommentTime.setText(String.valueOf(datas.get(position).getGmtCreate()));
         viewHolder.tvCommentContent.setText(datas.get(position).getContent());
         viewHolder.tvCommentPraise.setText(String.valueOf(datas.get(position).getPraiseCount()));
-        if(TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(),datas.get(position).getUserId())){
+        if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
             viewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             viewHolder.tvCommentDelete.setVisibility(View.GONE);
         }
+        if (viewHolder.adapter != null){
+            viewHolder.adapter.setDatas(datas.get(position).getReplyDtoList());
+        }
+
     }
 
     @Override
@@ -93,23 +104,24 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         ImageView ivArticleComment;
         @BindView(R.id.item_recycler)
         RecyclerView itemRecyclerView;
+        ArticleCommentAdapter adapter;
 
         CommmentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
             manager.setOrientation(LinearLayoutManager.VERTICAL);
-            ArticleCommentAdapter adapter = new ArticleCommentAdapter(mContext);
+            adapter = new ArticleCommentAdapter(mContext);
             itemRecyclerView.setLayoutManager(manager);
             itemRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             adapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
-                public void onViewClick(View view, int type,int position) {
-                    listener.onViewClick(view,type,position);
+                public void onViewClick(View view, int type, int position) {
+                    listener.onViewClick(view, type, position);
                 }
             });
-            setOnClick(tvCommentPraise,ivArticleComment,tvCommentDelete);
+            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete,ivCommentatorAcatar);
         }
     }
 
@@ -130,18 +142,21 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.iv_commentator_avatar:
+                    Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
+                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.comment_list_avatar)).getUserId());
+                    mContext.startActivity(pIntent);
+                    break;
                 //点赞
                 case R.id.tv_comment_praise:
-//                    ToastUtil.toast("点赞第"+ v.getTag()+"条");
                     listener.onViewClick(v, ConstantTag.TAG_PRAISE_COMMENT, (Integer) v.getTag());
                     break;
                 //评论
                 case R.id.iv_article_comment:
-//                    ToastUtil.toast("评论第"+ v.getTag()+"条");
-                    listener.onViewClick(v,ConstantTag.TAG_REPLY_COMMENT, (Integer) v.getTag());
+                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT, (Integer) v.getTag());
                     break;
                 case R.id.tv_comment_delete:
-                    listener.onViewClick(v,ConstantTag.TAG_COMMENT_DELETE, (Integer) v.getTag());
+                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_DELETE, (Integer) v.getTag());
                     break;
                 default:
                     break;

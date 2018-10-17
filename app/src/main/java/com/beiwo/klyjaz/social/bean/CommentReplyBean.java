@@ -112,6 +112,9 @@ public class CommentReplyBean {
         private String userName;
         private String toUserName;
         private String content;
+        private String userHeadUrl;
+        private int praiseCount;
+        private String gmtCreate;
 
         public String getId() {
             return id;
@@ -159,6 +162,30 @@ public class CommentReplyBean {
 
         public void setContent(String content) {
             this.content = content;
+        }
+
+        public String getUserHeadUrl() {
+            return userHeadUrl;
+        }
+
+        public void setUserHeadUrl(String userHeadUrl) {
+            this.userHeadUrl = userHeadUrl;
+        }
+
+        public int getPraiseCount() {
+            return praiseCount;
+        }
+
+        public void setPraiseCount(int praiseCount) {
+            this.praiseCount = praiseCount;
+        }
+
+        public String getGmtCreate() {
+            return gmtCreate;
+        }
+
+        public void setGmtCreate(String gmtCreate) {
+            this.gmtCreate = gmtCreate;
         }
     }
 }

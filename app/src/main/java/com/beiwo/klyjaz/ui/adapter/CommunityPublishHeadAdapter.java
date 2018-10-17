@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.beiwo.klyjaz.Manifest;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
+import com.beiwo.klyjaz.util.ToastUtil;
 import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -22,6 +24,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
 
 /**
  * @name loanmarket
@@ -133,7 +137,8 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    choosePhoto();
+//                    choosePhoto();
+                    pickListener.onPickClick(9 - mList.size());
                 }
             });
         }
@@ -145,6 +150,16 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
         this.listener = listener;
     }
 
+    private OnChoosePickListener pickListener;
+
+    public void setOnChoosePickListener(OnChoosePickListener listener){
+        this.pickListener = listener;
+    }
+
+    public interface OnChoosePickListener{
+        void onPickClick(int remainSize);
+    }
+
     /**
      * 选择照片
      */
@@ -153,7 +168,7 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
                 .choose(MimeType.ofAll(), false)
                 .countable(true)
                 .capture(true)
-                .captureStrategy(new CaptureStrategy(true, "com.beihui.klyjaz.fileprovider","kaola"))
+                .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider","kaola"))
 //                .maxSelectable(9)
                 .maxSelectable(9 - mList.size())
                 .gridExpectedSize(mContext.getResources().getDimensionPixelSize(R.dimen.dp120))
@@ -165,4 +180,5 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
                 .autoHideToolbarOnSingleTap(true)
                 .forResult(CommunityPublishActivity.REQUEST_CODE_CHOOSE);
     }
+
 }

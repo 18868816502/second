@@ -249,7 +249,9 @@
     <string name="article_comment">写评论</string>
     <string name="article_attention_content">确定取消关注?</string>
     <string name="article_attention_ensure">确定</string>
+    <string name="article_attention_commit">提交</string>
     <string name="article_delete_content">确定删除该动态?</string>
+    <string name="article_comment_audit">是否提交内容给管理员审核?</string>
     <string name="article_more_report_title">请选择举报原因</string>
     <string name="article_more_report_content1">色情、政治等敏感信息</string>
     <string name="article_more_report_content2">广告信息或骚扰用户</string>
