@@ -227,17 +227,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 presenter.fetchReplyForumInfo("", "1",
-                        etInput.getText().toString(), forumBean.getForumId(), "", "","");
+                        etInput.getText().toString(), forumBean.getForumId(), "", "","","");
                 break;
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"");
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"","");
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId());
+                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId(),replyDtoListBean.getContent());
                 break;
             default:
                 break;
@@ -278,7 +278,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+        presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),forumId,pageNo,pageSize);
     }
 
     @Override
