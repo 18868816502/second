@@ -485,8 +485,8 @@ public class MainActivity extends BaseComponentActivity {
 
     private void defaultTabIconTxt() {
         int[] colors = new int[]{
-                ContextCompat.getColor(this, R.color.black_1),
-                ContextCompat.getColor(this, R.color.black_1),
+                ContextCompat.getColor(this, R.color.refresh_one),
+                ContextCompat.getColor(this, R.color.refresh_one),
                 ContextCompat.getColor(this, R.color.black_2)
         };
         int[][] states = new int[3][];

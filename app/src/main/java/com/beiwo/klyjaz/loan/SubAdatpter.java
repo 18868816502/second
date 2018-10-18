@@ -31,6 +31,6 @@ public class SubAdatpter extends BaseQuickAdapter<GroupProductBean, BaseViewHold
         ImageView iv_icon = helper.getView(R.id.iv_icon);
         Glide.with(mContext).load(item.getLogoUrl()).error(R.color.white_7).into(iv_icon);
         helper.setText(R.id.tv_name, item.getProductName())
-                .setText(R.id.tv_num, item.borrowingLowText + "-" + item.borrowingHighText);
+                .setText(R.id.tv_num, item.borrowingLowText.substring(0, item.borrowingLowText.length() - 1) + "-" + item.borrowingHighText);
     }
 }

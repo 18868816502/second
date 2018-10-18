@@ -114,74 +114,148 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
             adapters0.clear();
             adapters1.clear();
             int size = datas.size();
-            for (int i = 1; i < getItemCount(); i++) {
-                if (i % 2 != 0) {
-                    int last;
-                    if (size > (i - 1) / 2 * 12 + 8) {
-                        last = (i - 1) / 2 * 12 + 8;
+            if (pageType == R.mipmap.ic_head_btn1 || pageType == R.mipmap.ic_head_btn2) {
+                for (int i = 1; i < getItemCount(); i++) {
+                    if (i % 2 != 0) {
+                        int last;
+                        if (size > (i - 1) / 2 * 12 + 8) {
+                            last = (i - 1) / 2 * 12 + 8;
+                        } else {
+                            last = size;
+                        }
+                        data1.add(datas.subList((i - 1) / 2 * 12, last));
+                        RecyclerView recycler = new RecyclerView(context);
+                        recycler.setBackgroundResource(R.color.white);
+                        type0.add(recycler);
+                        PopAdapter popAdapter = new PopAdapter();
+                        adapters0.add(popAdapter);
+                        holder.ll_container.addView(recycler);
                     } else {
-                        last = size;
+                        int last;
+                        if (size > 12 + (i - 1) / 2 * 12) {
+                            last = 12 + (i - 1) / 2 * 12;
+                        } else {
+                            last = size;
+                        }
+                        data2.add(datas.subList(8 + (i - 1) / 2 * 12, last));
+                        RecyclerView recycler1 = new RecyclerView(context);
+                        recycler1.setBackgroundResource(R.color.white);
+                        SubAdatpter subAdatpter = new SubAdatpter();
+                        adapters1.add(subAdatpter);
+                        type1.add(recycler1);
+                        holder.ll_container.addView(recycler1);
                     }
-                    data1.add(datas.subList((i - 1) / 2 * 12, last));
-                    RecyclerView recycler = new RecyclerView(context);
-                    recycler.setBackgroundResource(R.color.white);
-                    type0.add(recycler);
-                    PopAdapter popAdapter = new PopAdapter();
-                    adapters0.add(popAdapter);
-                    holder.ll_container.addView(recycler);
-                } else {
-                    int last;
-                    if (size > 12 + (i - 1) / 2 * 12) {
-                        last = 12 + (i - 1) / 2 * 12;
-                    } else {
-                        last = size;
+                }
+
+                if (isExcuted) {
+                    for (int j = 0; j < type0.size(); j++) {
+                        RecyclerView recyclerView = type0.get(j);
+                        initRecycler(recyclerView, 4);
+                        recyclerView.setAdapter(adapters0.get(j));
+                        adapters0.get(j).setNewData(data1.get(j));
+                        final int finalJ = j;
+                        adapters0.get(j).setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                int pos = finalJ * 12 + position;
+                                GroupProductBean product = datas.get(pos);
+                                productItemClick(product);
+                            }
+                        });
                     }
-                    data2.add(datas.subList(8 + (i - 1) / 2 * 12, last));//(7,9)
-                    RecyclerView recycler1 = new RecyclerView(context);
-                    recycler1.setBackgroundResource(R.color.white);
-                    SubAdatpter subAdatpter = new SubAdatpter();
-                    adapters1.add(subAdatpter);
-                    type1.add(recycler1);
-                    holder.ll_container.addView(recycler1);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    lp.topMargin = DensityUtil.dp2px(context, 8);
+                    lp.bottomMargin = DensityUtil.dp2px(context, 8);
+                    for (int k = 0; k < type1.size(); k++) {
+                        RecyclerView recyclerView = type1.get(k);
+                        initRecycler(recyclerView, 2);
+                        recyclerView.setLayoutParams(lp);
+                        recyclerView.setAdapter(adapters1.get(k));
+                        adapters1.get(k).setNewData(data2.get(k));
+                        final int finalK = k;
+                        adapters1.get(k).setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                int pos = finalK * 12 + position + 8;
+                                GroupProductBean product = datas.get(pos);
+                                productItemClick(product);
+                            }
+                        });
+                    }
+                    isExcuted = !isExcuted;
                 }
             }
+            if (pageType == R.mipmap.ic_head_btn3 || pageType == R.mipmap.ic_head_btn4) {
+                for (int i = 1; i < getItemCount(); i++) {
+                    if (i % 2 != 0) {
+                        int last;
+                        if (size > (i - 1) / 2 * 8 + 4) {
+                            last = (i - 1) / 2 * 8 + 4;
+                        } else {
+                            last = size;
+                        }
+                        data1.add(datas.subList((i - 1) / 2 * 8, last));
+                        RecyclerView recycler = new RecyclerView(context);
+                        recycler.setBackgroundResource(R.color.white);
+                        type0.add(recycler);
+                        holder.ll_container.addView(recycler);
+                        SubAdatpter subAdatpter = new SubAdatpter();
+                        adapters1.add(subAdatpter);
+                    } else {
+                        int last;
+                        if (size > 8 + (i - 1) / 2 * 8) {
+                            last = 8 + (i - 1) / 2 * 8;
+                        } else {
+                            last = size;
+                        }
+                        data2.add(datas.subList(4 + (i - 1) / 2 * 8, last));
+                        RecyclerView recycler1 = new RecyclerView(context);
+                        recycler1.setBackgroundResource(R.color.white);
+                        type1.add(recycler1);
+                        holder.ll_container.addView(recycler1);
+                        PopAdapter popAdapter = new PopAdapter();
+                        adapters0.add(popAdapter);
+                    }
+                }
 
-            if (isExcuted) {
-                for (int j = 0; j < type0.size(); j++) {
-                    RecyclerView recyclerView = type0.get(j);
-                    initRecycler(recyclerView, 4);
-                    recyclerView.setAdapter(adapters0.get(j));
-                    adapters0.get(j).setNewData(data1.get(j));
-                    final int finalJ = j;
-                    adapters0.get(j).setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                            int pos = finalJ * 12 + position;
-                            GroupProductBean product = datas.get(pos);
-                            productItemClick(product);
-                        }
-                    });
+                if (isExcuted) {
+                    for (int j = 0; j < type0.size(); j++) {
+                        RecyclerView recyclerView = type0.get(j);
+                        initRecycler(recyclerView, 2);
+                        recyclerView.setAdapter(adapters1.get(j));
+                        adapters1.get(j).setNewData(data1.get(j));
+                        final int finalK = j;
+                        adapters1.get(j).setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                int pos = finalK * 8 + position;
+                                GroupProductBean product = datas.get(pos);
+                                productItemClick(product);
+                            }
+                        });
+                    }
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    lp.topMargin = DensityUtil.dp2px(context, 8);
+                    lp.bottomMargin = DensityUtil.dp2px(context, 8);
+                    for (int k = 0; k < type1.size(); k++) {
+                        RecyclerView recyclerView = type1.get(k);
+                        initRecycler(recyclerView, 4);
+                        recyclerView.setLayoutParams(lp);
+
+                        recyclerView.setAdapter(adapters0.get(k));
+                        adapters0.get(k).setNewData(data2.get(k));
+                        final int finalJ = k;
+                        adapters0.get(k).setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                int pos = finalJ * 8 + position + 4;
+                                GroupProductBean product = datas.get(pos);
+                                productItemClick(product);
+                            }
+                        });
+                    }
+                    isExcuted = !isExcuted;
                 }
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                lp.topMargin = DensityUtil.dp2px(context, 8);
-                lp.bottomMargin = DensityUtil.dp2px(context, 8);
-                for (int k = 0; k < type1.size(); k++) {
-                    RecyclerView recyclerView = type1.get(k);
-                    initRecycler(recyclerView, 2);
-                    recyclerView.setLayoutParams(lp);
-                    recyclerView.setAdapter(adapters1.get(k));
-                    adapters1.get(k).setNewData(data2.get(k));
-                    final int finalK = k;
-                    adapters1.get(k).setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                            int pos = finalK * 12 + position + 8;
-                            GroupProductBean product = datas.get(pos);
-                            productItemClick(product);
-                        }
-                    });
-                }
-                isExcuted = !isExcuted;
             }
         }
     }
@@ -220,12 +294,22 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
         if (datas == null || datas.size() < 1) {
             return 2;
         } else {
-            if (datas.size() % 12 > 8) {
-                return datas.size() / 9 * 2 + 1;
-            } else {
-                return datas.size() / 12 * 2 + 2;
+            if (pageType == R.mipmap.ic_head_btn3 || pageType == R.mipmap.ic_head_btn4) {
+                if (datas.size() % 8 > 4) {
+                    return datas.size() / 5 * 2 + 1;
+                } else {
+                    return datas.size() / 8 * 2 + 2;
+                }
+            }
+            if (pageType == R.mipmap.ic_head_btn1 || pageType == R.mipmap.ic_head_btn2) {
+                if (datas.size() % 12 > 8) {
+                    return datas.size() / 9 * 2 + 1;
+                } else {
+                    return datas.size() / 12 * 2 + 2;
+                }
             }
         }
+        return 0;
     }
 
     @Override
