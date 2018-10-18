@@ -320,13 +320,21 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     public void onCountViewSucceed(SocialMessageBean msgBean) {
         if(msgBean != null){
             if(msgBean.getPraiseCount()>999){
+                tvPraiseNum.setVisibility(View.VISIBLE);
                 tvPraiseNum.setText("999+");
+            }else if(msgBean.getPraiseCount() == 0){
+                tvPraiseNum.setVisibility(View.GONE);
             }else{
+                tvPraiseNum.setVisibility(View.VISIBLE);
                 tvPraiseNum.setText(String.valueOf(msgBean.getPraiseCount()));
             }
             if(msgBean.getCommentCount()>999){
+                tvCommentNum.setVisibility(View.VISIBLE);
                 tvCommentNum.setText("999+");
+            }else if(msgBean.getCommentCount() == 0){
+                tvCommentNum.setVisibility(View.GONE);
             }else{
+                tvCommentNum.setVisibility(View.VISIBLE);
                 tvCommentNum.setText(String.valueOf(msgBean.getCommentCount()));
             }
         }

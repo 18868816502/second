@@ -60,6 +60,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         CommmentViewHolder viewHolder = (CommmentViewHolder) holder;
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
+        viewHolder.itemView.setTag(position);
         viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar,position);
 
         if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
@@ -106,7 +107,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         RecyclerView itemRecyclerView;
         ArticleCommentAdapter adapter;
 
-        CommmentViewHolder(View itemView) {
+        CommmentViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -118,6 +119,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             adapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
                 public void onViewClick(View view, int type, int position) {
+                    view.setTag(itemView.getTag());
                     listener.onViewClick(view, type, position);
                 }
             });

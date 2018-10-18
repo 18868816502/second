@@ -240,7 +240,15 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onViewClick(View view, int type, int position) {
                     view.setTag(itemView.getTag());
-                    listener.onViewClick(view, type, position);
+                    switch (type){
+                        case ConstantTag.TAG_CHILD_REPLY_COMMENT:
+                            listener.onViewClick(view, ConstantTag.TAG_COMMENT_MORE, position);
+                            break;
+
+                            default:
+                                break;
+                    }
+//                    listener.onViewClick(view, type, position);
                 }
             });
             setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete,ivCommentatorAcatar);
@@ -322,7 +330,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag(R.id.tag_comment);
 //                    ToastUtil.toast("回复第"+(comPosition + 1) + "条");
-                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT, comPosition);
+//                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT, comPosition);
+                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE, comPosition);
                     break;
                 //评论删除
                 case R.id.tv_comment_delete:

@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.social.adapter;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,9 +36,10 @@ public class PraiseListAdapter extends BaseQuickAdapter<PraiseListBean, BaseView
             Glide.with(mContext).load(item.getHeadPortrait()).into((ImageView) helper.getView(R.id.iv_avatar));
         }
         if (item.getImageList() != null && item.getImageList().size() != 0) {
-            Glide.with(mContext).load(item.getImageList().get(0).getImgUrl()).into((ImageView) helper.getView(R.id.iv_avatar));
+            Glide.with(mContext).load(item.getImageList().get(0).getImgUrl()).into((ImageView) helper.getView(R.id.iv_content));
         } else {
             helper.setVisible(R.id.iv_content, false);
+            helper.getView(R.id.iv_content).setVisibility(View.GONE);
         }
         helper.setText(R.id.tv_name, item.getUserName())
                 .setText(R.id.tv_date, item.getGmtCreate())

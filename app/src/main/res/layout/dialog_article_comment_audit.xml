@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp76"
         android:gravity="center"
-        android:text="@string/article_delete_content"
+        android:text="@string/article_comment_audit"
         android:textColor="@color/black_1"
         android:textSize="@dimen/sp15"/>
     <View
