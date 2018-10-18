@@ -18,14 +18,10 @@
         android:layout_marginTop="16dp">
 
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:background="@drawable/bg_oval_white" />
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_oval_white">
 
             <ImageView
                 android:id="@+id/iv_card_icon"

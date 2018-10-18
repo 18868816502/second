@@ -64,4 +64,17 @@ public class BankInfoUtil {
         }
         return null;
     }
+
+    public static int bgResource(int bg) {
+        switch (bg) {
+            case 2:
+                return R.drawable.bg_card2;
+            case 3:
+                return R.drawable.bg_card3;
+            case 4:
+                return R.drawable.bg_card4;
+            default:
+                return R.drawable.bg_card1;
+        }
+    }
 }
