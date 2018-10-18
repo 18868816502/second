@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.loan;
 
+
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
@@ -16,19 +17,20 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * @package:
  * @description:
  * @modify:
- * @date: 2018/10/15
+ * @date: 2018/10/18
  */
 
-public class PopAdapter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
-    public PopAdapter() {
-        super(R.layout.layout_pop);
+public class SubAdatpter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
+    public SubAdatpter() {
+        super(R.layout.layout_sub2);
         openLoadAnimation(ALPHAIN);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, GroupProductBean item) {
         ImageView iv_icon = helper.getView(R.id.iv_icon);
-        Glide.with(iv_icon.getContext()).load(item.getLogoUrl()).error(R.color.white_7).into(iv_icon);
-        helper.setText(R.id.tv_name, item.getProductName());
+        Glide.with(mContext).load(item.getLogoUrl()).error(R.color.white_7).into(iv_icon);
+        helper.setText(R.id.tv_name, item.getProductName())
+                .setText(R.id.tv_num, item.borrowingLowText + "-" + item.borrowingHighText);
     }
 }

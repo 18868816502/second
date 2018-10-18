@@ -143,7 +143,7 @@ public class CustomKeyboardManager implements OnFocusChangeListener {
     public void showSoftKeyboard(EditText view) {
         CustomBaseKeyboard keyboard = getKeyboard(view); //获取输入框所绑定的键盘BaseKeyboard
         if (null == keyboard) {
-            Log.e(TAG, "The EditText no bind CustomBaseKeyboard!");
+            Log.e(TAG, "The EditText no watch CustomBaseKeyboard!");
             return;
         }
         if (isShow) {

@@ -15,7 +15,7 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.BankInfoUtil;
 import com.beiwo.klyjaz.jjd.bean.BankCard;
 import com.beiwo.klyjaz.jjd.bean.BankName;
-import com.beiwo.klyjaz.tang.StringUtil;
+import com.beiwo.klyjaz.loan.BankCardTextWatcher;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -33,7 +33,6 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function3;
-import io.reactivex.functions.Function4;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -88,7 +87,7 @@ public class AddCardActivity extends BaseComponentActivity {
     public void initDatas() {
         map.put("userId", UserHelper.getInstance(this).id());
         cet_holder_name.setMaxLenght(20);
-        cet_card_no.setMaxLenght(20);
+        cet_card_no.setMaxLenght(23);
         cet_bank_name.setMaxLenght(20);
 
         try {
@@ -115,7 +114,7 @@ public class AddCardActivity extends BaseComponentActivity {
             @Override
             public Boolean apply(@NonNull CharSequence name, @NonNull CharSequence card, @NonNull CharSequence bank) throws Exception {
                 holderName = name.toString().trim();
-                cardNo = card.toString().trim();
+                cardNo = card.toString().trim().replace(" ", "");
                 bankName = bank.toString().trim();
                 return right();
             }
@@ -131,14 +130,18 @@ public class AddCardActivity extends BaseComponentActivity {
                 tv_holder_name.setText(TextUtils.isEmpty(holder) ? "持卡人：xxx" : "持卡人：" + holder);
             }
         });
+        BankCardTextWatcher.watch(cet_card_no);
         RxTextView.textChanges(cet_card_no)
                 .subscribe(new Consumer<CharSequence>() {
                     @Override
                     public void accept(CharSequence card) throws Exception {
                         if (!TextUtils.isEmpty(card)) {
-                            if (card.length() > 15) tv_card_num.setTextSize(23);
-                            else tv_card_num.setTextSize(25);
-                            setCardNum(card);
+                            if (card.length() > 23) {
+                                tv_card_num.setTextSize(21);
+                            } else if (card.length() > 15) {
+                                tv_card_num.setTextSize(23);
+                            } else tv_card_num.setTextSize(25);
+                            tv_card_num.setText(card);
                         } else {
                             cardBank();
                             tv_card_num.setText(getString(R.string.card_num_default));
@@ -203,7 +206,7 @@ public class AddCardActivity extends BaseComponentActivity {
                 });
     }
 
-    private void setCardNum(CharSequence cardNum) {
+    /*private void setCardNum(CharSequence cardNum) {
         StringBuffer sb = new StringBuffer();
         CharSequence[] arr = new CharSequence[]{"xxxx", "xxxx", "xxxx", "xxxx", "xxx"};
         int i = cardNum.length() / 4;
@@ -213,7 +216,7 @@ public class AddCardActivity extends BaseComponentActivity {
             }
             CharSequence ccc = cardNum.subSequence(4 * i, cardNum.length());
             arr[i] = ccc;
-            /*if (i == 4) {
+            *//*if (i == 4) {
                 if (ccc.length() == 1) arr[i] = ccc + "xx";
                 if (ccc.length() == 2) arr[i] = ccc + "x";
                 if (ccc.length() == 3) arr[i] = ccc;
@@ -222,13 +225,13 @@ public class AddCardActivity extends BaseComponentActivity {
                 if (ccc.length() == 2) arr[i] = ccc + "xx";
                 if (ccc.length() == 3) arr[i] = ccc + "x";
                 if (ccc.length() == 4) arr[i] = ccc;
-            }*/
+            }*//*
         }
         for (int j = 0; j <= i; j++) {
             sb.append(" ").append(arr[j]);
         }
         tv_card_num.setText(sb.toString().trim());
-    }
+    }*/
 
     private void cardBank() {
         tv_card_name.setText("");

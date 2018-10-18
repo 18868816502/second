@@ -64,6 +64,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.beiwo.klyjaz.loan.ProType1Activity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.beiwo.klyjaz.loan.BillListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -506,7 +510,7 @@
         <activity
             android:name="com.beiwo.klyjaz.ui.activity.CommunityPublishActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.beiwo.klyjaz.ui.activity.ArticleDetailActivity"
             android:screenOrientation="portrait" />
@@ -514,15 +518,15 @@
             android:name="com.beiwo.klyjaz.ui.activity.SocialTopicDetailActivity"
             android:screenOrientation="portrait" />
 
-         <!--<provider-->
-         <!--android:name="android.support.v4.content.FileProvider"-->
-         <!--android:authorities="com.beihui.market"-->
-         <!--android:exported="false"-->
-         <!--android:grantUriPermissions="true">-->
-         <!--<meta-data-->
-         <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-         <!--android:resource="@xml/file_paths_public"></meta-data>-->
-         <!--</provider>-->
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="com.beihui.market"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/file_paths_public"></meta-data>-->
+        <!--</provider>-->
         <activity
             android:name="com.beiwo.klyjaz.social.activity.MyDraftsActivity"
             android:screenOrientation="portrait" />

@@ -304,23 +304,26 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(context, ProTypeActivity.class);
         switch (view.getId()) {
             case R.id.tv_pro_1:
-                intent.putExtra("productType", 1);
-                context.startActivity(intent);
+                Intent intent1 = new Intent(context, ProType1Activity.class);
+                intent1.putExtra("productType", 1);
+                context.startActivity(intent1);
                 break;
             case R.id.tv_pro_2:
-                intent.putExtra("productType", 2);
-                context.startActivity(intent);
+                Intent intent2 = new Intent(context, ProType1Activity.class);
+                intent2.putExtra("productType", 2);
+                context.startActivity(intent2);
                 break;
             case R.id.tv_pro_3:
-                intent.putExtra("productType", 4);
-                context.startActivity(intent);
+                Intent intent4 = new Intent(context, ProType1Activity.class);
+                intent4.putExtra("productType", 4);
+                context.startActivity(intent4);
                 break;
             case R.id.tv_pro_4:
-                intent.putExtra("productType", 3);
-                context.startActivity(intent);
+                Intent intent3 = new Intent(context, ProType1Activity.class);
+                intent3.putExtra("productType", 3);
+                context.startActivity(intent3);
                 break;
             case R.id.iv_edit_money:
                 DlgUtil.createDlg(context, R.layout.dlg_set_loan_money, DlgUtil.DlgLocation.BOTTOM, new DlgUtil.OnDlgViewClickListener() {
