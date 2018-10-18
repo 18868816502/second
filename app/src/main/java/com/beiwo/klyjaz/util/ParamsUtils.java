@@ -41,7 +41,8 @@ public class ParamsUtils {
      * @param selfId
      * @return
      */
-    public static Map<String,Object> generateCommentParams(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId,String replyId){
+    public static Map<String,Object> generateCommentParams(String userId, String commentType, String commentContent, String forumId,
+                                                           String toUserId, String selfId,String replyId,String replyContent){
         Map<String,Object> mMap = new HashMap<>();
         mMap.put("userId",userId);
         mMap.put("commentType",commentType);
@@ -55,6 +56,9 @@ public class ParamsUtils {
         }
         if(!TextUtils.isEmpty(replyId)) {
             mMap.put("replyId", replyId);
+        }
+        if(!TextUtils.isEmpty(replyContent)) {
+            mMap.put("replyContent", replyContent);
         }
         return mMap;
     }

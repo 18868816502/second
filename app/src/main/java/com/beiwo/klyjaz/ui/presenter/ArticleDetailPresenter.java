@@ -89,11 +89,11 @@ public class ArticleDetailPresenter extends BaseRxPresenter implements ArticleDe
     }
 
     @Override
-    public void fetchReplyForumInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId,String replyId) {
+    public void fetchReplyForumInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId,String replyId,String replyContent) {
 
 //        Disposable dis = api.fetchReplyForumInfo(userHelper.getProfile().getId(),commentType, commentContent, forumId, toUserId, selfId)
         Disposable dis = api.fetchReplyForumInfo(ParamsUtils.generateCommentParams(userHelper.getProfile().getId(),commentType,
-                commentContent, forumId, toUserId, selfId,replyId))
+                commentContent, forumId, toUserId, selfId,replyId,replyContent))
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

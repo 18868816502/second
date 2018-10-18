@@ -1,12 +1,11 @@
 package com.beiwo.klyjaz.ui.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,7 +31,6 @@ import com.beiwo.klyjaz.ui.adapter.CommunityPublishAdapter;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
 import com.beiwo.klyjaz.util.ImageUtils;
-import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.gyf.barlibrary.ImmersionBar;
@@ -43,14 +40,12 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnPermissionDenied;
-import permissions.dispatcher.RuntimePermissions;
 
 /**
  * @author chenguoguo
@@ -60,7 +55,7 @@ import permissions.dispatcher.RuntimePermissions;
  * @time 2018/9/11 18:45
  */
 public class CommunityPublishActivity extends BaseComponentActivity implements SocialPublishContract.View,
-        View.OnClickListener, PopDialog.OnInitPopListener, OnItemClickListener, OnSaveEditListener,CommunityPublishAdapter.OnChoosePickListener {
+        View.OnClickListener, PopDialog.OnInitPopListener, OnItemClickListener, OnSaveEditListener, CommunityPublishAdapter.OnChoosePickListener {
 
     public static final int REQUEST_CODE_CHOOSE = 23;
 
@@ -78,35 +73,59 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     private CommunityPublishAdapter adapter;
     private PopDialog popDialog;
-    private int mPopType = 0;
-    private List<Uri> uriList;
-    private List<String> pathList;
     /**
-     * 记录上传失败的base64
+     * 弹窗类型,0 草稿箱保存弹窗  1 提交发布弹窗
      */
-    private List<String> failList;
+    private int mPopType = 0;
+    /**
+     * 选择本地图片路径存储集合
+     */
+    private List<String> pathList;
     /**
      * 当前上传位置
      */
     private int uploadIndex = 0;
     /**
-     * 选中的图片base64
+     * 选中的图片base64集合
      */
     private List<Bitmap> base64List;
+    /**
+     * 图片上传的key集合
+     */
     private List<String> imgKeys;
 
+    /**
+     * 动态标题
+     */
     private String mTopicTitle = "";
+    /**
+     * 动态内容
+     */
     private String mTopicContent = "";
+    /**
+     * 用来格式发布的key
+     */
     private StringBuilder sb;
+    /**
+     * 动态状态值，0 发布  1 存草稿箱
+     */
     private String status = "0";
+    /**
+     * 动态id 从草稿箱进来需要发布动态需要上传该值
+     */
     private String forumId = "";
-
+    /**
+     * 草稿箱中的图片集合
+     */
     private List<String> httpUrls;
+    /**
+     * 草稿箱中已保存的图片key集合
+     */
     private List<String> httpImgKeys;
-
-    private EditText etTitle;
-    private EditText etContent;
-    private int remainSize;//剩余选择
+    /**
+     * 剩余可添加的图片张数
+     */
+    private int remainSize;
 
     @Override
     public int getLayoutId() {
@@ -142,11 +161,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void initDatas() {
-        failList = new ArrayList<>();
         base64List = new ArrayList<>();
         imgKeys = new ArrayList<>();
         pathList = new ArrayList<>();
-
         httpUrls = new ArrayList<>();
         httpImgKeys = new ArrayList<>();
     }
@@ -177,8 +194,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                     ToastUtil.toast("请填写内容");
                     return;
                 }
-
-                if(mTopicContent.length()<10){
+                if (mTopicContent.length() < 10) {
                     ToastUtil.toast("正文内容不能少于10个字");
                     return;
                 }
@@ -208,6 +224,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 //提交发布的内容
                 popDialog.dismiss();
                 status = "0";
+                clearNetPicture();
                 if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
                 } else {
@@ -217,6 +234,19 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 清除草稿箱中的网络图片
+     */
+    private void clearNetPicture() {
+        Iterator<String> it = pathList.iterator();
+        while (it.hasNext()) {
+            String x = it.next();
+            if (x.contains("http")) {
+                it.remove();
+            }
         }
     }
 
@@ -263,7 +293,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             default:
                 break;
         }
-
     }
 
     @Override
@@ -271,10 +300,9 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
 //            adapter.setHeadData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
-//            uriList = Matisse.obtainResult(data);
 //            pathList = Matisse.obtainPathResult(data);
             pathList.addAll(Matisse.obtainPathResult(data));
-            adapter.setHeadData(pathList,mTopicTitle,mTopicContent);
+            adapter.setHeadData(pathList, mTopicTitle, mTopicContent);
         }
     }
 
@@ -282,7 +310,13 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     public void onItemClick(int position) {
         if (pathList != null) {
             pathList.remove(position);
-            adapter.setHeadData(pathList,mTopicTitle,mTopicContent);
+            adapter.setHeadData(pathList, mTopicTitle, mTopicContent);
+        }
+        //清除草稿箱中的key信息
+        if (httpImgKeys != null && httpImgKeys.size() != 0) {
+            if (position < httpImgKeys.size()) {
+                httpImgKeys.remove(position);
+            }
         }
     }
 
@@ -293,17 +327,16 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onPublishTopicSucceed() {
-        switch (status){
+        switch (status) {
             case "0":
                 ToastUtil.toast("发布成功");
                 break;
             case "3":
                 ToastUtil.toast("保存成功");
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
-
         finish();
     }
 
@@ -317,13 +350,15 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         }
 
         //所有图片上传完毕
+
         if (imgKeys.size() == base64List.size()) {
-            int size = imgKeys.size();
+            httpImgKeys.addAll(imgKeys);
+            int size = httpImgKeys.size();
             for (int i = 0; i < size; i++) {
                 if (i != size - 1) {
-                    sb.append(imgKeys.get(i) + "#");
+                    sb.append(httpImgKeys.get(i)).append("#");
                 } else {
-                    sb.append(imgKeys.get(i));
+                    sb.append(httpImgKeys.get(i));
                 }
             }
             dismissProgress();
@@ -334,8 +369,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     @Override
     public void onUploadImgFailed() {
-//        failList.add(base64List.get(uploadIndex));
-//        uploadIndex ++;
         //如果上传失败则重新上传
         mPresenter.uploadForumImg(base64List.get(uploadIndex));
     }
@@ -347,6 +380,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 for (int i = 0; i < forumBean.getImgKey().size(); i++) {
                     httpImgKeys.add(forumBean.getImgKey().get(i).getId());
                     httpUrls.add(forumBean.getImgKey().get(i).getImgUrl());
+                    pathList.add(forumBean.getImgKey().get(i).getImgUrl());
                 }
             }
             adapter.setData(httpUrls, forumBean.getTitle(), forumBean.getContent());
@@ -361,10 +395,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     @Override
     public void onSaveEdit(EditText editText, int flag, String strEdit) {
         if (flag == 1) {
-            this.etTitle = editText;
             mTopicTitle = strEdit;
         } else {
-            this.etContent = editText;
             mTopicContent = strEdit;
         }
     }
@@ -391,13 +423,13 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             //申请WRITE_EXTERNAL_STORAGE权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     1);
-        }else{
+        } else {
             openPick();
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         doNext(requestCode, grantResults);
     }
@@ -406,7 +438,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission Granted
-            openPick();
+                openPick();
             } else {
                 // Permission Denied
                 Toast.makeText(this, "请在应用管理中打开“相机”访问权限！", Toast.LENGTH_LONG).show();
@@ -415,12 +447,12 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         }
     }
 
-    private void openPick(){
+    private void openPick() {
         Matisse.from(this)
                 .choose(MimeType.ofAll(), false)
                 .countable(true)
                 .capture(true)
-                .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider","kaola"))
+                .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider", "kaola"))
                 .maxSelectable(remainSize)
                 .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)

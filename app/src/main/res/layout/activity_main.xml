@@ -57,7 +57,7 @@
                         android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@mipmap/ic_tab_bill_select" />
+                        android:src="@drawable/tab_home_btn_normal" />
 
                     <TextView
                         android:id="@+id/tab_bill_text"
@@ -85,7 +85,7 @@
                         android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@mipmap/ic_tab_discover_normal" />
+                        android:src="@drawable/tab_borrow_btn_normal" />
 
                     <TextView
                         android:id="@+id/tab_discover_text"
@@ -112,7 +112,7 @@
                         android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@mipmap/ic_tab_discover_normal" />
+                        android:src="@drawable/tab_community_btn_normal" />
 
                     <TextView
                         android:id="@+id/tab_three_text"
@@ -139,7 +139,7 @@
                         android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@mipmap/ic_tab_discover_normal" />
+                        android:src="@drawable/tab_tool_btn_normal" />
 
                     <TextView
                         android:id="@+id/tab_social_text"
@@ -166,7 +166,7 @@
                         android:layout_height="28dp"
                         android:layout_centerHorizontal="true"
                         android:focusable="false"
-                        android:src="@mipmap/ic_tab_mine_normal" />
+                        android:src="@drawable/tab_me_btn_normal" />
 
                     <TextView
                         android:id="@+id/tab_mine_text"

@@ -501,11 +501,11 @@ public class MainActivity extends BaseComponentActivity {
         tabTxt.add("工具");
         tabTxt.add("我的");
         List<Drawable[]> drawables = new ArrayList<>();
-        Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_bill_normal)};
-        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
-        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_discover_normal)};
-        Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_social_normal)};
-        Drawable[] bitmaps4 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_select), ContextCompat.getDrawable(this, R.mipmap.ic_tab_mine_normal)};
+        Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_home_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_home_btn_normal)};
+        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_borrow_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_borrow_btn_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
+        Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_normal)};
+        Drawable[] bitmaps4 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_me_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_me_btn_normal)};
         drawables.add(bitmaps0);
         drawables.add(bitmaps1);
         drawables.add(bitmaps2);

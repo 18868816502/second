@@ -45,7 +45,7 @@ public interface ArticleDetailContact {
          * @param selfId 对应的评论回复id
          */
         void fetchReplyForumInfo(String userId,String commentType,String commentContent,
-                                 String forumId,String toUserId,String selfId,String replyId);
+                                 String forumId,String toUserId,String selfId,String replyId,String replyContent);
 
         /**
          * 提交举报信息

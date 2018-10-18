@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.social.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,10 @@ import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.StateLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +38,20 @@ import java.util.List;
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
-public class PraiseListActivity extends BaseComponentActivity implements BaseQuickAdapter.RequestLoadMoreListener,
-        BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener ,
-        SwipeRefreshLayout.OnRefreshListener{
+/**
+ * 点赞列表、评论列表
+ */
+public class PraiseListActivity extends BaseComponentActivity implements OnRefreshListener, OnLoadMoreListener,
+        BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener{
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.state_layout)
     StateLayout stateLayout;
     @BindView(R.id.refresh_layout)
-    SwipeRefreshLayout refreshLayout;
+    SmartRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.ll_no_data)
@@ -70,20 +79,21 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
         if(getIntent()!=null){
             type = getIntent().getIntExtra("type",1);
             if(type == 1){
+                tvTitle.setText("赞");
                 tvEmptyData.setText("还未收到点赞哦~");
             }else{
+                tvTitle.setText("评论");
                 tvEmptyData.setText("还未收到评论哦~");
             }
         }
         adapter = new PraiseListAdapter(type);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setOnLoadMoreListener(this, recyclerView);
         adapter.setOnItemClickListener(this);
         adapter.setOnItemChildClickListener(this);
 
-        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
         refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setOnLoadMoreListener(this);
     }
 
     @Override
@@ -104,22 +114,9 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
         intent.putExtra("userId",datas.get(position).getUserId());
         startActivity(intent);
     }
-
-    @Override
-    public void onLoadMoreRequested() {
-        pageNo ++;
-        fetchData();
-    }
-
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
-    }
-
-    @Override
-    public void onRefresh() {
-        pageNo = 1;
-        fetchData();
     }
 
     private void fetchData(){
@@ -129,7 +126,6 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
             fetchCommentList();
         }
     }
-
 
     /**
      * 查询点赞列表
@@ -143,7 +139,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                                public void accept(ResultEntity<List<PraiseListBean>> result){
                                    if (result.isSuccess()) {
                                        if(1 == pageNo){
-                                           refreshLayout.setRefreshing(false);
+                                           refreshLayout.finishRefresh();
                                            if(result.getData() == null || result.getData().size() == 0){
                                                stateLayout.setVisibility(View.GONE);
                                                emptyContainer.setVisibility(View.VISIBLE);
@@ -155,6 +151,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                                                adapter.notifyPraiseChanged(datas);
                                            }
                                        }else{
+                                           refreshLayout.finishLoadMore();
                                            datas.addAll(result.getData());
                                            adapter.notifyPraiseChanged(datas);
                                        }
@@ -166,14 +163,15 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable){
-                                refreshLayout.setRefreshing(false);
+                                refreshLayout.finishLoadMore();
+                                refreshLayout.finishRefresh();
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });
     }
 
     /**
-     * 查询点赞列表
+     * 查询评论列表
      */
     @SuppressLint("CheckResult")
     private void fetchCommentList(){
@@ -184,7 +182,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                                public void accept(ResultEntity<List<PraiseListBean>> result){
                                    if (result.isSuccess()) {
                                        if(1 == pageNo){
-                                           refreshLayout.setRefreshing(false);
+                                           refreshLayout.finishRefresh();
                                            if(result.getData() == null || result.getData().size() == 0){
                                                stateLayout.setVisibility(View.GONE);
                                                emptyContainer.setVisibility(View.VISIBLE);
@@ -196,6 +194,7 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                                                adapter.notifyPraiseChanged(datas);
                                            }
                                        }else{
+                                           refreshLayout.finishLoadMore();
                                            datas.addAll(result.getData());
                                            adapter.notifyPraiseChanged(datas);
                                        }
@@ -207,10 +206,22 @@ public class PraiseListActivity extends BaseComponentActivity implements BaseQui
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable){
-                                refreshLayout.setRefreshing(false);
+                                refreshLayout.finishLoadMore();
+                                refreshLayout.finishRefresh();
                                 Log.e("exception_custom", throwable.getMessage());
                             }
                         });
     }
 
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        pageNo ++;
+        fetchData();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        pageNo = 1;
+        fetchData();
+    }
 }

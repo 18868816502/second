@@ -91,6 +91,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     private ArticleCommentListAdapter childAdapter;
     private int tag = 1;
 
+    private PopDialog auditDialog;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_article_detail;
@@ -195,7 +197,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 presenter.fetchSaveReport("", forumBean.getForumId(), "1", getString(R.string.article_more_report_content4));
                 break;
             case R.id.iv_close:
-                hideDialog();
+                if(auditDialog!=null){
+                    auditDialog.dismiss();
+                }
                 break;
             case R.id.tv_comment:
                 mPopType = 5;
@@ -209,8 +213,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 }
                 mPopType = 6;
                 PopUtils.showCenterPopWindow(R.layout.dialog_article_comment_audit, fManager, this, this);
-//                reply();
-//                PopUtils.dismissComment();
                 break;
             default:
                 break;
@@ -225,17 +227,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 presenter.fetchReplyForumInfo("", "1",
-                        etInput.getText().toString(), forumBean.getForumId(), "", "","");
+                        etInput.getText().toString(), forumBean.getForumId(), "", "","","");
                 break;
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"");
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"","");
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId());
+                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId(),replyDtoListBean.getContent());
                 break;
             default:
                 break;
@@ -276,7 +278,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        presenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+        presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),forumId,pageNo,pageSize);
     }
 
     @Override
@@ -298,8 +300,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             //文章评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
-//                mPopType = 5;
-//                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 mPopType = 4;
                 PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
@@ -311,28 +311,22 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //评论回复
             case ConstantTag.TAG_REPLY_COMMENT:
                 replyBean = datas.get(position);
-//                mPopType = 5;
-//                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
-                mPopType = 4;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                mPopType = 5;
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
-
             //子评论点赞
             case ConstantTag.TAG_CHILD_PARISE_COMMENT:
                 int praisePosition = (int) view.getTag();
                 replyDtoListBean = datas.get(praisePosition).getReplyDtoList().get(position);
                 presenter.fetchClickPraise(2, replyDtoListBean.getId(), "");
-//                ToastUtil.toast("点赞第" + praisePosition + "条");
                 break;
             //子评论回复
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 int comPosition = (int) view.getTag();
                 replyBean = datas.get(comPosition);
                 replyDtoListBean = datas.get(comPosition).getReplyDtoList().get(position);
-                mPopType = 4;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
-//                mPopType = 5;
-//                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+                mPopType = 5;
+                PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
                 break;
             //删除评论
             case ConstantTag.TAG_COMMENT_DELETE:
@@ -382,6 +376,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
             /*评论列表弹出框*/
             case 4:
+                auditDialog = mPopDialog;
                 initCommentListPop(view);
                 break;
             /*评论输入框*/
@@ -397,6 +392,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 setOnClick(view.findViewById(R.id.tv_send));
                 break;
             case 6:
+
                 setOnClick(view.findViewById(R.id.tv_cancel), view.findViewById(R.id.tv_save));
                 break;
             default:
