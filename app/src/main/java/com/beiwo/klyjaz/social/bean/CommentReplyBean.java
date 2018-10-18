@@ -115,6 +115,8 @@ public class CommentReplyBean {
         private String userHeadUrl;
         private int praiseCount;
         private String gmtCreate;
+        private String selfId;
+        private String replyId;
 
         public String getId() {
             return id;
@@ -186,6 +188,22 @@ public class CommentReplyBean {
 
         public void setGmtCreate(String gmtCreate) {
             this.gmtCreate = gmtCreate;
+        }
+
+        public String getSelfId() {
+            return selfId;
+        }
+
+        public void setSelfId(String selfId) {
+            this.selfId = selfId;
+        }
+
+        public String getReplyId() {
+            return replyId;
+        }
+
+        public void setReplyId(String replyId) {
+            this.replyId = replyId;
         }
     }
 }

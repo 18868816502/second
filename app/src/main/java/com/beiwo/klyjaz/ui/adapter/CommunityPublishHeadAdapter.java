@@ -54,11 +54,11 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
     public void setData(List<String> mList){
         this.mList.clear();
         this.mList.addAll(mList);
-        if(mList.size() >= 9){
-            footViewHolder.itemView.setVisibility(View.GONE);
-        }else{
-            footViewHolder.itemView.setVisibility(View.VISIBLE);
-        }
+//        if(mList.size() >= 9){
+//            footViewHolder.itemView.setVisibility(View.GONE);
+//        }else{
+//            footViewHolder.itemView.setVisibility(View.VISIBLE);
+//        }
         notifyDataSetChanged();
     }
 
@@ -93,6 +93,11 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
             contentViewHolder.ivDelete.setTag(position);
         }else{
             footViewHolder = (FootViewHolder) holder;
+            if(mList.size() >= 9){
+                footViewHolder.itemView.setVisibility(View.GONE);
+            }else{
+                footViewHolder.itemView.setVisibility(View.VISIBLE);
+            }
         }
     }
 

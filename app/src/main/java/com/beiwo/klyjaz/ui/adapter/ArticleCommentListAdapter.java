@@ -76,7 +76,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.tvCommentDelete.setVisibility(View.GONE);
         }
         if (viewHolder.adapter != null){
-            viewHolder.adapter.setDatas(datas.get(position).getReplyDtoList());
+            viewHolder.adapter.setDatas(datas.get(position).getReplyDtoList(),datas.get(position).getId());
         }
 
     }

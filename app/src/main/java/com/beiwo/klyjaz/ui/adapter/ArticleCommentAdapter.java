@@ -38,6 +38,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private boolean isOpen = false;
+    private String selfId;
 
     private List<CommentReplyBean.ReplyDtoListBean> datas;
     private static final int CONTENT = 1;
@@ -48,23 +49,24 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         datas = new ArrayList<>();
     }
 
-    public void setDatas(List<CommentReplyBean.ReplyDtoListBean> datas){
+    public void setDatas(List<CommentReplyBean.ReplyDtoListBean> datas, String selfId) {
         this.datas.clear();
         this.datas.addAll(datas);
+        this.selfId = selfId;
         notifyDataSetChanged();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case CONTENT:
-                View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment,parent,false);
+                View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment, parent, false);
                 return new ViewHolder(commentView);
             case FOOT:
-                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment_foot,parent,false);
+                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment_foot, parent, false);
                 return new FootViewHolder(footView);
-                default:
-                    return null;
+            default:
+                return null;
         }
 //        View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment,parent,false);
 //        return new ViewHolder(commentView);
@@ -72,34 +74,39 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(position == getItemCount() - 1){
+        if (position == getItemCount() - 1) {
             FootViewHolder viewHolder = (FootViewHolder) holder;
-            if(datas.size() < 2){
+            if (datas.size() < 2) {
                 viewHolder.setVisibility(false);
-            }else{
+            } else {
                 viewHolder.setVisibility(true);
-                if(isOpen){
+                if (isOpen) {
                     viewHolder.tvOpenReply.setText("关闭全部回复");
 //                    viewHolder.ivOpenReply.setBackgroundResource(R.drawable);
-                }else{
+                } else {
                     viewHolder.tvOpenReply.setText("展开全部回复");
 //                    viewHolder.ivOpenReply.setBackgroundResource(R.drawable);
                 }
             }
-        }else {
+        } else {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.tvCommentPraise.setTag(position);
-            viewHolder.ivCommentatorAcatar.setTag(R.id.user_avatar,position);
+            viewHolder.ivCommentatorAcatar.setTag(R.id.user_avatar, position);
             viewHolder.ivArticleComment.setTag(position);
             viewHolder.tvDelete.setTag(position);
-            if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())){
+            if (!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
                 Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
             }
+
             viewHolder.tvCommentTime.setText(datas.get(position).getGmtCreate());
-            String content = "回复<font color='#2a84ff'>"
-                    + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
+            String content = (TextUtils.equals(selfId, datas.get(position).getReplyId())) ? "":"回复"
+                    + "<font color='#2a84ff'>"
+//                    + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
+                    + ((TextUtils.equals(selfId, datas.get(position).getReplyId())) ?
+                    "" : (TextUtils.isEmpty(datas.get(position).getToUserName()) ?
+                    "未知" : datas.get(position).getToUserName()))
                     + "</font>:"
-                    + (TextUtils.isEmpty(datas.get(position).getContent())?"":datas.get(position).getContent());
+                    + (TextUtils.isEmpty(datas.get(position).getContent()) ? "" : datas.get(position).getContent());
             viewHolder.tvCommentContent.setText(Html.fromHtml(content));
             viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
             if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
@@ -112,12 +119,12 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if(isOpen){
+        if (isOpen) {
             return datas.size() + 1;
-        }else{
-            if(datas.size() > 0){
+        } else {
+            if (datas.size() > 0) {
                 return 2;
-            }else{
+            } else {
                 return 0;
             }
         }
@@ -125,9 +132,9 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(position == getItemCount() -1 ){
+        if (position == getItemCount() - 1) {
             return FOOT;
-        }else{
+        } else {
             return CONTENT;
         }
     }
@@ -153,9 +160,9 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemRecyclerView.setVisibility(View.GONE);
-            setOnClick(tvCommentPraise,ivArticleComment,tvDelete,ivCommentatorAcatar);
+            setOnClick(tvCommentPraise, ivArticleComment, tvDelete, ivCommentatorAcatar);
         }
     }
 
@@ -168,7 +175,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
         public FootViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             setOnClick(itemView);
         }
 
@@ -187,51 +194,51 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void setOnClick(View... views){
-        for(View view:views){
+    private void setOnClick(View... views) {
+        for (View view : views) {
             view.setOnClickListener(new OnClickListener());
         }
     }
 
     private OnViewClickListener listener;
 
-    public void setOnViewClickListener(OnViewClickListener listener){
+    public void setOnViewClickListener(OnViewClickListener listener) {
         this.listener = listener;
     }
 
 
-    class OnClickListener implements View.OnClickListener{
+    class OnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.iv_commentator_avatar:
                     Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
-                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.user_avatar)).getUserId());
+                    pIntent.putExtra("userId", datas.get((Integer) v.getTag(R.id.user_avatar)).getUserId());
                     mContext.startActivity(pIntent);
                     break;
                 //评论点赞
                 case R.id.tv_comment_praise:
                     int position = (int) v.getTag();
 //                    ToastUtil.toast("子点赞第"+(position + 1) + "条");
-                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT,position);
+                    listener.onViewClick(v, ConstantTag.TAG_CHILD_PARISE_COMMENT, position);
                     break;
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag();
 //                    ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
-                    listener.onViewClick(v,ConstantTag.TAG_CHILD_REPLY_COMMENT,comPosition);
+                    listener.onViewClick(v, ConstantTag.TAG_CHILD_REPLY_COMMENT, comPosition);
                     break;
                 case R.id.tv_comment_delete:
                     int delPosition = (int) v.getTag();
 //                    ToastUtil.toast("删除第"+(delPosition + 1) + "条");
-                    listener.onViewClick(v, ConstantTag.TAG_CHILD_COMMENT_DELETE,delPosition);
+                    listener.onViewClick(v, ConstantTag.TAG_CHILD_COMMENT_DELETE, delPosition);
                     break;
                 case R.id.foot:
                     //展开或者回复
-                    if(isOpen){
+                    if (isOpen) {
                         isOpen = false;
-                    }else{
+                    } else {
                         isOpen = true;
                     }
                     notifyDataSetChanged();

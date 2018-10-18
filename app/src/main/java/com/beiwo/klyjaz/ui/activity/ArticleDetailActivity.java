@@ -200,8 +200,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 if(auditDialog!=null){
                     auditDialog.dismiss();
                 }
-//                hideDialog();
-//                PopUtils.dismissComment();
                 break;
             case R.id.tv_comment:
                 mPopType = 5;
@@ -215,8 +213,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 }
                 mPopType = 6;
                 PopUtils.showCenterPopWindow(R.layout.dialog_article_comment_audit, fManager, this, this);
-//                reply();
-//                PopUtils.dismissComment();
                 break;
             default:
                 break;
