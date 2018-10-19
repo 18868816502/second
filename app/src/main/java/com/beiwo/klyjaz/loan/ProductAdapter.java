@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -33,9 +34,15 @@ public class ProductAdapter extends BaseQuickAdapter<GroupProductBean, BaseViewH
         helper.setText(R.id.tv_product_name, item.getProductName())
                 .setText(R.id.tv_product_money, span(item.borrowingLowText.substring(0, item.borrowingLowText.length() - 1) + "-" + item.borrowingHighText))
                 .setText(R.id.tv_product_rate, span(item.getInterestLowText()))
-                .setText(R.id.tv_product_count, span(item.getSuccessCount() + "人"));
+                .setText(R.id.tv_product_count, span(item.getSuccessCount() + "人"))
+                .setText(R.id.tv_product_rate_type, item.interestTimeText);
         ImageView iv_product_icon = helper.getView(R.id.iv_product_icon);
-        Glide.with(iv_product_icon.getContext()).load(item.getLogoUrl()).error(R.color.white).into(iv_product_icon);
+        Glide.with(mContext)
+                .load(item.getLogoUrl())
+                .centerCrop()
+                .transform(new GlideCircleTransform(mContext))
+                .error(R.color.white_7)
+                .into(iv_product_icon);
     }
 
     private CharSequence span(String value) {

@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.loan;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -41,6 +42,7 @@ import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.DensityUtil;
+import com.beiwo.klyjaz.view.BannerLayout;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -138,21 +140,16 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder.getItemViewType() == TYPE_HEADER) {
-            holder.bga_banner.setData(imgs, null);
-            holder.bga_banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
+            holder.banner_layout.setImageLoader(new BannerLayout.ImageLoader() {
                 @Override
-                public void fillBannerItem(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
-                    Glide.with(context)
-                            .load(model)
-                            .placeholder(R.drawable.no_banner)
-                            .error(R.drawable.no_banner)
-                            .fitCenter()
-                            .into(itemView);
+                public void displayImage(Context context, String path, ImageView imageView) {
+                    Glide.with(context).load(path).placeholder(R.drawable.no_banner).error(R.drawable.no_banner).into(imageView);
                 }
             });
-            holder.bga_banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
+            if (imgs != null && imgs.size() > 0) holder.banner_layout.setViewUrls(imgs);
+            holder.banner_layout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
-                public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
+                public void onItemClick(int position) {
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("webViewUrl", urls.get(position));
                     intent.putExtra("webViewTitleName", titles.get(position));
@@ -212,9 +209,11 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             }
         }
         if (holder.viewType == TYPE_NORMAL) {
-            holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
+            if (holder.recycler.getPaddingLeft() <= 0) {
+                holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
+                holder.recycler.addItemDecoration(new Decoration(20, 2));
+            }
             holder.recycler.setItemAnimator(new DefaultItemAnimator());
-            holder.recycler.addItemDecoration(new Decoration(20, 2));
             holder.recycler.setLayoutManager(new GridLayoutManager(context, 2) {
                 @Override
                 public boolean canScrollVertically() {
@@ -432,7 +431,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private int viewType;
         //head
-        private BGABanner bga_banner;
+        //private BGABanner bga_banner;
+        private BannerLayout banner_layout;
         private TextView tv_pro_1;
         private TextView tv_pro_2;
         private TextView tv_pro_3;
@@ -446,7 +446,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             super(itemView);
             this.viewType = viewType;
             if (viewType == TYPE_HEADER) {
-                bga_banner = itemView.findViewById(R.id.bga_banner);
+                banner_layout = itemView.findViewById(R.id.banner_layout);
                 tv_pro_1 = itemView.findViewById(R.id.tv_pro_1);
                 tv_pro_2 = itemView.findViewById(R.id.tv_pro_2);
                 tv_pro_3 = itemView.findViewById(R.id.tv_pro_3);

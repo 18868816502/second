@@ -16,6 +16,7 @@ public class GroupProductBean implements Serializable {
     private int successCount;
     public String borrowingHighText;
     public String borrowingLowText;
+    public String interestTimeText;
 
     public String getExplains() {
         return explains;

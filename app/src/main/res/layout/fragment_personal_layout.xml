@@ -174,7 +174,7 @@
                     android:id="@+id/invite_friend"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:left_image="@mipmap/ic_me_invite"
                     app:left_image_Visible="true"
                     app:left_textView_color="@color/color_primary_black"

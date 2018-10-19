@@ -6,12 +6,21 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/bga_banner"
+    <com.beiwo.klyjaz.view.BannerLayout
+        android:id="@+id/banner_layout"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        app:banner_indicatorGravity="bottom|right"
-        app:banner_pointContainerBackground="@color/transparent" />
+        app:indicatorMargin="15dp"
+        app:indicatorPosition="rightBottom"
+        app:indicatorShape="oval_rect"
+        app:indicatorSpace="2.5dp"
+        app:indicator_selected_stroke="true"
+        app:selectedIndicatorColor="@color/white"
+        app:selectedIndicatorHeight="6dp"
+        app:selectedIndicatorWidth="6dp"
+        app:unSelectedIndicatorColor="@color/white"
+        app:unSelectedIndicatorHeight="2.2dp"
+        app:unSelectedIndicatorWidth="5.5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseTabFragment;
@@ -83,6 +84,8 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @BindView(R.id.activity_deploy_recycler)
     RecyclerView deployRecyclerView;
+    @BindView(R.id.my_wallet)
+    View my_wallet;
 
     private DeployAdapter deployAdapter;
 
@@ -134,6 +137,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void configViews() {
+        my_wallet.setVisibility(App.audit == 2 ? View.VISIBLE : View.GONE);
         deployAdapter = new DeployAdapter(R.layout.activity_deploy_list_item, list, getActivity());
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
             @Override
