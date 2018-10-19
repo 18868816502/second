@@ -72,6 +72,87 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/tab_three_root"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="6dp">
+
+                    <ImageView
+                        android:id="@+id/tab_three_icon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_centerHorizontal="true"
+                        android:focusable="false"
+                        android:src="@drawable/tab_community_btn_normal" />
+
+                    <TextView
+                        android:id="@+id/tab_three_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tab_three_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="2dp"
+                        android:text="@string/tab_news"
+                        android:textColor="@color/black_2"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tab_tools_root"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="6dp">
+
+                    <ImageView
+                        android:id="@+id/tab_tools_icon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_centerHorizontal="true"
+                        android:focusable="false"
+                        android:src="@drawable/tab_tool_btn_normal" />
+
+                    <TextView
+                        android:id="@+id/tab_tools_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tab_tools_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="2dp"
+                        android:text="@string/tab_social"
+                        android:textColor="@color/black_2"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tab_mine_root"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="6dp">
+
+                    <ImageView
+                        android:id="@+id/tab_mine_icon"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_centerHorizontal="true"
+                        android:focusable="false"
+                        android:src="@drawable/tab_me_btn_normal" />
+
+                    <TextView
+                        android:id="@+id/tab_mine_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tab_mine_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="2dp"
+                        android:text="@string/tab_personal"
+                        android:textColor="@color/black_2"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/tab_discover_root"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -99,32 +180,6 @@
                         android:textSize="10dp" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/tab_mine_root"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingTop="6dp">
-
-                    <ImageView
-                        android:id="@+id/tab_mine_icon"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_centerHorizontal="true"
-                        android:focusable="false"
-                        android:src="@mipmap/ic_tab_mine_normal" />
-
-                    <TextView
-                        android:id="@+id/tab_mine_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tab_mine_icon"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="2dp"
-                        android:text="我的"
-                        android:textColor="@color/black_2"
-                        android:textSize="10dp" />
-                </RelativeLayout>
             </com.beiwo.klyjaz.view.BottomNavigationBar>
         </FrameLayout>
 

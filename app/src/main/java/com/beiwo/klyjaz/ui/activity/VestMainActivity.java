@@ -39,10 +39,13 @@ import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.scdk.fragment.LoanFragment;
 import com.beiwo.klyjaz.scdk.fragment.MineFragment;
+import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.ui.dialog.AdDialog;
+import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
+import com.beiwo.klyjaz.ui.fragment.SocialRecommendFragment;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.umeng.Statistic;
@@ -93,11 +96,21 @@ public class VestMainActivity extends BaseComponentActivity {
     ImageView tabBillIcon;
     @BindView(R.id.tab_bill_text)
     TextView tabBillText;
+    //社区
+    @BindView(R.id.tab_three_icon)
+    ImageView tabSocialIcon;
+    @BindView(R.id.tab_three_text)
+    TextView tabSocialText;
     //发现
     @BindView(R.id.tab_discover_icon)
     ImageView tabDiscoverIcon;
     @BindView(R.id.tab_discover_text)
     TextView tabDiscoverText;
+    //工具
+    @BindView(R.id.tab_tools_icon)
+    ImageView tabToosIcon;
+    @BindView(R.id.tab_tools_text)
+    TextView tabToolsText;
     //个人
     @BindView(R.id.tab_mine_icon)
     ImageView tabMineIcon;
@@ -251,8 +264,8 @@ public class VestMainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabMineIcon};
-        textView = new TextView[]{tabBillText, tabDiscoverText, tabMineText};
+        iconView = new ImageView[]{tabBillIcon,tabSocialIcon, tabToosIcon, tabMineIcon};
+        textView = new TextView[]{tabBillText,tabSocialText, tabToolsText, tabMineText};
         activity = this;
         EventBus.getDefault().register(this);
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
@@ -269,24 +282,6 @@ public class VestMainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         queryBottomImage();//请求底部导航栏图标 文字 字体颜色
-        /*用户首次进入app，弹出登陆界面*/
-        updateHelper.checkUpdate(this);
-        Api.getInstance().querySupernatant(3)
-                .compose(RxResponse.<List<AdBanner>>compatT())
-                .subscribe(new ApiObserver<List<AdBanner>>() {
-                    @Override
-                    public void onNext(@NonNull List<AdBanner> data) {
-                        if (data != null && data.size() > 0) {
-                            AdBanner adBanner = data.get(0);
-                            if (adBanner.getLocation() == 2) {//发现页
-                                navigationBar.select(R.id.tab_discover_root);
-                            } else {//首页
-                                navigationBar.select(R.id.tab_bill_root);
-                            }
-                            showAdDialog(adBanner);
-                        }
-                    }
-                });
     }
 
     public static void main(Activity activity) {
@@ -333,8 +328,9 @@ public class VestMainActivity extends BaseComponentActivity {
     }
 
     private LoanFragment tabHome;
-    public MineFragment tabMine;
-    public Fragment currentFragment;
+    private ToolFragment tabTool;
+    public SocialRecommendFragment tabSocial;
+    private PersonalFragment tabMine;
 
     private void selectTab(int id) {
         selectedFragmentId = id;
@@ -344,25 +340,42 @@ public class VestMainActivity extends BaseComponentActivity {
             tabHome = LoanFragment.newInstance();
             ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
+        if (tabSocial == null) {
+            tabSocial = SocialRecommendFragment.getInstance();
+            ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
+        }
+        if (tabTool == null) {
+            tabTool = ToolFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabTool).hide(tabTool);
+        }
         if (tabMine == null) {
-            tabMine = MineFragment.newInstance();
+            tabMine = PersonalFragment.newInstance();
             ft.add(R.id.tab_fragment, tabMine).hide(tabMine);
         }
         switch (id) {
             case R.id.tab_bill_root:
-                //1.审核中 2.审核通过
-                ft.hide(tabMine).show(tabHome);
+                ft.hide(tabMine).hide(tabSocial).hide(tabTool).show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
-                currentFragment = tabHome;
                 break;
-            case R.id.tab_mine_root:
-                ft.show(tabMine).hide(tabHome);
+            case R.id.tab_three_root://社区
+                ft.show(tabSocial).hide(tabHome).hide(tabTool).hide(tabMine);
+                ImmersionBar.with(this).statusBarDarkFont(true).init();
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                break;
+            case R.id.tab_tools_root://工具
+                ft.show(tabTool).hide(tabHome).hide(tabMine).hide(tabSocial);
+                ImmersionBar.with(this).statusBarDarkFont(false).init();
+                //pv，uv统计
+                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                break;
+            case R.id.tab_mine_root://个人
+                ft.show(tabMine).hide(tabHome).hide(tabTool).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
                 DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
-                currentFragment = tabMine;
                 break;
             default:
                 break;
@@ -448,9 +461,9 @@ public class VestMainActivity extends BaseComponentActivity {
 
     private void defaultTabIconTxt() {
         int[] colors = new int[]{
-                ContextCompat.getColor(this, R.color.c_ff5b2f),
-                ContextCompat.getColor(this, R.color.c_ff5b2f),
-                ContextCompat.getColor(this, R.color.c_a5a9b2)
+                ContextCompat.getColor(this, R.color.refresh_one),
+                ContextCompat.getColor(this, R.color.refresh_one),
+                ContextCompat.getColor(this, R.color.black_2)
         };
         int[][] states = new int[3][];
         states[0] = new int[]{android.R.attr.state_selected};
@@ -458,16 +471,19 @@ public class VestMainActivity extends BaseComponentActivity {
         states[2] = new int[]{};
         ColorStateList colorStateList = new ColorStateList(states, colors);
         List<String> tabTxt = new ArrayList<>();
-        tabTxt.add("借钱");
-        tabTxt.add("发现");
+        tabTxt.add("贷款");
+        tabTxt.add("社区");
+        tabTxt.add("工具");
         tabTxt.add("我的");
         List<Drawable[]> drawables = new ArrayList<>();
         Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.vest_tab_one_selected), ContextCompat.getDrawable(this, R.mipmap.vest_tab_one_normal)};
-        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.vest_tab_two_selected), ContextCompat.getDrawable(this, R.mipmap.vest_tab_two_normal)};
-        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.vest_tab_three_selected), ContextCompat.getDrawable(this, R.mipmap.vest_tab_three_normal)};
+        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_home_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_normal)};
+        Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_me_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_me_btn_normal)};
         drawables.add(bitmaps0);
         drawables.add(bitmaps1);
         drawables.add(bitmaps2);
+        drawables.add(bitmaps3);
         for (int i = 0; i < tabTxt.size(); i++) {
             textView[i].setTextColor(colorStateList);
             textView[i].setText(tabTxt.get(i));
