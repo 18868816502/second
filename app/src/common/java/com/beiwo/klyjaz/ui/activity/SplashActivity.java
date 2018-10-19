@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
@@ -122,7 +123,13 @@ public class SplashActivity extends BaseComponentActivity {
         if (!adClicked) {
             //startActivity(new Intent(SplashActivity.this, MainActivity.class));
             //finish();
-            MainActivity.main(this);
+            if(App.audit == 1){
+                Intent intent = new Intent(this, VestMainActivity.class);
+                startActivity(intent);
+            }else{
+                MainActivity.main(this);
+            }
+            finish();
         }
     }
 

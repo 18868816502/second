@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseActivity;
 import com.beiwo.klyjaz.util.SPUtils;
@@ -58,8 +59,14 @@ public class WelcomeActivity extends BaseActivity {
                     finish();
                 } else {
                     SPUtils.setValue(WelcomeActivity.this, "splash", "");
-                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    if(App.audit == 1){
+                        Intent intent = new Intent(WelcomeActivity.this, VestMainActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
                     finish();
                 }
 
