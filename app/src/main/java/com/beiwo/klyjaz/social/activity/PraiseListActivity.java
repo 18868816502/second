@@ -21,6 +21,7 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.PraiseListAdapter;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
 import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -116,7 +117,15 @@ public class PraiseListActivity extends BaseComponentActivity implements OnRefre
     }
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-
+        switch (view.getId()){
+            case R.id.iv_avatar:
+                Intent intent = new Intent(this, PersonalCenterActivity.class);
+                intent.putExtra("userId",datas.get(position).getUserId());
+                startActivity(intent);
+                break;
+                default:
+                    break;
+        }
     }
 
     private void fetchData(){
