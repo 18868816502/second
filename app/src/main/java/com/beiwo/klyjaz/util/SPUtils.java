@@ -183,4 +183,28 @@ public class SPUtils {
         editor.putBoolean("loanNumVisible", visible);
         editor.apply();
     }
+
+    public static int getVertifyState(Context context,String phone) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getInt(phone, 1);
+    }
+
+    public static void setVertifyState(Context context, int state,String phone) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(phone, state);
+        editor.commit();
+    }
+
+    public static String getPhone(Context context,String userId) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString(userId, "");
+    }
+
+    public static void setPhone(Context context, String userId,String phone) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(userId, phone);
+        editor.commit();
+    }
 }
