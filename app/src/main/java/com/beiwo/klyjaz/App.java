@@ -120,8 +120,7 @@ public class App extends Application {
                         @Override
                         public void onNext(Audit data) {
                             try {
-//                                audit = data.audit;
-                                audit = 1;
+                                audit = data.audit;
                             } catch (Exception e) {
                             }
                         }
