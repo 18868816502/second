@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -28,7 +29,12 @@ public class RecomProAdapter extends BaseQuickAdapter<GroupProductBean, BaseView
     @Override
     protected void convert(BaseViewHolder helper, GroupProductBean item) {
         ImageView iv_icon = helper.getView(R.id.iv_icon);
-        Glide.with(iv_icon.getContext()).load(item.logoUrl).error(R.color.white).into(iv_icon);
+        Glide.with(mContext)
+                .load(item.logoUrl)
+                .centerCrop()
+                .transform(new GlideCircleTransform(mContext))
+                .error(R.color.white_7)
+                .into(iv_icon);
         helper.setText(R.id.tv_name, item.getProductName())
                 .setText(R.id.tv_content, item.borrowingLowText.substring(0, item.borrowingLowText.length() - 1) + "-" + item.borrowingHighText);
     }

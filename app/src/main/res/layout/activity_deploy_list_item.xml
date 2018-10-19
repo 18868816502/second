@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/mine_list_bg">
+    android:layout_height="45dp"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/activity_event_img"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="21dp"
-        android:scaleType="fitXY" />
+        android:layout_marginLeft="15dp"
+        android:scaleType="fitXY"
+        tools:src="@mipmap/ic_ticket" />
 
     <TextView
         android:id="@+id/activity_event_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="9dp"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/activity_event_img"
         android:textColor="@color/color_primary_black"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="邀请好友" />
 
     <ImageView
         android:id="@+id/right_arrow"
@@ -40,6 +43,6 @@
         android:layout_marginRight="8dp"
         android:layout_toLeftOf="@id/right_arrow"
         android:textColor="#FF5240"
-        android:textSize="12sp" />
-
+        android:textSize="12sp"
+        tools:text="首要任务是死" />
 </RelativeLayout>

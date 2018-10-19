@@ -98,7 +98,8 @@ public class ProType1Activity extends BaseComponentActivity {
         map.put("pageNo", 1);
         map.put("pageSize", 50);
         map.put("platform", 1);
-        //map.put("productType", productType);
+        map.put("type", 5);
+        map.put("productType", productType);
         Api.getInstance().products(map)
                 .compose(RxResponse.<List<GroupProductBean>>compatT())
                 .subscribe(new ApiObserver<List<GroupProductBean>>() {
