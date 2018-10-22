@@ -53,7 +53,7 @@ public class NetConstants {
     public static final String H5_MISSION = H5_DOMAIN_NEW + "/activity/page/activity-invite-task.html";
     public static final String H5_CODE = H5_DOMAIN_NEW + "/activity/page/activity-input-invite.html";
     public static final String H5_GUIDE_INVITE = H5_DOMAIN_NEW + "/activity/page/activity-guide-task.html";
-    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
+    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME + "&logoName=klyj-icon";
     public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
     public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";

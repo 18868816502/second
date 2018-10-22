@@ -72,6 +72,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private List<String> imgs = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
+    private List<Boolean> needLogin = new ArrayList<>();
     private List<String> looperTexts = new ArrayList<>();
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<GroupProductBean> data = new ArrayList<>();
@@ -96,10 +97,11 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private int progress = 2000;
     private PopAdapter popAdapter = new PopAdapter();
 
-    public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles) {
+    public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles, List<Boolean> needLogin) {
         this.imgs = imgs;
         this.urls = urls;
         this.titles = titles;
+        this.needLogin = needLogin;
         notifyItemChanged(0);
     }
 
@@ -150,10 +152,14 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             holder.banner_layout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    Intent intent = new Intent(context, WebViewActivity.class);
-                    intent.putExtra("webViewUrl", urls.get(position));
-                    intent.putExtra("webViewTitleName", titles.get(position));
-                    context.startActivity(intent);
+                    if (needLogin.get(position) && !UserHelper.getInstance(context).isLogin()) {
+                        context.startActivity(new Intent(context, UserAuthorizationActivity.class));
+                    } else {
+                        Intent intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra("webViewUrl", urls.get(position));
+                        intent.putExtra("webViewTitleName", titles.get(position));
+                        context.startActivity(intent);
+                    }
                 }
             });
             holder.tv_pro_1.setOnClickListener(this);

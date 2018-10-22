@@ -126,17 +126,16 @@ public class MainActivity extends BaseComponentActivity {
 
     private MainActivity activity;
     private Bundle extras;
-    private Bundle extras1;
 
-    /**
-     * 重新进入MainActivity切换的对应的Fragment
-     */
+    /*重新进入MainActivity切换的对应的Fragment*/
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         extras = intent.getExtras();
-        extras1 = intent.getExtras();
         if (extras != null) {
+            if (extras.getBoolean("finish")) {
+                finish();
+            }
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
@@ -149,11 +148,11 @@ public class MainActivity extends BaseComponentActivity {
             if (extras.getBoolean("home")) {
                 navigationBar.select(R.id.tab_bill_root);
             }
-            if (extras1.getBoolean("istk")) {
+            if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
                     startActivity(tkIntent);
                 }
             }
@@ -165,12 +164,12 @@ public class MainActivity extends BaseComponentActivity {
     protected void onStart() {
         super.onStart();
         if (getIntent() != null && getIntent().getExtras() != null && !flag) {
-            extras1 = getIntent().getExtras();
-            if (extras1.getBoolean("istk")) {
+            extras = getIntent().getExtras();
+            if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
                     startActivity(tkIntent);
                 }
             }
@@ -264,9 +263,14 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         checkPermission();
-        queryBottomImage();//请求底部导航栏图标 文字 字体颜色
+        defaultTabIconTxt();
+        //强制登陆
+        if (!UserHelper.getInstance(this).isLogin()) {
+            UserAuthorizationActivity.launch(this);
+        }
+        //queryBottomImage();//请求底部导航栏图标 文字 字体颜色
         /*用户首次进入app，弹出登陆界面*/
-        try {
+        /*try {
             if (!"splash".equals(SPUtils.getValue(this, "splash")) &&
                     !TextUtils.equals("userLogin", SPUtils.getValue(this, "userLogin")) && !UserHelper.getInstance(this).isLogin()) {
                 UserAuthorizationActivity.launch(this);
@@ -274,7 +278,7 @@ public class MainActivity extends BaseComponentActivity {
                 SPUtils.setValue(this, "userLogin");
             }
         } catch (Exception e) {
-        }
+        }*/
         updateHelper.checkUpdate(this);
         Api.getInstance().querySupernatant(3)
                 .compose(RxResponse.<List<AdBanner>>compatT())
@@ -419,6 +423,7 @@ public class MainActivity extends BaseComponentActivity {
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
+                System.exit(0);
             }
             return true;
         }
@@ -444,7 +449,6 @@ public class MainActivity extends BaseComponentActivity {
                     try {
                         ActivityCompat.requestPermissions(this, permission.toArray(needPermission), 1);
                     } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
                 SPUtils.setCheckPermission(this, true);
@@ -470,7 +474,6 @@ public class MainActivity extends BaseComponentActivity {
                             updateBottomSelector(data.bottomList);
                         } else {
                             defaultTabIconTxt();
-                            navigationBar.select(R.id.tab_bill_root);
                         }
                     }
 
@@ -478,7 +481,6 @@ public class MainActivity extends BaseComponentActivity {
                     public void onError(@NonNull Throwable t) {
                         super.onError(t);
                         defaultTabIconTxt();
-                        navigationBar.select(R.id.tab_bill_root);
                     }
                 });
     }
@@ -520,6 +522,7 @@ public class MainActivity extends BaseComponentActivity {
             stateListDrawable.addState(new int[]{}, drawables.get(i)[1]);
             iconView[i].setImageDrawable(stateListDrawable);
         }
+        navigationBar.select(R.id.tab_bill_root);
     }
 
     private void updateBottomSelector(List<TabImage> list) {
@@ -642,6 +645,5 @@ public class MainActivity extends BaseComponentActivity {
     protected void onStop() {
         super.onStop();
         flag = true;
-        extras1 = null;
     }
 }

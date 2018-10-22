@@ -162,7 +162,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
                 }
                 if (!TextUtils.isEmpty(phoneNumber.getText().toString()) && isCheckContract) {
                     UserCertificationCodeActivity.launch(getActivity(), phoneNumber.getText().toString());
-                    getActivity().finish();
+                    //getActivity().finish();
                 }
                 break;
             case R.id.iv_contract:

@@ -66,7 +66,6 @@ public class WelcomeActivity extends BaseActivity {
                         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
-
                     finish();
                 }
 

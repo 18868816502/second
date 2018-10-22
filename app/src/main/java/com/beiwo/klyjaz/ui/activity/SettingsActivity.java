@@ -50,7 +50,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     RelativeLayoutBar checkVersionRel;
     @BindView(R.id.about_kaola)
     RelativeLayoutBar about_kaola;
-    //清楚缓存的大小
+    //清除缓存的大小
     private String mCacheSize;
 
     @Inject
@@ -82,9 +82,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     @Override
     public void initDatas() {
         presenter.onStart();
-        /**
-         * 显示版本号
-         */
+        /*显示版本号*/
         checkVersionRel.setRightTextView1Text("v" + BuildConfig.VERSION_NAME);
 
         try {
@@ -140,23 +138,19 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                                 //umeng统计
                                 Statistic.onEvent(Events.EXIT_DISMISS);
                             }
-                        })
-                        .withNegativeBtn("退出", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //umeng统计
-                                Statistic.onEvent(Events.EXIT_CONFIRM);
-
-                                presenter.logout();
-                            }
-                        }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
+                        }).withNegativeBtn("退出", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //umeng统计
+                        Statistic.onEvent(Events.EXIT_CONFIRM);
+                        presenter.logout();
+                    }
+                }).show(getSupportFragmentManager(), CommNoneAndroidDialog.class.getSimpleName());
                 break;
             case R.id.check_version:
                 presenter.checkVersion();
                 break;
-
             case R.id.clear_cache:
-
                 showAlertDialog();
                 break;
         }
@@ -229,12 +223,9 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         broadCast.setAction("logout");
         sendBroadcast(broadCast);
 
-        /*Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);*/
+        UserAuthorizationActivity.launch(this);
         finish();
     }
-
 
     @Override
     public void showUpdate(AppUpdate update) {
