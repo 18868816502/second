@@ -4,11 +4,11 @@ package com.beiwo.klyjaz.ui.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
@@ -25,6 +25,8 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerSysMsgDetailComponent;
 import com.beiwo.klyjaz.injection.module.SysMsgDetailModule;
+import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.ui.contract.SysMsgDetailContract;
 import com.beiwo.klyjaz.ui.presenter.SysMsgDetailPresenter;
 import com.beiwo.klyjaz.util.DateFormatUtils;
@@ -60,6 +62,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     SysMsgDetailPresenter presenter;
 
     private SysMsg.Row sysMsg;
+    private SysMsgDetail detail;
 
     @Override
     protected void onDestroy() {
@@ -89,6 +92,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
                 presenter.queryMsgDetail(sysMsg.getId());
             }
         }
+
     }
 
     @Override
@@ -107,6 +111,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void showSysMsgDetail(SysMsgDetail detail) {
+        this.detail = detail;
         if (detail != null) {
             if (detail.getMessageType() == 0) {
                 feed_line.setVisibility(View.GONE);
@@ -134,6 +139,30 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
                 dealContent(detail);
             }
 
+        }
+    }
+
+    @Override
+    public void onEditForumSucceed(DraftEditForumBean forumBean) {
+        Intent intent = new Intent(this,CommunityPublishActivity.class);
+        intent.putExtra("forumId",sysMsg.getForumId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onEditForumFailure() {
+        ToastUtil.toast("该动态已重新提交审核");
+    }
+
+    @Override
+    public void onQueryForumInfoSucceed(ForumInfoBean forumBean) {
+        if(forumBean.getForum() == null){
+            ToastUtil.toast("该动态已删除");
+        }else{
+            Intent intent = new Intent(this,ArticleDetailActivity.class);
+            intent.putExtra("userId", UserHelper.getInstance(this).getProfile().getId());
+            intent.putExtra("forumId",sysMsg.getForumId());
+            startActivity(intent);
         }
     }
 
@@ -178,22 +207,20 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
      * @param detail
      */
     private void dealClick(SysMsgDetail detail) {
-        Intent intent;
         switch (detail.getTitle()){
             case "动态审核成功":
             case "评论审核成功":
             case "评论审核失败":
             case "评论下线通知":
-                intent = new Intent(this,ArticleDetailActivity.class);
-                intent.putExtra("userId", UserHelper.getInstance(this).getProfile().getId());
-                intent.putExtra("forumId",sysMsg.getForumId());
-                startActivity(intent);
+                if(!TextUtils.isEmpty(sysMsg.getForumId())) {
+                    presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),sysMsg.getForumId(),1,30);
+                }
                 break;
             case "动态审核失败":
             case "动态下线通知":
-                intent = new Intent(this,CommunityPublishActivity.class);
-                intent.putExtra("forumId",sysMsg.getForumId());
-                startActivity(intent);
+                if(!TextUtils.isEmpty(sysMsg.getForumId())) {
+                    presenter.fetchEditForum(sysMsg.getForumId());
+                }
                 break;
             default:
                 break;
