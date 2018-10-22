@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
@@ -137,7 +138,7 @@ public class UserPsdEditActivity extends BaseComponentActivity {
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
         //进入我的模块首页
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
         intent.putExtra("account", true);
         startActivity(intent);
         super.finish();

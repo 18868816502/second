@@ -121,8 +121,6 @@ public class SplashActivity extends BaseComponentActivity {
     private void launch() {
         handler.removeMessages(1);
         if (!adClicked) {
-            //startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            //finish();
             if(App.audit == 1){
                 Intent intent = new Intent(this, VestMainActivity.class);
                 startActivity(intent);
@@ -178,7 +176,7 @@ public class SplashActivity extends BaseComponentActivity {
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_SPLASH_AD);
 
                     //先跳转至首页
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                     startActivity(intent);
 
                     //需要先登录并且用户还没登录

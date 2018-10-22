@@ -549,6 +549,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.VestMainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".scdk.activity.ScdkVerticyIDActivity"

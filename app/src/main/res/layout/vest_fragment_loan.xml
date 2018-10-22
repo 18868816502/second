@@ -32,55 +32,61 @@
             android:id="@+id/rl_container_wrap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
+
             <ImageView
                 android:id="@+id/iv_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp11"
-                android:src="@drawable/loan_state02"
-                android:layout_centerHorizontal="true"/>
+                android:src="@drawable/loan_state02" />
+
             <View
                 android:id="@+id/view_indicate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp10"
-                android:background="@color/colorBackground"
                 android:layout_below="@id/iv_head"
-                android:layout_marginTop="@dimen/dp10"/>
+                android:layout_marginTop="@dimen/dp10"
+                android:background="@color/colorBackground" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_below="@+id/view_indicate"
+                android:background="@color/white"
                 android:gravity="center_horizontal"
-                android:background="@color/white">
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/loan_clock"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dp42"/>
+                    android:layout_marginTop="@dimen/dp42"
+                    android:src="@drawable/loan_clock" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
                     android:text="正在审核中"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp17"
-                    android:layout_marginTop="@dimen/dp20"/>
+                    android:textSize="@dimen/sp17" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp12"
                     android:text="您提交的贷款已受理，请您稍后查看"
                     android:textColor="@color/c_999999"
-                    android:textSize="@dimen/sp13"
-                    android:layout_marginTop="@dimen/dp12"/>
+                    android:textSize="@dimen/sp13" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorBackground"
-                    android:layout_marginTop="@dimen/dp50"/>
+                    android:layout_marginTop="@dimen/dp50"
+                    android:background="@color/colorBackground" />
             </LinearLayout>
         </RelativeLayout>
 

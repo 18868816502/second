@@ -8,12 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CardAdapter;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -84,7 +86,7 @@ public class MyLoanActivity extends BaseComponentActivity {
             @Override
             public void onClick(View v) {
                 Intent intent;
-                intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent = new Intent(getApplicationContext(), App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("home", true);
                 startActivity(intent);
             }

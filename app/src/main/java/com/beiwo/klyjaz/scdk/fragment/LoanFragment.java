@@ -62,9 +62,6 @@ public class LoanFragment extends BaseComponentFragment {
 
     private float money;
     private float charge;
-
-//    private AgentWeb mAgentWeb;
-//    private WebView mWebView;
     public String webViewUrl = "";
 
     @Override
@@ -78,8 +75,6 @@ public class LoanFragment extends BaseComponentFragment {
         ViewGroup.LayoutParams params = hold_view.getLayoutParams();
         params.height = statusHeight;
         hold_view.setLayoutParams(params);
-//        initView();
-
     }
 
     @Override
@@ -89,13 +84,12 @@ public class LoanFragment extends BaseComponentFragment {
     }
 
     private void initView() {
-
         if (UserHelper.getInstance(getActivity()).isLogin()) {
-            int code = SPUtils.getVertifyState(getActivity(),UserHelper.getInstance(getActivity()).getProfile().getAccount());
-            String phone = SPUtils.getPhone(getActivity(),UserHelper.getInstance(getActivity()).getProfile().getId());
-            if(code == 5 && !TextUtils.isEmpty(phone)){
+            int code = SPUtils.getVertifyState(getActivity(), UserHelper.getInstance(getActivity()).getProfile().getAccount());
+            String phone = SPUtils.getPhone(getActivity(), UserHelper.getInstance(getActivity()).getProfile().getId());
+            if (code == 5 && !TextUtils.isEmpty(phone)) {
                 checking();
-            }else{
+            } else {
                 normalState();
             }
         } else {
@@ -192,14 +186,14 @@ public class LoanFragment extends BaseComponentFragment {
     }
 
     private void toVertifyActivity() {
-        int code = SPUtils.getVertifyState(getActivity(),UserHelper.getInstance(getActivity()).getProfile().getAccount());
-        String phone = SPUtils.getPhone(getActivity(),UserHelper.getInstance(getActivity()).getProfile().getId());
-        if(code == 4 && !TextUtils.isEmpty(phone)){
+        int code = SPUtils.getVertifyState(getActivity(), UserHelper.getInstance(getActivity()).getProfile().getAccount());
+        String phone = SPUtils.getPhone(getActivity(), UserHelper.getInstance(getActivity()).getProfile().getId());
+        if (code == 4 && !TextUtils.isEmpty(phone)) {
             Intent intent = new Intent(getActivity(), ScdkLoanActivity.class);
             intent.putExtra("money", money);
             intent.putExtra("charge", charge);
             startActivity(intent);
-        }else{
+        } else {
             Intent verifyIntent = new Intent(getActivity(), ScdkVerticyIDActivity.class);
             verifyIntent.putExtra("mVertifyState", code);
             startActivity(verifyIntent);

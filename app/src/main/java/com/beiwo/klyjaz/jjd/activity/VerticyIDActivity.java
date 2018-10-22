@@ -23,6 +23,7 @@ import com.beiwo.klyjaz.jjd.VertifyIDContract;
 import com.beiwo.klyjaz.jjd.VertifyIDModule;
 import com.beiwo.klyjaz.jjd.VertifyIDPresenter;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -291,8 +292,7 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
 
         @Override
         public void onFinish() {
-            //startActivity(new Intent(VerticyIDActivity.this, App.audit == 2 ? VestMainActivity.class : MainActivity.class));
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), App.audit == 2 ? MainActivity.class: VestMainActivity.class));
             finish();
         }
     }

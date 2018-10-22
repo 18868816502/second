@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.moxie.client.exception.ExceptionType;
 import com.moxie.client.exception.MoxieException;
 import com.moxie.client.manager.MoxieCallBack;
@@ -125,7 +127,7 @@ public class MoxieUtil {
                             return true;
                     }
                 }
-                Intent intent = new Intent(activity, MainActivity.class);
+                Intent intent = new Intent(activity, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("account", true);
                 //intent.putExtra("moxieMsg", "3秒后刷新页面信用卡就会显示啦");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

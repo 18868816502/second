@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
@@ -176,7 +177,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
                 ToastUtil.toast("再按一次退出");
                 exitTime = System.currentTimeMillis();
             } else {
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
                 intent.putExtra("finish", true);
                 startActivity(intent);
                 finish();

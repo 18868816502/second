@@ -24,15 +24,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
-import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.TabImage;
-import com.beiwo.klyjaz.entity.TabImageBean;
-import com.beiwo.klyjaz.event.TabNewsWebViewFragmentUrlEvent;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
@@ -268,17 +264,6 @@ public class MainActivity extends BaseComponentActivity {
         if (!UserHelper.getInstance(this).isLogin()) {
             UserAuthorizationActivity.launch(this);
         }
-        //queryBottomImage();//请求底部导航栏图标 文字 字体颜色
-        /*用户首次进入app，弹出登陆界面*/
-        /*try {
-            if (!"splash".equals(SPUtils.getValue(this, "splash")) &&
-                    !TextUtils.equals("userLogin", SPUtils.getValue(this, "userLogin")) && !UserHelper.getInstance(this).isLogin()) {
-                UserAuthorizationActivity.launch(this);
-                SPUtils.setValue(this, "splash");
-                SPUtils.setValue(this, "userLogin");
-            }
-        } catch (Exception e) {
-        }*/
         updateHelper.checkUpdate(this);
         Api.getInstance().querySupernatant(3)
                 .compose(RxResponse.<List<AdBanner>>compatT())
@@ -454,35 +439,6 @@ public class MainActivity extends BaseComponentActivity {
                 SPUtils.setCheckPermission(this, true);
             }
         }
-    }
-
-    private void queryBottomImage() {
-        Api.getInstance().queryBottomImage()
-                .compose(RxResponse.<TabImageBean>compatT())
-                .subscribe(new ApiObserver<TabImageBean>() {
-                    @Override
-                    public void onNext(@NonNull TabImageBean data) {
-                        //审核 1-资讯页，2-借贷页
-                        if (data.audit == 1) {
-                            NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
-                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                        } else if (data.audit == 2) {
-                            NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
-                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                        }
-                        if (data.bottomList.size() > 0) {
-                            updateBottomSelector(data.bottomList);
-                        } else {
-                            defaultTabIconTxt();
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable t) {
-                        super.onError(t);
-                        defaultTabIconTxt();
-                    }
-                });
     }
 
     private void defaultTabIconTxt() {

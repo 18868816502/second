@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
@@ -152,8 +153,7 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
         event.pendingPhone = account;
         EventBus.getDefault().post(event);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
         startActivity(intent);
 
         finish();

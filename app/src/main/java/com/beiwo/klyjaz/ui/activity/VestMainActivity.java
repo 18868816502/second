@@ -5,73 +5,44 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.api.Api;
-import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
-import com.beiwo.klyjaz.entity.TabImage;
-import com.beiwo.klyjaz.entity.TabImageBean;
-import com.beiwo.klyjaz.event.TabNewsWebViewFragmentUrlEvent;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.scdk.fragment.LoanFragment;
-import com.beiwo.klyjaz.scdk.fragment.MineFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
-import com.beiwo.klyjaz.tang.rx.RxResponse;
-import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
-import com.beiwo.klyjaz.ui.dialog.AdDialog;
 import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
 import com.beiwo.klyjaz.ui.fragment.SocialRecommendFragment;
-import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
-import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.BottomNavigationBar;
-import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -132,14 +103,15 @@ public class VestMainActivity extends BaseComponentActivity {
 
     private VestMainActivity activity;
     private Bundle extras;
-    private Bundle extras1;
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         extras = intent.getExtras();
-        extras1 = intent.getExtras();
         if (extras != null) {
+            if (extras.getBoolean("finish")) {
+                finish();
+            }
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
@@ -160,11 +132,11 @@ public class VestMainActivity extends BaseComponentActivity {
                     tabHome.normalState();
                 }
             }
-            if (extras1.getBoolean("istk")) {
+            if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(activity, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
                     startActivity(tkIntent);
                 }
             }
@@ -176,72 +148,16 @@ public class VestMainActivity extends BaseComponentActivity {
     protected void onStart() {
         super.onStart();
         if (getIntent() != null && getIntent().getExtras() != null && !flag) {
-            extras1 = getIntent().getExtras();
-            if (extras1.getBoolean("istk")) {
+            extras = getIntent().getExtras();
+            if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(activity, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
                     startActivity(tkIntent);
                 }
             }
         }
-    }
-
-    private void showAdDialog(final AdBanner ad) {
-        if (ad.getShowTimes() == 1) {//仅显示一次
-            if (ad.getId().equals(SPUtils.getValue(activity, ad.getId()))) {
-                return;
-            } else {
-                SPUtils.setValue(activity, ad.getId());
-            }
-        } else if (ad.getShowTimes() == 2) {//未点击继续显示
-            if (ad.getId().equals(SPUtils.getValue(activity, ad.getId()))) {
-                return;
-            }
-        } else {//其他情况不展示弹窗广告
-            return;
-        }
-        //更新广告展示时间
-        SPUtils.setLastAdShowTime(activity, System.currentTimeMillis());
-        //umeng统计
-        Statistic.onEvent(Events.RESUME_AD_DIALOG);
-        //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
-        new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //umeng统计
-                Statistic.onEvent(Events.CLICK_AD_DIALOG);
-                //统计点击
-                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
-                //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
-                //是否需要登录
-                if (ad.needLogin()) {
-                    if (UserHelper.getInstance(activity).getProfile() == null) {
-                        UserAuthorizationActivity.launchWithPending(activity, ad);
-                        return;
-                    }
-                }
-                if (ad.isNative()) {//跳原生还是跳Web
-                    Intent intent = new Intent(activity, LoanDetailActivity.class);
-                    intent.putExtra("loanId", ad.getLocalId());
-                    startActivity(intent);
-                    SPUtils.setValue(activity, ad.getId());
-                } else if (!TextUtils.isEmpty(ad.getUrl())) {
-                    String url = ad.getUrl();
-                    if (url.contains("USERID") && UserHelper.getInstance(activity).getProfile() != null) {
-                        url = url.replace("USERID", UserHelper.getInstance(activity).getProfile().getId());
-                    }
-                    Intent intent = new Intent(activity, ComWebViewActivity.class);
-                    intent.putExtra("title", ad.getTitle());
-                    intent.putExtra("url", url);
-                    startActivity(intent);
-                    SPUtils.setValue(activity, ad.getId());
-                }
-            }
-        }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
     }
 
     @Override
@@ -264,8 +180,8 @@ public class VestMainActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-        iconView = new ImageView[]{tabBillIcon,tabSocialIcon, tabToosIcon, tabMineIcon};
-        textView = new TextView[]{tabBillText,tabSocialText, tabToolsText, tabMineText};
+        iconView = new ImageView[]{tabBillIcon, tabSocialIcon, tabToosIcon, tabMineIcon};
+        textView = new TextView[]{tabBillText, tabSocialText, tabToolsText, tabMineText};
         activity = this;
         EventBus.getDefault().register(this);
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
@@ -281,7 +197,11 @@ public class VestMainActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         checkPermission();
-        queryBottomImage();//请求底部导航栏图标 文字 字体颜色
+        defaultTabIconTxt();
+        //强制登陆
+        if (!UserHelper.getInstance(this).isLogin()) {
+            UserAuthorizationActivity.launch(this);
+        }
     }
 
     public static void main(Activity activity) {
@@ -293,6 +213,7 @@ public class VestMainActivity extends BaseComponentActivity {
     @Override
     protected void configureComponent(AppComponent appComponent) {
     }
+
     /**
      * 点击广告要求登录，登录成功之后收到事件完成后续动作
      * 事件由UserAuthorizationActivity发出
@@ -320,9 +241,8 @@ public class VestMainActivity extends BaseComponentActivity {
         }, 400);
     }
 
-
     public void switchTab() {
-        if(selectedFragmentId != -1){
+        if (selectedFragmentId != -1) {
             selectTab(selectedFragmentId);
         }
     }
@@ -426,39 +346,6 @@ public class VestMainActivity extends BaseComponentActivity {
         }
     }
 
-    private void queryBottomImage() {
-        Api.getInstance().queryBottomImage()
-                .compose(RxResponse.<TabImageBean>compatT())
-                .subscribe(new ApiObserver<TabImageBean>() {
-                    @Override
-                    public void onNext(@NonNull TabImageBean data) {
-                        //审核 1-资讯页，2-借贷页
-                        if (data.audit == 1) {
-//                            App.audit = 1;
-                            NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
-                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                        } else if (data.audit == 2) {
-//                            App.audit = 2;
-                            NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
-                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                        }
-                        if (data.bottomList.size() > 0) {
-                            updateBottomSelector(data.bottomList);
-                        } else {
-                            defaultTabIconTxt();
-                            navigationBar.select(R.id.tab_bill_root);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable t) {
-                        super.onError(t);
-                        defaultTabIconTxt();
-                        navigationBar.select(R.id.tab_bill_root);
-                    }
-                });
-    }
-
     private void defaultTabIconTxt() {
         int[] colors = new int[]{
                 ContextCompat.getColor(this, R.color.refresh_one),
@@ -477,7 +364,7 @@ public class VestMainActivity extends BaseComponentActivity {
         tabTxt.add("我的");
         List<Drawable[]> drawables = new ArrayList<>();
         Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.vest_tab_one_selected), ContextCompat.getDrawable(this, R.mipmap.vest_tab_one_normal)};
-        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_home_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
+        Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_community_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
         Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_normal)};
         Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_me_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_me_btn_normal)};
         drawables.add(bitmaps0);
@@ -493,129 +380,12 @@ public class VestMainActivity extends BaseComponentActivity {
             stateListDrawable.addState(new int[]{}, drawables.get(i)[1]);
             iconView[i].setImageDrawable(stateListDrawable);
         }
-    }
-
-    private void updateBottomSelector(List<TabImage> list) {
-        Collections.sort(list, new Comparator<TabImage>() {
-            @Override
-            public int compare(TabImage o1, TabImage o2) {
-                return o1.getPosition() - o2.getPosition();
-            }
-        });
-
-        TabImage bgTabImage = null;
-        for (TabImage tabImage : list) {
-            //位置：1第1位，2第2位，3第3位，4第4位，5第5位，6底部栏横条
-            if (tabImage.getPosition() == 6) {
-                bgTabImage = tabImage;
-                break;
-            }
-        }
-        //底部栏背景
-        if (bgTabImage != null) {
-            Glide.with(this)
-                    .load(bgTabImage.getUnselectedImage())
-                    .asBitmap()
-                    .centerCrop()
-                    .into(navigationBarBg);
-        }
-
-        boolean isShowTabAccount = true;
-        for (int i = 0; i < list.size(); ++i) {
-            TabImage tabImage = list.get(i);
-            /*focus配置app模块展示的优先级*/
-            if (TextUtils.equals("1", tabImage.getFocus())) {
-
-            }
-            if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
-                if (tabImage.getPosition() == 1) {
-                    navigationBar.select(R.id.tab_bill_root);
-                    isShowTabAccount = false;
-                } else if (tabImage.getPosition() == 2) {
-                    navigationBar.select(R.id.tab_discover_root);
-                    isShowTabAccount = false;
-                } else if (tabImage.getPosition() == 3) {
-                    navigationBar.select(R.id.tab_mine_root);
-                    isShowTabAccount = false;
-                }
-            }
-
-            final int index = tabImage.getPosition() - 1;
-            if (index < 0 || index >= textView.length) {
-                continue;
-            }
-            //tab字体颜色和文字
-            if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
-                int[] colors = new int[]{
-                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
-                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
-                        Color.parseColor("#" + tabImage.getUnselectedFontColor())
-                };
-                int[][] states = new int[3][];
-                states[0] = new int[]{android.R.attr.state_selected};
-                states[1] = new int[]{android.R.attr.state_pressed};
-                states[2] = new int[]{};
-                ColorStateList colorStateList = new ColorStateList(states, colors);
-                textView[index].setTextColor(colorStateList);
-                textView[index].setText(tabImage.getName());
-            }
-
-            if (!TextUtils.isEmpty(tabImage.getSelectedImage())) {
-                Observable.just(new String[]{tabImage.getSelectedImage(), tabImage.getUnselectedImage()})
-                        .observeOn(Schedulers.io())
-                        .map(new Function<String[], Bitmap[]>() {
-                            @Override
-                            public Bitmap[] apply(String[] strings) throws Exception {
-                                OkHttpClient client = new OkHttpClient();
-                                Bitmap[] images = new Bitmap[2];
-                                byte[] bytes = client.newCall(new Request.Builder().url(strings[0]).build()).execute().body().bytes();
-                                images[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                                bytes = client.newCall(new Request.Builder().url(strings[1]).build()).execute().body().bytes();
-                                images[1] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                return images;
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<Bitmap[]>() {
-                            @Override
-                            public void accept(Bitmap[] bitmaps) throws Exception {
-                                if (bitmaps[0] != null && bitmaps[1] != null) {
-                                    StateListDrawable stateListDrawable = new StateListDrawable();
-                                    stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                    stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                    stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
-                                    iconView[index].setImageDrawable(stateListDrawable);
-                                }
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(final Throwable throwable) throws Exception {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            throw throwable;
-                                        } catch (Throwable throwable1) {
-                                            throwable1.printStackTrace();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-            }
-        }
-        if (isShowTabAccount) {//都没有选择那就选择首页
-            navigationBar.select(R.id.tab_bill_root);
-        }
+        navigationBar.select(R.id.tab_bill_root);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         flag = true;
-        extras1 = null;
     }
-
 }
