@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import com.beiwo.klyjaz.injection.component.DaggerArticleDetailComponent;
 import com.beiwo.klyjaz.injection.module.ArticleDetailModule;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.ui.adapter.ArticleCommentListAdapter;
 import com.beiwo.klyjaz.ui.adapter.ArticleDetailAdapter;
 import com.beiwo.klyjaz.ui.contract.ArticleDetailContact;
@@ -230,11 +228,13 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                         etInput.getText().toString(), forumBean.getForumId(), "", "","","");
                 break;
             //评论回复
+            case ConstantTag.TAG_COMMENT_OUTSIDE:
             case ConstantTag.TAG_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
                         etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"","");
                 break;
             //子评论回复
+            case ConstantTag.TAG_REPLY_OUTSIDE:
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
                         etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId(),replyDtoListBean.getContent());
@@ -338,10 +338,25 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 replyDtoListBean = datas.get(delPosition).getReplyDtoList().get(position);
                 presenter.fetchCancelReply(replyDtoListBean.getId());
                 break;
+            //外层子回复
+            case ConstantTag.TAG_REPLY_OUTSIDE:
+                int pos = (int) view.getTag();
+                replyBean = datas.get(pos);
+                replyDtoListBean = datas.get(pos).getReplyDtoList().get(position);
+                mPopType = 4;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                break;
+            //外层回复
+            case ConstantTag.TAG_COMMENT_OUTSIDE:
+                replyBean = datas.get(position);
+                mPopType = 4;
+                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                break;
             case ConstantTag.TAG_COMMENT_MORE:
                 mPopType = 4;
                 PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
+
             default:
                 break;
         }
@@ -390,6 +405,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 }, 300);
                 etInput.addTextChangedListener(new LengthTextWatcherListener(etInput, 100));
                 setOnClick(view.findViewById(R.id.tv_send));
+                showHintForEditInput(etInput);
                 break;
             case 6:
 
@@ -399,6 +415,28 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 break;
         }
 
+    }
+
+    /**
+     * 显示提示信息
+     * @param etInput
+     */
+    private void showHintForEditInput(ClearEditText etInput) {
+        switch (tag){
+            case ConstantTag.TAG_COMMENT_ARTICLE:
+                etInput.setHint("在这里畅所欲言吧");
+                break;
+            case ConstantTag.TAG_REPLY_COMMENT:
+            case ConstantTag.TAG_COMMENT_OUTSIDE:
+                etInput.setHint("回复@"+replyBean.getUserName());
+                break;
+            case ConstantTag.TAG_CHILD_REPLY_COMMENT:
+            case ConstantTag.TAG_REPLY_OUTSIDE:
+                etInput.setHint("回复@"+replyDtoListBean.getUserName());
+                break;
+                default:
+                    break;
+        }
     }
 
     private void initCommentListPop(View view) {
@@ -414,6 +452,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         childAdapter.setDatas(datas);
         childAdapter.notifyDataSetChanged();
         childAdapter.setOnViewClickListener(this);
+
+        mPopType = 5;
+        PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+
     }
 
     private void setOnClick(View... views) {

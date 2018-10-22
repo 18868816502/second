@@ -100,4 +100,14 @@ public interface ConstantTag {
      * 子评论删除
      */
     int TAG_CHILD_COMMENT_DELETE = 9;
+
+    /**
+     * 详情评论
+     */
+    int TAG_COMMENT_OUTSIDE = 10;
+
+    /**
+     * 详情回复
+     */
+    int TAG_REPLY_OUTSIDE = 11;
 }
