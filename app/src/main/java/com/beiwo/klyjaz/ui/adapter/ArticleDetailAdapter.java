@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
+import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
@@ -103,6 +104,15 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     @Override
                     public void fillBannerItem(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
                         Glide.with(mContext).load(model).into(itemView);
+                    }
+                });
+                headViewHolder.bgaBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
+                    @Override
+                    public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
+                        Intent intent = new Intent(mContext, PhotoDetailActivity.class);
+                        intent.putStringArrayListExtra("datas", (ArrayList<String>) forumBean.getPicUrl());
+                        intent.putExtra("position",position);
+                        mContext.startActivity(intent);
                     }
                 });
             } else {

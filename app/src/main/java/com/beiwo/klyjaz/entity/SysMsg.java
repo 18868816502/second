@@ -33,6 +33,9 @@ public class SysMsg {
         private long gmtCreate;
         private int isRead;
         private int style;
+        private String forumId;
+        private int messageType;
+        private int linkTableType;
 
         public String getExplain() {
             return explain;
@@ -82,6 +85,30 @@ public class SysMsg {
             this.style = style;
         }
 
+        public String getForumId() {
+            return forumId;
+        }
+
+        public void setForumId(String forumId) {
+            this.forumId = forumId;
+        }
+
+        public int getMessageType() {
+            return messageType;
+        }
+
+        public void setMessageType(int messageType) {
+            this.messageType = messageType;
+        }
+
+        public int getLinkTableType() {
+            return linkTableType;
+        }
+
+        public void setLinkTableType(int linkTableType) {
+            this.linkTableType = linkTableType;
+        }
+
         public Row() {
         }
 
@@ -98,6 +125,9 @@ public class SysMsg {
             dest.writeLong(this.gmtCreate);
             dest.writeInt(this.isRead);
             dest.writeInt(this.style);
+            dest.writeString(this.forumId);
+            dest.writeInt(this.messageType);
+            dest.writeInt(this.linkTableType);
         }
 
         protected Row(Parcel in) {
@@ -107,6 +137,9 @@ public class SysMsg {
             this.gmtCreate = in.readLong();
             this.isRead = in.readInt();
             this.style = in.readInt();
+            this.forumId = in.readString();
+            this.messageType = in.readInt();
+            this.linkTableType = in.readInt();
         }
 
         public static final Creator<Row> CREATOR = new Creator<Row>() {

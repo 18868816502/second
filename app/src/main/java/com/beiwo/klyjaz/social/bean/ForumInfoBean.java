@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.social.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @descripe
  * @time 2018/10/16 20:01
  */
-public class ForumInfoBean {
+public class ForumInfoBean implements Serializable {
 
 
     /**
@@ -36,7 +37,7 @@ public class ForumInfoBean {
         this.commentDtoList = commentDtoList;
     }
 
-    public static class ForumBean {
+    public static class ForumBean implements Serializable{
         /**
          * userId : ad67cbc40f5d4146bb98f49061843236
          * userName : 137****9292
