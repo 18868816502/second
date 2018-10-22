@@ -449,25 +449,26 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onReplyCommentSucceed() {
-        switch (tag) {
-            //动态评论
-            case ConstantTag.TAG_COMMENT_ARTICLE:
-                ToastUtil.toast("评论成功");
-                break;
-
-            //评论回复
-            case ConstantTag.TAG_REPLY_COMMENT:
-                ToastUtil.toast("回复成功");
-                break;
-
-            //子评论回复
-            case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-                ToastUtil.toast("回复成功");
-                break;
-            default:
-                break;
-        }
-        fetchData();
+        ToastUtil.toast("已提交审核请耐心等待");
+//        switch (tag) {
+//            //动态评论
+//            case ConstantTag.TAG_COMMENT_ARTICLE:
+//                ToastUtil.toast("已提交审核请耐心等待");
+//                break;
+//
+//            //评论回复
+//            case ConstantTag.TAG_REPLY_COMMENT:
+//                ToastUtil.toast("回复成功");
+//                break;
+//
+//            //子评论回复
+//            case ConstantTag.TAG_CHILD_REPLY_COMMENT:
+//                ToastUtil.toast("回复成功");
+//                break;
+//            default:
+//                break;
+//        }
+//        fetchData();
     }
 
     @Override

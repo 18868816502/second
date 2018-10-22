@@ -35,14 +35,15 @@ public class PraiseListAdapter extends BaseQuickAdapter<PraiseListBean, BaseView
         if(!TextUtils.isEmpty(item.getHeadPortrait())) {
             Glide.with(mContext).load(item.getHeadPortrait()).into((ImageView) helper.getView(R.id.iv_avatar));
         }
+        helper.addOnClickListener(R.id.iv_avatar);
         if (item.getImageList() != null && item.getImageList().size() != 0) {
+            helper.getView(R.id.iv_content).setVisibility(View.VISIBLE);
             Glide.with(mContext).load(item.getImageList().get(0).getImgUrl()).into((ImageView) helper.getView(R.id.iv_content));
         } else {
-            helper.setVisible(R.id.iv_content, false);
             helper.getView(R.id.iv_content).setVisibility(View.GONE);
         }
         helper.setText(R.id.tv_name, item.getUserName())
-                .setText(R.id.tv_date, item.getGmtCreate())
+                .setText(R.id.tv_date, item.getCreateText())
                 .setText(R.id.tv_content, item.getForumTitle());
 
         if(type == 1){

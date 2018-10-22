@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp10"
-            android:text="暂无审核内容哦~"/>
+            android:text="暂无草稿内容哦~"/>
     </LinearLayout>
 
 

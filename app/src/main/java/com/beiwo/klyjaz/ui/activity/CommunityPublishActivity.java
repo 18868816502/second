@@ -213,6 +213,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 //保存
                 popDialog.dismiss();
                 status = "3";
+                clearNetPicture();
                 if (pathList == null || pathList.size() == 0) {
                     mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
                 } else {
@@ -329,7 +330,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
     public void onPublishTopicSucceed() {
         switch (status) {
             case "0":
-                ToastUtil.toast("发布成功");
+                ToastUtil.toast("已提交审核请耐心等待");
                 break;
             case "3":
                 ToastUtil.toast("保存成功");
