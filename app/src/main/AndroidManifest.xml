@@ -556,6 +556,9 @@
         <activity
             android:name=".scdk.activity.ScdkLoanActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".social.activity.PhotoDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

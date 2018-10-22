@@ -215,7 +215,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 status = "3";
                 clearNetPicture();
                 if (pathList == null || pathList.size() == 0) {
-                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
+                    publishTopic();
+//                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
                 } else {
                     showProgress();
                     uploadImg();
@@ -227,7 +228,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
                 status = "0";
                 clearNetPicture();
                 if (pathList == null || pathList.size() == 0) {
-                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
+//                    mPresenter.fetchPublishTopic("", mTopicTitle, mTopicContent, status, "", forumId);
+                    publishTopic();
                 } else {
                     showProgress();
                     uploadImg();
@@ -255,12 +257,17 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
      * 提交图片
      */
     private void uploadImg() {
-        int size = pathList.size();
-        for (int i = 0; i < size; i++) {
-            Bitmap bitmap = ImageUtils.getFixedBitmap(pathList.get(i), 512);
-            base64List.add(bitmap);
+        try {
+            int size = pathList.size();
+            for (int i = 0; i < size; i++) {
+                Bitmap bitmap = ImageUtils.getFixedBitmap(pathList.get(i), 512);
+                base64List.add(bitmap);
+            }
+            mPresenter.uploadForumImg(base64List.get(uploadIndex));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        mPresenter.uploadForumImg(base64List.get(uploadIndex));
+
     }
 
     /**
@@ -351,7 +358,10 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         }
 
         //所有图片上传完毕
+        publishTopic();
+    }
 
+    private void publishTopic(){
         if (imgKeys.size() == base64List.size()) {
             httpImgKeys.addAll(imgKeys);
             int size = httpImgKeys.size();
@@ -365,7 +375,6 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
             dismissProgress();
             mPresenter.fetchPublishTopic(sb.toString(), mTopicTitle, mTopicContent, status, "", forumId);
         }
-
     }
 
     @Override
@@ -379,7 +388,8 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
         if (forumBean != null) {
             if (forumBean.getImgKey() != null && forumBean.getImgKey().size() != 0) {
                 for (int i = 0; i < forumBean.getImgKey().size(); i++) {
-                    httpImgKeys.add(forumBean.getImgKey().get(i).getId());
+//                    httpImgKeys.add(forumBean.getImgKey().get(i).getId());
+                    httpImgKeys.add(forumBean.getImgKey().get(i).getImgUrl());
                     httpUrls.add(forumBean.getImgKey().get(i).getImgUrl());
                     pathList.add(forumBean.getImgKey().get(i).getImgUrl());
                 }
@@ -450,7 +460,7 @@ public class CommunityPublishActivity extends BaseComponentActivity implements S
 
     private void openPick() {
         Matisse.from(this)
-                .choose(MimeType.ofAll(), false)
+                .choose(MimeType.ofImage(), false)
                 .countable(true)
                 .capture(true)
                 .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider", "kaola"))
