@@ -24,15 +24,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
-import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.TabImage;
-import com.beiwo.klyjaz.entity.TabImageBean;
-import com.beiwo.klyjaz.event.TabNewsWebViewFragmentUrlEvent;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
@@ -126,17 +122,16 @@ public class MainActivity extends BaseComponentActivity {
 
     private MainActivity activity;
     private Bundle extras;
-    private Bundle extras1;
 
-    /**
-     * 重新进入MainActivity切换的对应的Fragment
-     */
+    /*重新进入MainActivity切换的对应的Fragment*/
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         extras = intent.getExtras();
-        extras1 = intent.getExtras();
         if (extras != null) {
+            if (extras.getBoolean("finish")) {
+                finish();
+            }
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
@@ -149,11 +144,11 @@ public class MainActivity extends BaseComponentActivity {
             if (extras.getBoolean("home")) {
                 navigationBar.select(R.id.tab_bill_root);
             }
-            if (extras1.getBoolean("istk")) {
+            if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
                     startActivity(tkIntent);
                 }
             }
@@ -165,12 +160,12 @@ public class MainActivity extends BaseComponentActivity {
     protected void onStart() {
         super.onStart();
         if (getIntent() != null && getIntent().getExtras() != null && !flag) {
-            extras1 = getIntent().getExtras();
-            if (extras1.getBoolean("istk")) {
+            extras = getIntent().getExtras();
+            if (extras.getBoolean("istk")) {
                 navigationBar.select(R.id.tab_bill_root);
-                if (!TextUtils.isEmpty(extras1.getString("tankuang"))) {
+                if (!TextUtils.isEmpty(extras.getString("tankuang"))) {
                     Intent tkIntent = new Intent(MainActivity.this, GetuiDialogActivity.class);
-                    tkIntent.putExtra("pending_json", extras1.getString("tankuang"));
+                    tkIntent.putExtra("pending_json", extras.getString("tankuang"));
                     startActivity(tkIntent);
                 }
             }
@@ -264,16 +259,10 @@ public class MainActivity extends BaseComponentActivity {
     @Override
     public void initDatas() {
         checkPermission();
-        queryBottomImage();//请求底部导航栏图标 文字 字体颜色
-        /*用户首次进入app，弹出登陆界面*/
-        try {
-            if (!"splash".equals(SPUtils.getValue(this, "splash")) &&
-                    !TextUtils.equals("userLogin", SPUtils.getValue(this, "userLogin")) && !UserHelper.getInstance(this).isLogin()) {
-                UserAuthorizationActivity.launch(this);
-                SPUtils.setValue(this, "splash");
-                SPUtils.setValue(this, "userLogin");
-            }
-        } catch (Exception e) {
+        defaultTabIconTxt();
+        //强制登陆
+        if (!UserHelper.getInstance(this).isLogin()) {
+            UserAuthorizationActivity.launch(this);
         }
         updateHelper.checkUpdate(this);
         Api.getInstance().querySupernatant(3)
@@ -419,6 +408,7 @@ public class MainActivity extends BaseComponentActivity {
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
+                System.exit(0);
             }
             return true;
         }
@@ -444,43 +434,11 @@ public class MainActivity extends BaseComponentActivity {
                     try {
                         ActivityCompat.requestPermissions(this, permission.toArray(needPermission), 1);
                     } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
                 SPUtils.setCheckPermission(this, true);
             }
         }
-    }
-
-    private void queryBottomImage() {
-        Api.getInstance().queryBottomImage()
-                .compose(RxResponse.<TabImageBean>compatT())
-                .subscribe(new ApiObserver<TabImageBean>() {
-                    @Override
-                    public void onNext(@NonNull TabImageBean data) {
-                        //审核 1-资讯页，2-借贷页
-                        if (data.audit == 1) {
-                            NetConstants.H5_FIND_WEVVIEW_DETAIL = BuildConfig.H5_DOMAIN + "/information-v2.html";
-                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                        } else if (data.audit == 2) {
-                            NetConstants.H5_FIND_WEVVIEW_DETAIL = NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY;
-                            EventBus.getDefault().post(new TabNewsWebViewFragmentUrlEvent());
-                        }
-                        if (data.bottomList.size() > 0) {
-                            updateBottomSelector(data.bottomList);
-                        } else {
-                            defaultTabIconTxt();
-                            navigationBar.select(R.id.tab_bill_root);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable t) {
-                        super.onError(t);
-                        defaultTabIconTxt();
-                        navigationBar.select(R.id.tab_bill_root);
-                    }
-                });
     }
 
     private void defaultTabIconTxt() {
@@ -503,7 +461,7 @@ public class MainActivity extends BaseComponentActivity {
         List<Drawable[]> drawables = new ArrayList<>();
         Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_home_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_home_btn_normal)};
         Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_borrow_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_borrow_btn_normal)};
-        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
+        Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_community_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
         Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_normal)};
         Drawable[] bitmaps4 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_me_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_me_btn_normal)};
         drawables.add(bitmaps0);
@@ -520,6 +478,7 @@ public class MainActivity extends BaseComponentActivity {
             stateListDrawable.addState(new int[]{}, drawables.get(i)[1]);
             iconView[i].setImageDrawable(stateListDrawable);
         }
+        navigationBar.select(R.id.tab_bill_root);
     }
 
     private void updateBottomSelector(List<TabImage> list) {
@@ -642,6 +601,5 @@ public class MainActivity extends BaseComponentActivity {
     protected void onStop() {
         super.onStop();
         flag = true;
-        extras1 = null;
     }
 }

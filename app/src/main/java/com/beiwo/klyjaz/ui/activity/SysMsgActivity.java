@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
@@ -181,7 +182,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                     intent.putExtra("sysMsg", row);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(SysMsgActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SysMsgActivity.this, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                     intent.putExtra("account", true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

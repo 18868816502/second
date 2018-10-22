@@ -13,8 +13,10 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 
 import java.util.Random;
 
@@ -158,7 +160,7 @@ public class NotificationUtil {
         //设置点击跳转
         Intent hangIntent = new Intent();
         hangIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        hangIntent.setClass(context, MainActivity.class);
+        hangIntent.setClass(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
         //如果描述的PendingIntent已经存在，则在产生新的Intent之前会先取消掉当前的
         PendingIntent hangPendingIntent = PendingIntent.getActivity(context, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setFullScreenIntent(hangPendingIntent, true);
@@ -180,7 +182,7 @@ public class NotificationUtil {
         view_custom.setTextColor(R.id.tv_custom_content, Color.BLACK);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContent(view_custom)
-                .setContentIntent(PendingIntent.getActivity(context, 4, new Intent(context, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 4, new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT))
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
                 .setTicker("")
                 .setPriority(Notification.PRIORITY_HIGH)// 设置该通知优先级

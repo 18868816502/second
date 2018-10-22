@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.LegalInputUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.SPUtils;
+import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -103,14 +105,11 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 boolean validateCode = verifyCode.getText().length() == 4;
-
                 if (validateCode) {
                     tvLogin.setClickable(true);
                     tvLogin.setTextColor(Color.WHITE);
@@ -122,11 +121,9 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         };
         verifyCode.addTextChangedListener(textWatcher);
-
         clickGetCode();
     }
 
@@ -137,15 +134,34 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
-        super.finish();
+        if (exitTag == 1) {
+            if (activity != null) activity.finish();
+        } else {
+            super.finish();
+        }
+        activity = null;
+    }
+
+    private long exitTime = 0;
+    private int exitTag = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                ToastUtil.toast("再按一次退出");
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @OnClick({R.id.fetch_text, R.id.tv_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            /**
-             * 点击获取验证码
-             */
             case R.id.fetch_text:
                 clickGetCode();
                 break;
@@ -165,20 +181,13 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                         UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
                                         //保存用户id,缓存
                                         SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
-                                        /**
-                                         * 调用登录接口
-                                         */
+                                        /*调用登录接口*/
                                         loginNoPwd(result.getData());
                                     } else {
                                         //umeng统计
                                         Statistic.onEvent(Events.REGISTER_VERIFICATION_FAILED);
                                         showErrorMsg(result.getMsg());
                                     }
-                                }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                    showErrorMsg("网络错误");
                                 }
                             });
                 } else {
@@ -192,11 +201,6 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                         showErrorMsg(result.getMsg());
                                     }
                                     finish();
-                                }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                    showErrorMsg("网络错误");
                                 }
                             });
                 }
@@ -229,12 +233,6 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                             showErrorMsg(result.getMsg());
                         }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        fetchText.setEnabled(true);
-                        showErrorMsg("网络错误");
-                    }
                 });
     }
 
@@ -243,9 +241,10 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
      * 免密码登录
      */
     private void loginNoPwd(UserProfileAbstract result) {
+        exitTag = 1;
         EventBus.getDefault().post(new UserLoginEvent());
         if (result.isNewUser()) {
-            UserPsdEditActivity.launch(UserCertificationCodeActivity.this, 1, pendingPhone);
+            UserPsdEditActivity.launch(this, 1, pendingPhone);
             //umeng统计
             Statistic.onEvent(Events.LOGIN_REGISTER);
         } else {
@@ -265,6 +264,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
      * @param pendingPhone 登陆手机号
      */
     public static void launch(Activity context, String pendingPhone) {
+        activity = (UserAuthorizationActivity) context;
         Intent i = new Intent(context, UserCertificationCodeActivity.class);
         i.putExtra("pendingPhone", pendingPhone);
         context.startActivity(i);
@@ -285,4 +285,6 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
         context.overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
         context.finish();
     }
+
+    private static UserAuthorizationActivity activity = null;
 }

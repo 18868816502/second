@@ -21,6 +21,7 @@ import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
+import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -189,7 +190,7 @@ public class ProTypeActivity extends BaseComponentActivity {
         tv_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("home", true);
                 startActivity(intent);
             }

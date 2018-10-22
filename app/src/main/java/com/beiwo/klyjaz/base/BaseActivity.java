@@ -17,16 +17,18 @@ public class BaseActivity extends AppCompatActivity {
         if (override) {
             overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_still);
         }
-        override = true;
+        //override = true;
     }
 
     @Override
     public void finish() {
         super.finish();
         if (override) {
-            overridePendingTransition(0, R.anim.slide_left_to_right);
+            overridePendingTransition(R.anim.no_anim, R.anim.slide_left_to_right);
+        } else {
+            overridePendingTransition(R.anim.no_anim, R.anim.no_anim);
         }
-        override = true;
+        //override = true;
     }
 
     public void startActivityWithoutOverride(Intent intent) {

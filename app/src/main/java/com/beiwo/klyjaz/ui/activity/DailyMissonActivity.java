@@ -16,6 +16,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.widget.RelativeLayout;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
@@ -284,7 +285,7 @@ public class DailyMissonActivity extends BaseComponentActivity {
         @SuppressLint("JavascriptInterface")
         @JavascriptInterface
         public void enterLoanMarket() {
-            Intent intent = new Intent(context, MainActivity.class);
+            Intent intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
             intent.putExtra("loan", true);
             startActivity(intent);
         }

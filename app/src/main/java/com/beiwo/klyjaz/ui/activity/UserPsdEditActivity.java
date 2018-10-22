@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
@@ -52,11 +53,8 @@ public class UserPsdEditActivity extends BaseComponentActivity {
     @BindView(R.id.tv_login)
     TextView tvLogin;
 
-
     private CountDownTimerUtils countDownTimer;
-
     private int returnType = 1;
-
     //手机号
     private String pendingPhone;
 
@@ -93,7 +91,6 @@ public class UserPsdEditActivity extends BaseComponentActivity {
             tvTitle.setText("设置密码");
         }
 
-
         psdVisibilityCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -112,14 +109,11 @@ public class UserPsdEditActivity extends BaseComponentActivity {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 boolean validateCode = LegalInputUtils.validatePassword(passwordEt.getText().toString());
-
                 if (validateCode) {
                     tvLogin.setClickable(true);
                     tvLogin.setTextColor(Color.WHITE);
@@ -131,7 +125,6 @@ public class UserPsdEditActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         };
         passwordEt.addTextChangedListener(textWatcher);
@@ -139,16 +132,17 @@ public class UserPsdEditActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
-
 
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
+        //进入我的模块首页
+        Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
+        intent.putExtra("account", true);
+        startActivity(intent);
         super.finish();
     }
-
 
     @OnClick({R.id.tv_skip, R.id.tv_login})
     public void onViewClicked(View view) {
@@ -161,39 +155,22 @@ public class UserPsdEditActivity extends BaseComponentActivity {
                 Api.getInstance().resetPwd(pendingPhone, passwordEt.getText().toString())
                         .compose(RxUtil.<ResultEntity>io2main())
                         .subscribe(new Consumer<ResultEntity>() {
-                                       @Override
-                                       public void accept(@NonNull ResultEntity result) throws Exception {
-                                           if (result.isSuccess()) {
-                                               //umeng统计
-                                               Statistic.onEvent(Events.CHANGE_PASSWORD_SUCCESS);
-
-                                               login();
-                                           } else {
-                                               //umeng统计
-                                               Statistic.onEvent(Events.CHANGE_PASSWORD_FAILED);
-
-                                               showErrorMsg(result.getMsg());
-                                           }
-                                       }
-                                   },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@NonNull Throwable throwable) throws Exception {
-                                        showErrorMsg("网络错误");
-                                    }
-                                });
+                            @Override
+                            public void accept(@NonNull ResultEntity result) throws Exception {
+                                if (result.isSuccess()) {//umeng统计
+                                    Statistic.onEvent(Events.CHANGE_PASSWORD_SUCCESS);
+                                    login();
+                                } else {//umeng统计
+                                    Statistic.onEvent(Events.CHANGE_PASSWORD_FAILED);
+                                    showErrorMsg(result.getMsg());
+                                }
+                            }
+                        });
                 break;
         }
     }
 
-    /**
-     * 上一页就登录成功
-     */
     private void login() {
-        //进入我的模块首页
-        /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("account", true);
-        startActivity(intent);*/
         EventBus.getDefault().post("1");
         finish();
     }

@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
@@ -26,6 +28,7 @@ import com.beiwo.klyjaz.ui.fragment.UserLoginFragment;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.InputMethodUtil;
+import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.drawable.BlurringDrawable;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
@@ -145,7 +148,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
-
     @OnClick({R.id.cancel, R.id.tv_change})
     void OnViewClicked(View view) {
         switch (view.getId()) {
@@ -166,11 +168,25 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
-    /**
-     * EventBus事件
-     *
-     * @param event
-     */
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                ToastUtil.toast("再按一次退出");
+                exitTime = System.currentTimeMillis();
+            } else {
+                Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
+                intent.putExtra("finish", true);
+                startActivity(intent);
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Subscribe
     public void onAuthorizationNavigation(AuthNavigationEvent event) {
         if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_PSD) {
@@ -226,6 +242,7 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
+        override = false;
         super.finish();
     }
 

@@ -64,6 +64,7 @@ public class TabHomeFragment extends BaseComponentFragment {
     private List<String> imgs = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
+    private List<Boolean> needLogin = new ArrayList<>();
     private TabHomeAdapter homeAdapter = new TabHomeAdapter();
     private int dyTranslate;
 
@@ -118,8 +119,9 @@ public class TabHomeFragment extends BaseComponentFragment {
                             imgs.add(data.get(i).getImgUrl());
                             urls.add(data.get(i).getUrl());
                             titles.add(data.get(i).getTitle());
+                            needLogin.add(data.get(i).needLogin());
                         }
-                        homeAdapter.setHeadBanner(imgs, urls, titles);
+                        homeAdapter.setHeadBanner(imgs, urls, titles,needLogin);
                     }
                 });
         //looper text

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.helper.UserHelper;
@@ -14,6 +15,7 @@ import com.beiwo.klyjaz.ui.activity.ComWebViewActivity;
 import com.beiwo.klyjaz.ui.activity.LoanDetailActivity;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.ui.activity.NewsDetailActivity;
+import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,13 +66,13 @@ public class PushClickedReceiver extends BroadcastReceiver {
                 intent.putExtra("url", NetConstants.generateInternalMessageUrl(obj.getString("localId")));
                 intent.putExtra("title", title);
             } else if (type == 4) {//跳转到首页
-                intent = new Intent(context, MainActivity.class);
+                intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("account", true);
             } else if (type == 5) {//跳转到账单首页
-                intent = new Intent(context, MainActivity.class);
+                intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("account", true);
             } else if (type == 6) {//弹框
-                intent = new Intent(context, MainActivity.class);
+                intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("tankuang", json);
                 intent.putExtra("istk", true);
             }

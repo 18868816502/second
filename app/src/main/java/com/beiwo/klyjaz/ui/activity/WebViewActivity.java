@@ -200,7 +200,7 @@ public class WebViewActivity extends BaseComponentActivity {
 
         @JavascriptInterface
         public void skipToHome() {
-            Intent intent = new Intent(WebViewActivity.this, MainActivity.class);
+            Intent intent = new Intent(WebViewActivity.this, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
             intent.putExtra("home", true);
             startActivity(intent);
         }

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.CreditCardBank;
@@ -198,7 +199,6 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
 
     @Override
     public void showSaveCreditCardDebtSuccess(String msg) {
-//        WeakRefToastUtil.showShort(this, msg, R.mipmap.white_success);
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -217,7 +217,7 @@ public class CreditCardDebtNewActivity extends BaseComponentActivity implements 
         toolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(CreditCardDebtNewActivity.this, MainActivity.class);
+                Intent intent = new Intent(CreditCardDebtNewActivity.this, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
                 intent.putExtra("account", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

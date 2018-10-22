@@ -5,7 +5,9 @@ import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 需要检查
@@ -23,8 +25,24 @@ public class NetConstants {
 
     public static final String VERSION_NAME = BuildConfig.VERSION_NAME;
     public static final String APP_NAME = App.getInstance().getString(R.string.app_name);
-    public static final String COMPANY_NAME = App.getInstance().getString(R.string.app_name).contains("鱼米") ? "杭州贝捷金融信息服务有限公司" : "杭州贝沃科技有限公司";
-    public static final String SHORT_COMPANY_NAME = App.getInstance().getString(R.string.app_name).contains("鱼米") ? "贝捷金融" : "贝沃科技";
+    public static final String COMPANY_NAME = apname2CompName(APP_NAME);
+    public static final String SHORT_COMPANY_NAME = shortComp(APP_NAME);
+
+    private static String apname2CompName(String appname) {
+        Map<String, String> map = new HashMap<>();
+        map.put("考拉有借", "杭州优材科技有限公司");
+        map.put("鱼米记账", "杭州贝捷金融信息服务有限公司");
+        if (map.containsKey(appname)) return map.get(appname);
+        return "杭州贝沃科技有限公司";
+    }
+
+    private static String shortComp(String appname) {
+        Map<String, String> map = new HashMap<>();
+        map.put("考拉有借", "优材科技");
+        map.put("鱼米记账", "贝捷金融");
+        if (map.containsKey(appname)) return map.get(appname);
+        return "贝沃科技";
+    }
 
     public static final String BASE_PATH = "/s1";
     public static final String BASE_PATH_S_FOUR = "/s4";
@@ -42,7 +60,6 @@ public class NetConstants {
     public static final String H5_NEWS_DETAIL = H5_DOMAIN + "/newsDetail.html";
     public static String H5_FIND_WEVVIEW_DETAIL = H5_DOMAIN + "/findH5-v4.html";
     public static final String H5_FIND_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/findH5-v4.html";
-
     /*活动的URL*/
     public static final String H5_ACTIVITY_WEVVIEW_DETAIL_COPY = H5_DOMAIN + "/activity-h5.html";
     public static final String H5_LOAN_DETAIL = H5_DOMAIN + "/productDetail.html";
@@ -53,7 +70,7 @@ public class NetConstants {
     public static final String H5_MISSION = H5_DOMAIN_NEW + "/activity/page/activity-invite-task.html";
     public static final String H5_CODE = H5_DOMAIN_NEW + "/activity/page/activity-input-invite.html";
     public static final String H5_GUIDE_INVITE = H5_DOMAIN_NEW + "/activity/page/activity-guide-task.html";
-    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
+    public static final String H5_ABOUT_US = H5_DOMAIN + BuildConfig.PATH_ABOUT_US + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME + "&logoName=klyj-icon";
     public static final String H5_USER_AGREEMENT = H5_DOMAIN + BuildConfig.PATH_USER_AGREEMENT + "?isApp=1" + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     public static final String H5_INTERNAL_MESSAGE = H5_DOMAIN + "/letterDetail.html";
     public static final String H5_ONE_KEY_LOAN = H5_DOMAIN + "/oneKeyRegistration.html";
