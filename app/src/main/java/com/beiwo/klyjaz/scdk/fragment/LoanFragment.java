@@ -21,6 +21,7 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.jjd.activity.VerticyIDActivity;
 import com.beiwo.klyjaz.scdk.activity.ScdkLoanActivity;
 import com.beiwo.klyjaz.scdk.activity.ScdkVerticyIDActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;

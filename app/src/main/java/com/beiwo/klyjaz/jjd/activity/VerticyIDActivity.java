@@ -188,7 +188,6 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
         return true;
     }
 
-
     private void setOnClick(View... views) {
         for (View view : views) {
             view.setOnClickListener(this);
