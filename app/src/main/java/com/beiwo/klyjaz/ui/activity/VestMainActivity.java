@@ -189,6 +189,10 @@ public class VestMainActivity extends BaseComponentActivity {
             public void onSelected(int selectedId) {
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
+                    if(selectedId == R.id.tab_three_root){
+                        //pv，uv统计
+                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
+                    }
                 }
             }
         });
@@ -282,8 +286,8 @@ public class VestMainActivity extends BaseComponentActivity {
             case R.id.tab_three_root://社区
                 ft.show(tabSocial).hide(tabHome).hide(tabTool).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
-                //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+//                //pv，uv统计
+//                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
                 break;
             case R.id.tab_tools_root://工具
                 ft.show(tabTool).hide(tabHome).hide(tabMine).hide(tabSocial);

@@ -251,6 +251,10 @@ public class MainActivity extends BaseComponentActivity {
             public void onSelected(int selectedId) {
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
+                    if(selectedId == R.id.tab_three_root){
+                        //pv，uv统计
+                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
+                    }
                 }
             }
         });
@@ -375,7 +379,7 @@ public class MainActivity extends BaseComponentActivity {
                 ft.show(tabSocial).hide(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+//                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
                 currentFragment = tabDiscover;
                 break;
             case R.id.tab_social_root://工具

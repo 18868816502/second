@@ -24,7 +24,7 @@
             android:visibility="visible"
             app:direction="top"
             app:max_progress="100"
-            app:outside_color="@color/c_3586ff"
+            app:outside_color="@color/c_26df56"
             app:outside_radius="60dp"
             app:progress="0"
             app:progress_width="6dp" />

@@ -151,7 +151,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void onEditForumFailure() {
-        ToastUtil.toast("该动态已重新提交审核");
+//        ToastUtil.toast("该动态已重新提交审核");
     }
 
     @Override

@@ -61,7 +61,8 @@ public class SysMsgDetailPresenter extends BaseRxPresenter implements SysMsgDeta
                                    if (result.isSuccess()) {
                                        mView.onEditForumSucceed(result.getData());
                                    } else {
-                                       mView.onEditForumFailure();
+//                                       mView.onEditForumFailure();
+                                       mView.showErrorMsg(result.getMsg());
                                    }
                                }
                            },

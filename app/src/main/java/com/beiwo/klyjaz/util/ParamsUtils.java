@@ -96,4 +96,21 @@ public class ParamsUtils {
         return mMap;
     }
 
+    /**
+     * 获取埋点请求参数
+     * @param userId
+     * @param type
+     * @param linkId
+     * @return
+     */
+    public static Map<String,Object> generateCountUvParams(String userId, String type, String linkId){
+        Map<String,Object> mMap = new HashMap<>();
+        mMap.put("userId", userId);
+        mMap.put("type", type);
+        if(!TextUtils.isEmpty(linkId)) {
+            mMap.put("linkId", linkId);
+        }
+        return mMap;
+    }
+
 }

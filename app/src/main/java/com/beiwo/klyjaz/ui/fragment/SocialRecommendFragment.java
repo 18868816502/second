@@ -14,12 +14,14 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
+import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.adapter.social.SocialRecommendAdapter;
+import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -119,6 +121,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
+                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE,"");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 } else {
