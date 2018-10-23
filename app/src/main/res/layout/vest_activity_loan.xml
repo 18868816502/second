@@ -93,10 +93,13 @@
             android:paddingRight="15dp">
 
             <TextView
+                android:id="@+id/tv_dout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="手续费用"
+                android:drawablePadding="5dp"
+                android:drawableRight="@mipmap/ic_bill_dout"
+                android:text="服务费"
                 android:textColor="#292929"
                 android:textSize="15dp" />
 

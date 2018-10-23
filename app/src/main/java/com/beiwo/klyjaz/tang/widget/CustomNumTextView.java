@@ -18,7 +18,6 @@ import android.util.AttributeSet;
  */
 
 public class CustomNumTextView extends AppCompatTextView {
-
     private final String fontPath = "fonts/din-medium.otf";
     private Typeface typeface;
 

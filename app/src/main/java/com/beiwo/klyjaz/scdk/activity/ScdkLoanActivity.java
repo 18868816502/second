@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.scdk.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.ui.activity.UserProtocolActivity;
 import com.beiwo.klyjaz.ui.activity.VestMainActivity;
@@ -101,7 +103,7 @@ public class ScdkLoanActivity extends BaseComponentActivity {
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.iv_agree_protocal, R.id.tv_loan_protocol, R.id.tv_confirm_loan})
+    @OnClick({R.id.iv_agree_protocal, R.id.tv_loan_protocol, R.id.tv_confirm_loan, R.id.tv_dout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_agree_protocal:
@@ -135,6 +137,18 @@ public class ScdkLoanActivity extends BaseComponentActivity {
 //                            }
 //                        });
                 break;
+            case R.id.tv_dout:
+                DlgUtil.createDlg(this, R.layout.f_dlg_apl_fail, new DlgUtil.OnDlgViewClickListener() {
+                    @Override
+                    public void onViewClick(final Dialog dialog, View dlgView) {
+                        TextView content = dlgView.findViewById(R.id.content);
+                        TextView title = dlgView.findViewById(R.id.dlg_title);
+                        title.setText("提示");
+                        content.setText("服务费按日息0.1%收取");
+                        DlgUtil.cancelClick(dialog, dlgView);
+                    }
+                });
+                break;
             default:
                 break;
         }
@@ -143,7 +157,7 @@ public class ScdkLoanActivity extends BaseComponentActivity {
     private String url;
 
     private void main() {
-        SPUtils.setVertifyState(this,5, UserHelper.getInstance(this).getProfile().getAccount());
+        SPUtils.setVertifyState(this, 5, UserHelper.getInstance(this).getProfile().getAccount());
         Intent intent = new Intent(activity, VestMainActivity.class);
         intent.putExtra("home", true);
         intent.putExtra("webViewUrl", url);

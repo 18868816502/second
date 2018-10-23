@@ -42,6 +42,7 @@ import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.DensityUtil;
+import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.beiwo.klyjaz.view.BannerLayout;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -276,7 +277,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             iv_question = view.findViewById(R.id.iv_question);
             tv_go_loan = view.findViewById(R.id.tv_go_loan);
 
-            tv_seekbar_progress.setText(progress + "");
+            tv_seekbar_progress.setText(FormatNumberUtils.FormatNumberFor0(progress));
             float charge = progress / 100;
             SpannableString ss = new SpannableString(String.format("%.2f元", charge));
             ForegroundColorSpan span = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.refresh_one));
@@ -343,11 +344,11 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                         }
                         seekbar.setProgress((int) ((progress - 500) * 2000 / 1500));
 
-                        tv_seekbar_progress.setText(progress + "");
+                        tv_seekbar_progress.setText(FormatNumberUtils.FormatNumberFor0(progress));
                         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                tv_seekbar_progress.setText(seekbarProgress(seekbar) + "");
+                                tv_seekbar_progress.setText(FormatNumberUtils.FormatNumberFor0(seekbarProgress(seekbar)));
                             }
 
                             @Override
@@ -376,7 +377,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     public void onViewClick(final Dialog dialog, View dlgView) {
                         TextView content = dlgView.findViewById(R.id.content);
                         TextView title = dlgView.findViewById(R.id.dlg_title);
-                        title.setText("提示");
+                        title.setText("");//提示
                         content.setText("服务费按日息0.1%收取");
                         dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
                             @Override
