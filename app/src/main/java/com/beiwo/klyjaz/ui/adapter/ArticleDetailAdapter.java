@@ -252,7 +252,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     view.setTag(itemView.getTag());
                     switch (type){
                         case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-                            listener.onViewClick(view, ConstantTag.TAG_COMMENT_MORE, position);
+                            listener.onViewClick(view, ConstantTag.TAG_REPLY_OUTSIDE, position);
                             break;
 
                             default:
@@ -341,7 +341,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     int comPosition = (int) v.getTag(R.id.tag_comment);
 //                    ToastUtil.toast("回复第"+(comPosition + 1) + "条");
 //                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT, comPosition);
-                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE, comPosition);
+//                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE, comPosition);
+                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_OUTSIDE, comPosition);
                     break;
                 //评论删除
                 case R.id.tv_comment_delete:
