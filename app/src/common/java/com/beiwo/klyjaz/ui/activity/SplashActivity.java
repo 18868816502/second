@@ -105,7 +105,6 @@ public class SplashActivity extends BaseComponentActivity {
                 finish();
             }
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
             launch();
         }
     }
