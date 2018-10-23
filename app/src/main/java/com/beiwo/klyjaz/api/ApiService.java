@@ -1062,6 +1062,14 @@ public interface ApiService {
     Observable<ResultEntity> onCountUv(@Field("type") String type, @Field("userId") String userId);
 
     /**
+     * 数据统计（埋点统计）
+     *
+     */
+    @FormUrlEncoded
+    @POST(BASE_PATH + "/dataDictionary/countUv")
+    Observable<ResultEntity> onCountUv(@FieldMap Map<String, Object> params);
+
+    /**
      * 个推消息点击次数统计
      */
     @FormUrlEncoded

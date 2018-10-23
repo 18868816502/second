@@ -12,10 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
+import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.view.CircleImageView;
 import com.bumptech.glide.Glide;
 
@@ -166,9 +168,9 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT,datas.get((Integer) v.getTag()).getForumId());
                     if(UserHelper.getInstance(mContext).isLogin()) {
                         Intent intent = new Intent(mContext, ArticleDetailActivity.class);
-//                        intent.putExtra("topic", datas.get((Integer) v.getTag()));
                         intent.putExtra("userId", datas.get((Integer) v.getTag()).getUserId());
                         intent.putExtra("forumId", datas.get((Integer) v.getTag()).getForumId());
                         mContext.startActivity(intent);

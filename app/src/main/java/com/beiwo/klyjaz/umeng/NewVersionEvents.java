@@ -20,4 +20,7 @@ public class NewVersionEvents {
     public static final String CCDSETALREADYREPAY = "CCDSetAlreadyRepay";
     public static final String CCDSTARTSYNC = "CCDStartSync";
     public static final String CCDALREADYREPAY = "CCDAlreadyRepay";
+    public static final String COMMUNITY_RECOMMEND_PAGE = "CommunityRecommendPage";
+    public static final String COMMUNITY_PUBLISH_PAGE = "CommunityPublishPage";
+    public static final String COMMUNITY_FORUM_HIT = "CommunityForumHit";
 }

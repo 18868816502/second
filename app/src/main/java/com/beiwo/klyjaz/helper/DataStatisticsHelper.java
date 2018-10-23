@@ -11,7 +11,10 @@ import com.beiwo.klyjaz.injection.component.DaggerDataStatisticHelperComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.LogUtils;
+import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.SPUtils;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -369,6 +372,33 @@ public class DataStatisticsHelper {
             userId = SPUtils.getCacheUserId(context);
         }
         api.onCountUv(type, userId)
+                .compose(RxResponse.compatO())
+                .subscribe(new ApiObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object data) {
+                        LogUtils.w(TAG, "count uv error event id=" + type);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        LogUtils.w(TAG, "count uv error event id = " + type + " " + t.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * 数据统计(埋点统计-社区)
+     *
+     */
+    public void onCountUvPv(final String type,String linkId) {
+        String userId;
+        if (UserHelper.getInstance(context).isLogin()) {
+            userId = UserHelper.getInstance(context).id();
+        } else {
+            userId = SPUtils.getCacheUserId(context);
+        }
+        api.onCountUv(ParamsUtils.generateCountUvParams(userId,type,linkId))
                 .compose(RxResponse.compatO())
                 .subscribe(new ApiObserver<Object>() {
                     @Override

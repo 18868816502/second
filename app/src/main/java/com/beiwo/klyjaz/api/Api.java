@@ -1029,6 +1029,11 @@ public class Api {
         return service.onCountUv(type, userId);
     }
 
+    /*数据统计，各类pv/uv*/
+    public Observable<ResultEntity> onCountUv(Map<String,Object> mMap) {
+        return service.onCountUv(mMap);
+    }
+
     /*账单汇总*/
     public Observable<ResultEntity<BillSummaryBean>> onBillSummary(String id, String pageNo) {
         return service.onBillSummary(id, pageNo);
