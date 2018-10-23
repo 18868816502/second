@@ -78,7 +78,7 @@ public class NetConstants {
     public static final String H5_CREDIT_CARD_CENTER = H5_DOMAIN + "/creditIndex.html";
     public static final String H5_REWARD_POINTS = H5_DOMAIN + "/integral.html";
     /*用户协议H5*/
-    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/majiabao/regist-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&appName=" + APP_NAME;
+    public static final String H5_USER_REGISTRATION_PROTOCOL = H5_DOMAIN + "/majiabao/regist-v2.html" + "?isApp=1&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&appName=" + APP_NAME + "&companyName=" + COMPANY_NAME;
     public static final String H5_USER_SECRET_PROTOCOL = H5_DOMAIN_NEW + "/activity/page/privacy-agreement.html" + "?shortCompanyName=" + SHORT_COMPANY_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
     public static final String H5_USER_AUTH_PROTOCOL = H5_DOMAIN_NEW + "/activity/page/authorization-protocol.html" + "?shortCompanyName=" + SHORT_COMPANY_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
     public static final String H5_USER_PROTOCOL = H5_DOMAIN_NEW + "/activity/page/user-protocol.html" + "?shortCompanyName=" + SHORT_COMPANY_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME;
@@ -135,11 +135,10 @@ public class NetConstants {
     }
 
     public static String invitationActivityUrl(String userId) {
-        return H5_INVITATION_ACTIVITY + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
+        return H5_INVITATION_ACTIVITY + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME + "shortCompanyName=" + SHORT_COMPANY_NAME;
     }
 
     public static String invitationUrl(String userId) {
-        //return H5_INVITE + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
         return H5_INVITATION_CONTACTS + "?userId=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME;
     }
 

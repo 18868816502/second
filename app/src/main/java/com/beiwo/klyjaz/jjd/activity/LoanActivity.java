@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.jjd.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -100,7 +102,7 @@ public class LoanActivity extends BaseComponentActivity {
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.iv_agree_protocal, R.id.tv_loan_protocol, R.id.tv_confirm_loan})
+    @OnClick({R.id.iv_agree_protocal, R.id.tv_loan_protocol, R.id.tv_confirm_loan, R.id.tv_dout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_agree_protocal:
@@ -115,7 +117,7 @@ public class LoanActivity extends BaseComponentActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_confirm_loan:
-                DataStatisticsHelper.getInstance().onCountUv("JjdSureLoanPage");
+                DataStatisticsHelper.getInstance().onCountUv("HPSureLoanButton");
                 map.put("userId", UserHelper.getInstance(this).id());
                 map.put("orderAmount", money);
                 map.put("limitDay", 10);
@@ -132,6 +134,18 @@ public class LoanActivity extends BaseComponentActivity {
                                 finish();
                             }
                         });
+                break;
+            case R.id.tv_dout:
+                DlgUtil.createDlg(this, R.layout.f_dlg_apl_fail, new DlgUtil.OnDlgViewClickListener() {
+                    @Override
+                    public void onViewClick(final Dialog dialog, View dlgView) {
+                        TextView content = dlgView.findViewById(R.id.content);
+                        TextView title = dlgView.findViewById(R.id.dlg_title);
+                        title.setText("");//提示
+                        content.setText("服务费按日息0.1%收取");
+                        DlgUtil.cancelClick(dialog, dlgView);
+                    }
+                });
                 break;
             default:
                 break;
