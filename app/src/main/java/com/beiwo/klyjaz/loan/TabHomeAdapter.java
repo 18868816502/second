@@ -30,6 +30,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.LoanActivity;
 import com.beiwo.klyjaz.jjd.activity.VerticyIDActivity;
@@ -391,6 +392,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             case R.id.tv_go_loan:
                 /*用户认证信息查询*/
                 if (UserHelper.getInstance(context).isLogin()) {
+                    DataStatisticsHelper.getInstance().onCountUv("HPLoanImmediately");
                     Api.getInstance().userAuth(UserHelper.getInstance(context).id())
                             .compose(RxResponse.<CashUserInfo>compatT())
                             .subscribe(new ApiObserver<CashUserInfo>() {

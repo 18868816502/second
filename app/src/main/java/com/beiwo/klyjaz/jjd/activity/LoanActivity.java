@@ -117,7 +117,7 @@ public class LoanActivity extends BaseComponentActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_confirm_loan:
-                DataStatisticsHelper.getInstance().onCountUv("JjdSureLoanPage");
+                DataStatisticsHelper.getInstance().onCountUv("HPSureLoanButton");
                 map.put("userId", UserHelper.getInstance(this).id());
                 map.put("orderAmount", money);
                 map.put("limitDay", 10);
