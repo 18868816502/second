@@ -69,6 +69,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(null);
         adapter.notifyDataSetChanged();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
