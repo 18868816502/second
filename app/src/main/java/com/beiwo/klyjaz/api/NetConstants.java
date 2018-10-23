@@ -135,7 +135,7 @@ public class NetConstants {
     }
 
     public static String invitationActivityUrl(String userId) {
-        return H5_INVITATION_ACTIVITY + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME + "shortCompanyName=" + SHORT_COMPANY_NAME;
+        return H5_INVITATION_ACTIVITY + "?id=" + userId + "&packageId=" + App.sChannelId + "&version=" + VERSION_NAME + "&companyName=" + COMPANY_NAME + "&appName=" + APP_NAME + "&shortCompanyName=" + SHORT_COMPANY_NAME;
     }
 
     public static String invitationUrl(String userId) {
