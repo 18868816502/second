@@ -81,7 +81,6 @@ public class PushClickedReceiver extends BroadcastReceiver {
                 context.startActivity(intent);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }

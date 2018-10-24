@@ -35,19 +35,16 @@ class DownloadHelper {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 res = false;
             } finally {
                 if (fos != null) {
                     try {
                         fos.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
                     }
                 }
             }
         }
         return res;
     }
-
 }

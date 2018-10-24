@@ -15,18 +15,14 @@ import dagger.Provides;
 
 @Module
 public class RemindModule {
-
     private RemindContract.View view;
 
     public RemindModule(RemindContract.View view) {
         this.view = view;
-
     }
 
     @Provides
     public RemindContract.View provideRemindContractView() {
         return view;
     }
-
-
 }

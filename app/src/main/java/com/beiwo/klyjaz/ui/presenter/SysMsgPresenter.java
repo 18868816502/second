@@ -39,7 +39,6 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
         mUserHelper = UserHelper.getInstance(context);
     }
 
-
     @Override
     public void onStart() {
         super.onStart();

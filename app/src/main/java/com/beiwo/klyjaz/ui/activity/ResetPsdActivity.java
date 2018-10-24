@@ -29,7 +29,6 @@ import butterknife.BindView;
 public class ResetPsdActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-    private String tileName;
 
     @Override
     protected void onDestroy() {
@@ -66,7 +65,6 @@ public class ResetPsdActivity extends BaseComponentActivity {
             setPsd.setArguments(bundle);
             ft.commitAllowingStateLoss();
         }
-
         SlidePanelHelper.attach(this);
     }
 
@@ -76,11 +74,11 @@ public class ResetPsdActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     /**
      * EventBus 事件 计入忘记密码填写密码页面
+     *
      * @param event
      */
     @Subscribe

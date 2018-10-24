@@ -67,11 +67,7 @@ public class TabOneFragment extends BaseTabFragment {
     @BindView(R.id.ll_neterror)
     LinearLayout ll_neterror;
 
-    /**
-     * 拼接URL
-     */
     public static String newsUrl = null;
-
     //依赖的activity
     public FragmentActivity mActivity;
 
@@ -95,7 +91,6 @@ public class TabOneFragment extends BaseTabFragment {
         mActivity = getActivity();
         //pv，uv统计
         DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
-
         //umeng统计
         Statistic.onEvent(Events.ENTER_NEWS_PAGE);
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -168,9 +163,7 @@ public class TabOneFragment extends BaseTabFragment {
     }
 
     private void initWebView() {
-        /**
-         * 在fragment里面 webView监听返回键事件
-         */
+        /*在fragment里面 webView监听返回键事件*/
         webView.setFocusable(true);
         webView.setFocusableInTouchMode(true);
         webView.requestFocus();
@@ -300,9 +293,7 @@ public class TabOneFragment extends BaseTabFragment {
          */
         @JavascriptInterface
         public void getFindHtmlBannerStatus(boolean isFly) {
-            if (webView == null) {
-                return;
-            }
+            if (webView == null) return;
             webView.requestDisallowInterceptTouchEvent(isFly);
         }
 

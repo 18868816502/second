@@ -7,6 +7,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = VerifyCodeModule.class)
 public interface VerifyCodeComponent {
-
     void inject(RequireVerifyCodeFragment fragment);
 }

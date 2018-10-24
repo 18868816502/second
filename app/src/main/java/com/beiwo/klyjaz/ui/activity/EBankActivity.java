@@ -83,17 +83,7 @@ public class EBankActivity extends BaseComponentActivity {
                                        WeakRefToastUtil.showShort(EBankActivity.this, result.getMsg(), null);
                                    }
                                }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Log.e("EBank", throwable.toString());
-                                WeakRefToastUtil.showShort(EBankActivity.this, "请求出错", null);
-                            }
-                        });
-
-        //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_BILL_ENTER_EBANK_LEAD_IN);
+                           });
     }
 
     @Override

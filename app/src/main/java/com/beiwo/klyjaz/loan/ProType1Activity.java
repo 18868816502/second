@@ -1,10 +1,8 @@
 package com.beiwo.klyjaz.loan;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
@@ -15,7 +13,6 @@ import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 

@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class VerifyCodeModule {
-
     private ResetPwdVerifyContract.View mView;
 
     public VerifyCodeModule(ResetPwdVerifyContract.View view) {

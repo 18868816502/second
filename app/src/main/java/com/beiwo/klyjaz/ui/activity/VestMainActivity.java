@@ -189,9 +189,9 @@ public class VestMainActivity extends BaseComponentActivity {
             public void onSelected(int selectedId) {
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
-                    if(selectedId == R.id.tab_three_root){
+                    if (selectedId == R.id.tab_three_root) {
                         //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
+                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
                     }
                 }
             }
@@ -202,10 +202,6 @@ public class VestMainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         defaultTabIconTxt();
-        //强制登陆
-        if (!UserHelper.getInstance(this).isLogin()) {
-            UserAuthorizationActivity.launch(this);
-        }
     }
 
     public static void main(Activity activity) {
@@ -252,8 +248,8 @@ public class VestMainActivity extends BaseComponentActivity {
     }
 
     private LoanFragment tabHome;
-    private ToolFragment tabTool;
     public SocialRecommendFragment tabSocial;
+    private ToolFragment tabTool;
     private PersonalFragment tabMine;
 
     private void selectTab(int id) {

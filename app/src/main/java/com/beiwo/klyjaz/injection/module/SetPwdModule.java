@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class SetPwdModule {
-
     private ResetPwdSetPwdContract.View mView;
 
     public SetPwdModule(ResetPwdSetPwdContract.View view) {

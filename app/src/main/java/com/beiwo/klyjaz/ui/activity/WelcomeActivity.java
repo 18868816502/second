@@ -59,10 +59,10 @@ public class WelcomeActivity extends BaseActivity {
                     finish();
                 } else {
                     SPUtils.setValue(WelcomeActivity.this, "splash", "");
-                    if(App.audit == 1){
+                    if (App.audit == 1) {
                         Intent intent = new Intent(WelcomeActivity.this, VestMainActivity.class);
                         startActivity(intent);
-                    }else{
+                    } else {
                         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                         startActivity(intent);
                     }

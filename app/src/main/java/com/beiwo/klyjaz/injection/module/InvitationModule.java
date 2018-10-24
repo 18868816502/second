@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class InvitationModule {
-
     private InvitationContract.View mView;
 
     public InvitationModule(InvitationContract.View view) {

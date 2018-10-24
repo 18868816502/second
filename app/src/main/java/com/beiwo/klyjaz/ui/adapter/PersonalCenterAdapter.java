@@ -144,10 +144,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             holder.tvProduce.setText("简介:");
         }
         holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
-//        holder.tvAttentionNum.setText(String.valueOf(userInfo.getFollowerCount()));
-//        holder.tvFansNum.setText(String.valueOf(userInfo.getFansCount()));
         holder.tvPraiseNum.setText(String.valueOf(userInfo.getPraiseCount()));
-
     }
 
     /**
@@ -259,7 +256,6 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         ContentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-//            setOnClick(ivAuthorAvatar,llArticlePraiseContainer,llCommentContainer);
             setOnClick(itemView);
         }
     }
@@ -296,8 +292,6 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                 case R.id.iv_more:
                     listener.onViewClick(view,ConstantTag.TAG_PERSONAL_MORE,0);
                     break;
-
-
                     /*content*/
                 case R.id.iv_author_avatar:
 //                    ToastUtil.toast("作者头像");
@@ -329,5 +323,4 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
     public void setOnItemClickListener(OnItemClickListener itemListener){
         this.itemListener = itemListener;
     }
-
 }

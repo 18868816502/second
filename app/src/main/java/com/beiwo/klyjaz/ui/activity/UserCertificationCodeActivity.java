@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,7 +27,6 @@ import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.LegalInputUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.SPUtils;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -134,29 +132,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
     @Override
     public void finish() {
         InputMethodUtil.closeSoftKeyboard(this);
-        if (exitTag == 1) {
-            if (activity != null) activity.finish();
-        } else {
-            super.finish();
-        }
         activity = null;
-    }
-
-    private long exitTime = 0;
-    private int exitTag = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (System.currentTimeMillis() - exitTime > 2000) {
-                ToastUtil.toast("再按一次退出");
-                exitTime = System.currentTimeMillis();
-            } else {
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @OnClick({R.id.fetch_text, R.id.tv_login})
@@ -241,7 +217,6 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
      * 免密码登录
      */
     private void loginNoPwd(UserProfileAbstract result) {
-        exitTag = 1;
         EventBus.getDefault().post(new UserLoginEvent());
         if (result.isNewUser()) {
             UserPsdEditActivity.launch(this, 1, pendingPhone);

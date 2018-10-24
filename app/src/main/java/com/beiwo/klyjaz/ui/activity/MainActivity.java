@@ -38,7 +38,6 @@ import com.beiwo.klyjaz.loan.TabLoanFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.busevents.NavigateNews;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.ui.dialog.AdDialog;
 import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
@@ -54,7 +53,6 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -251,9 +249,9 @@ public class MainActivity extends BaseComponentActivity {
             public void onSelected(int selectedId) {
                 if (selectedId != selectedFragmentId) {
                     selectTab(selectedId);
-                    if(selectedId == R.id.tab_three_root){
+                    if (selectedId == R.id.tab_three_root) {
                         //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
+                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
                     }
                 }
             }
@@ -264,10 +262,6 @@ public class MainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         defaultTabIconTxt();
-        //强制登陆
-        if (!UserHelper.getInstance(this).isLogin()) {
-            UserAuthorizationActivity.launch(this);
-        }
         updateHelper.checkUpdate(this);
         Api.getInstance().querySupernatant(3)
                 .compose(RxResponse.<List<AdBanner>>compatT())
@@ -295,11 +289,6 @@ public class MainActivity extends BaseComponentActivity {
     //空事件
     @Override
     protected void configureComponent(AppComponent appComponent) {
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void navigateNews(NavigateNews event) {
-        navigationBar.select(R.id.tab_discover_root);
     }
 
     /**
@@ -331,8 +320,8 @@ public class MainActivity extends BaseComponentActivity {
 
     private TabHomeFragment tabHome;
     private TabLoanFragment tabDiscover;
-    private ToolFragment tabTool;
     public SocialRecommendFragment tabSocial;
+    private ToolFragment tabTool;
     private PersonalFragment tabMine;
     public Fragment currentFragment;
 

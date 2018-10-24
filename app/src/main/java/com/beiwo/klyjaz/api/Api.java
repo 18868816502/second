@@ -31,7 +31,6 @@ import com.beiwo.klyjaz.entity.CreditCardDebtBill;
 import com.beiwo.klyjaz.entity.CreditCardDebtDetail;
 import com.beiwo.klyjaz.entity.DebeDetailRecord;
 import com.beiwo.klyjaz.entity.DebtAbstract;
-import com.beiwo.klyjaz.entity.DebtChannel;
 import com.beiwo.klyjaz.entity.DebtDetail;
 import com.beiwo.klyjaz.entity.DetailHead;
 import com.beiwo.klyjaz.entity.DetailList;
@@ -855,9 +854,9 @@ public class Api {
     }
 
     /*查询记账渠道*/
-    public Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel() {
+    /*public Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel() {
         return service.queryLoanChannel();
-    }
+    }*/
 
     /*确认记账，不返回还款计划，直接插入数据*/
     public Observable<ResultEntity> saveDebtImmediately(Map<String, Object> params) {
@@ -1255,7 +1254,6 @@ public class Api {
     public Observable<ResultEntity> publicForumInfo(String userId, String imgKey, String forumTitle,
                                                     String forumContent, String status, String topicId, String forumId) {
         return service.publicForumInfo(userId, imgKey, forumTitle, forumContent, status, topicId, forumId);
-
     }
 
     /**

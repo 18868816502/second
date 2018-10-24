@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = ChangePsdModule.class)
 public interface ChangePsdComponent {
-
     void inject(ChangePsdActivity activity);
 }

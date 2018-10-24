@@ -26,7 +26,6 @@ public class SysMsgDetailPresenter extends BaseRxPresenter implements SysMsgDeta
         mView = view;
     }
 
-
     @Override
     public void queryMsgDetail(String id) {
         Disposable dis = mApi.querySysMsgDetail(id)

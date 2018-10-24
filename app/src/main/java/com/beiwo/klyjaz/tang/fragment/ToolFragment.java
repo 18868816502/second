@@ -16,6 +16,7 @@ import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.BillListActivity;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.activity.CreditBillActivity;
 import com.beiwo.klyjaz.tang.activity.CreditQueryActivity;
 import com.beiwo.klyjaz.tang.activity.LoanBillActivity;
@@ -157,7 +158,8 @@ public class ToolFragment extends BaseComponentFragment {
         switch (view.getId()) {
             case R.id.clb_credit_wrap:
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    UserAuthorizationActivity.launch(getActivity());
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), CreditQueryActivity.class));
@@ -167,35 +169,40 @@ public class ToolFragment extends BaseComponentFragment {
                 break;
             case R.id.clb_ticket_wrap:
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    UserAuthorizationActivity.launch(getActivity());
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), TicketActivity.class));
                 break;
             case R.id.fl_add_bill_wrap:
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    UserAuthorizationActivity.launch(getActivity());
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), LoanBillActivity.class));
                 break;
             case R.id.fl_credit_wrap:
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    UserAuthorizationActivity.launch(getActivity());
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), CreditBillActivity.class));
                 break;
             case R.id.tv_bill_detail:
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    UserAuthorizationActivity.launch(getActivity());
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), BillListActivity.class));
                 break;
             case R.id.iv_bill_visible:
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    UserAuthorizationActivity.launch(getActivity());
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 if (numVisible) {

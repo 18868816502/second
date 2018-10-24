@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class TabMineModule {
-
     private TabMineContract.View mView;
 
     public TabMineModule(TabMineContract.View view) {

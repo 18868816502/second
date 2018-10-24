@@ -25,7 +25,6 @@ import com.beiwo.klyjaz.entity.CreditCardDebtBill;
 import com.beiwo.klyjaz.entity.CreditCardDebtDetail;
 import com.beiwo.klyjaz.entity.DebeDetailRecord;
 import com.beiwo.klyjaz.entity.DebtAbstract;
-import com.beiwo.klyjaz.entity.DebtChannel;
 import com.beiwo.klyjaz.entity.DebtDetail;
 import com.beiwo.klyjaz.entity.DetailHead;
 import com.beiwo.klyjaz.entity.DetailList;
@@ -88,7 +87,6 @@ import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -809,18 +807,14 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/accounting/allLoan")
     Observable<ResultEntity<AllDebt>> queryAllDebt(@Field("userId") String userId, @Field("status") int status, @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
-    /**
-     * 查询借款记账渠道
-     */
-    @POST(BASE_PATH_S_FOUR + "/accounting/loanChannels")
-    Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel();
+    /*查询借款记账渠道*/
+    /*@POST(BASE_PATH_S_FOUR + "/accounting/loanChannels")
+    Observable<ResultEntity<LinkedHashMap<String, List<DebtChannel>>>> queryLoanChannel();*/
 
-    /**
-     * 查询网贷平台渠道
-     */
-    @FormUrlEncoded
+    /*查询网贷平台渠道*/
+    /*@FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/channels/show")
-    Observable<ResultEntity<List<DebtChannel>>> fetchDebtSourceChannel(@Field("appShow") int appShow);
+    Observable<ResultEntity<List<DebtChannel>>> fetchDebtSourceChannel(@Field("appShow") int appShow);*/
 
     /**
      * 确认记账，保存账单

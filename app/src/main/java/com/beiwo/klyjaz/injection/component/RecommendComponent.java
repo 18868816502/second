@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = RecommendProductModule.class)
 public interface RecommendComponent {
-
     void inject(RecommendProductActivity activity);
 }

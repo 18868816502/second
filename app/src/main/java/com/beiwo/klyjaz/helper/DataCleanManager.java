@@ -78,7 +78,6 @@ public class DataCleanManager {
         return getFolderSize(new File(sContext.getFilesDir().getParent() + File.separator + "databases"));
     }
 
-
     /**
      * 清除内部SP
      * /data/data/com.xxx.xxx/shared_prefs

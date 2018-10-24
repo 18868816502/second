@@ -155,7 +155,7 @@ public class LoanFragment extends BaseComponentFragment {
     @OnClick({R.id.tv_go_loan, R.id.iv_question})
     public void onClick(View view) {
         if (!UserHelper.getInstance(getActivity()).isLogin()) {
-            startActivity(new Intent(getActivity(), UserAuthorizationActivity.class));
+            DlgUtil.loginDlg(getActivity(), null);
             return;
         }
         switch (view.getId()) {

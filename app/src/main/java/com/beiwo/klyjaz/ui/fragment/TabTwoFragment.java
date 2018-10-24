@@ -65,11 +65,7 @@ public class TabTwoFragment extends BaseTabFragment {
     @BindView(R.id.ll_neterror)
     LinearLayout ll_neterror;
 
-    /**
-     * 拼接URL
-     */
     public static String newsUrl = null;
-
     //依赖的activity
     public FragmentActivity mActivity;
 
@@ -130,10 +126,6 @@ public class TabTwoFragment extends BaseTabFragment {
     @Override
     public void configViews() {
         load();
-
-        /**
-         * 在fragment里面 webView监听返回键事件
-         */
         webView.setFocusable(true);
         webView.setFocusableInTouchMode(true);
         webView.requestFocus();
@@ -167,10 +159,6 @@ public class TabTwoFragment extends BaseTabFragment {
                 }
             });
         }
-
-        /**
-         * 客户端监听器
-         */
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -253,9 +241,6 @@ public class TabTwoFragment extends BaseTabFragment {
 
     private boolean isError = false;
 
-    /**
-     * webView 加载Url
-     */
     private void load() {
         String userId = null;
         if (UserHelper.getInstance(mActivity).getProfile() != null) {

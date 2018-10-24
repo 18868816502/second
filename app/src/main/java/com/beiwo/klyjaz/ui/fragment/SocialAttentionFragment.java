@@ -67,12 +67,6 @@ public class SocialAttentionFragment extends BaseComponentFragment implements On
         List<SocialTopicBean> mList = new ArrayList<>();
         for(int i = 0 ; i < 10 ; i++){
             SocialTopicBean bean = new SocialTopicBean();
-//            bean.setName("高军");
-//            bean.setTime("刚刚");
-//            bean.setTitle("论坛获取积分、禁言、打赏、提问规则-贷款...");
-//            bean.setContent("书内机柜变一变个月续租西。产局共可在没法度越发便面贴牌。轮成都管管徐昂要领不研祥中增加。菜之一星级已审理资源十层华人下富源");
-//            bean.setPariseNum(3*i+"");
-//            bean.setCommentNum(8*i+"");
             mList.add(bean);
         }
         adapter.notifySocialTopicChanged(mList);
@@ -80,17 +74,14 @@ public class SocialAttentionFragment extends BaseComponentFragment implements On
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
     }
 
     @Override

@@ -146,7 +146,7 @@ public class CreditCardWebActivity extends BaseComponentActivity {
             @Override
             public void run() {
                 override = false;
-                startActivityForResult(new Intent(CreditCardWebActivity.this, UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
+                startActivityForResult(new Intent(getApplicationContext(), UserAuthorizationActivity.class), REQUEST_CODE_LOGIN);
             }
         });
     }

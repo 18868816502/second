@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class WeChatBindPhoneModule {
-
     private WeChatBindPhoneContract.View view;
 
     public WeChatBindPhoneModule(WeChatBindPhoneContract.View view) {

@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class LoginModule {
-
     private LoginContract.View mView;
 
     public LoginModule(LoginContract.View view) {

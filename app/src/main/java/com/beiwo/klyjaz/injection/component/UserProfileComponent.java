@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = UserProfileModule.class)
 public interface UserProfileComponent {
-
     void inject(UserProfileActivity activity);
 }

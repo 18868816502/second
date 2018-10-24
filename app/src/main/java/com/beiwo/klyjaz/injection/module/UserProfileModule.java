@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class UserProfileModule {
-
     private UserProfileContract.View mView;
 
     public UserProfileModule(UserProfileContract.View view) {

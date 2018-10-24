@@ -9,10 +9,7 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = LoginModule.class)
 public interface LoginComponent {
-
     void inject(UserLoginFragment loginFragment);
 
-
     void inject(LoginMainFragment loginFragment);
-
 }

@@ -168,25 +168,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
         }
     }
 
-    private long exitTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (System.currentTimeMillis() - exitTime > 2000) {
-                ToastUtil.toast("再按一次退出");
-                exitTime = System.currentTimeMillis();
-            } else {
-                Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
-                intent.putExtra("finish", true);
-                startActivity(intent);
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     @Subscribe
     public void onAuthorizationNavigation(AuthNavigationEvent event) {
         if (event.navigationTag == AuthNavigationEvent.TAG_LOGIN_PSD) {

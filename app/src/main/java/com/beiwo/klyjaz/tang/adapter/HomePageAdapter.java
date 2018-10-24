@@ -1,9 +1,9 @@
 package com.beiwo.klyjaz.tang.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.RectF;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +33,6 @@ import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.ui.fragment.HomeFragment;
-import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -47,11 +46,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.annotations.NonNull;
-import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBaseCallback;
-import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.view.HightLightView;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -71,7 +65,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
     public static final int VIEW_EMPTY = R.layout.f_layout_home_bill_empty;
     public static final int VIEW_EMPTY_NOT_LGOIN = R.layout.f_layout_home_bill_empty_not_login;
 
-    private MainActivity mActivity;
+    private Activity mActivity;
     private List<Bill> dataSet = new ArrayList<>();
     private HomeFragment homeFragment;
     private double totalAmount;
@@ -123,7 +117,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         }
     }
 
-    public HomePageAdapter(MainActivity activity, HomeFragment homeFragment) {
+    public HomePageAdapter(Activity activity, HomeFragment homeFragment) {
         this.mActivity = activity;
         this.homeFragment = homeFragment;
         currentMonth = new SimpleDateFormat("MM", Locale.CHINA).format(System.currentTimeMillis());
@@ -290,45 +284,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     }, 300);
                 }
             });
-            light();
-        }
-    }
-
-    private HighLight infoHighLight;
-
-    public void light() {
-        if (!"showGuideMainActivity".equals(SPUtils.getValue(mActivity, "showGuideMainActivity"))) {
-            if (userHelper.isLogin() && dataSet.size() > 0 && (mActivity.currentFragment instanceof HomeFragment)) {
-                infoHighLight = new HighLight(mActivity)
-                        .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
-                            @Override
-                            public void onLayouted() {
-                                infoHighLight.autoRemove(false)
-                                        .intercept(true)
-                                        .enableNext()
-                                        .addHighLight(R.id.view_center, R.layout.f_layout_guide_home, new OnBaseCallback() {
-                                            @Override
-                                            public void getPosition(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                                                marginInfo.leftMargin = rectF.centerX() - DensityUtil.dp2px(mActivity, 10);
-                                                marginInfo.topMargin = rectF.centerY() - DensityUtil.dp2px(mActivity, 5);
-                                            }
-                                        }, new CircleLightShape())
-                                        .setOnNextCallback(new HighLightInterface.OnNextCallback() {
-                                            @Override
-                                            public void onNext(HightLightView hightLightView, View targetView, View tipView) {
-                                                // targetView 目标按钮 tipView添加的提示布局 可以直接找到'我知道了'按钮添加监听事件等处理
-                                                infoHighLight.getHightLightView().findViewById(R.id.iv_guide).setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        infoHighLight.remove();
-                                                        SPUtils.setValue(mActivity, "showGuideMainActivity");
-                                                    }
-                                                });
-                                            }
-                                        }).show();
-                            }
-                        });
-            }
         }
     }
 

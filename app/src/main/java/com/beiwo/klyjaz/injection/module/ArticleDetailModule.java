@@ -14,7 +14,6 @@ import dagger.Provides;
  */
 @Module
 public class ArticleDetailModule {
-
     private ArticleDetailContact.View view;
 
     public ArticleDetailModule(ArticleDetailContact.View view) {
@@ -22,8 +21,7 @@ public class ArticleDetailModule {
     }
 
     @Provides
-    public ArticleDetailContact.View provideView(){
+    public ArticleDetailContact.View provideView() {
         return view;
     }
-
 }

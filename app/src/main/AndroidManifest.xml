@@ -371,7 +371,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- share setting end -->
 
-
         <!-- 小能客服 -->
         <activity
             android:name="cn.xiaoneng.activity.ChatActivity"

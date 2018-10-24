@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class EditUserNameModule {
-
     private EditUserNameContract.View mView;
 
     public EditUserNameModule(EditUserNameContract.View view) {

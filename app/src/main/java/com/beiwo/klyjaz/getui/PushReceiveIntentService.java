@@ -38,7 +38,7 @@ public class PushReceiveIntentService extends GTIntentService {
                 //记录相关id
                 SPUtils.setPushBindClientId(context, clientId);
                 SPUtils.setPushBindUserId(context, userId);
-                System.out.println(userId + " === " + clientId);
+                //System.out.println(userId + " === " + clientId);
                 Api.getInstance().bindClientId(userId, clientId)
                         .compose(RxResponse.compatO())
                         .subscribe(new ApiObserver<Object>() {

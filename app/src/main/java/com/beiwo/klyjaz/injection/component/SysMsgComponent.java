@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = SysMsgModule.class)
 public interface SysMsgComponent {
-
     void inject(SysMsgActivity activity);
 }

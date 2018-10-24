@@ -7,6 +7,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = SetPwdModule.class)
 public interface SetPwdComponent {
-
     void inject(SetPsdFragment fragment);
 }
