@@ -1458,6 +1458,11 @@ public class Api {
         return service.queryForumInfo(userId, forumId, pageNo, pageSize);
     }
 
+    /*动态详情加载*/
+    public Observable<ResultEntity<ForumInfoBean>> queryForumInfo(Map<String, Object> map) {
+        return service.queryForumInfo(map);
+    }
+
     /*消息-社区消息数量*/
     public Observable<ResultEntity<SocialMessageBean>> queryCountView(String userId) {
         return service.queryCountView(userId);

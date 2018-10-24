@@ -1527,6 +1527,12 @@ public interface ApiService {
     Observable<ResultEntity<ForumInfoBean>> queryForumInfo(@Field("userId") String userID, @Field("forumId") String forumId,
                                                            @Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
 
+    /*动态详情加载*/
+    @FormUrlEncoded
+    @POST("s6/forumQueryController/queryForumInfo")
+    Observable<ResultEntity<ForumInfoBean>> queryForumInfo(@FieldMap Map<String, Object> map);
+
+
     /*消息-社区数量*/
     @FormUrlEncoded
     @POST("s6/message/countView")

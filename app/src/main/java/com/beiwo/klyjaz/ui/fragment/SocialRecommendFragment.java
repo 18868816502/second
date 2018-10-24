@@ -78,6 +78,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(null);
         adapter.notifyDataSetChanged();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
@@ -169,13 +170,14 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
         }
     }
 
+
     @SuppressLint("CheckResult")
     private void fetchData() {
         String userId = "";
         if (UserHelper.getInstance(getActivity()).isLogin()) {
             userId = UserHelper.getInstance(getActivity()).getProfile().getId();
         }
-        Api.getInstance().queryRecommendTopic(userId, pageNo, pageSize)
+        Api.getInstance().queryRecommendTopic(ParamsUtils.generateRecommendTopicParams(userId, pageNo, pageSize))
                 .compose(RxUtil.<ResultEntity<SocialTopicBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<SocialTopicBean>>() {
                     @Override
@@ -203,39 +205,5 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                         Log.e("exception_custom", throwable.getMessage());
                     }
                 });
-    }
-
-    @SuppressLint("CheckResult")
-    private void fetchData1() {
-        String userId = "";
-        if (UserHelper.getInstance(getActivity()) != null) {
-            userId = UserHelper.getInstance(getActivity()).getProfile().getId();
-        }
-        Api.getInstance().queryRecommendTopic(ParamsUtils.generateRecommendTopicParams(userId, pageNo, pageSize))
-                .compose(RxUtil.<ResultEntity<SocialTopicBean>>io2main())
-                .subscribe(new Consumer<ResultEntity<SocialTopicBean>>() {
-                               @Override
-                               public void accept(ResultEntity<SocialTopicBean> result) {
-                                   if (result.isSuccess()) {
-                                       if (1 == pageNo) {
-                                           refreshLayout.finishRefresh();
-                                           adapter.setDatas(result.getData().getForum());
-                                       } else {
-                                           refreshLayout.finishLoadMore();
-                                           adapter.appendDatas(result.getData().getForum());
-                                       }
-                                   } else {
-                                       ToastUtil.toast(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) {
-                                refreshLayout.finishRefresh();
-                                refreshLayout.finishLoadMore();
-                                Log.e("exception_custom", throwable.getMessage());
-                            }
-                        });
     }
 }
