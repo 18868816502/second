@@ -44,7 +44,7 @@ public class ArticleDetailPresenter extends BaseRxPresenter implements ArticleDe
 
     @Override
     public void queryForumInfo(String userId, String forumId, int pageNo, int pageSize) {
-        Disposable dis = api.queryForumInfo(userId, forumId, pageNo, pageSize)
+        Disposable dis = api.queryForumInfo(ParamsUtils.generateForumParams(userId,forumId,pageNo,pageSize))
                 .compose(RxUtil.<ResultEntity<ForumInfoBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<ForumInfoBean>>() {
                                @Override

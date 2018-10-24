@@ -124,7 +124,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             this.userId = intent.getStringExtra("userId");
             this.forumId = intent.getStringExtra("forumId");
             if (!TextUtils.isEmpty(forumId)) {
-                presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(), forumId, pageNo, pageSize);
+                fetchForumData();
+//                presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(), forumId, pageNo, pageSize);
             }
 
         }
@@ -279,7 +280,15 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(), forumId, pageNo, pageSize);
+        fetchForumData();
+    }
+
+    private void fetchForumData(){
+        String userId = "";
+        if(UserHelper.getInstance(this).isLogin()) {
+            userId = UserHelper.getInstance(this).getProfile().getId();
+        }
+        presenter.queryForumInfo(userId, forumId, pageNo, pageSize);
     }
 
     @Override

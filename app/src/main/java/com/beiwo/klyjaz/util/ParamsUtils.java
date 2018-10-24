@@ -16,23 +16,25 @@ public class ParamsUtils {
 
     /**
      * 获取话题推荐列表请求参数
+     *
      * @param userId
      * @param pageNo
-     * @param pageNum
+     * @param pageSize
      * @return
      */
-    public static Map<String,Object> generateRecommendTopicParams(String userId, int pageNo, int pageNum){
-        Map<String,Object> mMap = new HashMap<>();
-        if(!TextUtils.isEmpty(userId)) {
+    public static Map<String, Object> generateRecommendTopicParams(String userId, int pageNo, int pageSize) {
+        Map<String, Object> mMap = new HashMap<>();
+        if (!TextUtils.isEmpty(userId)) {
             mMap.put("userId", userId);
         }
-        mMap.put("pageNo",pageNo);
-        mMap.put("pageNum",pageNum);
+        mMap.put("pageNo", pageNo);
+        mMap.put("pageSize", pageSize);
         return mMap;
     }
 
     /**
      * 获取评论参数
+     *
      * @param userId
      * @param commentType
      * @param commentContent
@@ -41,23 +43,23 @@ public class ParamsUtils {
      * @param selfId
      * @return
      */
-    public static Map<String,Object> generateCommentParams(String userId, String commentType, String commentContent, String forumId,
-                                                           String toUserId, String selfId,String replyId,String replyContent){
-        Map<String,Object> mMap = new HashMap<>();
-        mMap.put("userId",userId);
-        mMap.put("commentType",commentType);
-        mMap.put("commentContent",commentContent);
-        mMap.put("forumId",forumId);
-        if(!TextUtils.isEmpty(toUserId)) {
+    public static Map<String, Object> generateCommentParams(String userId, String commentType, String commentContent, String forumId,
+                                                            String toUserId, String selfId, String replyId, String replyContent) {
+        Map<String, Object> mMap = new HashMap<>();
+        mMap.put("userId", userId);
+        mMap.put("commentType", commentType);
+        mMap.put("commentContent", commentContent);
+        mMap.put("forumId", forumId);
+        if (!TextUtils.isEmpty(toUserId)) {
             mMap.put("toUserId", toUserId);
         }
-        if(!TextUtils.isEmpty(selfId)) {
+        if (!TextUtils.isEmpty(selfId)) {
             mMap.put("selfId", selfId);
         }
-        if(!TextUtils.isEmpty(replyId)) {
+        if (!TextUtils.isEmpty(replyId)) {
             mMap.put("replyId", replyId);
         }
-        if(!TextUtils.isEmpty(replyContent)) {
+        if (!TextUtils.isEmpty(replyContent)) {
             mMap.put("replyContent", replyContent);
         }
         return mMap;
@@ -66,16 +68,17 @@ public class ParamsUtils {
 
     /**
      * 获取保存用户参数
+     *
      * @param userId
      * @param sex
      * @param introduce
      * @return
      */
-    public static Map<String,Object> generateUserInfoParams(String userId, int sex, String introduce){
-        Map<String,Object> mMap = new HashMap<>();
+    public static Map<String, Object> generateUserInfoParams(String userId, int sex, String introduce) {
+        Map<String, Object> mMap = new HashMap<>();
         mMap.put("userId", userId);
         mMap.put("sex", sex);
-        if(!TextUtils.isEmpty(introduce)) {
+        if (!TextUtils.isEmpty(introduce)) {
             mMap.put("introduce", introduce);
         }
         return mMap;
@@ -83,13 +86,14 @@ public class ParamsUtils {
 
     /**
      * 获取草稿箱-待审核列表参数
+     *
      * @param userId
      * @param pageNo
      * @param pageSize
      * @return
      */
-    public static Map<String,Object> generateDraftsParams(String userId,int pageNo, int pageSize){
-        Map<String,Object> mMap = new HashMap<>();
+    public static Map<String, Object> generateDraftsParams(String userId, int pageNo, int pageSize) {
+        Map<String, Object> mMap = new HashMap<>();
         mMap.put("userId", userId);
         mMap.put("pageNo", pageNo);
         mMap.put("pageSize", pageSize);
@@ -98,19 +102,39 @@ public class ParamsUtils {
 
     /**
      * 获取埋点请求参数
+     *
      * @param userId
      * @param type
      * @param linkId
      * @return
      */
-    public static Map<String,Object> generateCountUvParams(String userId, String type, String linkId){
-        Map<String,Object> mMap = new HashMap<>();
+    public static Map<String, Object> generateCountUvParams(String userId, String type, String linkId) {
+        Map<String, Object> mMap = new HashMap<>();
         mMap.put("userId", userId);
         mMap.put("type", type);
-        if(!TextUtils.isEmpty(linkId)) {
+        if (!TextUtils.isEmpty(linkId)) {
             mMap.put("linkId", linkId);
         }
         return mMap;
     }
 
+
+    /**
+     * 动态详情参数
+     * @param userId
+     * @param forumId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public static Map<String, Object> generateForumParams(String userId, String forumId, int pageNo, int pageSize) {
+        Map<String, Object> mMap = new HashMap<>();
+        if (!TextUtils.isEmpty(userId)) {
+            mMap.put("userId", userId);
+        }
+        mMap.put("forumId", forumId);
+        mMap.put("pageNo", pageNo);
+        mMap.put("pageSize", pageSize);
+        return mMap;
+    }
 }

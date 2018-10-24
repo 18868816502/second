@@ -158,9 +158,13 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commmentViewHolder.tvCommentTime.setText(String.valueOf(datas.get(position - 1).getGmtCreate() + ""));
             commmentViewHolder.commentAdapter.setDatas(datas.get(position - 1).getReplyDtoList(),datas.get(position - 1).getId());
 
-            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position - 1).getUserId())) {
-                commmentViewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
-            } else {
+            if(UserHelper.getInstance(mContext).isLogin()) {
+                if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position - 1).getUserId())) {
+                    commmentViewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+                } else {
+                    commmentViewHolder.tvCommentDelete.setVisibility(View.GONE);
+                }
+            }else{
                 commmentViewHolder.tvCommentDelete.setVisibility(View.GONE);
             }
         }

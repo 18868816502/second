@@ -70,9 +70,13 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         viewHolder.tvCommentTime.setText(String.valueOf(datas.get(position).getGmtCreate()));
         viewHolder.tvCommentContent.setText(datas.get(position).getContent());
         viewHolder.tvCommentPraise.setText(String.valueOf(datas.get(position).getPraiseCount()));
-        if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
-            viewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
-        } else {
+        if(UserHelper.getInstance(mContext).isLogin()) {
+            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
+                viewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.tvCommentDelete.setVisibility(View.GONE);
+            }
+        }else{
             viewHolder.tvCommentDelete.setVisibility(View.GONE);
         }
         if (viewHolder.adapter != null){
