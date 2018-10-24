@@ -1,6 +1,6 @@
 package com.beiwo.klyjaz.ui.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -22,7 +22,7 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -45,14 +45,14 @@ import cn.bingoogolapple.bgabanner.BGABanner;
  */
 public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
+    private Activity mContext;
     private static final int HEAD = 0;
     private static final int COMMENT = 1;
     private static final int FOOT = 2;
     private List<CommentReplyBean> datas;
     private ForumInfoBean.ForumBean forumBean;
 
-    public ArticleDetailAdapter(Context mContext) {
+    public ArticleDetailAdapter(Activity mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
     }
@@ -78,7 +78,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 return new FootViewHolder(footView);
             default:
                 break;
-
         }
         return null;
     }
@@ -87,15 +86,13 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
-            if (forumBean == null) {
-                return;
-            }
+            if (forumBean == null) return;
             HeadViewHolder headViewHolder = (HeadViewHolder) holder;
             headViewHolder.tvArticleTitle.setText(forumBean.getTitle());
-            if(!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
+            if (!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
                 Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
             }
-            headViewHolder.tvAuthorName.setText(TextUtils.isEmpty(forumBean.getUserName())?"未知":forumBean.getUserName());
+            headViewHolder.tvAuthorName.setText(TextUtils.isEmpty(forumBean.getUserName()) ? "未知" : forumBean.getUserName());
             headViewHolder.tvAuthorTime.setText(forumBean.getGmtCreate());
             if (forumBean.getPicUrl() != null && forumBean.getPicUrl().size() != 0) {
                 headViewHolder.bgaBanner.setVisibility(View.VISIBLE);
@@ -111,7 +108,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
                         Intent intent = new Intent(mContext, PhotoDetailActivity.class);
                         intent.putStringArrayListExtra("datas", (ArrayList<String>) forumBean.getPicUrl());
-                        intent.putExtra("position",position);
+                        intent.putExtra("position", position);
                         mContext.startActivity(intent);
                     }
                 });
@@ -148,18 +145,22 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commmentViewHolder.ivArticleComment.setTag(R.id.tag_comment, position - 1);
             commmentViewHolder.tvCommentDelete.setTag(R.id.tag_delete, position - 1);
             commmentViewHolder.itemView.setTag(position - 1);
-            commmentViewHolder.ivCommentatorAcatar.setTag(R.id.comment_user_avatar,position - 1);
+            commmentViewHolder.ivCommentatorAcatar.setTag(R.id.comment_user_avatar, position - 1);
 
-            if(!TextUtils.isEmpty(datas.get(position - 1).getUserHeadUrl())) {
+            if (!TextUtils.isEmpty(datas.get(position - 1).getUserHeadUrl())) {
                 Glide.with(mContext).load(datas.get(position - 1).getUserHeadUrl()).into(commmentViewHolder.ivCommentatorAcatar);
             }
             commmentViewHolder.tvCommentatorName.setText(datas.get(position - 1).getUserName());
             commmentViewHolder.tvCommentContent.setText(datas.get(position - 1).getContent());
             commmentViewHolder.tvCommentTime.setText(String.valueOf(datas.get(position - 1).getGmtCreate() + ""));
-            commmentViewHolder.commentAdapter.setDatas(datas.get(position - 1).getReplyDtoList(),datas.get(position - 1).getId());
+            commmentViewHolder.commentAdapter.setDatas(datas.get(position - 1).getReplyDtoList(), datas.get(position - 1).getId());
 
-            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position - 1).getUserId())) {
-                commmentViewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+            if (UserHelper.getInstance(mContext).isLogin()) {
+                if (TextUtils.equals(UserHelper.getInstance(mContext).id(), datas.get(position - 1).getUserId())) {
+                    commmentViewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+                } else {
+                    commmentViewHolder.tvCommentDelete.setVisibility(View.GONE);
+                }
             } else {
                 commmentViewHolder.tvCommentDelete.setVisibility(View.GONE);
             }
@@ -249,19 +250,21 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commentAdapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
                 public void onViewClick(View view, int type, int position) {
+                    if (UserHelper.getInstance(mContext).isLogin()) {
+                        DlgUtil.loginDlg(mContext, null);
+                        return;
+                    }
                     view.setTag(itemView.getTag());
-                    switch (type){
+                    switch (type) {
                         case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                             listener.onViewClick(view, ConstantTag.TAG_REPLY_OUTSIDE, position);
                             break;
-
-                            default:
-                                break;
+                        default:
+                            break;
                     }
-//                    listener.onViewClick(view, type, position);
                 }
             });
-            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete,ivCommentatorAcatar);
+            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete, ivCommentatorAcatar);
         }
     }
 
@@ -304,9 +307,12 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     class OnClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
+            if (!UserHelper.getInstance(mContext).isLogin()) {
+                DlgUtil.loginDlg(mContext, null);
+                return;
+            }
             switch (v.getId()) {
                 case R.id.iv_author_avatar:
                     Intent intent = new Intent(mContext, PersonalCenterActivity.class);
@@ -315,11 +321,10 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     break;
                 case R.id.iv_commentator_avatar:
                     Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
-                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.comment_user_avatar)).getUserId());
+                    pIntent.putExtra("userId", datas.get((Integer) v.getTag(R.id.comment_user_avatar)).getUserId());
                     mContext.startActivity(pIntent);
                     break;
                 case R.id.tv_article_attention:
-//                    listener.onViewClick(v,ConstantTag.TAG_ATTENTION);
                     break;
                 case R.id.tv_article_praise:
                     listener.onViewClick(v, ConstantTag.TAG_PARISE_ARTICLE, 0);
@@ -328,8 +333,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 case R.id.tv_comment:
                     listener.onViewClick(v, ConstantTag.TAG_COMMENT_ARTICLE, 0);
                     break;
-
-
                 //评论点赞
                 case R.id.tv_comment_praise:
                     int position = (int) v.getTag(R.id.tag_praise);
@@ -339,9 +342,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 //评论回复
                 case R.id.iv_article_comment:
                     int comPosition = (int) v.getTag(R.id.tag_comment);
-//                    ToastUtil.toast("回复第"+(comPosition + 1) + "条");
-//                    listener.onViewClick(v, ConstantTag.TAG_REPLY_COMMENT, comPosition);
-//                    listener.onViewClick(v, ConstantTag.TAG_COMMENT_MORE, comPosition);
                     listener.onViewClick(v, ConstantTag.TAG_COMMENT_OUTSIDE, comPosition);
                     break;
                 //评论删除

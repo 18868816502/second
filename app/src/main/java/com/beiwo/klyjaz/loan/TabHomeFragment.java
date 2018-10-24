@@ -15,7 +15,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
@@ -138,10 +138,10 @@ public class TabHomeFragment extends BaseComponentFragment {
         checkUserState();
         //recommond product
         Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT)
-                .compose(RxResponse.<List<GroupProductBean>>compatT())
-                .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                .compose(RxResponse.<List<Product>>compatT())
+                .subscribe(new ApiObserver<List<Product>>() {
                     @Override
-                    public void onNext(@NonNull List<GroupProductBean> data) {
+                    public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         homeAdapter.setNormalData(data);
                     }

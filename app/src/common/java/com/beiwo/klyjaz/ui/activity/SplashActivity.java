@@ -1,7 +1,7 @@
 package com.beiwo.klyjaz.ui.activity;
 
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
@@ -19,14 +19,22 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
+import com.beiwo.klyjaz.entity.Audit;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.entity.request.RequestConstants;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerSplashComponent;
+import com.beiwo.klyjaz.tang.DlgUtil;
+import com.beiwo.klyjaz.tang.rx.RxResponse;
+import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
+import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -45,23 +53,18 @@ public class SplashActivity extends BaseComponentActivity {
     TextView ignoreTv;
     @BindView(R.id.bottom_logo)
     ImageView bottomLogoIv;
-
-    private AdTimer adTimer;
-
     @Inject
     Api api;
 
+    private AdTimer adTimer;
     private Disposable disposable;
-
     private boolean adClicked;
-
     private SplashHandler handler;
+    private Activity context;
 
     @Override
     protected void onDestroy() {
-        if (adTimer != null) {
-            adTimer.cancel();
-        }
+        if (adTimer != null) adTimer.cancel();
         adTimer = null;
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
@@ -77,6 +80,7 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        context = this;
         SPUtils.setValue(this, "splash");
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,21 +96,33 @@ public class SplashActivity extends BaseComponentActivity {
         Message msg = Message.obtain();
         msg.what = 1;
         handler.sendMessageDelayed(msg, 1000 * 5);
+        Api.getInstance().audit()
+                .compose(RxResponse.<Audit>compatT())
+                .subscribe(new ApiObserver<Audit>() {
+                    @Override
+                    public void onNext(Audit data) {
+                        try {
+                            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                            if (version.equals(SPUtils.getLastInstalledVersion(context))) {
+                                checkAd();
+                            } else {
+                                handler.removeMessages(1);
+                                SPUtils.setLastInstalledVersion(context, version);
+                                startActivity(new Intent(context, data.audit == 2 ? MainActivity.class : VestMainActivity.class));
+                                finish();
+                            }
+                        } catch (PackageManager.NameNotFoundException e) {
+                            launch();
+                        }
+                    }
 
-        try {
-            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            if (version.equals(SPUtils.getLastInstalledVersion(this))) {
-                checkAd();
-            } else {
-                handler.removeMessages(1);
-                SPUtils.setLastInstalledVersion(this, version);
-                Intent intent = new Intent(this, WelcomeActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            launch();
-        }
+                    @Override
+                    public void onError(@NonNull Throwable t) {
+                        super.onError(t);
+                        launch();
+                    }
+                });
+
     }
 
     @Override
@@ -120,12 +136,7 @@ public class SplashActivity extends BaseComponentActivity {
     private void launch() {
         handler.removeMessages(1);
         if (!adClicked) {
-            if(App.audit == 1){
-                Intent intent = new Intent(this, VestMainActivity.class);
-                startActivity(intent);
-            }else{
-                MainActivity.main(this);
-            }
+            startActivity(new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class));
             finish();
         }
     }
@@ -134,26 +145,25 @@ public class SplashActivity extends BaseComponentActivity {
         disposable = api.querySupernatant(RequestConstants.SUP_TYPE_AD)
                 .compose(RxUtil.<ResultEntity<List<AdBanner>>>io2main())
                 .subscribe(new Consumer<ResultEntity<List<AdBanner>>>() {
-                               @Override
-                               public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
-                                   handler.removeMessages(1);
-                                   if (result.isSuccess()) {
-                                       if (result.getData() != null && result.getData().size() > 0) {
-                                           startAd(result.getData().get(0));
-                                       } else {
-                                           launch();
-                                       }
-                                   } else {
-                                       launch();
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
+                    @Override
+                    public void accept(@NonNull ResultEntity<List<AdBanner>> result) throws Exception {
+                        handler.removeCallbacksAndMessages(null);
+                        if (result.isSuccess()) {
+                            if (result.getData() != null && result.getData().size() > 0) {
+                                startAd(result.getData().get(0));
+                            } else {
                                 launch();
                             }
-                        });
+                        } else {
+                            launch();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        launch();
+                    }
+                });
     }
 
     private void startAd(final AdBanner ad) {
@@ -167,20 +177,21 @@ public class SplashActivity extends BaseComponentActivity {
                 @Override
                 public void onClick(View v) {
                     adClicked = true;
-                    Context context = SplashActivity.this;
                     //统计点击
                     DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 1);
-
                     //pv，uv统计
                     DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_SPLASH_AD);
-
                     //先跳转至首页
-                    Intent intent = new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
+                    Intent intent = new Intent(context, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
                     startActivity(intent);
-
                     //需要先登录并且用户还没登录
-                    if (ad.needLogin() && UserHelper.getInstance(SplashActivity.this).getProfile() == null) {
-                        UserAuthorizationActivity.launchWithPending(SplashActivity.this, ad);
+                    if (ad.needLogin() && UserHelper.getInstance(context).getProfile() == null) {
+                        DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
+                            @Override
+                            public void success(UserProfileAbstract data) {
+                                EventBus.getDefault().post(new UserLoginWithPendingTaskEvent(ad));
+                            }
+                        });
                     } else {
                         //跳Native还是跳Web
                         if (ad.isNative()) {
@@ -191,8 +202,8 @@ public class SplashActivity extends BaseComponentActivity {
                         } else if (!TextUtils.isEmpty(ad.getUrl())) {
                             //跳转网页时，url不为空情况下才跳转
                             String url = ad.getUrl();
-                            if (url.contains("USERID") && UserHelper.getInstance(SplashActivity.this).getProfile() != null) {
-                                url = url.replace("USERID", UserHelper.getInstance(SplashActivity.this).getProfile().getId());
+                            if (url.contains("USERID") && UserHelper.getInstance(context).getProfile() != null) {
+                                url = url.replace("USERID", UserHelper.getInstance(context).getProfile().getId());
                             }
                             intent = new Intent(context, ComWebViewActivity.class);
                             intent.putExtra("url", url);
@@ -200,11 +211,9 @@ public class SplashActivity extends BaseComponentActivity {
                             startActivity(intent);
                         }
                     }
-
                     finish();
                 }
             });
-
             Glide.with(this)
                     .load(ad.getImgUrl())
                     .asBitmap()
@@ -219,7 +228,6 @@ public class SplashActivity extends BaseComponentActivity {
     }
 
     private class AdTimer extends CountDownTimer {
-
         AdTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }

@@ -1,13 +1,11 @@
 package com.beiwo.klyjaz.loan;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +18,10 @@ import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.UserHelper;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
@@ -52,13 +52,13 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
     private static final int TYPE_NORMAL = R.layout.temlapte_v_linearlayout;
     private static final int TYPE_EMPTY = R.layout.empty_layout_product;
 
-    private List<GroupProductBean> datas = new ArrayList();
+    private List<Product> datas = new ArrayList();
     private int pageType;
     private Activity context;
     private Handler handler = new Handler(Looper.getMainLooper());
     private boolean isExcuted = true;
-    private List<List<GroupProductBean>> data1 = new ArrayList<>();
-    private List<List<GroupProductBean>> data2 = new ArrayList<>();
+    private List<List<Product>> data1 = new ArrayList<>();
+    private List<List<Product>> data2 = new ArrayList<>();
     private List<RecyclerView> type0 = new ArrayList<>();
     private List<RecyclerView> type1 = new ArrayList<>();
     private List<PopAdapter> adapters0 = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
         this.pageType = pageType;
     }
 
-    public void setData(List<GroupProductBean> data) {
+    public void setData(List<Product> data) {
         if (data == null || data.size() < 1) {
             notifyItemChanged(1);
             return;
@@ -158,7 +158,7 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                                 int pos = finalJ * 12 + position;
-                                GroupProductBean product = datas.get(pos);
+                                Product product = datas.get(pos);
                                 productItemClick(product);
                             }
                         });
@@ -177,7 +177,7 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                                 int pos = finalK * 12 + position + 8;
-                                GroupProductBean product = datas.get(pos);
+                                Product product = datas.get(pos);
                                 productItemClick(product);
                             }
                         });
@@ -229,7 +229,7 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                                 int pos = finalK * 8 + position;
-                                GroupProductBean product = datas.get(pos);
+                                Product product = datas.get(pos);
                                 productItemClick(product);
                             }
                         });
@@ -249,7 +249,7 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                                 int pos = finalJ * 8 + position + 4;
-                                GroupProductBean product = datas.get(pos);
+                                Product product = datas.get(pos);
                                 productItemClick(product);
                             }
                         });
@@ -260,11 +260,18 @@ public class ProType1Adapter extends RecyclerView.Adapter<ProType1Adapter.ViewHo
         }
     }
 
-    private void productItemClick(final GroupProductBean product) {
+    private void productItemClick(final Product product) {
         if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
-            context.startActivity(new Intent(context, UserAuthorizationActivity.class));
-            return;
-        }
+            DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
+                @Override
+                public void success(UserProfileAbstract data) {
+                    goProduct(product);
+                }
+            });
+        } else goProduct(product);
+    }
+
+    private void goProduct(final Product product) {
         String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
         Api.getInstance().queryGroupProductSkip(id, product.getId())
                 .compose(RxResponse.<String>compatT())

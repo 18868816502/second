@@ -2,7 +2,6 @@ package com.beiwo.klyjaz.loan;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -18,14 +17,14 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -132,26 +131,32 @@ public class TabLoanFragment extends BaseComponentFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                final GroupProductBean product = adapter.getData().get(position);
+                final Product product = adapter.getData().get(position);
                 if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
-                    //startActivity(new Intent(context, UserAuthorizationActivity.class));
-                    DlgUtil.loginDlg(context, null);
-                    return;
-                }
-                String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
-                Api.getInstance().queryGroupProductSkip(id, product.getId())
-                        .compose(RxResponse.<String>compatT())
-                        .subscribe(new ApiObserver<String>() {
-                            @Override
-                            public void onNext(@NonNull String data) {
-                                Intent intent = new Intent(context, WebViewActivity.class);
-                                intent.putExtra("webViewUrl", data);
-                                intent.putExtra("webViewTitleName", product.getProductName());
-                                startActivity(intent);
-                            }
-                        });
+                    DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
+                        @Override
+                        public void success(UserProfileAbstract data) {
+                            goProduct(product);
+                        }
+                    });
+                } else goProduct(product);
             }
         });
+    }
+
+    private void goProduct(final Product product) {
+        String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
+        Api.getInstance().queryGroupProductSkip(id, product.getId())
+                .compose(RxResponse.<String>compatT())
+                .subscribe(new ApiObserver<String>() {
+                    @Override
+                    public void onNext(@NonNull String data) {
+                        Intent intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra("webViewUrl", data);
+                        intent.putExtra("webViewTitleName", product.getProductName());
+                        startActivity(intent);
+                    }
+                });
     }
 
     private void initFieldVar() {
@@ -176,10 +181,10 @@ public class TabLoanFragment extends BaseComponentFragment {
 
     private void request(Map<String, Object> map) {
         Api.getInstance().products(map)
-                .compose(RxResponse.<List<GroupProductBean>>compatT())
-                .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                .compose(RxResponse.<List<Product>>compatT())
+                .subscribe(new ApiObserver<List<Product>>() {
                     @Override
-                    public void onNext(@NonNull List<GroupProductBean> data) {
+                    public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         refresh_layout.finishLoadMore();
                         if (pageNo == 1) {

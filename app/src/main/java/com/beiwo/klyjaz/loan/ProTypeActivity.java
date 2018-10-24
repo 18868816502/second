@@ -13,7 +13,7 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
@@ -123,7 +123,7 @@ public class ProTypeActivity extends BaseComponentActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                final GroupProductBean product = adapter.getData().get(position);
+                final Product product = adapter.getData().get(position);
                 if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
                     startActivity(new Intent(context, UserAuthorizationActivity.class));
                     return;
@@ -155,10 +155,10 @@ public class ProTypeActivity extends BaseComponentActivity {
         map.put("platform", 1);
         map.put("productType", productType);
         Api.getInstance().products(map)
-                .compose(RxResponse.<List<GroupProductBean>>compatT())
-                .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                .compose(RxResponse.<List<Product>>compatT())
+                .subscribe(new ApiObserver<List<Product>>() {
                     @Override
-                    public void onNext(@NonNull List<GroupProductBean> data) {
+                    public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         refresh_layout.finishLoadMore();
                         if (pageNo == 1) {

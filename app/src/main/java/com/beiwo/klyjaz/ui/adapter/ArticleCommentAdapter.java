@@ -100,27 +100,22 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
             viewHolder.tvCommentTime.setText(datas.get(position).getGmtCreate());
             StringBuilder sb = new StringBuilder();
-            if(TextUtils.equals(selfId, datas.get(position).getReplyId())){
+            if (TextUtils.equals(selfId, datas.get(position).getReplyId())) {
                 viewHolder.tvCommentContent.setText(datas.get(position).getContent());
-            }else{
+            } else {
                 sb.append("回复<font color='#2a84ff'>")
                         .append(datas.get(position).getToUserName())
                         .append("</font>:")
                         .append((TextUtils.isEmpty(datas.get(position).getContent()) ? "" : datas.get(position).getContent()));
                 viewHolder.tvCommentContent.setText(Html.fromHtml(sb.toString()));
             }
-//            String content = (TextUtils.equals(selfId, datas.get(position).getReplyId())) ? "":"回复"
-//                    + "<font color='#2a84ff'>"
-////                    + (TextUtils.isEmpty(datas.get(position).getToUserName())?"未知":datas.get(position).getToUserName())
-//                    + ((TextUtils.equals(selfId, datas.get(position).getReplyId())) ?
-//                    "" : (TextUtils.isEmpty(datas.get(position).getToUserName()) ?
-//                    "未知" : datas.get(position).getToUserName()))
-//                    + "</font>:"
-//                    + (TextUtils.isEmpty(datas.get(position).getContent()) ? "" : datas.get(position).getContent());
-//            viewHolder.tvCommentContent.setText(Html.fromHtml(content));
             viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
-            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
-                viewHolder.tvDelete.setVisibility(View.VISIBLE);
+            if (UserHelper.getInstance(mContext).isLogin()) {
+                if (TextUtils.equals(UserHelper.getInstance(mContext).id(), datas.get(position).getUserId())) {
+                    viewHolder.tvDelete.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.tvDelete.setVisibility(View.GONE);
+                }
             } else {
                 viewHolder.tvDelete.setVisibility(View.GONE);
             }

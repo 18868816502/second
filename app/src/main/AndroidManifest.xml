@@ -153,12 +153,6 @@
             android:name="com.beiwo.klyjaz.ui.activity.LoanDebtDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.beiwo.klyjaz.ui.activity.DebtCalendarActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.beiwo.klyjaz.ui.activity.DebtAnalyzeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.beiwo.klyjaz.ui.activity.RewardPointActivity"
             android:screenOrientation="portrait" />
         <activity

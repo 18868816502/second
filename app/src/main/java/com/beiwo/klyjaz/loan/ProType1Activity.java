@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -98,10 +98,10 @@ public class ProType1Activity extends BaseComponentActivity {
         map.put("type", 5);
         map.put("productType", productType);
         Api.getInstance().products(map)
-                .compose(RxResponse.<List<GroupProductBean>>compatT())
-                .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                .compose(RxResponse.<List<Product>>compatT())
+                .subscribe(new ApiObserver<List<Product>>() {
                     @Override
-                    public void onNext(@NonNull List<GroupProductBean> data) {
+                    public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         if (data == null || data.size() < 1) {
                             type1Adapter.setData(null);

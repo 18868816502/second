@@ -123,15 +123,15 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, datas.get((Integer) v.getTag()).getForumId());
-                    if (UserHelper.getInstance(mContext).isLogin()) {
-                        Intent intent = new Intent(mContext, ArticleDetailActivity.class);
+                    boolean isLogin = UserHelper.getInstance(v.getContext()).isLogin();
+                    Intent intent = new Intent(mContext, ArticleDetailActivity.class);
+                    if (isLogin) {
                         intent.putExtra("userId", datas.get((Integer) v.getTag()).getUserId());
-                        intent.putExtra("forumId", datas.get((Integer) v.getTag()).getForumId());
-                        mContext.startActivity(intent);
                     } else {
-                        //UserAuthorizationActivity.launch((Activity) mContext, null);
-                        DlgUtil.loginDlg(mContext, null);
+                        intent.putExtra("userId", "");
                     }
+                    intent.putExtra("forumId", datas.get((Integer) v.getTag()).getForumId());
+                    mContext.startActivity(intent);
                 }
             });
         }

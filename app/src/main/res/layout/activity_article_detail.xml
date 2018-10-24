@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
+        android:layout_width="368dp"
+        android:layout_height="50dp"
         android:gravity="center_vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,29 +23,28 @@
         <ImageView
             android:id="@+id/iv_more"
             style="@style/ToolBarIconStyle"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:contentDescription="TODO"
-            android:layout_marginRight="@dimen/dp10"
-            android:src="@drawable/bill_more_icon"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/dp10" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            android:contentDescription="TODO"
+            android:src="@drawable/bill_more_icon" />
 
     </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+        tools:layout_editor_absoluteX="8dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:descendantFocusability = "beforeDescendants"/>
+            android:descendantFocusability="beforeDescendants" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-
 </android.support.constraint.ConstraintLayout>

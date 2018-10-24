@@ -3,7 +3,7 @@ package com.beiwo.klyjaz.loan;
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -20,14 +20,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * @date: 2018/10/11
  */
 
-public class RecomProAdapter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
+public class RecomProAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
     public RecomProAdapter() {
         super(R.layout.layout_recom_pro);
         openLoadAnimation(ALPHAIN);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, GroupProductBean item) {
+    protected void convert(BaseViewHolder helper, Product item) {
         ImageView iv_icon = helper.getView(R.id.iv_icon);
         Glide.with(mContext)
                 .load(item.logoUrl)

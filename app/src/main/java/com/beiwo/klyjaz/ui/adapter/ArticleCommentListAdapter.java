@@ -61,22 +61,26 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
         viewHolder.itemView.setTag(position);
-        viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar,position);
+        viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar, position);
 
-        if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
+        if (!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
             Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
         }
         viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
         viewHolder.tvCommentTime.setText(String.valueOf(datas.get(position).getGmtCreate()));
         viewHolder.tvCommentContent.setText(datas.get(position).getContent());
         viewHolder.tvCommentPraise.setText(String.valueOf(datas.get(position).getPraiseCount()));
-        if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
-            viewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+        if (UserHelper.getInstance(mContext).isLogin()) {
+            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
+                viewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.tvCommentDelete.setVisibility(View.GONE);
+            }
         } else {
             viewHolder.tvCommentDelete.setVisibility(View.GONE);
         }
-        if (viewHolder.adapter != null){
-            viewHolder.adapter.setDatas(datas.get(position).getReplyDtoList(),datas.get(position).getId());
+        if (viewHolder.adapter != null) {
+            viewHolder.adapter.setDatas(datas.get(position).getReplyDtoList(), datas.get(position).getId());
         }
 
     }
@@ -123,7 +127,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
                     listener.onViewClick(view, type, position);
                 }
             });
-            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete,ivCommentatorAcatar);
+            setOnClick(tvCommentPraise, ivArticleComment, tvCommentDelete, ivCommentatorAcatar);
         }
     }
 
@@ -146,7 +150,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             switch (v.getId()) {
                 case R.id.iv_commentator_avatar:
                     Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
-                    pIntent.putExtra("userId",datas.get((Integer) v.getTag(R.id.comment_list_avatar)).getUserId());
+                    pIntent.putExtra("userId", datas.get((Integer) v.getTag(R.id.comment_list_avatar)).getUserId());
                     mContext.startActivity(pIntent);
                     break;
                 //点赞

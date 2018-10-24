@@ -27,7 +27,8 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.LoanActivity;
@@ -73,7 +74,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private List<Boolean> needLogin = new ArrayList<>();
     private List<String> looperTexts = new ArrayList<>();
     private RecomProAdapter adapter = new RecomProAdapter();
-    private List<GroupProductBean> data = new ArrayList<>();
+    private List<Product> data = new ArrayList<>();
     private int state = 0;//1 正常状态 2 审核中 3 审核失败
     private String auditDate;
     private String overDate;
@@ -126,7 +127,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         notifyItemChanged(0);
     }
 
-    public void setNormalData(List<GroupProductBean> data) {
+    public void setNormalData(List<Product> data) {
         this.data = data;
         notifyItemChanged(1);
     }
@@ -171,10 +172,10 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             if (state == 2) {
                 holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
                 Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT_CHECKING1)
-                        .compose(RxResponse.<List<GroupProductBean>>compatT())
-                        .subscribe(new ApiObserver<List<GroupProductBean>>() {
+                        .compose(RxResponse.<List<Product>>compatT())
+                        .subscribe(new ApiObserver<List<Product>>() {
                             @Override
-                            public void onNext(@NonNull List<GroupProductBean> data) {
+                            public void onNext(@NonNull List<Product> data) {
                                 popAdapter.setNewData(data);
                             }
                         });
@@ -229,18 +230,25 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                    GroupProductBean product = adapter.getData().get(position);
+                    Product product = adapter.getData().get(position);
                     productItemClick(product);
                 }
             });
         }
     }
 
-    private void productItemClick(final GroupProductBean product) {
+    private void productItemClick(final Product product) {
         if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
-            DlgUtil.loginDlg(context, null);
-            return;
-        }
+            DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
+                @Override
+                public void success(UserProfileAbstract data) {
+                    goProduct(product);
+                }
+            });
+        } else goProduct(product);
+    }
+
+    private void goProduct(final Product product) {
         String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
         Api.getInstance().queryGroupProductSkip(id, product.getId())
                 .compose(RxResponse.<String>compatT())
@@ -309,37 +317,21 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_pro_1:
-                if (!UserHelper.getInstance(context).isLogin()) {
-                    DlgUtil.loginDlg(context, null);
-                    return;
-                }
                 Intent intent1 = new Intent(context, ProType1Activity.class);
                 intent1.putExtra("productType", 1);
                 context.startActivity(intent1);
                 break;
             case R.id.tv_pro_2:
-                if (!UserHelper.getInstance(context).isLogin()) {
-                    DlgUtil.loginDlg(context, null);
-                    return;
-                }
                 Intent intent2 = new Intent(context, ProType1Activity.class);
                 intent2.putExtra("productType", 2);
                 context.startActivity(intent2);
                 break;
             case R.id.tv_pro_3:
-                if (!UserHelper.getInstance(context).isLogin()) {
-                    DlgUtil.loginDlg(context, null);
-                    return;
-                }
                 Intent intent4 = new Intent(context, ProType1Activity.class);
                 intent4.putExtra("productType", 4);
                 context.startActivity(intent4);
                 break;
             case R.id.tv_pro_4:
-                if (!UserHelper.getInstance(context).isLogin()) {
-                    DlgUtil.loginDlg(context, null);
-                    return;
-                }
                 Intent intent3 = new Intent(context, ProType1Activity.class);
                 intent3.putExtra("productType", 3);
                 context.startActivity(intent3);

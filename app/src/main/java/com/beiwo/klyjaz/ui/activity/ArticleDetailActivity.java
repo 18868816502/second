@@ -1,7 +1,9 @@
 package com.beiwo.klyjaz.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import com.beiwo.klyjaz.injection.component.DaggerArticleDetailComponent;
 import com.beiwo.klyjaz.injection.module.ArticleDetailModule;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.adapter.ArticleCommentListAdapter;
 import com.beiwo.klyjaz.ui.adapter.ArticleDetailAdapter;
 import com.beiwo.klyjaz.ui.contract.ArticleDetailContact;
@@ -36,6 +39,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,10 +129,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         if (intent != null) {
             this.userId = intent.getStringExtra("userId");
             this.forumId = intent.getStringExtra("forumId");
-            if(!TextUtils.isEmpty(forumId)){
-                presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),forumId,pageNo,pageSize);
+            if (!TextUtils.isEmpty(forumId)) {
+                presenter.queryForumInfo(userId, forumId, pageNo, pageSize);
             }
-
         }
     }
 
@@ -144,10 +150,32 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         }
     }
 
-
     @Override
     public void setPresenter(ArticleDetailContact.Presenter presenter) {
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recieve(String msg) {
+        if (TextUtils.equals("1", msg)) {
+            System.out.println("ArticleDetailActivity recieve 1");
+            fetchData();
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -157,13 +185,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 finish();
                 break;
             case R.id.iv_more:
-                //判断是否是自己的文章
-                if (TextUtils.equals(forumBean.getUserId(), UserHelper.getInstance(this).getProfile().getId())) {
-                    mPopType = 3;
-                    PopUtils.showBottomPopWindow(R.layout.dialog_article_mine_more, fManager, this, this);
+                if (UserHelper.getInstance(this).isLogin()) {
+                    //判断是否是自己的文章
+                    if (TextUtils.equals(forumBean.getUserId(), UserHelper.getInstance(this).getProfile().getId())) {
+                        mPopType = 3;
+                        PopUtils.showBottomPopWindow(R.layout.dialog_article_mine_more, fManager, this, this);
+                    } else {
+                        mPopType = 2;
+                        PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager, this, this);
+                    }
                 } else {
-                    mPopType = 2;
-                    PopUtils.showBottomPopWindow(R.layout.dialog_article_other_more, fManager, this, this);
+                    DlgUtil.loginDlg(this, null);
                 }
                 break;
             case R.id.tv_cancel:
@@ -195,7 +227,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 presenter.fetchSaveReport("", forumBean.getForumId(), "1", getString(R.string.article_more_report_content4));
                 break;
             case R.id.iv_close:
-                if(auditDialog!=null){
+                if (auditDialog != null) {
                     auditDialog.dismiss();
                 }
                 break;
@@ -225,19 +257,19 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //动态评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 presenter.fetchReplyForumInfo("", "1",
-                        etInput.getText().toString(), forumBean.getForumId(), "", "","","");
+                        etInput.getText().toString(), forumBean.getForumId(), "", "", "", "");
                 break;
             //评论回复
             case ConstantTag.TAG_COMMENT_OUTSIDE:
             case ConstantTag.TAG_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(),"","");
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(), "", "");
                 break;
             //子评论回复
             case ConstantTag.TAG_REPLY_OUTSIDE:
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(),replyDtoListBean.getId(),replyDtoListBean.getContent());
+                        etInput.getText().toString(), forumBean.getForumId(), replyDtoListBean.getUserId(), replyBean.getId(), replyDtoListBean.getId(), replyDtoListBean.getContent());
                 break;
             default:
                 break;
@@ -257,7 +289,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 presenter.fetchCancelForum(forumBean.getForumId());
                 break;
             case 2:
-
                 break;
             case 6:
                 PopUtils.dismiss();
@@ -278,7 +309,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),forumId,pageNo,pageSize);
+        presenter.queryForumInfo(userId, forumId, pageNo, pageSize);
     }
 
     @Override
@@ -356,16 +387,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 mPopType = 4;
                 PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
-
             default:
                 break;
         }
-
     }
 
-    /**
-     * 隐藏弹窗
-     */
+    /*隐藏弹窗*/
     private void hideDialog() {
         PopUtils.dismiss();
     }
@@ -408,34 +435,33 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 showHintForEditInput(etInput);
                 break;
             case 6:
-
                 setOnClick(view.findViewById(R.id.tv_cancel), view.findViewById(R.id.tv_save));
                 break;
             default:
                 break;
         }
-
     }
 
     /**
      * 显示提示信息
+     *
      * @param etInput
      */
     private void showHintForEditInput(ClearEditText etInput) {
-        switch (tag){
+        switch (tag) {
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 etInput.setHint("在这里畅所欲言吧");
                 break;
             case ConstantTag.TAG_REPLY_COMMENT:
             case ConstantTag.TAG_COMMENT_OUTSIDE:
-                etInput.setHint("回复@"+replyBean.getUserName());
+                etInput.setHint("回复@" + replyBean.getUserName());
                 break;
             case ConstantTag.TAG_CHILD_REPLY_COMMENT:
             case ConstantTag.TAG_REPLY_OUTSIDE:
-                etInput.setHint("回复@"+replyDtoListBean.getUserName());
+                etInput.setHint("回复@" + replyDtoListBean.getUserName());
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -455,7 +481,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
         mPopType = 5;
         PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
-
     }
 
     private void setOnClick(View... views) {
@@ -492,25 +517,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onReplyCommentSucceed() {
         ToastUtil.toast("已提交审核请耐心等待");
-//        switch (tag) {
-//            //动态评论
-//            case ConstantTag.TAG_COMMENT_ARTICLE:
-//                ToastUtil.toast("已提交审核请耐心等待");
-//                break;
-//
-//            //评论回复
-//            case ConstantTag.TAG_REPLY_COMMENT:
-//                ToastUtil.toast("回复成功");
-//                break;
-//
-//            //子评论回复
-//            case ConstantTag.TAG_CHILD_REPLY_COMMENT:
-//                ToastUtil.toast("回复成功");
-//                break;
-//            default:
-//                break;
-//        }
-//        fetchData();
     }
 
     @Override
@@ -536,7 +542,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //话题点赞
             case ConstantTag.TAG_PARISE_ARTICLE:
                 forumBean.setIsPraise(1);
-                forumBean.setPraiseCount(forumBean.getPraiseCount()+1);
+                forumBean.setPraiseCount(forumBean.getPraiseCount() + 1);
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:
@@ -556,7 +562,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //话题点赞
             case ConstantTag.TAG_PARISE_ARTICLE:
                 forumBean.setIsPraise(0);
-                forumBean.setPraiseCount(forumBean.getPraiseCount()-1);
+                forumBean.setPraiseCount(forumBean.getPraiseCount() - 1);
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:

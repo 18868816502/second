@@ -2,12 +2,7 @@ package com.beiwo.klyjaz.entity;
 
 import java.io.Serializable;
 
-/**
- * Created by admin on 2018/6/20.
- * 分组贷超产品
- */
-
-public class GroupProductBean implements Serializable {
+public class Product implements Serializable {
     public String explains;
     public String id;
     public String productName;

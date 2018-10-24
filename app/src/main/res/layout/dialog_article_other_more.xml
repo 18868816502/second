@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,51 +9,51 @@
         android:layout_height="@dimen/dp35"
         android:background="@color/c_fffafafa"
         android:gravity="center"
-        android:text="@string/article_more_report_title"/>
-    
+        android:text="@string/article_more_report_title" />
+
     <TextView
         android:id="@+id/report01"
         style="@style/ReportTextStyle"
-        android:text="@string/article_more_report_content1"/>
+        android:text="@string/article_more_report_content1" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
-        android:background="@color/colorBackground"/>
+        android:background="@color/colorBackground" />
 
     <TextView
         android:id="@+id/report02"
         style="@style/ReportTextStyle"
-        android:text="@string/article_more_report_content2"/>
+        android:text="@string/article_more_report_content2" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
-        android:background="@color/colorBackground"/>
+        android:background="@color/colorBackground" />
 
     <TextView
         android:id="@+id/report03"
         style="@style/ReportTextStyle"
-        android:text="@string/article_more_report_content3"/>
+        android:text="@string/article_more_report_content3" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
-        android:background="@color/colorBackground"/>
+        android:background="@color/colorBackground" />
 
     <TextView
         android:id="@+id/report04"
         style="@style/ReportTextStyle"
-        android:text="@string/article_more_report_content4"/>
+        android:text="@string/article_more_report_content4" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp10"
-        android:background="@color/colorBackground"/>
+        android:background="@color/colorBackground" />
 
     <TextView
         android:id="@+id/tv_cancel"
         style="@style/ReportTextStyle"
-        android:textColor="@color/black_2"
-        android:text="@string/cancel"/>
+        android:text="@string/cancel"
+        android:textColor="@color/black_2" />
 </LinearLayout>

@@ -22,7 +22,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
-import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.scdk.fragment.LoanFragment;
@@ -109,9 +108,6 @@ public class VestMainActivity extends BaseComponentActivity {
         super.onNewIntent(intent);
         extras = intent.getExtras();
         if (extras != null) {
-            if (extras.getBoolean("finish")) {
-                finish();
-            }
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
@@ -202,11 +198,6 @@ public class VestMainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         defaultTabIconTxt();
-    }
-
-    public static void main(Activity activity) {
-        activity.startActivity(new Intent(activity, VestMainActivity.class));
-        activity.finish();
     }
 
     //空事件

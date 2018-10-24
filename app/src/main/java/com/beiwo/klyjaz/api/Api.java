@@ -37,7 +37,7 @@ import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
 import com.beiwo.klyjaz.entity.HotNews;
@@ -95,7 +95,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -220,7 +219,7 @@ public class Api {
     }
 
     /*分组贷超产品列表*/
-    public Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(String groupId) {
+    public Observable<ResultEntity<List<Product>>> queryGroupProductList(String groupId) {
         return service.queryGroupProductList(groupId);
     }
 
@@ -1268,7 +1267,7 @@ public class Api {
 
 
     /*产品列表查询*/
-    public Observable<ResultEntity<List<GroupProductBean>>> products(Map<String, Object> map) {
+    public Observable<ResultEntity<List<Product>>> products(Map<String, Object> map) {
         return service.products(map);
     }
 

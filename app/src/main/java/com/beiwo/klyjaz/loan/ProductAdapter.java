@@ -6,7 +6,7 @@ import android.text.style.RelativeSizeSpan;
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -24,14 +24,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * @date: 2018/10/10
  */
 
-public class ProductAdapter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
+public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
     public ProductAdapter() {
         super(R.layout.layout_product_item);
         openLoadAnimation(ALPHAIN);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, GroupProductBean item) {
+    protected void convert(BaseViewHolder helper, Product item) {
         String min = item.borrowingLowText.substring(0, item.borrowingLowText.length() - 1);
         String max = item.borrowingHighText.substring(0, item.borrowingHighText.length() - 1);
         String lowText, highText;

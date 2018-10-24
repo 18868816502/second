@@ -31,7 +31,7 @@ import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
 import com.beiwo.klyjaz.entity.HotNews;
@@ -199,7 +199,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/groupProduct/list")
-    Observable<ResultEntity<List<GroupProductBean>>> queryGroupProductList(@Field("groupId") String groupId);
+    Observable<ResultEntity<List<Product>>> queryGroupProductList(@Field("groupId") String groupId);
 
     /**
      * @author xhb
@@ -1350,7 +1350,7 @@ public interface ApiService {
     /*产品列表查询*/
     @FormUrlEncoded
     @POST("/s3/product/productListForNative")
-    Observable<ResultEntity<List<GroupProductBean>>> products(@FieldMap Map<String, Object> map);
+    Observable<ResultEntity<List<Product>>> products(@FieldMap Map<String, Object> map);
 
     /**
      * 发表评论回复

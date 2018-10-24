@@ -29,12 +29,14 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.TabImage;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.TabHomeFragment;
 import com.beiwo.klyjaz.loan.TabLoanFragment;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -127,9 +129,6 @@ public class MainActivity extends BaseComponentActivity {
         super.onNewIntent(intent);
         extras = intent.getExtras();
         if (extras != null) {
-            if (extras.getBoolean("finish")) {
-                finish();
-            }
             if (extras.getBoolean("account")) {
                 navigationBar.select(R.id.tab_bill_root);
                 if (!TextUtils.isEmpty(extras.getString("moxieMsg"))) {
@@ -202,7 +201,12 @@ public class MainActivity extends BaseComponentActivity {
                 //是否需要登录
                 if (ad.needLogin()) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null) {
-                        UserAuthorizationActivity.launchWithPending(MainActivity.this, ad);
+                        DlgUtil.loginDlg(activity, new DlgUtil.OnLoginSuccessListener() {
+                            @Override
+                            public void success(UserProfileAbstract data) {
+                                EventBus.getDefault().post(new UserLoginWithPendingTaskEvent(ad));
+                            }
+                        });
                         return;
                     }
                 }
@@ -279,11 +283,6 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     }
                 });
-    }
-
-    public static void main(Activity activity) {
-        activity.startActivity(new Intent(activity, MainActivity.class));
-        activity.finish();
     }
 
     //空事件
@@ -367,8 +366,6 @@ public class MainActivity extends BaseComponentActivity {
             case R.id.tab_three_root://社区
                 ft.show(tabSocial).hide(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
-                //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE,"");
                 currentFragment = tabDiscover;
                 break;
             case R.id.tab_social_root://工具
@@ -472,122 +469,6 @@ public class MainActivity extends BaseComponentActivity {
             iconView[i].setImageDrawable(stateListDrawable);
         }
         navigationBar.select(R.id.tab_bill_root);
-    }
-
-    private void updateBottomSelector(List<TabImage> list) {
-        Collections.sort(list, new Comparator<TabImage>() {
-            @Override
-            public int compare(TabImage o1, TabImage o2) {
-                return o1.getPosition() - o2.getPosition();
-            }
-        });
-
-        TabImage bgTabImage = null;
-        for (TabImage tabImage : list) {
-            //位置：1第1位，2第2位，3第3位，4第4位，5第5位，6底部栏横条
-            if (tabImage.getPosition() == 6) {
-                bgTabImage = tabImage;
-                break;
-            }
-        }
-        //底部栏背景
-        if (bgTabImage != null) {
-            Glide.with(this)
-                    .load(bgTabImage.getUnselectedImage())
-                    .asBitmap()
-                    .centerCrop()
-                    .into(navigationBarBg);
-        }
-
-        boolean isShowTabAccount = true;
-        for (int i = 0; i < list.size(); ++i) {
-            TabImage tabImage = list.get(i);
-            /*focus配置app模块展示的优先级*/
-            if (TextUtils.equals("1", tabImage.getFocus())) {
-
-            }
-            if (tabImage.getFocus() != null && "1".equals(tabImage.getFocus())) {
-                if (tabImage.getPosition() == 1) {
-                    navigationBar.select(R.id.tab_bill_root);
-                    isShowTabAccount = false;
-                } else if (tabImage.getPosition() == 2) {
-                    navigationBar.select(R.id.tab_discover_root);
-                    isShowTabAccount = false;
-                } else if (tabImage.getPosition() == 3) {
-                    navigationBar.select(R.id.tab_mine_root);
-                    isShowTabAccount = false;
-                }
-            }
-
-            final int index = tabImage.getPosition() - 1;
-            if (index < 0 || index >= textView.length) {
-                continue;
-            }
-            //tab字体颜色和文字
-            if (!TextUtils.isEmpty(tabImage.getSelectedFontColor())) {
-                int[] colors = new int[]{
-                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
-                        Color.parseColor("#" + tabImage.getSelectedFontColor()),
-                        Color.parseColor("#" + tabImage.getUnselectedFontColor())
-                };
-                int[][] states = new int[3][];
-                states[0] = new int[]{android.R.attr.state_selected};
-                states[1] = new int[]{android.R.attr.state_pressed};
-                states[2] = new int[]{};
-                ColorStateList colorStateList = new ColorStateList(states, colors);
-                textView[index].setTextColor(colorStateList);
-                textView[index].setText(tabImage.getName());
-            }
-
-            if (!TextUtils.isEmpty(tabImage.getSelectedImage())) {
-                Observable.just(new String[]{tabImage.getSelectedImage(), tabImage.getUnselectedImage()})
-                        .observeOn(Schedulers.io())
-                        .map(new Function<String[], Bitmap[]>() {
-                            @Override
-                            public Bitmap[] apply(String[] strings) throws Exception {
-                                OkHttpClient client = new OkHttpClient();
-                                Bitmap[] images = new Bitmap[2];
-                                byte[] bytes = client.newCall(new Request.Builder().url(strings[0]).build()).execute().body().bytes();
-                                images[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                                bytes = client.newCall(new Request.Builder().url(strings[1]).build()).execute().body().bytes();
-                                images[1] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                return images;
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<Bitmap[]>() {
-                            @Override
-                            public void accept(Bitmap[] bitmaps) throws Exception {
-                                if (bitmaps[0] != null && bitmaps[1] != null) {
-                                    StateListDrawable stateListDrawable = new StateListDrawable();
-                                    stateListDrawable.addState(new int[]{android.R.attr.state_selected}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                    stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(getResources(), bitmaps[0]));
-                                    stateListDrawable.addState(new int[]{}, new BitmapDrawable(getResources(), bitmaps[1]));
-                                    iconView[index].setImageDrawable(stateListDrawable);
-                                }
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(final Throwable throwable) throws Exception {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            throw throwable;
-                                        } catch (Throwable throwable1) {
-                                            throwable1.printStackTrace();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-            }
-        }
-        if (isShowTabAccount) {//都没有选择那就选择首页
-            navigationBar.select(R.id.tab_bill_root);
-        }
     }
 
     @Override

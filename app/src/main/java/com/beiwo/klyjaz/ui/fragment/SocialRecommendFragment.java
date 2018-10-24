@@ -2,9 +2,12 @@ package com.beiwo.klyjaz.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +17,12 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.adapter.social.SocialRecommendAdapter;
@@ -29,6 +34,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,13 +86,36 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void initDatas() {
         initListener();
-
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         fetchData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recieve(String msg) {
+        if (TextUtils.equals("1", msg)) {
+            System.out.println("SocialRecommendFragment recieve 1");
+            fetchData();
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void initListener() {
@@ -106,7 +138,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//        pageNo++;
         fetchData();
     }
 
@@ -124,7 +155,13 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 } else {
-                    UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {
+                        @Override
+                        public void success(UserProfileAbstract data) {
+                            pageNo = 1;
+                            fetchData();
+                        }
+                    });
                 }
                 break;
             default:
@@ -141,32 +178,31 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
         Api.getInstance().queryRecommendTopic(userId, pageNo, pageSize)
                 .compose(RxUtil.<ResultEntity<SocialTopicBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<SocialTopicBean>>() {
-                               @Override
-                               public void accept(ResultEntity<SocialTopicBean> result) {
-                                   if (result.isSuccess()) {
-                                       if (1 == pageNo) {
-                                           refreshLayout.finishRefresh();
-                                           adapter.setDatas(result.getData().getForum());
-                                       } else {
-                                           refreshLayout.finishLoadMore();
-                                           adapter.appendDatas(result.getData().getForum());
-                                       }
-                                       if (result.getData().getForum() != null && result.getData().getForum().size() != 0) {
-                                           pageNo++;
-                                       }
-                                   } else {
-                                       ToastUtil.toast(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) {
+                    @Override
+                    public void accept(ResultEntity<SocialTopicBean> result) {
+                        if (result.isSuccess()) {
+                            if (1 == pageNo) {
                                 refreshLayout.finishRefresh();
+                                adapter.setDatas(result.getData().getForum());
+                            } else {
                                 refreshLayout.finishLoadMore();
-                                Log.e("exception_custom", throwable.getMessage());
+                                adapter.appendDatas(result.getData().getForum());
                             }
-                        });
+                            if (result.getData().getForum() != null && result.getData().getForum().size() != 0) {
+                                pageNo++;
+                            }
+                        } else {
+                            ToastUtil.toast(result.getMsg());
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadMore();
+                        Log.e("exception_custom", throwable.getMessage());
+                    }
+                });
     }
 
     @SuppressLint("CheckResult")

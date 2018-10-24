@@ -52,6 +52,8 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +117,14 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     public void onResume() {
         super.onResume();
         presenter.onStart();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recieve(String msg) {
+        if (TextUtils.equals("1", msg)) {
+            System.out.println("PersonalFragment recieve 1");
+            request();
+        }
     }
 
     @Override

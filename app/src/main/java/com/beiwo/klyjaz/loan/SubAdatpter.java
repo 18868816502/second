@@ -4,7 +4,7 @@ package com.beiwo.klyjaz.loan;
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.entity.GroupProductBean;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -21,14 +21,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
  * @date: 2018/10/18
  */
 
-public class SubAdatpter extends BaseQuickAdapter<GroupProductBean, BaseViewHolder> {
+public class SubAdatpter extends BaseQuickAdapter<Product, BaseViewHolder> {
     public SubAdatpter() {
         super(R.layout.layout_sub2);
         openLoadAnimation(ALPHAIN);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, GroupProductBean item) {
+    protected void convert(BaseViewHolder helper, Product item) {
         ImageView iv_icon = helper.getView(R.id.iv_icon);
         Glide.with(mContext)
                 .load(item.getLogoUrl())

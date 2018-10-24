@@ -84,6 +84,31 @@ public class App extends Application {
         SPUtils.setShowMainAddBanner(this, true);
         registerActivityLifecycleCallbacks(ActivityTracker.getInstance());//activity生命周期管理
         initComponent();
+        if (TextUtils.equals(getProcessName(this), getPackageName())) {
+            /*是否审核状态*/
+            Api.getInstance().audit()
+                    .compose(RxResponse.<Audit>compatT())
+                    .subscribe(new ApiObserver<Audit>() {
+                        @Override
+                        public void onNext(Audit data) {
+                            try {
+                                audit = data.audit;
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+            //pv，uv统计
+            androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            if (UserHelper.getInstance(this).isLogin()) {
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
+            } else {
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
+            }
+            if (SPUtils.getFirstInstall(this)) {
+                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
+                SPUtils.setFirstInstall(this, false);
+            }
+        }
 
         Umeng.install(this);//初始化友盟
         MoxieSDK.init(this);//初始化魔蝎
@@ -100,31 +125,6 @@ public class App extends Application {
                     .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
             //sChannelId = AnalyticsConfig.getChannel(this);
         } catch (PackageManager.NameNotFoundException e) {
-        }
-        if (TextUtils.equals(getProcessName(this), getPackageName())) {
-            //pv，uv统计
-            androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            if (UserHelper.getInstance(this).isLogin()) {
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
-            } else {
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
-            }
-            if (SPUtils.getFirstInstall(this)) {
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
-                SPUtils.setFirstInstall(this, false);
-            }
-            /*是否审核状态*/
-            Api.getInstance().audit()
-                    .compose(RxResponse.<Audit>compatT())
-                    .subscribe(new ApiObserver<Audit>() {
-                        @Override
-                        public void onNext(Audit data) {
-                            try {
-                                audit = data.audit;
-                            } catch (Exception e) {
-                            }
-                        }
-                    });
         }
         //获取WindowManager
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);

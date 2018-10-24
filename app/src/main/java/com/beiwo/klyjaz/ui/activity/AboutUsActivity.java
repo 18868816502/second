@@ -29,7 +29,6 @@ public class AboutUsActivity extends BaseComponentActivity {
     @BindView(R.id.version_name)
     TextView versionNameTv;
 
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_about_us;

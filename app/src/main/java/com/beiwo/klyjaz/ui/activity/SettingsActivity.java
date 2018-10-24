@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
@@ -182,10 +183,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
             public void onClick(View arg0) {
             }
         }).show();
-
-
     }
-
 
     /**
      * https://www.cnblogs.com/qwangxiao/p/8030389.html
@@ -198,7 +196,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         try {
             startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -223,7 +220,9 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         broadCast.setAction("logout");
         sendBroadcast(broadCast);
 
-        UserAuthorizationActivity.launch(this);
+        Intent intent = new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
+        intent.putExtra("home", true);
+        startActivity(intent);
         finish();
     }
 
