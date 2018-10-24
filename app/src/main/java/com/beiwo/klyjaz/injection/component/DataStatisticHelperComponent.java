@@ -7,6 +7,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class)
 public interface DataStatisticHelperComponent {
-
     void inject(DataStatisticsHelper helper);
 }

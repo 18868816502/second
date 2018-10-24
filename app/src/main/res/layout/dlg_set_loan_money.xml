@@ -47,18 +47,18 @@
         android:maxHeight="5dp"
         android:min="500"
         android:minHeight="5dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:progressDrawable="@drawable/seekbar"
         android:splitTrack="false"
         android:thumb="@drawable/ic_seekbar_thumb"
-        android:thumbOffset="15dp"
+        android:thumbOffset="10dp"
         tools:progress="800" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-12dp"
+        android:layout_marginTop="-3dp"
         android:paddingLeft="18dp"
         android:paddingRight="18dp">
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -40,7 +38,6 @@ import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
@@ -51,7 +48,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bingoogolapple.bgabanner.BGABanner;
 import io.reactivex.annotations.NonNull;
 
 /**
@@ -155,7 +151,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 @Override
                 public void onItemClick(int position) {
                     if (needLogin.get(position) && !UserHelper.getInstance(context).isLogin()) {
-                        context.startActivity(new Intent(context, UserAuthorizationActivity.class));
+                        DlgUtil.loginDlg(context, null);
                     } else {
                         Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("webViewUrl", urls.get(position));
@@ -242,7 +238,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     private void productItemClick(final GroupProductBean product) {
         if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
-            context.startActivity(new Intent(context, UserAuthorizationActivity.class));
+            DlgUtil.loginDlg(context, null);
             return;
         }
         String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
@@ -313,21 +309,37 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_pro_1:
+                if (!UserHelper.getInstance(context).isLogin()) {
+                    DlgUtil.loginDlg(context, null);
+                    return;
+                }
                 Intent intent1 = new Intent(context, ProType1Activity.class);
                 intent1.putExtra("productType", 1);
                 context.startActivity(intent1);
                 break;
             case R.id.tv_pro_2:
+                if (!UserHelper.getInstance(context).isLogin()) {
+                    DlgUtil.loginDlg(context, null);
+                    return;
+                }
                 Intent intent2 = new Intent(context, ProType1Activity.class);
                 intent2.putExtra("productType", 2);
                 context.startActivity(intent2);
                 break;
             case R.id.tv_pro_3:
+                if (!UserHelper.getInstance(context).isLogin()) {
+                    DlgUtil.loginDlg(context, null);
+                    return;
+                }
                 Intent intent4 = new Intent(context, ProType1Activity.class);
                 intent4.putExtra("productType", 4);
                 context.startActivity(intent4);
                 break;
             case R.id.tv_pro_4:
+                if (!UserHelper.getInstance(context).isLogin()) {
+                    DlgUtil.loginDlg(context, null);
+                    return;
+                }
                 Intent intent3 = new Intent(context, ProType1Activity.class);
                 intent3.putExtra("productType", 3);
                 context.startActivity(intent3);
@@ -378,7 +390,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     public void onViewClick(final Dialog dialog, View dlgView) {
                         TextView content = dlgView.findViewById(R.id.content);
                         TextView title = dlgView.findViewById(R.id.dlg_title);
-                        title.setText("");//提示
+                        title.setText("提示");
                         content.setText("服务费按日息0.1%收取");
                         dlgView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -391,42 +403,42 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 break;
             case R.id.tv_go_loan:
                 /*用户认证信息查询*/
-                if (UserHelper.getInstance(context).isLogin()) {
-                    DataStatisticsHelper.getInstance().onCountUv("HPLoanImmediately");
-                    Api.getInstance().userAuth(UserHelper.getInstance(context).id())
-                            .compose(RxResponse.<CashUserInfo>compatT())
-                            .subscribe(new ApiObserver<CashUserInfo>() {
-                                @Override
-                                public void onNext(@NonNull CashUserInfo data) {
-                                    Intent verifyIntent = new Intent(context, VerticyIDActivity.class);
-                                    if (data == null || data.getCashUser() == null) {
-                                        verifyIntent.putExtra("mVertifyState", 1);
-                                        context.startActivity(verifyIntent);
-                                    } else if (data.getCashContact() == null || App.step == 1) {
-                                        verifyIntent.putExtra("mVertifyState", 2);
-                                        context.startActivity(verifyIntent);
-                                    } else if (App.step == 2) {
-                                        verifyIntent.putExtra("mVertifyState", 3);
-                                        context.startActivity(verifyIntent);
-                                    } else {
-                                        Intent intent = new Intent(context, LoanActivity.class);
-                                        intent.putExtra("money", progress);
-                                        intent.putExtra("charge", progress * 1.0f / 100);
-                                        context.startActivity(intent);
-                                    }
-                                }
-
-                                @Override
-                                public void onError(@NonNull Throwable t) {
-                                    super.onError(t);
-                                    Intent intent = new Intent(context, VerticyIDActivity.class);
-                                    intent.putExtra("mVertifyState", 1);
+                if (!UserHelper.getInstance(context).isLogin()) {
+                    DlgUtil.loginDlg(context, null);
+                    return;
+                }
+                DataStatisticsHelper.getInstance().onCountUv("HPLoanImmediately");
+                Api.getInstance().userAuth(UserHelper.getInstance(context).id())
+                        .compose(RxResponse.<CashUserInfo>compatT())
+                        .subscribe(new ApiObserver<CashUserInfo>() {
+                            @Override
+                            public void onNext(@NonNull CashUserInfo data) {
+                                Intent verifyIntent = new Intent(context, VerticyIDActivity.class);
+                                if (data == null || data.getCashUser() == null) {
+                                    verifyIntent.putExtra("mVertifyState", 1);
+                                    context.startActivity(verifyIntent);
+                                } else if (data.getCashContact() == null || App.step == 1) {
+                                    verifyIntent.putExtra("mVertifyState", 2);
+                                    context.startActivity(verifyIntent);
+                                } else if (App.step == 2) {
+                                    verifyIntent.putExtra("mVertifyState", 3);
+                                    context.startActivity(verifyIntent);
+                                } else {
+                                    Intent intent = new Intent(context, LoanActivity.class);
+                                    intent.putExtra("money", progress);
+                                    intent.putExtra("charge", progress * 1.0f / 100);
                                     context.startActivity(intent);
                                 }
-                            });
-                } else {
-                    context.startActivity(new Intent(context, UserAuthorizationActivity.class));
-                }
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable t) {
+                                super.onError(t);
+                                Intent intent = new Intent(context, VerticyIDActivity.class);
+                                intent.putExtra("mVertifyState", 1);
+                                context.startActivity(intent);
+                            }
+                        });
                 break;
             default:
                 break;

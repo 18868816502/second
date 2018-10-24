@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class ChangePsdModule {
-
     private ChangePsdContract.View mView;
 
     public ChangePsdModule(ChangePsdContract.View view) {

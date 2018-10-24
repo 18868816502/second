@@ -9,7 +9,6 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = TabMineModule.class)
 public interface TabMineComponent {
-
     void inject(PersonalFragment fragment);
 
     void inject(MineFragment fragment);

@@ -8,10 +8,8 @@ import dagger.Provides;
 
 @Module
 public class ApiModule {
-
     @Provides
     protected Api provideApi() {
         return Api.getInstance();
     }
-
 }

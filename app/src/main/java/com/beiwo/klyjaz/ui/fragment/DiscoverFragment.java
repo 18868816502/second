@@ -20,7 +20,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.base.BaseTabFragment;
-import com.beiwo.klyjaz.event.TabNewsWebViewFragmentTitleEvent;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.umeng.Events;
@@ -61,16 +60,6 @@ public class DiscoverFragment extends BaseTabFragment {
     private int selectedFragmentId = R.id.tv_tab_one_title;
 
     public String mTitleName;
-    private TabNewsWebViewFragmentTitleEvent event = null;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (event != null && !TextUtils.isEmpty(event.title) && newsTitleName != null) {
-            newsTitleName.setText(event.title);
-            mTitleName = event.title;
-        }
-    }
 
     public static DiscoverFragment newInstance() {
         return new DiscoverFragment();

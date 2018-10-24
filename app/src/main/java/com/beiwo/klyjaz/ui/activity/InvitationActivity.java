@@ -17,7 +17,6 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerInvitationComponent;
 import com.beiwo.klyjaz.injection.module.InvitationModule;
-import com.beiwo.klyjaz.ui.adapter.InvitationAdapter;
 import com.beiwo.klyjaz.ui.contract.InvitationContract;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
 import com.beiwo.klyjaz.ui.presenter.InvitationPresenter;
@@ -42,10 +41,6 @@ import butterknife.BindView;
 public class InvitationActivity extends BaseComponentActivity implements InvitationContract.View {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
-//    @BindView(R.id.invitation_code)
-//    TextView invitationCodeTv;
-//    @BindView(R.id.recycler_view)
-//    RecyclerView recyclerView;
 
     @BindView(R.id.ll_root)
     LinearLayout mRoot;
@@ -54,8 +49,6 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
 
     @BindView(R.id.ac_invitation_sv_root)
     ScrollView mScrollView;
-
-    private InvitationAdapter adapter;
 
     @Inject
     InvitationPresenter presenter;
@@ -82,10 +75,6 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-
-//        adapter = new InvitationAdapter();
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(adapter);
 
         inviteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +132,5 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
                 mRoot.addView(view);
             }
         }
-
-//        adapter.notifyInvitationChanged(list);
     }
 }

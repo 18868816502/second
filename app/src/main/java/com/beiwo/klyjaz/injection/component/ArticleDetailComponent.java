@@ -6,10 +6,10 @@ import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
 import dagger.Component;
 
 /**
+ * @author A
  * @name loanmarket
  * @class name：com.beihui.market.injection.component
  * @class describe
- * @author A
  * @time 2018/9/11 17:55
  */
 @Component(dependencies = AppComponent.class, modules = ArticleDetailModule.class)

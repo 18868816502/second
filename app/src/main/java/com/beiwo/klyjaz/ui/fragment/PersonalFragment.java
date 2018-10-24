@@ -18,23 +18,23 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseTabFragment;
 import com.beiwo.klyjaz.entity.EventBean;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerTabMineComponent;
 import com.beiwo.klyjaz.injection.module.TabMineModule;
 import com.beiwo.klyjaz.jjd.activity.MyBankCardActivity;
 import com.beiwo.klyjaz.jjd.activity.MyLoanActivity;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.activity.WalletActivity;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.BillSummaryActivity;
-import com.beiwo.klyjaz.ui.activity.CollectionActivity;
 import com.beiwo.klyjaz.ui.activity.H5Activity;
 import com.beiwo.klyjaz.ui.activity.HelpAndFeedActivity;
 import com.beiwo.klyjaz.ui.activity.InvitationWebActivity;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.activity.RemindActivity;
-import com.beiwo.klyjaz.ui.activity.RewardPointActivity;
 import com.beiwo.klyjaz.ui.activity.SettingsActivity;
 import com.beiwo.klyjaz.ui.activity.SysMsgActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
@@ -116,7 +116,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         super.onResume();
         presenter.onStart();
     }
-
 
     @Override
     public void onDestroy() {
@@ -228,8 +227,8 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             R.id.avatar, R.id.ll_navigate_user_profile, R.id.invite_friend,
             R.id.help_center, R.id.settings, R.id.mine_msg, R.id.dctv_loan, R.id.dctv_bank})
     public void onViewClicked(View view) {
-        if (UserHelper.getInstance(getActivity()).getProfile() == null || UserHelper.getInstance(getActivity()).getProfile().getId() == null) {
-            UserAuthorizationActivity.launch(getActivity(), null);
+        if (!UserHelper.getInstance(getActivity()).isLogin()) {
+            goLogin();
             return;
         }
         switch (view.getId()) {
@@ -243,8 +242,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     presenter.clickRemind();
                 }
                 break;
-            //登录
-            case R.id.login:
+            case R.id.login://登录
                 if (!FastClickUtils.isFastClick()) {
                     navigateLogin();
                 }
@@ -295,58 +293,53 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         }
     }
 
-    /**
-     * 登录事件
-     */
     @Override
     public void navigateLogin() {
-        if (pendingPhone != null) {
-            UserAuthorizationActivity.launch(getActivity(), pendingPhone);
-            pendingPhone = null;
-        } else {
-            UserAuthorizationActivity.launch(getActivity(), null);
-        }
+        goLogin();
     }
 
-    /**
-     * 个人中心页面
-     *
-     * @param userId 用户id
-     */
+    private void goLogin() {
+        DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {
+            @Override
+            public void success(UserProfileAbstract data) {
+                loginTv.setVisibility(View.GONE);
+                userNameTv.setVisibility(View.VISIBLE);
+                userInfo.setText("查看并编辑资料");
+                if (data.getHeadPortrait() != null) {
+                    Glide.with(getActivity())
+                            .load(data.getHeadPortrait())
+                            .asBitmap()
+                            .into(avatarIv);
+                }
+                String username = data.getUserName();
+                if (username != null) {
+                    if (LegalInputUtils.validatePhone(username)) {
+                        userNameTv.setText(CommonUtils.phone2Username(username));
+                    } else {
+                        userNameTv.setText(username);
+                    }
+                }
+            }
+        });
+    }
+
+    /*个人中心页面*/
     @Override
     public void navigateUserProfile(String userId) {
         startActivity(new Intent(getActivity(), UserProfileActivity.class));
     }
 
-    /**
-     * 直接进入系统消息 抛弃公告的选择
-     *
-     * @param userId 用户id
-     */
+    /*直接进入系统消息 抛弃公告的选择*/
     @Override
     public void navigateRemind(String userId) {
         Intent intent = new Intent(getActivity(), RemindActivity.class);
         startActivity(intent);
     }
 
-    /**
-     * 跳转到我的账单
-     *
-     * @param userId 用户id
-     */
+    /*跳转到我的账单*/
     @Override
     public void navigateMineBill(String userId) {
         startActivity(new Intent(getActivity(), BillSummaryActivity.class));
-    }
-
-    @Override
-    public void navigateCollection(String userId) {
-        startActivity(new Intent(getActivity(), CollectionActivity.class));
-    }
-
-    @Override
-    public void navigateRewardPoints() {
-        startActivity(new Intent(getActivity(), RewardPointActivity.class));
     }
 
     @Override
@@ -371,39 +364,25 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
     }
 
-    /**
-     * 进入设置页面
-     *
-     * @param userId 用户id
-     */
+    /*进入设置页面*/
     @Override
     public void navigateSetting(String userId) {
         startActivity(new Intent(getActivity(), SettingsActivity.class));
     }
 
-    /**
-     * 是否显示我的账单按钮
-     *
-     * @param visible 是否显示
-     */
+    /*是否显示我的账单按钮*/
     @Override
     public void updateMyLoanVisible(boolean visible) {
     }
 
-    /**
-     * 直接进入系统消息 抛弃公告的选择
-     *
-     * @param userId 用户id
-     */
+    /*直接进入系统消息 抛弃公告的选择*/
     @Override
     public void navigateMessage(String userId) {
         Intent intent = new Intent(getActivity(), SysMsgActivity.class);
         startActivity(intent);
     }
 
-    /**
-     * 消息数量
-     */
+    /*消息数量*/
     @Override
     public void updateMessageNum(String data) {
         if (TextUtils.isEmpty(data)) {

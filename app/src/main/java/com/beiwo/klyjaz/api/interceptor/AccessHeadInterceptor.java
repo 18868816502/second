@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,12 +30,12 @@ import okio.Buffer;
 public class AccessHeadInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private Map<String, Object> keyValue = new HashMap<>();
-    private Comparator<String> keyComparator = new Comparator<String>() {
+    /*private Comparator<String> keyComparator = new Comparator<String>() {
         @Override
         public int compare(String o1, String o2) {
             return o1.toLowerCase().compareTo(o2.toLowerCase());
         }
-    };
+    };*/
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -129,14 +128,11 @@ public class AccessHeadInterceptor implements Interceptor {
                     }
                     keyValue.put(keyDecode, URLDecoder.decode(keyvalue[1], "utf-8"));
                 }
-//                Arrays.sort(keys, keyComparator);
+                //Arrays.sort(keys, keyComparator);
                 Arrays.sort(keys);
-                for (String key : keys) {
-                    sb.append(key).append(keyValue.get(key));
-                }
+                for (String key : keys) sb.append(key).append(keyValue.get(key));
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

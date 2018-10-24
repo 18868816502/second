@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.loan;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,7 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.GroupProductBean;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
@@ -66,7 +68,7 @@ public class TabLoanFragment extends BaseComponentFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
-    private Context context;
+    private Activity context;
     private Map<String, Object> map = new HashMap<>();
     private int pageNo = 1;
     private int pageSize = 10;
@@ -132,7 +134,8 @@ public class TabLoanFragment extends BaseComponentFragment {
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
                 final GroupProductBean product = adapter.getData().get(position);
                 if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
-                    startActivity(new Intent(context, UserAuthorizationActivity.class));
+                    //startActivity(new Intent(context, UserAuthorizationActivity.class));
+                    DlgUtil.loginDlg(context, null);
                     return;
                 }
                 String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;

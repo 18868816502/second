@@ -148,7 +148,6 @@ public class HomeFragment extends BaseTabFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRecieve(String value) {
         if ("1".equals(value)) request();
-        pageAdapter.light();
     }
 
     @Override
@@ -277,7 +276,7 @@ public class HomeFragment extends BaseTabFragment {
     }
 
     private void initRecyclerView() {
-        pageAdapter = new HomePageAdapter((MainActivity) getActivity(), this);
+        pageAdapter = new HomePageAdapter(getActivity(), this);
         layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(pageAdapter);

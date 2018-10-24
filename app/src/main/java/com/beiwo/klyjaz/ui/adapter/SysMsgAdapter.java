@@ -24,14 +24,12 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
         this.context = context;
     }
 
-
     @Override
     protected void convert(BaseViewHolder helper, SysMsg.Row item) {
         if (item.getTitle() != null) {
             helper.setText(R.id.title, item.getTitle());
         }
         if (item.getExplain() != null) {
-//            helper.getView(R.id.content).getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListenerByEllipSize((TextView) helper.getView(R.id.content),2));
             helper.setText(R.id.content, item.getExplain());
         }
         helper.setText(R.id.date, dateFormat.format(new Date(item.getGmtCreate())));
@@ -42,8 +40,6 @@ public class SysMsgAdapter extends BaseQuickAdapter<SysMsg.Row, BaseViewHolder> 
             helper.setTextColor(R.id.title, context.getResources().getColor(R.color.black_2));
         }
         helper.addOnClickListener(R.id.tv_delete);
-
-
     }
 
     public void notifySysMsgChanged(List<SysMsg.Row> list) {

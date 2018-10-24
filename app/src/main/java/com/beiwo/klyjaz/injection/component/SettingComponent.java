@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = SettingModule.class)
 public interface SettingComponent {
-
     void inject(SettingsActivity activity);
 }

@@ -14,7 +14,6 @@ import okio.Source;
 
 public class ProgressResponseBody extends ResponseBody {
 
-
     //实际的待包装响应体
     private final ResponseBody responseBody;
     //进度回调接口
@@ -32,7 +31,6 @@ public class ProgressResponseBody extends ResponseBody {
         this.responseBody = responseBody;
         this.progressListener = progressListener;
     }
-
 
     /**
      * 重写调用实际的响应体的contentType

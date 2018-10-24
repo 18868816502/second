@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class EditProfessionModule {
-
     private EditProfessionContract.View mView;
 
     public EditProfessionModule(EditProfessionContract.View view) {

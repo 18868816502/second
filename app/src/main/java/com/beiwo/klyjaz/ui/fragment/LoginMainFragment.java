@@ -245,7 +245,6 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void showLoginSuccess(String msg) {
         dismissProgress();
-//        WeakRefToastUtil.showShort(getContext(), msg, R.mipmap.white_success);
         //登录后发送全局事件,更新UI
         EventBus.getDefault().post("1");
         EventBus.getDefault().post(new UserLoginEvent());

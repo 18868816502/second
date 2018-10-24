@@ -80,7 +80,6 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         };
         phoneNumberEt.addTextChangedListener(textWatcher);
@@ -88,7 +87,6 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
 
     @Override
     public void initDatas() {
-
     }
 
     @Override
@@ -110,7 +108,4 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
     public void setPresenter(ResetPwdVerifyContract.Presenter presenter) {
         //injected.nothing to do.
     }
-
-
-
 }

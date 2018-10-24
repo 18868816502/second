@@ -15,7 +15,7 @@ import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.adapter.AccountFlowCreditCardAdapter;
+import com.beiwo.klyjaz.ui.adapter.CreditBillAdapter;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -44,7 +44,7 @@ public class CreditBillActivity extends BaseComponentActivity {
     @BindView(R.id.line)
     View line;
 
-    public AccountFlowCreditCardAdapter mAdapter;
+    public CreditBillAdapter mAdapter;
     private Activity activity;
 
     @Override
@@ -58,7 +58,7 @@ public class CreditBillActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
         activity = this;
-        mAdapter = new AccountFlowCreditCardAdapter(activity);
+        mAdapter = new CreditBillAdapter(activity);
         LinearLayoutManager manager = new LinearLayoutManager(activity);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);

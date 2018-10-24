@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class RegisterVerifyModule {
-
     private RegisterVerifyContract.View mView;
 
     public RegisterVerifyModule(RegisterVerifyContract.View view) {

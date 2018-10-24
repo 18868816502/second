@@ -18,7 +18,6 @@ import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.adapter.NutEmailAdapter;
-import com.beiwo.klyjaz.ui.rvdecoration.CommVerItemDeco;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -94,9 +93,6 @@ public class NutEmailActivity extends BaseComponentActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-        float density = getResources().getDisplayMetrics().density;
-        recyclerView.addItemDecoration(new CommVerItemDeco((int) (density * 0.5), (int) (15 * density), (int) (15 * density)));
-
         SlidePanelHelper.attach(this);
     }
 

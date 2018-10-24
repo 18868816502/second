@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class SettingModule {
-
     private SettingContract.View mView;
 
     public SettingModule(SettingContract.View view) {

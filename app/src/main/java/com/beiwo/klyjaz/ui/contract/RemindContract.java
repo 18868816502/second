@@ -26,8 +26,5 @@ public interface RemindContract {
         void selectPushRemindType();
 
         void selectmessageRemindType();
-
     }
-
-
 }

@@ -8,6 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = EditProfessionModule.class)
 public interface EditProfessionComponent {
-
     void inject(EditJobGroupActivity activity);
 }

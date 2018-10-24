@@ -20,11 +20,9 @@ import com.beiwo.klyjaz.injection.module.TabMineModule;
 import com.beiwo.klyjaz.jjd.activity.MyBankCardActivity;
 import com.beiwo.klyjaz.jjd.activity.MyLoanActivity;
 import com.beiwo.klyjaz.ui.activity.BillSummaryActivity;
-import com.beiwo.klyjaz.ui.activity.CollectionActivity;
 import com.beiwo.klyjaz.ui.activity.HelpAndFeedActivity;
 import com.beiwo.klyjaz.ui.activity.InvitationWebActivity;
 import com.beiwo.klyjaz.ui.activity.RemindActivity;
-import com.beiwo.klyjaz.ui.activity.RewardPointActivity;
 import com.beiwo.klyjaz.ui.activity.SettingsActivity;
 import com.beiwo.klyjaz.ui.activity.SysMsgActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
@@ -233,16 +231,6 @@ public class MineFragment extends BaseTabFragment implements TabMineContract.Vie
     @Override
     public void navigateMineBill(String userId) {
         startActivity(new Intent(getActivity(), BillSummaryActivity.class));
-    }
-
-    @Override
-    public void navigateCollection(String userId) {
-        startActivity(new Intent(getActivity(), CollectionActivity.class));
-    }
-
-    @Override
-    public void navigateRewardPoints() {
-        startActivity(new Intent(getActivity(), RewardPointActivity.class));
     }
 
     @Override

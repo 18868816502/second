@@ -6,15 +6,14 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * @author A
  * @name loanmarket
  * @class name：com.beihui.market.injection.module
  * @class describe
- * @author A
  * @time 2018/9/11 17:52
  */
 @Module
 public class PersonalCenterModule {
-
     private PersonalCenterContact.View view;
 
     public PersonalCenterModule(PersonalCenterContact.View view) {
@@ -22,7 +21,7 @@ public class PersonalCenterModule {
     }
 
     @Provides
-    public PersonalCenterContact.View provideView(){
+    public PersonalCenterContact.View provideView() {
         return view;
     }
 }

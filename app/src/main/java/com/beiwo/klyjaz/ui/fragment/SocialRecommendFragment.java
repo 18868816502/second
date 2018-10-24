@@ -102,7 +102,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override
@@ -121,7 +120,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
-                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE,"");
+                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 } else {
@@ -173,7 +172,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @SuppressLint("CheckResult")
     private void fetchData1() {
         String userId = "";
-        ;
         if (UserHelper.getInstance(getActivity()) != null) {
             userId = UserHelper.getInstance(getActivity()).getProfile().getId();
         }

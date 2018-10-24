@@ -40,9 +40,6 @@ public class DeployAdapter extends BaseQuickAdapter<EventBean, BaseViewHolder> {
                 helper.setText(R.id.subTitle_tv, str[1]);
             }
         }
-
         Glide.with(context).load(item.getImgUrl()).into((ImageView) helper.getView(R.id.activity_event_img));
-
-
     }
 }

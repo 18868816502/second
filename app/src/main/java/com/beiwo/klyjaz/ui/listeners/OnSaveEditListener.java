@@ -2,8 +2,6 @@ package com.beiwo.klyjaz.ui.listeners;
 
 import android.widget.EditText;
 
-import com.beiwo.klyjaz.view.ClearEditText;
-
 /**
  * @author chenguoguo
  * @name loanmarket
@@ -12,12 +10,11 @@ import com.beiwo.klyjaz.view.ClearEditText;
  * @time 2018/9/18 16:56
  */
 public interface OnSaveEditListener {
-
     /**
      * 点击事件回调方法
+     *
      * @param flag
      * @param strEdit
      */
     void onSaveEdit(EditText editText, int flag, String strEdit);
-
 }

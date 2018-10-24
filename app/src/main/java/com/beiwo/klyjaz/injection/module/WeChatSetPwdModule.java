@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class WeChatSetPwdModule {
-
     private WeChatSetPwdContract.View view;
 
     public WeChatSetPwdModule(WeChatSetPwdContract.View view) {

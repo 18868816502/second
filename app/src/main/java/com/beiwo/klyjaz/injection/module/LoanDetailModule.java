@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class LoanDetailModule {
-
     private LoanProductDetailContract.View mView;
 
     public LoanDetailModule(LoanProductDetailContract.View view) {

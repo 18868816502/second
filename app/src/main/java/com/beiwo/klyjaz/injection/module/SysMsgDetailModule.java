@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class SysMsgDetailModule {
-
     private SysMsgDetailContract.View mView;
 
     public SysMsgDetailModule(SysMsgDetailContract.View view) {

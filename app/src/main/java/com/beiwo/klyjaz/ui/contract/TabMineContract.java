@@ -8,7 +8,6 @@ import com.beiwo.klyjaz.helper.UserHelper;
 public interface TabMineContract {
 
     interface Presenter extends BasePresenter {
-
         /**
          * 点击考拉圈圈
          */
@@ -33,16 +32,6 @@ public interface TabMineContract {
          * 点击我的账单
          */
         void clickMineBill();
-
-        /**
-         * 点击我的收藏
-         */
-        void clickCollection();
-
-        /**
-         * 点击我的积分
-         */
-        void clickRewardPoints();
 
         /**
          * 点击邀请朋友
@@ -110,18 +99,6 @@ public interface TabMineContract {
         void navigateMineBill(String userId);
 
         /**
-         * 导航至我的收藏
-         *
-         * @param userId 用户id
-         */
-        void navigateCollection(String userId);
-
-        /**
-         * 导航至我的积分
-         */
-        void navigateRewardPoints();
-
-        /**
          * 导航至邀请朋友
          *
          * @param userId 用户id
@@ -160,6 +137,5 @@ public interface TabMineContract {
          * @param data
          */
         void updateMessageNum(String data);
-
     }
 }

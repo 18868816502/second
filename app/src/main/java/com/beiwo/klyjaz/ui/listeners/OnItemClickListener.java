@@ -8,11 +8,10 @@ package com.beiwo.klyjaz.ui.listeners;
  * @time 2018/9/18 16:56
  */
 public interface OnItemClickListener {
-
     /**
      * 点击事件回调方法
+     *
      * @param position 点击item的位置
      */
     void onItemClick(int position);
-
 }

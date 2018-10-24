@@ -113,7 +113,5 @@ public interface LoanProductDetailContract {
          * 授权注册等待dialog
          */
         void updateRegisterDialogVisibility(boolean visible);
-
-
     }
 }

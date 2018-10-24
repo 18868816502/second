@@ -31,7 +31,6 @@ public class RateView extends LinearLayout {
         stars[2] = (ImageView) findViewById(R.id.star_3);
         stars[3] = (ImageView) findViewById(R.id.star_4);
         stars[4] = (ImageView) findViewById(R.id.star_5);
-
     }
 
     public void setRate(int star, boolean half) {

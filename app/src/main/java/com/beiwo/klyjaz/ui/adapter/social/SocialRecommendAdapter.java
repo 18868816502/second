@@ -15,6 +15,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
@@ -37,59 +38,42 @@ import butterknife.ButterKnife;
 public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<SocialTopicBean.ForumBean> datas;
-    private Context mContext;
-    private static final int ADVANTAGE = 0;
-    private static final int OPERATE_TOPIC = 1;
-    private static final int USER_TOPIC = 2;
+    private Activity mContext;
 
     private int mLastPosition = 0;
 
-    public SocialRecommendAdapter(Context mContext) {
+    public SocialRecommendAdapter(Activity mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
     }
 
-    public void setDatas(List<SocialTopicBean.ForumBean> mList){
+    public void setDatas(List<SocialTopicBean.ForumBean> mList) {
         datas.clear();
         datas.addAll(mList);
         notifyDataSetChanged();
     }
 
-    public void appendDatas(List<SocialTopicBean.ForumBean> mList){
+    public void appendDatas(List<SocialTopicBean.ForumBean> mList) {
         mLastPosition = datas.size();
         datas.addAll(mList);
-//        notifyDataSetChanged();
         notifyItemInserted(mLastPosition);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View operateView = LayoutInflater.from(mContext).inflate(R.layout.item_social_recommend_operate_topic,parent,false);
+        View operateView = LayoutInflater.from(mContext).inflate(R.layout.item_social_recommend_operate_topic, parent, false);
         return new OperateTopicViewHolder(operateView);
-//        switch (viewType){
-//            case ADVANTAGE:
-//                View advantageView = LayoutInflater.from(mContext).inflate(R.layout.item_social_recommend_advertage,parent,false);
-//                return new AdvantageViewHolder(advantageView);
-//            case OPERATE_TOPIC:
-//                View operateView = LayoutInflater.from(mContext).inflate(R.layout.item_social_recommend_operate_topic,parent,false);
-//                return new OperateTopicViewHolder(operateView);
-//            case USER_TOPIC:
-//                View userTopicView = LayoutInflater.from(mContext).inflate(R.layout.item_social_recommend_user_topic,parent,false);
-//                return new UserTopicViewHolder(userTopicView);
-//            default:
-//                return null;
-//        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         OperateTopicViewHolder viewHoler = (OperateTopicViewHolder) holder;
 
-        if(datas.get(position).getPicUrl()!=null&&datas.get(position).getPicUrl().size()!=0) {
+        if (datas.get(position).getPicUrl() != null && datas.get(position).getPicUrl().size() != 0) {
             viewHoler.ivTopic.setVisibility(View.VISIBLE);
             viewHoler.tvTopicContent.setVisibility(View.GONE);
             Glide.with(mContext).load(datas.get(position).getPicUrl().get(0)).into(viewHoler.ivTopic);
-        }else{
+        } else {
             viewHoler.ivTopic.setVisibility(View.GONE);
             viewHoler.tvTopicContent.setVisibility(View.VISIBLE);
             viewHoler.tvTopicContent.setText(datas.get(position).getContent());
@@ -98,7 +82,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         viewHoler.tvTopicContent.setText(datas.get(position).getContent());
         Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHoler.ivAvatar);
         viewHoler.tvName.setText(datas.get(position).getUserName());
-        viewHoler.tvPraise.setText(String.valueOf(datas.get(position).getPraiseCount()+""));
+        viewHoler.tvPraise.setText(String.valueOf(datas.get(position).getPraiseCount() + ""));
         if (datas.get(position).getIsPraise() == 0) {
             Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
@@ -115,36 +99,6 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemCount() {
         return datas.size();
-    }
-
-//    @Override
-//    public int getItemViewType(int position) {
-
-//        if(datas.size() < 7){
-//            if(position == 0){
-//                return ADVANTAGE;
-//            }else if(position == getItemCount() - 1){
-//                return USER_TOPIC;
-//            }else{
-//                return OPERATE_TOPIC;
-//            }
-//        }else{
-//            if(position == 0){
-//                return ADVANTAGE;
-//            }else if(position == 7){
-//                return USER_TOPIC;
-//            }else{
-//                return OPERATE_TOPIC;
-//            }
-//        }
-//    }
-
-    class AdvantageViewHolder extends RecyclerView.ViewHolder {
-
-        public AdvantageViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
-        }
     }
 
     class OperateTopicViewHolder extends RecyclerView.ViewHolder {
@@ -164,29 +118,22 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         public OperateTopicViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT,datas.get((Integer) v.getTag()).getForumId());
-                    if(UserHelper.getInstance(mContext).isLogin()) {
+                    DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, datas.get((Integer) v.getTag()).getForumId());
+                    if (UserHelper.getInstance(mContext).isLogin()) {
                         Intent intent = new Intent(mContext, ArticleDetailActivity.class);
                         intent.putExtra("userId", datas.get((Integer) v.getTag()).getUserId());
                         intent.putExtra("forumId", datas.get((Integer) v.getTag()).getForumId());
                         mContext.startActivity(intent);
-                    }else{
-                        UserAuthorizationActivity.launch((Activity) mContext, null);
+                    } else {
+                        //UserAuthorizationActivity.launch((Activity) mContext, null);
+                        DlgUtil.loginDlg(mContext, null);
                     }
                 }
             });
-        }
-    }
-
-    class UserTopicViewHolder extends RecyclerView.ViewHolder {
-
-        public UserTopicViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
         }
     }
 }

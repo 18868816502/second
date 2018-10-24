@@ -54,11 +54,6 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
     public void setData(List<String> mList){
         this.mList.clear();
         this.mList.addAll(mList);
-//        if(mList.size() >= 9){
-//            footViewHolder.itemView.setVisibility(View.GONE);
-//        }else{
-//            footViewHolder.itemView.setVisibility(View.VISIBLE);
-//        }
         notifyDataSetChanged();
     }
 
@@ -174,7 +169,6 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
                 .countable(true)
                 .capture(true)
                 .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider","kaola"))
-//                .maxSelectable(9)
                 .maxSelectable(9 - mList.size())
                 .gridExpectedSize(mContext.getResources().getDimensionPixelSize(R.dimen.dp120))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -185,5 +179,4 @@ public class CommunityPublishHeadAdapter extends RecyclerView.Adapter<RecyclerVi
                 .autoHideToolbarOnSingleTap(true)
                 .forResult(CommunityPublishActivity.REQUEST_CODE_CHOOSE);
     }
-
 }

@@ -7,6 +7,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class)
 public interface AppUpdateHelperComponent {
-
     void inject(AppUpdateHelper helper);
 }

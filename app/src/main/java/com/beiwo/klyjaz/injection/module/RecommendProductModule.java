@@ -8,7 +8,6 @@ import dagger.Provides;
 
 @Module
 public class RecommendProductModule {
-
     private RecommendProductContract.View view;
 
     public RecommendProductModule(RecommendProductContract.View view) {

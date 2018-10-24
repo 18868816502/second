@@ -16,5 +16,4 @@ public class ResetPwdVerifyPresenter extends BaseRxPresenter implements ResetPwd
         mApi = api;
         mView = view;
     }
-
 }

@@ -159,5 +159,4 @@ public class SocialFragment extends BaseComponentFragment {
                 break;
         }
     }
-
 }

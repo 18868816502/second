@@ -8,7 +8,5 @@ import dagger.Component;
 
 @Component(dependencies = AppComponent.class, modules = WeChatSetPwdModule.class)
 public interface WeChatSetPwdComponent {
-
     void inject(WeChatSetPwdActivity activity);
-
 }

@@ -1,6 +1,5 @@
 package com.beiwo.klyjaz.loan;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
