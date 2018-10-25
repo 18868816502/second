@@ -18,4 +18,5 @@
     <item name="tag_praise" type="id"/>
     <item name="tag_comment" type="id"/>
     <item name="tag_delete" type="id"/>
+    <item name="tag_user_avatar" type="id"/>
 </resources>

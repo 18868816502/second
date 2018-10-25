@@ -17,9 +17,11 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.view.CircleImageView;
+import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -94,6 +96,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
         viewHoler.itemView.setTag(position);
         viewHoler.tvPraise.setTag(position);
+        viewHoler.ivAvatar.setTag(R.id.tag_user_avatar,position);
     }
 
     @Override
@@ -131,6 +134,18 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra("userId", "");
                     }
                     intent.putExtra("forumId", datas.get((Integer) v.getTag()).getForumId());
+                    mContext.startActivity(intent);
+                }
+            });
+            ivAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!UserHelper.getInstance(mContext).isLogin()) {
+                        DlgUtil.loginDlg(mContext, null);
+                        return;
+                    }
+                    Intent intent = new Intent(mContext, PersonalCenterActivity.class);
+                    intent.putExtra("userId",datas.get((Integer) v.getTag(R.id.tag_user_avatar)).getUserId());
                     mContext.startActivity(intent);
                 }
             });

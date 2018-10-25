@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.social.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.view.BannerLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class PhotoDetailActivity extends BaseComponentActivity {
             datas = intent.getStringArrayListExtra("datas");
             position = intent.getIntExtra("position", 0);
         }
-        banner.setData(datas, null);
+        banner.setData(R.layout.item_view_banner_photo,datas, null);
         banner.setAutoPlayAble(false);
         banner.setCurrentItem(position);
         banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {

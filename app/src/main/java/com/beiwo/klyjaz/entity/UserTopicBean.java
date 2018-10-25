@@ -37,6 +37,7 @@ public class UserTopicBean {
     private int praiseCount;
     private int commentCount;
     private List<String> picUrl;
+    private int isPraise;
 
     public String getUserId() {
         return userId;
@@ -124,5 +125,13 @@ public class UserTopicBean {
 
     public void setPicUrl(List<String> picUrl) {
         this.picUrl = picUrl;
+    }
+
+    public int getIsPraise() {
+        return isPraise;
+    }
+
+    public void setIsPraise(int isPraise) {
+        this.isPraise = isPraise;
     }
 }

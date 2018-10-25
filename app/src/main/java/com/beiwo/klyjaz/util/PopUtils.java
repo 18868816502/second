@@ -3,6 +3,7 @@ package com.beiwo.klyjaz.util;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.WindowManager;
 
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 
@@ -34,6 +35,25 @@ public class PopUtils {
         mPopDialog = new PopDialog.Builder(fManager,mContext)
                 .setLayoutId(layoutId)
                 .setGravity(Gravity.BOTTOM)
+                .setCancelableOutside(true)
+                .setInitPopListener(listener)
+                .create();
+        mPopDialog.show();
+    }
+
+    /**
+     * 显示评论列表弹出框
+     * @param layoutId
+     * @param fManager
+     * @param mContext
+     * @param listener
+     */
+    public static void showBottomListWindow(int layoutId, FragmentManager fManager, Context mContext,
+                                           PopDialog.OnInitPopListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
+                .setLayoutId(layoutId)
+                .setGravity(Gravity.BOTTOM)
+                .setFlag(2)
                 .setCancelableOutside(true)
                 .setInitPopListener(listener)
                 .create();
@@ -74,6 +94,7 @@ public class PopUtils {
         commentDialog = new PopDialog.Builder(fManager,mContext)
                 .setLayoutId(layoutId)
                 .setHeight(58)
+                .setDimAmount(0.0f)
                 .setGravity(Gravity.BOTTOM)
                 .setCancelableOutside(true)
                 .setInitPopListener(initListener)
