@@ -58,6 +58,7 @@ public class ProType1Activity extends BaseComponentActivity {
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        refresh_layout.setEnableRefresh(false);
         refresh_layout.setEnableLoadMore(false);
     }
 

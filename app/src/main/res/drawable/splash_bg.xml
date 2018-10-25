@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <!--<item>
         <shape android:shape="rectangle">
             <solid android:color="@android:color/white" />
         </shape>
@@ -11,5 +11,6 @@
         <bitmap
             android:gravity="center_horizontal|bottom"
             android:src="@drawable/splash_bottom_logo" />
-    </item>
+    </item>-->
+    <item android:drawable="@drawable/ic_splash" />
 </layer-list>

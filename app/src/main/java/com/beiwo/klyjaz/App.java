@@ -85,18 +85,6 @@ public class App extends Application {
         registerActivityLifecycleCallbacks(ActivityTracker.getInstance());//activity生命周期管理
         initComponent();
         if (TextUtils.equals(getProcessName(this), getPackageName())) {
-            /*是否审核状态*/
-            Api.getInstance().audit()
-                    .compose(RxResponse.<Audit>compatT())
-                    .subscribe(new ApiObserver<Audit>() {
-                        @Override
-                        public void onNext(Audit data) {
-                            try {
-                                audit = data.audit;
-                            } catch (Exception e) {
-                            }
-                        }
-                    });
             //pv，uv统计
             androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             if (UserHelper.getInstance(this).isLogin()) {

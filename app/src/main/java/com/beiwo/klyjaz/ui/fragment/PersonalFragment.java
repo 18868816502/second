@@ -108,8 +108,8 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Statistic.onEvent(Events.ENTER_MINE_PAGE);
-        if (!EventBus.getDefault().isRegistered(getActivity())) {
-            EventBus.getDefault().register(getActivity());
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 
@@ -122,16 +122,33 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) {
-            System.out.println("PersonalFragment recieve 1");
+            System.out.println("personal fregment 1");
             request();
+            loginTv.setVisibility(View.GONE);
+            userNameTv.setVisibility(View.VISIBLE);
+            userInfo.setText("查看并编辑资料");
+            UserHelper.Profile profile = UserHelper.getInstance(getActivity()).getProfile();
+            if (profile != null) {
+                Glide.with(getActivity())
+                        .load(profile.getHeadPortrait())
+                        .into(avatarIv);
+                String username = profile.getUserName();
+                if (username != null) {
+                    if (LegalInputUtils.validatePhone(username)) {
+                        userNameTv.setText(CommonUtils.phone2Username(username));
+                    } else {
+                        userNameTv.setText(username);
+                    }
+                }
+            }
         }
     }
 
     @Override
     public void onDestroy() {
         presenter.onDestroy();
-        if (EventBus.getDefault().isRegistered(getActivity())) {
-            EventBus.getDefault().unregister(getActivity());
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
         if (myRecevier != null) {
             getActivity().unregisterReceiver(myRecevier);

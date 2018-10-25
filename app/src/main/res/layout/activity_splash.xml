@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="35dp"
-        android:src="@drawable/splash_bottom_logo" />
+        android:src="@drawable/splash_bottom_logo"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/ad_image"
@@ -18,7 +19,8 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="130dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/ignore"

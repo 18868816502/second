@@ -3,7 +3,6 @@ package com.beiwo.klyjaz.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,7 +30,6 @@ import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.util.RxUtil;
-import com.beiwo.klyjaz.util.SPUtils;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,13 +79,13 @@ public class SplashActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         context = this;
-        SPUtils.setValue(this, "splash");
+        /*SPUtils.setValue(this, "splash");
         ignoreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launch();
             }
-        });
+        });*/
     }
 
     @Override
@@ -95,14 +93,19 @@ public class SplashActivity extends BaseComponentActivity {
         handler = new SplashHandler(this);
         Message msg = Message.obtain();
         msg.what = 1;
-        handler.sendMessageDelayed(msg, 1000 * 5);
+        handler.sendMessageDelayed(msg, 1000 * 3);
+        /*是否审核状态*/
         Api.getInstance().audit()
                 .compose(RxResponse.<Audit>compatT())
                 .subscribe(new ApiObserver<Audit>() {
                     @Override
                     public void onNext(Audit data) {
                         try {
-                            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                            App.audit = data.audit;
+                            handler.removeMessages(1);
+                            startActivity(new Intent(context, data.audit == 2 ? MainActivity.class : VestMainActivity.class));
+                            finish();
+                            /*String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
                             if (version.equals(SPUtils.getLastInstalledVersion(context))) {
                                 checkAd();
                             } else {
@@ -110,8 +113,8 @@ public class SplashActivity extends BaseComponentActivity {
                                 SPUtils.setLastInstalledVersion(context, version);
                                 startActivity(new Intent(context, data.audit == 2 ? MainActivity.class : VestMainActivity.class));
                                 finish();
-                            }
-                        } catch (PackageManager.NameNotFoundException e) {
+                            }*/
+                        } catch (Exception e) {
                             launch();
                         }
                     }
@@ -122,7 +125,6 @@ public class SplashActivity extends BaseComponentActivity {
                         launch();
                     }
                 });
-
     }
 
     @Override
