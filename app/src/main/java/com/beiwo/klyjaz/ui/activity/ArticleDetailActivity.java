@@ -347,7 +347,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //文章评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 mPopType = 4;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             //评论给点赞
             case ConstantTag.TAG_PRAISE_COMMENT:
@@ -391,19 +392,22 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 replyDtoListBean = datas.get(pos).getReplyDtoList().get(position);
                 mPopType = 4;
                 clickType = 3;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             //外层回复
             case ConstantTag.TAG_COMMENT_OUTSIDE:
                 replyBean = datas.get(position);
                 mPopType = 4;
                 clickType = 2;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             case ConstantTag.TAG_COMMENT_MORE:
                 mPopType = 4;
                 clickType = 4;
-                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
+                PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             default:
                 break;
@@ -485,6 +489,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     private void initCommentListPop(View view) {
         setOnClick(view.findViewById(R.id.iv_close), view.findViewById(R.id.tv_comment));
+        View emptyContainer = view.findViewById(R.id.empty_container);
         tvCommentTitle = view.findViewById(R.id.tv_comment_title);
         RecyclerView itemRecycler = view.findViewById(R.id.comment_recycler);
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -496,6 +501,13 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         childAdapter.setDatas(datas);
         childAdapter.notifyDataSetChanged();
         childAdapter.setOnViewClickListener(this);
+        if(datas.size() == 0){
+            emptyContainer.setVisibility(View.VISIBLE);
+            itemRecycler.setVisibility(View.GONE);
+        }else{
+            emptyContainer.setVisibility(View.GONE);
+            itemRecycler.setVisibility(View.VISIBLE);
+        }
 
         if(clickType != 4){
             mPopType = 5;

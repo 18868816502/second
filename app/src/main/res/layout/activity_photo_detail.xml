@@ -8,15 +8,14 @@
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/bgaBanner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:banner_pointAutoPlayAble="false"
         app:banner_pointContainerBackground="@color/transparent"
         app:banner_indicatorGravity="bottom|center_horizontal"
         app:banner_isNumberIndicator="true"
         app:banner_numberIndicatorTextSize="@dimen/sp16"
-        app:banner_numberIndicatorBackground="@color/transparent"
-        android:scaleType="centerInside"/>
+        app:banner_numberIndicatorBackground="@color/transparent"/>
 
     <LinearLayout
         android:id="@+id/back_container"

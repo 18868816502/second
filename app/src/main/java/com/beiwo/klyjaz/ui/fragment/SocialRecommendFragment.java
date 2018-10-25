@@ -56,6 +56,8 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.empty_container)
+    View emptyContainer;
     @BindView(R.id.iv_publish)
     ImageView ivPublish;
     private SocialRecommendAdapter adapter;
@@ -188,6 +190,13 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                             if (1 == pageNo) {
                                 refreshLayout.finishRefresh();
                                 adapter.setDatas(result.getData().getForum());
+                                if(result.getData().getForum().size() == 0){
+                                    refreshLayout.setVisibility(View.GONE);
+                                    emptyContainer.setVisibility(View.VISIBLE);
+                                }else{
+                                    refreshLayout.setVisibility(View.VISIBLE);
+                                    emptyContainer.setVisibility(View.GONE);
+                                }
                             } else {
                                 refreshLayout.finishLoadMore();
                                 adapter.appendDatas(result.getData().getForum());

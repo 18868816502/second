@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -179,6 +180,11 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         }
         holder.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
         holder.tvCommentNum.setText(String.valueOf(bean.getCommentCount()));
+//        if (mList.get(position).getIsPraise() == 0) {
+//            holder.ivPraise.setBackgroundResource(R.drawable.icon_social_topic_praise_unselect);
+//        } else {
+//            holder.ivPraise.setBackgroundResource(R.drawable.icon_social_topic_praise_select);
+//        }
     }
 
     @Override

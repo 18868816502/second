@@ -112,6 +112,11 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                         mContext.startActivity(intent);
                     }
                 });
+                if(forumBean.getPicUrl().size() == 1) {
+                    headViewHolder.bgaBanner.setAutoPlayAble(false);
+                }else{
+                    headViewHolder.bgaBanner.setAutoPlayAble(true);
+                }
             } else {
                 headViewHolder.bgaBanner.setVisibility(View.GONE);
             }

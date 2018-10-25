@@ -78,6 +78,7 @@ public class PopDialog extends BaseDialog {
     private float mDimAmount = 0.6f;
 
     private int mAnimationAnim;
+    private int flag = 0;
     /**
      * 弹窗类型默认为普通弹窗
      */
@@ -130,7 +131,11 @@ public class PopDialog extends BaseDialog {
             if (mHeight > 0) {
                 layoutParams.height = mHeight;
             } else {
-                layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                if(flag == 0) {
+                    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                }else{
+                    layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+                }
             }
             //透明度
             layoutParams.dimAmount = mDimAmount;
@@ -202,6 +207,17 @@ public class PopDialog extends BaseDialog {
         public Builder setHeight(int mHeight) {
             int px = DensityUtil.dp2px(mContext, mHeight);
             mDialog.mHeight = px;
+            return this;
+        }
+
+        /**
+         * 设置
+         *
+         * @param flag
+         * @return
+         */
+        public Builder setFlag(int flag) {
+            mDialog.flag = flag;
             return this;
         }
 
