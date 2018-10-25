@@ -170,7 +170,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) {
             System.out.println("ArticleDetailActivity recieve 1");
-            fetchData();
+            fetchForumInfo();
+//            fetchData();
         }
     }
 
@@ -314,8 +315,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        pageNo++;
-        fetchData();
+//        pageNo++;
+//        fetchData();
+        fetchForumInfo();
     }
 
     @Override
@@ -530,6 +532,12 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             this.datas.addAll(list);
             adapter.setDatas(datas, forumBean);
         }
+        if(tvCommentTitle != null){
+            tvCommentTitle.setText(String.valueOf("全部" + datas.size() + "条评论"));
+        }
+        if(childAdapter != null){
+            childAdapter.setDatas(datas);
+        }
     }
 
     @Override
@@ -551,7 +559,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onCancelReplySucceed() {
         ToastUtil.toast("删除成功");
-        presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
+        fetchForumInfo();
+//        fetchData();
     }
 
     @Override

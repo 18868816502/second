@@ -62,6 +62,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         CommmentViewHolder viewHolder = (CommmentViewHolder) holder;
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
+        viewHolder.tvCommentDelete.setTag(position);
         viewHolder.itemView.setTag(position);
         viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar, position);
 
