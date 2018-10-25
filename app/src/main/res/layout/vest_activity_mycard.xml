@@ -8,7 +8,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+        android:minHeight="45dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,8 +26,7 @@
             android:layout_height="28dp"
             android:layout_gravity="right"
             android:layout_marginRight="12dp"
-            android:padding="5dp"
-            android:src="@drawable/mail_add_icon" />
+            android:src="@drawable/ic_add" />
     </android.support.v7.widget.Toolbar>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

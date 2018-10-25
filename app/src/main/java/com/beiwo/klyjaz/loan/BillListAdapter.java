@@ -31,9 +31,6 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.annotations.NonNull;
 
 /**
@@ -52,7 +49,6 @@ public class BillListAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
     private Resources resources;
     private Handler handler = new Handler(Looper.getMainLooper());
     private UserHelper userHelper;
-    private List<Bill> dataSet = new ArrayList<>();
     private Runnable task = new Runnable() {
         @Override
         public void run() {
@@ -70,10 +66,9 @@ public class BillListAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
         mActivity = (BillListActivity) helper.itemView.getContext();
         resources = mActivity.getResources();
         userHelper = UserHelper.getInstance(mActivity);
-        dataSet = getData();
         //icon
         ImageView iv_home_bill_icon = helper.getView(R.id.iv_home_bill_icon);
-        Glide.with(mActivity).load(item.getLogoUrl()).transform(new GlideCircleTransform(mActivity)).into(iv_home_bill_icon);
+        Glide.with(mActivity).load(item.getLogoUrl()).error(R.color.white_7).transform(new GlideCircleTransform(mActivity)).into(iv_home_bill_icon);
         //name
         helper.setText(R.id.tv_home_bill_name, item.getTitle());
         //tag + 同步按钮

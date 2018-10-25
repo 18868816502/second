@@ -136,15 +136,14 @@ public class AddCardActivity extends BaseComponentActivity {
                     @Override
                     public void accept(CharSequence card) throws Exception {
                         if (!TextUtils.isEmpty(card)) {
-                            if (card.length() > 23) {
-                                tv_card_num.setTextSize(21);
-                            } else if (card.length() > 15) {
-                                tv_card_num.setTextSize(23);
-                            } else tv_card_num.setTextSize(25);
+                            if (card.length() > 20) {
+                                tv_card_num.setTextSize(24.3f);
+                            } else tv_card_num.setTextSize(29);
                             tv_card_num.setText(card);
                         } else {
                             cardBank();
                             tv_card_num.setText(getString(R.string.card_num_default));
+                            tv_card_num.setTextSize(27.5f);
                         }
                         if (isBankCard(cardNo)) {
                             Api.getInstance().bankName(cardNo)
@@ -162,7 +161,7 @@ public class AddCardActivity extends BaseComponentActivity {
                                                 Integer bg = nameAndLogo.get("bg");
                                                 iv_card_icon.setImageResource(bankLogo);
                                                 iv_card_icon.setBackgroundResource(R.drawable.bg_oval_white);
-                                                ll_card_wrap.setBackgroundResource(BankInfoUtil.bgResource(bg));
+                                                //ll_card_wrap.setBackgroundResource(BankInfoUtil.bgResource(bg));
                                             } else {
                                                 cet_bank_name.setEnabled(true);
                                                 cardBank();

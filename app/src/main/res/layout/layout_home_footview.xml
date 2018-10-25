@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:text="考拉记账 · 专业贷款"
+        android:text="考拉有借 · 专业贷款"
         android:textColor="#d3d4d5"
         android:textSize="10dp" />
 

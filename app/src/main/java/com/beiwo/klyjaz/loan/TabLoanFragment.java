@@ -101,6 +101,7 @@ public class TabLoanFragment extends BaseComponentFragment {
 
         map.put("pageNo", pageNo);
         map.put("pageSize", pageSize);
+        map.put("type", 5);
         map.put("platform", 1);
 
         right = ContextCompat.getDrawable(context, R.drawable.loan_selected);
@@ -116,6 +117,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                 map.clear();
                 map.put("pageNo", pageNo);
                 map.put("pageSize", pageSize);
+                map.put("type", 5);
                 map.put("platform", 1);
                 request(map);
             }
@@ -452,7 +454,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                                 map.put("pageNo", pageNo);
                                 switch (v.getId()) {
                                     case R.id.tv_sort_1:
-                                        type = 0;
+                                        type = 5;
                                         break;
                                     case R.id.tv_sort_2:
                                         type = 2;

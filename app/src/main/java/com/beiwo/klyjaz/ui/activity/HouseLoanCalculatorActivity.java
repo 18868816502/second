@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -69,7 +70,7 @@ public class HouseLoanCalculatorActivity extends AppCompatActivity implements Vi
     @BindView(R.id.tool_bar)
     Toolbar tool_bar;
     @BindView(R.id.rl_container)
-    RelativeLayout rlContainer;
+    ViewGroup rlContainer;
     @BindView(R.id.navigate)
     ImageView ivBack;
     @BindView(R.id.tab_comm)

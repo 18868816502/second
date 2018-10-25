@@ -114,10 +114,10 @@ public class AddTicketActivity extends BaseComponentActivity {
     protected void configureComponent(AppComponent appComponent) {
     }
 
-    @OnClick({R.id.ticket_save})
+    @OnClick({R.id.toolbar_right_txt})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ticket_save:
+            case R.id.toolbar_right_txt:
                 //公司名称
                 companyName = str(cet_company_name);
                 if (TextUtils.isEmpty(companyName)) {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CircleProgressBar;
@@ -55,6 +56,7 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
      * 1:第一步 2:第二步 3:第三步
      */
     private int mVertifyState = 1;
+    private int progress;
     private EditText etIDCardName;
     private EditText etIDCardNo;
 
@@ -89,6 +91,7 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
         Intent intent = getIntent();
         if (intent != null) {
             mVertifyState = intent.getIntExtra("mVertifyState", 1);
+            progress = intent.getIntExtra("money", 2000);
             switchVertifyLayout();
         } else {
             loadFirstLayout();
@@ -291,7 +294,10 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
 
         @Override
         public void onFinish() {
-            startActivity(new Intent(getApplicationContext(), App.audit == 2 ? MainActivity.class: VestMainActivity.class));
+            Intent intent = new Intent(getApplicationContext(), LoanActivity.class);
+            intent.putExtra("money", progress);
+            intent.putExtra("charge", progress * 1.0f / 100);
+            startActivity(intent);
             finish();
         }
     }

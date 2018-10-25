@@ -64,25 +64,13 @@
                     android:orientation="horizontal"
                     android:paddingBottom="20dp">
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp">
-
-                        <View
-                            android:layout_width="95dp"
-                            android:layout_height="95dp"
-                            android:background="@drawable/mine_bg_head_shadow" />
-
-                        <com.beiwo.klyjaz.view.CircleImageView
-                            android:id="@+id/avatar"
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/mine_icon_head"
-                            app:civ_border_color="#ffffff"
-                            app:civ_border_width="3dp" />
-                    </FrameLayout>
+                    <com.beiwo.klyjaz.view.CircleImageView
+                        android:id="@+id/avatar"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/mine_icon_head" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -132,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
                     android:layout_marginBottom="12dp"
-                    android:background="@mipmap/bg_bill_item">
+                    android:background="@mipmap/bg_mine">
 
                     <com.beiwo.klyjaz.loan.DrawableCenterTextView
                         android:id="@+id/dctv_loan"
@@ -195,7 +183,7 @@
                     app:left_textView_text="@string/my_wallet"
                     app:left_textView_textSize="15sp"
                     app:right_textView1_Visible="true"
-                    app:right_textView1_color="#FF5240"
+                    app:right_textView1_color="#ff5240"
                     app:right_textView1_text="支付宝提现"
                     app:right_textView1_textSize="12sp" />
 
@@ -204,6 +192,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/line_color" />
 
                 <TextView

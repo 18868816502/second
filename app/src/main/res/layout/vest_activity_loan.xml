@@ -9,22 +9,27 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+        android:minHeight="45dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="借钱"
-            android:textColor="#2F3133"
+            android:textColor="#2f3133"
             android:textSize="17dp" />
     </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#f5f5f5" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#f5f5f5"
         android:orientation="vertical">
 
         <FrameLayout
@@ -55,9 +60,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color"
-            android:paddingLeft="15dp" />
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="15dp"
+            android:background="@color/line_color" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -84,10 +89,14 @@
                 tools:text="10天" />
         </FrameLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#f5f5f5" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginTop="8dp"
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -113,10 +122,14 @@
                 tools:text="10.00元" />
         </FrameLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#f5f5f5" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginTop="8dp"
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -141,9 +154,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color"
-            android:paddingLeft="15dp" />
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="15dp"
+            android:background="@color/line_color" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -172,9 +185,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_color"
-            android:paddingLeft="15dp" />
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="15dp"
+            android:background="@color/line_color" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -202,16 +215,16 @@
         </FrameLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="12dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f5f5f5"
+            android:paddingTop="12dp">
 
             <ImageView
                 android:id="@+id/iv_agree_protocal"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/btn_open_rb" />
 
             <TextView

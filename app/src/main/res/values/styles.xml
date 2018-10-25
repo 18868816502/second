@@ -21,8 +21,8 @@
 
     <!-- popup由下到上动画 -->
     <style name="anim_style_top2bottom">
-        <item name="android:windowEnterAnimation">@anim/anim_top_enter</item>
-        <item name="android:windowExitAnimation">@anim/anim_top_exit</item>
+        <item name="android:windowEnterAnimation">@anim/no_anim</item>
+        <item name="android:windowExitAnimation">@anim/no_anim</item>
     </style>
 
     <style name="anim_style_bottom2top">

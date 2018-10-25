@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
+        android:layout_height="45dp"
         android:background="@color/white"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:minHeight="45dp">
 
         <ImageView
             android:id="@+id/navigate"
@@ -130,23 +132,29 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_above="@+id/tv_calculate"
         android:layout_below="@+id/space"
-        android:layout_marginBottom="10dp"
-        android:background="@color/white" />
+        android:layout_weight="1"
+        android:background="@color/c_fff5f5f5" />
 
-    <TextView
-        android:id="@+id/tv_calculate"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_house_loan_btn"
-        android:gravity="center"
-        android:text="@string/loan_start_calculate"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/c_fff5f5f5"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_calculate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/shape_house_loan_btn"
+            android:gravity="center"
+            android:text="@string/loan_start_calculate"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

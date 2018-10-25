@@ -26,7 +26,7 @@
     <LinearLayout
         android:id="@+id/ll_card_wrap"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="160dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -60,20 +60,20 @@
                 tools:text="招商银行储蓄卡" />
         </LinearLayout>
 
-        <TextView
+        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_card_num"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="15dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:gravity="left|center_vertical"
             android:singleLine="true"
             android:text="@string/card_num_default"
             android:textColor="@color/white"
-            android:textSize="25dp" />
+            android:textSize="27.5dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -140,7 +140,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="35dp"
+            android:maxLength="12"
             android:text="持卡人：xxx"
             android:textColor="@color/white"
             android:textSize="14dp" />
@@ -178,6 +179,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@color/line_color" />
 
     <LinearLayout
@@ -212,6 +214,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@color/line_color" />
 
     <LinearLayout
@@ -246,6 +249,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@color/line_color" />
 
     <LinearLayout
@@ -264,7 +268,7 @@
             android:enabled="false"
             android:gravity="center"
             android:text="提交"
-            android:textColor="@color/white"
+            android:textColor="@color/color_50_white"
             android:textSize="17dp" />
 
         <LinearLayout
@@ -277,15 +281,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="温馨提示："
-                android:textColor="#A5A9B2"
-                android:textSize="12dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:lineSpacingExtra="3.5dp"
-                android:text="1.放款使用，请绑定本人名下的有效银行卡\n2.请绑定储蓄卡，暂不支持信用卡"
+                android:text="温馨提示：\n1.放款使用，请绑定本人名下的有效银行卡\n2.请绑定储蓄卡，暂不支持信用卡"
                 android:textColor="#A5A9B2"
                 android:textSize="12dp" />
         </LinearLayout>

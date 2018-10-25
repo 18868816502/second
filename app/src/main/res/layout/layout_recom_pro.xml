@@ -33,7 +33,7 @@
 
         <android.support.v4.widget.Space
             android:layout_width="0dp"
-            android:layout_height="3.5dp" />
+            android:layout_height="0.5dp" />
 
         <TextView
             android:id="@+id/tv_content"

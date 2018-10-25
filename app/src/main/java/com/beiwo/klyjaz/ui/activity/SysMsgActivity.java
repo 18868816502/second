@@ -51,7 +51,7 @@ import butterknife.OnClick;
 /**
  * 系统消息
  */
-public class SysMsgActivity extends BaseComponentActivity implements SysMsgContract.View, View.OnClickListener,BaseQuickAdapter.OnItemChildClickListener {
+public class SysMsgActivity extends BaseComponentActivity implements SysMsgContract.View, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.state_layout)
@@ -98,12 +98,10 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
             case R.id.from_delete:
                 showAlertDialog();
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
-
     }
-
 
     /**
      * 弹窗
@@ -124,8 +122,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
             public void onClick(View arg0) {
             }
         }).show();
-
-
     }
 
     /**
@@ -141,7 +137,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                 presenter.loadMeaasge();
             }
         });
-
     }
 
     private void deleteMessage() {
@@ -154,7 +149,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                 presenter.loadMeaasge();
             }
         });
-
     }
 
     @Override
@@ -182,7 +176,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
                     intent.putExtra("sysMsg", row);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(SysMsgActivity.this, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
+                    Intent intent = new Intent(SysMsgActivity.this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
                     intent.putExtra("account", true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -211,16 +205,12 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         stateLayout.setStateViewProvider(new MessageStateViewProvider());
 
         SlidePanelHelper.attach(this);
-
 //        loadHeadView();
     }
 
     private void loadHeadView() {
-
-        View headerView=getLayoutInflater().inflate(R.layout.layout_header_system_message, null);
-
-        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-
+        View headerView = getLayoutInflater().inflate(R.layout.layout_header_system_message, null);
+        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         adapter.addHeaderView(headerView);
     }
 
@@ -236,26 +226,25 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         presenter.queryCountView();
     }
 
-    @OnClick({R.id.message_more,R.id.praise_container,R.id.comment_container})
+    @OnClick({R.id.message_more, R.id.praise_container, R.id.comment_container})
     void OnViewClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.message_more:
                 showMessageEdit();
                 break;
             case R.id.praise_container:
                 Intent pariaseIntent = new Intent(this, PraiseListActivity.class);
-                pariaseIntent.putExtra("type",1);
+                pariaseIntent.putExtra("type", 1);
                 startActivity(pariaseIntent);
                 break;
             case R.id.comment_container:
                 Intent commentIntent = new Intent(this, PraiseListActivity.class);
-                commentIntent.putExtra("type",2);
+                commentIntent.putExtra("type", 2);
                 startActivity(commentIntent);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
-
     }
 
     private void showMessageEdit() {
@@ -275,7 +264,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
         }
         messageSelector.show();
     }
-
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
@@ -319,22 +307,22 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void onCountViewSucceed(SocialMessageBean msgBean) {
-        if(msgBean != null){
-            if(msgBean.getPraiseCount()>999){
+        if (msgBean != null) {
+            if (msgBean.getPraiseCount() > 999) {
                 tvPraiseNum.setVisibility(View.VISIBLE);
                 tvPraiseNum.setText("999+");
-            }else if(msgBean.getPraiseCount() == 0){
+            } else if (msgBean.getPraiseCount() == 0) {
                 tvPraiseNum.setVisibility(View.GONE);
-            }else{
+            } else {
                 tvPraiseNum.setVisibility(View.VISIBLE);
                 tvPraiseNum.setText(String.valueOf(msgBean.getPraiseCount()));
             }
-            if(msgBean.getCommentCount()>999){
+            if (msgBean.getCommentCount() > 999) {
                 tvCommentNum.setVisibility(View.VISIBLE);
                 tvCommentNum.setText("999+");
-            }else if(msgBean.getCommentCount() == 0){
+            } else if (msgBean.getCommentCount() == 0) {
                 tvCommentNum.setVisibility(View.GONE);
-            }else{
+            } else {
                 tvCommentNum.setVisibility(View.VISIBLE);
                 tvCommentNum.setText(String.valueOf(msgBean.getCommentCount()));
             }
@@ -354,7 +342,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tv_delete:
                 deleteMessage(datas.get(position).getId());
                 break;

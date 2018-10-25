@@ -13,12 +13,12 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="12dp"
         android:background="@mipmap/home_borrow_bg"
-        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="25dp"
             android:text="借款金额(元)"
             android:textColor="@color/black_1"
@@ -27,14 +27,19 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="3dp">
+
+            <android.support.v4.widget.Space
+                android:layout_width="33dp"
+                android:layout_height="0dp" />
 
             <com.beiwo.klyjaz.tang.widget.CustomNumTextView
                 android:id="@+id/tv_seekbar_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="right"
                 android:textColor="@color/black_1"
                 android:textSize="34dp"
                 tools:text="2000" />
@@ -55,6 +60,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:gravity="center_vertical">
 
@@ -100,10 +106,10 @@
     <TextView
         android:id="@+id/tv_go_loan"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:background="@mipmap/home_btn"
         android:gravity="center"
-        android:paddingBottom="15dp"
+        android:paddingBottom="23dp"
         android:text="立即借钱"
         android:textColor="@color/white"
         android:textSize="17dp" />

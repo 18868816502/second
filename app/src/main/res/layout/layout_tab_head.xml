@@ -25,7 +25,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="16dp"
         android:paddingTop="3dp">
 
         <TextView
@@ -35,7 +36,9 @@
             android:layout_weight="1"
             android:drawableTop="@mipmap/ic_home_btn1"
             android:gravity="center_horizontal"
-            android:text="新品推荐" />
+            android:text="新品推荐"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tv_pro_2"
@@ -44,7 +47,9 @@
             android:layout_weight="1"
             android:drawableTop="@mipmap/ic_home_btn2"
             android:gravity="center_horizontal"
-            android:text="闪电到账" />
+            android:text="闪电到账"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tv_pro_3"
@@ -53,7 +58,9 @@
             android:layout_weight="1"
             android:drawableTop="@mipmap/ic_home_btn3"
             android:gravity="center_horizontal"
-            android:text="不查征信" />
+            android:text="不查征信"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tv_pro_4"
@@ -62,12 +69,14 @@
             android:layout_weight="1"
             android:drawableTop="@mipmap/ic_home_btn4"
             android:gravity="center_horizontal"
-            android:text="大额低息" />
+            android:text="大额低息"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:background="@color/c_f7f7f7" />

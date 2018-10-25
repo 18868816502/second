@@ -37,7 +37,6 @@ import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.activity.RemindActivity;
 import com.beiwo.klyjaz.ui.activity.SettingsActivity;
 import com.beiwo.klyjaz.ui.activity.SysMsgActivity;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.UserProfileActivity;
 import com.beiwo.klyjaz.ui.adapter.DeployAdapter;
 import com.beiwo.klyjaz.ui.contract.TabMineContract;
@@ -129,9 +128,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             userInfo.setText("查看并编辑资料");
             UserHelper.Profile profile = UserHelper.getInstance(getActivity()).getProfile();
             if (profile != null) {
-                Glide.with(getActivity())
-                        .load(profile.getHeadPortrait())
-                        .into(avatarIv);
+                Glide.with(getActivity()).load(profile.getHeadPortrait()).error(R.drawable.mine_icon_head).into(avatarIv);
                 String username = profile.getUserName();
                 if (username != null) {
                     if (LegalInputUtils.validatePhone(username)) {
@@ -229,7 +226,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         if (profile.getHeadPortrait() != null) {
             Glide.with(getActivity())
                     .load(profile.getHeadPortrait())
-                    .asBitmap()
+                    .error(R.drawable.mine_icon_head)
                     .into(avatarIv);
         }
         String username = profile.getUserName();
@@ -434,7 +431,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     userInfo.setText("立即登录，开启记账旅程！");
                     Glide.with(getActivity())
                             .load(R.drawable.mine_icon_head)
-                            .asBitmap()
                             .into(avatarIv);
                 }
             }

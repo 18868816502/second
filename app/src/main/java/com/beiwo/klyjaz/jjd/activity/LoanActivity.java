@@ -141,7 +141,7 @@ public class LoanActivity extends BaseComponentActivity {
                     public void onViewClick(final Dialog dialog, View dlgView) {
                         TextView content = dlgView.findViewById(R.id.content);
                         TextView title = dlgView.findViewById(R.id.dlg_title);
-                        title.setText("");//提示
+                        title.setText("提示");
                         content.setText("服务费按日息0.1%收取");
                         DlgUtil.cancelClick(dialog, dlgView);
                     }

@@ -44,6 +44,10 @@
                 android:layout_marginTop="3.5dp"
                 android:gravity="center_vertical">
 
+                <android.support.v4.widget.Space
+                    android:layout_width="27dp"
+                    android:layout_height="0dp" />
+
                 <TextView
                     android:id="@+id/tv_month_num"
                     android:layout_width="wrap_content"
@@ -173,11 +177,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="145dp"
-            android:background="@mipmap/bg_bill_item">
+            android:background="@mipmap/bg_zai">
 
             <FrameLayout
                 android:id="@+id/fl_add_bill_wrap"

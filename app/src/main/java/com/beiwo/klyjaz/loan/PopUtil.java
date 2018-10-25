@@ -32,7 +32,7 @@ public class PopUtil {
         popup.setOutsideTouchable(true);
         //popup.setFocusable(false);
         popup.setTouchable(true);
-        popup.showAsDropDown(anchor, 0, 0);
+        popup.showAsDropDown(anchor, 0, 15);
     }
 
     public interface PopViewClickListener {

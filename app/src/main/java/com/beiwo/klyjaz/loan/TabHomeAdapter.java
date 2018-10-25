@@ -3,6 +3,7 @@ package com.beiwo.klyjaz.loan;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
+import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.view.BannerLayout;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -85,7 +88,10 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         public void run() {
             currentMillSecond = currentMillSecond - 1000;
             if (currentMillSecond / 1000 <= 0) {
-                if (state == 3) setStateNormal();//审核失败 => 普通状态
+                if (state == 3) {
+                    setStateNormal();//审核失败 => 普通状态
+                    SPUtils.setValue(context, "checking", "false");
+                }
                 if (state == 2) setStateFail(overDate);//审核中 => 审核失败
                 return;
             }
@@ -171,39 +177,47 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
             if (state == 2) {
                 holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
-                Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT_CHECKING1)
-                        .compose(RxResponse.<List<Product>>compatT())
-                        .subscribe(new ApiObserver<List<Product>>() {
-                            @Override
-                            public void onNext(@NonNull List<Product> data) {
-                                popAdapter.setNewData(data);
-                            }
-                        });
-                DlgUtil.createDlg(context, R.layout.dlg_checking, new DlgUtil.OnDlgViewClickListener() {
-                    @Override
-                    public void onViewClick(final Dialog dialog, View dlgView) {
-                        RecyclerView recycler = dlgView.findViewById(R.id.recycler);
-                        recycler.setLayoutManager(new GridLayoutManager(context, 3) {
-                            @Override
-                            public boolean canScrollVertically() {
-                                return false;
-                            }
-                        });
-                        recycler.setAdapter(popAdapter);
-                        DlgUtil.cancelClick(dialog, dlgView);
-                        popAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                productItemClick(popAdapter.getData().get(position));
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-                });
-                long nowStamp = System.currentTimeMillis();
-                currentMillSecond = StringUtil.timeGapSecond(auditDate, StringUtil.stamp2Str(nowStamp)) * 1000;
-                handler.removeCallbacksAndMessages(null);
-                handler.post(timeRunable);
+                if (!TextUtils.equals("true", SPUtils.getValue(context, "checking"))) {
+                    Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT_CHECKING1)
+                            .compose(RxResponse.<List<Product>>compatT())
+                            .subscribe(new ApiObserver<List<Product>>() {
+                                @Override
+                                public void onNext(@NonNull List<Product> data) {
+                                    popAdapter.setNewData(data);
+                                }
+                            });
+                    DlgUtil.createDlg(context, R.layout.dlg_checking, new DlgUtil.OnDlgViewClickListener() {
+                        @Override
+                        public void onViewClick(final Dialog dialog, View dlgView) {
+                            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    SPUtils.setValue(context, "checking", "true");
+                                }
+                            });
+                            RecyclerView recycler = dlgView.findViewById(R.id.recycler);
+                            recycler.setLayoutManager(new GridLayoutManager(context, 3) {
+                                @Override
+                                public boolean canScrollVertically() {
+                                    return false;
+                                }
+                            });
+                            recycler.setAdapter(popAdapter);
+                            DlgUtil.cancelClick(dialog, dlgView);
+                            popAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                    productItemClick(popAdapter.getData().get(position));
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    });
+                    long nowStamp = System.currentTimeMillis();
+                    currentMillSecond = StringUtil.timeGapSecond(auditDate, StringUtil.stamp2Str(nowStamp)) * 1000;
+                    handler.removeCallbacksAndMessages(null);
+                    handler.post(timeRunable);
+                }
             }
             if (state == 3) {
                 holder.state_container.addView(initState1(R.layout.layout_state_3, 3));
@@ -406,6 +420,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                             @Override
                             public void onNext(@NonNull CashUserInfo data) {
                                 Intent verifyIntent = new Intent(context, VerticyIDActivity.class);
+                                verifyIntent.putExtra("money", progress);
                                 if (data == null || data.getCashUser() == null) {
                                     verifyIntent.putExtra("mVertifyState", 1);
                                     context.startActivity(verifyIntent);

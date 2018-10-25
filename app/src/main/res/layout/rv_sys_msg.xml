@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -8,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/dp10"
         android:paddingLeft="@dimen/dp15"
-        android:paddingRight="@dimen/dp15">
+        android:paddingTop="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/dp15">
 
             <TextView
                 android:id="@+id/title"
@@ -24,10 +25,10 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text=""
                 android:textColor="@color/black_1"
                 android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="qwerasdfas" />
 
             <ImageView
                 android:id="@+id/iv_system_message_dot"
@@ -47,11 +48,9 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:textColor="#B9BBBE"
-                android:textSize="11sp" />
-
-
+                android:textSize="10sp"
+                tools:text="asdfasdfas" />
         </LinearLayout>
 
         <TextView
@@ -61,16 +60,15 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text=""
             android:textColor="@color/black_2"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            tools:text="asdfasdfasfd" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:background="#e8e8e8" />
-
     </LinearLayout>
 
     <TextView
@@ -84,5 +82,4 @@
         android:text="删除"
         android:textColor="#FFFFFFFF"
         android:textSize="14sp" />
-
 </LinearLayout>

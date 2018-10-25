@@ -91,7 +91,7 @@
     <string name="pickerview_seconds">秒</string>
     <string name="third_auth_hint">将使用您的考拉记账手机号注册该应用</string>
     <string name="tab_personal">我</string>
-    <string name="x_month_repay">%s月应还（元）</string>
+    <string name="x_month_repay">%s月应还(元)</string>
     <string name="x_home_bill_overdue">逾期%d天</string>
     <string name="x_home_bill_today">今天到期</string>
     <string name="x_home_bill_will_come">%d天后到期</string>
@@ -164,20 +164,20 @@
     <string name="loan_comb">组合贷款</string>
     <string name="loan_start_calculate">开始计算</string>
 
-    <string name="loan_gjj_amount_text">公积金贷款金额（万元）</string>
+    <string name="loan_gjj_amount_text">公积金贷款金额(万元)</string>
     <string name="loan_amount_input">请输入贷款金额</string>
-    <string name="loan_sd_amount_text">商业贷款金额（万元）</string>
-    <string name="loan_year_title">贷款年限（年）</string>
+    <string name="loan_sd_amount_text">商业贷款金额(万元)</string>
+    <string name="loan_year_title">贷款年限(年)</string>
     <string name="loan_year_default_text">30年(360期)</string>
-    <string name="loan_rate_gjj_title">公积金利率（%）</string>
+    <string name="loan_rate_gjj_title">公积金利率(%)</string>
     <string name="loan_rate_gjj_default_text">基准利率(3.25%)</string>
-    <string name="loan_rate_sd_title">贷款利率（%）</string>
+    <string name="loan_rate_sd_title">贷款利率(%)</string>
     <string name="loan_rate_sd_default_text">基准利率(4.90%)</string>
-    <string name="loan_payback_method_title">贷款方式</string>
+    <string name="loan_payback_method_title">还款方式</string>
     <string name="loan_equal_amount_of_interest">等额本息</string>
     <string name="loan_equal_amount_of_principal">等额本金</string>
 
-    <string name="loan_amount">贷款金额（万元）</string>
+    <string name="loan_amount">贷款金额(万元)</string>
     <string name="loan_choose_year_title">选择贷款年限</string>
     <string name="loan_choose_rate_title">选择常用利率</string>
     <string name="loan_custome_rate_title">选择常用利率</string>
@@ -238,7 +238,7 @@
     <string name="jjd_vertify_start_auth">开始授权</string>
     <string name="jjd_vertify_auth_zhima">请授权您的芝麻信用</string>
     <string name="jjd_vertify_auth_ing">正在授权中...</string>
-    <string name="jjd_vertify_auth_back_time_tips">%1$ds后返回首页</string>
+    <string name="jjd_vertify_auth_back_time_tips">你将在 %1$ds 后自动跳转</string>
     <string name="jjd_vertify_zhima_auth_via">芝麻信用认证通过</string>
     <string name="app_contentdescription">TODO</string>
     <string name="loan_protocol">《%s借款协议》</string>
