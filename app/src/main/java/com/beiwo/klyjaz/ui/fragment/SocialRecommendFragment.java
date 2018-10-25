@@ -79,6 +79,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(null);
+        recyclerView.setItemAnimator(null);
         adapter.notifyDataSetChanged();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
@@ -99,6 +100,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) {
             System.out.println("SocialRecommendFragment recieve 1");
+            pageNo = 1;
             fetchData();
         }
     }

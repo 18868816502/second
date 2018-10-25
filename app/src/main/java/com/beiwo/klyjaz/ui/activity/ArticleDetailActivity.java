@@ -97,6 +97,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     private int tag = 1;
 
     private PopDialog auditDialog;
+    /**
+     * 点击类型 2 回复 3 子回复 4 查看全部
+     */
+    private int clickType = 1;
 
     @Override
     public int getLayoutId() {
@@ -129,9 +133,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         if (intent != null) {
             this.userId = intent.getStringExtra("userId");
             this.forumId = intent.getStringExtra("forumId");
-            if (!TextUtils.isEmpty(forumId)) {
-                presenter.queryForumInfo(userId, forumId, pageNo, pageSize);
-            }
+            fetchForumInfo();
+        }
+    }
+
+    private void fetchForumInfo(){
+        String userId = "";
+        if(UserHelper.getInstance(this).isLogin()){
+            userId = UserHelper.getInstance(this).getProfile().getId();
+        }
+        if (!TextUtils.isEmpty(forumId)) {
+            presenter.queryForumInfo(userId, forumId, pageNo, pageSize);
         }
     }
 
@@ -146,7 +158,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     private void fetchData() {
         if (forumBean != null) {
-            presenter.queryCommentList(forumBean.getForumId(), pageNo, pageSize);
+            presenter.queryCommentList(forumBean.getForumId(), pageNo, 10000);
         }
     }
 
@@ -309,7 +321,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        presenter.queryForumInfo(userId, forumId, pageNo, pageSize);
+        fetchForumInfo();
+//        presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(), forumId, pageNo, pageSize);
     }
 
     @Override
@@ -375,16 +388,19 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 replyBean = datas.get(pos);
                 replyDtoListBean = datas.get(pos).getReplyDtoList().get(position);
                 mPopType = 4;
+                clickType = 3;
                 PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             //外层回复
             case ConstantTag.TAG_COMMENT_OUTSIDE:
                 replyBean = datas.get(position);
                 mPopType = 4;
+                clickType = 2;
                 PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             case ConstantTag.TAG_COMMENT_MORE:
                 mPopType = 4;
+                clickType = 4;
                 PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             default:
@@ -479,8 +495,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         childAdapter.notifyDataSetChanged();
         childAdapter.setOnViewClickListener(this);
 
-        mPopType = 5;
-        PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+        if(clickType != 4){
+            mPopType = 5;
+            PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
+         }
     }
 
     private void setOnClick(View... views) {

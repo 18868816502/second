@@ -14,6 +14,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.entity.UserInfoBean;
+import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.bumptech.glide.Glide;
@@ -145,6 +146,19 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         }
         holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
         holder.tvPraiseNum.setText(String.valueOf(userInfo.getPraiseCount()));
+
+        if(UserHelper.getInstance(mContext).isLogin()) {
+            if (TextUtils.equals(userInfo.getUserId(), UserHelper.getInstance(mContext).getProfile().getId())) {
+                holder.ivMore.setVisibility(View.VISIBLE);
+                holder.ivAvatar.setClickable(true);
+                holder.llEditContainer.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivMore.setVisibility(View.GONE);
+                holder.ivAvatar.setClickable(false);
+                holder.llEditContainer.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     /**

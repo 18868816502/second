@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -36,7 +38,7 @@ import butterknife.ButterKnife;
  */
 public class ArticleCommentAdapter extends RecyclerView.Adapter {
 
-    private Context mContext;
+    private Activity mContext;
     private boolean isOpen = false;
     private String selfId;
 
@@ -44,7 +46,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
     private static final int CONTENT = 1;
     private static final int FOOT = 2;
 
-    public ArticleCommentAdapter(Context mContext) {
+    public ArticleCommentAdapter(Activity mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
     }
@@ -218,6 +220,10 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_commentator_avatar:
+                    if (!UserHelper.getInstance(mContext).isLogin()) {
+                        DlgUtil.loginDlg(mContext, null);
+                        return;
+                    }
                     Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
                     pIntent.putExtra("userId", datas.get((Integer) v.getTag(R.id.user_avatar)).getUserId());
                     mContext.startActivity(pIntent);

@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.bumptech.glide.Glide;
@@ -34,11 +36,11 @@ import butterknife.ButterKnife;
  */
 public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
+    private Activity mContext;
     private List<CommentReplyBean> datas;
 
 
-    public ArticleCommentListAdapter(Context mContext) {
+    public ArticleCommentListAdapter(Activity mContext) {
         this.mContext = mContext;
         datas = new ArrayList<>();
     }
@@ -123,6 +125,10 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             adapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
                 public void onViewClick(View view, int type, int position) {
+                    if (!UserHelper.getInstance(mContext).isLogin()) {
+                        DlgUtil.loginDlg(mContext, null);
+                        return;
+                    }
                     view.setTag(itemView.getTag());
                     listener.onViewClick(view, type, position);
                 }
@@ -149,6 +155,10 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_commentator_avatar:
+                    if (UserHelper.getInstance(mContext).isLogin()) {
+                        DlgUtil.loginDlg(mContext, null);
+                        return;
+                    }
                     Intent pIntent = new Intent(mContext, PersonalCenterActivity.class);
                     pIntent.putExtra("userId", datas.get((Integer) v.getTag(R.id.comment_list_avatar)).getUserId());
                     mContext.startActivity(pIntent);

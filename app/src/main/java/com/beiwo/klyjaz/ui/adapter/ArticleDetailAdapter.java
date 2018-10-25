@@ -250,7 +250,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             commentAdapter.setOnViewClickListener(new OnViewClickListener() {
                 @Override
                 public void onViewClick(View view, int type, int position) {
-                    if (UserHelper.getInstance(mContext).isLogin()) {
+                    if (!UserHelper.getInstance(mContext).isLogin()) {
                         DlgUtil.loginDlg(mContext, null);
                         return;
                     }
