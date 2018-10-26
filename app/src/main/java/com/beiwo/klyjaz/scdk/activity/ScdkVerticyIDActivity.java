@@ -96,7 +96,6 @@ public class ScdkVerticyIDActivity extends BaseComponentActivity implements View
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override
@@ -117,19 +116,15 @@ public class ScdkVerticyIDActivity extends BaseComponentActivity implements View
         switch (mVertifyState) {
             case 1:
                 if (checkVertifyCondition()) {
-//                    mPresenter.fetchVertifyIDCard(mIDCardName, mIDCardNo);
                     loadSecondLayout();
-                    SPUtils.setVertifyState(this,2,UserHelper.getInstance(this).getProfile().getAccount());
+                    SPUtils.setVertifyState(this, 2, UserHelper.getInstance(this).getProfile().getAccount());
                 }
                 break;
             case 2:
                 if (checkVertifyContactCondition()) {
-//                    mPresenter.fetchSaveContact(mContactName, mContactRelate, mContactPhone);
                     loadThirdLayout();
-                    SPUtils.setVertifyState(this,3,UserHelper.getInstance(this).getProfile().getAccount());
-                    InputMethodUtil.closeSoftKeyboard(ScdkVerticyIDActivity.this,etIDCardName);
-
-
+                    SPUtils.setVertifyState(this, 3, UserHelper.getInstance(this).getProfile().getAccount());
+                    InputMethodUtil.closeSoftKeyboard(ScdkVerticyIDActivity.this, etIDCardName);
                 }
                 break;
             case 3:
@@ -137,7 +132,7 @@ public class ScdkVerticyIDActivity extends BaseComponentActivity implements View
                 tvAuthTip.setText(getString(R.string.jjd_vertify_auth_ing));
                 progressBar.setVisibility(View.VISIBLE);
                 progressBar.setProgress(100);
-                SPUtils.setVertifyState(this,4,UserHelper.getInstance(this).getProfile().getAccount());
+                SPUtils.setVertifyState(this, 4, UserHelper.getInstance(this).getProfile().getAccount());
                 SPUtils.setPhone(this,
                         UserHelper.getInstance(this).getProfile().getId(),
                         UserHelper.getInstance(this).getProfile().getAccount());
@@ -248,7 +243,6 @@ public class ScdkVerticyIDActivity extends BaseComponentActivity implements View
         etRelative = container02.findViewById(R.id.et_contact_relative);
         etRelativeName = container02.findViewById(R.id.et_contact_name);
         etPhone = container02.findViewById(R.id.et_contact_phone);
-//        setOnClick(etRelativeName);
     }
 
     /*加载状态3布局*/

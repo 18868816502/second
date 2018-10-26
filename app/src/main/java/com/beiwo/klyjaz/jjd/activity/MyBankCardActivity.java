@@ -85,7 +85,7 @@ public class MyBankCardActivity extends BaseComponentActivity {
     private void initRecycler() {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        /*adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 try {
@@ -95,7 +95,7 @@ public class MyBankCardActivity extends BaseComponentActivity {
                 } catch (Exception e) {
                 }
             }
-        });
+        });*/
     }
 
     private void request() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.DownloadListener;
@@ -36,7 +37,7 @@ import butterknife.BindView;
 public class WebViewActivity extends BaseComponentActivity {
 
     @BindView(R.id.tl_news_header_tool_bar)
-    android.support.v7.widget.Toolbar toolbar;
+    Toolbar toolbar;
     @BindView(R.id.iv_tab_fg_news_web_back)
     ImageView mReturn;
     @BindView(R.id.tv_web_view_title)
@@ -200,7 +201,7 @@ public class WebViewActivity extends BaseComponentActivity {
 
         @JavascriptInterface
         public void skipToHome() {
-            Intent intent = new Intent(WebViewActivity.this, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
+            Intent intent = new Intent(WebViewActivity.this, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
             intent.putExtra("home", true);
             startActivity(intent);
         }

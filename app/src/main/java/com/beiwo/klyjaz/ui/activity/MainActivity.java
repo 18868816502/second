@@ -171,20 +171,20 @@ public class MainActivity extends BaseComponentActivity {
 
     private void showAdDialog(final AdBanner ad) {
         if (ad.getShowTimes() == 1) {//仅显示一次
-            if (ad.getId().equals(SPUtils.getValue(activity, ad.getId()))) {
+            if (ad.getId().equals(SPUtils.getValue(ad.getId()))) {
                 return;
             } else {
-                SPUtils.setValue(activity, ad.getId());
+                SPUtils.setValue(ad.getId());
             }
         } else if (ad.getShowTimes() == 2) {//未点击继续显示
-            if (ad.getId().equals(SPUtils.getValue(activity, ad.getId()))) {
+            if (ad.getId().equals(SPUtils.getValue(ad.getId()))) {
                 return;
             }
         } else {//其他情况不展示弹窗广告
             return;
         }
         //更新广告展示时间
-        SPUtils.setLastAdShowTime(MainActivity.this, System.currentTimeMillis());
+        SPUtils.setLastAdShowTime(System.currentTimeMillis());
         //umeng统计
         Statistic.onEvent(Events.RESUME_AD_DIALOG);
         //pv，uv统计
@@ -214,7 +214,7 @@ public class MainActivity extends BaseComponentActivity {
                     Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
                     intent.putExtra("loanId", ad.getLocalId());
                     startActivity(intent);
-                    SPUtils.setValue(activity, ad.getId());
+                    SPUtils.setValue(ad.getId());
                 } else if (!TextUtils.isEmpty(ad.getUrl())) {
                     String url = ad.getUrl();
                     if (url.contains("USERID") && UserHelper.getInstance(MainActivity.this).getProfile() != null) {
@@ -224,7 +224,7 @@ public class MainActivity extends BaseComponentActivity {
                     intent.putExtra("title", ad.getTitle());
                     intent.putExtra("url", url);
                     startActivity(intent);
-                    SPUtils.setValue(activity, ad.getId());
+                    SPUtils.setValue(ad.getId());
                 }
             }
         }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
@@ -413,7 +413,7 @@ public class MainActivity extends BaseComponentActivity {
 
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!SPUtils.getCheckPermission(this)) {
+            if (!SPUtils.getCheckPermission()) {
                 ArrayList<String> permission = new ArrayList<>();
                 for (int i = 0; i < needPermission.length; ++i) {
                     if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
@@ -426,7 +426,7 @@ public class MainActivity extends BaseComponentActivity {
                     } catch (Exception e) {
                     }
                 }
-                SPUtils.setCheckPermission(this, true);
+                SPUtils.setCheckPermission(true);
             }
         }
     }

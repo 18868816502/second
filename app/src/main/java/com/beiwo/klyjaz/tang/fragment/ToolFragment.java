@@ -87,7 +87,7 @@ public class ToolFragment extends BaseComponentFragment {
 
         userHelper = UserHelper.getInstance(getActivity());
         currentMonth = new SimpleDateFormat("MM", Locale.CHINA).format(System.currentTimeMillis());
-        numVisible = SPUtils.getNumVisible(getActivity());
+        numVisible = SPUtils.getNumVisible();
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ToolFragment extends BaseComponentFragment {
                             //账单头
                             tv_month_num.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));//x月应还
                             num = data.getTotalAmount();
-                            if (SPUtils.getNumVisible(getActivity())) {
+                            if (SPUtils.getNumVisible()) {
                                 tv_bill_num.setText(FormatNumberUtils.FormatNumberFor2(num));//应还金额
                                 iv_bill_visible.setImageResource(R.mipmap.ic_eye_open);
                             } else {
@@ -208,14 +208,14 @@ public class ToolFragment extends BaseComponentFragment {
                 if (numVisible) {
                     iv_bill_visible.setImageResource(R.mipmap.ic_eye_close);
                     tv_bill_num.setText(hideNum);
-                    SPUtils.putNumVisible(getActivity(), false);
+                    SPUtils.putNumVisible(false);
                 } else {
                     iv_bill_visible.setImageResource(R.mipmap.ic_eye_open);
 
                     String billNum = FormatNumberUtils.FormatNumberFor2(num);
                     String num = userHelper.isLogin() ? billNum : hideNum;
                     tv_bill_num.setText(num);
-                    SPUtils.putNumVisible(getActivity(), true);
+                    SPUtils.putNumVisible(true);
                 }
                 numVisible = !numVisible;
                 break;

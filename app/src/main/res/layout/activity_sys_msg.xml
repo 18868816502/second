@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
         android:background="@color/white"
-        android:minHeight="50dp">
+        android:minHeight="45dp">
 
         <TextView
             android:layout_width="wrap_content"

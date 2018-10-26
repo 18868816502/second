@@ -190,7 +190,7 @@ public class WechatBindDoneActivity extends BaseComponentActivity {
                                    if (result.isSuccess()) {
                                        UserHelper.getInstance(WechatBindDoneActivity.this).update(result.getData(), account, WechatBindDoneActivity.this);
                                        //保存用户id,缓存
-                                       SPUtils.setCacheUserId(WechatBindDoneActivity.this, result.getData().getId());
+                                       SPUtils.setCacheUserId(result.getData().getId());
                                        WechatBindDoneActivity.this.setResult(RESULT_OK);
                                        WechatBindDoneActivity.this.finish();
 

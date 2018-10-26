@@ -156,7 +156,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
                                         //登录之后，将用户信息注册到本地
                                         UserHelper.getInstance(UserCertificationCodeActivity.this).update(result.getData(), tvPhone.getText().toString(), UserCertificationCodeActivity.this);
                                         //保存用户id,缓存
-                                        SPUtils.setCacheUserId(UserCertificationCodeActivity.this, result.getData().getId());
+                                        SPUtils.setCacheUserId(result.getData().getId());
                                         /*调用登录接口*/
                                         loginNoPwd(result.getData());
                                     } else {
@@ -227,7 +227,7 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
             //登录之后，将用户信息注册到本地
             UserHelper.getInstance(getApplicationContext()).update(result, pendingPhone, getApplicationContext());
             //保存用户id,缓存
-            SPUtils.setCacheUserId(getApplicationContext(), result.getId());
+            SPUtils.setCacheUserId(result.getId());
             finish();
         }
     }

@@ -121,7 +121,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                             titles.add(data.get(i).getTitle());
                             needLogin.add(data.get(i).needLogin());
                         }
-                        homeAdapter.setHeadBanner(imgs, urls, titles,needLogin);
+                        homeAdapter.setHeadBanner(imgs, urls, titles, needLogin);
                     }
                 });
         //looper text
@@ -144,6 +144,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                     public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         homeAdapter.setNormalData(data);
+                        if (recycler != null) recycler.smoothScrollToPosition(0);
                     }
                 });
     }

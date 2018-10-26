@@ -81,7 +81,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        SPUtils.setShowMainAddBanner(this, true);
+        SPUtils.setShowMainAddBanner(true);
         registerActivityLifecycleCallbacks(ActivityTracker.getInstance());//activity生命周期管理
         initComponent();
         if (TextUtils.equals(getProcessName(this), getPackageName())) {
@@ -92,9 +92,9 @@ public class App extends Application {
             } else {
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
             }
-            if (SPUtils.getFirstInstall(this)) {
+            if (SPUtils.getFirstInstall()) {
                 DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
-                SPUtils.setFirstInstall(this, false);
+                SPUtils.setFirstInstall(false);
             }
         }
 

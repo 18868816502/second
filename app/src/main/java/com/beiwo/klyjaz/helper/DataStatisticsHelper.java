@@ -14,7 +14,6 @@ import com.beiwo.klyjaz.util.LogUtils;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -84,7 +83,7 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).getProfile() != null) {
             userId = UserHelper.getInstance(context).getProfile().getId();
         } else {
-            userId = SPUtils.getCacheUserId(App.getInstance());
+            userId = SPUtils.getCacheUserId();
         }
         api.onProductClicked(userId, id)
                 .compose(RxResponse.compatO())
@@ -106,7 +105,7 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).getProfile() != null) {
             userId = UserHelper.getInstance(context).getProfile().getId();
         } else {
-            userId = SPUtils.getCacheUserId(App.getInstance());
+            userId = SPUtils.getCacheUserId();
         }
         api.onAdClicked(id, userId, type)
                 .compose(RxResponse.compatO())
@@ -144,7 +143,7 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).getProfile() != null) {
             userId = UserHelper.getInstance(context).getProfile().getId();
         } else {
-            userId = SPUtils.getCacheUserId(App.getInstance());
+            userId = SPUtils.getCacheUserId();
         }
         //信用卡详情
         api.queryCreditCardDetail(userId, id)
@@ -170,7 +169,7 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).isLogin()) {
             userId = UserHelper.getInstance(context).id();
         } else {
-            userId = SPUtils.getCacheUserId(context);
+            userId = SPUtils.getCacheUserId();
         }
         api.onCountUv(type, userId)
                 .compose(RxResponse.compatO())
@@ -194,7 +193,7 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).isLogin()) {
             userId = UserHelper.getInstance(context).id();
         } else {
-            userId = SPUtils.getCacheUserId(context);
+            userId = SPUtils.getCacheUserId();
         }
         api.onCountUv(ParamsUtils.generateCountUvParams(userId, type, linkId))
                 .compose(RxResponse.compatO())

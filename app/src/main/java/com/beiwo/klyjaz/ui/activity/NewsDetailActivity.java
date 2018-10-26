@@ -126,7 +126,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
         if (UserHelper.getInstance(this).getProfile() != null) {
             userId = UserHelper.getInstance(this).getProfile().getId();
         } else {
-            userId = SPUtils.getCacheUserId(this);
+            userId = SPUtils.getCacheUserId();
         }
         newsUrl = NetConstants.generateNewsUrl(newsId, userId);
         webView.loadUrl(newsUrl);

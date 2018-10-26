@@ -66,7 +66,7 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                             //登录之后，将用户信息注册到本地
                             userHelper.update(result.getData(), phone, context);
                             //保存用户id,缓存
-                            SPUtils.setCacheUserId(context, result.getData().getId());
+                            SPUtils.setCacheUserId(result.getData().getId());
 
                             //向下传递id
                             newRes.setData(result.getData().getId());
@@ -154,7 +154,7 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
                             //登录之后，将用户信息注册到本地
                             userHelper.update(result.getData(), result.getData().getAccount(), context);
                             //保存用户id,缓存
-                            SPUtils.setCacheUserId(context, result.getData().getId());
+                            SPUtils.setCacheUserId(result.getData().getId());
 
                             newRes.setData(result.getData().getId());
 
