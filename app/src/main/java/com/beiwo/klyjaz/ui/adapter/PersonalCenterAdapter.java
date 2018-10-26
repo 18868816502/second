@@ -175,7 +175,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         holder.tvPublishTime.setText(String.valueOf(bean.getGmtCreate()));
         holder.tvArticleContent.setText(bean.getTitle());
         holder.tvArticleDescripe.setText(bean.getContent());
-        holder.tvTitle.setText(bean.getContent());
+        holder.tvTitle.setText(bean.getTitle());
         if(bean.getPicUrl()!=null&&bean.getPicUrl().size()!=0) {
             Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
             holder.llContainer.setVisibility(View.VISIBLE);
