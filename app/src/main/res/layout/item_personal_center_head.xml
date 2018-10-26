@@ -56,7 +56,8 @@
         android:gravity="center">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/redact_icon"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,11 +75,14 @@
         app:layout_constraintTop_toBottomOf="@id/avatar">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/introduce_icon"
+            android:layout_marginTop="@dimen/dp2"/>
         <TextView
             android:id="@+id/tv_produce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp3"
             tools:text="简介："/>
     </LinearLayout>
 
@@ -213,7 +217,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/bill_more_icon"/>
+            android:src="@drawable/more_icon"/>
     </RelativeLayout>
 
     <LinearLayout
