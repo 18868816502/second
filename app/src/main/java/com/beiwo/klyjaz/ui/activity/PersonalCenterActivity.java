@@ -169,7 +169,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
-        presenter.fetchPersonalInfo(UserHelper.getInstance(this).getProfile().getId());
+        presenter.fetchPersonalInfo(userId);
     }
 
     @Override

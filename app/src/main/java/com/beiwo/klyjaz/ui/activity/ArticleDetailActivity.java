@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -124,6 +125,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         adapter.setOnViewClickListener(this);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
+        refreshLayout.setEnableLoadMore(false);
     }
 
     @Override
@@ -243,6 +245,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 if (auditDialog != null) {
                     auditDialog.dismiss();
                 }
+                PopUtils.dismissComment();
                 break;
             case R.id.tv_comment:
                 mPopType = 5;
@@ -614,4 +617,23 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         }
         adapter.setDatas(datas, forumBean);
     }
+
+//    @Override
+//    public void onBackPressed() {
+////        super.onBackPressed();
+//        if(mPopType == 5){
+//            PopUtils.dismissComment();
+//        }
+//    }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if(mPopType == 5){
+//                PopUtils.dismissComment();
+//            }
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }
