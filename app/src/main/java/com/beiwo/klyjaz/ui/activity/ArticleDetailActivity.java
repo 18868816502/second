@@ -414,6 +414,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 //                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
+            case 1000:
+                PopUtils.dismiss();
+                PopUtils.dismissComment();
+                break;
             default:
                 break;
         }
@@ -462,13 +466,17 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case 5:
                 commentDialog = mPopDialog;
                 etInput = view.findViewById(R.id.et_comment);
+
                 etInput.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        KeyBoardUtils.toggleKeybord(etInput);
+//                        KeyBoardUtils.toggleKeybord(etInput);
+                        KeyBoardUtils.showKeybord(etInput);
+//                        if(!KeyBoardUtils.isKeybord(etInput)){
+//                            KeyBoardUtils.toggleKeybord(etInput);
+//                        }
                     }
                 }, 300);
-//                etInput.setFocusable(true);
                 etInput.addTextChangedListener(new LengthTextWatcherListener(etInput, 100));
                 setOnClick(view.findViewById(R.id.tv_send));
                 showHintForEditInput(etInput);
@@ -552,6 +560,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onDismiss(PopDialog mPopDialog) {
 //        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+        KeyBoardUtils.hideInput(this,etInput);
         PopUtils.dismissComment();
     }
 

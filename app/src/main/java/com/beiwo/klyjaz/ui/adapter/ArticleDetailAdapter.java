@@ -87,7 +87,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
             if (forumBean == null) return;
-            HeadViewHolder headViewHolder = (HeadViewHolder) holder;
+            final HeadViewHolder headViewHolder = (HeadViewHolder) holder;
             headViewHolder.tvArticleTitle.setText(forumBean.getTitle());
             if (!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
                 Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
@@ -106,10 +106,12 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 headViewHolder.bgaBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
                     @Override
                     public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
+                        listener.onViewClick(headViewHolder.bgaBanner,1000,0);
                         Intent intent = new Intent(mContext, PhotoDetailActivity.class);
                         intent.putStringArrayListExtra("datas", (ArrayList<String>) forumBean.getPicUrl());
                         intent.putExtra("position", position);
                         mContext.startActivity(intent);
+
                     }
                 });
                 if(forumBean.getPicUrl().size() == 1) {
@@ -123,13 +125,13 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             headViewHolder.tvArticleContent.setText(forumBean.getContent());
             headViewHolder.tvCommentNum.setText(String.valueOf("评论 " + datas.size()));
             if (forumBean.getIsPraise() == 0) {
-                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
+                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_personal_praise_unselected);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
                 headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
                 headViewHolder.tvPraise.setText("赞");
                 headViewHolder.tvPraise.setTextColor(mContext.getColor(R.color.black_2));
             } else {
-                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
+                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_personal_praise_selected);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
                 headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
                 headViewHolder.tvPraise.setText(String.valueOf(forumBean.getPraiseCount()));

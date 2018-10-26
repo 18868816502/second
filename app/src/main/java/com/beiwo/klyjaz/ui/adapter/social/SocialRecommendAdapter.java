@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -68,6 +70,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return new OperateTopicViewHolder(operateView);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         OperateTopicViewHolder viewHoler = (OperateTopicViewHolder) holder;
@@ -92,11 +95,14 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+            viewHoler.tvPraise.setTextColor(mContext.getColor(R.color.black_2));
         } else {
             Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
+            viewHoler.tvPraise.setTextColor(mContext.getColor(R.color.c_ff5240));
         }
+
         viewHoler.itemView.setTag(position);
         viewHoler.tvPraise.setTag(position);
         viewHoler.ivAvatar.setTag(R.id.tag_user_avatar,position);
