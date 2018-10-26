@@ -67,6 +67,7 @@ import io.reactivex.annotations.NonNull;
 
 public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHolder> implements View.OnClickListener {
     private static final int TYPE_HEADER = R.layout.layout_tab_head;
+    private static final int TYPE_HEADER1 = R.layout.layout_tab_head1;
     private static final int TYPE_NORMAL = R.layout.temlapte_recycler;
     private static final int TYPE_FOOT = R.layout.layout_home_footview;
 
@@ -115,25 +116,25 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     public void setStateNormal() {
         this.state = 1;
         SPUtils.setValue("checking", "false");
-        notifyItemChanged(0);
+        notifyItemChanged(1);
     }
 
     public void setStateChecking(String auditDate, String overDate) {
         this.state = 2;
         this.auditDate = auditDate;
         this.overDate = overDate;
-        notifyItemChanged(0);
+        notifyItemChanged(1);
     }
 
     public void setStateFail(String overDate) {
         this.state = 3;
         this.overDate = overDate;
-        notifyItemChanged(0);
+        notifyItemChanged(1);
     }
 
     public void setNormalData(List<Product> data) {
         this.data = data;
-        notifyItemChanged(1);
+        notifyItemChanged(2);
     }
 
     @Override
@@ -170,6 +171,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             holder.tv_pro_3.setOnClickListener(this);
             holder.tv_pro_4.setOnClickListener(this);
             holder.adt_looper.init(looperTexts, null);
+        }
+        if (holder.viewType == TYPE_HEADER1) {
             if (holder.state_container.getChildCount() > 0) holder.state_container.removeAllViews();
             if (state == 1)
                 holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
@@ -321,7 +324,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return TYPE_HEADER;
-        else if (position == 2) return TYPE_FOOT;
+        else if (position == 1) return TYPE_HEADER1;
+        else if (position == 3) return TYPE_FOOT;
         else return TYPE_NORMAL;
     }
 
@@ -478,6 +482,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 tv_pro_3 = itemView.findViewById(R.id.tv_pro_3);
                 tv_pro_4 = itemView.findViewById(R.id.tv_pro_4);
                 adt_looper = itemView.findViewById(R.id.adt_looper);
+            }
+            if (viewType == TYPE_HEADER1) {
                 state_container = itemView.findViewById(R.id.state_container);
             }
             if (viewType == TYPE_NORMAL) {
