@@ -121,7 +121,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                             titles.add(data.get(i).getTitle());
                             needLogin.add(data.get(i).needLogin());
                         }
-                        homeAdapter.setHeadBanner(imgs, urls, titles,needLogin);
+                        homeAdapter.setHeadBanner(imgs, urls, titles, needLogin);
                     }
                 });
         //looper text
@@ -144,6 +144,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                     public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         homeAdapter.setNormalData(data);
+                        recycler.smoothScrollToPosition(0);
                     }
                 });
     }
@@ -178,7 +179,9 @@ public class TabHomeFragment extends BaseComponentFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) recycler.smoothScrollToPosition(0);
+        if (!hidden) {
+            recycler.smoothScrollToPosition(0);
+        }
     }
 
     @Override
@@ -202,15 +205,13 @@ public class TabHomeFragment extends BaseComponentFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

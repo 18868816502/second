@@ -8,8 +8,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white">
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:minHeight="45dp">
 
         <TextView
             android:id="@+id/tv_toolbar_title"

@@ -88,10 +88,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         public void run() {
             currentMillSecond = currentMillSecond - 1000;
             if (currentMillSecond / 1000 <= 0) {
-                if (state == 3) {
-                    setStateNormal();//审核失败 => 普通状态
-                    SPUtils.setValue(context, "checking", "false");
-                }
+                if (state == 3) setStateNormal();//审核失败 => 普通状态
                 if (state == 2) setStateFail(overDate);//审核中 => 审核失败
                 return;
             }
@@ -117,6 +114,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     public void setStateNormal() {
         this.state = 1;
+        SPUtils.setValue("checking", "false");
         notifyItemChanged(0);
     }
 
@@ -177,7 +175,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 holder.state_container.addView(initState1(R.layout.layout_state_1, 1));
             if (state == 2) {
                 holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
-                if (!TextUtils.equals("true", SPUtils.getValue(context, "checking"))) {
+                if (!TextUtils.equals("true", SPUtils.getValue("checking"))) {
                     Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT_CHECKING1)
                             .compose(RxResponse.<List<Product>>compatT())
                             .subscribe(new ApiObserver<List<Product>>() {
@@ -192,7 +190,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                 @Override
                                 public void onDismiss(DialogInterface dialog) {
-                                    SPUtils.setValue(context, "checking", "true");
+                                    SPUtils.setValue("checking", "true");
                                 }
                             });
                             RecyclerView recycler = dlgView.findViewById(R.id.recycler);

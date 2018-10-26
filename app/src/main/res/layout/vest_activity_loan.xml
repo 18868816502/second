@@ -6,20 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:minHeight="45dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="借钱"
-            android:textColor="#2f3133"
-            android:textSize="17dp" />
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/template_toolbar" />
 
     <View
         android:layout_width="match_parent"

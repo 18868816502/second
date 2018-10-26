@@ -113,7 +113,7 @@ public class HomeFragment extends BaseTabFragment {
                     } else {
                         mTitle.setAlpha(0);
                     }
-                    if (SPUtils.getNumVisible(mActivity)) {
+                    if (SPUtils.getNumVisible()) {
                         tv_top_loan_num.setText("¥" + FormatNumberUtils.FormatNumberFor2(num));//应还金额
                     } else {
                         tv_top_loan_num.setText("****");//应还金额
@@ -243,7 +243,7 @@ public class HomeFragment extends BaseTabFragment {
                             //账单头
                             tv_top_loan_month.setText(String.format(getString(R.string.x_month_repay), data.getXmonth()));//x月应还
                             num = data.getTotalAmount();
-                            if (SPUtils.getNumVisible(mActivity)) {
+                            if (SPUtils.getNumVisible()) {
                                 tv_top_loan_num.setText(String.format("￥%.2f", num));//应还金额
                             } else {
                                 tv_top_loan_num.setText("****");//应还金额

@@ -101,7 +101,7 @@ public class WeChatBindPhonePresenter extends BaseRxPresenter implements WeChatB
                                        //登录之后，将用户信息注册到本地
                                        userHelper.update(result.getData(), account, context);
                                        //保存用户id,缓存
-                                       SPUtils.setCacheUserId(context, result.getData().getId());
+                                       SPUtils.setCacheUserId(result.getData().getId());
 
                                        view.showLoginSuccess();
                                    } else {

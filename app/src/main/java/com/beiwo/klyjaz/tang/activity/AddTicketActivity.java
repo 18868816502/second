@@ -43,6 +43,8 @@ public class AddTicketActivity extends BaseComponentActivity {
     Toolbar toolbar;
     @BindView(R.id.toolbar_title)
     TextView toolbar_title;
+    @BindView(R.id.toolbar_right_txt)
+    TextView toolbar_right_txt;
     @BindView(R.id.cet_company_name)
     ClearEditText cet_company_name;
     @BindView(R.id.cet_tax_no)
@@ -75,6 +77,8 @@ public class AddTicketActivity extends BaseComponentActivity {
         setupToolbarBackNavigation(toolbar, R.drawable.back);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        toolbar_right_txt.setVisibility(View.VISIBLE);
+        toolbar_right_txt.setText("保存");
     }
 
     @Override

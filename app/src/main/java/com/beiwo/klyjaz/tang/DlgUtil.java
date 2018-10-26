@@ -169,7 +169,7 @@ public class DlgUtil {
                                         //登录之后，将用户信息注册到本地
                                         UserHelper.getInstance(context).update(data, account, context);
                                         //保存用户id,缓存
-                                        SPUtils.setCacheUserId(context, data.getId());
+                                        SPUtils.setCacheUserId(data.getId());
                                         EventBus.getDefault().post(new UserLoginEvent());
                                         EventBus.getDefault().post("1");
                                         if (listener != null) listener.success(data);

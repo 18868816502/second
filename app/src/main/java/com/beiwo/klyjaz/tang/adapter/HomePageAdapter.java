@@ -123,7 +123,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
         currentMonth = new SimpleDateFormat("MM", Locale.CHINA).format(System.currentTimeMillis());
         resources = activity.getResources();
         userHelper = UserHelper.getInstance(mActivity);
-        numVisible = SPUtils.getNumVisible(mActivity);
+        numVisible = SPUtils.getNumVisible();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                     if (numVisible) {
                         holder.headBillVisible.setImageResource(R.mipmap.ic_eye_close);
                         holder.headBillNum.setText(hideNum);
-                        SPUtils.putNumVisible(mActivity, false);
+                        SPUtils.putNumVisible(false);
                     } else {
                         holder.headBillVisible.setImageResource(R.mipmap.ic_eye_open);
 
@@ -192,7 +192,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                         }
                         String num = userHelper.isLogin() ? billNum : makeBill;
                         holder.headBillNum.setText(num);
-                        SPUtils.putNumVisible(mActivity, true);
+                        SPUtils.putNumVisible(true);
                     }
                     numVisible = !numVisible;
                 }

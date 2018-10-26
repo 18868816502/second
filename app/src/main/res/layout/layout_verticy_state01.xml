@@ -8,9 +8,11 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/name_container"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp">
 
@@ -58,9 +60,11 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/idcard_no_container"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicate"
         tools:layout_editor_absoluteX="8dp">
 

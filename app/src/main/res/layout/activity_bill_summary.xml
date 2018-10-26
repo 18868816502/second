@@ -9,8 +9,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar_sunmary"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
+        android:layout_height="45dp"
         android:background="@color/white"
+        android:minHeight="45dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

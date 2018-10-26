@@ -318,7 +318,7 @@ public class VestMainActivity extends BaseComponentActivity {
 
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!SPUtils.getCheckPermission(this)) {
+            if (!SPUtils.getCheckPermission()) {
                 ArrayList<String> permission = new ArrayList<>();
                 for (int i = 0; i < needPermission.length; ++i) {
                     if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
@@ -332,7 +332,7 @@ public class VestMainActivity extends BaseComponentActivity {
                         e.printStackTrace();
                     }
                 }
-                SPUtils.setCheckPermission(this, true);
+                SPUtils.setCheckPermission(true);
             }
         }
     }

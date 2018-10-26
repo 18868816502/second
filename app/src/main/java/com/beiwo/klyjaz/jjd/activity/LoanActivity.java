@@ -46,6 +46,8 @@ public class LoanActivity extends BaseComponentActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbar_title;
     @BindView(R.id.tv_loan_money)
     TextView tv_loan_money;
     @BindView(R.id.tv_loan_period)
@@ -80,6 +82,7 @@ public class LoanActivity extends BaseComponentActivity {
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        toolbar_title.setText("借钱");
         Intent intent = getIntent();
         if (intent != null) {
             money = intent.getIntExtra("money", 0);

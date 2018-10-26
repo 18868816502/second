@@ -9,7 +9,8 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:minHeight="45dp">
 
         <TextView
             android:id="@+id/tv_title"

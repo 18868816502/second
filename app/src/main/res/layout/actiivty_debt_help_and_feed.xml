@@ -9,7 +9,8 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:minHeight="45dp">
 
         <ImageView
             android:id="@+id/iv_debt_help_and_feed_back"
@@ -31,10 +32,10 @@
             android:id="@+id/help_commit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="12dp"
             android:layout_gravity="right"
             android:layout_marginRight="8dp"
             android:gravity="center"
+            android:padding="12dp"
             android:textColor="#FF5240"
             android:textSize="13sp" />
 
