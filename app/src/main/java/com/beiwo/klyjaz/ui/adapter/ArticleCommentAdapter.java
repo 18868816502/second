@@ -94,7 +94,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.tvCommentPraise.setTag(position);
             viewHolder.ivCommentatorAcatar.setTag(R.id.user_avatar, position);
-            viewHolder.ivArticleComment.setTag(position);
+            viewHolder.ivArticleComment.setTag(R.id.tag_child_comment,position);
             viewHolder.tvDelete.setTag(position);
             if (!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
                 Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
@@ -236,7 +236,7 @@ public class ArticleCommentAdapter extends RecyclerView.Adapter {
                     break;
                 //评论回复
                 case R.id.iv_article_comment:
-                    int comPosition = (int) v.getTag();
+                    int comPosition = (int) v.getTag(R.id.tag_child_comment);
 //                    ToastUtil.toast("子回复第"+(comPosition + 1) + "条");
                     listener.onViewClick(v, ConstantTag.TAG_CHILD_REPLY_COMMENT, comPosition);
                     break;

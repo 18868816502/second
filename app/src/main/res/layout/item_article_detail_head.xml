@@ -51,7 +51,6 @@
         android:id="@+id/tv_author_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp6"
         android:textColor="@color/black_2"
         android:textSize="@dimen/sp10"
         app:layout_constraintLeft_toLeftOf="@+id/tv_author_name"
@@ -76,9 +75,9 @@
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner"
-        android:layout_width="345dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="w,9:16"
+        app:layout_constraintDimensionRatio="w,3:4"
         android:layout_marginEnd="@dimen/dp15"
         android:layout_marginLeft="@dimen/dp15"
         android:layout_marginRight="@dimen/dp15"
@@ -98,31 +97,31 @@
         android:id="@+id/tv_article_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp26"
+        android:layout_marginTop="@dimen/dp20"
         android:gravity="left|start|top"
         android:paddingEnd="@dimen/dp10"
         android:paddingLeft="@dimen/dp15"
         android:paddingRight="@dimen/dp15"
         android:paddingStart="@dimen/dp15"
         android:text=""
+        android:textColor="@color/black_1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/banner" />
 
     <TextView
         android:id="@+id/tv_article_praise"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dp78"
         android:layout_height="@dimen/dp36"
         android:layout_marginTop="@dimen/dp26"
         android:background="@drawable/shape_article_praise"
         android:drawableLeft="@drawable/icon_social_topic_praise_unselect"
-        android:drawablePadding="@dimen/dp10"
         android:drawableStart="@drawable/icon_social_topic_praise_unselect"
         android:gravity="center"
         android:paddingEnd="@dimen/dp15"
-        android:paddingLeft="@dimen/dp15"
+        android:paddingLeft="@dimen/dp22"
         android:paddingRight="@dimen/dp15"
-        android:paddingStart="@dimen/dp15"
+        android:paddingStart="@dimen/dp22"
         android:text="@string/article_praise"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -169,6 +168,18 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/tv_comment_num"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indicate" />
+        app:layout_constraintTop_toBottomOf="@+id/indicate"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/social_comment_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_num"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indicate"
+        app:layout_constraintTop_toTopOf="@+id/tv_comment_num"
+        android:layout_marginTop="@dimen/dp7"/>
 
 </android.support.constraint.ConstraintLayout>

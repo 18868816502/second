@@ -21,6 +21,8 @@ public abstract class BaseDialog extends DialogFragment {
         return view;
     }
 
+
+
     public abstract int getViewLayout();
 
     public abstract void findView(View view);

@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -98,6 +99,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     private int tag = 1;
 
     private PopDialog auditDialog;
+    private PopDialog commentDialog;
     /**
      * 点击类型 2 回复 3 子回复 4 查看全部
      */
@@ -445,9 +447,20 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case 4:
                 auditDialog = mPopDialog;
                 initCommentListPop(view);
+//                auditDialog.getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+//                    @Override
+//                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+//                        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+//                            PopUtils.dismiss();
+//                            return true;
+//                        }
+//                            return false;
+//                    }
+//                });
                 break;
             /*评论输入框*/
             case 5:
+                commentDialog = mPopDialog;
                 etInput = view.findViewById(R.id.et_comment);
                 etInput.postDelayed(new Runnable() {
                     @Override
@@ -455,9 +468,21 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                         KeyBoardUtils.toggleKeybord(etInput);
                     }
                 }, 300);
+//                etInput.setFocusable(true);
                 etInput.addTextChangedListener(new LengthTextWatcherListener(etInput, 100));
                 setOnClick(view.findViewById(R.id.tv_send));
                 showHintForEditInput(etInput);
+                commentDialog.getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                            PopUtils.dismissComment();
+                            commentDialog.dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
                 break;
             case 6:
                 setOnClick(view.findViewById(R.id.tv_cancel), view.findViewById(R.id.tv_save));
@@ -526,7 +551,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onDismiss(PopDialog mPopDialog) {
-        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+//        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+        PopUtils.dismissComment();
     }
 
     @Override
@@ -617,23 +643,4 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         }
         adapter.setDatas(datas, forumBean);
     }
-
-//    @Override
-//    public void onBackPressed() {
-////        super.onBackPressed();
-//        if(mPopType == 5){
-//            PopUtils.dismissComment();
-//        }
-//    }
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            if(mPopType == 5){
-//                PopUtils.dismissComment();
-//            }
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 }

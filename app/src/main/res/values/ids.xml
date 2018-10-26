@@ -19,4 +19,5 @@
     <item name="tag_comment" type="id"/>
     <item name="tag_delete" type="id"/>
     <item name="tag_user_avatar" type="id"/>
+    <item name="tag_child_comment" type="id"/>
 </resources>

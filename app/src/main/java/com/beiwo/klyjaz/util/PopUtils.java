@@ -91,16 +91,19 @@ public class PopUtils {
      */
     public static void showCommentPopWindow(int layoutId, FragmentManager fManager, Context mContext,
                                             PopDialog.OnInitPopListener initListener,PopDialog.OnDismissListener dismissListener){
-        commentDialog = new PopDialog.Builder(fManager,mContext)
-                .setLayoutId(layoutId)
-                .setHeight(58)
-                .setDimAmount(0.0f)
-                .setGravity(Gravity.BOTTOM)
-                .setCancelableOutside(true)
-                .setInitPopListener(initListener)
-                .setDismissListener(dismissListener)
-                .create();
+//        if(commentDialog == null) {
+            commentDialog = new PopDialog.Builder(fManager, mContext)
+                    .setLayoutId(layoutId)
+                    .setHeight(58)
+                    .setDimAmount(0.0f)
+                    .setGravity(Gravity.BOTTOM)
+                    .setCancelableOutside(true)
+                    .setInitPopListener(initListener)
+                    .setDismissListener(dismissListener)
+                    .create();
+//        }
         commentDialog.show();
+//        commentDialog.getDialog().show();
     }
 
     /**

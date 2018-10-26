@@ -74,7 +74,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment, parent, false);
                 return new CommmentViewHolder(commentView);
             case FOOT:
-                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot, parent, false);
+                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot, parent,false);
                 return new FootViewHolder(footView);
             default:
                 break;
@@ -214,12 +214,14 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView tvCommentNum;
         @BindView(R.id.tv_comment)
         TextView tvComment;
+        @BindView(R.id.iv_comment)
+        ImageView ivComment;
 
         HeadViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             tvArticleTitle.setFocusable(true);
-            setOnClick(ivAuthorAvatar, tvComment, tvPraise);
+            setOnClick(ivAuthorAvatar, ivComment, tvPraise);
         }
     }
 
@@ -335,7 +337,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     listener.onViewClick(v, ConstantTag.TAG_PARISE_ARTICLE, 0);
                     break;
                 //追加文章评论
-                case R.id.tv_comment:
+                case R.id.iv_comment:
                     listener.onViewClick(v, ConstantTag.TAG_COMMENT_ARTICLE, 0);
                     break;
                 //评论点赞

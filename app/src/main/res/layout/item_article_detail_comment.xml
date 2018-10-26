@@ -11,8 +11,8 @@
         android:id="@+id/iv_commentator_avatar"
         android:layout_width="34dp"
         android:layout_height="34dp"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginStart="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
         android:layout_marginTop="@dimen/dp16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_commentator_avatar"
         android:text="闫伟"
         android:textColor="@color/black_1"
-        android:textSize="@dimen/sp14"/>
+        android:textSize="@dimen/sp16"/>
 
     <TextView
         android:id="@+id/tv_comment_content"
@@ -47,8 +47,11 @@
         android:layout_marginRight="@dimen/dp15"
         android:layout_marginEnd="@dimen/dp15"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/iv_commentator_avatar"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_commentator_name"
+        app:layout_constraintLeft_toRightOf="@id/iv_commentator_avatar"
         app:layout_constraintTop_toBottomOf="@+id/tv_commentator_name"
+        android:textSize="@dimen/sp14"
+        android:textColor="@color/black_1"
         android:text="离开静安寺欧尼是了圣诞节福利年历卡爱丽舍咖啡加啊我啥来的咖啡就阿里老师肯定发了"/>
 
 

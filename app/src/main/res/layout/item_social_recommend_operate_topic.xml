@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@drawable/shape_recommend_social_bg"
     android:layout_marginLeft="4.5dp"
     android:layout_marginRight="4.5dp">
     
@@ -48,7 +48,7 @@
         android:maxEms="50"
         android:ellipsize="end"
         android:maxLines="5"
-        android:textSize="@dimen/sp14"
+        android:textSize="@dimen/sp10"
         android:textColor="@color/black_2"
         tools:text="法官被撤或者将再次推"
         android:visibility="gone"/>
@@ -59,7 +59,7 @@
         android:layout_width="@dimen/dp20"
         android:layout_height="@dimen/dp20"
         android:src="@drawable/about_kaola_logo"
-        android:layout_marginTop="@dimen/dp17"
+        android:layout_marginTop="@dimen/dp14"
         android:layout_marginStart="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp10"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -91,11 +91,13 @@
         android:layout_marginEnd="@dimen/dp10"
         android:drawablePadding="@dimen/dp4"
         tools:text="12"
+        android:textSize="@dimen/sp10"
         android:gravity="center"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp8"
         app:layout_constraintTop_toBottomOf="@+id/tv_praise"
         android:background="@color/c_fafafa"/>
 
