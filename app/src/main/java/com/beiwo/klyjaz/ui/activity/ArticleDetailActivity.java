@@ -141,9 +141,9 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         }
     }
 
-    private void fetchForumInfo(){
+    private void fetchForumInfo() {
         String userId = "";
-        if(UserHelper.getInstance(this).isLogin()){
+        if (UserHelper.getInstance(this).isLogin()) {
             userId = UserHelper.getInstance(this).getProfile().getId();
         }
         if (!TextUtils.isEmpty(forumId)) {
@@ -537,18 +537,18 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
         childAdapter.setDatas(datas);
         childAdapter.notifyDataSetChanged();
         childAdapter.setOnViewClickListener(this);
-        if(datas.size() == 0){
+        if (datas.size() == 0) {
             emptyContainer.setVisibility(View.VISIBLE);
             itemRecycler.setVisibility(View.GONE);
-        }else{
+        } else {
             emptyContainer.setVisibility(View.GONE);
             itemRecycler.setVisibility(View.VISIBLE);
         }
 
-        if(clickType != 4){
+        if (clickType != 4) {
             mPopType = 5;
             PopUtils.showCommentPopWindow(R.layout.dialog_comment_input, fManager, this, this, this);
-         }
+        }
     }
 
     private void setOnClick(View... views) {
@@ -582,10 +582,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             this.datas.addAll(list);
             adapter.setDatas(datas, forumBean);
         }
-        if(tvCommentTitle != null){
+        if (tvCommentTitle != null) {
             tvCommentTitle.setText(String.valueOf("全部" + datas.size() + "条评论"));
         }
-        if(childAdapter != null){
+        if (childAdapter != null) {
             childAdapter.setDatas(datas);
         }
     }

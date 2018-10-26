@@ -105,7 +105,7 @@
         android:layout_height="8dp"
         android:background="#fafafa" />
 
-    <FrameLayout
+    <!--<FrameLayout
         android:id="@+id/state_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -143,5 +143,5 @@
             android:text="Hot Product"
             android:textColor="@color/c_e7e7e7"
             android:textSize="16dp" />
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

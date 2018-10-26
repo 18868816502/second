@@ -85,7 +85,7 @@ public class PopDialog extends BaseDialog {
     private static int mDialogType = 1;
 
     private OnInitPopListener mPopListener;
-    private OnDismissListener  mDismissListener;
+    private OnDismissListener mDismissListener;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -108,7 +108,7 @@ public class PopDialog extends BaseDialog {
         getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if(mDismissListener != null) {
+                if (mDismissListener != null) {
                     mDismissListener.onDismiss(PopDialog.this);
                 }
             }
@@ -131,9 +131,9 @@ public class PopDialog extends BaseDialog {
             if (mHeight > 0) {
                 layoutParams.height = mHeight;
             } else {
-                if(flag == 0) {
+                if (flag == 0) {
                     layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                }else{
+                } else {
                     layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
                 }
             }
@@ -155,7 +155,6 @@ public class PopDialog extends BaseDialog {
     public void findView(View view) {
         mPopListener.initPop(view, this);
     }
-
 
 
     public void show() {
@@ -276,7 +275,7 @@ public class PopDialog extends BaseDialog {
             return this;
         }
 
-        public Builder setDismissListener(OnDismissListener listener){
+        public Builder setDismissListener(OnDismissListener listener) {
             mDialog.mDismissListener = listener;
             return this;
         }
@@ -322,7 +321,7 @@ public class PopDialog extends BaseDialog {
         void initPop(View view, PopDialog mPopDialog);
     }
 
-    public interface OnDismissListener{
+    public interface OnDismissListener {
         void onDismiss(PopDialog mPopDialog);
     }
 

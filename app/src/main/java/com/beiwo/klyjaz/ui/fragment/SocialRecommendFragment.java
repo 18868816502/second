@@ -10,6 +10,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 
@@ -27,6 +28,7 @@ import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.adapter.social.SocialRecommendAdapter;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
+import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -52,6 +54,8 @@ import io.reactivex.functions.Consumer;
  */
 public class SocialRecommendFragment extends BaseComponentFragment implements OnRefreshListener, OnLoadMoreListener {
 
+    @BindView(R.id.hold_view)
+    View hold_view;
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -76,6 +80,12 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     @Override
     public void configViews() {
         adapter = new SocialRecommendAdapter(getActivity());
+        int statusHeight = CommonUtils.getStatusBarHeight(getActivity());
+        ViewGroup.LayoutParams params = hold_view.getLayoutParams();
+        params.height = statusHeight;
+        hold_view.setBackgroundResource(R.color.white);
+        hold_view.setLayoutParams(params);
+
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
@@ -190,10 +200,10 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                             if (1 == pageNo) {
                                 refreshLayout.finishRefresh();
                                 adapter.setDatas(result.getData().getForum());
-                                if(result.getData().getForum().size() == 0){
+                                if (result.getData().getForum().size() == 0) {
                                     refreshLayout.setVisibility(View.GONE);
                                     emptyContainer.setVisibility(View.VISIBLE);
-                                }else{
+                                } else {
                                     refreshLayout.setVisibility(View.VISIBLE);
                                     emptyContainer.setVisibility(View.GONE);
                                 }
