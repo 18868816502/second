@@ -59,7 +59,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setDatas(List<CommentReplyBean> datas, ForumInfoBean.ForumBean forumBean) {
         this.datas.clear();
-        this.datas.addAll(datas);
+//        this.datas.addAll(datas);
         this.forumBean = forumBean;
         notifyDataSetChanged();
     }

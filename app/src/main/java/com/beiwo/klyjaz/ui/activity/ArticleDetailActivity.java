@@ -281,7 +281,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case ConstantTag.TAG_COMMENT_OUTSIDE:
             case ConstantTag.TAG_REPLY_COMMENT:
                 presenter.fetchReplyForumInfo("", "2",
-                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(), "", "");
+                        etInput.getText().toString(), forumBean.getForumId(), replyBean.getUserId(), replyBean.getId(), replyBean.getId(), replyBean.getContent());
                 break;
             //子评论回复
             case ConstantTag.TAG_REPLY_OUTSIDE:

@@ -95,7 +95,7 @@ public class PopDialog extends BaseDialog {
     @Override
     public void onStart() {
         super.onStart();
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.PopDialog);
+        //setStyle(DialogFragment.STYLE_NO_TITLE, R.style.PopDialog);
         setWindowAttr();
     }
 

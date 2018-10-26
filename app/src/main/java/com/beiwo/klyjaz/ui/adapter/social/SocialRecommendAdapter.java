@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,9 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
         viewHoler.tvTopicTitle.setText(datas.get(position).getTitle());
         viewHoler.tvTopicContent.setText(datas.get(position).getContent());
-        Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHoler.ivAvatar);
+        if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
+            Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHoler.ivAvatar);
+        }
         viewHoler.tvName.setText(datas.get(position).getUserName());
         viewHoler.tvPraise.setText(String.valueOf(datas.get(position).getPraiseCount() + ""));
         if (datas.get(position).getIsPraise() == 0) {

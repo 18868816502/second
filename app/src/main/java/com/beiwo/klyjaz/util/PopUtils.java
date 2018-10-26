@@ -17,7 +17,7 @@ import com.beiwo.klyjaz.view.dialog.PopDialog;
 public class PopUtils {
 
     private static PopDialog mPopDialog;
-    private static PopDialog commentDialog;
+    private static  PopDialog commentDialog;
 
     private PopUtils() {
 
@@ -25,15 +25,14 @@ public class PopUtils {
 
     /**
      * 显示底部弹出框
-     *
      * @param layoutId
      * @param fManager
      * @param mContext
      * @param listener
      */
     public static void showBottomPopWindow(int layoutId, FragmentManager fManager, Context mContext,
-                                           PopDialog.OnInitPopListener listener) {
-        mPopDialog = new PopDialog.Builder(fManager, mContext)
+                                           PopDialog.OnInitPopListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
                 .setLayoutId(layoutId)
                 .setGravity(Gravity.BOTTOM)
                 .setCancelableOutside(true)
@@ -44,15 +43,14 @@ public class PopUtils {
 
     /**
      * 显示评论列表弹出框
-     *
      * @param layoutId
      * @param fManager
      * @param mContext
      * @param listener
      */
     public static void showBottomListWindow(int layoutId, FragmentManager fManager, Context mContext,
-                                            PopDialog.OnInitPopListener listener) {
-        mPopDialog = new PopDialog.Builder(fManager, mContext)
+                                           PopDialog.OnInitPopListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
                 .setLayoutId(layoutId)
                 .setGravity(Gravity.BOTTOM)
                 .setFlag(2)
@@ -64,15 +62,14 @@ public class PopUtils {
 
     /**
      * 显示中心弹出框
-     *
      * @param layoutId
      * @param fManager
      * @param mContext
      * @param listener
      */
     public static void showCenterPopWindow(int layoutId, FragmentManager fManager, Context mContext,
-                                           PopDialog.OnInitPopListener listener) {
-        mPopDialog = new PopDialog.Builder(fManager, mContext)
+                                           PopDialog.OnInitPopListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
                 .setLayoutId(layoutId)
                 .setWidth(270)
                 .setHeight(120)
@@ -86,7 +83,6 @@ public class PopUtils {
 
     /**
      * 显示评论输入框
-     *
      * @param layoutId
      * @param fManager
      * @param mContext
@@ -94,17 +90,17 @@ public class PopUtils {
      * @param dismissListener
      */
     public static void showCommentPopWindow(int layoutId, FragmentManager fManager, Context mContext,
-                                            PopDialog.OnInitPopListener initListener, PopDialog.OnDismissListener dismissListener) {
+                                            PopDialog.OnInitPopListener initListener,PopDialog.OnDismissListener dismissListener){
 //        if(commentDialog == null) {
-        commentDialog = new PopDialog.Builder(fManager, mContext)
-                .setLayoutId(layoutId)
-                .setHeight(58)
-                .setDimAmount(0.0f)
-                .setGravity(Gravity.BOTTOM)
-                .setCancelableOutside(true)
-                .setInitPopListener(initListener)
-                .setDismissListener(dismissListener)
-                .create();
+            commentDialog = new PopDialog.Builder(fManager, mContext)
+                    .setLayoutId(layoutId)
+                    .setHeight(58)
+                    .setDimAmount(0.0f)
+                    .setGravity(Gravity.BOTTOM)
+                    .setCancelableOutside(true)
+                    .setInitPopListener(initListener)
+                    .setDismissListener(dismissListener)
+                    .create();
 //        }
         commentDialog.show();
 //        commentDialog.getDialog().show();
@@ -113,14 +109,14 @@ public class PopUtils {
     /**
      * 隐藏弹出框
      */
-    public static void dismiss() {
-        if (mPopDialog != null) {
+    public static void dismiss(){
+        if(mPopDialog != null){
             mPopDialog.dismiss();
         }
     }
 
-    public static void dismissComment() {
-        if (commentDialog != null) {
+    public static void dismissComment(){
+        if(commentDialog != null){
             commentDialog.dismiss();
         }
     }

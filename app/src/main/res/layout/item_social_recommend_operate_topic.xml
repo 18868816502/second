@@ -11,67 +11,62 @@
     
     <ImageView
         android:id="@+id/iv_topic"
-        android:layout_width="@dimen/dp168"
-        android:layout_height="@dimen/dp114"
+        android:layout_width="168dp"
+        android:layout_height="114dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:contentDescription="@string/app_content_description"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/tv_topic_title"
-        android:layout_width="match_parent"
+        android:layout_width="359dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iv_topic"
+        app:layout_constraintTop_toBottomOf="@+id/iv_topic"
         android:layout_marginTop="@dimen/dp10"
-        android:layout_marginStart="@dimen/dp10"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginEnd="@dimen/dp10"
-        android:layout_marginRight="@dimen/dp10"
         android:maxEms="20"
         android:ellipsize="end"
         android:maxLines="2"
         android:textSize="@dimen/sp14"
         android:textColor="@color/black_1"
-        tools:text="法官被撤或者将再次推出审判，张莹莹律师啊撒旦克"/>
+        tools:text="法官被撤或者将再次推出审判，张莹莹律师啊撒旦克"
+        tools:layout_editor_absoluteX="8dp" />
 
     <TextView
         android:id="@+id/tv_topic_content"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_topic_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic_title"
         android:layout_marginTop="@dimen/dp6"
-        android:layout_marginStart="@dimen/dp10"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginEnd="@dimen/dp10"
-        android:layout_marginRight="@dimen/dp10"
         android:maxEms="50"
         android:ellipsize="end"
         android:maxLines="5"
         android:textSize="@dimen/sp10"
         android:textColor="@color/black_2"
         tools:text="法官被撤或者将再次推"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="8dp" />
 
 
     <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_avatar"
-        android:layout_width="@dimen/dp20"
-        android:layout_height="@dimen/dp20"
-        android:src="@drawable/about_kaola_logo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/mine_icon_head"
         android:layout_marginTop="@dimen/dp14"
         android:layout_marginStart="@dimen/dp10"
         android:layout_marginLeft="@dimen/dp10"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_topic_content"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_topic_content"/>
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+        app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
         android:layout_marginLeft="@dimen/dp10"
         android:layout_marginStart="@dimen/sp10"
         android:textColor="@color/black_2"
@@ -84,8 +79,8 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/icon_social_topic_praise_unselect"
         android:drawableStart="@drawable/icon_social_topic_praise_unselect"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="@dimen/dp10"
         android:layout_marginEnd="@dimen/dp10"
@@ -95,10 +90,11 @@
         android:gravity="center"/>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp10"
+        android:layout_width="359dp"
+        android:layout_height="10dp"
         android:layout_marginTop="@dimen/dp8"
         app:layout_constraintTop_toBottomOf="@+id/tv_praise"
-        android:background="@color/c_fafafa"/>
+        android:background="@color/c_fafafa"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>
