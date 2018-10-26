@@ -175,10 +175,15 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         holder.tvPublishTime.setText(String.valueOf(bean.getGmtCreate()));
         holder.tvArticleContent.setText(bean.getTitle());
         holder.tvArticleDescripe.setText(bean.getContent());
+        holder.tvTitle.setText(bean.getContent());
         if(bean.getPicUrl()!=null&&bean.getPicUrl().size()!=0) {
             Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
+            holder.llContainer.setVisibility(View.VISIBLE);
+            holder.tvTitle.setVisibility(View.GONE);
         }else{
             holder.ivAuthorContent.setVisibility(View.GONE);
+            holder.tvTitle.setVisibility(View.VISIBLE);
+            holder.llContainer.setVisibility(View.GONE);
         }
         holder.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
         holder.tvCommentNum.setText(String.valueOf(bean.getCommentCount()));
@@ -273,6 +278,10 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         ImageView ivComment;
         @BindView(R.id.tv_comment_num)
         TextView tvCommentNum;
+        @BindView(R.id.ll_article_content)
+        LinearLayout llContainer;
+        @BindView(R.id.tv_title)
+        TextView tvTitle;
 
 
         ContentViewHolder(View itemView) {

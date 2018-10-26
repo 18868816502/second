@@ -47,13 +47,16 @@
 
     <LinearLayout
         android:id="@+id/ll_article_content"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="90dp"
         android:layout_marginTop="@dimen/dp18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
         app:layout_constraintTop_toBottomOf="@+id/tv_author_publish_time"
         android:orientation="horizontal"
-        android:background="@drawable/shape_personal_center_article"
-        tools:layout_editor_absoluteX="8dp">
+        android:background="@drawable/shape_personal_center_article">
         <TextView
             android:id="@+id/tv_article_content"
             android:layout_width="0dp"
@@ -78,11 +81,25 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/dp19"
+        app:layout_constraintTop_toBottomOf="@+id/ll_article_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:textSize="@dimen/sp17"
+        android:textColor="@color/black_1"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/tv_article_descripe"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp10"
-        app:layout_constraintTop_toBottomOf="@+id/ll_article_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:text="按时发局手动阀聂亚我阿up哦一发哦哦我阿US噢范增圣斗士已经这样了"
         android:textColor="@color/black_2"
         android:maxEms="80"
