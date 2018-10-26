@@ -94,7 +94,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
             }
             headViewHolder.tvAuthorName.setText(TextUtils.isEmpty(forumBean.getUserName()) ? "未知" : forumBean.getUserName());
-            headViewHolder.tvAuthorTime.setText(forumBean.getGmtCreate());
+            headViewHolder.tvAuthorTime.setText(forumBean.getCreateText());
             if (forumBean.getPicUrl() != null && forumBean.getPicUrl().size() != 0) {
                 headViewHolder.bgaBanner.setVisibility(View.VISIBLE);
                 headViewHolder.bgaBanner.setData(forumBean.getPicUrl(), null);

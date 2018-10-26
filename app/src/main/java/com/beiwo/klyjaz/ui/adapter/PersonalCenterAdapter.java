@@ -172,7 +172,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
             Glide.with(mContext).load(bean.getUserHeadUrl()).asBitmap().into(holder.ivAuthorAvatar);
         }
         holder.tvAuthorName.setText(bean.getUserName());
-        holder.tvPublishTime.setText(String.valueOf(bean.getGmtCreate()));
+        holder.tvPublishTime.setText(String.valueOf(bean.getCreateText()));
         holder.tvArticleContent.setText(bean.getTitle());
         holder.tvArticleDescripe.setText(bean.getContent());
         holder.tvTitle.setText(bean.getTitle());

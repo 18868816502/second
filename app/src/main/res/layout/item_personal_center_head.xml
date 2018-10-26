@@ -30,7 +30,8 @@
         tools:text="西村小飞"
         android:ems="6"
         android:singleLine="true"
-        android:textSize="23sp"/>
+        android:textSize="23sp"
+        android:textColor="@color/black_1"/>
 
     <ImageView
         android:id="@+id/iv_sex"
@@ -61,7 +62,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/personal_edit_text"/>
+            android:layout_marginLeft="@dimen/dp5"
+            android:text="@string/personal_edit_text"
+            android:textSize="@dimen/sp11"/>
     </LinearLayout>
 
     <LinearLayout

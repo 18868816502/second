@@ -26,11 +26,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp4"
         app:layout_constraintLeft_toRightOf="@id/tv_comment_num_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="@dimen/dp6"
         android:layout_marginStart="@dimen/dp6"
-        android:src="@drawable/account_push_debt_icon"/>
+        android:src="@drawable/icon_more"/>
 
 </LinearLayout>
