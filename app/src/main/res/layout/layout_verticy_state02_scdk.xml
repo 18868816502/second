@@ -8,8 +8,10 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/relative_container"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp">
 
@@ -62,8 +64,10 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/name_container"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicate"
         tools:layout_editor_absoluteX="8dp">
 
@@ -118,8 +122,10 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/phone_container"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicate2"
         tools:layout_editor_absoluteX="8dp">
 

@@ -102,6 +102,15 @@ public class TabHomeFragment extends BaseComponentFragment {
                     ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(false).init();
                 }
             }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (shouldScroll && RecyclerView.SCROLL_STATE_IDLE == newState) {
+                    shouldScroll = false;
+                    smoothMoveToPosition(toPosition);
+                }
+            }
         });
     }
 
@@ -144,7 +153,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                     public void onNext(@NonNull List<Product> data) {
                         refresh_layout.finishRefresh();
                         homeAdapter.setNormalData(data);
-                        if (recycler != null) recycler.smoothScrollToPosition(0);
+                        if (recycler != null) smoothMoveToPosition(0);
                     }
                 });
     }
@@ -179,7 +188,7 @@ public class TabHomeFragment extends BaseComponentFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) recycler.smoothScrollToPosition(0);
+        //if (!hidden) smoothMoveToPosition(0);//recycler.smoothScrollToPosition(0);
     }
 
     @Override
@@ -190,6 +199,32 @@ public class TabHomeFragment extends BaseComponentFragment {
                 request();
             }
         });
+    }
+
+    private int toPosition;
+    private boolean shouldScroll;
+
+    private void smoothMoveToPosition(final int position) {
+        // 第一个可见位置
+        int firstItem = recycler.getChildLayoutPosition(recycler.getChildAt(0));
+        // 最后一个可见位置
+        int lastItem = recycler.getChildLayoutPosition(recycler.getChildAt(recycler.getChildCount() - 1));
+        if (position < firstItem) {
+            // 第一种可能:跳转位置在第一个可见位置之前
+            recycler.smoothScrollToPosition(position);
+        } else if (position <= lastItem) {
+            // 第二种可能:跳转位置在第一个可见位置之后
+            int movePosition = position - firstItem;
+            if (movePosition >= 0 && movePosition < recycler.getChildCount()) {
+                int top = recycler.getChildAt(movePosition).getTop();
+                recycler.smoothScrollBy(0, top);
+            }
+        } else {
+            // 第三种可能:跳转位置在最后可见项之后
+            recycler.smoothScrollToPosition(position);
+            toPosition = position;
+            shouldScroll = true;
+        }
     }
 
     @Override
@@ -203,15 +238,13 @@ public class TabHomeFragment extends BaseComponentFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
