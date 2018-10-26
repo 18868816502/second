@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <include
-        layout="@layout/template_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+    <include layout="@layout/template_toolbar" />
 
     <LinearLayout
         android:id="@+id/ll_state"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/dp20"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="0dp">
+        android:paddingBottom="@dimen/dp20">
 
         <ImageView
             android:id="@+id/iv_state"
@@ -36,18 +29,16 @@
 
     <LinearLayout
         android:id="@+id/stateContainer"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackground"
         android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_state"
         tools:layout_editor_absoluteX="8dp" />
 
     <TextView
         android:id="@+id/tv_start_vertify"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginEnd="@dimen/dp15"
         android:layout_marginLeft="@dimen/dp15"
@@ -58,7 +49,5 @@
         android:gravity="center"
         android:text="@string/jjd_start_vertify_text"
         android:textColor="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stateContainer" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

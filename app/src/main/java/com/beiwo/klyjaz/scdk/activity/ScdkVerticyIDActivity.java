@@ -36,8 +36,10 @@ import butterknife.BindView;
  */
 public class ScdkVerticyIDActivity extends BaseComponentActivity implements View.OnClickListener, CircleProgressBar.OnAnimatorFinishedListener {
 
-    @BindView(R.id.tool_bar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.toolbar_title)
+    TextView toolbar_title;
     @BindView(R.id.iv_state)
     ImageView ivState;
     @BindView(R.id.stateContainer)
@@ -80,6 +82,7 @@ public class ScdkVerticyIDActivity extends BaseComponentActivity implements View
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        toolbar_title.setText("验证身份信息");
         Intent intent = getIntent();
         if (intent != null) {
             mVertifyState = intent.getIntExtra("mVertifyState", 1);

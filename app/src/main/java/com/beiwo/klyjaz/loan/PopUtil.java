@@ -2,7 +2,9 @@ package com.beiwo.klyjaz.loan;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +32,16 @@ public class PopUtil {
         popup.setAnimationStyle(R.style.anim_style_top2bottom);
         popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popup.setOutsideTouchable(true);
-        //popup.setFocusable(false);
         popup.setTouchable(true);
-        popup.showAsDropDown(anchor, 0, 15);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0
+            Rect visibleFrame = new Rect();
+            anchor.getGlobalVisibleRect(visibleFrame);
+            int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+            popup.setHeight(height);
+            popup.showAsDropDown(anchor, 0, 15);
+        } else {
+            popup.showAsDropDown(anchor, 0, 15);
+        }
     }
 
     public interface PopViewClickListener {
