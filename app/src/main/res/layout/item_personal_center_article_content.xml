@@ -73,7 +73,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:src="@drawable/push"/>
+            android:background="@drawable/push"
+            android:scaleType="centerCrop"/>
     </LinearLayout>
 
     <TextView
@@ -105,7 +106,7 @@
             android:id="@+id/iv_priase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_social_applaud_none_icon"/>
+            android:background="@drawable/icon_social_personal_praise_unselected"/>
         <TextView
             android:id="@+id/tv_praise"
             android:layout_width="wrap_content"

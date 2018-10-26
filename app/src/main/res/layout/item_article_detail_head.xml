@@ -76,8 +76,9 @@
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_width="345dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="w,9:16"
         android:layout_marginEnd="@dimen/dp15"
         android:layout_marginLeft="@dimen/dp15"
         android:layout_marginRight="@dimen/dp15"

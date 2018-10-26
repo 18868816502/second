@@ -180,11 +180,11 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         }
         holder.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
         holder.tvCommentNum.setText(String.valueOf(bean.getCommentCount()));
-//        if (mList.get(position).getIsPraise() == 0) {
-//            holder.ivPraise.setBackgroundResource(R.drawable.icon_social_topic_praise_unselect);
-//        } else {
-//            holder.ivPraise.setBackgroundResource(R.drawable.icon_social_topic_praise_select);
-//        }
+        if (mList.get(position).getIsPraise() == 0) {
+            holder.ivPraise.setBackgroundResource(R.drawable.icon_social_personal_praise_unselected);
+        } else {
+            holder.ivPraise.setBackgroundResource(R.drawable.icon_social_personal_praise_selected);
+        }
     }
 
     @Override
