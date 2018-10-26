@@ -414,6 +414,10 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 //                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
+            case 1000:
+                PopUtils.dismiss();
+                PopUtils.dismissComment();
+                break;
             default:
                 break;
         }

@@ -87,7 +87,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
             if (forumBean == null) return;
-            HeadViewHolder headViewHolder = (HeadViewHolder) holder;
+            final HeadViewHolder headViewHolder = (HeadViewHolder) holder;
             headViewHolder.tvArticleTitle.setText(forumBean.getTitle());
             if (!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
                 Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
@@ -106,10 +106,12 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 headViewHolder.bgaBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
                     @Override
                     public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
+                        listener.onViewClick(headViewHolder.bgaBanner,1000,0);
                         Intent intent = new Intent(mContext, PhotoDetailActivity.class);
                         intent.putStringArrayListExtra("datas", (ArrayList<String>) forumBean.getPicUrl());
                         intent.putExtra("position", position);
                         mContext.startActivity(intent);
+
                     }
                 });
                 if(forumBean.getPicUrl().size() == 1) {
