@@ -318,7 +318,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 
     @Override

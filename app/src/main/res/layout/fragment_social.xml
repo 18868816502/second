@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:background="@color/c_fafafa">
 
+    <View
+        android:id="@+id/hold_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -44,18 +49,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/no_data"
-            android:layout_marginTop="117dp"/>
+            android:layout_marginTop="117dp"
+            android:src="@mipmap/no_data" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp7"
-            android:text="抱歉，我们还没有文章"/>
+            android:text="抱歉，我们还没有文章" />
     </LinearLayout>
 
     <TextView
