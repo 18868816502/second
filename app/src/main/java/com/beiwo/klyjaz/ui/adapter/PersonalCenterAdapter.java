@@ -168,7 +168,9 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
      */
     private void onBindArticleData(ContentViewHolder holder,int position) {
         UserTopicBean bean = mList.get(position);
-        Glide.with(mContext).load(bean.getUserHeadUrl()).asBitmap().into(holder.ivAuthorAvatar);
+        if(!TextUtils.isEmpty(bean.getUserHeadUrl())) {
+            Glide.with(mContext).load(bean.getUserHeadUrl()).asBitmap().into(holder.ivAuthorAvatar);
+        }
         holder.tvAuthorName.setText(bean.getUserName());
         holder.tvPublishTime.setText(String.valueOf(bean.getGmtCreate()));
         holder.tvArticleContent.setText(bean.getTitle());

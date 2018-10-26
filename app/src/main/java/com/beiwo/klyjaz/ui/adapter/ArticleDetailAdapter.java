@@ -51,6 +51,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int FOOT = 2;
     private List<CommentReplyBean> datas;
     private ForumInfoBean.ForumBean forumBean;
+    private  HeadViewHolder headViewHolder;
 
     public ArticleDetailAdapter(Activity mContext) {
         this.mContext = mContext;
@@ -59,7 +60,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setDatas(List<CommentReplyBean> datas, ForumInfoBean.ForumBean forumBean) {
         this.datas.clear();
-//        this.datas.addAll(datas);
+        this.datas.addAll(datas);
         this.forumBean = forumBean;
         notifyDataSetChanged();
     }
@@ -87,7 +88,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
             if (forumBean == null) return;
-            final HeadViewHolder headViewHolder = (HeadViewHolder) holder;
+            headViewHolder = (HeadViewHolder) holder;
             headViewHolder.tvArticleTitle.setText(forumBean.getTitle());
             if (!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
                 Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(headViewHolder.ivAuthorAvatar);
@@ -138,6 +139,12 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 headViewHolder.tvPraise.setTextColor(mContext.getColor(R.color.c_ff5240));
             }
 
+            if(datas.size() == 0){
+                headViewHolder.emptyContainer.setVisibility(View.VISIBLE);
+            }else{
+                headViewHolder.emptyContainer.setVisibility(View.GONE);
+            }
+
         } else if (position == getItemCount() - 1) {
             FootViewHolder footViewHolder = (FootViewHolder) holder;
             if (datas.size() > 3) {
@@ -147,6 +154,13 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 footViewHolder.setVisibility(false);
             }
         } else {
+            if(headViewHolder != null) {
+                if (datas.size() == 0) {
+                    headViewHolder.emptyContainer.setVisibility(View.VISIBLE);
+                } else {
+                    headViewHolder.emptyContainer.setVisibility(View.GONE);
+                }
+            }
             CommmentViewHolder commmentViewHolder = (CommmentViewHolder) holder;
             commmentViewHolder.tvCommentPraise.setTag(R.id.tag_praise, position - 1);
             commmentViewHolder.ivArticleComment.setTag(R.id.tag_comment, position - 1);
@@ -218,6 +232,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView tvComment;
         @BindView(R.id.iv_comment)
         ImageView ivComment;
+
+        @BindView(R.id.empty_container)
+        View emptyContainer;
 
         HeadViewHolder(View itemView) {
             super(itemView);

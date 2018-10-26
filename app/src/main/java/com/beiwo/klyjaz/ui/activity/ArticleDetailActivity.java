@@ -559,8 +559,8 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onDismiss(PopDialog mPopDialog) {
-//        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
-        KeyBoardUtils.hideInput(this,etInput);
+        KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
+        //KeyBoardUtils.hideInput(this, etInput);
         PopUtils.dismissComment();
     }
 

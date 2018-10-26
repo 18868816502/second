@@ -91,7 +91,8 @@
         app:layout_constraintDimensionRatio="w,3:4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_author_avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_author_avatar"
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/tv_article_content"
@@ -180,5 +181,33 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_comment_num"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicate" />
+
+    <LinearLayout
+        android:id="@+id/empty_container"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/toolbar"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_comment">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/social_no_comment" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp7"
+            android:text="暂无评论" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
