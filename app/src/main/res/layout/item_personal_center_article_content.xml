@@ -95,7 +95,7 @@
         android:ellipsize="end"
         android:textSize="@dimen/sp17"
         android:textColor="@color/black_1"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_article_descripe"
