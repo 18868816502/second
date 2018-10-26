@@ -50,7 +50,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
         super.onResume();
         Statistic.onResume(this);
         //初始化个推
-        GeTuiClient.install(this);
+        GeTuiClient.install();
     }
 
     @Override

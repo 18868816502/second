@@ -114,7 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="立即登录，开启记账旅程！"
+                            android:text="登录开启更多功能"
                             android:textColor="@color/black_2"
                             android:textSize="12sp" />
                     </LinearLayout>

@@ -20,6 +20,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.entity.Phone;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.getui.GeTuiClient;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -170,7 +171,8 @@ public class DlgUtil {
                                         UserHelper.getInstance(context).update(data, account, context);
                                         //保存用户id,缓存
                                         SPUtils.setCacheUserId(data.getId());
-                                        EventBus.getDefault().post(new UserLoginEvent());
+                                        //EventBus.getDefault().post(new UserLoginEvent());
+                                        GeTuiClient.install();
                                         EventBus.getDefault().post("1");
                                         if (listener != null) listener.success(data);
                                     }

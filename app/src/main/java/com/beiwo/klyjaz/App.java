@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.Constant;
 import com.beiwo.klyjaz.entity.Audit;
+import com.beiwo.klyjaz.getui.GeTuiClient;
 import com.beiwo.klyjaz.helper.ActivityTracker;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;

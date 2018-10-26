@@ -51,7 +51,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int FOOT = 2;
     private List<CommentReplyBean> datas;
     private ForumInfoBean.ForumBean forumBean;
-    private  HeadViewHolder headViewHolder;
+    private HeadViewHolder headViewHolder;
 
     public ArticleDetailAdapter(Activity mContext) {
         this.mContext = mContext;
@@ -75,7 +75,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment, parent, false);
                 return new CommmentViewHolder(commentView);
             case FOOT:
-                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot, parent,false);
+                View footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot, parent, false);
                 return new FootViewHolder(footView);
             default:
                 break;
@@ -107,7 +107,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 headViewHolder.bgaBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
                     @Override
                     public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
-                        listener.onViewClick(headViewHolder.bgaBanner,1000,0);
+                        listener.onViewClick(headViewHolder.bgaBanner, 1000, 0);
                         Intent intent = new Intent(mContext, PhotoDetailActivity.class);
                         intent.putStringArrayListExtra("datas", (ArrayList<String>) forumBean.getPicUrl());
                         intent.putExtra("position", position);
@@ -115,9 +115,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     }
                 });
-                if(forumBean.getPicUrl().size() == 1) {
+                if (forumBean.getPicUrl().size() == 1) {
                     headViewHolder.bgaBanner.setAutoPlayAble(false);
-                }else{
+                } else {
                     headViewHolder.bgaBanner.setAutoPlayAble(true);
                 }
             } else {
@@ -139,9 +139,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 headViewHolder.tvPraise.setTextColor(mContext.getColor(R.color.c_ff5240));
             }
 
-            if(datas.size() == 0){
+            if (datas.size() == 0) {
                 headViewHolder.emptyContainer.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 headViewHolder.emptyContainer.setVisibility(View.GONE);
             }
 
@@ -154,7 +154,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                 footViewHolder.setVisibility(false);
             }
         } else {
-            if(headViewHolder != null) {
+            if (headViewHolder != null) {
                 if (datas.size() == 0) {
                     headViewHolder.emptyContainer.setVisibility(View.VISIBLE);
                 } else {

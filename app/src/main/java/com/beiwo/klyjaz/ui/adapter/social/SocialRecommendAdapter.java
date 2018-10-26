@@ -74,24 +74,25 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         OperateTopicViewHolder viewHoler = (OperateTopicViewHolder) holder;
-
-        if (datas.get(position).getPicUrl() != null && datas.get(position).getPicUrl().size() != 0) {
+        SocialTopicBean.ForumBean bean = datas.get(position);
+        if (bean.getPicUrl() != null && bean.getPicUrl().size() != 0) {
             viewHoler.ivTopic.setVisibility(View.VISIBLE);
             viewHoler.tvTopicContent.setVisibility(View.GONE);
-            Glide.with(mContext).load(datas.get(position).getPicUrl().get(0)).into(viewHoler.ivTopic);
+            Glide.with(mContext).load(bean.getPicUrl().get(0)).into(viewHoler.ivTopic);
         } else {
             viewHoler.ivTopic.setVisibility(View.GONE);
             viewHoler.tvTopicContent.setVisibility(View.VISIBLE);
-            viewHoler.tvTopicContent.setText(datas.get(position).getContent());
+            viewHoler.tvTopicContent.setText(bean.getContent());
         }
-        viewHoler.tvTopicTitle.setText(datas.get(position).getTitle());
-        viewHoler.tvTopicContent.setText(datas.get(position).getContent());
-        if(!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
-            Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHoler.ivAvatar);
+        viewHoler.tvTopicTitle.setText(bean.getTitle());
+        if (!TextUtils.isEmpty(bean.getUserHeadUrl())) {
+            Glide.with(mContext).load(bean.getUserHeadUrl()).into(viewHoler.ivAvatar);
+        } else {
+            viewHoler.ivAvatar.setImageResource(R.drawable.mine_icon_head);
         }
-        viewHoler.tvName.setText(datas.get(position).getUserName());
-        viewHoler.tvPraise.setText(String.valueOf(datas.get(position).getPraiseCount() + ""));
-        if (datas.get(position).getIsPraise() == 0) {
+        viewHoler.tvName.setText(bean.getUserName());
+        viewHoler.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
+        if (bean.getIsPraise() == 0) {
             Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
@@ -105,7 +106,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         viewHoler.itemView.setTag(position);
         viewHoler.tvPraise.setTag(position);
-        viewHoler.ivAvatar.setTag(R.id.tag_user_avatar,position);
+        viewHoler.ivAvatar.setTag(R.id.tag_user_avatar, position);
     }
 
     @Override
@@ -154,7 +155,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         return;
                     }
                     Intent intent = new Intent(mContext, PersonalCenterActivity.class);
-                    intent.putExtra("userId",datas.get((Integer) v.getTag(R.id.tag_user_avatar)).getUserId());
+                    intent.putExtra("userId", datas.get((Integer) v.getTag(R.id.tag_user_avatar)).getUserId());
                     mContext.startActivity(intent);
                 }
             });

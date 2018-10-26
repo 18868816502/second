@@ -26,24 +26,19 @@ public class PushReceiveIntentService extends GTIntentService {
     }
 
     @Override
-    public void onReceiveClientId(Context context, String clientId) {
+    public void onReceiveClientId(final Context context, String clientId) {
         if (TextUtils.isEmpty(clientId)) return;
         //System.out.println("clientId : " + clientId);
         if (UserHelper.getInstance(App.getInstance()).isLogin()) {
-            String bindClientId = SPUtils.getPushBindClientId(context);
             String bindUserId = SPUtils.getPushBindUserId(context);
-            String userId = UserHelper.getInstance(context).id();
-            //如果相同的userId，个推clientId已经绑定过，则不要再发送请求
-            if (!userId.equals(bindUserId) || !clientId.equals(bindClientId)) {
-                //记录相关id
-                SPUtils.setPushBindClientId(context, clientId);
-                SPUtils.setPushBindUserId(context, userId);
-                //System.out.println(userId + " === " + clientId);
+            final String userId = UserHelper.getInstance(context).id();
+            if (!TextUtils.equals(bindUserId, userId)) {
                 Api.getInstance().bindClientId(userId, clientId)
                         .compose(RxResponse.compatO())
                         .subscribe(new ApiObserver<Object>() {
                             @Override
                             public void onNext(@NonNull Object data) {
+                                SPUtils.setPushBindUserId(context, userId);
                                 //System.out.println("bind getui success");
                             }
                         });
