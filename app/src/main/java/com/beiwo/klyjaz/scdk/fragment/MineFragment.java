@@ -133,9 +133,9 @@ public class MineFragment extends BaseTabFragment implements TabMineContract.Vie
         loginTv.setVisibility(View.GONE);
         userNameTv.setVisibility(View.VISIBLE);
         if (UserHelper.getInstance(getActivity()).isLogin()) {
-            userInfo.setText("查看并编辑资料");
+            userInfo.setText("查看或编辑个人主页");
         } else {
-            userInfo.setText("立即登录，开启记账旅程！");
+            userInfo.setText("登录开启更多功能");
         }
         if (profile.getHeadPortrait() != null) {
             Glide.with(getActivity())
@@ -281,7 +281,7 @@ public class MineFragment extends BaseTabFragment implements TabMineContract.Vie
             if (intent.getAction() != null) {
                 if (intent.getAction().equals("logout")) {
                     userNameTv.setText("请登录");
-                    userInfo.setText("立即登录，开启记账旅程！");
+                    userInfo.setText("登录开启更多功能");
                     Glide.with(getActivity())
                             .load(R.drawable.mine_icon_head)
                             .asBitmap()

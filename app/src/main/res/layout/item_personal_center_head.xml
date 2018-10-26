@@ -28,6 +28,8 @@
         android:layout_marginLeft="6dp"
         android:layout_marginTop="20dp"
         tools:text="西村小飞"
+        android:ems="6"
+        android:singleLine="true"
         android:textSize="23sp"/>
 
     <ImageView

@@ -173,9 +173,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) {
-            System.out.println("ArticleDetailActivity recieve 1");
             fetchForumInfo();
-//            fetchData();
         }
     }
 

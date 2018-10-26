@@ -121,11 +121,10 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) {
-            System.out.println("personal fregment 1");
             request();
             loginTv.setVisibility(View.GONE);
             userNameTv.setVisibility(View.VISIBLE);
-            userInfo.setText("查看并编辑资料");
+            userInfo.setText("查看或编辑个人主页");
             UserHelper.Profile profile = UserHelper.getInstance(getActivity()).getProfile();
             if (profile != null) {
                 Glide.with(getActivity()).load(profile.getHeadPortrait()).error(R.drawable.mine_icon_head).into(avatarIv);
@@ -219,9 +218,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         loginTv.setVisibility(View.GONE);
         userNameTv.setVisibility(View.VISIBLE);
         if (UserHelper.getInstance(getActivity()).isLogin()) {
-            userInfo.setText("查看并编辑资料");
+            userInfo.setText("查看或编辑个人主页");
         } else {
-            userInfo.setText("立即登录，开启记账旅程！");
+            userInfo.setText("登录开启更多功能");
         }
         if (profile.getHeadPortrait() != null) {
             Glide.with(getActivity())
@@ -328,7 +327,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             public void success(UserProfileAbstract data) {
                 loginTv.setVisibility(View.GONE);
                 userNameTv.setVisibility(View.VISIBLE);
-                userInfo.setText("查看并编辑资料");
+                userInfo.setText("查看或编辑个人主页");
                 if (data.getHeadPortrait() != null) {
                     Glide.with(getActivity())
                             .load(data.getHeadPortrait())
@@ -428,7 +427,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             if (intent.getAction() != null) {
                 if (intent.getAction().equals("logout")) {
                     userNameTv.setText("请登录");
-                    userInfo.setText("立即登录，开启记账旅程！");
+                    userInfo.setText("登录开启更多功能");
                     Glide.with(getActivity())
                             .load(R.drawable.mine_icon_head)
                             .into(avatarIv);
