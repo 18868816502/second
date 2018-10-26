@@ -1,7 +1,6 @@
 package com.beiwo.klyjaz.ui.adapter.social;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -21,10 +20,8 @@ import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.view.CircleImageView;
-import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
