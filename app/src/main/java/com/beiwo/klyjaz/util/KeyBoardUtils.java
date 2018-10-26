@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.util;
 
 import android.content.Context;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -74,5 +75,15 @@ public class KeyBoardUtils {
         return bool;
     }
 
+    /**
+     * 强制隐藏输入法键盘
+     *
+     * @param context Context
+     * @param EditText    EditText
+     */
+    public static void hideInput(Context context, EditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
 
 }

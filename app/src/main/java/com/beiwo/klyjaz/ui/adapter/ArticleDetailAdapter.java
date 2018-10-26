@@ -125,13 +125,13 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             headViewHolder.tvArticleContent.setText(forumBean.getContent());
             headViewHolder.tvCommentNum.setText(String.valueOf("评论 " + datas.size()));
             if (forumBean.getIsPraise() == 0) {
-                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
+                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_personal_praise_unselected);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
                 headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
                 headViewHolder.tvPraise.setText("赞");
                 headViewHolder.tvPraise.setTextColor(mContext.getColor(R.color.black_2));
             } else {
-                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
+                Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_personal_praise_selected);
                 dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
                 headViewHolder.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
                 headViewHolder.tvPraise.setText(String.valueOf(forumBean.getPraiseCount()));

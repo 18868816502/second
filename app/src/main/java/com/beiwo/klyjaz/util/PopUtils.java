@@ -3,7 +3,6 @@ package com.beiwo.klyjaz.util;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
-import android.view.WindowManager;
 
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 
@@ -17,7 +16,7 @@ import com.beiwo.klyjaz.view.dialog.PopDialog;
 public class PopUtils {
 
     private static PopDialog mPopDialog;
-    private static  PopDialog commentDialog;
+    private static PopDialog commentDialog;
 
     private PopUtils() {
 
@@ -91,8 +90,7 @@ public class PopUtils {
      */
     public static void showCommentPopWindow(int layoutId, FragmentManager fManager, Context mContext,
                                             PopDialog.OnInitPopListener initListener,PopDialog.OnDismissListener dismissListener){
-//        if(commentDialog == null) {
-            commentDialog = new PopDialog.Builder(fManager, mContext)
+        commentDialog = new PopDialog.Builder(fManager, mContext)
                     .setLayoutId(layoutId)
                     .setHeight(58)
                     .setDimAmount(0.0f)
@@ -101,9 +99,7 @@ public class PopUtils {
                     .setInitPopListener(initListener)
                     .setDismissListener(dismissListener)
                     .create();
-//        }
         commentDialog.show();
-//        commentDialog.getDialog().show();
     }
 
     /**
