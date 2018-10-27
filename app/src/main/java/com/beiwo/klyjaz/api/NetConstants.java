@@ -30,7 +30,7 @@ public class NetConstants {
 
     private static String apname2CompName(String appname) {
         Map<String, String> map = new HashMap<>();
-        map.put("考拉有借", "杭州优材科技有限公司");
+        map.put("考拉有借", "杭州贝沃科技有限公司");
         map.put("鱼米记账", "杭州贝捷金融信息服务有限公司");
         if (map.containsKey(appname)) return map.get(appname);
         return "杭州贝沃科技有限公司";
@@ -38,7 +38,7 @@ public class NetConstants {
 
     private static String shortComp(String appname) {
         Map<String, String> map = new HashMap<>();
-        map.put("考拉有借", "优材科技");
+        map.put("考拉有借", "贝沃科技");
         map.put("鱼米记账", "贝捷金融");
         if (map.containsKey(appname)) return map.get(appname);
         return "贝沃科技";

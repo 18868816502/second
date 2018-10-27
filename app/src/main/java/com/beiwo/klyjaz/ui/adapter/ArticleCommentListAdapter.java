@@ -60,21 +60,26 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         CommmentViewHolder viewHolder = (CommmentViewHolder) holder;
+        CommentReplyBean bean = datas.get(position);
         viewHolder.tvCommentPraise.setTag(position);
         viewHolder.ivArticleComment.setTag(position);
         viewHolder.tvCommentDelete.setTag(position);
         viewHolder.itemView.setTag(position);
         viewHolder.ivCommentatorAcatar.setTag(R.id.comment_list_avatar, position);
 
-        if (!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
-            Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
+        if (!TextUtils.isEmpty(bean.getUserHeadUrl())) {
+            Glide.with(mContext).load(bean.getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);
+        }else{
+//            viewHolder.ivCommentatorAcatar.setBackgroundResource(R.drawable.mine_icon_head);
+            Glide.with(mContext).load(R.drawable.mine_icon_head).into(viewHolder.ivCommentatorAcatar);
+
         }
-        viewHolder.tvCommentatorName.setText(datas.get(position).getUserName());
-        viewHolder.tvCommentTime.setText(String.valueOf(datas.get(position).getGmtCreate()));
-        viewHolder.tvCommentContent.setText(datas.get(position).getContent());
-        viewHolder.tvCommentPraise.setText(String.valueOf(datas.get(position).getPraiseCount()));
+        viewHolder.tvCommentatorName.setText(bean.getUserName());
+        viewHolder.tvCommentTime.setText(String.valueOf(bean.getGmtCreate()));
+        viewHolder.tvCommentContent.setText(bean.getContent());
+        viewHolder.tvCommentPraise.setText(String.valueOf(bean.getPraiseCount()));
         if (UserHelper.getInstance(mContext).isLogin()) {
-            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), datas.get(position).getUserId())) {
+            if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), bean.getUserId())) {
                 viewHolder.tvCommentDelete.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.tvCommentDelete.setVisibility(View.GONE);
@@ -83,7 +88,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolder.tvCommentDelete.setVisibility(View.GONE);
         }
         if (viewHolder.adapter != null) {
-            viewHolder.adapter.setDatas(datas.get(position).getReplyDtoList(), datas.get(position).getId());
+            viewHolder.adapter.setDatas(bean.getReplyDtoList(), bean.getId());
         }
 
     }
@@ -156,7 +161,7 @@ public class ArticleCommentListAdapter extends RecyclerView.Adapter<RecyclerView
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_commentator_avatar:
-                    if (UserHelper.getInstance(mContext).isLogin()) {
+                    if (!UserHelper.getInstance(mContext).isLogin()) {
                         DlgUtil.loginDlg(mContext, null);
                         return;
                     }

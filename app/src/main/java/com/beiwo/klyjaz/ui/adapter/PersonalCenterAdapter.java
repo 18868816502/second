@@ -133,6 +133,8 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         if(userInfo == null){ return; }
         if(!TextUtils.isEmpty(userInfo.getHeadPortrait())) {
             Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
+        }else{
+            holder.ivAvatar.setBackgroundResource(R.drawable.mine_icon_head);
         }
         holder.tvName.setText(userInfo.getUserName());
         if(1 == userInfo.getSex()){

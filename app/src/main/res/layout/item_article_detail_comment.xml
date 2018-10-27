@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/mine_icon_head" />
+        android:background="@drawable/mine_icon_head" />
 
     <!--<android.support.constraint.Barrier-->
         <!--android:id="@+id/barrier"-->
