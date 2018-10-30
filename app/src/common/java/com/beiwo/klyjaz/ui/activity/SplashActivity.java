@@ -79,13 +79,6 @@ public class SplashActivity extends BaseComponentActivity {
     @Override
     public void configViews() {
         context = this;
-        /*SPUtils.setValue(this, "splash");
-        ignoreTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launch();
-            }
-        });*/
     }
 
     @Override
@@ -100,23 +93,8 @@ public class SplashActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<Audit>() {
                     @Override
                     public void onNext(Audit data) {
-                        try {
-                            App.audit = data.audit;
-                            handler.removeMessages(1);
-                            startActivity(new Intent(context, data.audit == 2 ? MainActivity.class : VestMainActivity.class));
-                            finish();
-                            /*String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-                            if (version.equals(SPUtils.getLastInstalledVersion(context))) {
-                                checkAd();
-                            } else {
-                                handler.removeMessages(1);
-                                SPUtils.setLastInstalledVersion(context, version);
-                                startActivity(new Intent(context, data.audit == 2 ? MainActivity.class : VestMainActivity.class));
-                                finish();
-                            }*/
-                        } catch (Exception e) {
-                            launch();
-                        }
+                        App.audit = data.audit;
+                        launch();
                     }
 
                     @Override
@@ -137,10 +115,8 @@ public class SplashActivity extends BaseComponentActivity {
 
     private void launch() {
         handler.removeMessages(1);
-        if (!adClicked) {
-            startActivity(new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class));
-            finish();
-        }
+        startActivity(new Intent(this, App.audit == 2 ? MainActivity.class : VestMainActivity.class));
+        finish();
     }
 
     private void checkAd() {
@@ -216,10 +192,7 @@ public class SplashActivity extends BaseComponentActivity {
                     finish();
                 }
             });
-            Glide.with(this)
-                    .load(ad.getImgUrl())
-                    .asBitmap()
-                    .into(adImageView);
+            Glide.with(this).load(ad.getImgUrl()).asBitmap().into(adImageView);
         }
     }
 
