@@ -159,10 +159,12 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     if (needLogin.get(position) && !UserHelper.getInstance(context).isLogin()) {
                         DlgUtil.loginDlg(context, null);
                     } else {
-                        Intent intent = new Intent(context, WebViewActivity.class);
-                        intent.putExtra("webViewUrl", urls.get(position));
-                        intent.putExtra("webViewTitleName", titles.get(position));
-                        context.startActivity(intent);
+                        if (!TextUtils.isEmpty(urls.get(position))) {
+                            Intent intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("webViewUrl", urls.get(position));
+                            intent.putExtra("webViewTitleName", titles.get(position));
+                            context.startActivity(intent);
+                        }
                     }
                 }
             });
@@ -385,7 +387,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                             @Override
                             public void onClick(View v) {
                                 progress = seekbarProgress(seekbar);
-                                notifyItemChanged(0);
+                                notifyItemChanged(1);
                                 dialog.dismiss();
                             }
                         });

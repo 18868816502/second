@@ -101,10 +101,13 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import okhttp3.Cache;
+import okhttp3.ConnectionPool;
+import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Field;
 
@@ -131,22 +134,20 @@ public class Api {
         @Override
         public void log(String message) {
             if (BuildConfig.API_ENV)
-                Log.i("OkHttp--->message: ", message);//打印日志
+                Log.i("response: ", message);//打印日志
         }
     });
 
     private static OkHttpClient createHttpClient() {
         File cacheFile = new File(App.getInstance().getCacheDir().getAbsolutePath(), "MarketCache");
-        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
-
+        Cache cache = new Cache(cacheFile, Runtime.getRuntime().maxMemory() / 8);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true)
                 .cache(cache)
-                .addInterceptor(new AccessHeadInterceptor());
-
+                .addInterceptor(new AccessHeadInterceptor())
+                .retryOnConnectionFailure(true)
+                .connectTimeout(3, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS);
         builder.addNetworkInterceptor(interceptor.setLevel(HttpLoggingInterceptor.Level.BODY));
         return builder.build();
     }
@@ -155,7 +156,6 @@ public class Api {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NetConstants.DOMAIN)
                 .addConverterFactory(ScalarsConverterFactory.create())
-//                .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(RsaGsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
@@ -1028,7 +1028,7 @@ public class Api {
     }
 
     /*数据统计，各类pv/uv*/
-    public Observable<ResultEntity> onCountUv(Map<String,Object> mMap) {
+    public Observable<ResultEntity> onCountUv(Map<String, Object> mMap) {
         return service.onCountUv(mMap);
     }
 

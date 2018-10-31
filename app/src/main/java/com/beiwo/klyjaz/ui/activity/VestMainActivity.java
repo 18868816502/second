@@ -103,6 +103,11 @@ public class VestMainActivity extends BaseComponentActivity {
     private VestMainActivity activity;
     private Bundle extras;
 
+    public static void init(Activity activity) {
+        activity.startActivity(new Intent(activity, VestMainActivity.class));
+        activity.finish();
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

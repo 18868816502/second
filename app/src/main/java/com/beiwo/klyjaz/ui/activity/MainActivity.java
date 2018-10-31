@@ -123,6 +123,11 @@ public class MainActivity extends BaseComponentActivity {
     private MainActivity activity;
     private Bundle extras;
 
+    public static void init(Activity activity) {
+        activity.startActivity(new Intent(activity, MainActivity.class));
+        activity.finish();
+    }
+
     /*重新进入MainActivity切换的对应的Fragment*/
     @Override
     protected void onNewIntent(Intent intent) {
