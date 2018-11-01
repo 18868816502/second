@@ -30,12 +30,6 @@ import okio.Buffer;
 public class AccessHeadInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private Map<String, Object> keyValue = new HashMap<>();
-    /*private Comparator<String> keyComparator = new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-            return o1.toLowerCase().compareTo(o2.toLowerCase());
-        }
-    };*/
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -95,7 +89,14 @@ public class AccessHeadInterceptor implements Interceptor {
             }
         }
 
-        builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
+        String md5Str = Digest.md5(sb.toString());
+        byte[] byteArr = Digest.hexStr2Bytes(md5Str);
+        String first = Digest.bytes2HexStr(byteArr);
+        String secondMd5str = Digest.md5(first);
+        byte[] secondByteArr = Digest.hexStr2Bytes(secondMd5str);
+        String second = Digest.bytes2HexStr(secondByteArr);
+        builder.addHeader("sign", second);
+        //builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
         return chain.proceed(builder.build());
     }
 
@@ -128,7 +129,6 @@ public class AccessHeadInterceptor implements Interceptor {
                     }
                     keyValue.put(keyDecode, URLDecoder.decode(keyvalue[1], "utf-8"));
                 }
-                //Arrays.sort(keys, keyComparator);
                 Arrays.sort(keys);
                 for (String key : keys) sb.append(key).append(keyValue.get(key));
             }
