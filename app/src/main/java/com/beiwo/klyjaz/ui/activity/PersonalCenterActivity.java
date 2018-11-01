@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
@@ -26,6 +27,7 @@ import com.beiwo.klyjaz.injection.module.PersonalCenterModule;
 import com.beiwo.klyjaz.social.activity.MyAuditedTopicActivity;
 import com.beiwo.klyjaz.social.activity.MyDraftsActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.social.dialog.CommentDialog;
 import com.beiwo.klyjaz.ui.adapter.PersonalCenterAdapter;
 import com.beiwo.klyjaz.ui.contract.PersonalCenterContact;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
@@ -125,7 +127,13 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navigate:
-                finish();
+                new CommentDialog("优质评论将会被优先展示", new CommentDialog.SendListener() {
+                    @Override
+                    public void sendComment(String inputText) {
+                        Toast.makeText(getApplicationContext(),inputText,Toast.LENGTH_SHORT).show();
+                    }
+                }).show(getSupportFragmentManager(), "comment");
+//                finish();
                 break;
             case R.id.tv_drafts:
                 popWindow.dismiss();

@@ -555,5 +555,8 @@
         <activity
             android:name=".social.activity.PhotoDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".social.activity.ForumDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
