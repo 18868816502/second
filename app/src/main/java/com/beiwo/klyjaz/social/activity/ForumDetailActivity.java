@@ -17,12 +17,7 @@ import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.classhelper.ForumHelper;
 import com.beiwo.klyjaz.social.contract.ForumDetailContact;
-import com.beiwo.klyjaz.social.dialog.CommentDialog;
-import com.beiwo.klyjaz.social.dialog.CommentInputDialog;
 import com.beiwo.klyjaz.social.presenter.ForumDetailPresenter;
-import com.beiwo.klyjaz.social.utils.DialogUtils;
-import com.beiwo.klyjaz.util.PopUtils;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -166,17 +161,9 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.foot:
-//                ToastUtil.toast("footer");
-//                DialogUtils.showBottomListWindow(R.layout.dialog_article_comment_list, getSupportFragmentManager(), this, this,commentLists);
-//                DialogUtils.showBottomListWindow(R.layout.dialog_article_comment_list, getSupportFragmentManager(), this, this,commentLists);
-
-//                DialogUtils.showCommentPopWindow(R.layout.dialog_comment_input, getSupportFragmentManager(), this,  this);
-                new CommentDialog("优质评论将会被优先展示", new CommentDialog.SendListener() {
-                    @Override
-                    public void sendComment(String inputText) {
-                        ToastUtil.toast(inputText);
-                    }
-                }).show(getSupportFragmentManager(), "comment");
+                Intent intent = new Intent(this, ForumCommentActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
                 break;
                 default:
                     break;

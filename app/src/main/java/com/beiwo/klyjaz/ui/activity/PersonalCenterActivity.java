@@ -2,32 +2,26 @@ package com.beiwo.klyjaz.ui.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.entity.UserInfoBean;
-import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerPersonalCenterComponent;
 import com.beiwo.klyjaz.injection.module.PersonalCenterModule;
 import com.beiwo.klyjaz.social.activity.MyAuditedTopicActivity;
 import com.beiwo.klyjaz.social.activity.MyDraftsActivity;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
-import com.beiwo.klyjaz.social.dialog.CommentDialog;
 import com.beiwo.klyjaz.ui.adapter.PersonalCenterAdapter;
 import com.beiwo.klyjaz.ui.contract.PersonalCenterContact;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
@@ -127,13 +121,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navigate:
-                new CommentDialog("优质评论将会被优先展示", new CommentDialog.SendListener() {
-                    @Override
-                    public void sendComment(String inputText) {
-                        Toast.makeText(getApplicationContext(),inputText,Toast.LENGTH_SHORT).show();
-                    }
-                }).show(getSupportFragmentManager(), "comment");
-//                finish();
+                finish();
                 break;
             case R.id.tv_drafts:
                 popWindow.dismiss();

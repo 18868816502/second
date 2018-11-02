@@ -96,7 +96,7 @@ public class CommentDialog extends DialogFragment implements TextWatcher, View.O
         // 使用不带Theme的构造器, 获得的dialog边框距离屏幕仍有几毫米的缝隙。
         dialog = new Dialog(getActivity(), R.style.Comment_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置Content前设定
-        View contentView = View.inflate(getActivity(), R.layout.dialog_comment1111, null);
+        View contentView = View.inflate(getActivity(), R.layout.dialog_comment_input_et, null);
         dialog.setContentView(contentView);
         dialog.setCanceledOnTouchOutside(true); // 外部点击取消
         return contentView;
