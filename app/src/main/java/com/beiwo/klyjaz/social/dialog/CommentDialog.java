@@ -111,7 +111,7 @@ public class CommentDialog extends DialogFragment implements TextWatcher, View.O
         lp.dimAmount = 0.0f;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT; // 宽度持平
         window.setAttributes(lp);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
 
     public void cleanText() {

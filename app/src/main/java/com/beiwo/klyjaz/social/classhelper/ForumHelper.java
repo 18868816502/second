@@ -97,9 +97,10 @@ public class ForumHelper {
      * @return view
      * @param recyclerView 父布局
      */
-    public View initHead(RecyclerView recyclerView) {
+    public View initHead(RecyclerView recyclerView,View.OnClickListener listener) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_head, recyclerView,false);
         ButterKnife.bind(this,view);
+        ivComment.setOnClickListener(listener);
         return view;
     }
 
@@ -218,6 +219,7 @@ public class ForumHelper {
                         }
                     }
                 }
+                break;
             case R.id.iv_author_avatar:
                 Intent intent = new Intent(mContext, PersonalCenterActivity.class);
                 intent.putExtra("userId", forumBean.getUserId());

@@ -35,6 +35,9 @@ public class ForumDetailAdapter extends BaseQuickAdapter<CommentReplyBean,BaseVi
         helper.setText(R.id.tv_commentator_name,item.getUserName())
                 .setText(R.id.tv_comment_content,item.getContent())
                 .setText(R.id.tv_comment_time,item.getGmtCreate());
+        helper.addOnClickListener(R.id.iv_commentator_avatar)
+                .addOnClickListener(R.id.iv_article_comment)
+                .addOnClickListener(R.id.tv_comment_delete);
         bindChildRecycler(helper,item);
     }
 

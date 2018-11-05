@@ -18,6 +18,9 @@ import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.classhelper.ForumHelper;
 import com.beiwo.klyjaz.social.contract.ForumDetailContact;
 import com.beiwo.klyjaz.social.presenter.ForumDetailPresenter;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
+import com.beiwo.klyjaz.util.ToastUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -33,7 +36,8 @@ import butterknife.BindView;
  * @descripe 动态详情页
  * @time 2018/10/29 11:35
  */
-public class ForumDetailActivity extends BaseComponentActivity implements ForumDetailContact.View,OnRefreshListener,View.OnClickListener{
+public class ForumDetailActivity extends BaseComponentActivity implements ForumDetailContact.View,OnRefreshListener,
+        View.OnClickListener,BaseQuickAdapter.OnItemChildClickListener{
 
     @BindView(R.id.tool_bar)
     RelativeLayout toolBar;
@@ -72,8 +76,9 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
 
         mPresenter = new ForumDetailPresenter(this,this);
         forumHelper = new ForumHelper(this);
-        mAdapter.addHeaderView(forumHelper.initHead(recyclerView));
+        mAdapter.addHeaderView(forumHelper.initHead(recyclerView,this));
         mAdapter.addFooterView(forumHelper.initFoot(recyclerView,this));
+        mAdapter.setOnItemChildClickListener(this);
     }
 
     @Override
@@ -84,11 +89,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     }
 
     private void fetchData(){
-        String userId = "";
-        if (UserHelper.getInstance(this).isLogin()) {
-            userId = UserHelper.getInstance(this).getProfile().getId();
-        }
-        mPresenter.queryForumInfo(userId,forumId,pageNo,pageSize);
+        mPresenter.queryForumInfo(forumId,pageNo,pageSize);
         mPresenter.queryCommentList(forumId,pageNo, pageSize);
     }
 
@@ -138,16 +139,6 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     }
 
     @Override
-    public void onPraiseSucceed() {
-
-    }
-
-    @Override
-    public void onCancelPraiseSucceed() {
-
-    }
-
-    @Override
     public void setPresenter(ForumDetailContact.Presenter presenter) {
     }
 
@@ -160,10 +151,39 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.iv_comment:
             case R.id.foot:
-                Intent intent = new Intent(this, ForumCommentActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
+                page2CommentActivity();
+                break;
+                default:
+                    break;
+        }
+    }
+
+    private void page2CommentActivity(){
+        Intent intent = new Intent(this, ForumCommentActivity.class);
+        intent.putExtra("forumId",forumId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
+    }
+
+    private void page2PersonalActivity(String userId){
+        Intent intent = new Intent(ForumDetailActivity.this, PersonalCenterActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()){
+            case R.id.iv_article_comment:
+                page2CommentActivity();
+                break;
+            case R.id.tv_comment_delete:
+                ToastUtil.toast("delete"+position);
+                break;
+            case R.id.iv_commentator_avatar:
+                page2PersonalActivity(commentLists.get(position).getUserId());
                 break;
                 default:
                     break;
