@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.social.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,14 +18,18 @@ import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.classhelper.ForumHelper;
 import com.beiwo.klyjaz.social.contract.ForumDetailContact;
+import com.beiwo.klyjaz.social.inter.OnChildViewClickListener;
 import com.beiwo.klyjaz.social.presenter.ForumDetailPresenter;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,7 +42,7 @@ import butterknife.BindView;
  * @time 2018/10/29 11:35
  */
 public class ForumDetailActivity extends BaseComponentActivity implements ForumDetailContact.View,OnRefreshListener,
-        View.OnClickListener,BaseQuickAdapter.OnItemChildClickListener{
+        View.OnClickListener,BaseQuickAdapter.OnItemChildClickListener,OnChildViewClickListener{
 
     @BindView(R.id.tool_bar)
     RelativeLayout toolBar;
@@ -57,6 +62,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     private int pageNo = 1;
     private int pageSize = 10000;
     private String forumId;
+    private ForumInfoBean forumBean;
     private List<CommentReplyBean> commentLists;
 
     @Override
@@ -66,6 +72,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
 
     @Override
     public void configViews() {
+        ImmersionBar.with(this).titleBar(toolBar).statusBarDarkFont(true).init();
         mAdapter = new ForumDetailAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -79,6 +86,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
         mAdapter.addHeaderView(forumHelper.initHead(recyclerView,this));
         mAdapter.addFooterView(forumHelper.initFoot(recyclerView,this));
         mAdapter.setOnItemChildClickListener(this);
+        mAdapter.setOnChildViewClickListener(this);
     }
 
     @Override
@@ -100,6 +108,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
 
     @Override
     public void onQueryForumInfoSucceed(ForumInfoBean forumBean) {
+        this.forumBean = forumBean;
         refreshLayout.finishRefresh();
         forumHelper.updateHeadDatas(forumBean.getForum());
         forumHelper.updateFootDatas(forumBean.getForum());
@@ -150,19 +159,31 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
 
     @Override
     public void onClick(View v) {
+        if (!UserHelper.getInstance(this).isLogin()) {
+            DlgUtil.loginDlg(this, null);
+            return;
+        }
         switch (v.getId()){
             case R.id.iv_comment:
+                page2CommentActivity(0,0,0);
+                break;
             case R.id.foot:
-                page2CommentActivity();
+                page2CommentActivity(1,0,0);
                 break;
                 default:
                     break;
         }
     }
 
-    private void page2CommentActivity(){
+    private void page2CommentActivity(int type,int position,int childPosition){
         Intent intent = new Intent(this, ForumCommentActivity.class);
-        intent.putExtra("forumId",forumId);
+        Bundle bundle = new Bundle();
+        bundle.putString("forumId",forumId);
+        bundle.putInt("type",type);
+        bundle.putInt("position",position);
+        bundle.putInt("childPosition",childPosition);
+        bundle.putSerializable("list", (Serializable) commentLists);
+        intent.putExtras(bundle);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
     }
@@ -175,9 +196,13 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        if (!UserHelper.getInstance(this).isLogin()) {
+            DlgUtil.loginDlg(this, null);
+            return;
+        }
         switch (view.getId()){
             case R.id.iv_article_comment:
-                page2CommentActivity();
+                page2CommentActivity(2,position,0);
                 break;
             case R.id.tv_comment_delete:
                 ToastUtil.toast("delete"+position);
@@ -187,6 +212,24 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
                 break;
                 default:
                     break;
+        }
+    }
+
+    @Override
+    public void onChildViewClick(View v, int position, int childPosition) {
+        CommentReplyBean.ReplyDtoListBean replyBean = commentLists.get(position).getReplyDtoList().get(childPosition);
+        switch (v.getId()){
+            case R.id.iv_commentator_avatar:
+                page2PersonalActivity(replyBean.getUserId());
+                break;
+            case R.id.iv_article_comment:
+                page2CommentActivity(3,position,childPosition);
+                break;
+            case R.id.tv_comment_delete:
+                ToastUtil.toast("删除");
+                break;
+            default:
+                break;
         }
     }
 }

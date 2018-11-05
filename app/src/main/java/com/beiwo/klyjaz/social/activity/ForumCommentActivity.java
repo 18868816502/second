@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.social.activity;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,16 +18,31 @@ import com.beiwo.klyjaz.social.adapter.ForumCommentAdapter;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.contract.ForumCommentContact;
 import com.beiwo.klyjaz.social.dialog.CommentDialog;
+import com.beiwo.klyjaz.social.inter.OnChildViewClickListener;
 import com.beiwo.klyjaz.social.presenter.ForumCommentPresenter;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
+import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.beiwo.klyjaz.view.dialog.PopDialog;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ForumCommentActivity extends BaseCommentActivity implements ForumCommentContact.View {
+/**
+ * @author chenguoguo
+ * @name loanmarket_social
+ * @class name：com.beiwo.klyjaz.social.activity
+ * @descripe 动态详情评论弹窗页
+ * @time 2018/11/01 14:21
+ */
+public class ForumCommentActivity extends BaseCommentActivity implements ForumCommentContact.View,
+        BaseQuickAdapter.OnItemChildClickListener,PopDialog.OnInitPopListener,View.OnClickListener,
+        OnChildViewClickListener{
 
     @BindView(R.id.iv_close)
     ImageView ivClose;
@@ -44,6 +60,17 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     private ForumCommentPresenter mPresenter;
     private ForumCommentAdapter mAdapter;
     private String forumId;
+    private int position;
+    private int childPosition;
+    private int size = 0;
+    private List<CommentReplyBean> datas;
+    /**
+     * type = 0 评论 1 查看评论 2 回复 3 子回复
+     */
+    private int type = 0;
+
+    private FragmentManager fManager;
+    private String commentContent;
 
     @Override
     public int getLayoutId() {
@@ -52,18 +79,44 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
 
     @Override
     public void configViews() {
+        fManager = getSupportFragmentManager();
         mAdapter = new ForumCommentAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
         mPresenter = new ForumCommentPresenter(this,this);
-        forumId = getIntent().getStringExtra("forumId");
+        mAdapter.setOnItemChildClickListener(this);
+        mAdapter.setOnChildViewClickListener(this);
+        getIntentData();
+
+    }
+
+    private void getIntentData() {
+        datas = new ArrayList<>();
+        Intent intent = getIntent();
+        if(intent != null) {
+            forumId = intent.getStringExtra("forumId");
+            type = intent.getIntExtra("type", 0);
+            position = intent.getIntExtra("position",0);
+            childPosition = intent.getIntExtra("childPosition",0);
+            List<CommentReplyBean> comments = (List<CommentReplyBean>) intent.getSerializableExtra("list");
+            if(comments != null) {
+                datas.addAll(comments);
+            }
+        }
     }
 
     @Override
     public void initDatas() {
-        fetchData();
+        bindCommentData(datas);
+        if(type == 0){
+            showInputDialog("在这里畅所欲言吧");
+        }else if(type == 2){
+            showInputDialog("回复@" + datas.get(position).getUserName());
+        }else if(type == 3){
+            showInputDialog("回复@" + datas.get(position).getReplyDtoList().get(childPosition).getUserName());
+        }
     }
 
     /**
@@ -80,20 +133,37 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
                 finish();
                 break;
             case R.id.tv_comment:
-                new CommentDialog("在这里畅所欲言吧", new CommentDialog.SendListener() {
-                    @Override
-                    public void sendComment(String inputText) {
-                        ToastUtil.toast(inputText);
-                    }
-                }).show(getSupportFragmentManager(), "comment");
+                showInputDialog("在这里畅所欲言吧");
                 break;
             default:
                 break;
         }
     }
 
+    private void showInputDialog(String hint){
+        new CommentDialog(hint, new CommentDialog.SendListener() {
+            @Override
+            public void sendComment(String inputText) {
+                ToastUtil.toast(inputText);
+                showCommentAuditPop();
+                commentContent = inputText;
+            }
+        }).show(getSupportFragmentManager(), "comment");
+    }
+
+    private void showCommentAuditPop() {
+        PopUtils.showCenterPopWindow(R.layout.dialog_article_comment_audit, fManager, this, this);
+    }
+
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
+        this.datas.clear();
+        this.datas.addAll(list);
+        bindCommentData(datas);
+    }
+
+    private void bindCommentData(List<CommentReplyBean> list){
+        tvTitle.setText("全部" + list.size() +"条评论");
         if(list == null || list.size() == 0){
             recyclerView.setVisibility(View.GONE);
             emptyContainer.setVisibility(View.VISIBLE);
@@ -111,7 +181,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
 
     @Override
     public void onCancelReplySucceed() {
-
+        fetchData();
     }
 
     @Override
@@ -119,4 +189,99 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
 
     }
 
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        this.position = position;
+        switch (view.getId()){
+            case R.id.iv_article_comment:
+                type = 2;
+                this.position = position;
+                showInputDialog("回复@" + datas.get(position).getUserName());
+                break;
+            case R.id.tv_comment_delete:
+                ToastUtil.toast("delete"+position);
+                break;
+            case R.id.iv_commentator_avatar:
+                page2PersonalActivity(datas.get(position).getUserId());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onChildViewClick(View v, int position, int childPosition) {
+        this.position = position;
+        this.childPosition = childPosition;
+        CommentReplyBean.ReplyDtoListBean replyBean = datas.get(position).getReplyDtoList().get(childPosition);
+        switch (v.getId()){
+            case R.id.iv_commentator_avatar:
+                page2PersonalActivity(replyBean.getUserId());
+                break;
+            case R.id.iv_article_comment:
+                type = 3;
+                showInputDialog("回复@" + replyBean.getUserName());
+                break;
+            case R.id.tv_comment_delete:
+                ToastUtil.toast("删除");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void page2PersonalActivity(String userId){
+        Intent intent = new Intent(ForumCommentActivity.this, PersonalCenterActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void initPop(View view, PopDialog mPopDialog) {
+        view.findViewById(R.id.tv_cancel).setOnClickListener(this);
+        view.findViewById(R.id.tv_save).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_cancel:
+                PopUtils.dismiss();
+                break;
+            case R.id.tv_save:
+                PopUtils.dismiss();
+                sendComment();
+                break;
+                default:
+                    break;
+        }
+    }
+
+    private void sendComment(){
+        switch (type){
+            //动态评论
+            case 0:
+                mPresenter.fetchReplyInfo("", "1", commentContent, forumId,
+                        "", "", "", "");
+                break;
+            //评论回复
+            case 2:
+                CommentReplyBean commentReplyBean = datas.get(position);
+                mPresenter.fetchReplyInfo("", "2", commentContent, forumId,
+                        commentReplyBean.getUserId(), commentReplyBean.getId(),
+                        commentReplyBean.getId(), commentReplyBean.getContent());
+                break;
+            //评论二级回复
+            case 3:
+                CommentReplyBean commentBean = datas.get(position);
+                CommentReplyBean.ReplyDtoListBean replyBean = datas.get(position).getReplyDtoList().get(childPosition);
+                mPresenter.fetchReplyInfo("", "2", commentContent, forumId,
+                        replyBean.getUserId(), commentBean.getId(),
+                        replyBean.getId(), replyBean.getContent());
+                break;
+            default:
+
+                break;
+        }
+    }
 }

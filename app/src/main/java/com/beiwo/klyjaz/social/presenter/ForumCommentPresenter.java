@@ -66,7 +66,7 @@ public class ForumCommentPresenter extends BaseRxPresenter implements ForumComme
 
     @Override
     public void fetchReplyInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId, String replyId, String replyContent) {
-        Disposable dis = api.fetchReplyForumInfo(ParamsUtils.generateCommentParams(userHelper.getProfile().getId(),commentType,
+        Disposable dis = api.fetchReplyForumInfo(ParamsUtils.generateCommentParams(userHelper.id(),commentType,
                 commentContent, forumId, toUserId, selfId,replyId,replyContent))
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {

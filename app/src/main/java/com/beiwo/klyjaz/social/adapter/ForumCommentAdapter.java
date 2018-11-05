@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.social.inter.OnChildViewClickListener;
 import com.beiwo.klyjaz.ui.adapter.ArticleCommentAdapter;
+import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -48,7 +50,8 @@ public class ForumCommentAdapter extends BaseQuickAdapter<CommentReplyBean,BaseV
                 .setText(R.id.tv_comment_time,String.valueOf(item.getGmtCreate()))
                 .setText(R.id.tv_comment_praise,String.valueOf(item.getPraiseCount()))
                 .addOnClickListener(R.id.tv_comment_delete)
-                .addOnClickListener(R.id.iv_article_comment);
+                .addOnClickListener(R.id.iv_article_comment)
+                .addOnClickListener(R.id.iv_commentator_avatar);
 
         if (UserHelper.getInstance(mContext).isLogin()) {
             if (TextUtils.equals(UserHelper.getInstance(mContext).getProfile().getId(), item.getUserId())) {
@@ -62,16 +65,29 @@ public class ForumCommentAdapter extends BaseQuickAdapter<CommentReplyBean,BaseV
 
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        ArticleCommentAdapter adapter = new ArticleCommentAdapter((Activity) mContext);
+        ForumChildCommentAdapter adapter = new ForumChildCommentAdapter((Activity) mContext);
         RecyclerView recyclerView = helper.getView(R.id.item_recycler);
+        final int position = helper.getLayoutPosition() - getHeaderLayoutCount();
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
         adapter.setDatas(item.getReplyDtoList(),"");
+        adapter.setOnViewClickListener(new OnViewClickListener() {
+            @Override
+            public void onViewClick(View view, int type, int childPosition) {
+                listener.onChildViewClick(view,position,childPosition);
+            }
+        });
     }
 
     public void setDatas(List<CommentReplyBean> list){
         this.datas.clear();
         this.datas.addAll(list);
         setNewData(datas);
+    }
+
+    private OnChildViewClickListener listener;
+
+    public void setOnChildViewClickListener(OnChildViewClickListener listener){
+        this.listener = listener;
     }
 }
