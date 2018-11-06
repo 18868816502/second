@@ -2,14 +2,9 @@ package com.beiwo.klyjaz.social.activity;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,14 +18,12 @@ import com.beiwo.klyjaz.social.presenter.ForumCommentPresenter;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
-import com.beiwo.klyjaz.view.dialog.PopDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -41,8 +34,7 @@ import butterknife.OnClick;
  * @time 2018/11/01 14:21
  */
 public class ForumCommentActivity extends BaseCommentActivity implements ForumCommentContact.View,
-        BaseQuickAdapter.OnItemChildClickListener,PopDialog.OnInitPopListener,View.OnClickListener,
-        OnChildViewClickListener{
+        BaseQuickAdapter.OnItemChildClickListener,View.OnClickListener, OnChildViewClickListener{
 
     @BindView(R.id.iv_close)
     ImageView ivClose;
@@ -111,11 +103,15 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     public void initDatas() {
         bindCommentData(datas);
         if(type == 0){
-            showInputDialog("在这里畅所欲言吧");
+            showInputDialog(getString(R.string.social_forum_comment_hint));
         }else if(type == 2){
-            showInputDialog("回复@" + datas.get(position).getUserName());
+//            showInputDialog("回复@" + datas.get(position).getUserName());
+            showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
+                    datas.get(position).getUserName()));
         }else if(type == 3){
-            showInputDialog("回复@" + datas.get(position).getReplyDtoList().get(childPosition).getUserName());
+//            showInputDialog("回复@" + datas.get(position).getReplyDtoList().get(childPosition).getUserName());
+            showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
+                    datas.get(position).getReplyDtoList().get(childPosition).getUserName()));
         }
     }
 
@@ -133,7 +129,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
                 finish();
                 break;
             case R.id.tv_comment:
-                showInputDialog("在这里畅所欲言吧");
+                showInputDialog(getString(R.string.social_forum_comment_hint));
                 break;
             default:
                 break;
@@ -152,7 +148,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     }
 
     private void showCommentAuditPop() {
-        PopUtils.showCenterPopWindow(R.layout.dialog_article_comment_audit, fManager, this, this);
+        PopUtils.showCommentAuditWindow(fManager, this, this);
     }
 
     @Override
@@ -163,8 +159,9 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     }
 
     private void bindCommentData(List<CommentReplyBean> list){
-        tvTitle.setText("全部" + list.size() +"条评论");
-        if(list == null || list.size() == 0){
+//        tvTitle.setText("全部" + list.size() +"条评论");
+        tvTitle.setText(String.format(getResources().getString(R.string.social_forum_comment_num),list.size()));
+        if(list.size() == 0){
             recyclerView.setVisibility(View.GONE);
             emptyContainer.setVisibility(View.VISIBLE);
         }else{
@@ -176,11 +173,12 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
 
     @Override
     public void onReplyCommentSucceed() {
-
+        ToastUtil.toast(getString(R.string.social_forum_comment_send_tips));
     }
 
     @Override
     public void onCancelReplySucceed() {
+        ToastUtil.toast(getString(R.string.social_forum_delete_succeed));
         fetchData();
     }
 
@@ -196,10 +194,12 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
             case R.id.iv_article_comment:
                 type = 2;
                 this.position = position;
-                showInputDialog("回复@" + datas.get(position).getUserName());
+//                showInputDialog("回复@" + datas.get(position).getUserName());
+                showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
+                        datas.get(position).getUserName()));
                 break;
             case R.id.tv_comment_delete:
-                ToastUtil.toast("delete"+position);
+                mPresenter.fetchCancelReply(datas.get(position).getId());
                 break;
             case R.id.iv_commentator_avatar:
                 page2PersonalActivity(datas.get(position).getUserId());
@@ -220,10 +220,11 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
                 break;
             case R.id.iv_article_comment:
                 type = 3;
-                showInputDialog("回复@" + replyBean.getUserName());
+                showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
+                        replyBean.getUserName()));
                 break;
             case R.id.tv_comment_delete:
-                ToastUtil.toast("删除");
+                mPresenter.fetchCancelReply(datas.get(position).getReplyDtoList().get(childPosition).getId());
                 break;
             default:
                 break;
@@ -234,12 +235,6 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         Intent intent = new Intent(ForumCommentActivity.this, PersonalCenterActivity.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
-    }
-
-    @Override
-    public void initPop(View view, PopDialog mPopDialog) {
-        view.findViewById(R.id.tv_cancel).setOnClickListener(this);
-        view.findViewById(R.id.tv_save).setOnClickListener(this);
     }
 
     @Override
@@ -280,7 +275,6 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
                         replyBean.getId(), replyBean.getContent());
                 break;
             default:
-
                 break;
         }
     }

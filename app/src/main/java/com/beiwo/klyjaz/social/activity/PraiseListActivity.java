@@ -110,7 +110,8 @@ public class PraiseListActivity extends BaseComponentActivity implements OnRefre
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, ArticleDetailActivity.class);
+//        Intent intent = new Intent(this, ArticleDetailActivity.class);
+        Intent intent = new Intent(this, ForumDetailActivity.class);
         intent.putExtra("forumId",datas.get(position).getForumId());
         intent.putExtra("userId",datas.get(position).getUserId());
         startActivity(intent);

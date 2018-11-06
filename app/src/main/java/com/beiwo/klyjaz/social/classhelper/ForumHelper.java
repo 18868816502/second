@@ -125,7 +125,11 @@ public class ForumHelper {
             return;
         }
         this.forumBean = forumBean;
-        Glide.with(mContext).load(forumBean.getUserHeadUrl()).placeholder(R.drawable.mine_icon_head).into(ivAuthorAvatar);
+        if(!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
+            Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(ivAuthorAvatar);
+        }else{
+            Glide.with(mContext).load(R.drawable.mine_icon_head).into(ivAuthorAvatar);
+        }
         tvArticleTitle.setText(forumBean.getTitle());
         tvAuthorName.setText(TextUtils.isEmpty(forumBean.getUserName()) ? "未知" : forumBean.getUserName());
         tvAuthorTime.setText(forumBean.getCreateText());
@@ -204,7 +208,7 @@ public class ForumHelper {
     }
 
 
-    @OnClick(R.id.tv_article_praise)
+    @OnClick({R.id.tv_article_praise,R.id.iv_author_avatar})
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.tv_article_praise:

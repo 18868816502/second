@@ -35,25 +35,12 @@ public interface ForumDetailContact {
         void queryCommentList(String forumId, int pageNo, int pageSize);
 
         /**
-         * 发表评论回复
-         * @param userId 用户名
-         * @param commentType 1 评论 2 回复
-         * @param commentContent 评论回复内容
-         * @param forumId 动态id
-         * @param toUserId 回复用户id
-         * @param selfId 对应的评论回复id
-         */
-        void fetchReplyForumInfo(String userId, String commentType, String commentContent,
-                                 String forumId, String toUserId, String selfId, String replyId, String replyContent);
-
-        /**
          * 提交举报信息
-         * @param userId
          * @param linkId
          * @param reportType
          * @param reportContent
          */
-        void fetchSaveReport(String userId, String linkId, String reportType, String reportContent);
+        void fetchSaveReport(String linkId, String reportType, String reportContent);
 
         /**
          * 删除动态
@@ -82,11 +69,6 @@ public interface ForumDetailContact {
          * @param list
          */
         void onQueryCommentSucceed(List<CommentReplyBean> list);
-
-        /**
-         * 评论回复成功
-         */
-        void onReplyCommentSucceed();
 
         /**
          * 举报成功

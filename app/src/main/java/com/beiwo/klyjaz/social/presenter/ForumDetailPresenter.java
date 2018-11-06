@@ -96,32 +96,8 @@ public class ForumDetailPresenter extends BaseRxPresenter implements ForumDetail
     }
 
     @Override
-    public void fetchReplyForumInfo(String userId, String commentType, String commentContent, String forumId, String toUserId, String selfId,String replyId,String replyContent) {
-        Disposable dis = api.fetchReplyForumInfo(ParamsUtils.generateCommentParams(userHelper.getProfile().getId(),commentType,
-                commentContent, forumId, toUserId, selfId,replyId,replyContent))
-                .compose(RxUtil.<ResultEntity>io2main())
-                .subscribe(new Consumer<ResultEntity>() {
-                               @Override
-                               public void accept(ResultEntity result){
-                                   if (result.isSuccess()) {
-                                       view.onReplyCommentSucceed();
-                                   } else {
-                                       view.showErrorMsg(result.getMsg());
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable){
-                                view.showErrorMsg(generateErrorMsg(throwable));
-                            }
-                        });
-        addDisposable(dis);
-    }
-
-    @Override
-    public void fetchSaveReport(String userId, String linkId, String reportType, String reportContent) {
-        Disposable dis = api.fetchSaveReport(userHelper.getProfile().getId(),linkId, reportType, reportContent)
+    public void fetchSaveReport(String linkId, String reportType, String reportContent) {
+        Disposable dis = api.fetchSaveReport(userHelper.id(),linkId, reportType, reportContent)
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

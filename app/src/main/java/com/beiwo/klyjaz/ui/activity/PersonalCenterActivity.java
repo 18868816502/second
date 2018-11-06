@@ -20,6 +20,7 @@ import com.beiwo.klyjaz.entity.UserInfoBean;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerPersonalCenterComponent;
 import com.beiwo.klyjaz.injection.module.PersonalCenterModule;
+import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.MyAuditedTopicActivity;
 import com.beiwo.klyjaz.social.activity.MyDraftsActivity;
 import com.beiwo.klyjaz.ui.adapter.PersonalCenterAdapter;
@@ -247,7 +248,8 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(this,ArticleDetailActivity.class);
+//        Intent intent = new Intent(this,ArticleDetailActivity.class);
+        Intent intent = new Intent(this,ForumDetailActivity.class);
         intent.putExtra("userId",datas.get(position).getUserId());
         intent.putExtra("forumId",datas.get(position).getForumId());
         startActivity(intent);

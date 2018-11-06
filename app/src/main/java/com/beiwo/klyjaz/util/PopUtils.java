@@ -3,7 +3,9 @@ package com.beiwo.klyjaz.util;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.View;
 
+import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.view.dialog.PopDialog;
 
 /**
@@ -41,6 +43,56 @@ public class PopUtils {
     }
 
     /**
+     * 显示动态删除弹出框
+     * @param fManager
+     * @param mContext
+     * @param listener
+     */
+    public static void showForumDeleteDialog(FragmentManager fManager, Context mContext,
+                                             final View.OnClickListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
+                .setLayoutId(R.layout.dialog_article_mine_more)
+                .setGravity(Gravity.BOTTOM)
+                .setCancelableOutside(true)
+                .setInitPopListener(new PopDialog.OnInitPopListener() {
+                    @Override
+                    public void initPop(View view, PopDialog mPopDialog) {
+                        view.findViewById(R.id.tv_delete).setOnClickListener(listener);
+                        view.findViewById(R.id.tv_cancel).setOnClickListener(listener);
+                    }
+                })
+                .create();
+        mPopDialog.show();
+    }
+
+    /**
+     * 显示动态举报弹出框
+     * @param fManager
+     * @param mContext
+     * @param listener
+     */
+    public static void showForumReportDialog(FragmentManager fManager, Context mContext,
+                                           final View.OnClickListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
+                .setLayoutId(R.layout.dialog_article_other_more)
+                .setGravity(Gravity.BOTTOM)
+                .setCancelableOutside(true)
+                .setInitPopListener(new PopDialog.OnInitPopListener() {
+                    @Override
+                    public void initPop(View view, PopDialog mPopDialog) {
+                        view.findViewById(R.id.report01).setOnClickListener(listener);
+                        view.findViewById(R.id.report02).setOnClickListener(listener);
+                        view.findViewById(R.id.report03).setOnClickListener(listener);
+                        view.findViewById(R.id.report04).setOnClickListener(listener);
+                        view.findViewById(R.id.tv_cancel).setOnClickListener(listener);
+                    }
+                })
+                .create();
+        mPopDialog.show();
+    }
+
+
+    /**
      * 显示评论列表弹出框
      * @param layoutId
      * @param fManager
@@ -75,6 +127,31 @@ public class PopUtils {
                 .setGravity(Gravity.CENTER)
                 .setCancelableOutside(false)
                 .setInitPopListener(listener)
+                .create();
+        mPopDialog.show();
+    }
+
+    /**
+     * 显示发送评论确认弹出框
+     * @param fManager
+     * @param mContext
+     * @param listener
+     */
+    public static void showCommentAuditWindow(FragmentManager fManager, Context mContext,
+                                           final View.OnClickListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
+                .setLayoutId(R.layout.dialog_article_comment_audit)
+                .setWidth(270)
+                .setHeight(120)
+                .setGravity(Gravity.CENTER)
+                .setCancelableOutside(false)
+                .setInitPopListener(new PopDialog.OnInitPopListener() {
+                    @Override
+                    public void initPop(View view, PopDialog mPopDialog) {
+                        view.findViewById(R.id.tv_cancel).setOnClickListener(listener);
+                        view.findViewById(R.id.tv_save).setOnClickListener(listener);
+                    }
+                })
                 .create();
         mPopDialog.show();
     }

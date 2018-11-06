@@ -220,6 +220,13 @@
     <string name="community_publish_title_size">30/30</string>
     <string name="community_attention_tips">已更新%d条内容</string>
 
+    <string name="social_forum_report_succeed">举报成功，我们尽快处理！</string>
+    <string name="social_forum_delete_succeed">删除成功！</string>
+    <string name="social_forum_comment_hint">在这里畅所欲言吧</string>
+    <string name="social_forum_comment_reply_hint">回复@%s</string>
+    <string name="social_forum_comment_num">全部%d条评论</string>
+    <string name="social_forum_comment_send_tips">已提交审核请耐心等待</string>
+
     <!--急借贷-->
     <string name="jjd_verticy_id_title">验证身份信息</string>
     <string name="jjd_truth_name">真实姓名</string>

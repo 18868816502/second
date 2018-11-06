@@ -68,8 +68,6 @@ public class ForumChildCommentAdapter extends RecyclerView.Adapter {
             default:
                 return null;
         }
-//        View commentView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_comment,parent,false);
-//        return new ViewHolder(commentView);
     }
 
     @Override
