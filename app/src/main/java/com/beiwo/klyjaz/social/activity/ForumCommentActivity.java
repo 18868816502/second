@@ -105,11 +105,9 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         if(type == 0){
             showInputDialog(getString(R.string.social_forum_comment_hint));
         }else if(type == 2){
-//            showInputDialog("回复@" + datas.get(position).getUserName());
             showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
                     datas.get(position).getUserName()));
         }else if(type == 3){
-//            showInputDialog("回复@" + datas.get(position).getReplyDtoList().get(childPosition).getUserName());
             showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
                     datas.get(position).getReplyDtoList().get(childPosition).getUserName()));
         }
@@ -159,7 +157,6 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     }
 
     private void bindCommentData(List<CommentReplyBean> list){
-//        tvTitle.setText("全部" + list.size() +"条评论");
         tvTitle.setText(String.format(getResources().getString(R.string.social_forum_comment_num),list.size()));
         if(list.size() == 0){
             recyclerView.setVisibility(View.GONE);
@@ -194,7 +191,6 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
             case R.id.iv_article_comment:
                 type = 2;
                 this.position = position;
-//                showInputDialog("回复@" + datas.get(position).getUserName());
                 showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
                         datas.get(position).getUserName()));
                 break;
@@ -220,8 +216,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
                 break;
             case R.id.iv_article_comment:
                 type = 3;
-                showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
-                        replyBean.getUserName()));
+                showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint), replyBean.getUserName()));
                 break;
             case R.id.tv_comment_delete:
                 mPresenter.fetchCancelReply(datas.get(position).getReplyDtoList().get(childPosition).getId());
