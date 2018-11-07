@@ -83,6 +83,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        try {
+            sChannelId = App.getInstance().getPackageManager()
+                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
+            //sChannelId = AnalyticsConfig.getChannel(this);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
         SPUtils.setShowMainAddBanner(true);
         registerActivityLifecycleCallbacks(ActivityTracker.getInstance());//activity生命周期管理
         initComponent();
@@ -110,12 +116,6 @@ public class App extends Application {
                     UserHelper.getInstance(this).getProfile().getUserName());
         }
         Ntalker.getBaseInstance().enableDebug(BuildConfig.DEBUG);
-        try {
-            sChannelId = App.getInstance().getPackageManager()
-                    .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
-            //sChannelId = AnalyticsConfig.getChannel(this);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
         //获取WindowManager
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         //分辨率

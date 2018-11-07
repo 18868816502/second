@@ -27,57 +27,40 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * @author chenguoguo
  * @name loanmarket
  * @class name：com.beihui.market.ui.adapter
  * @class describe 个人中心适配器
- * @author chenguoguo
  * @time 2018/9/11 14:38
  */
 public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    /**
-     * 头部
-     */
     private static final int HEAD = 1;
-    /**
-     * 列表项
-     */
     private static final int CONTENT = 2;
-
-    /**
-     * 头部ViewHolder
-     */
+    private static final int EMPTY = 3;
     private HeadViewHolder headViewHolder;
-    /**
-     * 列表ViewHolder
-     */
     private ContentViewHolder contentViewHolder;
-
-    /**
-     * 用户数据
-     */
     private UserInfoBean userInfo;
-    /**
-     * 用户文章列表
-     */
     private List<UserTopicBean> mList;
 
     /**
      * 装载头部用户数据
+     *
      * @param userInfo 用户bean
      */
-    public void setHeadData(UserInfoBean userInfo){
+    public void setHeadData(UserInfoBean userInfo) {
         this.userInfo = userInfo;
         notifyDataSetChanged();
     }
 
     /**
      * 装载刷新的文章数据
+     *
      * @param userInfoBean 用户bean
-     * @param list 用户话题列表
+     * @param list         用户话题列表
      */
-    public void setDatas(UserInfoBean userInfoBean,List<UserTopicBean> list){
+    public void setDatas(UserInfoBean userInfoBean, List<UserTopicBean> list) {
         mList.clear();
         mList.addAll(list);
         this.userInfo = userInfoBean;
@@ -86,9 +69,10 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     /**
      * 加载更多文章数据
+     *
      * @param list 文章列表
      */
-    public void appendTopicData(List<UserTopicBean> list){
+    public void appendTopicData(List<UserTopicBean> list) {
         mList.addAll(list);
         notifyDataSetChanged();
     }
@@ -100,57 +84,64 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case HEAD:
-                View headView = LayoutInflater.from(mContext).inflate(R.layout.item_personal_center_head,parent,false);
+                View headView = LayoutInflater.from(mContext).inflate(R.layout.item_personal_center_head, parent, false);
                 return new HeadViewHolder(headView);
             case CONTENT:
-                View contentView = LayoutInflater.from(mContext).inflate(R.layout.item_personal_center_article_content,parent,false);
+                View contentView = LayoutInflater.from(mContext).inflate(R.layout.item_personal_center_article_content, parent, false);
                 return new ContentViewHolder(contentView);
-                default:
-                    break;
+            case EMPTY:
+                return new EmptyHolder(LayoutInflater.from(mContext).inflate(R.layout.no_article, parent, false));
+            default:
+                break;
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(position == 0){
+        if (position == 0) {
             headViewHolder = (HeadViewHolder) holder;
             onBindHeadData(headViewHolder);
-        }else{
-            contentViewHolder = (ContentViewHolder) holder;
-            contentViewHolder.itemView.setTag(position-1);
-            onBindArticleData(contentViewHolder,position-1);
+        } else {
+            if (holder instanceof ContentViewHolder) {
+                contentViewHolder = (ContentViewHolder) holder;
+                contentViewHolder.itemView.setTag(position - 1);
+                onBindArticleData(contentViewHolder, position - 1);
+            }
         }
     }
 
     /**
      * 绑定头部用户数据
+     *
      * @param holder headViewHolder
      */
     private void onBindHeadData(HeadViewHolder holder) {
-        if(userInfo == null){ return; }
-        if(!TextUtils.isEmpty(userInfo.getHeadPortrait())) {
+        if (userInfo == null) {
+            return;
+        }
+        if (!TextUtils.isEmpty(userInfo.getHeadPortrait())) {
             Glide.with(mContext).load(userInfo.getHeadPortrait()).asBitmap().into(holder.ivAvatar);
-        }else{
+        } else {
             holder.ivAvatar.setBackgroundResource(R.drawable.mine_icon_head);
         }
         holder.tvName.setText(userInfo.getUserName());
-        if(1 == userInfo.getSex()){
+        if (1 == userInfo.getSex()) {
             holder.ivSex.setBackgroundResource(R.drawable.icon_social_boy);
-        }else{
+        } else {
             holder.ivSex.setBackgroundResource(R.drawable.icon_social_girl);
         }
-        if(!TextUtils.isEmpty(userInfo.getIntroduce())){
-            holder.tvProduce.setText("简介:"+userInfo.getIntroduce());
-        }else{
+        if (!TextUtils.isEmpty(userInfo.getIntroduce())) {
+            holder.tvProduce.setText("简介:" + userInfo.getIntroduce());
+        } else {
             holder.tvProduce.setText("简介:");
         }
         holder.tvPublishNum.setText(String.valueOf(userInfo.getForumCount()));
         holder.tvPraiseNum.setText(String.valueOf(userInfo.getPraiseCount()));
 
-        if(UserHelper.getInstance(mContext).isLogin()) {
+        if (UserHelper.getInstance(mContext).isLogin()) {
             if (TextUtils.equals(userInfo.getUserId(), UserHelper.getInstance(mContext).getProfile().getId())) {
                 holder.ivMore.setVisibility(View.VISIBLE);
                 holder.ivAvatar.setClickable(true);
@@ -161,16 +152,16 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                 holder.llEditContainer.setVisibility(View.GONE);
             }
         }
-
     }
 
     /**
      * 绑定用户文章列表数据
+     *
      * @param holder contentViewHolder
      */
-    private void onBindArticleData(ContentViewHolder holder,int position) {
+    private void onBindArticleData(ContentViewHolder holder, int position) {
         UserTopicBean bean = mList.get(position);
-        if(!TextUtils.isEmpty(bean.getUserHeadUrl())) {
+        if (!TextUtils.isEmpty(bean.getUserHeadUrl())) {
             Glide.with(mContext).load(bean.getUserHeadUrl()).asBitmap().into(holder.ivAuthorAvatar);
         }
         holder.tvAuthorName.setText(bean.getUserName());
@@ -178,11 +169,11 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         holder.tvArticleContent.setText(bean.getTitle());
         holder.tvArticleDescripe.setText(bean.getContent());
         holder.tvTitle.setText(bean.getTitle());
-        if(bean.getPicUrl()!=null&&bean.getPicUrl().size()!=0) {
+        if (bean.getPicUrl() != null && bean.getPicUrl().size() != 0) {
             Glide.with(mContext).load(bean.getPicUrl().get(0)).asBitmap().into(holder.ivAuthorContent);
             holder.llContainer.setVisibility(View.VISIBLE);
             holder.tvTitle.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.ivAuthorContent.setVisibility(View.GONE);
             holder.tvTitle.setVisibility(View.VISIBLE);
             holder.llContainer.setVisibility(View.GONE);
@@ -198,15 +189,23 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mList.size() + 1;
+        if (mList == null || mList.size() < 1) return 2;
+        else return mList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0){
+        if (position == 0) {
             return HEAD;
-        }else{
-            return CONTENT;
+        } else {
+            if (mList == null || mList.size() < 1) return EMPTY;
+            else return CONTENT;
+        }
+    }
+
+    private static class EmptyHolder extends RecyclerView.ViewHolder {
+        public EmptyHolder(View itemView) {
+            super(itemView);
         }
     }
 
@@ -243,13 +242,13 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
         HeadViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
-            setOnClick(ivAvatar,llEditContainer,llPraiseContainer,llAttentionContainer,llFansContainer,llPraiseContainer,ivMore);
+            ButterKnife.bind(this, itemView);
+            setOnClick(ivAvatar, llEditContainer, llPraiseContainer, llAttentionContainer, llFansContainer, llPraiseContainer, ivMore);
         }
     }
 
-    private void setOnClick(View ...views){
-        for (View view: views) {
+    private void setOnClick(View... views) {
+        for (View view : views) {
             view.setOnClickListener(new OnClickListener());
         }
     }
@@ -262,7 +261,7 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
         TextView tvAuthorName;
         @BindView(R.id.tv_author_publish_time)
         TextView tvPublishTime;
-        @BindView( R.id.tv_article_content)
+        @BindView(R.id.tv_article_content)
         TextView tvArticleContent;
         @BindView(R.id.tv_article_descripe)
         TextView tvArticleDescripe;
@@ -288,27 +287,27 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
 
         ContentViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             setOnClick(itemView);
         }
     }
 
-    class OnClickListener implements View.OnClickListener{
+    class OnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.avatar:
 //                    ToastUtil.toast("用户头像");
-                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_AVATAR,0);
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_AVATAR, 0);
                     break;
                 case R.id.ll_edit_container:
 //                    ToastUtil.toast("编辑个人资料");
-                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT,0);
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_INFO_EDIT, 0);
                     break;
                 case R.id.ll_publish_container:
 //                    ToastUtil.toast("发布");
-                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PUBLISH,0);
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PUBLISH, 0);
                     break;
                 case R.id.ll_attention_container:
 //                    ToastUtil.toast("关注");
@@ -320,10 +319,10 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                     break;
                 case R.id.ll_praise_container:
 //                    ToastUtil.toast("获赞");
-                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PARISE,0);
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_PARISE, 0);
                     break;
                 case R.id.iv_more:
-                    listener.onViewClick(view,ConstantTag.TAG_PERSONAL_MORE,0);
+                    listener.onViewClick(view, ConstantTag.TAG_PERSONAL_MORE, 0);
                     break;
                     /*content*/
                 case R.id.iv_author_avatar:
@@ -339,21 +338,21 @@ public class PersonalCenterAdapter extends RecyclerView.Adapter {
                 case R.id.article_item:
                     itemListener.onItemClick((Integer) view.getTag());
                     break;
-                    default:
-                        break;
+                default:
+                    break;
             }
         }
     }
 
     private OnViewClickListener listener;
 
-    public void setOnViewClickListener(OnViewClickListener listener){
+    public void setOnViewClickListener(OnViewClickListener listener) {
         this.listener = listener;
     }
 
     private OnItemClickListener itemListener;
 
-    public void setOnItemClickListener(OnItemClickListener itemListener){
+    public void setOnItemClickListener(OnItemClickListener itemListener) {
         this.itemListener = itemListener;
     }
 }

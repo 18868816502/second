@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -318,8 +319,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//        pageNo++;
-//        fetchData();
         fetchForumInfo();
     }
 
@@ -327,7 +326,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         pageNo = 1;
         fetchForumInfo();
-//        presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(), forumId, pageNo, pageSize);
     }
 
     @Override
@@ -350,7 +348,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             //文章评论
             case ConstantTag.TAG_COMMENT_ARTICLE:
                 mPopType = 4;
-//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             //评论给点赞
@@ -395,7 +392,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 replyDtoListBean = datas.get(pos).getReplyDtoList().get(position);
                 mPopType = 4;
                 clickType = 3;
-//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             //外层回复
@@ -403,13 +399,11 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 replyBean = datas.get(position);
                 mPopType = 4;
                 clickType = 2;
-//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             case ConstantTag.TAG_COMMENT_MORE:
                 mPopType = 4;
                 clickType = 4;
-//                PopUtils.showBottomPopWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 PopUtils.showBottomListWindow(R.layout.dialog_article_comment_list, fManager, this, this);
                 break;
             case 1000:
@@ -449,16 +443,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
             case 4:
                 auditDialog = mPopDialog;
                 initCommentListPop(view);
-//                auditDialog.getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-//                    @Override
-//                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-//                        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-//                            PopUtils.dismiss();
-//                            return true;
-//                        }
-//                            return false;
-//                    }
-//                });
                 break;
             /*评论输入框*/
             case 5:
@@ -468,11 +452,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
                 etInput.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        KeyBoardUtils.toggleKeybord(etInput);
                         KeyBoardUtils.showKeybord(etInput);
-//                        if(!KeyBoardUtils.isKeybord(etInput)){
-//                            KeyBoardUtils.toggleKeybord(etInput);
-//                        }
                     }
                 }, 300);
                 etInput.addTextChangedListener(new LengthTextWatcherListener(etInput, 100));
@@ -558,7 +538,6 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void onDismiss(PopDialog mPopDialog) {
         KeyBoardUtils.toggleKeyboard(ArticleDetailActivity.this);
-        //KeyBoardUtils.hideInput(this, etInput);
         PopUtils.dismissComment();
     }
 
@@ -608,7 +587,13 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     public void onCancelReplySucceed() {
         ToastUtil.toast("删除成功");
         fetchForumInfo();
-//        fetchData();
+    }
+
+    @Override
+    public void finish() {
+        Intent intent = new Intent("refresh_layout");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        super.finish();
     }
 
     @Override

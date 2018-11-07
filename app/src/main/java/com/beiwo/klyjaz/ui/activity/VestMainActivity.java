@@ -357,7 +357,7 @@ public class VestMainActivity extends BaseComponentActivity {
         tabTxt.add("工具");
         tabTxt.add("我的");
         List<Drawable[]> drawables = new ArrayList<>();
-        Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.mipmap.vest_tab_one_selected), ContextCompat.getDrawable(this, R.mipmap.vest_tab_one_normal)};
+        Drawable[] bitmaps0 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_borrow_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_borrow_btn_normal)};
         Drawable[] bitmaps1 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_community_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_community_btn_normal)};
         Drawable[] bitmaps2 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_tool_btn_normal)};
         Drawable[] bitmaps3 = new Drawable[]{ContextCompat.getDrawable(this, R.drawable.tab_me_btn_press), ContextCompat.getDrawable(this, R.drawable.tab_me_btn_normal)};

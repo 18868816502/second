@@ -235,6 +235,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
                 holder.recycler.addItemDecoration(new Decoration(20, 2));
             }
+            holder.recycler.setFocusableInTouchMode(false);
             holder.recycler.setItemAnimator(new DefaultItemAnimator());
             holder.recycler.setLayoutManager(new GridLayoutManager(context, 2) {
                 @Override

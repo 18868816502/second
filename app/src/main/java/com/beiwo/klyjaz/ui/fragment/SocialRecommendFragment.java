@@ -1,10 +1,14 @@
 package com.beiwo.klyjaz.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
@@ -108,6 +112,18 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
         fetchData();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                fetchData();
+            }
+        }, new IntentFilter("refresh_layout"));
+    }
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) {
@@ -152,6 +168,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        pageNo++;
         fetchData();
     }
 
@@ -209,9 +226,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
                             } else {
                                 refreshLayout.finishLoadMore();
                                 adapter.appendDatas(result.getData().getForum());
-                            }
-                            if (result.getData().getForum() != null && result.getData().getForum().size() != 0) {
-                                pageNo++;
                             }
                         } else {
                             ToastUtil.toast(result.getMsg());

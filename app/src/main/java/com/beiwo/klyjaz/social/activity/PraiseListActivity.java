@@ -100,12 +100,16 @@ public class PraiseListActivity extends BaseComponentActivity implements OnRefre
     @Override
     public void initDatas() {
         datas = new ArrayList<>();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         fetchData();
     }
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override

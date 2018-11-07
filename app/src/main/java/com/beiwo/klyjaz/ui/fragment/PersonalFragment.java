@@ -89,14 +89,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     View my_wallet;
 
     private DeployAdapter deployAdapter;
-
     private List<EventBean> list = new ArrayList<>();
-
-    private String pendingPhone;
     MyRecevier myRecevier = new MyRecevier();
-
     private String title;
-
     private String webViewUrl;
 
     public static PersonalFragment newInstance() {
