@@ -78,7 +78,7 @@ public class SocialFragment extends BaseComponentFragment {
     public void configViews() {
         List<Fragment> fragments = new ArrayList<>();
         Fragment attFragment = SocialAttentionFragment.getInstance();
-        Fragment recFragment = SocialRecommendFragment.getInstance();
+        Fragment recFragment = SocialRecommendFragment.newInstance();
         fragments.add(attFragment);
         fragments.add(recFragment);
         SocialAdapter adapter = new SocialAdapter(getActivity().getSupportFragmentManager());
@@ -95,7 +95,6 @@ public class SocialFragment extends BaseComponentFragment {
 
     @Override
     public void initDatas() {
-
     }
 
     @Override

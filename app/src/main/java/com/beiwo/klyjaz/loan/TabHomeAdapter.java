@@ -336,22 +336,22 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_pro_1:
-                Intent intent1 = new Intent(context, ProType1Activity.class);
+                Intent intent1 = new Intent(context, ProTypeActivity.class);
                 intent1.putExtra("productType", 1);
                 context.startActivity(intent1);
                 break;
             case R.id.tv_pro_2:
-                Intent intent2 = new Intent(context, ProType1Activity.class);
+                Intent intent2 = new Intent(context, ProTypeActivity.class);
                 intent2.putExtra("productType", 2);
                 context.startActivity(intent2);
                 break;
             case R.id.tv_pro_3:
-                Intent intent4 = new Intent(context, ProType1Activity.class);
+                Intent intent4 = new Intent(context, ProTypeActivity.class);
                 intent4.putExtra("productType", 4);
                 context.startActivity(intent4);
                 break;
             case R.id.tv_pro_4:
-                Intent intent3 = new Intent(context, ProType1Activity.class);
+                Intent intent3 = new Intent(context, ProTypeActivity.class);
                 intent3.putExtra("productType", 3);
                 context.startActivity(intent3);
                 break;

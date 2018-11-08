@@ -153,7 +153,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         SlidePanelHelper.attach(this);
 
         //pv，uv统计
-//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PI);
+//        DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PI);
     }
 
     @Override
@@ -238,14 +238,14 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             case R.id.fl_navigate_nick_name:
 
                 //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PINICKNAME);
+//                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PINICKNAME);
 
                 startActivityForResult(new Intent(this, EditNickNameActivity.class), REQUEST_EDIT_NICK_NAME_ACTIVITY);
                 break;
             //修改密码
             case R.id.fl_navigate_revise_pwd:
                 //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PICHANGEPWD);
+//                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PICHANGEPWD);
 
                 if (UserHelper.getInstance(this).getProfile() == null || UserHelper.getInstance(this).getProfile().getAccount() == null) {
                     return;
@@ -279,14 +279,14 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             //版本号
             case R.id.fl_version_code:
                 //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIVERSIONNUMBER);
+//                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PIVERSIONNUMBER);
 
                 presenter.checkVersion();
                 break;
             //清除缓存
             case R.id.fl_clear_cache:
                 //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PICLEARCACHE);
+//                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PICLEARCACHE);
 
                 boolean a = DataCleanManager.cleanInternalCache();
                 boolean b = DataCleanManager.cleanExternalCache();
@@ -300,7 +300,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             //关于我们
             case R.id.fl_about_us:
                 //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIABOUTUS);
+//                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PIABOUTUS);
 
                 Intent toAboutUs = new Intent(this, AboutUsActivity.class);
                 startActivity(toAboutUs);
@@ -309,7 +309,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
 //            case R.id.fl_revise_mobile:
 //
 //                //pv，uv统计
-////                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIPHONE);
+////                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PIPHONE);
 //
 //                Intent toNewMobile = new Intent(this, InputNewMobileActivity.class);
 //                toNewMobile.putExtra("bingNewMobile", "bingNewMobile");
@@ -318,7 +318,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             //解除微信绑定
 //            case R.id.fl_remove_wx_chat:
 //                //pv，uv统计
-////                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIWECHAT);
+////                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PIWECHAT);
 //
 //                if ("未绑定".equals(userProfileWxChat.getText().toString())) {
 //                    bindWXChat();
@@ -344,7 +344,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 showAvatarSelector();
 
                 //pv，uv统计
-//                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.PIHEADPORTRAIT);
+//                DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PIHEADPORTRAIT);
                 break;
             case R.id.fl_sex:
                 PopUtils.showBottomPopWindow(R.layout.dialog_user_choose_sex, getSupportFragmentManager(), this, this);

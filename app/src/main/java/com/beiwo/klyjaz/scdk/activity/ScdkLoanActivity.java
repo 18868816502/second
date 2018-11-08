@@ -130,7 +130,7 @@ public class ScdkLoanActivity extends BaseComponentActivity {
                 map.put("returnTime", StringUtil.date2Now(9));
                 map.put("returnAmount", money);
                 main();
-//                Api.getInstance().saveCashOrder(map)
+//                Api.newInstance().saveCashOrder(map)
 //                        .compose(RxResponse.<CashOrder>compatT())
 //                        .subscribe(new ApiObserver<CashOrder>() {
 //                            @Override

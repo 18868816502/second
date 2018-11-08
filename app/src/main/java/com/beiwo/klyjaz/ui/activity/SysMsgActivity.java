@@ -159,7 +159,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
     @Override
     public void configViews() {
         //pv，uv统计
-//        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.MYMESSAGE);
+//        DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.MYMESSAGE);
 
         setupToolbar(toolbar);
         //设置状态栏文字为黑色字体

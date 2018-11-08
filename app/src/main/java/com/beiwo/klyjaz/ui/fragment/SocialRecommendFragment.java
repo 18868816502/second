@@ -72,7 +72,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     private int pageSize = 30;
     private int pageNo = 1;
 
-    public static SocialRecommendFragment getInstance() {
+    public static SocialRecommendFragment newInstance() {
         return new SocialRecommendFragment();
     }
 

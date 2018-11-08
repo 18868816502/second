@@ -25,7 +25,7 @@ import retrofit2.HttpException;
  */
 
 public class RxErrorHandler {
-    //private Context context = App.getInstance();
+    //private Context context = App.newInstance();
 
     public BaseException errorHandle(Throwable t) {
         BaseException exception = new BaseException();

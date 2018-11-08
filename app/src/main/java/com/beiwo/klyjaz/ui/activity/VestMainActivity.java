@@ -257,7 +257,7 @@ public class VestMainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
         if (tabSocial == null) {
-            tabSocial = SocialRecommendFragment.getInstance();
+            tabSocial = SocialRecommendFragment.newInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
         if (tabTool == null) {

@@ -20,6 +20,8 @@ import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 
 import java.util.Random;
 
+import static android.support.v4.app.NotificationCompat.VISIBILITY_SECRET;
+
 public class NotificationUtil {
     public static void showNotification(Context context, String title, String content, Intent contentIntent, String group, boolean activity) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -93,9 +95,7 @@ public class NotificationUtil {
         }
     }
 
-    /**
-     * 显示一个下载带进度条的通知
-     */
+    /*显示一个下载带进度条的通知*/
     public static NotificationCompat.Builder showNotificationProgress(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builderProgress;
@@ -120,7 +120,6 @@ public class NotificationUtil {
 
             notificationManager.notify(2, notification);
         }
-
         return builderProgress;
     }
 
@@ -145,9 +144,7 @@ public class NotificationUtil {
         notificationManager.notify(2, notification);
     }
 
-    /**
-     * 悬挂式，支持6.0以上系统
-     */
+    /*悬挂式，支持6.0以上系统*/
     public static void showFullScreen(Context context, String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));
@@ -160,7 +157,7 @@ public class NotificationUtil {
         //设置点击跳转
         Intent hangIntent = new Intent();
         hangIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        hangIntent.setClass(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
+        hangIntent.setClass(context, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
         //如果描述的PendingIntent已经存在，则在产生新的Intent之前会先取消掉当前的
         PendingIntent hangPendingIntent = PendingIntent.getActivity(context, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setFullScreenIntent(hangPendingIntent, true);
@@ -168,9 +165,7 @@ public class NotificationUtil {
         notificationManager.notify(3, builder.build());
     }
 
-    /**
-     * 折叠式
-     */
+    /*折叠式*/
     public static void showNotify(Context context) {
         //先设定RemoteViews
         RemoteViews view_custom = new RemoteViews(context.getPackageName(), R.layout.view_custom);
@@ -182,7 +177,7 @@ public class NotificationUtil {
         view_custom.setTextColor(R.id.tv_custom_content, Color.BLACK);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContent(view_custom)
-                .setContentIntent(PendingIntent.getActivity(context, 4, new Intent(context, App.audit == 2 ? MainActivity.class: VestMainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 4, new Intent(context, App.audit == 2 ? MainActivity.class : VestMainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT))
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
                 .setTicker("")
                 .setPriority(Notification.PRIORITY_HIGH)// 设置该通知优先级
@@ -191,5 +186,53 @@ public class NotificationUtil {
         Notification notify = mBuilder.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(4, notify);
+    }
+
+    private static NotificationManager manager;
+
+    public static NotificationManager getManager(Context context) {
+        if (manager == null) {
+            manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return manager;
+    }
+
+    public static Notification.Builder getNotificationBuilder(Context context) {
+        Notification.Builder builder = new Notification.Builder(context);
+        //大于8.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            builder.setAutoCancel(true).setChannelId("channel_id")
+                    .setContentTitle("下载中")
+                    .setContentText("").setSmallIcon(R.mipmap.ic_launcher);
+            //id随便指定
+            NotificationChannel channel = new NotificationChannel("channel_id", "channel_name", NotificationManager.IMPORTANCE_MIN);
+            channel.canBypassDnd();//可否绕过，请勿打扰模式
+            channel.enableLights(true);//闪光
+            channel.setLockscreenVisibility(VISIBILITY_SECRET);//锁屏显示通知
+            channel.setLightColor(Color.RED);//指定闪光是的灯光颜色
+            channel.canShowBadge();//桌面laucher消息角标
+            channel.enableVibration(false);//是否允许震动
+            channel.getAudioAttributes();//获取系统通知响铃声音配置
+            channel.getGroup();//获取通知渠道组
+            channel.setBypassDnd(true);//设置可以绕过，请勿打扰模式
+            channel.setVibrationPattern(new long[]{0});//震动的模式
+            channel.shouldShowLights();//是否会闪光
+            //通知管理者创建的渠道
+            getManager(context).createNotificationChannel(channel);
+
+        } else {
+            builder.setContentTitle("下载中");
+            builder.setSmallIcon(R.drawable.push_small);
+            builder.setTicker("下载中");
+            builder.setProgress(100, 0, false);
+        }
+        return builder;
+    }
+
+    public static void sendProgressNotification(Context context, int progress, Notification.Builder builder) {
+        builder.setDefaults(Notification.FLAG_ONLY_ALERT_ONCE);
+        builder.setProgress(100, progress, false);
+        getManager(context).notify(2, builder.build());
     }
 }

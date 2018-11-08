@@ -5,10 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
@@ -28,7 +24,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
-import com.beiwo.klyjaz.entity.TabImage;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
@@ -37,6 +32,8 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.TabHomeFragment;
 import com.beiwo.klyjaz.loan.TabLoanFragment;
 import com.beiwo.klyjaz.tang.DlgUtil;
+import com.beiwo.klyjaz.tang.fragment.SocialFragment;
+import com.beiwo.klyjaz.tang.fragment.SocialRecomFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -50,26 +47,16 @@ import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.BottomNavigationBar;
-import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 public class MainActivity extends BaseComponentActivity {
 
@@ -324,7 +311,8 @@ public class MainActivity extends BaseComponentActivity {
 
     private TabHomeFragment tabHome;
     private TabLoanFragment tabDiscover;
-    public SocialRecommendFragment tabSocial;
+    //private SocialRecommendFragment tabSocial;
+    private SocialRecomFragment tabSocial;
     private ToolFragment tabTool;
     private PersonalFragment tabMine;
     public Fragment currentFragment;
@@ -342,7 +330,8 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
-            tabSocial = SocialRecommendFragment.getInstance();
+            //tabSocial = SocialRecommendFragment.newInstance();
+            tabSocial = SocialRecomFragment.newInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
         if (tabTool == null) {

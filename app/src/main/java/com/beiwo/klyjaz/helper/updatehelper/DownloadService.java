@@ -2,11 +2,11 @@ package com.beiwo.klyjaz.helper.updatehelper;
 
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 
 import com.beiwo.klyjaz.helper.FileProviderHelper;
@@ -35,11 +35,11 @@ public class DownloadService extends IntentService {
             String url = intent.getStringExtra("url");
             String filePath = intent.getStringExtra("filePath");
             if (url != null && filePath != null) {
-                final NotificationCompat.Builder builder = NotificationUtil.showNotificationProgress(getApplicationContext());
+                final Notification.Builder builder = NotificationUtil.getNotificationBuilder(getApplicationContext());
                 boolean res = DownloadHelper.download(url, filePath, new ProgressResponseListener() {
                     @Override
                     public void onResponseProgress(long bytesRead, long contentLength, boolean done) {
-                        NotificationUtil.updateProgress(getApplicationContext(), builder, (int) ((100 * bytesRead) / contentLength));
+                        NotificationUtil.sendProgressNotification(getApplicationContext(), (int) ((100 * bytesRead) / contentLength), builder);
                     }
                 });
 

@@ -11,10 +11,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.Constant;
-import com.beiwo.klyjaz.entity.Audit;
-import com.beiwo.klyjaz.getui.GeTuiClient;
 import com.beiwo.klyjaz.helper.ActivityTracker;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
@@ -22,8 +19,6 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerAppComponent;
 import com.beiwo.klyjaz.injection.module.ApiModule;
 import com.beiwo.klyjaz.injection.module.AppModule;
-import com.beiwo.klyjaz.tang.rx.RxResponse;
-import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.umeng.Umeng;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.view.jiang.ClassicFooter;
@@ -41,7 +36,6 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import java.util.List;
 
 import cn.xiaoneng.uiapi.Ntalker;
-import io.reactivex.disposables.Disposable;
 
 
 public class App extends Application {
