@@ -1365,7 +1365,6 @@ public class Api {
         return service.fetchCancelPraise(praiseType, forumReplyId, userId);
     }
 
-
     /**
      * 保存用户信息
      *

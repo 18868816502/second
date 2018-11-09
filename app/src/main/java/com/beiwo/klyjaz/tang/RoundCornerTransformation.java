@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -28,15 +27,16 @@ import com.bumptech.glide.load.resource.bitmap.BitmapResource;
  */
 
 public class RoundCornerTransformation implements Transformation<Bitmap> {
-
     private BitmapPool bitmapPool;
-    private float radius;
+    private float radius;//半径
+    private float diameter;//直径
     private CornerType default_type = CornerType.ALL;
 
     public RoundCornerTransformation(Context context, int radiusValue, CornerType type) {
         bitmapPool = Glide.get(context).getBitmapPool();
         if (type != null) default_type = type;
         radius = Resources.getSystem().getDisplayMetrics().density * radiusValue;
+        diameter = radius * 2;
     }
 
     @Override
@@ -50,8 +50,6 @@ public class RoundCornerTransformation implements Transformation<Bitmap> {
         }
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        paint.setColor(Color.TRANSPARENT);
-        paint.setStrokeWidth(0f);
         paint.setAntiAlias(true);
         paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
         drawRoundRect(canvas, paint, width, height);
@@ -86,61 +84,61 @@ public class RoundCornerTransformation implements Transformation<Bitmap> {
                 break;
             case ALL:
             default:
-                canvas.drawRoundRect(new RectF(0, 0, width, height), radius, radius, paint);
+                canvas.drawRoundRect(new RectF(0f, 0f, width, height), radius, radius, paint);
                 break;
         }
     }
 
-    private void drawLeftTopCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(radius, 0, width, height), paint);
-        canvas.drawRect(new RectF(0, radius, radius, height), paint);
-        canvas.drawArc(new RectF(0, 0, radius, radius), 180, 90, true, paint);
-    }
-
-    private void drawLeftBottomCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(0, 0, width, height - radius), paint);
-        canvas.drawRect(new RectF(radius, height - radius, width, height), paint);
-        canvas.drawArc(new RectF(0, height - radius, radius, height), 90, 90, true, paint);
-    }
-
-    private void drawRightTopCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(0, 0, width - radius, height), paint);
-        canvas.drawRect(new RectF(width - radius, radius, width, height), paint);
-        canvas.drawArc(new RectF(width - radius, 0, width, radius), 270, 90, true, paint);
-    }
-
-    private void drawRightBottomCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(0, 0, width, height - radius), paint);
-        canvas.drawRect(new RectF(0, height - radius, width - radius, height), paint);
-        canvas.drawArc(new RectF(width - radius, height - radius, width, height), 0, 90, true, paint);
-    }
-
     private void drawLeftCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(radius, 0, width, height), paint);
-        canvas.drawRect(new RectF(0, radius, radius, height - radius), paint);
-        canvas.drawArc(new RectF(0, 0, radius, radius), 180, 90, true, paint);
-        canvas.drawArc(new RectF(0, height - radius, radius, height), 90, 90, true, paint);
-    }
-
-    private void drawRightCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(0, 0, width - radius, height), paint);
-        canvas.drawRect(new RectF(width - radius, radius, width, height - radius), paint);
-        canvas.drawArc(new RectF(width - radius, 0, width, radius), 270, 90, true, paint);
-        canvas.drawArc(new RectF(width - radius, height - radius, width, height), 0, 90, true, paint);
+        canvas.drawArc(new RectF(0f, 0f, diameter, diameter), 180f, 90f, true, paint);//左上
+        canvas.drawArc(new RectF(0f, height - diameter, diameter, height), 90f, 90f, true, paint);//左下
+        canvas.drawRect(0f, radius, radius, height - radius, paint);
+        canvas.drawRect(radius, 0f, width, height, paint);
     }
 
     private void drawTopCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(0, radius, width, height), paint);
-        canvas.drawRect(new RectF(radius, 0, width - radius, radius), paint);
-        canvas.drawArc(new RectF(0, 0, radius, radius), 180, 90, true, paint);
-        canvas.drawArc(new RectF(width - radius, 0, width, radius), 270, 90, true, paint);
+        canvas.drawArc(new RectF(0f, 0f, diameter, diameter), 180f, 90f, true, paint);//左上
+        canvas.drawArc(new RectF(width - diameter, 0f, width, diameter), 270f, 90f, true, paint);//右上
+        canvas.drawRect(radius, 0f, width - radius, radius, paint);
+        canvas.drawRect(0f, radius, width, height, paint);
+    }
+
+    private void drawRightCorner(Canvas canvas, Paint paint, float width, float height) {
+        canvas.drawArc(new RectF(width - diameter, 0f, width, diameter), 270f, 90f, true, paint);//右上
+        canvas.drawArc(new RectF(width - diameter, height - diameter, width, height), 0f, 90f, true, paint);//右下
+        canvas.drawRect(0f, 0f, width - radius, height, paint);
+        canvas.drawRect(width - radius, radius, width, height - radius, paint);
     }
 
     private void drawBottomCorner(Canvas canvas, Paint paint, float width, float height) {
-        canvas.drawRect(new RectF(0, 0, width, height - radius), paint);
-        canvas.drawRect(new RectF(radius, height - radius, width - radius, height), paint);
-        canvas.drawArc(new RectF(0, height - radius, radius, height), 90, 90, true, paint);
-        canvas.drawArc(new RectF(width - radius, height - radius, width, height), 0, 90, true, paint);
+        canvas.drawArc(new RectF(0f, height - diameter, diameter, height), 90f, 90f, true, paint);//左下
+        canvas.drawArc(new RectF(width - diameter, height - diameter, width, height), 0f, 90f, true, paint);//右下
+        canvas.drawRect(0f, 0f, width, height - radius, paint);
+        canvas.drawRect(radius, height - radius, width - radius, height, paint);
+    }
+
+    private void drawLeftTopCorner(Canvas canvas, Paint paint, float width, float height) {
+        canvas.drawArc(new RectF(0f, 0f, diameter, diameter), 180f, 90f, true, paint);//左上
+        canvas.drawRect(radius, 0f, width, radius, paint);
+        canvas.drawRect(0f, radius, width, height, paint);
+    }
+
+    private void drawLeftBottomCorner(Canvas canvas, Paint paint, float width, float height) {
+        canvas.drawArc(new RectF(0f, height - diameter, diameter, height), 90f, 90f, true, paint);//左下
+        canvas.drawRect(0f, 0f, width, height - radius, paint);
+        canvas.drawRect(radius, height - radius, width, height, paint);
+    }
+
+    private void drawRightTopCorner(Canvas canvas, Paint paint, float width, float height) {
+        canvas.drawArc(new RectF(width - diameter, 0f, width, diameter), 270f, 90f, true, paint);//右上
+        canvas.drawRect(0f, 0f, width - radius, height, paint);
+        canvas.drawRect(width - radius, radius, width, height, paint);
+    }
+
+    private void drawRightBottomCorner(Canvas canvas, Paint paint, float width, float height) {
+        canvas.drawArc(new RectF(width - diameter, height - diameter, width, height), 0f, 90f, true, paint);//右下
+        canvas.drawRect(0f, 0f, width, height - radius, paint);
+        canvas.drawRect(0f, height - radius, width - radius, height, paint);
     }
 
     @Override

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_article_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -61,8 +62,9 @@
         <TextView
             android:id="@+id/tv_account_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginLeft="3dp"
+            android:gravity="center_vertical"
             android:textColor="@color/black_2"
             android:textSize="10dp"
             tools:text="爱的木头" />
@@ -75,11 +77,15 @@
         <TextView
             android:id="@+id/tv_account_praise"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_social_topic_praise_unselect"
+            android:layout_height="20dp"
+            android:drawableLeft="@drawable/ic_unpraised"
             android:drawablePadding="3dp"
+            android:gravity="center_vertical"
+            android:maxLength="4"
+            android:minWidth="20dp"
+            android:singleLine="true"
             android:textColor="@color/black_2"
             android:textSize="10dp"
-            tools:text="13" />
+            tools:text="1111111111" />
     </LinearLayout>
 </LinearLayout>

@@ -90,12 +90,12 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         viewHoler.tvName.setText(bean.getUserName());
         viewHoler.tvPraise.setText(String.valueOf(bean.getPraiseCount()));
         if (bean.getIsPraise() == 0) {
-            Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_unselect);
+            Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.ic_unpraised);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
             viewHoler.tvPraise.setTextColor(mContext.getColor(R.color.black_2));
         } else {
-            Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.icon_social_topic_praise_select);
+            Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.ic_praised);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
             viewHoler.tvPraise.setTextColor(mContext.getColor(R.color.c_ff5240));

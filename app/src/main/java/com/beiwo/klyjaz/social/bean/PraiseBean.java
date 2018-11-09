@@ -8,8 +8,6 @@ package com.beiwo.klyjaz.social.bean;
  * @time 2018/10/10 13:11
  */
 public class PraiseBean {
-
-
     /**
      * fansCount : 0
      * praiseCount : 0
