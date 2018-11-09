@@ -30,7 +30,6 @@ import java.util.List;
  */
 
 public class RecomAdapter extends BaseQuickAdapter<SocialTopicBean.ForumBean, BaseViewHolder> {
-
     public RecomAdapter() {
         super(R.layout.layout_recom);
         openLoadAnimation(ALPHAIN);
@@ -50,7 +49,7 @@ public class RecomAdapter extends BaseQuickAdapter<SocialTopicBean.ForumBean, Ba
             Glide.with(mContext)
                     .load(picUrl.get(0))
                     .crossFade(1000)
-                    .bitmapTransform(new CenterCrop(mContext), new RoundCornerTransformation(mContext, 4, RoundCornerTransformation.CornerType.TOP))
+                    .bitmapTransform(new CenterCrop(mContext), new RoundCornerTransformation(mContext, 4, RoundCornerTransformation.CornerType.LEFT))
                     .into(iv_article_icon);
             tv_article_content.setVisibility(View.GONE);
         }

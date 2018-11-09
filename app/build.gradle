@@ -103,6 +103,7 @@ android {
         klyjaz_jifeng { dimension "channel" }
         klyjaz_mumayi { dimension "channel" }
         klyjaz_anzhi { dimension "channel" }
+        klyjaz_toutiao { dimension "channel" }
         klyjaz_guanfang { dimension "channel" }
 
         productFlavors.all { flavor ->

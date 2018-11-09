@@ -108,7 +108,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
         toolbar_title.setText("社区");
 
         userHelper = UserHelper.getInstance(getActivity());
-        spanSpec = DensityUtil.dp2px(getContext(), 10.5f);
+        spanSpec = DensityUtil.dp2px(getContext(), 15f);
 
         map.put("pageSize", pageSize);
     }
@@ -228,26 +228,24 @@ public class SocialRecomFragment extends BaseComponentFragment {
     }
 
     private void initRecycler() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        layoutManager.setAutoMeasureEnabled(true);
         recycler.setLayoutManager(layoutManager);
         recycler.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = spanSpec;
+                outRect.top = spanSpec / 3;
+                outRect.bottom = spanSpec / 3;
                 StaggeredGridLayoutManager.LayoutParams params =
                         (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
                 if (params.getSpanIndex() % 2 == 0) {//span left
                     outRect.left = spanSpec;
-                    outRect.right = spanSpec / 2;
+                    outRect.right = spanSpec / 3;
                 } else {//span right
-                    outRect.left = spanSpec / 2;
+                    outRect.left = spanSpec / 3;
                     outRect.right = spanSpec;
-                }
-                //last item add bottom spec
-                if (parent.getChildLayoutPosition(view) == parent.getAdapter().getItemCount() - 1) {
-                    outRect.bottom = spanSpec;
                 }
             }
         });
@@ -259,6 +257,11 @@ public class SocialRecomFragment extends BaseComponentFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 iv_publish.setVisibility(dy > 0 ? View.VISIBLE : View.GONE);
+                int[] firstVisibleItem = null;
+                firstVisibleItem = layoutManager.findLastVisibleItemPositions(firstVisibleItem);
+                if (firstVisibleItem != null && firstVisibleItem[0] == 0) {
+                    if (adapter != null) adapter.notifyDataSetChanged();
+                }
             }
         });
     }

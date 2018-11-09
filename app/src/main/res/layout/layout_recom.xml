@@ -12,8 +12,10 @@
         android:id="@+id/iv_article_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="180dp"
-        android:minHeight="100dp"
+        android:adjustViewBounds="true"
+        android:maxHeight="280dp"
+        android:minHeight="110dp"
+        android:scaleType="centerCrop"
         tools:src="@mipmap/ic_launcher" />
 
     <TextView
