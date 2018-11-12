@@ -49,7 +49,7 @@ public class RecomAdapter extends BaseQuickAdapter<SocialTopicBean.ForumBean, Ba
             Glide.with(mContext)
                     .load(picUrl.get(0))
                     .crossFade(1000)
-                    .bitmapTransform(new CenterCrop(mContext), new RoundCornerTransformation(mContext, 4, RoundCornerTransformation.CornerType.LEFT))
+                    .bitmapTransform(new CenterCrop(mContext), new RoundCornerTransformation(mContext, 4, RoundCornerTransformation.CornerType.TOP))
                     .into(iv_article_icon);
             tv_article_content.setVisibility(View.GONE);
         }

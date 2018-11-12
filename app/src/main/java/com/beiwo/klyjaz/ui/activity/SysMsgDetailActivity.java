@@ -3,7 +3,6 @@ package com.beiwo.klyjaz.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -37,7 +36,6 @@ import com.gyf.barlibrary.ImmersionBar;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import cn.xiaoneng.uiutils.ToastUtils;
 
 public class SysMsgDetailActivity extends BaseComponentActivity implements SysMsgDetailContract.View {
 
@@ -62,7 +60,6 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     SysMsgDetailPresenter presenter;
 
     private SysMsg.Row sysMsg;
-    private SysMsgDetail detail;
 
     @Override
     protected void onDestroy() {
@@ -111,7 +108,6 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void showSysMsgDetail(SysMsgDetail detail) {
-        this.detail = detail;
         if (detail != null) {
             if (detail.getMessageType() == 0) {
                 feed_line.setVisibility(View.GONE);
@@ -135,7 +131,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
 
             //linkTableType == 2 为社区消息
-            if(sysMsg.getLinkTableType() == 2) {
+            if (sysMsg.getLinkTableType() == 2) {
                 dealContent(detail);
             }
 
@@ -144,8 +140,8 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void onEditForumSucceed(DraftEditForumBean forumBean) {
-        Intent intent = new Intent(this,CommunityPublishActivity.class);
-        intent.putExtra("forumId",sysMsg.getForumId());
+        Intent intent = new Intent(this, CommunityPublishActivity.class);
+        intent.putExtra("forumId", sysMsg.getForumId());
         startActivity(intent);
     }
 
@@ -156,12 +152,12 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void onQueryForumInfoSucceed(ForumInfoBean forumBean) {
-        if(forumBean.getForum() == null){
+        if (forumBean.getForum() == null) {
             ToastUtil.toast("该动态已删除");
-        }else{
-            Intent intent = new Intent(this,ArticleDetailActivity.class);
+        } else {
+            Intent intent = new Intent(this, ArticleDetailActivity.class);
             intent.putExtra("userId", UserHelper.getInstance(this).getProfile().getId());
-            intent.putExtra("forumId",sysMsg.getForumId());
+            intent.putExtra("forumId", sysMsg.getForumId());
             startActivity(intent);
         }
     }
@@ -183,17 +179,17 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
                 ds.setColor(Color.parseColor("#2a84ff"));
             }
         };
-        if(content != null){
-            if(content.contains("点击查看详情>>>")){
+        if (content != null) {
+            if (content.contains("点击查看详情>>>")) {
                 style.setSpan(clickableSpan, content.length() - 9, content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 answerTv.setText(style);
-            }else if(content.contains("点击查看>>>")){
+            } else if (content.contains("点击查看>>>")) {
                 style.setSpan(clickableSpan, content.length() - 7, content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 answerTv.setText(style);
-            }else if(content.contains("点击返回>>>")){
+            } else if (content.contains("点击返回>>>")) {
                 style.setSpan(clickableSpan, content.length() - 7, content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 answerTv.setText(style);
-            }else{
+            } else {
                 answerTv.setText(content);
             }
         }
@@ -204,21 +200,22 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     /**
      * 处理点击事件
+     *
      * @param detail
      */
     private void dealClick(SysMsgDetail detail) {
-        switch (detail.getTitle()){
+        switch (detail.getTitle()) {
             case "动态审核成功":
             case "评论审核成功":
             case "评论审核失败":
             case "评论下线通知":
-                if(!TextUtils.isEmpty(sysMsg.getForumId())) {
-                    presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(),sysMsg.getForumId(),1,30);
+                if (!TextUtils.isEmpty(sysMsg.getForumId())) {
+                    presenter.queryForumInfo(UserHelper.getInstance(this).getProfile().getId(), sysMsg.getForumId(), 1, 30);
                 }
                 break;
             case "动态审核失败":
             case "动态下线通知":
-                if(!TextUtils.isEmpty(sysMsg.getForumId())) {
+                if (!TextUtils.isEmpty(sysMsg.getForumId())) {
                     presenter.fetchEditForum(sysMsg.getForumId());
                 }
                 break;
@@ -226,6 +223,4 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
                 break;
         }
     }
-
-
 }

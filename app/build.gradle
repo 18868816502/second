@@ -118,7 +118,7 @@ android {
                 //这里修改apk文件名
                 def fileName = variant.getBaseName() + ".apk"
                 fileName = fileName.substring(fileName.indexOf("-") + 1, fileName.length())
-                output.outputFile = new File(outputFile.parent, fileName)
+                //output.outputFile = new File(outputFile.parent, fileName)
             }
         }
     }

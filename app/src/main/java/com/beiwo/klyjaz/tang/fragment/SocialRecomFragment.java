@@ -228,10 +228,11 @@ public class SocialRecomFragment extends BaseComponentFragment {
     }
 
     private void initRecycler() {
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         layoutManager.setAutoMeasureEnabled(true);
         recycler.setLayoutManager(layoutManager);
+        //recycler.setPadding(0, DensityUtil.dp2px(getActivity(), 10f), 0, 0);
         recycler.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -257,11 +258,6 @@ public class SocialRecomFragment extends BaseComponentFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 iv_publish.setVisibility(dy > 0 ? View.VISIBLE : View.GONE);
-                int[] firstVisibleItem = null;
-                firstVisibleItem = layoutManager.findLastVisibleItemPositions(firstVisibleItem);
-                if (firstVisibleItem != null && firstVisibleItem[0] == 0) {
-                    if (adapter != null) adapter.notifyDataSetChanged();
-                }
             }
         });
     }
