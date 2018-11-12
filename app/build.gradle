@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 def ext = rootProject.ext
-def debug_mode = rootProject.ext.debug_mode
+def debug_mode = ext.debug_mode
 def product_click_force_login = ext.product_click_force_login
 android {
     compileSdkVersion compile_sdk_version
@@ -28,7 +28,6 @@ android {
         buildConfigField("String", "SINA_APP_SECRET", "$sina_app_secret")
         buildConfigField("String", "SINA_APP_SHARE_URL", "$sina_app_share_url")
     }
-
     signingConfigs {
         kl5 {
             storeFile file('../kl5.jks')
@@ -37,7 +36,6 @@ android {
             keyPassword "123456"
         }
     }
-
     buildTypes {
         release {
             minifyEnabled true
@@ -46,17 +44,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
     }
-
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
-
     flavorDimensions "id", "channel"
     //维度
     productFlavors {
@@ -118,30 +113,27 @@ android {
                 //这里修改apk文件名
                 def fileName = variant.getBaseName() + ".apk"
                 fileName = fileName.substring(fileName.indexOf("-") + 1, fileName.length())
-                //output.outputFile = new File(outputFile.parent, fileName)
+                output.outputFile = new File(outputFile.parent, fileName)
             }
         }
     }
-
     lintOptions {
         disable "MissingTranslation"
         abortOnError false
     }
 }
-
 repositories {
     flatDir {
         dirs 'libs'
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':xiaonengchat')
     //魔蝎信用
     compile(name: 'moxie-client-2.2.1', ext: 'aar')
     //坚果信用
-    compile(name: 'newnutsdk', ext: 'aar')
+    //compile(name: 'newnutsdk', ext: 'aar')
     //noinspection GradleCompatible
     compile "com.android.support:cardview-v7:$support_library_version"
     compile "com.android.support:design:$support_library_version"

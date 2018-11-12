@@ -186,21 +186,6 @@
             android:name="com.beiwo.klyjaz.ui.activity.EBankActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.beiwo.klyjaz.ui.activity.UsedEmailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.beiwo.klyjaz.ui.activity.NutEmailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.beiwo.klyjaz.ui.activity.EmailLoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.beiwo.klyjaz.ui.activity.EmailLeadingInProgressActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.beiwo.klyjaz.ui.activity.EmailLeadingInResultActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.beiwo.klyjaz.ui.activity.UserCertificationCodeActivity"
             android:screenOrientation="portrait" />
         <activity
