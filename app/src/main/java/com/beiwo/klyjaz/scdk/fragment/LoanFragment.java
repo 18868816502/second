@@ -21,11 +21,9 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.jjd.activity.VerticyIDActivity;
 import com.beiwo.klyjaz.scdk.activity.ScdkLoanActivity;
 import com.beiwo.klyjaz.scdk.activity.ScdkVerticyIDActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 
@@ -107,7 +105,7 @@ public class LoanFragment extends BaseComponentFragment {
             seekbar.setMin(0);
             seekbar.setProgress(0);
         }
-        money = 500 + (int) (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
+        money = 500 + (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
         charge = money / 100;
         tv_seekbar_progress.setText(String.format("%.0f", money));
         tv_service_charge.setText(String.format("%.2f", charge));
@@ -128,7 +126,7 @@ public class LoanFragment extends BaseComponentFragment {
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                money = 500 + (int) (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
+                money = 500 + (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
                 charge = money / 100;
                 tv_seekbar_progress.setText(String.format("%.0f", money));
                 tv_service_charge.setText(String.format("%.2f", charge));

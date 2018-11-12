@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcel;
@@ -25,9 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
-
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.util.DensityUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

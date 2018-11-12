@@ -90,7 +90,7 @@ public class CustomKeyboardView extends KeyboardView {
         paint.setColor(rKeyTextColor);
         final int kbdPaddingLeft = getPaddingLeft();
         final int kbdPaddingTop = getPaddingTop();
-        Drawable keyBackground = null;
+        Drawable keyBackground;
 
         final Rect clipRegion = rClipRegion;
         final Keyboard.Key invalidKey = rInvalidatedKey;

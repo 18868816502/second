@@ -25,7 +25,6 @@ import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.tang.widget.CustomNumTextView;
 import com.beiwo.klyjaz.ui.activity.HouseLoanCalculatorActivity;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.beiwo.klyjaz.util.SPUtils;

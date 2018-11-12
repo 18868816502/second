@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CircleProgressBar;
@@ -23,8 +22,6 @@ import com.beiwo.klyjaz.jjd.DaggerVertifyIDComponent;
 import com.beiwo.klyjaz.jjd.VertifyIDContract;
 import com.beiwo.klyjaz.jjd.VertifyIDModule;
 import com.beiwo.klyjaz.jjd.VertifyIDPresenter;
-import com.beiwo.klyjaz.ui.activity.MainActivity;
-import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 

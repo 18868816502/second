@@ -148,8 +148,7 @@ public class LogUtils {
 
     private static String createMessage(String msg) {
         String functionName = getFunctionName();
-        String message = (functionName == null ? msg : (functionName + " - " + msg));
-        return message;
+        return (functionName == null ? msg : (functionName + " - " + msg));
     }
 
     /*打开日志文件并写入日志*/

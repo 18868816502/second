@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:imagecontrol="http://schemas.android.com/apk/com.xiaoneng.xnlibrary"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="6dp" >
+    android:padding="6dp">
 
     <TextView
         android:id="@+id/tv_lt_sendtime"
@@ -24,7 +23,7 @@
         android:layout_marginRight="66dp"
         android:layout_marginTop="6dp"
         android:clickable="false"
-        android:focusable="true" >
+        android:focusable="true">
 
         <RelativeLayout
             android:id="@+id/rl_lt_sendcontent"
@@ -32,27 +31,26 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
-		<include 
-            android:id="@+id/div_userhead"
-            layout="@layout/xn_lefthead_include"
-            />
+            <include
+                android:id="@+id/div_userhead"
+                layout="@layout/xn_lefthead_include" />
+
             <RelativeLayout
                 android:id="@+id/l_rl_text_uname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_toRightOf="@id/div_userhead"
-                android:focusable="true" >
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/l_text_uname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/xn_black"
-                    android:visibility="gone"
-                     />
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
@@ -69,7 +67,8 @@
                 android:lineSpacingExtra="3dp"
                 android:textColor="@color/xn_black"
                 android:textSize="15sp" />
-			<RelativeLayout
+
+            <RelativeLayout
                 android:id="@+id/msg_listRL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,21 +76,21 @@
                 android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/div_userhead"
                 android:background="@drawable/newl22"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <cn.xiaoneng.uiview.RobotTextView
                     android:id="@+id/msgTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:autoLink="web"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
                     android:textColor="@color/xn_black"
                     android:textSize="14sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_systype"
                 android:layout_width="wrap_content"
@@ -102,8 +101,7 @@
                 android:paddingLeft="14dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_before"
@@ -140,24 +138,23 @@
                 android:layout_toRightOf="@id/div_userhead"
                 android:background="@drawable/newl22"
                 android:paddingLeft="4dp"
-                android:visibility="gone" 
-                >
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/copyurl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/foreText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:autoLink="phone"
                         android:clickable="false"
                         android:paddingLeft="14dp"
                         android:paddingRight="4dp"
                         android:paddingTop="8dp"
-                        android:autoLink="phone"
                         android:textColor="@color/xn_black"
                         android:textSize="14sp" />
 
@@ -177,7 +174,7 @@
                         android:layout_marginTop="8dp"
                         android:clickable="false"
                         android:orientation="horizontal"
-                        android:paddingBottom="10dp" >
+                        android:paddingBottom="10dp">
 
                         <ImageView
                             android:id="@+id/cardImg"
@@ -195,7 +192,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="8dp"
                             android:clickable="false"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/cardTitle"

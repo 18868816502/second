@@ -451,7 +451,7 @@ public class CommonUtils {
     public static boolean isAppInstalled(Context context, String packageName) {
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
-        List<String> pName = new ArrayList<String>();
+        List<String> pName = new ArrayList<>();
         if (pinfo != null) {
             for (int i = 0; i < pinfo.size(); i++) {
                 String pn = pinfo.get(i).packageName;
@@ -527,8 +527,7 @@ public class CommonUtils {
         }
 
         try {
-            HttpURLConnection conn = (HttpURLConnection) fileUrl
-                    .openConnection();
+            HttpURLConnection conn = (HttpURLConnection) fileUrl.openConnection();
             conn.setDoInput(true);
             conn.connect();
             InputStream is = conn.getInputStream();
@@ -668,7 +667,7 @@ public class CommonUtils {
     public static String numToString(String rateStr) {
         if (rateStr.indexOf(".") != -1) {
             //获取小数点的位置
-            int num = 0;
+            int num;
             //找到小数点在字符串中的位置,找到返回一个int类型的数字,不存在的话返回 -1
             num = rateStr.indexOf(".");
 
@@ -678,13 +677,11 @@ public class CommonUtils {
             //判断小数点后字符的长度并做不同的操作,得到小数点后两位的字符串
             if (afterData.length() < 2) {
                 afterData = afterData + "0";
-            } else {
-                afterData = afterData;
             }
             //返回元字符串开始到小数点的位置 + "." + 小数点后两位字符
             return rateStr.substring(0, num) + "." + afterData.substring(0, 2);
         } else {
-            if (rateStr == "1") {
+            if (TextUtils.equals(rateStr, "1")) {
                 return "1.00";
             } else {
                 return rateStr + ".00";
@@ -710,10 +707,7 @@ public class CommonUtils {
 
     public static boolean isMobileNO(String mobileNums) {
         String telRegex = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
-        if (TextUtils.isEmpty(mobileNums))
-            return false;
-        else
-            return mobileNums.matches(telRegex);
+        return !TextUtils.isEmpty(mobileNums) && mobileNums.matches(telRegex);
     }
 
     /**

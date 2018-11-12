@@ -36,7 +36,7 @@ import butterknife.BindView;
 
 /**
  * @author xhb
- * 邀请好友
+ *         邀请好友
  */
 public class InvitationActivity extends BaseComponentActivity implements InvitationContract.View {
     @BindView(R.id.tool_bar)
@@ -125,8 +125,8 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
         if (list.size() > 0) {
             for (Invitation.Row row : list) {
                 View view = View.inflate(this, R.layout.rv_item_invitation, null);
-                TextView mPhone = (TextView) view.findViewById(R.id.phone);
-                TextView mStatus = (TextView) view.findViewById(R.id.status);
+                TextView mPhone = view.findViewById(R.id.phone);
+                TextView mStatus = view.findViewById(R.id.status);
                 mPhone.setText(CommonUtils.changeTel(row.getPhone()));
                 mStatus.setText(row.getStatus());
                 mRoot.addView(view);

@@ -53,8 +53,8 @@ public class Digest {
     public static String bytes2HexStr(byte[] bytes) {
         if (bytes == null || bytes.length <= 0) return null;
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            String hv = Integer.toHexString(bytes[i] & 0xff);
+        for (Byte b : bytes) {
+            String hv = Integer.toHexString(b & 0xff);
             if (hv.length() < 2) sb.append(0);
             sb.append(hv);
         }

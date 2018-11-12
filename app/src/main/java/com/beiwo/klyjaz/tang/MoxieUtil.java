@@ -82,13 +82,11 @@ public class MoxieUtil {
                          * Bill通知：账单通知
                          */
                         case MxParam.ResultCode.IMPORTING:
-                            if (moxieCallBackData.isLoginDone()) {
-                                //状态为IMPORTING, 且loginDone为true，说明这个时候已经在采集中，已经登录成功
-                                //Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
-                            } else {
-                                //状态为IMPORTING, 且loginDone为false，说明这个时候正在登录中
-                                //Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
-                            }
+                            //状态为IMPORTING, 且loginDone为true，说明这个时候已经在采集中，已经登录成功
+                            //Log.d("customMoxie", "任务已经登录成功，正在采集中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
+
+                            //状态为IMPORTING, 且loginDone为false，说明这个时候正在登录中
+                            //Log.d("customMoxie", "任务正在登录中，SDK退出后不会再回调任务状态，任务最终状态会从服务端回调，建议轮询APP服务端接口查询任务/业务最新状态");
                             break;
                         /**
                          * 任务还未开始
@@ -127,7 +125,7 @@ public class MoxieUtil {
                             return true;
                     }
                 }
-                Intent intent = new Intent(activity, App.audit == 2 ? MainActivity.class: VestMainActivity.class);
+                Intent intent = new Intent(activity, App.audit == 2 ? MainActivity.class : VestMainActivity.class);
                 intent.putExtra("account", true);
                 //intent.putExtra("moxieMsg", "3秒后刷新页面信用卡就会显示啦");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

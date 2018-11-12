@@ -197,7 +197,7 @@ public class AppUpdateHelper {
         if (weakReference.get() != null) {
             View holder = LayoutInflater.from(weakReference.get())
                     .inflate(R.layout.dialog_download_progress, null);
-            progressBar = (ProgressBar) holder.findViewById(R.id.number_progress_bar);
+            progressBar = holder.findViewById(R.id.number_progress_bar);
             progressDialog = new Dialog(weakReference.get(), R.style.DownloadProgressDialogStyle);
             progressDialog.setContentView(holder);
             progressDialog.setCancelable(false);
@@ -228,6 +228,7 @@ public class AppUpdateHelper {
     private static class DownloadAppTask extends AsyncTask<String, Long, Boolean> {
         private AppUpdateHelper helper;
         private String filePath;
+
         public DownloadAppTask(AppUpdateHelper helper, String filePath) {
             this.helper = helper;
             this.filePath = filePath;

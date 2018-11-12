@@ -1474,6 +1474,7 @@ public class CopyTabLayout extends HorizontalScrollView {
                     || specWidthSize > maxWidth)) {
                 // If we have a max width and a given spec which is either unspecified or
                 // larger than the max width, update the width spec using the same mode
+                //noinspection Range
                 widthMeasureSpec = MeasureSpec.makeMeasureSpec(mTabMaxWidth, MeasureSpec.AT_MOST);
             } else {
                 // Else, use the original width spec
@@ -1485,7 +1486,6 @@ public class CopyTabLayout extends HorizontalScrollView {
 
             // We need to switch the text size based on whether the text is spanning 2 lines or not
             if (mTextView != null) {
-                final Resources res = getResources();
                 float textSize = mTabTextSize;
                 int maxLines = mDefaultMaxLines;
 
@@ -1559,11 +1559,11 @@ public class CopyTabLayout extends HorizontalScrollView {
                     mIconView.setImageDrawable(null);
                 }
 
-                mCustomTextView = (TextView) custom.findViewById(android.R.id.text1);
+                mCustomTextView = custom.findViewById(android.R.id.text1);
                 if (mCustomTextView != null) {
                     mDefaultMaxLines = TextViewCompat.getMaxLines(mCustomTextView);
                 }
-                mCustomIconView = (ImageView) custom.findViewById(android.R.id.icon);
+                mCustomIconView = custom.findViewById(android.R.id.icon);
             } else {
                 // We do not have a custom view. Remove one if it already exists
                 if (mCustomView != null) {
@@ -1937,8 +1937,7 @@ public class CopyTabLayout extends HorizontalScrollView {
         // Default enabled state
         states[i] = EMPTY_STATE_SET;
         colors[i] = defaultColor;
-        i++;
-
+        //i++;
         return new ColorStateList(states, colors);
     }
 

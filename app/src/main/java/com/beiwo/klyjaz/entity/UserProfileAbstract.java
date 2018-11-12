@@ -54,6 +54,6 @@ public class UserProfileAbstract {
     }
 
     public void setNewUser(boolean newUser) {
-        newUser = newUser;
+        this.newUser = newUser;
     }
 }

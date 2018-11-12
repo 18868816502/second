@@ -1,6 +1,5 @@
 package com.beiwo.klyjaz.tang.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -47,7 +46,7 @@ public class LoanBillAdapter extends BaseQuickAdapter<LoanAccountIconBean, BaseV
                 intent.putExtra("title", iconBean.iconName);
                 intent.putExtra("iconId", iconBean.iconId);
                 intent.putExtra("tallyId", iconBean.tallyId);
-                ((Activity) context).startActivity(intent);
+                context.startActivity(intent);
             }
         });
     }

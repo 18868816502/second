@@ -311,8 +311,6 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             iv_question.setOnClickListener(this);
             tv_go_loan.setOnClickListener(this);
         }
-        if (state == 2) {//审核中
-        }
         if (state == 3) {//审核失败
             tv_time_counter = view.findViewById(R.id.tv_time_counter);
         }
@@ -366,7 +364,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                             seekbar.setMax(2000);
                             seekbar.setMin(0);
                         }
-                        seekbar.setProgress((int) ((progress - 500) * 2000 / 1500));
+                        seekbar.setProgress(((progress - 500) * 2000 / 1500));
 
                         tv_seekbar_progress.setText(FormatNumberUtils.FormatNumberFor0(progress));
                         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -458,7 +456,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     }
 
     private int seekbarProgress(SeekBar seekbar) {
-        return 500 + (int) (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
+        return 500 + (seekbar.getProgress() * 1500 / 2000 / 100) * 100;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

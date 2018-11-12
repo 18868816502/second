@@ -3,7 +3,6 @@ package com.beiwo.klyjaz.social.adapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;

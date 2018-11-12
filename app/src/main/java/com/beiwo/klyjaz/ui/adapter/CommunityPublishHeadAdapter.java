@@ -8,11 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.beiwo.klyjaz.Manifest;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.bumptech.glide.Glide;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -24,8 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnPermissionDenied;
 
 /**
  * @name loanmarket

@@ -6,17 +6,12 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.util.NetUtils;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -39,25 +34,8 @@ public class AccessHeadInterceptor implements Interceptor {
         //添加公共参数packageId和version
         if ("GET".equals(request.method())) {
             HttpUrl httpUrl = request.url();
-            Set<String> ps = httpUrl.queryParameterNames();
-            Map<String, Object> params = new HashMap<>();
-            if (ps != null) {
-                for (String key : ps) {
-                    Iterator<String> iterator = ps.iterator();
-                    while (iterator.hasNext())
-                        params.put(key, iterator.next());
-                }
-            }
             String url = httpUrl.toString();
             url = url + "?" + "packageId=" + App.sChannelId + "&terminal=1&version=" + BuildConfig.VERSION_NAME + "&userIp=" + NetUtils.getIPAddress(App.getInstance());
-            StringBuilder sb = new StringBuilder();
-            if (params.size() > 0) {
-                Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry<String, Object> next = iterator.next();
-                    sb.append("&" + next.getKey()).append("=").append(next.getValue());
-                }
-            }
             request = request.newBuilder().url(url).build();
         } else if ("POST".equals(request.method())) {
             RequestBody body = request.body();
@@ -95,8 +73,8 @@ public class AccessHeadInterceptor implements Interceptor {
         String secondMd5str = Digest.md5(first);
         byte[] secondByteArr = Digest.hexStr2Bytes(secondMd5str);
         String second = Digest.bytes2HexStr(secondByteArr);
+        assert second != null;
         builder.addHeader("sign", second);
-        //builder.addHeader("sign", new String(Hex.encodeHex(DigestUtils.md5(new String(Hex.encodeHex(DigestUtils.md5(sb.toString())))))));
         return chain.proceed(builder.build());
     }
 

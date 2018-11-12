@@ -2,13 +2,8 @@ package com.beiwo.klyjaz.entity;
 
 import java.io.Serializable;
 
-/**
- * Created by admin on 2018/5/22.
- */
 
 public class AnalysisOverviewBean implements Serializable {
-
-
     /**
      * repayAmount : 40851.27
      * unpayAmount : 3891.52

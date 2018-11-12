@@ -157,7 +157,9 @@ public class AddCardActivity extends BaseComponentActivity {
                                                 cet_bank_name.setText(bankName);
                                                 tv_card_name.setText(bankName);
                                                 Map<String, Integer> nameAndLogo = BankInfoUtil.bankNameAndLogo(bankName);
+                                                assert nameAndLogo != null;
                                                 Integer bankLogo = nameAndLogo.get("bankLogo");
+                                                assert bankLogo != null;
                                                 Integer bg = nameAndLogo.get("bg");
                                                 iv_card_icon.setImageResource(bankLogo);
                                                 iv_card_icon.setBackgroundResource(R.drawable.bg_oval_white);

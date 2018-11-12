@@ -2,9 +2,7 @@ package com.beiwo.klyjaz.view.multiChildHistogram;
 
 import java.util.List;
 
-/**
- * Created by cuiyan on 2018/5/3.
- */
+
 public class MultiGroupHistogramGroupData {
 
     private String groupName;

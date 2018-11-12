@@ -2,9 +2,6 @@ package com.beiwo.klyjaz.entity;
 
 import java.io.Serializable;
 
-/**
- * Created by admin on 2018/6/21.
- */
 
 public class LoanAccountIconBean implements Serializable {
     public String logo;

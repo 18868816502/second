@@ -112,12 +112,8 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
                 startActivity(new Intent(SettingsActivity.this, AboutKaolaActivity.class));
                 break;
             case R.id.star_me:
-                String model = android.os.Build.MODEL;
-                //品牌
-                String brand = android.os.Build.BRAND;
                 //制造商
                 String manufacturer = android.os.Build.MANUFACTURER;
-                //Log.e("MANUFACTURER", "MANUFACTURER--> " + manufacturer);
                 if ("samsung".equals(manufacturer)) {
                     goToSamsungappsMarket();
                 } else {

@@ -31,11 +31,9 @@ public class DeployAdapter extends BaseQuickAdapter<EventBean, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, EventBean item) {
-        String title = "";
         if (item.getTitle() != null && !TextUtils.isEmpty(item.getTitle())) {
             String[] str = item.getTitle().split("#");
             helper.setText(R.id.activity_event_tv, str[0]);
-            title = str[0];
             if (str.length == 2) {
                 helper.setText(R.id.subTitle_tv, str[1]);
             }

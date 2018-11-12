@@ -21,7 +21,6 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.activity.LoanBillActivity;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.gyf.barlibrary.ImmersionBar;
@@ -144,7 +143,7 @@ public class BillListActivity extends BaseComponentActivity {
                             refresh_layout.finishRefresh();
                             refresh_layout.finishLoadMore();
                             if (pageNo == 1) {
-                                if (data == null || data.getItem() == null || data.getItem().size() < 1) {
+                                if (data.getItem() == null || data.getItem().size() < 1) {
                                     empty();
                                 } else {
                                     listAdapter.setNewData(data.getItem());

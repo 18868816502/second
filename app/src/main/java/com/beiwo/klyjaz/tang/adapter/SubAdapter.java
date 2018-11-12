@@ -43,9 +43,7 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (holder.viewType == VIEW_EMPTY) {
-            //nothing
-        } else if (holder.viewType == VIEW_NORMAL) {
+        if (holder.viewType == VIEW_NORMAL) {
             if (dataSet.size() == 0) return;
             BillDetail item = dataSet.get(position);
             holder.tv_sub_description.setText(item.getDiscription());
@@ -76,9 +74,9 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder> {
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_NORMAL) {
-                tv_sub_description = (TextView) itemView.findViewById(R.id.tv_sub_description);
-                tv_sub_amount = (TextView) itemView.findViewById(R.id.tv_sub_amount);
-                tv_sub_time = (TextView) itemView.findViewById(R.id.tv_sub_time);
+                tv_sub_description = itemView.findViewById(R.id.tv_sub_description);
+                tv_sub_amount = itemView.findViewById(R.id.tv_sub_amount);
+                tv_sub_time = itemView.findViewById(R.id.tv_sub_time);
             }
         }
     }

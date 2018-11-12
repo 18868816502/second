@@ -18,7 +18,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerEditUserNameComponent;
 import com.beiwo.klyjaz.ui.listeners.TextWatcherListener;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;

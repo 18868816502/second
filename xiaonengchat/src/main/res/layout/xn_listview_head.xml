@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- ListView的头部 -->
+<?xml version="1.0" encoding="utf-8"?><!-- ListView的头部 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
-    android:background="@null" >
+    android:background="@null">
 
     <LinearLayout
         android:id="@+id/ll_headLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="center">
 
         <ProgressBar
             android:id="@+id/pb_loadmore"
@@ -19,8 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@anim/progress_smallround"
-            android:visibility="gone" >
-        </ProgressBar>
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_loadmore"

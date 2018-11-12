@@ -21,9 +21,9 @@ public class FlowLayout extends ViewGroup {
     private static final int CENTER = 0;
     private static final int RIGHT = 1;
 
-    protected List<List<View>> mAllViews = new ArrayList<List<View>>();
-    protected List<Integer> mLineHeight = new ArrayList<Integer>();
-    protected List<Integer> mLineWidth = new ArrayList<Integer>();
+    protected List<List<View>> mAllViews = new ArrayList<>();
+    protected List<Integer> mLineHeight = new ArrayList<>();
+    protected List<Integer> mLineWidth = new ArrayList<>();
     private int mGravity;
     private List<View> lineViews = new ArrayList<>();
 
@@ -205,6 +205,8 @@ public class FlowLayout extends ViewGroup {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
+
+    @SuppressWarnings("ResourceType")
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

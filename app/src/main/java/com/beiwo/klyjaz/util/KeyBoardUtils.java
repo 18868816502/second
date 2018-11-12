@@ -1,7 +1,6 @@
 package com.beiwo.klyjaz.util;
 
 import android.content.Context;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -42,12 +41,6 @@ public class KeyBoardUtils {
      * 强制隐藏输入法键盘
      */
     public static void hideKeybord(EditText edittext, PopDialog commentDialog) {
-//        InputMethodManager inputMethodManager = (InputMethodManager)
-//                edittext.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), 0);
-//        if (inputMethodManager.isActive()) {
-//            inputMethodManager.hideSoftInputFromWindow(edittext.getWindowToken(), 0);
-//        }
         InputMethodManager manager = (InputMethodManager) edittext.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(commentDialog.getDialog().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
@@ -58,7 +51,6 @@ public class KeyBoardUtils {
     public static void showKeybord(EditText edittext) {
         InputMethodManager inputMethodManager = (InputMethodManager)
                 edittext.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.showSoftInput(edittext, InputMethodManager.SHOW_FORCED);
         inputMethodManager.showSoftInput(edittext, InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -74,16 +66,4 @@ public class KeyBoardUtils {
         }
         return bool;
     }
-
-    /**
-     * 强制隐藏输入法键盘
-     *
-     * @param context Context
-     * @param EditText    EditText
-     */
-    public static void hideInput(Context context, EditText editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-    }
-
 }

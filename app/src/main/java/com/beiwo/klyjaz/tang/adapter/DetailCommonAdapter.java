@@ -239,22 +239,22 @@ public class DetailCommonAdapter extends RecyclerView.Adapter<DetailCommonAdapte
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
-                iv_detail_icon = (ImageView) itemView.findViewById(R.id.iv_detail_icon);
-                tv_detail_name = (TextView) itemView.findViewById(R.id.tv_detail_name);
-                tv_still_balance = (TextView) itemView.findViewById(R.id.tv_still_balance);
-                tv_already_num = (TextView) itemView.findViewById(R.id.tv_already_num);
-                tv_cycle_num = (TextView) itemView.findViewById(R.id.tv_cycle_num);
-                tv_add_remark = (TextView) itemView.findViewById(R.id.tv_add_remark);
-                iv_bill_over_tag = (ImageView) itemView.findViewById(R.id.iv_bill_over_tag);
+                iv_detail_icon = itemView.findViewById(R.id.iv_detail_icon);
+                tv_detail_name = itemView.findViewById(R.id.tv_detail_name);
+                tv_still_balance = itemView.findViewById(R.id.tv_still_balance);
+                tv_already_num = itemView.findViewById(R.id.tv_already_num);
+                tv_cycle_num = itemView.findViewById(R.id.tv_cycle_num);
+                tv_add_remark = itemView.findViewById(R.id.tv_add_remark);
+                iv_bill_over_tag = itemView.findViewById(R.id.iv_bill_over_tag);
             }
             if (viewType == VIEW_NORMAL) {
-                csm_bill_wrap = (CustomSwipeMenuLayout) itemView.findViewById(R.id.csm_bill_wrap);
-                tv_term_num = (TextView) itemView.findViewById(R.id.tv_term_num);
-                tv_present_flag = (TextView) itemView.findViewById(R.id.tv_present_flag);
-                tv_term_pay_amount = (TextView) itemView.findViewById(R.id.tv_term_pay_amount);
-                tv_term_repay_date = (TextView) itemView.findViewById(R.id.tv_term_repay_date);
-                tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-                tv_set_status = (TextView) itemView.findViewById(R.id.tv_set_status);
+                csm_bill_wrap = itemView.findViewById(R.id.csm_bill_wrap);
+                tv_term_num = itemView.findViewById(R.id.tv_term_num);
+                tv_present_flag = itemView.findViewById(R.id.tv_present_flag);
+                tv_term_pay_amount = itemView.findViewById(R.id.tv_term_pay_amount);
+                tv_term_repay_date = itemView.findViewById(R.id.tv_term_repay_date);
+                tv_status = itemView.findViewById(R.id.tv_status);
+                tv_set_status = itemView.findViewById(R.id.tv_set_status);
             }
         }
     }

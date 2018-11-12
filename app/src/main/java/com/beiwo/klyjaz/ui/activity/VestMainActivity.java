@@ -323,9 +323,14 @@ public class VestMainActivity extends BaseComponentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!SPUtils.getCheckPermission()) {
                 ArrayList<String> permission = new ArrayList<>();
-                for (int i = 0; i < needPermission.length; ++i) {
+                /*for (int i = 0; i < needPermission.length; ++i) {
                     if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
                         permission.add(needPermission[i]);
+                    }
+                }*/
+                for (String p : needPermission) {
+                    if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
+                        permission.add(p);
                     }
                 }
                 if (permission.size() > 0) {

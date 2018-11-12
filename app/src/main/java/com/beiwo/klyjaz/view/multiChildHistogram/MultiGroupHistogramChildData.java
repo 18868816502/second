@@ -1,8 +1,6 @@
 package com.beiwo.klyjaz.view.multiChildHistogram;
 
-/**
- * Created by cuiyan on 2018/5/4.
- */
+
 public class MultiGroupHistogramChildData {
     private float value;
     private String suffix;

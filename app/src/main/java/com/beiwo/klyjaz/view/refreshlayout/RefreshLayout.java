@@ -288,6 +288,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
         }
     }
 
+    @SuppressWarnings("RedundantCast")
     void abortScrolling() {
         if (mInNestedScrolling) {
             mNotifyMotionEnd = false;
@@ -544,10 +545,7 @@ public class RefreshLayout extends ViewGroup implements NestedScrollingChild, Ne
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        if ((Build.VERSION.SDK_INT < 21 && mTargetView instanceof AbsListView)
-                || (mTargetView != null && !ViewCompat.isNestedScrollingEnabled(mTargetView))) {
-            // Nope, just to keep motion event passing.
-        } else {
+        if (!(Build.VERSION.SDK_INT < 21 && mTargetView instanceof AbsListView) || (mTargetView != null && !ViewCompat.isNestedScrollingEnabled(mTargetView))) {
             super.requestDisallowInterceptTouchEvent(disallowIntercept);
         }
     }

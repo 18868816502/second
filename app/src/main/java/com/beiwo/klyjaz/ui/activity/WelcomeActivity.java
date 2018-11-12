@@ -32,8 +32,8 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        IndicatorView indicatorView = (IndicatorView) findViewById(R.id.indicator_view);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        IndicatorView indicatorView = findViewById(R.id.indicator_view);
         final View startNowView = findViewById(R.id.start_now);
 
         viewPager.setAdapter(new WelcomeAdapter());
@@ -101,7 +101,7 @@ public class WelcomeActivity extends BaseActivity {
                 view = LayoutInflater.from(container.getContext())
                         .inflate(R.layout.viewpager_item_welcom, container, false);
                 holder = new ViewHolder();
-                holder.imageView = (ImageView) view.findViewById(R.id.image);
+                holder.imageView = view.findViewById(R.id.image);
                 view.setTag(holder);
             }
 

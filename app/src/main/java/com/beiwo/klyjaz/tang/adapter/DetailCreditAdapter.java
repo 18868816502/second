@@ -222,25 +222,25 @@ public class DetailCreditAdapter extends RecyclerView.Adapter<DetailCreditAdapte
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
-                iv_detail_icon = (ImageView) itemView.findViewById(R.id.iv_detail_icon);
-                tv_detail_name = (TextView) itemView.findViewById(R.id.tv_detail_name);
-                tv_x_month = (TextView) itemView.findViewById(R.id.tv_x_month);
-                tv_still_balance = (TextView) itemView.findViewById(R.id.tv_still_balance);
-                tv_min_amount = (TextView) itemView.findViewById(R.id.tv_min_amount);
-                tv_bill_date = (TextView) itemView.findViewById(R.id.tv_bill_date);
-                tv_pay_date = (TextView) itemView.findViewById(R.id.tv_pay_date);
+                iv_detail_icon = itemView.findViewById(R.id.iv_detail_icon);
+                tv_detail_name = itemView.findViewById(R.id.tv_detail_name);
+                tv_x_month = itemView.findViewById(R.id.tv_x_month);
+                tv_still_balance = itemView.findViewById(R.id.tv_still_balance);
+                tv_min_amount = itemView.findViewById(R.id.tv_min_amount);
+                tv_bill_date = itemView.findViewById(R.id.tv_bill_date);
+                tv_pay_date = itemView.findViewById(R.id.tv_pay_date);
             }
             if (viewType == VIEW_NORMAL) {
-                fl_credit_item_wrap = (FrameLayout) itemView.findViewById(R.id.fl_credit_item_wrap);
-                iv_left = (ImageView) itemView.findViewById(R.id.iv_left);
-                tv_term_num = (TextView) itemView.findViewById(R.id.tv_term_num);
-                tv_present_flag = (TextView) itemView.findViewById(R.id.tv_present_flag);
-                tv_term_pay_amount = (TextView) itemView.findViewById(R.id.tv_term_pay_amount);
-                tv_term_repay_date = (TextView) itemView.findViewById(R.id.tv_term_repay_date);
-                tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-                ll_subitem_wrap = (LinearLayout) itemView.findViewById(R.id.ll_subitem_wrap);
-                tv_bill_start_end_time = (TextView) itemView.findViewById(R.id.tv_bill_start_end_time);
-                recycler = (RecyclerView) itemView.findViewById(R.id.recycler);
+                fl_credit_item_wrap = itemView.findViewById(R.id.fl_credit_item_wrap);
+                iv_left = itemView.findViewById(R.id.iv_left);
+                tv_term_num = itemView.findViewById(R.id.tv_term_num);
+                tv_present_flag = itemView.findViewById(R.id.tv_present_flag);
+                tv_term_pay_amount = itemView.findViewById(R.id.tv_term_pay_amount);
+                tv_term_repay_date = itemView.findViewById(R.id.tv_term_repay_date);
+                tv_status = itemView.findViewById(R.id.tv_status);
+                ll_subitem_wrap = itemView.findViewById(R.id.ll_subitem_wrap);
+                tv_bill_start_end_time = itemView.findViewById(R.id.tv_bill_start_end_time);
+                recycler = itemView.findViewById(R.id.recycler);
             }
         }
 

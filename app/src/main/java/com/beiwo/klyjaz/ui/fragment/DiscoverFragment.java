@@ -93,10 +93,10 @@ public class DiscoverFragment extends BaseTabFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void configViews() {
-        mTvTitleName = (TextView) getActivity().findViewById(R.id.tv_tab_fg_web_title);
-        mTabRoot = (LinearLayout) getActivity().findViewById(R.id.ll_tab_fg_web_root);
-        newsTitleName = (TextView) getActivity().findViewById(R.id.tv_tab_one_title);
-        activityName = (TextView) getActivity().findViewById(R.id.tv_tab_two_title);
+        mTvTitleName = getActivity().findViewById(R.id.tv_tab_fg_web_title);
+        mTabRoot = getActivity().findViewById(R.id.ll_tab_fg_web_root);
+        newsTitleName = getActivity().findViewById(R.id.tv_tab_one_title);
+        activityName = getActivity().findViewById(R.id.tv_tab_two_title);
 
         //贷超
         if (TextUtils.equals(NetConstants.H5_FIND_WEVVIEW_DETAIL, NetConstants.H5_FIND_WEVVIEW_DETAIL_COPY)) {

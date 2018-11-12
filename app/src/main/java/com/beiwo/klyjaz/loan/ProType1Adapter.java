@@ -25,7 +25,6 @@ import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;

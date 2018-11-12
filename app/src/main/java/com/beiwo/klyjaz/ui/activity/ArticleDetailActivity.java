@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.constant.ConstantTag;
+import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerArticleDetailComponent;
@@ -114,6 +115,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolBar).statusBarDarkFont(true).init();
+        SlidePanelHelper.attach(this);
         fManager = getSupportFragmentManager();
 
         adapter = new ArticleDetailAdapter(this);
@@ -593,6 +595,7 @@ public class ArticleDetailActivity extends BaseComponentActivity implements Arti
     public void finish() {
         Intent intent = new Intent("refresh_layout");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        override = false;
         super.finish();
     }
 

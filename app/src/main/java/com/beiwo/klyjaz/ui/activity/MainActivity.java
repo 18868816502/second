@@ -32,7 +32,6 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.TabHomeFragment;
 import com.beiwo.klyjaz.loan.TabLoanFragment;
 import com.beiwo.klyjaz.tang.DlgUtil;
-import com.beiwo.klyjaz.tang.fragment.SocialFragment;
 import com.beiwo.klyjaz.tang.fragment.SocialRecomFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -40,7 +39,6 @@ import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.ui.dialog.AdDialog;
 import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
-import com.beiwo.klyjaz.ui.fragment.SocialRecommendFragment;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.umeng.Statistic;
@@ -409,9 +407,14 @@ public class MainActivity extends BaseComponentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!SPUtils.getCheckPermission()) {
                 ArrayList<String> permission = new ArrayList<>();
-                for (int i = 0; i < needPermission.length; ++i) {
+                /*for (int i = 0; i < needPermission.length; ++i) {
                     if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
                         permission.add(needPermission[i]);
+                    }
+                }*/
+                for (String p : needPermission) {
+                    if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
+                        permission.add(p);
                     }
                 }
                 if (permission.size() > 0) {

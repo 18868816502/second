@@ -61,7 +61,6 @@ import butterknife.BindView;
 import cn.xiaoneng.uiapi.Ntalker;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -204,7 +203,7 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     private void summit() {
         final Context context = HelpAndFeedActivity.this;
         if (etFeedContent.getText().length() > 0) {
-            Disposable dis = Observable.just(1)
+            Observable.just(1)
                     .observeOn(Schedulers.io())
                     .flatMap(new Function<Integer, ObservableSource<ResultEntity>>() {
                         @Override

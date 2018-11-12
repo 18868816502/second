@@ -27,7 +27,7 @@ public class CardAdapter extends BaseQuickAdapter<BankCard, BaseViewHolder> {
         super(R.layout.vest_layout_card_item);
         openLoadAnimation(ALPHAIN);
     }
-
+    
     @Override
     protected void convert(BaseViewHolder helper, BankCard item) {
         helper.setText(R.id.tv_card_name, item.getBankName());

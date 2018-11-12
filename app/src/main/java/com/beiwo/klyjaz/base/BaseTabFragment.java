@@ -19,7 +19,7 @@ public abstract class BaseTabFragment extends BaseComponentFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base_tab, container, false);
         fakedStatusBar = view.findViewById(R.id.faked_status_bar);
-        ViewGroup rootView = (ViewGroup) view.findViewById(R.id.root_view);
+        ViewGroup rootView = view.findViewById(R.id.root_view);
         inflater.inflate(getLayoutResId(), rootView, true);
         if (needFakeStatusBar()) {
             fakeStatusBar();

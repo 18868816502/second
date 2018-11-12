@@ -221,16 +221,15 @@ public class DataCleanManager {
         long size = 0;
         try {
             File[] fileList = file.listFiles();
-            for (int i = 0; i < fileList.length; i++) {
+            for (File f : fileList) {
                 // 如果下面还有文件
-                if (fileList[i].isDirectory()) {
-                    size = size + getFolderSize(fileList[i]);
+                if (f.isDirectory()) {
+                    size = size + getFolderSize(f);
                 } else {
-                    size = size + fileList[i].length();
+                    size = size + f.length();
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return size;
     }

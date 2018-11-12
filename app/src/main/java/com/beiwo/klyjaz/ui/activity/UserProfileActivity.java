@@ -2,7 +2,6 @@ package com.beiwo.klyjaz.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -407,14 +406,14 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
                 WeakRefToastUtil.showShort(UserProfileActivity.this, "授权取消", null);
             }
         };
-        UMShareAPI.get(UserProfileActivity.this).getPlatformInfo((Activity) UserProfileActivity.this, SHARE_MEDIA.WEIXIN, listener);
+        UMShareAPI.get(UserProfileActivity.this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, listener);
     }
 
     /**
      * 解绑微信
      */
     private void unBindWXChat() {
-        Api.getInstance().unBindWXChat(UserHelper.getInstance(UserProfileActivity.this).getProfile().getId())
+        Api.getInstance().unBindWXChat(UserHelper.getInstance(this).getProfile().getId())
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override

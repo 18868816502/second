@@ -47,13 +47,13 @@ public class CommNoneAndroidDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_comm_none_android, container, false);
-        titleContainer = (FrameLayout) view.findViewById(R.id.title_container);
-        titleTv = (TextView) view.findViewById(R.id.title);
-        messageContainer = (FrameLayout) view.findViewById(R.id.message_container);
-        messageTv = (TextView) view.findViewById(R.id.message);
-        btnContainer = (FrameLayout) view.findViewById(R.id.btn_container);
-        positiveTv = (TextView) view.findViewById(R.id.positive_btn);
-        negativeTv = (TextView) view.findViewById(R.id.negative_btn);
+        titleContainer = view.findViewById(R.id.title_container);
+        titleTv = view.findViewById(R.id.title);
+        messageContainer = view.findViewById(R.id.message_container);
+        messageTv = view.findViewById(R.id.message);
+        btnContainer = view.findViewById(R.id.btn_container);
+        positiveTv = view.findViewById(R.id.positive_btn);
+        negativeTv = view.findViewById(R.id.negative_btn);
 
         messageTv.setTextColor(message_color);
 

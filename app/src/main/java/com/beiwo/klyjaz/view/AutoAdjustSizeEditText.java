@@ -9,9 +9,6 @@ import android.util.TypedValue;
 
 import com.beiwo.klyjaz.util.DensityUtil;
 
-/**
- * Created by admin on 2018/6/13.
- */
 
 public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatEditText {
 
@@ -47,15 +44,12 @@ public class AutoAdjustSizeEditText extends android.support.v7.widget.AppCompatE
         mTextPaint = new Paint();
         mTextPaint.set(this.getPaint());
         int availableTextViewWidth = getWidth() - getPaddingLeft() - getPaddingRight();
-        float[] charsWidthArr = new float[text.length()];
         Rect boundsRect = new Rect();
         Rect boundsCharsRect = new Rect();
         mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
         mTextPaint.getTextBounds("0", 0, 1, boundsCharsRect);
         int textWidth = boundsRect.width();
-        int charWidth = boundsCharsRect.width();
         mTextSize = getTextSize();
-
 
         while (Math.abs(textWidth - availableTextViewWidth) > 1) {
             if (textWidth > availableTextViewWidth) {

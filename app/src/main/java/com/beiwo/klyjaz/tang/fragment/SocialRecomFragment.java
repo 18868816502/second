@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,12 +21,10 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.adapter.RecomAdapter;
@@ -39,7 +36,6 @@ import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -232,7 +228,6 @@ public class SocialRecomFragment extends BaseComponentFragment {
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         layoutManager.setAutoMeasureEnabled(true);
         recycler.setLayoutManager(layoutManager);
-        //recycler.setPadding(0, DensityUtil.dp2px(getActivity(), 10f), 0, 0);
         recycler.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

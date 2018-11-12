@@ -25,7 +25,7 @@ public class AndroidBug5497Fix {
         //获取状态栏的高度
         int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
         statusBarHeight = activity.getResources().getDimensionPixelSize(resourceId);
-        FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);
+        FrameLayout content = activity.findViewById(android.R.id.content);
         mChildOfContent = content.getChildAt(0);
 
         //界面出现变动都会调用这个监听事件

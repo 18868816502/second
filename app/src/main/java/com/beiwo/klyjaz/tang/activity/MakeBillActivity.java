@@ -27,7 +27,6 @@ import com.beiwo.klyjaz.loan.BillListActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -217,7 +216,7 @@ public class MakeBillActivity extends BaseComponentActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString()) || "0".equals(s)) {
+                if (TextUtils.isEmpty(s.toString()) || "0".equals(s.toString())) {
                     numText = "";
                     return;
                 }

@@ -25,7 +25,7 @@ public class CommNoneAndroidLoading extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_comm_none_android_loading);
-        TextView messageTv = (TextView) findViewById(R.id.message);
+        TextView messageTv = findViewById(R.id.message);
         if (this.message != null) {
             messageTv.setText(message);
         } else {

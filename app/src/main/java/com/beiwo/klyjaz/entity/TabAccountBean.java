@@ -3,9 +3,7 @@ package com.beiwo.klyjaz.entity;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by admin on 2018/5/21.
- */
+
 
 public class TabAccountBean implements Serializable{
 
@@ -218,5 +216,4 @@ public class TabAccountBean implements Serializable{
             this.term = term;
         }
     }
-
 }

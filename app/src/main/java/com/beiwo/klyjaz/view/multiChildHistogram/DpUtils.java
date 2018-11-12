@@ -2,9 +2,6 @@ package com.beiwo.klyjaz.view.multiChildHistogram;
 
 import android.content.Context;
 
-/**
- * Created by opq on 2017/8/9.
- */
 
 public class DpUtils {
 
@@ -15,8 +12,6 @@ public class DpUtils {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
-
 
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp

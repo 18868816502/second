@@ -1,7 +1,6 @@
 package com.beiwo.klyjaz.ui.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -20,7 +19,6 @@ import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

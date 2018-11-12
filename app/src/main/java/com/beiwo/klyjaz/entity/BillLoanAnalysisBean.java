@@ -4,13 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by admin on 2018/5/22.
- */
 
 public class BillLoanAnalysisBean implements Serializable {
-
-
     private String startTime;
     private String endTime;
     private double overAmount = 0;

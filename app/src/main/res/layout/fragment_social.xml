@@ -74,10 +74,8 @@
         android:layout_marginTop="@dimen/dp20"
         android:background="@drawable/shape_social_attention_tips"
         android:gravity="center"
-        android:paddingEnd="@dimen/dp23"
         android:paddingLeft="@dimen/dp23"
         android:paddingRight="@dimen/dp23"
-        android:paddingStart="@dimen/dp23"
         android:text="@string/community_attention_tips"
         android:textColor="@color/white"
         android:visibility="gone" />

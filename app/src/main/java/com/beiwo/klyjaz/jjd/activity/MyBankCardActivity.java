@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
@@ -19,7 +18,6 @@ import com.beiwo.klyjaz.jjd.CardAdapter;
 import com.beiwo.klyjaz.jjd.bean.BankCard;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

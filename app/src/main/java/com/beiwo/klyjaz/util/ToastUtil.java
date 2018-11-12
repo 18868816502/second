@@ -25,9 +25,9 @@ public class ToastUtil {
         if (sToast == null)
             sToast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
         View view = LayoutInflater.from(context).inflate(R.layout.f_layout_toast, null);
-        ImageView iv_image = (ImageView) view.findViewById(R.id.iv_image);
+        ImageView iv_image = view.findViewById(R.id.iv_image);
         View view_gap = view.findViewById(R.id.view_gap);
-        TextView tv_content = (TextView) view.findViewById(R.id.tv_content);
+        TextView tv_content = view.findViewById(R.id.tv_content);
         sToast.setGravity(Gravity.CENTER, 0, 0);
         sToast.setView(view);
 

@@ -6,9 +6,6 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-/**
- * Created by MichaelLee826 on 2016-10-07-0007.
- */
 public class HouseLoanVPAdapter extends PagerAdapter {
     List<View> viewList;
 

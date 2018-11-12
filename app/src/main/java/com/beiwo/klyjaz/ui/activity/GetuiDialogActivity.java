@@ -53,8 +53,5 @@ public class GetuiDialogActivity extends Activity {
                 finish();
             }
         });
-
     }
-
-
 }

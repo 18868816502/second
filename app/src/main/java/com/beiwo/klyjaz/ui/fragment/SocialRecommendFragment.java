@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
@@ -29,7 +28,6 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
-import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.adapter.social.SocialRecommendAdapter;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.CommonUtils;

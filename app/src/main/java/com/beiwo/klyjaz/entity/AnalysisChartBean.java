@@ -2,12 +2,8 @@ package com.beiwo.klyjaz.entity;
 
 import java.io.Serializable;
 
-/**
- * Created by admin on 2018/5/22.
- */
 
 public class AnalysisChartBean implements Serializable {
-
 
     /**
      * amount : 0

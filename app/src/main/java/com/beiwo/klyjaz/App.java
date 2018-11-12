@@ -52,14 +52,17 @@ public class App extends Application {
     static {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
+
+            @NonNull
             @Override
-            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+            public RefreshHeader createRefreshHeader(@NonNull Context context, @NonNull RefreshLayout layout) {
                 layout.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white);//全局设置主题颜色
                 return new MaterialHeader(context).setColorSchemeColors(ContextCompat.getColor(App.getInstance(), R.color.refresh_one));//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
+            @NonNull
             @Override
             public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
                 return new ClassicFooter(context).setSpinnerStyle(SpinnerStyle.Translate);

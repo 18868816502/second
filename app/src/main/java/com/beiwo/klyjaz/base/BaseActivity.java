@@ -28,7 +28,6 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             overridePendingTransition(R.anim.no_anim, R.anim.no_anim);
         }
-        //override = true;
     }
 
     public void startActivityWithoutOverride(Intent intent) {

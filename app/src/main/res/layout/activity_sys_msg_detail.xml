@@ -9,7 +9,7 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white"></android.support.v7.widget.Toolbar>
+        android:background="@color/white"/>
 
     <ScrollView
         android:layout_width="match_parent"

@@ -2,12 +2,7 @@ package com.beiwo.klyjaz.entity;
 
 import java.io.Serializable;
 
-/**
- * Created by admin on 2018/6/15.
- */
-
 public class AccountFlowIconBean implements Serializable {
-
     //图标地址
     public String logo;
     //	图标名称
@@ -25,5 +20,4 @@ public class AccountFlowIconBean implements Serializable {
     public String isPrivate;
     // 	标签备注 用英语逗号作分隔符
     public String remark;
-
 }

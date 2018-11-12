@@ -24,7 +24,6 @@ import com.beiwo.klyjaz.getui.GeTuiClient;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.busevents.UserLoginEvent;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.view.ClearEditText;
 import com.jakewharton.rxbinding2.view.RxView;

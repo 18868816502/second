@@ -8,10 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beiwo.klyjaz.App;
-import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
@@ -23,9 +20,6 @@ import com.beiwo.klyjaz.ui.activity.UserProtocolActivity;
 import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.gyf.barlibrary.ImmersionBar;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -70,7 +64,6 @@ public class ScdkLoanActivity extends BaseComponentActivity {
     private float charge;
     private boolean checked = true;
     private Activity activity;
-    private Map<String, Object> map = new HashMap<>();
 
     @Override
     public int getLayoutId() {
@@ -122,23 +115,7 @@ public class ScdkLoanActivity extends BaseComponentActivity {
                 break;
             case R.id.tv_confirm_loan:
                 DataStatisticsHelper.getInstance().onCountUv("JjdSureLoanPage");
-                map.put("userId", UserHelper.getInstance(this).id());
-                map.put("orderAmount", money);
-                map.put("limitDay", 10);
-                map.put("serviceCharge", charge);
-                map.put("accountAmount", money - charge);
-                map.put("returnTime", StringUtil.date2Now(9));
-                map.put("returnAmount", money);
                 main();
-//                Api.newInstance().saveCashOrder(map)
-//                        .compose(RxResponse.<CashOrder>compatT())
-//                        .subscribe(new ApiObserver<CashOrder>() {
-//                            @Override
-//                            public void onNext(@NonNull CashOrder data) {
-//                                url = generateUrl(data.getOrderStatus(), data.getOverDate(), data.getAuditDate());
-//                                main();
-//                            }
-//                        });
                 break;
             case R.id.tv_dout:
                 DlgUtil.createDlg(this, R.layout.f_dlg_apl_fail, new DlgUtil.OnDlgViewClickListener() {
@@ -157,20 +134,13 @@ public class ScdkLoanActivity extends BaseComponentActivity {
         }
     }
 
-    private String url;
-
     private void main() {
         SPUtils.setVertifyState(this, 5, UserHelper.getInstance(this).getProfile().getAccount());
         Intent intent = new Intent(activity, VestMainActivity.class);
         intent.putExtra("home", true);
-        intent.putExtra("webViewUrl", url);
+        intent.putExtra("webViewUrl", "");
         startActivity(intent);
         finish();
-    }
-
-    private String generateUrl(String status, String overDate, String auditDate) {
-        return BuildConfig.H5_DOMAIN_NEW + "/activity/page/activity-loan-review.html?status=" + status
-                + "&overDate=" + overDate + "&auditDate=" + auditDate + "&audit=" + App.audit + NetConstants.sufPublicParam(UserHelper.getInstance(this).id());
     }
 
     private String sufUrl() {

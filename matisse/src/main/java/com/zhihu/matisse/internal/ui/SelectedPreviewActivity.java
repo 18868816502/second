@@ -47,5 +47,4 @@ public class SelectedPreviewActivity extends BasePreviewActivity {
         mPreviousPos = 0;
         updateSize(selected.get(0));
     }
-
 }

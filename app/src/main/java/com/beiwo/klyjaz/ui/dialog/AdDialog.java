@@ -39,7 +39,7 @@ public class AdDialog extends DialogFragment {
             }
         });
         if (ad != null && ad.getImgUrl() != null) {
-            ImageView imageView = (ImageView) view.findViewById(R.id.ad_image);
+            ImageView imageView = view.findViewById(R.id.ad_image);
             Glide.with(getContext())
                     .load(ad.getImgUrl())
                     .into(imageView);

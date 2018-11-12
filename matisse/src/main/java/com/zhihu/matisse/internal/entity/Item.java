@@ -111,8 +111,7 @@ public class Item implements Parcelable {
     }
 
     public boolean isGif() {
-        if (mimeType == null) return false;
-        return mimeType.equals(MimeType.GIF.toString());
+        return mimeType != null && mimeType.equals(MimeType.GIF.toString());
     }
 
     public boolean isVideo() {

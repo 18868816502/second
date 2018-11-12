@@ -18,7 +18,6 @@ import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnSaveEditListener;
 import com.beiwo.klyjaz.ui.listeners.TextWatcherListener;
 import com.beiwo.klyjaz.util.ToastUtil;
-import com.beiwo.klyjaz.view.ClearEditText;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -28,10 +27,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * @author A
  * @name loanmarket
  * @class name：com.beihui.market.ui.adapter
  * @class describe
- * @author A
  * @time 2018/9/11 19:00
  */
 public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -51,7 +50,7 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.mContext = mContext;
     }
 
-    public void setHeadData(List<String> mList,String mTopicTitle,String mTopicContent){
+    public void setHeadData(List<String> mList, String mTopicTitle, String mTopicContent) {
         adapter.setData(mList);
 //        notifyItemChanged(0);
         this.mTitle = mTopicTitle;
@@ -60,12 +59,12 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void setData(List<String> mList,String mTitle,String mContent){
+    public void setData(List<String> mList, String mTitle, String mContent) {
         adapter.setDraftData(mList);
-        if(!TextUtils.isEmpty(mTitle)){
+        if (!TextUtils.isEmpty(mTitle)) {
             this.mTitle = mTitle;
         }
-        if(!TextUtils.isEmpty(mContent)) {
+        if (!TextUtils.isEmpty(mContent)) {
             this.mContent = mContent;
         }
         notifyDataSetChanged();
@@ -80,17 +79,17 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             case CONTENT:
                 View contentView = LayoutInflater.from(mContext).inflate(R.layout.item_community_publish_content, parent, false);
                 return new ContentViewHolder(contentView);
-                default:
-                    break;
+            default:
+                break;
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(position == 0){
+        if (position == 0) {
             headViewHolder = (HeadViewHolder) holder;
-        }else{
+        } else {
             contentViewHolder = (ContentViewHolder) holder;
             contentViewHolder.etPublishTitle.setText(mTitle);
             contentViewHolder.etPublishContent.setText(mContent);
@@ -104,9 +103,9 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0){
+        if (position == 0) {
             return HEAD;
-        }else{
+        } else {
             return CONTENT;
         }
     }
@@ -120,7 +119,7 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
             super(itemView);
             ButterKnife.bind(this, itemView);
             adapter = new CommunityPublishHeadAdapter(mContext);
-            GridLayoutManager manager = new GridLayoutManager(mContext,4);
+            GridLayoutManager manager = new GridLayoutManager(mContext, 4);
             manager.setSpanCount(4);
             publishRecycler.setLayoutManager(manager);
             publishRecycler.setAdapter(adapter);
@@ -155,8 +154,8 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             etPublishTitle.addTextChangedListener(new TextWatcher(1));
             etPublishContent.addTextChangedListener(new TextWatcher(2));
-            etPublishTitle.setFilters(new InputFilter[]{getEmojiFilter,new InputFilter.LengthFilter(30)});
-            etPublishContent.setFilters(new InputFilter[]{getEmojiFilter,new InputFilter.LengthFilter(1500)});
+            etPublishTitle.setFilters(new InputFilter[]{getEmojiFilter, new InputFilter.LengthFilter(30)});
+            etPublishContent.setFilters(new InputFilter[]{getEmojiFilter, new InputFilter.LengthFilter(1500)});
 
         }
     }
@@ -177,7 +176,7 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
     };
 
 
-    class TextWatcher extends TextWatcherListener{
+    class TextWatcher extends TextWatcherListener {
 
         /**
          * flag 1:标题 2:内容
@@ -190,29 +189,25 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(flag == 1) {
-                contentViewHolder.tvPublishTitleNum.setText((30 - s.length()) + "/30");
-            }else{
-            }
+            if (flag == 1) contentViewHolder.tvPublishTitleNum.setText((30 - s.length()) + "/30");
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-            if(saveListener == null){
+            if (saveListener == null) {
                 saveListener = (OnSaveEditListener) mContext;
             }
-            if(flag == 1){
-                saveListener.onSaveEdit(contentViewHolder.etPublishTitle,flag,s.toString());
-            }else{
-                saveListener.onSaveEdit(contentViewHolder.etPublishContent,flag,s.toString());
+            if (flag == 1) {
+                saveListener.onSaveEdit(contentViewHolder.etPublishTitle, flag, s.toString());
+            } else {
+                saveListener.onSaveEdit(contentViewHolder.etPublishContent, flag, s.toString());
             }
-
         }
     }
 
     private OnItemClickListener listener;
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -220,11 +215,11 @@ public class CommunityPublishAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private OnChoosePickListener pickListener;
 
-    public void setOnChoosePickListener(OnChoosePickListener listener){
+    public void setOnChoosePickListener(OnChoosePickListener listener) {
         this.pickListener = listener;
     }
 
-    public interface OnChoosePickListener{
+    public interface OnChoosePickListener {
         void onPickClick(int remainSize);
     }
 }

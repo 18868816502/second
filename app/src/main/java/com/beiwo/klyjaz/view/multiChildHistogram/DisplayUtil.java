@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -180,24 +182,17 @@ public class DisplayUtil {
         return locationArray[1];
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static boolean hasBottomNav(WindowManager windowManager) {
         Display d = windowManager.getDefaultDisplay();
         DisplayMetrics realDisplayMetrics = new DisplayMetrics();
         d.getRealMetrics(realDisplayMetrics);
-
-
         int realHeight = realDisplayMetrics.heightPixels;
         int realWidth = realDisplayMetrics.widthPixels;
-
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         d.getMetrics(displayMetrics);
-
-
         int displayHeight = displayMetrics.heightPixels;
         int displayWidth = displayMetrics.widthPixels;
-
-
         return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
     }
 }

@@ -4,7 +4,6 @@ package com.beiwo.klyjaz.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -15,7 +14,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.EBank;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
@@ -24,7 +22,6 @@ import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -71,7 +68,7 @@ public class EBankActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-        Disposable dis = Api.getInstance().fetchEBankUrl(UserHelper.getInstance(this).getProfile().getId())
+        Api.getInstance().fetchEBankUrl(UserHelper.getInstance(this).getProfile().getId())
                 .compose(RxUtil.<ResultEntity<EBank>>io2main())
                 .subscribe(new Consumer<ResultEntity<EBank>>() {
                                @Override
@@ -88,7 +85,6 @@ public class EBankActivity extends BaseComponentActivity {
 
     @Override
     protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @JavascriptInterface

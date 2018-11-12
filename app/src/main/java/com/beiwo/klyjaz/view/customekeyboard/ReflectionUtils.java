@@ -20,7 +20,7 @@ public class ReflectionUtils {
      * @return 父类中的方法对象
      */
     public static Method getDeclaredMethod(Object object, String methodName, Class<?>... parameterTypes) {
-        Method method = null;
+        Method method;
         for (Class<?> clazz = object.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
             try {
                 method = clazz.getDeclaredMethod(methodName, parameterTypes);
@@ -54,11 +54,8 @@ public class ReflectionUtils {
                 return method.invoke(object, parameters);
             }
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -71,7 +68,7 @@ public class ReflectionUtils {
      * @return 父类中的属性对象
      */
     public static Field getDeclaredField(Object object, String fieldName) {
-        Field field = null;
+        Field field;
         Class<?> clazz = object.getClass();
         for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
             try {

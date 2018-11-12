@@ -29,7 +29,6 @@ import com.beiwo.klyjaz.tang.activity.LoanBillActivity;
 import com.beiwo.klyjaz.tang.activity.NetLoanDetailActivity;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.ui.activity.UserAuthorizationActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.ui.fragment.HomeFragment;
@@ -201,8 +200,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             holder.headAddBillWrap.setOnClickListener(this);
             /*导入信用卡*/
             holder.headCreditIn.setOnClickListener(this);
-        } else if (holder.viewType == VIEW_EMPTY) {
-            //空账单
         } else if (holder.viewType == VIEW_NORMAL) {
             Bill bill = null;
             if (dataSet.size() > 0) bill = dataSet.get(position - 1);
@@ -413,23 +410,23 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
             super(itemView);
             this.viewType = viewType;
             if (viewType == VIEW_HEADER) {
-                headEventEntry = (ImageView) itemView.findViewById(R.id.iv_event_entry);
-                headMonthNum = (TextView) itemView.findViewById(R.id.tv_month_num);
-                headBillNum = (TextView) itemView.findViewById(R.id.tv_bill_num);
-                headBillVisible = (ImageView) itemView.findViewById(R.id.iv_bill_visible);
+                headEventEntry = itemView.findViewById(R.id.iv_event_entry);
+                headMonthNum = itemView.findViewById(R.id.tv_month_num);
+                headBillNum = itemView.findViewById(R.id.tv_bill_num);
+                headBillVisible = itemView.findViewById(R.id.iv_bill_visible);
                 headAddBillWrap = itemView.findViewById(R.id.fl_add_account_bill_wrap);
                 headCreditIn = itemView.findViewById(R.id.tv_credit_in);
             }
             if (viewType == VIEW_NORMAL) {
-                csm_bill_wrap = (CustomSwipeMenuLayout) itemView.findViewById(R.id.csm_bill_wrap);
+                csm_bill_wrap = itemView.findViewById(R.id.csm_bill_wrap);
                 ll_bill_wrap = itemView.findViewById(R.id.ll_bill_wrap);
-                iv_home_bill_icon = (ImageView) itemView.findViewById(R.id.iv_home_bill_icon);
-                tv_home_bill_name = (TextView) itemView.findViewById(R.id.tv_home_bill_name);
-                tv_home_bill_tag = (TextView) itemView.findViewById(R.id.tv_home_bill_tag);
+                iv_home_bill_icon = itemView.findViewById(R.id.iv_home_bill_icon);
+                tv_home_bill_name = itemView.findViewById(R.id.tv_home_bill_name);
+                tv_home_bill_tag = itemView.findViewById(R.id.tv_home_bill_tag);
                 tv_home_bill_synchronized = itemView.findViewById(R.id.tv_home_bill_synchronized);
-                tv_home_bill_time_tip = (TextView) itemView.findViewById(R.id.tv_home_bill_time_tip);
-                tv_home_bill_loan_num = (TextView) itemView.findViewById(R.id.tv_home_bill_loan_num);
-                tv_home_bill_time = (TextView) itemView.findViewById(R.id.tv_home_bill_time);
+                tv_home_bill_time_tip = itemView.findViewById(R.id.tv_home_bill_time_tip);
+                tv_home_bill_loan_num = itemView.findViewById(R.id.tv_home_bill_loan_num);
+                tv_home_bill_time = itemView.findViewById(R.id.tv_home_bill_time);
                 tv_home_bill_over = itemView.findViewById(R.id.tv_home_bill_over);
             }
         }

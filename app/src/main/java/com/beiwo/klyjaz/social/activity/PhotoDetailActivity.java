@@ -1,6 +1,5 @@
 package com.beiwo.klyjaz.social.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.ImageView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.view.BannerLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.List;

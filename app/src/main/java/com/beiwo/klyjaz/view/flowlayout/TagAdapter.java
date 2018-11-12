@@ -12,7 +12,7 @@ public abstract class TagAdapter<T> {
     private List<T> mTagDatas;
     private OnDataChangedListener mOnDataChangedListener;
     @Deprecated
-    private HashSet<Integer> mCheckedPosList = new HashSet<Integer>();
+    private HashSet<Integer> mCheckedPosList = new HashSet<>();
 
     public TagAdapter(List<T> datas) {
         mTagDatas = datas;
@@ -20,7 +20,7 @@ public abstract class TagAdapter<T> {
 
     @Deprecated
     public TagAdapter(T[] datas) {
-        mTagDatas = new ArrayList<T>(Arrays.asList(datas));
+        mTagDatas = new ArrayList<>(Arrays.asList(datas));
     }
 
     interface OnDataChangedListener {

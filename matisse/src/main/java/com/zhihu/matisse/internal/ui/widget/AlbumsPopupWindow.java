@@ -27,7 +27,7 @@ public class AlbumsPopupWindow {
     public AlbumsPopupWindow(@NonNull Context context) {
         mListPopupWindow = new ListPopupWindow(context, null, R.attr.listPopupWindowStyle);
         mListPopupWindow.setModal(true);
-        mListPopupWindow.setContentWidth((int) (context.getResources().getDisplayMetrics().widthPixels));
+        mListPopupWindow.setContentWidth(context.getResources().getDisplayMetrics().widthPixels);
         mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

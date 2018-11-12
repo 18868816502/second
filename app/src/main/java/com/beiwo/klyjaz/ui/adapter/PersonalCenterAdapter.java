@@ -1,7 +1,6 @@
 package com.beiwo.klyjaz.ui.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.constant.ConstantTag;
-import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.entity.UserInfoBean;
+import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.ui.listeners.OnItemClickListener;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;

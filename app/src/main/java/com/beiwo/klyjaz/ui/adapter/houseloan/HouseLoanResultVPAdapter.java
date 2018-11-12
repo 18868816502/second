@@ -42,10 +42,10 @@ public class HouseLoanResultVPAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = View.inflate(context, R.layout.item_loan_calculate_list, null);
 
-        TextView timeTextView = (TextView)view.findViewById(R.id.List_Time_TextView);
-        TextView capitalTextView = (TextView)view.findViewById(R.id.List_Capital_TextView);
-        TextView interestTextView = (TextView)view.findViewById(R.id.List_Interest_TextView);
-        TextView monthPayTextView = (TextView)view.findViewById(R.id.List_MonthPay_TextView);
+        TextView timeTextView = view.findViewById(R.id.List_Time_TextView);
+        TextView capitalTextView = view.findViewById(R.id.List_Capital_TextView);
+        TextView interestTextView = view.findViewById(R.id.List_Interest_TextView);
+        TextView monthPayTextView = view.findViewById(R.id.List_MonthPay_TextView);
 
         timeTextView.setText(timeStrings[position]);
         capitalTextView.setText(capitalStrings[position]);

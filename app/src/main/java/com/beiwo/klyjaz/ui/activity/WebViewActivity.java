@@ -30,9 +30,7 @@ import java.net.URLDecoder;
 
 import butterknife.BindView;
 
-/**
- * Created by admin on 2018/6/20.
- */
+
 
 public class WebViewActivity extends BaseComponentActivity {
 

@@ -23,6 +23,7 @@ public class FileUtils {
 
     /**
      * 文件转base64字符串
+     *
      * @param file
      * @return
      */
@@ -35,19 +36,13 @@ public class FileUtils {
             int length = in.read(bytes);
             base64 = Base64.encodeToString(bytes, 0, length, Base64.DEFAULT);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
         }
         return base64;
@@ -55,6 +50,7 @@ public class FileUtils {
 
     /**
      * base64字符串转文件
+     *
      * @param base64
      * @return
      */
@@ -72,7 +68,7 @@ public class FileUtils {
             byte[] buffer = new byte[1024];
             out = new FileOutputStream(file);
             int bytesum = 0;
-            int byteread = 0;
+            int byteread;
             while ((byteread = in.read(buffer)) != -1) {
                 bytesum += byteread;
                 out.write(buffer, 0, byteread); // 文件写操作
@@ -81,12 +77,10 @@ public class FileUtils {
             ioe.printStackTrace();
         } finally {
             try {
-                if (out!= null) {
+                if (out != null) {
                     out.close();
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
         }
         return file;
@@ -95,7 +89,7 @@ public class FileUtils {
     /**
      * 获得指定文件的byte数组
      */
-    public static byte[] getBytes(String filePath){
+    public static byte[] getBytes(String filePath) {
         byte[] buffer = null;
         try {
             File file = new File(filePath);
@@ -110,9 +104,7 @@ public class FileUtils {
             bos.close();
             buffer = bos.toByteArray();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return buffer;
     }

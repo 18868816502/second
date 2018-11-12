@@ -48,13 +48,8 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
                                        if (result.getData() != null) {
                                            appUpdate = result.getData();
                                            String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
-                                           if (version.compareTo(appUpdate.getVersion()) < 0) {
+                                           if (version.compareTo(appUpdate.getVersion()) < 0)
                                                mView.showLatestVersion("可更新");
-                                           } else {
-                                               //mView.showLatestVersion("已是最新版");
-                                           }
-                                       } else {
-                                           //mView.showLatestVersion("已是最新版");
                                        }
                                    }
                                }

@@ -26,11 +26,11 @@ public class RateView extends LinearLayout {
         setOrientation(HORIZONTAL);
 
         inflate(context, R.layout.layout_rate_view, this);
-        stars[0] = (ImageView) findViewById(R.id.star_1);
-        stars[1] = (ImageView) findViewById(R.id.star_2);
-        stars[2] = (ImageView) findViewById(R.id.star_3);
-        stars[3] = (ImageView) findViewById(R.id.star_4);
-        stars[4] = (ImageView) findViewById(R.id.star_5);
+        stars[0] = findViewById(R.id.star_1);
+        stars[1] = findViewById(R.id.star_2);
+        stars[2] = findViewById(R.id.star_3);
+        stars[3] = findViewById(R.id.star_4);
+        stars[4] = findViewById(R.id.star_5);
     }
 
     public void setRate(int star, boolean half) {

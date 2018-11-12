@@ -125,7 +125,7 @@ public class ImageUtils {
             return null;
         }
         InputStream is = null;
-        byte[] data = null;
+        byte[] data;
         String result = null;
         try {
             is = new FileInputStream(path);

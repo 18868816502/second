@@ -122,7 +122,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
         mPendingRemovals.clear();
         // Next, move stuff
         if (movesPending) {
-            final ArrayList<MoveInfo> moves = new ArrayList<MoveInfo>();
+            final ArrayList<MoveInfo> moves = new ArrayList<>();
             moves.addAll(mPendingMoves);
             mMovesList.add(moves);
             mPendingMoves.clear();
@@ -150,7 +150,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
         }
         // Next, change stuff, to run in parallel with move animations
         if (changesPending) {
-            final ArrayList<ChangeInfo> changes = new ArrayList<ChangeInfo>();
+            final ArrayList<ChangeInfo> changes = new ArrayList<>();
             changes.addAll(mPendingChanges);
             mChangesList.add(changes);
             mPendingChanges.clear();
@@ -177,7 +177,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
         }
         // Next, add stuff
         if (additionsPending) {
-            final ArrayList<ViewHolder> additions = new ArrayList<ViewHolder>();
+            final ArrayList<ViewHolder> additions = new ArrayList<>();
             additions.addAll(mPendingAdditions);
             mAdditionsList.add(additions);
             mPendingAdditions.clear();
@@ -349,20 +349,17 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
                                  int toX, int toY) {
         final float prevTranslationX = ViewCompat.getTranslationX(oldHolder.itemView);
         final float prevTranslationY = ViewCompat.getTranslationY(oldHolder.itemView);
-        final float prevAlpha = ViewCompat.getAlpha(oldHolder.itemView);
         endAnimation(oldHolder);
         int deltaX = (int) (toX - fromX - prevTranslationX);
         int deltaY = (int) (toY - fromY - prevTranslationY);
-        // recover prev translation state after ending animation
+
         ViewCompat.setTranslationX(oldHolder.itemView, prevTranslationX);
         ViewCompat.setTranslationY(oldHolder.itemView, prevTranslationY);
-//    ViewCompat.setAlpha(oldHolder.itemView, prevAlpha);
         if (newHolder != null && newHolder.itemView != null) {
             // carry over translation values
             endAnimation(newHolder);
             ViewCompat.setTranslationX(newHolder.itemView, -deltaX);
             ViewCompat.setTranslationY(newHolder.itemView, -deltaY);
-//      ViewCompat.setAlpha(newHolder.itemView, 0);
         }
         mPendingChanges.add(new ChangeInfo(oldHolder, newHolder, fromX, fromY, toX, toY));
         return true;
@@ -388,7 +385,6 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
                 @Override
                 public void onAnimationEnd(View view) {
                     oldViewAnim.setListener(null);
-//          ViewCompat.setAlpha(view, 1);
                     ViewCompat.setTranslationX(view, 0);
                     ViewCompat.setTranslationY(view, 0);
                     dispatchChangeFinished(changeInfo.oldHolder, true);
@@ -410,7 +406,6 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
                         @Override
                         public void onAnimationEnd(View view) {
                             newViewAnimation.setListener(null);
-//          ViewCompat.setAlpha(newView, 1);
                             ViewCompat.setTranslationX(newView, 0);
                             ViewCompat.setTranslationY(newView, 0);
                             dispatchChangeFinished(changeInfo.newHolder, false);
@@ -451,7 +446,6 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
         } else {
             return false;
         }
-//    ViewCompat.setAlpha(item.itemView, 1);
         ViewCompat.setTranslationX(item.itemView, 0);
         ViewCompat.setTranslationY(item.itemView, 0);
         dispatchChangeFinished(item, oldItem);
@@ -622,8 +616,6 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
             count = additions.size();
             for (int j = count - 1; j >= 0; j--) {
                 ViewHolder item = additions.get(j);
-                View view = item.itemView;
-//        ViewCompat.setAlpha(view, 1);
                 dispatchAddFinished(item);
                 //this check prevent exception when removal already happened during finishing animation
                 if (j < additions.size()) {

@@ -34,12 +34,14 @@ public class LegalInputUtils {
 
     /**
      * 验证手机号
+     *
      * @author xhb 判断是一位纯数字 首位为1
      */
     public static boolean validatePhone(String phone) {
-        if (TextUtils.isEmpty(phone) || phone.length() != 11) {
+        /*if (TextUtils.isEmpty(phone) || phone.length() != 11) {
             return false;
         }
-        return phone.matches("^(1)\\d{10}$");
+        return phone.matches("^(1)\\d{10}$");*/
+        return !(TextUtils.isEmpty(phone) || phone.length() != 11) && phone.matches("^(1)\\d{10}$");
     }
 }

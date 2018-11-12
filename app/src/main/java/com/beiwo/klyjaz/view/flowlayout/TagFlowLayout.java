@@ -15,9 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Created by zhy on 15/9/10.
- */
+
 public class TagFlowLayout extends FlowLayout
         implements TagAdapter.OnDataChangedListener {
 
@@ -25,7 +23,7 @@ public class TagFlowLayout extends FlowLayout
     private int mSelectedMax = -1;//-1为不限制数量
     private static final String TAG = "TagFlowLayout";
 
-    private Set<Integer> mSelectedView = new HashSet<Integer>();
+    private Set<Integer> mSelectedView = new HashSet<>();
 
     private OnSelectListener mOnSelectListener;
     private OnTagClickListener mOnTagClickListener;
@@ -90,7 +88,7 @@ public class TagFlowLayout extends FlowLayout
     private void changeAdapter() {
         removeAllViews();
         TagAdapter adapter = mTagAdapter;
-        TagView tagViewContainer = null;
+        TagView tagViewContainer;
         HashSet preCheckedList = mTagAdapter.getPreCheckedList();
         for (int i = 0; i < adapter.getCount(); i++) {
             View tagView = adapter.getView(this, i, adapter.getItem(i));
@@ -149,7 +147,7 @@ public class TagFlowLayout extends FlowLayout
     }
 
     public Set<Integer> getSelectedList() {
-        return new HashSet<Integer>(mSelectedView);
+        return new HashSet<>(mSelectedView);
     }
 
     private void setChildChecked(int position, TagView view) {
@@ -186,7 +184,7 @@ public class TagFlowLayout extends FlowLayout
             mSelectedView.remove(position);
         }
         if (mOnSelectListener != null) {
-            mOnSelectListener.onSelected(new HashSet<Integer>(mSelectedView));
+            mOnSelectListener.onSelected(new HashSet<>(mSelectedView));
         }
     }
 
