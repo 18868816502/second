@@ -199,7 +199,8 @@ public class SocialRecomFragment extends BaseComponentFragment {
                             empty();
                         } else {
                             if (pageNo == 1) {
-                                adapter.setNewData(data.getForum());
+                                adapter.getData().clear();
+                                adapter.addData(data.getForum());
                             } else {
                                 adapter.addData(data.getForum());
                             }
