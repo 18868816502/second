@@ -153,6 +153,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                 .subscribe(new ApiObserver<String>() {
                     @Override
                     public void onNext(@NonNull String data) {
+                        //System.out.println("native url = " + data);
                         Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("webViewUrl", data);
                         intent.putExtra("webViewTitleName", product.getProductName());
