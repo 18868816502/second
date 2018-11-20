@@ -26,6 +26,7 @@ import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.CircleImageView;
 import com.bumptech.glide.Glide;
+import com.liji.imagezoom.util.ImageZoom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,10 +180,11 @@ public class ForumHelper {
             bgaBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
                 @Override
                 public void onBannerItemClick(BGABanner banner, ImageView itemView, @Nullable String model, int position) {
-                    Intent intent = new Intent(mContext, PhotoDetailActivity.class);
-                    intent.putStringArrayListExtra("datas", (ArrayList<String>) picLists);
-                    intent.putExtra("position", position);
-                    mContext.startActivity(intent);
+//                    Intent intent = new Intent(mContext, PhotoDetailActivity.class);
+//                    intent.putStringArrayListExtra("datas", (ArrayList<String>) picLists);
+//                    intent.putExtra("position", position);
+//                    mContext.startActivity(intent);
+                    ImageZoom.show(mContext, position, picLists);
 
                 }
             });
