@@ -180,6 +180,56 @@ public class PopUtils {
     }
 
     /**
+     * 显示动态发布保存草稿弹出框
+     * @param fManager
+     * @param mContext
+     * @param listener
+     */
+    public static void showForumDraftDialog(FragmentManager fManager, Context mContext,
+                                             final View.OnClickListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
+                .setLayoutId(R.layout.dialog_community_publish_save)
+                .setWidth(270)
+                .setHeight(120)
+                .setGravity(Gravity.CENTER)
+                .setCancelableOutside(true)
+                .setInitPopListener(new PopDialog.OnInitPopListener() {
+                    @Override
+                    public void initPop(View view, PopDialog mPopDialog) {
+                        view.findViewById(R.id.cancel).setOnClickListener(listener);
+                        view.findViewById(R.id.tv_save).setOnClickListener(listener);
+                    }
+                })
+                .create();
+        mPopDialog.show();
+    }
+
+    /**
+     * 显示动态发布保存草稿弹出框
+     * @param fManager
+     * @param mContext
+     * @param listener
+     */
+    public static void showForumCommitDialog(FragmentManager fManager, Context mContext,
+                                            final View.OnClickListener listener){
+        mPopDialog = new PopDialog.Builder(fManager,mContext)
+                .setLayoutId(R.layout.dialog_community_publish_commit)
+                .setWidth(270)
+                .setHeight(120)
+                .setGravity(Gravity.CENTER)
+                .setCancelableOutside(true)
+                .setInitPopListener(new PopDialog.OnInitPopListener() {
+                    @Override
+                    public void initPop(View view, PopDialog mPopDialog) {
+                        view.findViewById(R.id.tv_cancel).setOnClickListener(listener);
+                        view.findViewById(R.id.tv_commit).setOnClickListener(listener);
+                    }
+                })
+                .create();
+        mPopDialog.show();
+    }
+
+    /**
      * 隐藏弹出框
      */
     public static void dismiss(){

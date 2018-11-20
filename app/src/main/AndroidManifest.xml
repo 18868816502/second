@@ -558,8 +558,10 @@
         <activity
             android:name=".social.activity.ForumDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".social.activity.ForumCommentActivity"
-            android:theme="@style/MyDialogActivityStyle"></activity>
+        <activity
+            android:name=".social.activity.ForumCommentActivity"
+            android:theme="@style/MyDialogActivityStyle" />
+        <activity android:name=".social.activity.ForumPublishActivity"></activity>
     </application>
 
 </manifest>

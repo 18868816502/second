@@ -226,6 +226,12 @@
     <string name="social_forum_comment_reply_hint">回复@%s</string>
     <string name="social_forum_comment_num">全部%d条评论</string>
     <string name="social_forum_comment_send_tips">已提交审核请耐心等待</string>
+    <string name="social_forum_save_succeed">保存成功</string>
+    <string name="social_forum_upload_failure">上传失败</string>
+    <string name="social_forum_title_tips">%d/30</string>
+    <string name="social_forum_title_hint">请填写标题</string>
+    <string name="social_forum_content_hint">请填写内容</string>
+    <string name="social_forum_content_tips">正文内容不能少于10个字</string>
 
     <!--急借贷-->
     <string name="jjd_verticy_id_title">验证身份信息</string>

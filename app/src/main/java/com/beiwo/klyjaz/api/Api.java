@@ -1256,6 +1256,15 @@ public class Api {
     }
 
     /**
+     * 发布动态
+     * @param map
+     * @return
+     */
+    public Observable<ResultEntity> publicForumInfo(Map<String, Object> map) {
+        return service.publicForumInfo(map);
+    }
+
+    /**
      * 获取草稿箱动态编辑
      *
      * @param forumId

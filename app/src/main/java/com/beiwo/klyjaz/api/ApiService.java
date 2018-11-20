@@ -1325,6 +1325,16 @@ public interface ApiService {
                                              @Field("forumId") String forumId);
 
     /**
+     * 发布动态
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/s6/forumController/publicForumInfo")
+    Observable<ResultEntity> publicForumInfo(@FieldMap Map<String, Object> map);
+
+
+    /**
      * 草稿箱动态编辑接口
      *
      * @param forumId

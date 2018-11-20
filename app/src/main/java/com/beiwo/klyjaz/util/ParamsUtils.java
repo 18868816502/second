@@ -121,6 +121,7 @@ public class ParamsUtils {
 
     /**
      * 动态详情参数
+     *
      * @param userId
      * @param forumId
      * @param pageNo
@@ -135,6 +136,39 @@ public class ParamsUtils {
         mMap.put("forumId", forumId);
         mMap.put("pageNo", pageNo);
         mMap.put("pageSize", pageSize);
+        return mMap;
+    }
+
+
+    /**
+     * 获取发布参数
+     *
+     * @param userId
+     * @param imgKey
+     * @param forumTitle
+     * @param forumContent
+     * @param status
+     * @param topicId
+     * @param forumId
+     * @return
+     */
+    public static Map<String, Object> generatePublishParams(String userId, String imgKey, String forumTitle,
+                                                            String forumContent, int status, String topicId,
+                                                            String forumId) {
+        Map<String, Object> mMap = new HashMap<>();
+        mMap.put("userId", userId);
+        if (!TextUtils.isEmpty(imgKey)) {
+            mMap.put("imgKey", imgKey);
+        }
+        mMap.put("forumTitle", forumTitle);
+        mMap.put("forumContent", forumContent);
+        mMap.put("status", status + "");
+        if (!TextUtils.isEmpty(topicId)) {
+            mMap.put("topicId", topicId);
+        }
+        if (!TextUtils.isEmpty(forumId)) {
+            mMap.put("forumId", forumId);
+        }
         return mMap;
     }
 }

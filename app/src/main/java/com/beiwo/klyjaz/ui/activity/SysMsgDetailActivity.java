@@ -26,6 +26,7 @@ import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerSysMsgDetailComponent;
 import com.beiwo.klyjaz.injection.module.SysMsgDetailModule;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
+import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.ui.contract.SysMsgDetailContract;
@@ -145,7 +146,8 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void onEditForumSucceed(DraftEditForumBean forumBean) {
-        Intent intent = new Intent(this,CommunityPublishActivity.class);
+//        Intent intent = new Intent(this,CommunityPublishActivity.class);
+        Intent intent = new Intent(this,ForumPublishActivity.class);
         intent.putExtra("forumId",sysMsg.getForumId());
         startActivity(intent);
     }
