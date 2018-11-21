@@ -30,7 +30,6 @@
         tools:text="保存" />
 
     <ImageView
-        android:id="@+id/toolbar_right_icon"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_gravity="right"

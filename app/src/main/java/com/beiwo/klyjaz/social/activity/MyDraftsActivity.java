@@ -19,7 +19,6 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.AuditedTopicAdapter;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
-import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.RxUtil;

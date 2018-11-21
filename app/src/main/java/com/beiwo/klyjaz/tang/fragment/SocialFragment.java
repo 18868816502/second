@@ -16,7 +16,6 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.tang.adapter.SocialAdapter;
-import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
 import com.beiwo.klyjaz.ui.fragment.SocialAttentionFragment;
 import com.beiwo.klyjaz.ui.fragment.SocialRecommendFragment;
 import com.beiwo.klyjaz.util.CommonUtils;
@@ -153,7 +152,6 @@ public class SocialFragment extends BaseComponentFragment {
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
-//                startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                 startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 break;
             default:

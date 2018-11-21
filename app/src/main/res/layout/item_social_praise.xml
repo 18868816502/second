@@ -60,7 +60,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <LinearLayout
-        android:id="@+id/ll_content"
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_marginEnd="@dimen/dp15"

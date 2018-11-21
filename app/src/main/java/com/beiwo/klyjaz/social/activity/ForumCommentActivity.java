@@ -138,7 +138,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         new CommentDialog(hint, new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
-                ToastUtil.toast(inputText);
+//                ToastUtil.toast(inputText);
                 showCommentAuditPop();
                 commentContent = inputText;
             }

@@ -19,7 +19,6 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.PraiseListAdapter;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
-import com.beiwo.klyjaz.ui.activity.ArticleDetailActivity;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;

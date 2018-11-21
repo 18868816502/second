@@ -2,11 +2,8 @@
 <resources>
     <!-- 自定义键盘背景颜色集 -->
     <!--键盘按下的颜色-->
-    <color name="custom_key_gray_pressed">#3c3e52</color>
     <!--键盘为按下的颜色-->
-    <color name="custom_key_gray">#37394d</color>
     <!--键盘文字颜色-->
-    <color name="text_color_gray_3">#ffffff</color>
 
     <color name="colorHintTextColor">#e5e5e5</color>
     <color name="colorBackground">#f7f7f7</color>
@@ -32,7 +29,6 @@
     <color name="red">#ff0000</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_half">#33000000</color>
-    <color name="transparent_half1">#77000000</color>
 
     <color name="common_bg">#f6f6f6</color>
 
@@ -80,8 +76,6 @@
     <color name="c_fafafa">#fafafa</color>
     <color name="c_e7e7e7">#e7e7e7</color>
     <color name="c_09141f">#09141f</color>
-    <color name="c_d3d4d5">#D3D4D5</color>
-    <color name="c_344485">#344485</color>
     <color name="c_ff5b2f">#FF5B2F</color>
     <color name="c_a5a9b2">#A5A9B2</color>
     <color name="c_3586ff">#3586FF</color>

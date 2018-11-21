@@ -8,15 +8,11 @@ import com.beiwo.klyjaz.base.BaseRxPresenter;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
-import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.contract.ForumDetailContact;
-import com.beiwo.klyjaz.ui.contract.ArticleDetailContact;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;

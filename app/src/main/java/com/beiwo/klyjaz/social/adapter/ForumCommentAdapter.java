@@ -12,7 +12,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.inter.OnChildViewClickListener;
-import com.beiwo.klyjaz.ui.adapter.ArticleCommentAdapter;
 import com.beiwo.klyjaz.ui.listeners.OnViewClickListener;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
