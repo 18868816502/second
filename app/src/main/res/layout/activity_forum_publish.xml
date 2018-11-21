@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/navigate"
+            style="@style/ToolBarIconStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:contentDescription="@string/app_content_description"
+            android:src="@drawable/close_black" />
+
+        <TextView
+            android:id="@+id/tv_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp15"
+            android:text="@string/personal_publish_text"
+            android:textColor="@color/c_ff5240"
+            android:textSize="@dimen/sp14"
+            tools:ignore="RelativeOverlap" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/head_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/recycler"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_publish_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start|top"
+                    android:hint="@string/community_publish_title_input"
+                    android:inputType="textMultiLine"
+                    android:paddingLeft="@dimen/dp15"
+                    android:paddingRight="@dimen/dp40"
+                    android:paddingTop="@dimen/dp_10"
+                    android:scrollHorizontally="false"
+                    android:singleLine="false"
+                    android:textColor="@color/black_1"
+                    android:textSize="@dimen/sp21" />
+
+                <TextView
+                    android:id="@+id/tv_publish_title_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginEnd="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:text="@string/community_publish_title_size"
+                    app:layout_constraintBottom_toBottomOf="@id/et_publish_title"
+                    app:layout_constraintRight_toRightOf="@id/et_publish_title" />
+
+                <View
+                    android:id="@+id/indicate"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp05"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginRight="@dimen/dp15"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@color/c_e7e7e7"
+                    app:layout_constraintTop_toBottomOf="@id/et_publish_title" />
+
+                <EditText
+                    android:id="@+id/et_publish_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@null"
+                    android:gravity="start|top"
+                    android:hint="@string/community_publish_content_input"
+                    android:inputType="textMultiLine"
+                    android:minHeight="@dimen/dp200"
+                    android:paddingLeft="@dimen/dp15"
+                    android:paddingRight="@dimen/dp15"
+                    android:paddingTop="@dimen/dp10"
+                    android:scrollHorizontally="false"
+                    android:singleLine="false"
+                    android:textColor="@color/black_1"
+                    android:textSize="@dimen/sp17"
+                    app:layout_constraintTop_toBottomOf="@id/indicate" />
+
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

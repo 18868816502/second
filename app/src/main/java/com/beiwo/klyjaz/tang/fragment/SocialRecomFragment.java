@@ -25,6 +25,8 @@ import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
+import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.adapter.RecomAdapter;
@@ -131,7 +133,8 @@ public class SocialRecomFragment extends BaseComponentFragment {
             @Override
             public void itemClick(String forumId, String userId) {
                 DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
-                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+//                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                Intent intent = new Intent(getActivity(), ForumDetailActivity.class);
                 intent.putExtra("forumId", forumId);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -268,7 +271,8 @@ public class SocialRecomFragment extends BaseComponentFragment {
             case R.id.iv_publish:
                 DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
-                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+//                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                    startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 } else {
                     DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {
                         @Override

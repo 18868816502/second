@@ -24,6 +24,8 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.injection.component.DaggerSysMsgDetailComponent;
 import com.beiwo.klyjaz.injection.module.SysMsgDetailModule;
+import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
+import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.ui.contract.SysMsgDetailContract;
@@ -60,6 +62,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     SysMsgDetailPresenter presenter;
 
     private SysMsg.Row sysMsg;
+    private SysMsgDetail detail;
 
     @Override
     protected void onDestroy() {
@@ -108,6 +111,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void showSysMsgDetail(SysMsgDetail detail) {
+        this.detail = detail;
         if (detail != null) {
             if (detail.getMessageType() == 0) {
                 feed_line.setVisibility(View.GONE);
@@ -140,8 +144,9 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void onEditForumSucceed(DraftEditForumBean forumBean) {
-        Intent intent = new Intent(this, CommunityPublishActivity.class);
-        intent.putExtra("forumId", sysMsg.getForumId());
+//        Intent intent = new Intent(this,CommunityPublishActivity.class);
+        Intent intent = new Intent(this,ForumPublishActivity.class);
+        intent.putExtra("forumId",sysMsg.getForumId());
         startActivity(intent);
     }
 
@@ -152,12 +157,13 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     @Override
     public void onQueryForumInfoSucceed(ForumInfoBean forumBean) {
-        if (forumBean.getForum() == null) {
+        if(forumBean.getForum() == null){
             ToastUtil.toast("该动态已删除");
-        } else {
-            Intent intent = new Intent(this, ArticleDetailActivity.class);
+        }else{
+//            Intent intent = new Intent(this,ArticleDetailActivity.class);
+            Intent intent = new Intent(this,ForumDetailActivity.class);
             intent.putExtra("userId", UserHelper.getInstance(this).getProfile().getId());
-            intent.putExtra("forumId", sysMsg.getForumId());
+            intent.putExtra("forumId",sysMsg.getForumId());
             startActivity(intent);
         }
     }
@@ -200,7 +206,6 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
 
     /**
      * 处理点击事件
-     *
      * @param detail
      */
     private void dealClick(SysMsgDetail detail) {

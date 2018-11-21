@@ -25,6 +25,7 @@ import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.injection.component.AppComponent;
+import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.CommunityPublishActivity;
@@ -182,7 +183,8 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
             case R.id.iv_publish:
                 DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
-                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+//                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
+                    startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 } else {
                     DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {
                         @Override

@@ -207,4 +207,6 @@ dependencies {
     compile project(':matisse')
     //pickview
     compile 'com.contrarywind:Android-PickerView:3.2.6'
+
+    compile 'liji.library.dev:imagezoom:1.3.1'
 }

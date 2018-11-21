@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/dp10"
+    android:paddingBottom="@dimen/dp10"
+    android:gravity="center_vertical">
+
+    <com.beiwo.klyjaz.view.ClearEditText
+        android:id="@+id/dialog_comment_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:background="@drawable/shape_article_comment_input"
+        android:hint="@string/article_comment_input_text"
+        android:inputType="textMultiLine"
+        android:minHeight="@dimen/dp40"
+        android:paddingLeft="@dimen/dp12"
+        android:paddingRight="@dimen/dp12"
+        android:textSize="@dimen/sp12" />
+
+    <TextView
+        android:id="@+id/dialog_comment_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp15"
+        android:text="@string/article_comment_send_text"
+        android:textColor="@color/c_ff5240"
+        android:textSize="@dimen/sp17" />
+
+</LinearLayout>

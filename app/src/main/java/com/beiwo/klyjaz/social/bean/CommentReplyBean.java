@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.social.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @descripe
  * @time 2018/10/10 10:48
  */
-public class CommentReplyBean {
+public class CommentReplyBean implements Serializable {
 
 
     /**
@@ -96,7 +97,7 @@ public class CommentReplyBean {
         this.replyDtoList = replyDtoList;
     }
 
-    public static class ReplyDtoListBean {
+    public static class ReplyDtoListBean implements Serializable {
         /**
          * id : 2d9f761ca6ea4e60a655527745caee0b
          * userId : ad67cbc40f5d4146bb98f49061843236

@@ -145,7 +145,8 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         curPosition = position;
-        Intent intent = new Intent(this, CommunityPublishActivity.class);
+//        Intent intent = new Intent(this, CommunityPublishActivity.class);
+        Intent intent = new Intent(this, ForumPublishActivity.class);
         intent.putExtra("forumId",datas.get(position).getForumId());
         startActivity(intent);
 //        switch (datas.get(position).getForumStatus()){

@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp88"
     android:layout_height="@dimen/dp88"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_container">
 
     <LinearLayout
         android:layout_width="@dimen/dp70"
