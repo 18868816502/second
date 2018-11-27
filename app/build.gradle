@@ -191,7 +191,7 @@ dependencies {
     //hightlight
     compile 'com.isanwenyu.highlight:highlight:1.8.0'
     //chart
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+//    compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     //Permission
     compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
     apt "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
