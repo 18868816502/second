@@ -13,8 +13,6 @@ import com.beiwo.klyjaz.ui.contract.SettingContract;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.RxUtil;
 
-import javax.inject.Inject;
-
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -28,9 +26,8 @@ public class SettingPresenter extends BaseRxPresenter implements SettingContract
 
     private AppUpdate appUpdate;
 
-    @Inject
-    SettingPresenter(Api api, SettingContract.View view, Context context) {
-        mApi = api;
+    public SettingPresenter(SettingContract.View view, Context context) {
+        mApi = Api.getInstance();
         mView = view;
         mContext = context;
         mUserHelper = UserHelper.getInstance(context);

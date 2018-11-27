@@ -12,8 +12,6 @@ import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.RxUtil;
 
-import javax.inject.Inject;
-
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -27,9 +25,8 @@ public class ResetPwdSetPwdPresenter extends BaseRxPresenter implements ResetPwd
 
     private boolean isRequestingVerification;
 
-    @Inject
-    public ResetPwdSetPwdPresenter(Api api, ResetPwdSetPwdContract.View view, Context context) {
-        mApi = api;
+    public ResetPwdSetPwdPresenter(ResetPwdSetPwdContract.View view, Context context) {
+        mApi = Api.getInstance();
         mView = view;
         mContext = context;
         mUserHelper = UserHelper.getInstance(context);

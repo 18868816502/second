@@ -10,16 +10,11 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Profession;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerEditProfessionComponent;
-import com.beiwo.klyjaz.injection.module.EditProfessionModule;
 import com.beiwo.klyjaz.ui.contract.EditProfessionContract;
 import com.beiwo.klyjaz.ui.presenter.EditProfessionPresenter;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -30,7 +25,6 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
     LinearLayout professionContainer;
     private View curSelectedView;
 
-    @Inject
     EditProfessionPresenter presenter;
 
     @Override
@@ -48,22 +42,13 @@ public class EditJobGroupActivity extends BaseComponentActivity implements EditP
     @Override
     public void configViews() {
         setupToolbar(toolbar);
-
         SlidePanelHelper.attach(this);
+        presenter = new EditProfessionPresenter(this,this);
     }
 
     @Override
     public void initDatas() {
         presenter.onStart();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerEditProfessionComponent.builder()
-                .appComponent(appComponent)
-                .editProfessionModule(new EditProfessionModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

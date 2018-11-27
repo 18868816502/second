@@ -416,7 +416,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     DlgUtil.loginDlg(context, null);
                     return;
                 }
-                DataStatisticsHelper.getInstance().onCountUv("HPLoanImmediately");
+                DataStatisticsHelper.getInstance(context).onCountUv("HPLoanImmediately");
                 Api.getInstance().userAuth(UserHelper.getInstance(context).id())
                         .compose(RxResponse.<CashUserInfo>compatT())
                         .subscribe(new ApiObserver<CashUserInfo>() {

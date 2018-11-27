@@ -34,9 +34,6 @@ import com.beiwo.klyjaz.helper.FileProviderHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerUserProfileComponent;
-import com.beiwo.klyjaz.injection.module.UserProfileModule;
 import com.beiwo.klyjaz.social.activity.EditProduceActivity;
 import com.beiwo.klyjaz.ui.busevents.UserLogoutEvent;
 import com.beiwo.klyjaz.ui.contract.UserProfileContract;
@@ -64,8 +61,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -111,7 +106,6 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
     @BindView(R.id.tv_produce)
     TextView tvProduce;
 
-    @Inject
     UserProfilePresenter presenter;
 
     private Dialog avatarSelector;
@@ -150,6 +144,7 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
         setupToolbar(toolbar);
 
         SlidePanelHelper.attach(this);
+        presenter = new UserProfilePresenter(this,this);
 
         //pv，uv统计
 //        DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.PI);
@@ -177,15 +172,6 @@ public class UserProfileActivity extends BaseComponentActivity implements UserPr
             mSex = intent.getIntExtra("sex", 1);
             tvSex.setText(mSex == 1 ? "男" : "女");
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerUserProfileComponent.builder()
-                .appComponent(appComponent)
-                .userProfileModule(new UserProfileModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

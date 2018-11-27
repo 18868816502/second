@@ -10,7 +10,6 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.ui.contract.TabMineContract;
 import com.beiwo.klyjaz.util.RxUtil;
 
-import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -23,9 +22,8 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
 
     private int points = 0;
 
-    @Inject
-    TabMinePresenter(Context context, Api api, TabMineContract.View view) {
-        this.api = api;
+    public TabMinePresenter(Context context,TabMineContract.View view) {
+        this.api = Api.getInstance();
         this.view = view;
         userHelper = UserHelper.getInstance(context);
     }

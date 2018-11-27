@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -24,9 +22,8 @@ public class RecommendProductPresenter extends BaseRxPresenter implements Recomm
 
     private List<LoanProduct.Row> products = new ArrayList<>();
 
-    @Inject
-    RecommendProductPresenter(Api api, RecommendProductContract.View view) {
-        this.api = api;
+    public RecommendProductPresenter(RecommendProductContract.View view) {
+        this.api = Api.getInstance();
         this.view = view;
     }
 

@@ -22,7 +22,6 @@ import com.beiwo.klyjaz.entity.CreateAccountReturnIDsBean;
 import com.beiwo.klyjaz.entity.RemindBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.BillListActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -248,10 +247,6 @@ public class MakeBillActivity extends BaseComponentActivity {
                         createBill();
                     }
                 });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.tv_save_bill, R.id.fl_repay_date_wrap, R.id.fl_repay_times_wrap, R.id.tv_alert_dlg,

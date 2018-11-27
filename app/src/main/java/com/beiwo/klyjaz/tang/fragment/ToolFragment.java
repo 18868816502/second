@@ -14,7 +14,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.BillListActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.activity.CreditBillActivity;
@@ -145,10 +144,6 @@ public class ToolFragment extends BaseComponentFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void recieve(String msg) {
         if (TextUtils.equals("1", msg)) request();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.clb_credit_wrap, R.id.clb_interest_wrap, R.id.clb_ticket_wrap, R.id.fl_add_bill_wrap,

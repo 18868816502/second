@@ -13,9 +13,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.RemindBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerRemindComponent;
-import com.beiwo.klyjaz.injection.module.RemindModule;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.contract.RemindContract;
@@ -29,8 +26,6 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,7 +47,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
     Switch pushSwitch;
     @BindView(R.id.message_switch)
     Switch messageSwitch;
-    @Inject
+
     RemindPresenter presenter;
 
     private int pushRemind = 0;
@@ -70,7 +65,7 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
         SlidePanelHelper.attach(this);
-
+        presenter = new RemindPresenter(this,this);
     }
 
     @Override
@@ -128,15 +123,6 @@ public class RemindActivity extends BaseComponentActivity implements RemindContr
                 remindDay = data.getDay();
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerRemindComponent.builder()
-                .appComponent(appComponent)
-                .remindModule(new RemindModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

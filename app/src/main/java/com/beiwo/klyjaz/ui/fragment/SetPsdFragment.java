@@ -14,9 +14,6 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerSetPwdComponent;
-import com.beiwo.klyjaz.injection.module.SetPwdModule;
 import com.beiwo.klyjaz.ui.activity.ResetPwdActivity;
 import com.beiwo.klyjaz.ui.contract.ResetPwdSetPwdContract;
 import com.beiwo.klyjaz.ui.presenter.ResetPwdSetPwdPresenter;
@@ -26,8 +23,6 @@ import com.beiwo.klyjaz.util.LegalInputUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.beiwo.klyjaz.view.ClearEditText;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +52,6 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     private CountDownTimerUtils countDownTimer;
 
-    @Inject
     ResetPwdSetPwdPresenter presenter;
 
     private String requestPhone;
@@ -80,6 +74,7 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
 
     @Override
     public void configViews() {
+        presenter = new ResetPwdSetPwdPresenter(this,getActivity());
         mActivity = getActivity();
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -116,16 +111,6 @@ public class SetPsdFragment extends BaseComponentFragment implements ResetPwdSet
         requestPhone = getArguments().getString("requestPhone");
         phoneTv.setText(LegalInputUtils.formatMobile(requestPhone));
         presenter.requestVerification(requestPhone);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerSetPwdComponent.builder()
-                .appComponent(appComponent)
-                .setPwdModule(new SetPwdModule(this))
-                .build()
-                .inject(this);
-
     }
 
     @OnClick({R.id.confirm, R.id.fetch_text})

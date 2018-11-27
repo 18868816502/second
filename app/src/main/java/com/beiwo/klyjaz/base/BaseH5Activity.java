@@ -6,7 +6,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 
@@ -46,10 +45,6 @@ public abstract class BaseH5Activity extends BaseComponentActivity {
         AgentWeb.with(this).setAgentWebParent(relativeLayout, new RelativeLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator(ContextCompat.getColor(this, R.color.red), 1)
                 .createAgentWeb().ready().go(loadUrl());
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     public abstract String loadUrl();

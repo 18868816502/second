@@ -6,10 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.getui.GeTuiClient;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.dialog.CommNoneAndroidLoading;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.InputMethodUtil;
@@ -31,7 +29,6 @@ public abstract class BaseComponentActivity extends BaseActivity {
         /**
          * 注入App
          */
-        configureComponent(App.getInstance().getAppComponent());
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         //初始化沉浸式
@@ -69,7 +66,7 @@ public abstract class BaseComponentActivity extends BaseActivity {
 
     public abstract void initDatas();
 
-    protected abstract void configureComponent(AppComponent appComponent);
+//    protected abstract void configureComponent(AppComponent appComponent);
 
     /**
      * set tool bar render and behavior with default action

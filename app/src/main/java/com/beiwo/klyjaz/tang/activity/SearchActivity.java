@@ -18,7 +18,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.LoanAccountIconBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.adapter.LoanBillAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -150,10 +149,6 @@ public class SearchActivity extends BaseComponentActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

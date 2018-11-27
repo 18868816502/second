@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerLoginComponent;
-import com.beiwo.klyjaz.injection.module.LoginModule;
 import com.beiwo.klyjaz.ui.activity.UserCertificationCodeActivity;
 import com.beiwo.klyjaz.ui.activity.UserProtocolActivity;
 import com.beiwo.klyjaz.ui.activity.WeChatBindFirstActivity;
@@ -38,8 +35,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -50,7 +45,6 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
     private final int REQUEST_CODE_BIND_PHONE = 1;
 
-    @Inject
     LoginPresenter presenter;
     @BindView(R.id.phone_number)
     ClearEditText phoneNumber;
@@ -95,6 +89,7 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void configViews() {
+        presenter = new LoginPresenter(this,getActivity());
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -123,14 +118,6 @@ public class LoginMainFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void initDatas() {
         tv_contract.setText(String.format(getString(R.string.user_protocol), getString(R.string.app_name)));
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerLoginComponent.builder().appComponent(appComponent)
-                .loginModule(new LoginModule(this))
-                .build()
-                .inject(this);
     }
 
     /**

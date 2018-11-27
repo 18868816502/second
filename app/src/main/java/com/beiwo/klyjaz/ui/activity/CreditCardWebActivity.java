@@ -19,7 +19,6 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.view.BusinessWebView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -95,11 +94,6 @@ public class CreditCardWebActivity extends BaseComponentActivity {
         webView.loadUrl(url);
         this.titleList.push(title);
         this.title.setText(title);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override

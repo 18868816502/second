@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -39,14 +38,15 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
     private Api api;
     private LoanProductDetailContract.View view;
     private UserHelper userHelper;
+    private Context mContext;
 
     private LoanProductDetail productDetail;
 
-    @Inject
-    LoanDetailPresenter(Api api, LoanProductDetailContract.View view, Context context) {
-        this.api = api;
+    public LoanDetailPresenter(LoanProductDetailContract.View view, Context context) {
+        this.api = Api.getInstance();
         this.view = view;
         userHelper = UserHelper.getInstance(context);
+        this.mContext = context;
     }
 
 
@@ -111,7 +111,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
         if (productDetail != null && productDetail.getBase() != null) {
             //服务端统计
-            DataStatisticsHelper.getInstance().onProductClicked(productDetail.getBase().getId());
+            DataStatisticsHelper.getInstance(mContext).onProductClicked(productDetail.getBase().getId());
 
 
             if (productDetail.getBase().getCoopType() == 1) {

@@ -17,7 +17,6 @@ import com.beiwo.klyjaz.entity.DetailHead;
 import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.adapter.DetailItemAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -142,10 +141,6 @@ public class NetLoanDetailActivity extends BaseComponentActivity {
         });
         params = (FrameLayout.LayoutParams) pullMoreLayout.getLayoutParams();
         bottomMargin = params.bottomMargin;
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.iv_more_setting, R.id.ll_finish_all})

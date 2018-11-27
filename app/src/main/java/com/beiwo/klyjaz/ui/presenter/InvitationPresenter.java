@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -29,9 +27,8 @@ public class InvitationPresenter extends BaseRxPresenter implements InvitationCo
 
     private List<Invitation.Row> invitation = new ArrayList<>();
 
-    @Inject
-    InvitationPresenter(Api api, InvitationContract.View view, Context context) {
-        this.api = api;
+    public InvitationPresenter(InvitationContract.View view, Context context) {
+        this.api = Api.getInstance();
         this.view = view;
         userHelper = UserHelper.getInstance(context);
     }

@@ -9,7 +9,6 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 
@@ -56,11 +55,6 @@ public class EnterInviteCodeActivity extends BaseComponentActivity {
             EnterInviteCodeActivity.this.finish();
         }
 
-
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
 
     }
 }

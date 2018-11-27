@@ -14,9 +14,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.LoanProduct;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerRecommendComponent;
-import com.beiwo.klyjaz.injection.module.RecommendProductModule;
 import com.beiwo.klyjaz.ui.adapter.HotChoiceRVAdapter;
 import com.beiwo.klyjaz.ui.contract.RecommendProductContract;
 import com.beiwo.klyjaz.ui.presenter.RecommendProductPresenter;
@@ -25,8 +22,6 @@ import com.beiwo.klyjaz.umeng.Statistic;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -38,7 +33,6 @@ public class RecommendProductActivity extends BaseComponentActivity implements R
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    @Inject
     RecommendProductPresenter presenter;
 
     private HotChoiceRVAdapter adapter;
@@ -58,7 +52,7 @@ public class RecommendProductActivity extends BaseComponentActivity implements R
     @Override
     public void configViews() {
         setupToolbar(toolbar);
-
+        presenter = new RecommendProductPresenter(this);
         adapter = new HotChoiceRVAdapter(R.layout.list_item_hot_product);
         final View view = LayoutInflater.from(this)
                 .inflate(R.layout.layout_recommend_product_head, null);
@@ -93,15 +87,6 @@ public class RecommendProductActivity extends BaseComponentActivity implements R
     @Override
     public void initDatas() {
         presenter.loadRecommendProduct(getIntent().getIntExtra("amount", 0));
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerRecommendComponent.builder()
-                .appComponent(appComponent)
-                .recommendProductModule(new RecommendProductModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

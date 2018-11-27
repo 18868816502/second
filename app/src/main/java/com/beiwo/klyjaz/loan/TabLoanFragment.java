@@ -20,7 +20,6 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -224,10 +223,6 @@ public class TabLoanFragment extends BaseComponentFragment {
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     public static TabLoanFragment newInstance() {

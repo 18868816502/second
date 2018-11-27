@@ -14,7 +14,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.LoanAccountIconBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.adapter.LoanBillAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -117,10 +116,6 @@ public class LoanBillActivity extends BaseComponentActivity {
         loanBillAdapter = new LoanBillAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(loanBillAdapter);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.tv_custom_loan, R.id.ll_house_loan, R.id.ll_car_loan, R.id.tv_search_others})

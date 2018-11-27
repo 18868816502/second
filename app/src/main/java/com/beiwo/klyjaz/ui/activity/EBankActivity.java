@@ -16,7 +16,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
@@ -81,10 +80,6 @@ public class EBankActivity extends BaseComponentActivity {
                                    }
                                }
                            });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @JavascriptInterface

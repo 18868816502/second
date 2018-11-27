@@ -13,7 +13,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CardAdapter;
 import com.beiwo.klyjaz.jjd.bean.BankCard;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -134,10 +133,6 @@ public class MyBankCardActivity extends BaseComponentActivity {
                 startActivity(new Intent(getApplicationContext(), AddCardActivity.class));
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.iv_add_card})

@@ -24,7 +24,6 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -161,10 +160,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     }
 
     @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
-    @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         pageNo++;
         fetchData();
@@ -180,7 +175,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
-                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
+                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
 //                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                     startActivity(new Intent(getActivity(), ForumPublishActivity.class));

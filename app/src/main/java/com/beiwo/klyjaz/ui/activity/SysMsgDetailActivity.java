@@ -21,9 +21,6 @@ import com.beiwo.klyjaz.entity.SysMsg;
 import com.beiwo.klyjaz.entity.SysMsgDetail;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerSysMsgDetailComponent;
-import com.beiwo.klyjaz.injection.module.SysMsgDetailModule;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
@@ -34,8 +31,6 @@ import com.beiwo.klyjaz.util.DateFormatUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -58,7 +53,6 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
     @BindView(R.id.feed_liner_layout)
     LinearLayout feed_line;
 
-    @Inject
     SysMsgDetailPresenter presenter;
 
     private SysMsg.Row sysMsg;
@@ -82,6 +76,7 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
+        presenter = new SysMsgDetailPresenter(this);
     }
 
     @Override
@@ -93,15 +88,6 @@ public class SysMsgDetailActivity extends BaseComponentActivity implements SysMs
             }
         }
 
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerSysMsgDetailComponent.builder()
-                .appComponent(appComponent)
-                .sysMsgDetailModule(new SysMsgDetailModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

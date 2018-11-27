@@ -13,7 +13,6 @@ import com.beiwo.klyjaz.entity.PayAccount;
 import com.beiwo.klyjaz.entity.Withdraw;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -88,10 +87,6 @@ public class WithdrawActivity extends BaseComponentActivity {
                         }
                     }
                 });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.ll_alp_wrap, R.id.tv_withdraw})

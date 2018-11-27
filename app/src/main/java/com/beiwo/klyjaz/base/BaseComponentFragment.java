@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.beiwo.klyjaz.App;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.dialog.CommNoneAndroidLoading;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.InputMethodUtil;
@@ -26,7 +24,7 @@ public abstract class BaseComponentFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        configureComponent(App.getInstance().getAppComponent());
+//        configureComponent(App.getInstance().getAppComponent());
     }
 
     @Override
@@ -79,7 +77,7 @@ public abstract class BaseComponentFragment extends Fragment {
     /**
      * set up injection
      */
-    protected abstract void configureComponent(AppComponent appComponent);
+//    protected abstract void configureComponent(AppComponent appComponent);
 
     protected void showProgress(String msg) {
         if (loading == null) {

@@ -132,7 +132,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, datas.get((Integer) v.getTag()).getForumId());
+                    DataStatisticsHelper.getInstance(mContext).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, datas.get((Integer) v.getTag()).getForumId());
                     boolean isLogin = UserHelper.getInstance(v.getContext()).isLogin();
 //                    Intent intent = new Intent(mContext, ArticleDetailActivity.class);
                     Intent intent = new Intent(mContext, ForumDetailActivity.class);

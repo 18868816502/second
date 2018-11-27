@@ -17,7 +17,6 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -192,10 +191,6 @@ public class TabHomeFragment extends BaseComponentFragment {
                 request();
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     public static TabHomeFragment newInstance() {

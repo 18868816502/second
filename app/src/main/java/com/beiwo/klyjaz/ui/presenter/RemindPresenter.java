@@ -7,8 +7,6 @@ import com.beiwo.klyjaz.base.BaseRxPresenter;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.ui.contract.RemindContract;
 
-import javax.inject.Inject;
-
 /**
  * Copyright: kaola (C)2018
  * FileName: RemindPresenter
@@ -40,11 +38,11 @@ public class RemindPresenter extends BaseRxPresenter implements RemindContract.P
 
     }
 
-    @Inject
-    RemindPresenter(Context context, RemindContract.View view, Api api) {
+
+    public RemindPresenter(Context context, RemindContract.View view) {
         this.context = context;
         this.view = view;
-        this.api = api;
+        this.api = Api.getInstance();
         userHelper = UserHelper.getInstance(context);
 
     }

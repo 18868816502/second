@@ -13,9 +13,6 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerEditUserNameComponent;
-import com.beiwo.klyjaz.injection.module.EditUserNameModule;
 import com.beiwo.klyjaz.ui.contract.EditUserNameContract;
 import com.beiwo.klyjaz.ui.presenter.EditUserNamePresenter;
 import com.beiwo.klyjaz.util.InputMethodUtil;
@@ -26,8 +23,6 @@ import com.beiwo.klyjaz.view.EditTextUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.io.UnsupportedEncodingException;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,7 +41,6 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     @BindView(R.id.confirm)
     TextView confirmBtn;
 
-    @Inject
     EditUserNamePresenter presenter;
     private int black_2;
 
@@ -66,7 +60,7 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     public void configViews() {
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
-
+        presenter = new EditUserNamePresenter(this,this);
 
         InputFilter filter = new InputFilter() {
             @Override
@@ -171,15 +165,6 @@ public class EditNickNameActivity extends BaseComponentActivity implements EditU
     public void initDatas() {
         black_2 = getResources().getColor(R.color.black_2);
         presenter.onStart();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerEditUserNameComponent.builder()
-                .appComponent(appComponent)
-                .editUserNameModule(new EditUserNameModule(this))
-                .build()
-                .inject(this);
     }
 
     @OnClick(R.id.confirm)

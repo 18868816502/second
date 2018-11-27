@@ -14,9 +14,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Invitation;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerInvitationComponent;
-import com.beiwo.klyjaz.injection.module.InvitationModule;
 import com.beiwo.klyjaz.ui.contract.InvitationContract;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
 import com.beiwo.klyjaz.ui.presenter.InvitationPresenter;
@@ -29,8 +26,6 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -50,7 +45,6 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     @BindView(R.id.ac_invitation_sv_root)
     ScrollView mScrollView;
 
-    @Inject
     InvitationPresenter presenter;
 
     @Override
@@ -75,7 +69,7 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     public void configViews() {
         setupToolbar(toolbar);
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-
+        presenter = new InvitationPresenter(this,this);
         inviteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,15 +93,6 @@ public class InvitationActivity extends BaseComponentActivity implements Invitat
     @Override
     public void initDatas() {
         presenter.onStart();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerInvitationComponent.builder()
-                .appComponent(appComponent)
-                .invitationModule(new InvitationModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

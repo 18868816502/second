@@ -329,7 +329,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHo
                         switch (v.getId()) {
                             case R.id.confirm:
                                 //pv，uv统计
-                                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
+                                DataStatisticsHelper.getInstance(mActivity).onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
                                 if (type == 2) {//信用卡记账
                                     Api.getInstance().updateCreditCardBillStatus(userHelper.id(), billId, 2)
                                             .compose(RxResponse.compatO())

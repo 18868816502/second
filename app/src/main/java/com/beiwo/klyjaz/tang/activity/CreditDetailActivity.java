@@ -15,7 +15,6 @@ import com.beiwo.klyjaz.entity.CreditBill;
 import com.beiwo.klyjaz.entity.CreditCardDebtDetail;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.MoxieUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
@@ -129,10 +128,6 @@ public class CreditDetailActivity extends BaseComponentActivity {
 
     public PulledTabAccountRecyclerView getRecyclerView() {
         return mRecyclerView;
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.ll_synchronized, R.id.iv_more_setting})

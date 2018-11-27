@@ -15,7 +15,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.BillSummaryBean;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.activity.CommonDetailActivity;
 import com.beiwo.klyjaz.tang.activity.CreditDetailActivity;
 import com.beiwo.klyjaz.tang.activity.NetLoanDetailActivity;
@@ -128,9 +127,6 @@ public class BillSummaryActivity extends BaseComponentActivity {
         });
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
 
     private void getBillSummaryData(final boolean isDelete) {
         String userId = UserHelper.getInstance(this).getProfile().getId();

@@ -8,7 +8,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
 
@@ -44,9 +43,5 @@ public class AboutKaolaActivity extends BaseComponentActivity {
                 .createAgentWeb()//
                 .ready()
                 .go(NetConstants.H5_ABOUT_US);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 }

@@ -14,7 +14,6 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
@@ -81,11 +80,6 @@ public class InvitationWebActivity extends BaseComponentActivity {
                 refreshLayout.finishRefresh();
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @OnClick(R.id.daily_mission)

@@ -23,9 +23,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.SysMsg;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerSysMsgComponent;
-import com.beiwo.klyjaz.injection.module.SysMsgModule;
 import com.beiwo.klyjaz.social.activity.PraiseListActivity;
 import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -42,8 +39,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -73,7 +68,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 
     private SysMsgAdapter adapter;
 
-    @Inject
     SysMsgPresenter presenter;
 
     private Dialog messageSelector;
@@ -162,6 +156,7 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
 //        DataStatisticsHelper.newInstance().onCountUv(NewVersionEvents.MYMESSAGE);
 
         setupToolbar(toolbar);
+        presenter = new SysMsgPresenter(this,this);
         //设置状态栏文字为黑色字体
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         adapter = new SysMsgAdapter(SysMsgActivity.this);
@@ -263,15 +258,6 @@ public class SysMsgActivity extends BaseComponentActivity implements SysMsgContr
             window.setGravity(Gravity.BOTTOM);
         }
         messageSelector.show();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerSysMsgComponent.builder()
-                .appComponent(appComponent)
-                .sysMsgModule(new SysMsgModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

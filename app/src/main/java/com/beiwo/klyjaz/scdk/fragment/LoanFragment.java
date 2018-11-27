@@ -20,7 +20,6 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.scdk.activity.ScdkLoanActivity;
 import com.beiwo.klyjaz.scdk.activity.ScdkVerticyIDActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -142,10 +141,6 @@ public class LoanFragment extends BaseComponentFragment {
         });
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
     public static LoanFragment newInstance() {
         return new LoanFragment();
     }
@@ -158,7 +153,7 @@ public class LoanFragment extends BaseComponentFragment {
         }
         switch (view.getId()) {
             case R.id.tv_go_loan:
-                DataStatisticsHelper.getInstance().onCountUv("JjdLoanImmediately");//借钱—首页—立即借钱按钮
+                DataStatisticsHelper.getInstance(getActivity()).onCountUv("JjdLoanImmediately");//借钱—首页—立即借钱按钮
                 /*用户认证信息查询*/
                 toVertifyActivity();
                 break;

@@ -16,7 +16,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.PraiseListAdapter;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
@@ -104,10 +103,6 @@ public class PraiseListActivity extends BaseComponentActivity implements OnRefre
     protected void onResume() {
         super.onResume();
         fetchData();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

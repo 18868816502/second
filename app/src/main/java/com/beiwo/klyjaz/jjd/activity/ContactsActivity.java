@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.ContactBean;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.ContactAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -77,10 +76,6 @@ public class ContactsActivity extends BaseComponentActivity {
         checkPermission();
         contactRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         contactRecycler.setAdapter(adapter);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     private void checkPermission() {

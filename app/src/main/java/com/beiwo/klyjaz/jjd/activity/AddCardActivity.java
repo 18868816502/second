@@ -11,7 +11,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.BankInfoUtil;
 import com.beiwo.klyjaz.jjd.bean.BankCard;
 import com.beiwo.klyjaz.jjd.bean.BankName;
@@ -251,7 +250,4 @@ public class AddCardActivity extends BaseComponentActivity {
         return !TextUtils.isEmpty(cardNo) && cardNo.length() <= 19 && cardNo.length() >= 15;//银行卡号15-19位数字
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
 }

@@ -20,8 +20,6 @@ import com.beiwo.klyjaz.util.RxUtil;
 
 import java.io.ByteArrayOutputStream;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
@@ -39,9 +37,8 @@ public class UserProfilePresenter extends BaseRxPresenter implements UserProfile
 
     private AppUpdate appUpdate;
 
-    @Inject
-    UserProfilePresenter(Api api, UserProfileContract.View view, Context context) {
-        mApi = api;
+    public UserProfilePresenter(UserProfileContract.View view, Context context) {
+        mApi = Api.getInstance();
         mView = view;
         mContext = context;
         mUserHelper = UserHelper.getInstance(context);

@@ -11,7 +11,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.busevents.ResetPsdNavigationEvent;
 import com.beiwo.klyjaz.ui.fragment.RequireVerifyCodeFragment;
 import com.beiwo.klyjaz.ui.fragment.SetPsdFragment;
@@ -70,10 +69,6 @@ public class ResetPsdActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     /**

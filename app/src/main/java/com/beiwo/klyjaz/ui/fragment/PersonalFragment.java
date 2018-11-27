@@ -20,9 +20,6 @@ import com.beiwo.klyjaz.base.BaseTabFragment;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerTabMineComponent;
-import com.beiwo.klyjaz.injection.module.TabMineModule;
 import com.beiwo.klyjaz.jjd.activity.MyBankCardActivity;
 import com.beiwo.klyjaz.jjd.activity.MyLoanActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -57,8 +54,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -80,7 +75,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     View loanContainer;
     @BindView(R.id.dctv_bank)
     View bankContainer;
-    @Inject
+
     TabMinePresenter presenter;
 
     @BindView(R.id.activity_deploy_recycler)
@@ -154,6 +149,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void configViews() {
+        presenter = new TabMinePresenter(getActivity(),this);
         my_wallet.setVisibility(App.audit == 2 ? View.VISIBLE : View.GONE);
         deployAdapter = new DeployAdapter(R.layout.activity_deploy_list_item, list, getActivity());
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -185,15 +181,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         if (getActivity() != null) {
             getActivity().registerReceiver(myRecevier, intentFilter);
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerTabMineComponent.builder()
-                .appComponent(appComponent)
-                .tabMineModule(new TabMineModule(this))
-                .build()
-                .inject(this);
     }
 
     private void request() {

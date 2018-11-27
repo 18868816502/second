@@ -22,7 +22,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.entity.AppUpdate;
 import com.beiwo.klyjaz.helper.FileProviderHelper;
-import com.beiwo.klyjaz.injection.component.DaggerAppUpdateHelperComponent;
 import com.beiwo.klyjaz.ui.dialog.CommNoneAndroidDialog;
 import com.beiwo.klyjaz.util.LogUtils;
 import com.beiwo.klyjaz.util.RxUtil;
@@ -32,7 +31,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -40,7 +38,6 @@ import io.reactivex.functions.Consumer;
 
 public class AppUpdateHelper {
 
-    @Inject
     Api api;
 
     private Disposable disposable;
@@ -56,10 +53,7 @@ public class AppUpdateHelper {
     }
 
     private AppUpdateHelper() {
-        DaggerAppUpdateHelperComponent.builder()
-                .appComponent(App.getInstance().getAppComponent())
-                .build()
-                .inject(this);
+        api = Api.getInstance();
     }
 
     public void checkUpdate(AppCompatActivity activity) {

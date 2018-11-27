@@ -19,7 +19,6 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.CommonUtils;
@@ -128,10 +127,6 @@ public class UserPsdEditActivity extends BaseComponentActivity {
             }
         };
         passwordEt.addTextChangedListener(textWatcher);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

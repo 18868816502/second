@@ -24,7 +24,6 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
@@ -130,7 +129,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
         adapter.setOnArticleClickListener(new RecomAdapter.OnArticleClickListener() {
             @Override
             public void itemClick(String forumId, String userId) {
-                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
+                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
 //                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
                 Intent intent = new Intent(getActivity(), ForumDetailActivity.class);
                 intent.putExtra("forumId", forumId);
@@ -259,15 +258,11 @@ public class SocialRecomFragment extends BaseComponentFragment {
         });
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
     @OnClick(R.id.iv_publish)
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
-                DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
+                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
 //                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                     startActivity(new Intent(getActivity(), ForumPublishActivity.class));

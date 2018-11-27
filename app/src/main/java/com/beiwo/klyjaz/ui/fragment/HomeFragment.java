@@ -21,7 +21,6 @@ import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.adapter.HomePageAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -140,7 +139,7 @@ public class HomeFragment extends BaseTabFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_ACCOUNT);
+        DataStatisticsHelper.getInstance(getActivity()).onCountUv(DataStatisticsHelper.ID_CLICK_TAB_ACCOUNT);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -295,10 +294,6 @@ public class HomeFragment extends BaseTabFragment {
     }
 
     @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
-    @Override
     protected boolean needFakeStatusBar() {
         return false;
     }
@@ -307,6 +302,6 @@ public class HomeFragment extends BaseTabFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HP);
+        DataStatisticsHelper.getInstance(getActivity()).onCountUv(NewVersionEvents.HP);
     }
 }

@@ -13,17 +13,12 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerWeChatSetPwdComponent;
-import com.beiwo.klyjaz.injection.module.WeChatSetPwdModule;
 import com.beiwo.klyjaz.ui.contract.WeChatSetPwdContract;
 import com.beiwo.klyjaz.ui.presenter.WeChatSetPwdPresenter;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.LegalInputUtils;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,7 +34,6 @@ public class WeChatSetPwdActivity extends BaseComponentActivity implements WeCha
     @BindView(R.id.confirm)
     TextView tvConfirmBtn;
 
-    @Inject
     WeChatSetPwdPresenter presenter;
 
     private String account;
@@ -56,7 +50,7 @@ public class WeChatSetPwdActivity extends BaseComponentActivity implements WeCha
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
-
+        presenter = new WeChatSetPwdPresenter(this,this);
         cbPwdVisibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -94,15 +88,6 @@ public class WeChatSetPwdActivity extends BaseComponentActivity implements WeCha
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerWeChatSetPwdComponent.builder()
-                .appComponent(appComponent)
-                .weChatSetPwdModule(new WeChatSetPwdModule(this))
-                .build()
-                .inject(this);
     }
 
     @OnClick(R.id.confirm)

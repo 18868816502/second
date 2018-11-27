@@ -11,7 +11,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Ticket;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -112,10 +111,6 @@ public class AddTicketActivity extends BaseComponentActivity {
         cet_phone_no.setMaxLenght(20);
         cet_bank_name.setMaxLenght(20);
         cet_bank_account.setMaxLenght(20);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.toolbar_right_txt})

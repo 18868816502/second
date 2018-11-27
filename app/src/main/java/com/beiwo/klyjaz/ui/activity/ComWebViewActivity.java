@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.util.AndroidBug5497Fix;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -109,11 +108,6 @@ public class ComWebViewActivity extends BaseComponentActivity {
         if (title != null) {
             titleTv.setText(title);
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override

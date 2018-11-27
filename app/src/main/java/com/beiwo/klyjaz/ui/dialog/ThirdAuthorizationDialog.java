@@ -90,7 +90,7 @@ public class ThirdAuthorizationDialog extends DialogFragment {
                 Statistic.onEvent(Events.LOAN_AUTHORIZE_CONFIRM);
 
                 //pv,uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_THIRD_AUTHORIZATION);
+                DataStatisticsHelper.getInstance(getActivity()).onCountUv(DataStatisticsHelper.ID_CLICK_THIRD_AUTHORIZATION);
 
                 presenter.clickConfirmAuthorize();
                 break;

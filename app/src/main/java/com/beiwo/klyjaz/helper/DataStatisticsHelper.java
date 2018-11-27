@@ -7,7 +7,6 @@ import android.content.Context;
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.entity.CreditCard;
-import com.beiwo.klyjaz.injection.component.DaggerDataStatisticHelperComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.LogUtils;
@@ -15,7 +14,6 @@ import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 
 
-import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 
@@ -55,23 +53,25 @@ public class DataStatisticsHelper {
     public static final String ID_OPEN_APP = "OPEN_APP";
     public static final String ID_FIRST_INSTALL = "FirstInstall";
 
-    @Inject
+//    @Inject
     Api api;
-    @Inject
+//    @Inject
     Context context;
 
-    private DataStatisticsHelper() {
-        DaggerDataStatisticHelperComponent.builder()
-                .appComponent(App.getInstance().getAppComponent())
-                .build()
-                .inject(this);
+    private DataStatisticsHelper(Context mContext) {
+//        DaggerDataStatisticHelperComponent.builder()
+//                .appComponent(App.getInstance().getAppComponent())
+//                .build()
+//                .inject(this);
+        api = Api.getInstance();
+        context = mContext;
     }
 
-    public static DataStatisticsHelper getInstance() {
+    public static DataStatisticsHelper getInstance(Context mContext) {
         if (sInstance == null) {
             synchronized (DataStatisticsHelper.class) {
                 if (sInstance == null) {
-                    sInstance = new DataStatisticsHelper();
+                    sInstance = new DataStatisticsHelper(mContext.getApplicationContext());
                 }
             }
         }

@@ -16,7 +16,6 @@ import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.AuditedTopicAdapter;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
 import com.beiwo.klyjaz.util.ParamsUtils;
@@ -94,11 +93,6 @@ public class MyDraftsActivity extends BaseComponentActivity implements BaseQuick
     protected void onResume() {
         super.onResume();
         fetchData();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @SuppressLint("CheckResult")

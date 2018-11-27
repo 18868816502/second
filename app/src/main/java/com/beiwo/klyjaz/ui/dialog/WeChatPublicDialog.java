@@ -77,7 +77,7 @@ public class WeChatPublicDialog extends DialogFragment {
                 Statistic.onEvent(Events.CLICK_WECHAT_GO);
 
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_GO_WECHAT);
+                DataStatisticsHelper.getInstance(getActivity()).onCountUv(DataStatisticsHelper.ID_CLICK_GO_WECHAT);
 
                 try {
                     Intent intent = new Intent();

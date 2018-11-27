@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
@@ -94,11 +93,6 @@ public class WeChatBindFirstActivity extends BaseComponentActivity {
                 }
             }
         });
-
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
 
     }
 

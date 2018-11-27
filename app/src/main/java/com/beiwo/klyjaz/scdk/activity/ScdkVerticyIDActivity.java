@@ -17,7 +17,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CircleProgressBar;
 import com.beiwo.klyjaz.ui.activity.VestMainActivity;
 import com.beiwo.klyjaz.util.InputMethodUtil;
@@ -95,10 +94,6 @@ public class ScdkVerticyIDActivity extends BaseComponentActivity implements View
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

@@ -15,10 +15,6 @@ import com.beiwo.klyjaz.base.Constant;
 import com.beiwo.klyjaz.helper.ActivityTracker;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerAppComponent;
-import com.beiwo.klyjaz.injection.module.ApiModule;
-import com.beiwo.klyjaz.injection.module.AppModule;
 import com.beiwo.klyjaz.umeng.Umeng;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.view.jiang.ClassicFooter;
@@ -41,7 +37,6 @@ import cn.xiaoneng.uiapi.Ntalker;
 public class App extends Application {
 
     private static App sInstance;
-    private AppComponent appComponent;
     public static WindowManager mWindowManager;//窗口
     public static int mWidthPixels;//屏幕宽度（像素）
     public static String androidId;//设备Id
@@ -93,12 +88,12 @@ public class App extends Application {
             //pv，uv统计
             androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             if (UserHelper.getInstance(this).isLogin()) {
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP);
+                DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_OPEN_APP);
             } else {
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
+                DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
             }
             if (SPUtils.getFirstInstall()) {
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
+                DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
                 SPUtils.setFirstInstall(false);
             }
         }
@@ -127,15 +122,15 @@ public class App extends Application {
     }
 
     private void initComponent() {
-        appComponent = DaggerAppComponent.builder()
-                .apiModule(new ApiModule())
-                .appModule(new AppModule(this))
-                .build();
+//        appComponent = DaggerAppComponent.builder()
+//                .apiModule(new ApiModule())
+//                .appModule(new AppModule(this))
+//                .build();
     }
 
-    public AppComponent getAppComponent() {
-        return appComponent;
-    }
+//    public AppComponent getAppComponent() {
+//        return appComponent;
+//    }
 
     private String getProcessName(Context cxt) {
         ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);

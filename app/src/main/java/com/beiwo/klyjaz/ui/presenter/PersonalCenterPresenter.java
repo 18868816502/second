@@ -10,7 +10,6 @@ import com.beiwo.klyjaz.util.RxUtil;
 
 import java.util.List;
 
-import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -27,9 +26,8 @@ public class PersonalCenterPresenter extends BaseRxPresenter implements Personal
     private Api api;
     private PersonalCenterContact.View view;
 
-    @Inject
-    PersonalCenterPresenter(Api api, PersonalCenterContact.View view) {
-        this.api = api;
+    public PersonalCenterPresenter(PersonalCenterContact.View view) {
+        this.api = Api.getInstance();
         this.view = view;
     }
 

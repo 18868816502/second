@@ -21,7 +21,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.beiwo.klyjaz.view.BusinessWebView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -151,10 +150,6 @@ public class WebViewActivity extends BaseComponentActivity {
         } else {
             finish();
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     /**

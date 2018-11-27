@@ -15,9 +15,6 @@ import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerChangePsdComponent;
-import com.beiwo.klyjaz.injection.module.ChangePsdModule;
 import com.beiwo.klyjaz.ui.busevents.UserLogoutEvent;
 import com.beiwo.klyjaz.ui.contract.ChangePsdContract;
 import com.beiwo.klyjaz.ui.presenter.ChangePsdPresenter;
@@ -31,8 +28,6 @@ import com.beiwo.klyjaz.view.ClearEditText;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,7 +58,6 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     @BindView(R.id.new_psd_confirm_visibility)
     CheckBox newPsdConfirmVisibility;
 
-    @Inject
     ChangePsdPresenter presenter;
 
     @Override
@@ -80,6 +74,7 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
 
     @Override
     public void configViews() {
+        presenter = new ChangePsdPresenter(this,this);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
 
@@ -116,18 +111,6 @@ public class ChangePsdActivity extends BaseComponentActivity implements ChangePs
     @Override
     public void initDatas() {
         showOrHideEditContent();
-    }
-
-    /**
-     * Dagger2 api
-     */
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerChangePsdComponent.builder()
-                .appComponent(appComponent)
-                .changePsdModule(new ChangePsdModule(this))
-                .build()
-                .inject(this);
     }
 
     @OnClick(R.id.confirm)

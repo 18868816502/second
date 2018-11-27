@@ -18,7 +18,6 @@ import com.beiwo.klyjaz.entity.Phone;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.busevents.UserLoginEvent;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
@@ -123,10 +122,6 @@ public class UserCertificationCodeActivity extends BaseComponentActivity {
         };
         verifyCode.addTextChangedListener(textWatcher);
         clickGetCode();
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

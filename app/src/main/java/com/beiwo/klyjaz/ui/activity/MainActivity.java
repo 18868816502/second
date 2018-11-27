@@ -28,7 +28,6 @@ import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.loan.TabHomeFragment;
 import com.beiwo.klyjaz.loan.TabLoanFragment;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -178,16 +177,16 @@ public class MainActivity extends BaseComponentActivity {
         //umeng统计
         Statistic.onEvent(Events.RESUME_AD_DIALOG);
         //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
+        DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
         new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //umeng统计
                 Statistic.onEvent(Events.CLICK_AD_DIALOG);
                 //统计点击
-                DataStatisticsHelper.getInstance().onAdClicked(ad.getId(), 3);
+                DataStatisticsHelper.getInstance(MainActivity.this).onAdClicked(ad.getId(), 3);
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
+                DataStatisticsHelper.getInstance(MainActivity.this).onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
                 //是否需要登录
                 if (ad.needLogin()) {
                     if (UserHelper.getInstance(MainActivity.this).getProfile() == null) {
@@ -245,7 +244,7 @@ public class MainActivity extends BaseComponentActivity {
                     selectTab(selectedId);
                     if (selectedId == R.id.tab_three_root) {
                         //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
+                        DataStatisticsHelper.getInstance(MainActivity.this).onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
                     }
                 }
             }
@@ -273,11 +272,6 @@ public class MainActivity extends BaseComponentActivity {
                         }
                     }
                 });
-    }
-
-    //空事件
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     /**
@@ -345,14 +339,14 @@ public class MainActivity extends BaseComponentActivity {
                 ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome).hide(tabTool);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.REPORTBUTTON);
                 currentFragment = tabHome;
                 break;
             case R.id.tab_discover_root://发现
                 ft.show(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
                 break;
             case R.id.tab_three_root://社区
@@ -364,14 +358,14 @@ public class MainActivity extends BaseComponentActivity {
                 ft.show(tabTool).hide(tabHome).hide(tabDiscover).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
                 currentFragment = tabDiscover;
                 break;
             case R.id.tab_mine_root://个人
                 ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabTool).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 currentFragment = tabMine;
                 break;
             default:

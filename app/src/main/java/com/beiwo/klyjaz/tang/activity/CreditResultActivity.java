@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.gyf.barlibrary.ImmersionBar;
 import com.just.agentweb.AgentWeb;
@@ -97,9 +96,5 @@ public class CreditResultActivity extends BaseComponentActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 }

@@ -14,7 +14,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Ticket;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -88,10 +87,6 @@ public class TicketDetailActivity extends BaseComponentActivity {
         phone_no.setText(ticket.getTelephone() == null ? "" : ticket.getTelephone());
         bank_name.setText(ticket.getOpenBank() == null ? "" : ticket.getOpenBank());
         bank_account.setText(ticket.getBankAccount() == null ? "" : ticket.getBankAccount());
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.iv_more_setting})

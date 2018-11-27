@@ -16,16 +16,12 @@ import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CircleProgressBar;
-import com.beiwo.klyjaz.jjd.DaggerVertifyIDComponent;
 import com.beiwo.klyjaz.jjd.VertifyIDContract;
-import com.beiwo.klyjaz.jjd.VertifyIDModule;
 import com.beiwo.klyjaz.jjd.VertifyIDPresenter;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -48,7 +44,7 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
     LinearLayout stateContainer;
     @BindView(R.id.tv_start_vertify)
     TextView tvStartVertify;
-    @Inject
+
     VertifyIDPresenter mPresenter;
     /**
      * 认证状态
@@ -88,6 +84,7 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
         toolbar_title.setText(getString(R.string.jjd_verticy_id_title));
+        mPresenter = new VertifyIDPresenter(this,this);
         Intent intent = getIntent();
         if (intent != null) {
             mVertifyState = intent.getIntExtra("mVertifyState", 1);
@@ -101,15 +98,6 @@ public class VerticyIDActivity extends BaseComponentActivity implements VertifyI
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerVertifyIDComponent.builder()
-                .appComponent(appComponent)
-                .vertifyIDModule(new VertifyIDModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

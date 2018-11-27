@@ -17,9 +17,6 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerLoginComponent;
-import com.beiwo.klyjaz.injection.module.LoginModule;
 import com.beiwo.klyjaz.ui.activity.ResetPsdActivity;
 import com.beiwo.klyjaz.ui.activity.WeChatBindFirstActivity;
 import com.beiwo.klyjaz.ui.busevents.UserLoginEvent;
@@ -40,8 +37,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -61,7 +56,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @BindView(R.id.psd_visibility)
     CheckBox psdVisibilityCb;
 
-    @Inject
     LoginPresenter presenter;
 
     private Map<String, String> wechatInfo;
@@ -97,6 +91,7 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
 
     @Override
     public void configViews() {
+        presenter = new LoginPresenter(this,getActivity());
         loginBtn.setClickable(false);
         psdVisibilityCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -148,15 +143,6 @@ public class UserLoginFragment extends BaseComponentFragment implements LoginCon
     @Override
     public void initDatas() {
     }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerLoginComponent.builder().appComponent(appComponent)
-                .loginModule(new LoginModule(this))
-                .build()
-                .inject(this);
-    }
-
 
     @OnClick({R.id.forget_psd, R.id.login, R.id.login_with_wechat})
     void onViewClicked(View view) {

@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerVerifyCodeComponent;
-import com.beiwo.klyjaz.injection.module.VerifyCodeModule;
 import com.beiwo.klyjaz.ui.busevents.ResetPsdNavigationEvent;
 import com.beiwo.klyjaz.ui.contract.ResetPwdVerifyContract;
 import com.beiwo.klyjaz.ui.presenter.ResetPwdVerifyPresenter;
@@ -20,8 +17,6 @@ import com.beiwo.klyjaz.util.InputMethodUtil;
 import com.beiwo.klyjaz.util.LegalInputUtils;
 
 import org.greenrobot.eventbus.EventBus;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +30,6 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
     @BindView(R.id.next_step)
     TextView nextStepBtn;
 
-    @Inject
     ResetPwdVerifyPresenter presenter;
 
     private CountDownTimerUtils countDownTimer;
@@ -58,6 +52,7 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
 
     @Override
     public void configViews() {
+        presenter = new ResetPwdVerifyPresenter(this);
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,15 +82,6 @@ public class RequireVerifyCodeFragment extends BaseComponentFragment implements 
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerVerifyCodeComponent.builder()
-                .appComponent(appComponent)
-                .verifyCodeModule(new VerifyCodeModule(this))
-                .build()
-                .inject(this);
     }
 
     @OnClick(R.id.next_step)

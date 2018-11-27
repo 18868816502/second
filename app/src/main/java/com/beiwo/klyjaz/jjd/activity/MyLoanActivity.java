@@ -12,7 +12,6 @@ import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.CardAdapter;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.ui.activity.VestMainActivity;
@@ -91,9 +90,5 @@ public class MyLoanActivity extends BaseComponentActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 }

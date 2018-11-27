@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.tang.adapter.SocialAdapter;
 import com.beiwo.klyjaz.ui.fragment.SocialAttentionFragment;
@@ -95,10 +94,6 @@ public class SocialFragment extends BaseComponentFragment {
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     private void initIndicator() {

@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.adapter.ForumDetailAdapter;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
@@ -109,11 +108,6 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     private void fetchData(){
         mPresenter.queryForumInfo(forumId,1,10000);
         mPresenter.queryCommentList(forumId,1, 10000);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override

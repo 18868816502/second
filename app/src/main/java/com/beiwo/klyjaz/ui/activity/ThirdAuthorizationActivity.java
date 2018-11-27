@@ -22,7 +22,6 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.gyf.barlibrary.ImmersionBar;
@@ -154,11 +153,6 @@ public class ThirdAuthorizationActivity extends BaseComponentActivity {
         List<String> ids = getIntent().getStringArrayListExtra("ids");
         String url = NetConstants.generateOneKeyLoanUrl(ids, UserHelper.getInstance(this).getProfile().getId());
         webView.loadUrl(url);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override

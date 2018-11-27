@@ -16,7 +16,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.PurseBalance;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.Decoration;
 import com.beiwo.klyjaz.tang.adapter.WalletAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -107,10 +106,6 @@ public class WalletActivity extends BaseComponentActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @OnClick({R.id.tv_withdraw_record, R.id.tv_withdraw})

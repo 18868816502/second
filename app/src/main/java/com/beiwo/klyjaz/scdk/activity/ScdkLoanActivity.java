@@ -13,7 +13,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.ui.activity.UserProtocolActivity;
@@ -95,10 +94,6 @@ public class ScdkLoanActivity extends BaseComponentActivity {
     public void initDatas() {
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
     @OnClick({R.id.iv_agree_protocal, R.id.tv_loan_protocol, R.id.tv_confirm_loan, R.id.tv_dout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -114,7 +109,7 @@ public class ScdkLoanActivity extends BaseComponentActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_confirm_loan:
-                DataStatisticsHelper.getInstance().onCountUv("JjdSureLoanPage");
+                DataStatisticsHelper.getInstance(this).onCountUv("JjdSureLoanPage");
                 main();
                 break;
             case R.id.tv_dout:

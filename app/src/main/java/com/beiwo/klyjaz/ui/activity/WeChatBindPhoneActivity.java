@@ -13,15 +13,10 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerWeChatBindPhoneComponent;
-import com.beiwo.klyjaz.injection.module.WeChatBindPhoneModule;
 import com.beiwo.klyjaz.ui.contract.WeChatBindPhoneContract;
 import com.beiwo.klyjaz.ui.presenter.WeChatBindPhonePresenter;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,7 +42,6 @@ public class WeChatBindPhoneActivity extends BaseComponentActivity implements We
     @BindView(R.id.verify_code)
     EditText etVerifyCode;
 
-    @Inject
     WeChatBindPhonePresenter presenter;
 
     private CountDown countDown;
@@ -82,7 +76,7 @@ public class WeChatBindPhoneActivity extends BaseComponentActivity implements We
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
         setupToolbarBackNavigation(toolbar, R.mipmap.left_arrow_black);
-
+        presenter = new WeChatBindPhonePresenter(this,this);
         ivHintClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,15 +98,6 @@ public class WeChatBindPhoneActivity extends BaseComponentActivity implements We
     @Override
     public void initDatas() {
 
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerWeChatBindPhoneComponent.builder()
-                .appComponent(appComponent)
-                .weChatBindPhoneModule(new WeChatBindPhoneModule(this))
-                .build()
-                .inject(this);
     }
 
     @OnClick(R.id.confirm_bind)

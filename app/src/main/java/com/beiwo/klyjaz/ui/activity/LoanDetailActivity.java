@@ -28,9 +28,6 @@ import com.beiwo.klyjaz.entity.LoanProductDetail;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerLoanDetailComponent;
-import com.beiwo.klyjaz.injection.module.LoanDetailModule;
 import com.beiwo.klyjaz.ui.contract.LoanProductDetailContract;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
 import com.beiwo.klyjaz.ui.dialog.ThirdAuthorizationDialog;
@@ -49,8 +46,6 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -120,7 +115,6 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     private LoanProduct.Row productAbstract;
     private LoanProductDetail productDetail;
 
-    @Inject
     LoanDetailPresenter presenter;
 
     private ThirdAuthorizationDialog authDialog;
@@ -146,6 +140,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
+        presenter = new LoanDetailPresenter(this,this);
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             @Override
@@ -163,7 +158,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             public void onClick(View v) {
                 if (!FastClickUtils.isFastClick()) {
                     //pv，uv统计
-                    DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_LOAN_REQUESTED);
+                    DataStatisticsHelper.getInstance(LoanDetailActivity.this).onCountUv(DataStatisticsHelper.ID_CLICK_LOAN_REQUESTED);
 
                     presenter.clickLoanRequested();
                 }
@@ -188,15 +183,6 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
         } else {
             presenter.queryDetail(loanId);
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerLoanDetailComponent.builder()
-                .appComponent(appComponent)
-                .loanDetailModule(new LoanDetailModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

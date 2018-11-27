@@ -12,8 +12,6 @@ import com.beiwo.klyjaz.ui.contract.WeChatSetPwdContract;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.SPUtils;
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -24,10 +22,9 @@ public class WeChatSetPwdPresenter extends BaseRxPresenter implements WeChatSetP
     private Context context;
     private UserHelper userHelper;
 
-    @Inject
-    WeChatSetPwdPresenter(Context context, Api api, WeChatSetPwdContract.View view) {
+    public WeChatSetPwdPresenter(Context context,WeChatSetPwdContract.View view) {
         this.context = context;
-        this.api = api;
+        this.api = Api.getInstance();
         this.view = view;
         userHelper = UserHelper.getInstance(context);
     }

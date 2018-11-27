@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -67,10 +66,5 @@ public class PhotoDetailActivity extends BaseComponentActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 }

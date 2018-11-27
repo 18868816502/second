@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.classhelper.ForumPublishHelper;
 import com.beiwo.klyjaz.social.contract.ForumPublishContact;
@@ -116,11 +115,6 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
                 mPresenter.fetchEditForum(forumId);
             }
         }
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @Override

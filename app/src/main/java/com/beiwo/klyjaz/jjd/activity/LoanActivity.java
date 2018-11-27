@@ -13,7 +13,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
@@ -101,10 +100,6 @@ public class LoanActivity extends BaseComponentActivity {
     public void initDatas() {
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-    }
-
     @OnClick({R.id.iv_agree_protocal, R.id.tv_loan_protocol, R.id.tv_confirm_loan, R.id.tv_dout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -120,7 +115,7 @@ public class LoanActivity extends BaseComponentActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_confirm_loan:
-                DataStatisticsHelper.getInstance().onCountUv("HPSureLoanButton");
+                DataStatisticsHelper.getInstance(this).onCountUv("HPSureLoanButton");
                 map.put("userId", UserHelper.getInstance(this).id());
                 map.put("orderAmount", money);
                 map.put("limitDay", 10);

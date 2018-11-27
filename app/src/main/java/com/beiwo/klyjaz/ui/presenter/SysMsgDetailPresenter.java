@@ -10,7 +10,6 @@ import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.ui.contract.SysMsgDetailContract;
 import com.beiwo.klyjaz.util.RxUtil;
 
-import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -20,9 +19,8 @@ public class SysMsgDetailPresenter extends BaseRxPresenter implements SysMsgDeta
     private Api mApi;
     private SysMsgDetailContract.View mView;
 
-    @Inject
-    SysMsgDetailPresenter(Api api, SysMsgDetailContract.View view) {
-        mApi = api;
+    public SysMsgDetailPresenter(SysMsgDetailContract.View view) {
+        mApi = Api.getInstance();
         mView = view;
     }
 

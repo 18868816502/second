@@ -7,7 +7,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Audit;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 
@@ -55,9 +54,5 @@ public class SplashActivity extends BaseComponentActivity {
     private void launch() {
         if (App.audit == 2) MainActivity.init(this);
         else VestMainActivity.init(this);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 }

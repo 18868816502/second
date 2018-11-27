@@ -18,9 +18,6 @@ import com.beiwo.klyjaz.constant.ConstantTag;
 import com.beiwo.klyjaz.entity.UserTopicBean;
 import com.beiwo.klyjaz.entity.UserInfoBean;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerPersonalCenterComponent;
-import com.beiwo.klyjaz.injection.module.PersonalCenterModule;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.MyAuditedTopicActivity;
 import com.beiwo.klyjaz.social.activity.MyDraftsActivity;
@@ -38,8 +35,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -63,7 +58,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
-    @Inject
+
     PersonalCenterPresenter presenter;
 
     private UserInfoBean userInfoBean;
@@ -82,6 +77,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
+        presenter = new PersonalCenterPresenter(this);
         ivBack.setOnClickListener(this);
 
         adapter = new PersonalCenterAdapter(this);
@@ -108,15 +104,6 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     protected void onResume() {
         super.onResume();
         presenter.fetchPersonalInfo(userId);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerPersonalCenterComponent.builder()
-                .appComponent(appComponent)
-                .personalCenterModule(new PersonalCenterModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override

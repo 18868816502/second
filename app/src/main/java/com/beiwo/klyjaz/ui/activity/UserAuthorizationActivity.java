@@ -17,7 +17,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.helper.ActivityTracker;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.busevents.AuthNavigationEvent;
 import com.beiwo.klyjaz.ui.busevents.UserLoginEvent;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
@@ -123,10 +122,6 @@ public class UserAuthorizationActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

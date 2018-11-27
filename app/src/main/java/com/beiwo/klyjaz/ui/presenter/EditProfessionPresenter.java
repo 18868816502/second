@@ -13,8 +13,6 @@ import com.beiwo.klyjaz.util.RxUtil;
 
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -26,9 +24,8 @@ public class EditProfessionPresenter extends BaseRxPresenter implements EditProf
     private Context mContext;
     private UserHelper mUserHelper;
 
-    @Inject
-    EditProfessionPresenter(Api api, EditProfessionContract.View view, Context context) {
-        mApi = api;
+    public EditProfessionPresenter(EditProfessionContract.View view, Context context) {
+        mApi = Api.getInstance();
         mView = view;
         mContext = context;
         mUserHelper = UserHelper.getInstance(context);

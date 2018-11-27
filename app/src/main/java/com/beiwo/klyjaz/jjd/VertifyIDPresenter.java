@@ -10,8 +10,6 @@ import com.beiwo.klyjaz.base.BaseRxPresenter;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.util.RxUtil;
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -24,9 +22,8 @@ public class VertifyIDPresenter extends BaseRxPresenter implements VertifyIDCont
     private Context context;
     private UserHelper userHelper;
 
-    @Inject
-    VertifyIDPresenter(Api api, VertifyIDContract.View view, Context context) {
-        this.api = api;
+    public VertifyIDPresenter(VertifyIDContract.View view, Context context) {
+        this.api = Api.getInstance();
         this.view = view;
         this.context = context;
         this.userHelper = UserHelper.getInstance(context);

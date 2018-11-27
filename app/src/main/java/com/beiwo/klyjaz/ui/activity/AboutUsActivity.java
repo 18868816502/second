@@ -13,7 +13,6 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
@@ -51,11 +50,6 @@ public class AboutUsActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
-
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
 
     }
 

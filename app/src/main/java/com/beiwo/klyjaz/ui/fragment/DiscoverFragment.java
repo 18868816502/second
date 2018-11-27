@@ -21,7 +21,6 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.base.BaseTabFragment;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
 
@@ -70,7 +69,7 @@ public class DiscoverFragment extends BaseTabFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mActivity = getActivity();
         //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
+        DataStatisticsHelper.getInstance(getActivity()).onCountUv(DataStatisticsHelper.ID_CLICK_TAB_NEWS);
         //umeng统计
         Statistic.onEvent(Events.ENTER_NEWS_PAGE);
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -163,10 +162,6 @@ public class DiscoverFragment extends BaseTabFragment {
 
     @Override
     public void initDatas() {
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     private class PgaerAdapter extends FragmentPagerAdapter {

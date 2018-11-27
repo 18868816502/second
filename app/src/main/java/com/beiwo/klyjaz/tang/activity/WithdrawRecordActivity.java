@@ -11,7 +11,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.WithdrawRecord;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.tang.adapter.WithdrawRecordAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -112,9 +111,5 @@ public class WithdrawRecordActivity extends BaseComponentActivity {
     private void initRecyclerView() {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 }

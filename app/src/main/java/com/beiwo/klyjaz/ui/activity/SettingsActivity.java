@@ -17,9 +17,6 @@ import com.beiwo.klyjaz.entity.AppUpdate;
 import com.beiwo.klyjaz.helper.DataCleanManager;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
-import com.beiwo.klyjaz.injection.component.DaggerSettingComponent;
-import com.beiwo.klyjaz.injection.module.SettingModule;
 import com.beiwo.klyjaz.ui.busevents.UserLogoutEvent;
 import com.beiwo.klyjaz.ui.contract.SettingContract;
 import com.beiwo.klyjaz.ui.dialog.AlertDialog;
@@ -32,8 +29,6 @@ import com.beiwo.klyjaz.view.RelativeLayoutBar;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -54,7 +49,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     //清除缓存的大小
     private String mCacheSize;
 
-    @Inject
     SettingPresenter presenter;
 
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
@@ -76,8 +70,8 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     public void configViews() {
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
-
         SlidePanelHelper.attach(this);
+        presenter = new SettingPresenter(this,this);
     }
 
     @Override
@@ -94,15 +88,6 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         }
         about_kaola.setLeftTextViewText(String.format(getString(R.string.about_app), getString(R.string.app_name)));
         clearCacheRel.setRightTextView1Text(mCacheSize);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-        DaggerSettingComponent.builder()
-                .appComponent(appComponent)
-                .settingModule(new SettingModule(this))
-                .build()
-                .inject(this);
     }
 
     @OnClick({R.id.about_kaola, R.id.star_me, R.id.check_version, R.id.exit, R.id.clear_cache})

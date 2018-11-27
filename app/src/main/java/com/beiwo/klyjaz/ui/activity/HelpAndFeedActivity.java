@@ -42,7 +42,6 @@ import com.beiwo.klyjaz.entity.request.RequestConstants;
 import com.beiwo.klyjaz.helper.FileProviderHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.util.FastClickUtils;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.LogUtils;
@@ -316,10 +315,6 @@ public class HelpAndFeedActivity extends BaseComponentActivity {
     public void initDatas() {
     }
 
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
-    }
 
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void openCamera() {

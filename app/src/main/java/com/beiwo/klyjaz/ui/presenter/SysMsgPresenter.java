@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -32,9 +30,8 @@ public class SysMsgPresenter extends BaseRxPresenter implements SysMsgContract.P
     private List<SysMsg.Row> sysMsgList;
     private UserHelper mUserHelper;
 
-    @Inject
-    SysMsgPresenter(Api api, SysMsgContract.View view, Context context) {
-        mApi = api;
+    public SysMsgPresenter(SysMsgContract.View view, Context context) {
+        mApi = Api.getInstance();
         mView = view;
         mUserHelper = UserHelper.getInstance(context);
     }

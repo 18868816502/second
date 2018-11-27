@@ -10,7 +10,6 @@ import android.view.View;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.activity.SocialTopicDetailActivity;
 import com.beiwo.klyjaz.ui.adapter.social.SocialAttentionAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -70,10 +69,6 @@ public class SocialAttentionFragment extends BaseComponentFragment implements On
             mList.add(bean);
         }
         adapter.notifySocialTopicChanged(mList);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     @Override

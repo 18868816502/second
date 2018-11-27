@@ -19,8 +19,6 @@ import com.beiwo.klyjaz.util.SPUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,9 +34,8 @@ public class LoginPresenter extends BaseRxPresenter implements LoginContract.Pre
     private Context context;
     private UserHelper userHelper;
 
-    @Inject
-    LoginPresenter(Api api, LoginContract.View view, Context context) {
-        this.api = api;
+    public LoginPresenter(LoginContract.View view, Context context) {
+        this.api = Api.getInstance();
         this.view = view;
         this.context = context;
         this.userHelper = UserHelper.getInstance(context);

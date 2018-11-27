@@ -14,8 +14,6 @@ import com.beiwo.klyjaz.ui.contract.WeChatBindPhoneContract;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.SPUtils;
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -26,10 +24,9 @@ public class WeChatBindPhonePresenter extends BaseRxPresenter implements WeChatB
     private WeChatBindPhoneContract.View view;
     private UserHelper userHelper;
 
-    @Inject
-    WeChatBindPhonePresenter(Context context, Api api, WeChatBindPhoneContract.View view) {
+    public WeChatBindPhonePresenter(Context context,WeChatBindPhoneContract.View view) {
         this.context = context;
-        this.api = api;
+        this.api = Api.getInstance();
         this.view = view;
         userHelper = UserHelper.getInstance(context);
     }

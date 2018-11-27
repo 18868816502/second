@@ -23,7 +23,6 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.scdk.fragment.LoanFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
@@ -192,7 +191,7 @@ public class VestMainActivity extends BaseComponentActivity {
                     selectTab(selectedId);
                     if (selectedId == R.id.tab_three_root) {
                         //pv，uv统计
-                        DataStatisticsHelper.getInstance().onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
+                        DataStatisticsHelper.getInstance(VestMainActivity.this).onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
                     }
                 }
             }
@@ -203,11 +202,6 @@ public class VestMainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         defaultTabIconTxt();
-    }
-
-    //空事件
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
     }
 
     /**
@@ -273,7 +267,7 @@ public class VestMainActivity extends BaseComponentActivity {
                 ft.hide(tabMine).hide(tabSocial).hide(tabTool).show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.REPORTBUTTON);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.REPORTBUTTON);
                 break;
             case R.id.tab_three_root://社区
                 ft.show(tabSocial).hide(tabHome).hide(tabTool).hide(tabMine);
@@ -283,13 +277,13 @@ public class VestMainActivity extends BaseComponentActivity {
                 ft.show(tabTool).hide(tabHome).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.HPTALLY);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
                 break;
             case R.id.tab_mine_root://个人
                 ft.show(tabMine).hide(tabHome).hide(tabTool).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance().onCountUv(NewVersionEvents.DISCOVERBUTTON);
+                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 break;
             default:
                 break;

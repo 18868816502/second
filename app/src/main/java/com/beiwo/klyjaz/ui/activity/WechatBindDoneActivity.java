@@ -17,7 +17,6 @@ import com.beiwo.klyjaz.entity.Phone;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.util.CountDownTimerUtils;
 import com.beiwo.klyjaz.util.LegalInputUtils;
 import com.beiwo.klyjaz.util.RxUtil;
@@ -128,11 +127,6 @@ public class WechatBindDoneActivity extends BaseComponentActivity {
         verifyCode.addTextChangedListener(textWatcher);
 
         requestVerifyCode(pendingPhone);
-
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
 
     }
 

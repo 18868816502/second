@@ -20,7 +20,6 @@ import com.beiwo.klyjaz.entity.News;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.injection.component.AppComponent;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
@@ -54,7 +53,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //pv，uv统计
-        DataStatisticsHelper.getInstance().onCountUv(DataStatisticsHelper.ID_RESUME_NEWS);
+        DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_RESUME_NEWS);
     }
 
     @Override
@@ -130,11 +129,6 @@ public class NewsDetailActivity extends BaseComponentActivity {
         }
         newsUrl = NetConstants.generateNewsUrl(newsId, userId);
         webView.loadUrl(newsUrl);
-    }
-
-    @Override
-    protected void configureComponent(AppComponent appComponent) {
-
     }
 
     @OnClick({R.id.close, R.id.share})
