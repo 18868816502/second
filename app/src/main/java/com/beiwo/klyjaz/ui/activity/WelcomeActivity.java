@@ -83,7 +83,8 @@ public class WelcomeActivity extends BaseActivity {
 
     private class WelcomeAdapter extends PagerAdapter {
         private LinkedList<View> cachedView = new LinkedList<>();
-        private int[] imageId = {R.drawable.welcome_page_1, R.drawable.welcome_page_2, R.drawable.welcome_page_3};
+//        private int[] imageId = {R.drawable.welcome_page_1, R.drawable.welcome_page_2, R.drawable.welcome_page_3};
+        private int[] imageId = {R.drawable.about_kaola_logo, R.drawable.about_kaola_logo, R.drawable.about_kaola_logo};
 
         @Override
         public int getCount() {
