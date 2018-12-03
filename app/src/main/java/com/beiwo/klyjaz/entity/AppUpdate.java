@@ -11,8 +11,8 @@ public class AppUpdate {
     private int appType;
     private String versionUrl;
     private String content;
-    private long gmtCreate;
-    private long gmtModify;
+    private String gmtCreate;
+    private String gmtModify;
 
     /**
      * @version 3.1.0
@@ -92,19 +92,19 @@ public class AppUpdate {
         this.content = content;
     }
 
-    public long getGmtCreate() {
+    public String getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(long gmtCreate) {
+    public void setGmtCreate(String gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 
-    public long getGmtModify() {
+    public String getGmtModify() {
         return gmtModify;
     }
 
-    public void setGmtModify(long gmtModify) {
+    public void setGmtModify(String gmtModify) {
         this.gmtModify = gmtModify;
     }
 }
