@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.base;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import com.beiwo.klyjaz.R;
 public class BaseActivity extends AppCompatActivity {
     protected boolean override = true;
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
         super.startActivityForResult(intent, requestCode, options);

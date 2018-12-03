@@ -71,7 +71,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         setupToolbar(toolbar);
         SlidePanelHelper.attach(this);
-        presenter = new SettingPresenter(this,this);
+        presenter = new SettingPresenter(this, this);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class SettingsActivity extends BaseComponentActivity implements SettingCo
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.about_kaola:
-                startActivity(new Intent(SettingsActivity.this, AboutKaolaActivity.class));
+                startActivity(new Intent(this, AboutKaolaActivity.class));
                 break;
             case R.id.star_me:
                 //制造商

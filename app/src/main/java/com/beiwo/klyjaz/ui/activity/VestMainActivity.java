@@ -24,10 +24,10 @@ import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.scdk.fragment.LoanFragment;
+import com.beiwo.klyjaz.tang.fragment.SocialRecomFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
-import com.beiwo.klyjaz.ui.fragment.SocialRecommendFragment;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -238,7 +238,7 @@ public class VestMainActivity extends BaseComponentActivity {
     }
 
     private LoanFragment tabHome;
-    public SocialRecommendFragment tabSocial;
+    public SocialRecomFragment tabSocial;
     private ToolFragment tabTool;
     private PersonalFragment tabMine;
 
@@ -251,7 +251,7 @@ public class VestMainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
         if (tabSocial == null) {
-            tabSocial = SocialRecommendFragment.newInstance();
+            tabSocial = SocialRecomFragment.newInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
         if (tabTool == null) {
@@ -317,11 +317,6 @@ public class VestMainActivity extends BaseComponentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!SPUtils.getCheckPermission()) {
                 ArrayList<String> permission = new ArrayList<>();
-                /*for (int i = 0; i < needPermission.length; ++i) {
-                    if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
-                        permission.add(needPermission[i]);
-                    }
-                }*/
                 for (String p : needPermission) {
                     if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
                         permission.add(p);

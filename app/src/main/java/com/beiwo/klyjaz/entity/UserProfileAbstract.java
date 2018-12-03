@@ -1,6 +1,8 @@
 package com.beiwo.klyjaz.entity;
 
 
+import com.google.gson.Gson;
+
 public class UserProfileAbstract {
     private String id;
     private String userName;
@@ -55,5 +57,10 @@ public class UserProfileAbstract {
 
     public void setNewUser(boolean newUser) {
         this.newUser = newUser;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

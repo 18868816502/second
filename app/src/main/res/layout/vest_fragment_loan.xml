@@ -135,7 +135,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="借款10天"
+                        android:text="借款30天"
                         android:textColor="#A5A9B2"
                         android:textSize="12dp" />
 
@@ -149,7 +149,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="服务费"
+                        android:text="日息0.05%"
                         android:textColor="#A5A9B2"
                         android:textSize="12dp" />
 
@@ -159,7 +159,8 @@
                         android:layout_height="wrap_content"
                         android:text="58.8元"
                         android:textColor="#ff6232"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/iv_question"
@@ -167,7 +168,8 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="7dp"
                         android:paddingRight="5dp"
-                        android:src="@mipmap/ic_bill_dout" />
+                        android:src="@mipmap/ic_bill_dout"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <SeekBar
@@ -184,7 +186,7 @@
                     android:progressDrawable="@drawable/seekbar"
                     android:splitTrack="false"
                     android:thumb="@drawable/ic_seekbar_thumb"
-                    android:thumbOffset="15dp"
+                    android:thumbOffset="10dp"
                     tools:progress="580" />
 
                 <FrameLayout

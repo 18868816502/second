@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.tang;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -118,6 +119,7 @@ public class DlgUtil {
 
     public static void loginDlg(final Activity context, final OnLoginSuccessListener listener) {
         DlgUtil.createDlg(context, R.layout.dlg_login, new DlgUtil.OnDlgViewClickListener() {
+            @SuppressLint("CheckResult")
             @Override
             public void onViewClick(final Dialog dialog, View dlgView) {
                 final ClearEditText cet_phone = dlgView.findViewById(R.id.cet_phone);
