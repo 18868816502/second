@@ -3,6 +3,7 @@ package com.beiwo.klyjaz.helper;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ public class SlidePanelHelper {
         final Activity curActivity = activity;
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
         View contentView = decorView.getChildAt(0);
+        contentView.setBackground(ContextCompat.getDrawable(activity, R.color.white));
         decorView.removeView(contentView);
 
         Activity cacheActivity = ActivityTracker.getInstance().getLastActivity();

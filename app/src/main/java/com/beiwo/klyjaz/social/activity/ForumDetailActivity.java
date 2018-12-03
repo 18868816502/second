@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.adapter.ForumDetailAdapter;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
@@ -48,8 +50,8 @@ import butterknife.BindView;
  * @descripe 动态详情页
  * @time 2018/10/29 11:35
  */
-public class ForumDetailActivity extends BaseComponentActivity implements ForumDetailContact.View,OnRefreshListener,
-        View.OnClickListener,BaseQuickAdapter.OnItemChildClickListener,OnChildViewClickListener{
+public class ForumDetailActivity extends BaseComponentActivity implements ForumDetailContact.View, OnRefreshListener,
+        View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener, OnChildViewClickListener {
 
     @BindView(R.id.tool_bar)
     RelativeLayout toolBar;
@@ -79,6 +81,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolBar).statusBarDarkFont(true).init();
+        SlidePanelHelper.attach(this);
         fManager = getSupportFragmentManager();
 
         mAdapter = new ForumDetailAdapter();
@@ -89,10 +92,10 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
         refreshLayout.setEnableLoadMore(false);
         refreshLayout.setOnRefreshListener(this);
 
-        mPresenter = new ForumDetailPresenter(this,this);
+        mPresenter = new ForumDetailPresenter(this, this);
         forumHelper = new ForumHelper(this);
-        mAdapter.addHeaderView(forumHelper.initHead(recyclerView,this));
-        mAdapter.addFooterView(forumHelper.initFoot(recyclerView,this));
+        mAdapter.addHeaderView(forumHelper.initHead(recyclerView, this));
+        mAdapter.addFooterView(forumHelper.initFoot(recyclerView, this));
         ivMore.setOnClickListener(this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnChildViewClickListener(this);
@@ -105,9 +108,9 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
         fetchData();
     }
 
-    private void fetchData(){
-        mPresenter.queryForumInfo(forumId,1,10000);
-        mPresenter.queryCommentList(forumId,1, 10000);
+    private void fetchData() {
+        mPresenter.queryForumInfo(forumId, 1, 10000);
+        mPresenter.queryCommentList(forumId, 1, 10000);
     }
 
     @Override
@@ -122,10 +125,10 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
         refreshLayout.finishRefresh();
         this.commentLists = list;
-        if(list != null){
-            if(list.size() > 3){
-                mAdapter.addData(list.subList(0,3));
-            }else{
+        if (list != null) {
+            if (list.size() > 3) {
+                mAdapter.addData(list.subList(0, 3));
+            } else {
                 mAdapter.addData(list);
             }
         }
@@ -163,16 +166,16 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
             DlgUtil.loginDlg(this, null);
             return;
         }
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_more:
                 showOperateWindow();
                 break;
 
             case R.id.iv_comment:
-                page2CommentActivity(0,0,0);
+                page2CommentActivity(0, 0, 0);
                 break;
             case R.id.foot:
-                page2CommentActivity(1,0,0);
+                page2CommentActivity(1, 0, 0);
                 break;
 
             case R.id.tv_delete:
@@ -198,17 +201,18 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
                 PopUtils.dismiss();
                 fetchReport(getString(R.string.article_more_report_content4));
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     /**
      * 举报动态
+     *
      * @param reportContent 举报内容
      */
-    private void fetchReport(String reportContent){
-        if(forumBean != null) {
+    private void fetchReport(String reportContent) {
+        if (forumBean != null) {
             mPresenter.fetchSaveReport(forumBean.getForumId(), "1", reportContent);
         }
     }
@@ -219,27 +223,27 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
             if (TextUtils.equals(forumBean.getUserId(), UserHelper.getInstance(this).getProfile().getId())) {
                 PopUtils.showForumDeleteDialog(fManager, this, this);
             } else {
-                PopUtils.showForumReportDialog( fManager, this, this);
+                PopUtils.showForumReportDialog(fManager, this, this);
             }
         } else {
             DlgUtil.loginDlg(this, null);
         }
     }
 
-    private void page2CommentActivity(int type,int position,int childPosition){
+    private void page2CommentActivity(int type, int position, int childPosition) {
         Intent intent = new Intent(this, ForumCommentActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("forumId",forumId);
-        bundle.putInt("type",type);
-        bundle.putInt("position",position);
-        bundle.putInt("childPosition",childPosition);
+        bundle.putString("forumId", forumId);
+        bundle.putInt("type", type);
+        bundle.putInt("position", position);
+        bundle.putInt("childPosition", childPosition);
         bundle.putSerializable("list", (Serializable) commentLists);
         intent.putExtras(bundle);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
     }
 
-    private void page2PersonalActivity(String userId){
+    private void page2PersonalActivity(String userId) {
         Intent intent = new Intent(ForumDetailActivity.this, PersonalCenterActivity.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
@@ -251,9 +255,9 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
             DlgUtil.loginDlg(this, null);
             return;
         }
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_article_comment:
-                page2CommentActivity(2,position,0);
+                page2CommentActivity(2, position, 0);
                 break;
             case R.id.tv_comment_delete:
                 mPresenter.fetchCancelReply(commentLists.get(position).getId());
@@ -261,20 +265,20 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
             case R.id.iv_commentator_avatar:
                 page2PersonalActivity(commentLists.get(position).getUserId());
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onChildViewClick(View v, int position, int childPosition) {
         CommentReplyBean.ReplyDtoListBean replyBean = commentLists.get(position).getReplyDtoList().get(childPosition);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_commentator_avatar:
                 page2PersonalActivity(replyBean.getUserId());
                 break;
             case R.id.iv_article_comment:
-                page2CommentActivity(3,position,childPosition);
+                page2CommentActivity(3, position, childPosition);
                 break;
             case R.id.tv_comment_delete:
                 mPresenter.fetchCancelReply(commentLists.get(position).getReplyDtoList().get(childPosition).getId());
@@ -282,6 +286,14 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
             default:
                 break;
         }
+    }
+
+    @Override
+    public void finish() {
+        Intent intent = new Intent("refresh_layout");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        override = false;
+        super.finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -306,5 +318,4 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
             EventBus.getDefault().unregister(this);
         }
     }
-
 }

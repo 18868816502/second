@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -130,7 +131,6 @@ public class SocialRecomFragment extends BaseComponentFragment {
             @Override
             public void itemClick(String forumId, String userId) {
                 DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
-//                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
                 Intent intent = new Intent(getActivity(), ForumDetailActivity.class);
                 intent.putExtra("forumId", forumId);
                 intent.putExtra("userId", userId);
@@ -264,7 +264,6 @@ public class SocialRecomFragment extends BaseComponentFragment {
             case R.id.iv_publish:
                 DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
-//                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                     startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 } else {
                     DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {
