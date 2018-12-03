@@ -8,6 +8,7 @@ import android.util.Log;
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.api.interceptor.AccessHeadInterceptor;
+import com.beiwo.klyjaz.api.interceptor.Digest;
 import com.beiwo.klyjaz.entity.AccountFlowIconBean;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.AllDebt;
@@ -1202,9 +1203,14 @@ public class Api {
     /*generate method*/
     //加密密码
     private String generatePwd(String pwd, String account) {
-        String sha = new String(Hex.encodeHex(DigestUtils.sha512(pwd)));
-        String md5 = new String(Hex.encodeHex(DigestUtils.md5(sha + account)));
-        return md5.toUpperCase();
+        String s1 = Digest.sha512(pwd);
+        byte[] bytes = Digest.hexStr2Bytes(s1);
+        String s2 = Digest.bytes2HexStr(bytes);
+
+        String s3 = Digest.md5(s2 + account);
+        byte[] bytes1 = Digest.hexStr2Bytes(s3);
+        String s4 = Digest.bytes2HexStr(bytes1);
+        return s4.toUpperCase();
     }
 
 

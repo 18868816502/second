@@ -60,4 +60,24 @@ public class Digest {
         }
         return sb.toString();
     }
+
+    public static String sha512(String value) {
+        String result = "";
+        if (value != null && value.length() > 0) {
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-512");
+                digest.update(value.getBytes());
+                byte[] bytes = digest.digest();
+                StringBuffer sb = new StringBuffer();
+                for (byte b : bytes) {
+                    String hex = Integer.toHexString(0xff & b);
+                    if (hex.length() == 1) sb.append("0");
+                    sb.append(hex);
+                }
+                result = sb.toString();
+            } catch (Exception e) {
+            }
+        }
+        return result;
+    }
 }

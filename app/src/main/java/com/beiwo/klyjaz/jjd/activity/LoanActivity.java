@@ -87,12 +87,19 @@ public class LoanActivity extends BaseComponentActivity {
             money = intent.getIntExtra("money", 0);
             charge = intent.getFloatExtra("charge", 0f);
         }
+        //借款金额
         tv_loan_money.setText(money + "元");
-        tv_loan_period.setText("10天");
-        tv_service_charge.setText(String.format("%.2f元", charge));
-        tv_real_money.setText(String.format("%.2f元", money - charge));
-        tv_pay_date.setText(StringUtil.date2Now(9));
-        tv_pay_money.setText(money + "元");
+        //借款期限
+        tv_loan_period.setText("30天");
+        //删除
+        //tv_service_charge.setText(String.format("%.2f元", charge));
+        //到账金额
+        tv_real_money.setText(money + "元");
+        //还款时间
+        tv_pay_date.setText(StringUtil.date2Now(29));
+        //还款金额
+        tv_pay_money.setText(String.format("%.2f元", money * 0.05 / 100 * 30 + money));
+        //借款协议
         tv_loan_protocol.setText(String.format(getString(R.string.loan_protocol), getString(R.string.app_name)));
     }
 

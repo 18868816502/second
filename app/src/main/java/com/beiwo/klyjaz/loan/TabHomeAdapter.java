@@ -8,14 +8,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -284,7 +280,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     //state 1
     private TextView tv_seekbar_progress;
     private ImageView iv_edit_money;
-    private TextView tv_service_charge;
+    //private TextView tv_service_charge;
     private ImageView iv_question;
     private TextView tv_go_loan;
     //state 2
@@ -296,16 +292,16 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         if (state == 1) {//正常状态
             tv_seekbar_progress = view.findViewById(R.id.tv_seekbar_progress);
             iv_edit_money = view.findViewById(R.id.iv_edit_money);
-            tv_service_charge = view.findViewById(R.id.tv_service_charge);
+            //tv_service_charge = view.findViewById(R.id.tv_service_charge);
             iv_question = view.findViewById(R.id.iv_question);
             tv_go_loan = view.findViewById(R.id.tv_go_loan);
 
             tv_seekbar_progress.setText(FormatNumberUtils.FormatNumberFor0(progress));
-            float charge = progress / 100;
+            /*float charge = progress / 100;
             SpannableString ss = new SpannableString(String.format("%.2f元", charge));
             ForegroundColorSpan span = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.refresh_one));
             ss.setSpan(span, 0, ss.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            tv_service_charge.setText(ss);
+            tv_service_charge.setText(ss);*/
 
             iv_edit_money.setOnClickListener(this);
             iv_question.setOnClickListener(this);

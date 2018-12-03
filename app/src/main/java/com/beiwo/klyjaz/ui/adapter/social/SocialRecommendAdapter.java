@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -93,12 +94,12 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.ic_unpraised);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
-            viewHoler.tvPraise.setTextColor(mContext.getColor(R.color.black_2));
+            viewHoler.tvPraise.setTextColor(ContextCompat.getColor(mContext, R.color.black_2));
         } else {
             Drawable dwLeft = mContext.getResources().getDrawable(R.drawable.ic_praised);
             dwLeft.setBounds(0, 0, dwLeft.getMinimumWidth(), dwLeft.getMinimumHeight());
             viewHoler.tvPraise.setCompoundDrawables(dwLeft, null, null, null);
-            viewHoler.tvPraise.setTextColor(mContext.getColor(R.color.c_ff5240));
+            viewHoler.tvPraise.setTextColor(ContextCompat.getColor(mContext, R.color.c_ff5240));
         }
 
         viewHoler.itemView.setTag(position);
