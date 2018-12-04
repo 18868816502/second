@@ -101,7 +101,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
         ivNavigate.setOnClickListener(this);
         tvPublish.setOnClickListener(this);
 
-        etPublishTitle.addTextChangedListener(new ForumTitleWatcher(this,tvPublishTitleNum));
+        etPublishTitle.addTextChangedListener(new ForumTitleWatcher(this, tvPublishTitleNum));
         etPublishTitle.setFilters(new InputFilter[]{InputFilterUtils.emojiFilter, new InputFilter.LengthFilter(30)});
         etPublishContent.setFilters(new InputFilter[]{InputFilterUtils.emojiFilter, new InputFilter.LengthFilter(1500)});
 
@@ -217,14 +217,14 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
             ToastUtil.toast(getString(R.string.social_forum_content_tips));
             return;
         }
-        PopUtils.showForumCommitDialog(getSupportFragmentManager(),this,this);
+        PopUtils.showForumCommitDialog(getSupportFragmentManager(), this, this);
     }
 
 
     /**
      * 保存草稿或者发布动态
      */
-    private void publishForum(){
+    private void publishForum() {
         mPresenter.addDraftUrls(helper.getDraftUrls());
         if (helper.getBitmapList().size() == 0) {
             getForumText();
@@ -250,7 +250,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
     /**
      * 获取动态编辑内容和标题
      */
-    private void getForumText(){
+    private void getForumText() {
         mForumTitle = etPublishTitle.getText().toString();
         mForumContent = etPublishContent.getText().toString();
     }
@@ -266,7 +266,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
     /**
      * 检查相机权限
      */
-    private void checkPermission(){
+    private void checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请WRITE_EXTERNAL_STORAGE权限
@@ -302,7 +302,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
                 .capture(true)
                 //只显示一种媒体类型（图片或者视频）
                 .showSingleMediaType(true)
-                .captureStrategy(new CaptureStrategy(true, "com.beiwo.klyjaz.fileprovider", "kaola"))
+                .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider", "kaola"))
                 //限制最大的选择数目
                 .maxSelectable(9 - helper.getListSize())
                 .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))

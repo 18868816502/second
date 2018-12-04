@@ -1,24 +1,16 @@
 package com.beiwo.klyjaz.social.classhelper;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.adapter.ForumPublishAdapter;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,8 +19,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.beiwo.klyjaz.social.activity.ForumPublishActivity.REQUEST_CODE_CHOOSE;
-
 /**
  * @author chenguoguo
  * @name loanmarket_social
@@ -36,7 +26,7 @@ import static com.beiwo.klyjaz.social.activity.ForumPublishActivity.REQUEST_CODE
  * @descripe
  * @time 2018/11/13 15:46
  */
-public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickListener{
+public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickListener {
 
     private Context mContext;
     private View.OnClickListener listener;
@@ -56,11 +46,12 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
 
     /**
      * 初始化header View（外层头部）
+     *
      * @return view
      */
     public View initHead(View.OnClickListener listener) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_forum_publish_head, recyclerView,false);
-        ButterKnife.bind(this,view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_forum_publish_head, recyclerView, false);
+        ButterKnife.bind(this, view);
         this.listener = listener;
         bindView();
         return view;
@@ -68,17 +59,18 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
 
     /**
      * 初始化footer View（内层底部，添加图片）
+     *
      * @return view
      */
-    private View initFoot(){
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_community_publish_head_foot, recyclerView,false);
+    private View initFoot() {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_community_publish_head_foot, recyclerView, false);
         view.setOnClickListener(listener);
         return view;
     }
 
     private void bindView() {
         mAdapter = new ForumPublishAdapter();
-        GridLayoutManager manager = new GridLayoutManager(mContext,4);
+        GridLayoutManager manager = new GridLayoutManager(mContext, 4);
         manager.setSpanCount(4);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
@@ -89,7 +81,7 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
         mAdapter.setOnItemChildClickListener(this);
     }
 
-    public void setDatas(List<String> list){
+    public void setDatas(List<String> list) {
         this.datas.addAll(list);
         mAdapter.setNewData(datas);
         mAdapter.notifyDataSetChanged();
@@ -97,25 +89,28 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
 
     /**
      * 获取选取的照片集合
+     *
      * @return 图片地址集合
      */
-    public List<String> getList(){
+    public List<String> getList() {
         return datas;
     }
 
     /**
      * 获取选择的图片数量
+     *
      * @return 图片数量
      */
-    public int getListSize(){
+    public int getListSize() {
         return datas.size();
     }
 
     /**
      * 获取转换后的bitmap集合
+     *
      * @return 本地选取bitmap集合
      */
-    public List<Bitmap> getBitmapList(){
+    public List<Bitmap> getBitmapList() {
         clearNetPicture();
         List<Bitmap> bitmaps = new ArrayList<>();
         for (int i = 0; i < datas.size(); i++) {
@@ -127,9 +122,10 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
 
     /**
      * 获取选择本地的图片数量
+     *
      * @return 图片数量
      */
-    public int getSize(){
+    public int getSize() {
         return datas.size();
     }
 
@@ -148,9 +144,10 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
 
     /**
      * 设置草稿箱数据
+     *
      * @param list 草稿箱list
      */
-    public void setDraftUrls(List<String> list){
+    public void setDraftUrls(List<String> list) {
         this.datas.addAll(list);
         this.draftsUrls.addAll(list);
         mAdapter.setNewData(draftsUrls);
@@ -160,13 +157,13 @@ public class ForumPublishHelper implements BaseQuickAdapter.OnItemChildClickList
     /**
      * 获取草稿箱图片urls数据
      */
-    public List<String> getDraftUrls(){
+    public List<String> getDraftUrls() {
         return draftsUrls;
     }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_delete:
                 datas.remove(position);
                 mAdapter.setNewData(datas);
