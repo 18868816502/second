@@ -64,6 +64,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".social.activity.TopicDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme" />
+        <activity
             android:name=".loan.ProTypeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

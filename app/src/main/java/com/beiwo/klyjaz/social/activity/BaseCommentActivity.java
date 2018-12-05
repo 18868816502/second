@@ -92,5 +92,4 @@ public abstract class BaseCommentActivity extends AppCompatActivity  {
         }
         loading.show();
     }
-
 }

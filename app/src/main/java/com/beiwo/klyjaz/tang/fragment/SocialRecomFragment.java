@@ -26,15 +26,19 @@ import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
+import com.beiwo.klyjaz.social.activity.TopicDetailActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.social.bean.TopicDetail;
 import com.beiwo.klyjaz.tang.DlgUtil;
-import com.beiwo.klyjaz.tang.adapter.RecomAdapter;
+import com.beiwo.klyjaz.tang.adapter.RecomMultiAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
+import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
+import com.beiwo.klyjaz.util.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -44,7 +48,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -76,7 +82,9 @@ public class SocialRecomFragment extends BaseComponentFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
-    private RecomAdapter adapter = new RecomAdapter();
+    //private RecomAdapter adapter = new RecomAdapter();
+    private RecomMultiAdapter multiAdapter = new RecomMultiAdapter(null);
+    private List<SocialTopicBean.ForumBean> datas = new ArrayList<>();
     private Map<String, Object> map = new HashMap<>();
     private int pageNo = 1;
     private int pageSize = 30;
@@ -126,7 +134,8 @@ public class SocialRecomFragment extends BaseComponentFragment {
                 request(pageNo);
             }
         });
-        adapter.setOnArticleClickListener(new RecomAdapter.OnArticleClickListener() {
+
+        multiAdapter.setOnArticleClickListener(new RecomMultiAdapter.OnArticleClickListener() {
             @Override
             public void itemClick(String forumId, String userId) {
                 DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
@@ -164,7 +173,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
                                     praise = !praise;
                                     item.setIsPraise(0);
                                     item.setPraiseCount(item.getPraiseCount() - 1);
-                                    adapter.setPraiseState(item, tv);
+                                    multiAdapter.setPraiseState(item, tv);
                                 }
                             });
                 } else {
@@ -176,10 +185,35 @@ public class SocialRecomFragment extends BaseComponentFragment {
                                     praise = !praise;
                                     item.setIsPraise(1);
                                     item.setPraiseCount(item.getPraiseCount() + 1);
-                                    adapter.setPraiseState(item, tv);
+                                    multiAdapter.setPraiseState(item, tv);
                                 }
                             });
                 }
+            }
+
+            @Override
+            public void eventClick(String url, String name) {
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    DlgUtil.loginDlg(getActivity(), null);
+                } else {
+                    if (!TextUtils.isEmpty(url)) {
+                        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                        intent.putExtra("webViewUrl", url);
+                        intent.putExtra("webViewTitleName", name);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void topicClick(String topicId) {
+                Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
+                intent.putExtra("topicId", topicId);
+                startActivity(intent);
+            }
+
+            @Override
+            public void goodsClick() {
             }
         });
     }
@@ -198,10 +232,25 @@ public class SocialRecomFragment extends BaseComponentFragment {
                             empty();
                         } else {
                             if (pageNo == 1) {
-                                adapter.getData().clear();
-                                adapter.addData(data.getForum());
+                                int sizeCanLoadMore = pageSize;
+                                datas.clear();
+                                datas.addAll(data.getForum());
+                                if (data.getForumActive() != null) {
+                                    datas.add(0, data.getForumActive());
+                                    sizeCanLoadMore++;
+                                }
+                                if (data.getTopic() != null) {
+                                    SocialTopicBean.ForumBean topic = data.getTopic();
+                                    int location = topic.getLocation();
+                                    if (location > datas.size()) datas.add(topic);
+                                    else datas.add(location, topic);
+                                    sizeCanLoadMore++;
+                                }
+                                multiAdapter.getData().clear();
+                                multiAdapter.addData(datas);
+                                refresh_layout.setEnableLoadMore(datas.size() >= sizeCanLoadMore);
                             } else {
-                                adapter.addData(data.getForum());
+                                multiAdapter.addData(data.getForum());
                             }
                         }
                     }
@@ -217,9 +266,9 @@ public class SocialRecomFragment extends BaseComponentFragment {
     }
 
     private void empty() {
-        adapter.setNewData(null);
-        adapter.setEmptyView(R.layout.empty_layout, recycler);
-        TextView tv_content = adapter.getEmptyView().findViewById(R.id.tv_content);
+        multiAdapter.setNewData(null);
+        multiAdapter.setEmptyView(R.layout.empty_layout, recycler);
+        TextView tv_content = multiAdapter.getEmptyView().findViewById(R.id.tv_content);
         tv_content.setText("抱歉，我们还没有文章~");
     }
 
@@ -247,7 +296,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
         });
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
-        recycler.setAdapter(adapter);
+        recycler.setAdapter(multiAdapter);
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_article_wrap"
+    android:id="@+id/ll_event_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/iv_article_icon"
+        android:id="@+id/iv_event_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -19,7 +19,7 @@
         tools:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/tv_article_title"
+        android:id="@+id/tv_event_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -30,20 +30,6 @@
         android:textColor="@color/black_1"
         android:textSize="14dp"
         tools:text="民航局通报首航备降深圳：前起落架两..." />
-
-    <TextView
-        android:id="@+id/tv_article_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:ellipsize="end"
-        android:lineSpacingExtra="3.5dp"
-        android:maxLines="4"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textColor="@color/black_2"
-        android:textSize="10dp"
-        tools:text="据报道，波罗申科说，我们开始着手下一个步骤：终止《乌俄两国友好合作伙伴关系条约》，期待乌克兰外交部..." />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,13 +42,13 @@
         android:paddingRight="10dp">
 
         <ImageView
-            android:id="@+id/iv_account_icon"
+            android:id="@+id/iv_app_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_account_name"
+            android:id="@+id/tv_event_name"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginLeft="3dp"
@@ -77,17 +63,12 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/tv_account_praise"
-            android:layout_width="wrap_content"
+            android:layout_width="35dp"
             android:layout_height="20dp"
-            android:drawableLeft="@drawable/ic_unpraised"
-            android:drawablePadding="3dp"
-            android:gravity="center_vertical"
-            android:maxLength="4"
-            android:minWidth="20dp"
-            android:singleLine="true"
+            android:background="@drawable/bg_stroke_line"
+            android:gravity="center"
+            android:text="活动"
             android:textColor="@color/black_2"
-            android:textSize="10dp"
-            tools:text="1111111111" />
+            android:textSize="10dp" />
     </LinearLayout>
 </LinearLayout>
