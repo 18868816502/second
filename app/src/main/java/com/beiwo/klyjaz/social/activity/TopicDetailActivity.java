@@ -14,6 +14,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -107,7 +110,11 @@ public class TopicDetailActivity extends BaseComponentActivity {
                             }
                         }, 150);
                         Glide.with(context).load(data.getImgUrl()).into(iv_topic_head);
-                        tv_join_num.setText(String.format(getString(R.string.join_topic_num), data.getTopicFourmCount()));
+
+                        int count = data.getTopicFourmCount();
+                        SpannableString ss = new SpannableString(String.format(getString(R.string.join_topic_num), count));
+                        ss.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.refresh_one)), 2, String.valueOf(count).length() + 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        tv_join_num.setText(ss);
                         expand_tv.initWidth(getWindowManager().getDefaultDisplay().getWidth());
                         expand_tv.setMaxLines(4);
                         expand_tv.setCloseText(data.getContent());
@@ -139,11 +146,13 @@ public class TopicDetailActivity extends BaseComponentActivity {
         Fragment fragment1 = TopicFragment.getInstance();
         Bundle args1 = new Bundle();
         args1.putInt("type", 2);
+        args1.putString("topicId", topicId);
         fragment1.setArguments(args1);
         fragments.add(fragment1);
         Fragment fragment2 = TopicFragment.getInstance();
         Bundle args2 = new Bundle();
         args2.putInt("type", 1);
+        args2.putString("topicId", topicId);
         fragment2.setArguments(args2);
         fragments.add(fragment2);
         SocialAdapter adapter = new SocialAdapter(getSupportFragmentManager());
