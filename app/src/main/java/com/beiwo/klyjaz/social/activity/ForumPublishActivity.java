@@ -53,6 +53,8 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
     RelativeLayout rlTitleBar;
     @BindView(R.id.navigate)
     ImageView ivNavigate;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.tv_publish)
     TextView tvPublish;
     @BindView(R.id.head_container)
@@ -87,6 +89,18 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
      */
     private int status;
 
+    /**
+     * 话题相关
+     */
+    /**
+     * 话题标题
+     */
+    private String topicTitle;
+    /**
+     * 话题id
+     */
+    private String topicId;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_forum_publish;
@@ -114,6 +128,12 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
             if (!TextUtils.isEmpty(forumId)) {
                 mPresenter.fetchEditForum(forumId);
             }
+            topicId = getIntent().getStringExtra("topicId");
+            topicTitle = getIntent().getStringExtra("title");
+            if(!TextUtils.isEmpty(topicTitle)){
+                tvTitle.setVisibility(View.VISIBLE);
+                tvTitle.setText(topicTitle);
+            }
         }
     }
 
@@ -136,7 +156,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
     public void onUploadImgSucceed(String imgKey) {
         dismissProgress();
         getForumText();
-        mPresenter.fetchPublishTopic("", mForumTitle, mForumContent, status, "", forumId);
+        mPresenter.fetchPublishTopic("", mForumTitle, mForumContent, status, topicId, forumId);
     }
 
     @Override
@@ -228,7 +248,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
         mPresenter.addDraftUrls(helper.getDraftUrls());
         if (helper.getBitmapList().size() == 0) {
             getForumText();
-            mPresenter.fetchPublishTopic("", mForumTitle, mForumContent, status, "", forumId);
+            mPresenter.fetchPublishTopic("", mForumTitle, mForumContent, status, topicId, forumId);
         } else {
             showProgress();
             mPresenter.prepareUpload(helper.getBitmapList());

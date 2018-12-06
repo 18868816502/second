@@ -122,6 +122,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_involve_topic"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_gravity="bottom"

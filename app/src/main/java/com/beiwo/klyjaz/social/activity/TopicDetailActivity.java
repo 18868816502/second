@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -76,9 +77,12 @@ public class TopicDetailActivity extends BaseComponentActivity {
     TextView tv_join_num;
     @BindView(R.id.expand_tv)
     ExpandableTextView expand_tv;
+    @BindView(R.id.tv_involve_topic)
+    TextView tvInvolveTopic;
 
     private String topicId;
     private Activity context;
+    private String topicTitle;
     private String[] mDataList = {"最热", "最新"};
 
     @Override
@@ -99,6 +103,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<TopicDetail>() {
                     @Override
                     public void onNext(TopicDetail data) {
+                        topicTitle = data.getTitle();
                         ctl_title.setTitle(data.getTitle());
                         ctl_title.postDelayed(new Runnable() {
                             @Override
@@ -117,6 +122,20 @@ public class TopicDetailActivity extends BaseComponentActivity {
         ctl_title.setCollapsedTitleTextColor(Color.WHITE);
         initAdapter();
         initIndicator();
+    }
+
+    @OnClick({R.id.tv_involve_topic})
+    public void onViewClick(View view){
+        switch(view.getId()){
+            case R.id.tv_involve_topic:
+                Intent intent = new Intent(this,ForumPublishActivity.class);
+                intent.putExtra("topicId",topicId);
+                intent.putExtra("title",topicTitle);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

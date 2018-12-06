@@ -102,60 +102,10 @@ public class TabMinePresenter extends BaseRxPresenter implements TabMineContract
     }
 
     @Override
-    public void clickUserProfile() {
-        if (checkValidUser()) {
-            view.navigateUserProfile(userHelper.getProfile().getId());
-        }
-    }
-
-    @Override
-    public void clickMineBill() {
-        if (checkValidUser()) {
-            view.navigateMineBill(userHelper.getProfile().getId());
-        }
-    }
-
-    @Override
-    public void clickRemind() {
-        if (checkValidUser()) {
-            view.navigateRemind(userHelper.getProfile().getId());
-        }
-    }
-
-    @Override
-    public void clickInvitation() {
-        if (checkValidUser()) {
-            view.navigateInvitation(userHelper.getProfile().getId());
-        }
-    }
-
-    @Override
     public void clickKaolaGroup() {
         if (checkValidUser()) {
             view.navigateKaolaGroup(userHelper.getProfile().getId(), userHelper.getProfile().getUserName());
         }
-    }
-
-    @Override
-    public void clickHelpAndFeedback() {
-        if (checkValidUser()) {
-            view.navigateHelpAndFeedback(userHelper.getProfile().getId());
-        }
-    }
-
-    @Override
-    public void clickSetting() {
-        if (checkValidUser()) {
-            view.navigateSetting(null);
-        }
-    }
-
-    @Override
-    public void clickMessage() {
-        if (checkValidUser()) {
-            view.navigateMessage(userHelper.getProfile().getId());
-        }
-
     }
 
     private boolean checkValidUser() {

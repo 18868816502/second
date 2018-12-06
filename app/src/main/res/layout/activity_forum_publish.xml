@@ -23,6 +23,20 @@
             android:src="@drawable/close_black" />
 
         <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="话题"
+            android:textSize="@dimen/sp14"
+            android:textColor="@color/refresh_one"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:ems="12"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/tv_publish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

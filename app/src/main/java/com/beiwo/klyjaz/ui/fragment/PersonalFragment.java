@@ -43,6 +43,7 @@ import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.FastClickUtils;
 import com.beiwo.klyjaz.util.LegalInputUtils;
+import com.beiwo.klyjaz.util.Util;
 import com.beiwo.klyjaz.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -75,19 +76,17 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
     View loanContainer;
     @BindView(R.id.dctv_bank)
     View bankContainer;
-
-    TabMinePresenter presenter;
-
     @BindView(R.id.activity_deploy_recycler)
     RecyclerView deployRecyclerView;
     @BindView(R.id.my_wallet)
     View my_wallet;
 
+    private TabMinePresenter presenter;
     private DeployAdapter deployAdapter;
     private List<EventBean> list = new ArrayList<>();
-    MyRecevier myRecevier = new MyRecevier();
-    private String title;
     private String webViewUrl;
+    private String title;
+    MyRecevier myRecevier = new MyRecevier();
 
     public static PersonalFragment newInstance() {
         return new PersonalFragment();
@@ -149,7 +148,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
 
     @Override
     public void configViews() {
-        presenter = new TabMinePresenter(getActivity(),this);
+        presenter = new TabMinePresenter(getActivity(), this);
         my_wallet.setVisibility(App.audit == 2 ? View.VISIBLE : View.GONE);
         deployAdapter = new DeployAdapter(R.layout.activity_deploy_list_item, list, getActivity());
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -205,10 +204,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             userInfo.setText("登录开启更多功能");
         }
         if (profile.getHeadPortrait() != null) {
-            Glide.with(getActivity())
-                    .load(profile.getHeadPortrait())
-                    .error(R.drawable.mine_icon_head)
-                    .into(avatarIv);
+            Glide.with(getActivity()).load(profile.getHeadPortrait()).error(R.drawable.mine_icon_head).into(avatarIv);
         }
         String username = profile.getUserName();
         if (username != null) {
@@ -239,12 +235,12 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         switch (view.getId()) {
             case R.id.bill_summary:
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickMineBill();
+                    startActivity(new Intent(getActivity(), BillSummaryActivity.class));
                 }
                 break;
             case R.id.remind:
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickRemind();
+                    startActivity(new Intent(getActivity(), RemindActivity.class));
                 }
                 break;
             case R.id.login://登录
@@ -255,32 +251,34 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             //点击头像 如果未登陆 会跳转到登陆页面
             case R.id.avatar:
             case R.id.ll_navigate_user_profile:
-                Intent intent = new Intent(getActivity(), PersonalCenterActivity.class);
-                intent.putExtra("userId", UserHelper.getInstance(getActivity()).getProfile().getId());
-                startActivity(intent);
+                if (!FastClickUtils.isFastClick()) {
+                    Intent intent = new Intent(getActivity(), PersonalCenterActivity.class);
+                    intent.putExtra("userId", UserHelper.getInstance(getActivity()).getProfile().getId());
+                    startActivity(intent);
+                }
                 break;
             case R.id.invite_friend:
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickInvitation();
+                    startActivity(new Intent(getActivity(), InvitationWebActivity.class));
                 }
                 break;
             case R.id.help_center:
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickHelpAndFeedback();
+                    startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
                 }
                 break;
             case R.id.settings:
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickSetting();
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
                 }
                 break;
             case R.id.mine_msg:
                 Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
                 if (!FastClickUtils.isFastClick()) {
-                    presenter.clickMessage();
+                    startActivity(new Intent(getActivity(), SysMsgActivity.class));
                 }
                 break;
             case R.id.my_wallet://我的钱包
@@ -288,10 +286,12 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
                     startActivity(new Intent(getActivity(), WalletActivity.class));
                 break;
             case R.id.dctv_loan:
-                startActivity(new Intent(getActivity(), MyLoanActivity.class));
+                if (!FastClickUtils.isFastClick())
+                    startActivity(new Intent(getActivity(), MyLoanActivity.class));
                 break;
             case R.id.dctv_bank:
-                startActivity(new Intent(getActivity(), MyBankCardActivity.class));
+                if (!FastClickUtils.isFastClick())
+                    startActivity(new Intent(getActivity(), MyBankCardActivity.class));
                 break;
             default:
                 break;
@@ -328,30 +328,6 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         });
     }
 
-    /*个人中心页面*/
-    @Override
-    public void navigateUserProfile(String userId) {
-        startActivity(new Intent(getActivity(), UserProfileActivity.class));
-    }
-
-    /*直接进入系统消息 抛弃公告的选择*/
-    @Override
-    public void navigateRemind(String userId) {
-        Intent intent = new Intent(getActivity(), RemindActivity.class);
-        startActivity(intent);
-    }
-
-    /*跳转到我的账单*/
-    @Override
-    public void navigateMineBill(String userId) {
-        startActivity(new Intent(getActivity(), BillSummaryActivity.class));
-    }
-
-    @Override
-    public void navigateInvitation(String userId) {
-        startActivity(new Intent(getActivity(), InvitationWebActivity.class));
-    }
-
     @Override
     public void navigateKaolaGroup(String userId, String userName) {
         if (title.equals("邀请好友")) {
@@ -364,27 +340,9 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         }
     }
 
-    @Override
-    public void navigateHelpAndFeedback(String userId) {
-        startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
-    }
-
-    /*进入设置页面*/
-    @Override
-    public void navigateSetting(String userId) {
-        startActivity(new Intent(getActivity(), SettingsActivity.class));
-    }
-
-    /*是否显示我的账单按钮*/
+   /*是否显示我的账单按钮*/
     @Override
     public void updateMyLoanVisible(boolean visible) {
-    }
-
-    /*直接进入系统消息 抛弃公告的选择*/
-    @Override
-    public void navigateMessage(String userId) {
-        Intent intent = new Intent(getActivity(), SysMsgActivity.class);
-        startActivity(intent);
     }
 
     /*消息数量*/
