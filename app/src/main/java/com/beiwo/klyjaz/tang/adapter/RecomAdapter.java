@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.tang.RoundCornerTransformation;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -29,14 +29,14 @@ import java.util.List;
  * @date: 2018/11/8
  */
 
-public class RecomAdapter extends BaseQuickAdapter<SocialTopicBean.ForumBean, BaseViewHolder> {
+public class RecomAdapter extends BaseQuickAdapter<ForumBean, BaseViewHolder> {
     public RecomAdapter() {
         super(R.layout.layout_recom);
         openLoadAnimation(ALPHAIN);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, final SocialTopicBean.ForumBean item) {
+    protected void convert(final BaseViewHolder helper, final ForumBean item) {
         List<String> picUrl = item.getPicUrl();
         boolean nonePic = picUrl == null || picUrl.size() == 0;
         ImageView iv_article_icon = helper.getView(R.id.iv_article_icon);
@@ -110,7 +110,7 @@ public class RecomAdapter extends BaseQuickAdapter<SocialTopicBean.ForumBean, Ba
         helper.getView(R.id.tv_account_praise).setOnClickListener(listener);
     }
 
-    public void setPraiseState(SocialTopicBean.ForumBean item, TextView tv) {
+    public void setPraiseState(ForumBean item, TextView tv) {
         Drawable praise = ContextCompat.getDrawable(mContext, R.drawable.ic_praised);
         praise.setBounds(0, 0, praise.getMinimumWidth(), praise.getMinimumHeight());
         Drawable unpraise = ContextCompat.getDrawable(mContext, R.drawable.ic_unpraised);
@@ -130,6 +130,6 @@ public class RecomAdapter extends BaseQuickAdapter<SocialTopicBean.ForumBean, Ba
 
         void userClick(String userId);
 
-        void praiseClick(SocialTopicBean.ForumBean item, TextView tv);
+        void praiseClick(ForumBean item, TextView tv);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_article_wrap"
+    android:id="@+id/ll_goods_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -9,7 +9,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_article_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -17,12 +16,12 @@
         android:maxLines="2"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:text="#下款推荐#"
         android:textColor="@color/black_1"
-        android:textSize="14dp"
-        tools:text="#下款推荐#" />
+        android:textSize="14dp" />
 
     <TextView
-        android:id="@+id/tv_article_content"
+        android:id="@+id/tv_goods_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -46,20 +45,19 @@
         android:paddingRight="10dp">
 
         <ImageView
-            android:id="@+id/iv_account_icon"
+            android:id="@+id/iv_goods_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_account_name"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginLeft="3dp"
             android:gravity="center_vertical"
+            android:text="@string/app_name"
             android:textColor="@color/black_2"
-            android:textSize="10dp"
-            tools:text="@string/app_name" />
+            android:textSize="10dp" />
 
         <android.support.v4.widget.Space
             android:layout_width="0dp"

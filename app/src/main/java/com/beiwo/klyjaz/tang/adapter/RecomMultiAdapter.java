@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.tang.RoundCornerTransformation;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
@@ -29,19 +29,19 @@ import java.util.List;
  * @modify:
  * @date: 2018/12/5
  */
-public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean.ForumBean, BaseViewHolder> {
+public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, BaseViewHolder> {
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    public RecomMultiAdapter(List<SocialTopicBean.ForumBean> data) {
+    public RecomMultiAdapter(List<ForumBean> data) {
         super(data);
-        addItemType(SocialTopicBean.ForumBean.TYPE_ARTICLE, R.layout.layout_recom);//普通帖子
-        addItemType(SocialTopicBean.ForumBean.TYPE_EVENT, R.layout.layout_event_item);//活动
-        addItemType(SocialTopicBean.ForumBean.TYPE_GOODS, R.layout.layout_market_item);//下款推荐
-        addItemType(SocialTopicBean.ForumBean.TYPE_TOPIC, R.layout.layout_topic_item);//话题
+        addItemType(ForumBean.TYPE_ARTICLE, R.layout.layout_recom);//普通帖子
+        addItemType(ForumBean.TYPE_EVENT, R.layout.layout_event_item);//活动
+        addItemType(ForumBean.TYPE_GOODS, R.layout.layout_goods_item);//下款推荐
+        addItemType(ForumBean.TYPE_TOPIC, R.layout.layout_topic_item);//话题
     }
 
     @Override
@@ -50,18 +50,18 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, SocialTopicBean.ForumBean item) {
+    protected void convert(BaseViewHolder helper, ForumBean item) {
         switch (helper.getItemViewType()) {
-            case SocialTopicBean.ForumBean.TYPE_ARTICLE:
+            case ForumBean.TYPE_ARTICLE:
                 article(helper, item);
                 break;
-            case SocialTopicBean.ForumBean.TYPE_EVENT:
+            case ForumBean.TYPE_EVENT:
                 event(helper, item);
                 break;
-            case SocialTopicBean.ForumBean.TYPE_GOODS:
+            case ForumBean.TYPE_GOODS:
                 goods(helper, item);
                 break;
-            case SocialTopicBean.ForumBean.TYPE_TOPIC:
+            case ForumBean.TYPE_TOPIC:
                 topic(helper, item);
                 break;
             default:
@@ -69,7 +69,7 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
         }
     }
 
-    private void article(BaseViewHolder helper, final SocialTopicBean.ForumBean item) {
+    private void article(BaseViewHolder helper, final ForumBean item) {
         List<String> picUrl = item.getPicUrl();
         boolean nonePic = picUrl == null || picUrl.size() == 0;
         ImageView iv_article_icon = helper.getView(R.id.iv_article_icon);
@@ -118,17 +118,17 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
                     userId = UserHelper.getInstance(mContext).id();
                 switch (v.getId()) {
                     case R.id.ll_article_wrap:
-                        if (articleClickListener != null)
-                            articleClickListener.itemClick(item.getForumId(), userId);
+                        if (itemClickListener != null)
+                            itemClickListener.itemClick(item.getForumId(), userId);
                         break;
                     case R.id.iv_account_icon:
                     case R.id.tv_account_name:
-                        if (articleClickListener != null)
-                            articleClickListener.userClick(item.getUserId());
+                        if (itemClickListener != null)
+                            itemClickListener.userClick(item.getUserId());
                         break;
                     case R.id.tv_account_praise:
-                        if (articleClickListener != null)
-                            articleClickListener.praiseClick(item, tv_account_praise);
+                        if (itemClickListener != null)
+                            itemClickListener.praiseClick(item, tv_account_praise);
                         break;
                     default:
                         break;
@@ -142,7 +142,7 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
         helper.getView(R.id.tv_account_praise).setOnClickListener(listener);
     }
 
-    private void event(BaseViewHolder helper, final SocialTopicBean.ForumBean item) {
+    private void event(BaseViewHolder helper, final ForumBean item) {
         Glide.with(mContext)
                 .load(item.getImgUrl())
                 .crossFade(1000)
@@ -160,41 +160,18 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
         helper.getView(R.id.ll_event_wrap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (articleClickListener != null)
-                    articleClickListener.eventClick(item.getActiveUrl(), item.getActiveName());
+                if (itemClickListener != null)
+                    itemClickListener.eventClick(item.getActiveUrl(), item.getActiveName());
             }
         });
     }
 
-    private void topic(BaseViewHolder helper, final SocialTopicBean.ForumBean item) {
+    private void topic(BaseViewHolder helper, final ForumBean item) {
         List<String> headUrls = item.getTopicUserHeadUrl();
         ImageView iv_topic_icon0 = helper.getView(R.id.iv_topic_icon0);
         ImageView iv_topic_icon1 = helper.getView(R.id.iv_topic_icon1);
         ImageView iv_topic_icon2 = helper.getView(R.id.iv_topic_icon2);
         if (headUrls != null) {
-            /*if (headUrls.size() > 0) {
-                iv_topic_icon0.setVisibility(View.VISIBLE);
-                iv_topic_icon1.setVisibility(View.VISIBLE);
-                iv_topic_icon2.setVisibility(View.VISIBLE);
-                Glide.with(mContext)
-                        .load(headUrls.get(0))
-                        .centerCrop()
-                        .transform(new GlideCircleTransform(mContext))
-                        .error(R.drawable.mine_icon_head)
-                        .into(iv_topic_icon0);
-                Glide.with(mContext)
-                        .load(headUrls.get(0))
-                        .centerCrop()
-                        .transform(new GlideCircleTransform(mContext))
-                        .error(R.drawable.mine_icon_head)
-                        .into(iv_topic_icon1);
-                Glide.with(mContext)
-                        .load(headUrls.get(0))
-                        .centerCrop()
-                        .transform(new GlideCircleTransform(mContext))
-                        .error(R.drawable.mine_icon_head)
-                        .into(iv_topic_icon2);
-            }*/
             if (headUrls.size() > 2) {
                 iv_topic_icon0.setVisibility(View.VISIBLE);
                 iv_topic_icon1.setVisibility(View.VISIBLE);
@@ -256,17 +233,30 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
         helper.getView(R.id.ll_topic_wrap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (articleClickListener != null)
-                    articleClickListener.topicClick(item.getTopicId());
+                if (itemClickListener != null)
+                    itemClickListener.topicClick(item.getTopicId());
             }
         });
     }
 
-    private void goods(BaseViewHolder helper, SocialTopicBean.ForumBean item) {
-        //todo
+    private void goods(BaseViewHolder helper, ForumBean item) {
+        Glide.with(mContext)
+                .load(R.mipmap.ic_launcher)
+                .centerCrop()
+                .transform(new GlideCircleTransform(mContext))
+                .into((ImageView) helper.getView(R.id.iv_goods_icon));
+        helper.setText(R.id.tv_goods_num, "已帮助" + item.getLoadProductNum() + "人成功下款！")
+                .addOnClickListener(R.id.ll_goods_wrap);
+        helper.getView(R.id.ll_goods_wrap).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null)
+                    itemClickListener.goodsClick();
+            }
+        });
     }
 
-    public void setPraiseState(SocialTopicBean.ForumBean item, TextView tv) {
+    public void setPraiseState(ForumBean item, TextView tv) {
         Drawable praise = ContextCompat.getDrawable(mContext, R.drawable.ic_praised);
         praise.setBounds(0, 0, praise.getMinimumWidth(), praise.getMinimumHeight());
         Drawable unpraise = ContextCompat.getDrawable(mContext, R.drawable.ic_unpraised);
@@ -275,20 +265,20 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<SocialTopicBean
         tv.setText(item.getPraiseCount() + "");
     }
 
-    private OnArticleClickListener articleClickListener;
+    private OnSocialItemClickListener itemClickListener;
 
-    public void setOnArticleClickListener(OnArticleClickListener clickListener) {
-        articleClickListener = clickListener;
+    public void setOnArticleClickListener(OnSocialItemClickListener clickListener) {
+        itemClickListener = clickListener;
     }
 
-    public interface OnArticleClickListener {
+    public interface OnSocialItemClickListener {
         void itemClick(String forumId, String userId);
 
         void userClick(String userId);
 
-        void praiseClick(SocialTopicBean.ForumBean item, TextView tv);
+        void praiseClick(ForumBean item, TextView tv);
 
-        void eventClick(String url,String name);
+        void eventClick(String url, String name);
 
         void topicClick(String topicId);
 

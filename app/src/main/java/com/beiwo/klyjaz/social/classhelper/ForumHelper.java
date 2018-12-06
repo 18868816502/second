@@ -17,8 +17,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
-import com.beiwo.klyjaz.social.bean.ForumInfoBean;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
@@ -28,7 +27,6 @@ import com.beiwo.klyjaz.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.liji.imagezoom.util.ImageZoom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -86,7 +84,7 @@ public class ForumHelper {
     private View footView;
     private TextView tvCommentMore;
 
-    private ForumInfoBean.ForumBean forumBean;
+    private ForumBean forumBean;
 
 
     public ForumHelper(Context mContext) {
@@ -95,23 +93,25 @@ public class ForumHelper {
 
     /**
      * 初始化header View
-     * @return view
+     *
      * @param recyclerView 父布局
+     * @return view
      */
-    public View initHead(RecyclerView recyclerView,View.OnClickListener listener) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_head, recyclerView,false);
-        ButterKnife.bind(this,view);
+    public View initHead(RecyclerView recyclerView, View.OnClickListener listener) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_head, recyclerView, false);
+        ButterKnife.bind(this, view);
         ivComment.setOnClickListener(listener);
         return view;
     }
 
     /**
      * 初始化footer View
-     * @return view
+     *
      * @param recyclerView 父布局
+     * @return view
      */
     public View initFoot(RecyclerView recyclerView, View.OnClickListener listener) {
-        footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot, recyclerView,false);
+        footView = LayoutInflater.from(mContext).inflate(R.layout.item_article_detail_foot, recyclerView, false);
         tvCommentMore = footView.findViewById(R.id.tv_comment_num_title);
         footView.setOnClickListener(listener);
         return footView;
@@ -119,16 +119,17 @@ public class ForumHelper {
 
     /**
      * 更新动态header数据
+     *
      * @param forumBean 动态详情数据
      */
-    public void updateHeadDatas(final ForumInfoBean.ForumBean forumBean) {
+    public void updateHeadDatas(final ForumBean forumBean) {
         if (forumBean == null) {
             return;
         }
         this.forumBean = forumBean;
-        if(!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
+        if (!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
             Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(ivAuthorAvatar);
-        }else{
+        } else {
             Glide.with(mContext).load(R.drawable.mine_icon_head).into(ivAuthorAvatar);
         }
         tvArticleTitle.setText(forumBean.getTitle());
@@ -139,7 +140,7 @@ public class ForumHelper {
         bindBannerData(forumBean.getPicUrl());
         bindForumPraise();
         //empty数据显示
-        if(forumBean.getCommentCount() < 1){
+        if (forumBean.getCommentCount() < 1) {
             emptyContainer.setVisibility(View.VISIBLE);
         }
     }
@@ -165,9 +166,10 @@ public class ForumHelper {
 
     /**
      * 绑定banner数据
+     *
      * @param picLists banner图片数据
      */
-    private void bindBannerData(final List<String> picLists){
+    private void bindBannerData(final List<String> picLists) {
         if (picLists != null && picLists.size() != 0) {
             bgaBanner.setVisibility(View.VISIBLE);
             bgaBanner.setData(picLists, null);
@@ -193,34 +195,35 @@ public class ForumHelper {
             } else {
                 bgaBanner.setAutoPlayAble(true);
             }
-        }else{
+        } else {
             bgaBanner.setVisibility(View.GONE);
         }
     }
 
     /**
      * 更新动态footer数据
+     *
      * @param forum 动态详情数据
      */
-    public void updateFootDatas(ForumInfoBean.ForumBean forum){
-        tvCommentMore.setText(String.format(mContext.getString(R.string.article_comment_total_num),forum.getCommentCount()));
-        if(forum.getCommentCount() < 4){
+    public void updateFootDatas(ForumBean forum) {
+        tvCommentMore.setText(String.format(mContext.getString(R.string.article_comment_total_num), forum.getCommentCount()));
+        if (forum.getCommentCount() < 4) {
             footView.setVisibility(View.GONE);
         }
     }
 
 
-    @OnClick({R.id.tv_article_praise,R.id.iv_author_avatar})
+    @OnClick({R.id.tv_article_praise, R.id.iv_author_avatar})
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.tv_article_praise:
-                if(!UserHelper.getInstance(mContext).isLogin()){
+                if (!UserHelper.getInstance(mContext).isLogin()) {
                     DlgUtil.loginDlg((Activity) mContext, null);
-                }else{
-                    if(forumBean != null){
-                        if(forumBean.getIsPraise() == 0){
+                } else {
+                    if (forumBean != null) {
+                        if (forumBean.getIsPraise() == 0) {
                             clickPraise(forumBean.getForumId());
-                        }else{
+                        } else {
                             cancelPraise(forumBean.getForumId());
                         }
                     }
@@ -237,15 +240,15 @@ public class ForumHelper {
     }
 
     @SuppressLint("CheckResult")
-    private void clickPraise(String forumId){
-        Api.getInstance().fetchClickPraise(0,forumId, UserHelper.getInstance(mContext).getProfile().getId())
+    private void clickPraise(String forumId) {
+        Api.getInstance().fetchClickPraise(0, forumId, UserHelper.getInstance(mContext).getProfile().getId())
                 .compose(RxUtil.<ResultEntity<PraiseBean>>io2main())
                 .subscribe(new Consumer<ResultEntity<PraiseBean>>() {
                                @Override
-                               public void accept(ResultEntity<PraiseBean> result){
+                               public void accept(ResultEntity<PraiseBean> result) {
                                    if (result.isSuccess()) {
                                        forumBean.setIsPraise(1);
-                                       forumBean.setPraiseCount(forumBean.getPraiseCount()+1);
+                                       forumBean.setPraiseCount(forumBean.getPraiseCount() + 1);
                                        bindForumPraise();
                                    } else {
                                        ToastUtil.toast(result.getMsg());
@@ -254,7 +257,7 @@ public class ForumHelper {
                            },
                         new Consumer<Throwable>() {
                             @Override
-                            public void accept(Throwable throwable){
+                            public void accept(Throwable throwable) {
 
                             }
                         });
@@ -262,11 +265,11 @@ public class ForumHelper {
 
     @SuppressLint("CheckResult")
     private void cancelPraise(String forumId) {
-        Api.getInstance().fetchCancelPraise(0,forumId,UserHelper.getInstance(mContext).getProfile().getId())
+        Api.getInstance().fetchCancelPraise(0, forumId, UserHelper.getInstance(mContext).getProfile().getId())
                 .compose(RxUtil.<ResultEntity>io2main())
                 .subscribe(new Consumer<ResultEntity>() {
                                @Override
-                               public void accept(ResultEntity result){
+                               public void accept(ResultEntity result) {
                                    if (result.isSuccess()) {
                                        forumBean.setIsPraise(0);
                                        forumBean.setPraiseCount(forumBean.getPraiseCount() - 1);
@@ -278,7 +281,7 @@ public class ForumHelper {
                            },
                         new Consumer<Throwable>() {
                             @Override
-                            public void accept(Throwable throwable){
+                            public void accept(Throwable throwable) {
 
                             }
                         });

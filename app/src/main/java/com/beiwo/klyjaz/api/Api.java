@@ -85,11 +85,13 @@ import com.beiwo.klyjaz.jjd.bean.CashUserInfo;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
 import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.social.bean.TopicDetail;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -1260,6 +1262,7 @@ public class Api {
 
     /**
      * 发布动态
+     *
      * @param map
      * @return
      */
@@ -1477,5 +1480,15 @@ public class Api {
     /*消息-社区消息数量*/
     public Observable<ResultEntity<SocialMessageBean>> queryCountView(String userId) {
         return service.queryCountView(userId);
+    }
+
+    /*话题详情(头部信息)*/
+    public Observable<ResultEntity<TopicDetail>> topicDetail(String topicId) {
+        return service.topicDetail(topicId);
+    }
+
+    /*话题详情(动态列表)*/
+    public Observable<ResultEntity<List<ForumBean>>> topicList(Map<String, Object> map) {
+        return service.topicList(map);
     }
 }

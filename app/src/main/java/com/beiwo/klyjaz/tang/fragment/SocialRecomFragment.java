@@ -27,8 +27,8 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.activity.TopicDetailActivity;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
-import com.beiwo.klyjaz.social.bean.TopicDetail;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.adapter.RecomMultiAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -84,7 +84,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
 
     //private RecomAdapter adapter = new RecomAdapter();
     private RecomMultiAdapter multiAdapter = new RecomMultiAdapter(null);
-    private List<SocialTopicBean.ForumBean> datas = new ArrayList<>();
+    private List<ForumBean> datas = new ArrayList<>();
     private Map<String, Object> map = new HashMap<>();
     private int pageNo = 1;
     private int pageSize = 30;
@@ -135,7 +135,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
             }
         });
 
-        multiAdapter.setOnArticleClickListener(new RecomMultiAdapter.OnArticleClickListener() {
+        multiAdapter.setOnArticleClickListener(new RecomMultiAdapter.OnSocialItemClickListener() {
             @Override
             public void itemClick(String forumId, String userId) {
                 DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
@@ -157,7 +157,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
             }
 
             @Override
-            public void praiseClick(final SocialTopicBean.ForumBean item, final TextView tv) {
+            public void praiseClick(final ForumBean item, final TextView tv) {
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
@@ -214,6 +214,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
 
             @Override
             public void goodsClick() {
+                ToastUtil.toast("下款推荐点击");
             }
         });
     }
@@ -235,15 +236,21 @@ public class SocialRecomFragment extends BaseComponentFragment {
                                 int sizeCanLoadMore = pageSize;
                                 datas.clear();
                                 datas.addAll(data.getForum());
-                                if (data.getForumActive() != null) {
+                                if (data.getForumActive() != null) {//活动放在第1个位置,常驻
                                     datas.add(0, data.getForumActive());
                                     sizeCanLoadMore++;
                                 }
-                                if (data.getTopic() != null) {
-                                    SocialTopicBean.ForumBean topic = data.getTopic();
-                                    int location = topic.getLocation();
-                                    if (location > datas.size()) datas.add(topic);
-                                    else datas.add(location, topic);
+                                if (data.getLoadProductNum() > 0) {//下款推荐放在第6个位置,常驻
+                                    ForumBean bean = new ForumBean();
+                                    bean.setLoadProductNum(data.getLoadProductNum());
+                                    if (datas.size() < 5) datas.add(bean);
+                                    else datas.add(5, bean);
+                                    sizeCanLoadMore++;
+                                }
+                                if (data.getTopic() != null) {//话题放在第9个位置,常驻
+                                    ForumBean topic = data.getTopic();
+                                    if (datas.size() < 8) datas.add(topic);
+                                    else datas.add(8, topic);
                                     sizeCanLoadMore++;
                                 }
                                 multiAdapter.getData().clear();

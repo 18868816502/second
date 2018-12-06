@@ -80,11 +80,13 @@ import com.beiwo.klyjaz.jjd.bean.CashUserInfo;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
 import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
+import com.beiwo.klyjaz.social.bean.TopicDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +105,7 @@ import static com.beiwo.klyjaz.api.NetConstants.PRODUCT_PATH;
 
 /**
  * @author xhb
- *         请求接口
+ * 请求接口
  */
 public interface ApiService {
 
@@ -144,7 +146,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/bookKeeping/save")
     Observable<ResultEntity<CreateAccountReturnIDsBean>> createNormalAccount(@FieldMap Map<String, Object> params);
-
 
     /**
      * @author xhb
@@ -436,7 +437,6 @@ public interface ApiService {
     Observable<ResultEntity<List<DebeDetailRecord>>> getFastDetailRecord(@Field("userId") String userId, @Field("billId") String billId);
 
     /****************************************************************************** 分割线 **************************************************************************************/
-
 
     /**
      * 密码登录
@@ -1057,7 +1057,6 @@ public interface ApiService {
 
     /**
      * 数据统计（埋点统计）
-     *
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/dataDictionary/countUv")
@@ -1326,6 +1325,7 @@ public interface ApiService {
 
     /**
      * 发布动态
+     *
      * @param map
      * @return
      */
@@ -1542,9 +1542,19 @@ public interface ApiService {
     @POST("s6/forumQueryController/queryForumInfo")
     Observable<ResultEntity<ForumInfoBean>> queryForumInfo(@FieldMap Map<String, Object> map);
 
-
     /*消息-社区数量*/
     @FormUrlEncoded
     @POST("s6/message/countView")
     Observable<ResultEntity<SocialMessageBean>> queryCountView(@Field("userId") String userID);
+
+    /*话题详情(头部信息)*/
+    @FormUrlEncoded
+    @POST("/s6/forumQueryController/queryTopicDetail")
+    Observable<ResultEntity<TopicDetail>> topicDetail(@Field("topicId") String topicId);
+
+    /*话题详情(动态列表)*/
+    @FormUrlEncoded//orderType 排序类型 1 最新 2 最热
+    @POST("/s6/forumQueryController/queryTopicDetailCommnet")
+    Observable<ResultEntity<List<ForumBean>>> topicList(@FieldMap Map<String, Object> map);
+
 }

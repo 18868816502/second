@@ -19,6 +19,7 @@ import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.adapter.ForumDetailAdapter;
 import com.beiwo.klyjaz.social.bean.CommentReplyBean;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.classhelper.ForumHelper;
 import com.beiwo.klyjaz.social.contract.ForumDetailContact;
@@ -70,7 +71,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     private ForumDetailAdapter mAdapter;
     private ForumHelper forumHelper;
     private String forumId;
-    private ForumInfoBean.ForumBean forumBean;
+    private ForumBean forumBean;
     private List<CommentReplyBean> commentLists;
 
     @Override

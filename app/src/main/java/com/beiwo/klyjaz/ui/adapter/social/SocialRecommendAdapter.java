@@ -18,6 +18,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
+import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
  */
 public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<SocialTopicBean.ForumBean> datas;
+    private List<ForumBean> datas;
     private Activity mContext;
 
     private int mLastPosition = 0;
@@ -50,13 +51,13 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         datas = new ArrayList<>();
     }
 
-    public void setDatas(List<SocialTopicBean.ForumBean> mList) {
+    public void setDatas(List<ForumBean> mList) {
         datas.clear();
         datas.addAll(mList);
         notifyDataSetChanged();
     }
 
-    public void appendDatas(List<SocialTopicBean.ForumBean> mList) {
+    public void appendDatas(List<ForumBean> mList) {
         mLastPosition = datas.size();
         datas.addAll(mList);
         notifyItemInserted(mLastPosition);
@@ -72,7 +73,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         OperateTopicViewHolder viewHoler = (OperateTopicViewHolder) holder;
-        SocialTopicBean.ForumBean bean = datas.get(position);
+        ForumBean bean = datas.get(position);
         if (bean.getPicUrl() != null && bean.getPicUrl().size() != 0) {
             viewHoler.ivTopic.setVisibility(View.VISIBLE);
             viewHoler.tvTopicContent.setVisibility(View.GONE);
