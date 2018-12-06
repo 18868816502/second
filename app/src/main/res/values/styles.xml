@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -204,5 +204,30 @@
     </style>
 
     <!--&lt;!&ndash;从底部弹出的动画样式&ndash;&gt;-->
+
+
+    <!--View共同属性-->
+    <style name="mineItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawableRight">@drawable/icon_come</item>
+        <item name="android:textColor">@color/black_1</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingLeft">@dimen/dp15</item>
+        <item name="android:paddingRight">@dimen/dp15</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    
+    <style name="mineCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="left_textView_color">@color/color_primary_black</item>
+        <item name="left_textView_textSize">@dimen/sp15</item>
+        <item name="right_textView1_Visible">true</item>
+        <item name="right_textView1_color">@color/refresh_one</item>
+        <item name="right_textView1_textSize">@dimen/sp12</item>
+        <item name="left_image_Visible">true</item>
+    </style>
 
 </resources>

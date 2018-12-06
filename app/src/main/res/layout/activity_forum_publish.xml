@@ -22,6 +22,39 @@
             android:contentDescription="@string/app_content_description"
             android:src="@drawable/close_black" />
 
+        <LinearLayout
+            android:id="@+id/title_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="#话题标题"
+                android:textSize="@dimen/sp14"
+                android:textColor="@color/refresh_one"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:maxEms="10"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_title"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="#"
+                android:textSize="@dimen/sp14"
+                android:textColor="@color/refresh_one"/>
+        </LinearLayout>
+
+
+
         <TextView
             android:id="@+id/tv_publish"
             android:layout_width="wrap_content"

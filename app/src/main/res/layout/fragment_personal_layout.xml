@@ -160,32 +160,18 @@
 
                 <com.beiwo.klyjaz.view.CardLayoutBar
                     android:id="@+id/invite_friend"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    style="@style/mineCard"
                     android:visibility="gone"
                     app:left_image="@mipmap/ic_me_invite"
-                    app:left_image_Visible="true"
-                    app:left_textView_color="@color/color_primary_black"
                     app:left_textView_text="@string/invite_friend"
-                    app:left_textView_textSize="15sp"
-                    app:right_textView1_Visible="true"
-                    app:right_textView1_color="@color/refresh_one"
-                    app:right_textView1_text="首邀好友得15元"
-                    app:right_textView1_textSize="12sp" />
+                    app:right_textView1_text="首邀好友得15元" />
 
                 <com.beiwo.klyjaz.view.CardLayoutBar
                     android:id="@+id/my_wallet"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    style="@style/mineCard"
                     app:left_image="@mipmap/ic_me_wallet"
-                    app:left_image_Visible="true"
-                    app:left_textView_color="@color/color_primary_black"
                     app:left_textView_text="@string/my_wallet"
-                    app:left_textView_textSize="15sp"
-                    app:right_textView1_Visible="true"
-                    app:right_textView1_color="#ff5240"
-                    app:right_textView1_text="支付宝提现"
-                    app:right_textView1_textSize="12sp" />
+                    app:right_textView1_text="支付宝提现" />
 
                 <View
                     android:layout_width="match_parent"
@@ -197,60 +183,28 @@
 
                 <TextView
                     android:id="@+id/bill_summary"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    style="@style/mineItem"
                     android:layout_marginTop="@dimen/dp_10"
                     android:drawableLeft="@mipmap/ic_me_bill"
-                    android:drawablePadding="8dp"
-                    android:drawableRight="@drawable/icon_come"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@string/bill_summary"
-                    android:textColor="@color/black_1"
-                    android:textSize="15dp" />
+                    android:text="@string/bill_summary" />
 
                 <TextView
                     android:id="@+id/remind"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    style="@style/mineItem"
                     android:drawableLeft="@mipmap/ic_me_remind"
-                    android:drawablePadding="8dp"
-                    android:drawableRight="@drawable/icon_come"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@string/remind"
-                    android:textColor="@color/black_1"
-                    android:textSize="15dp" />
+                    android:text="@string/remind" />
 
                 <TextView
                     android:id="@+id/help_center"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    style="@style/mineItem"
                     android:drawableLeft="@mipmap/ic_me_help"
-                    android:drawablePadding="8dp"
-                    android:drawableRight="@drawable/icon_come"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@string/help_center"
-                    android:textColor="@color/black_1"
-                    android:textSize="15dp" />
+                    android:text="@string/help_center" />
 
                 <TextView
                     android:id="@+id/settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    style="@style/mineItem"
                     android:drawableLeft="@mipmap/ic_me_setting"
-                    android:drawablePadding="8dp"
-                    android:drawableRight="@drawable/icon_come"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="@string/settings"
-                    android:textColor="@color/black_1"
-                    android:textSize="15dp" />
+                    android:text="@string/settings" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

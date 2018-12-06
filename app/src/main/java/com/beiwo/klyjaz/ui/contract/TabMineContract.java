@@ -13,40 +13,6 @@ public interface TabMineContract {
          */
         void clickKaolaGroup();
 
-        /**
-         * 点击消息
-         */
-        void clickRemind();
-
-        /**
-         * 点击消息
-         */
-        void clickMessage();
-
-        /**
-         * 点击用户资料
-         */
-        void clickUserProfile();
-
-        /**
-         * 点击我的账单
-         */
-        void clickMineBill();
-
-        /**
-         * 点击邀请朋友
-         */
-        void clickInvitation();
-
-        /**
-         * 点击帮助与反馈
-         */
-        void clickHelpAndFeedback();
-
-        /**
-         * 点击设置
-         */
-        void clickSetting();
     }
 
     interface View extends BaseView<Presenter> {
@@ -70,61 +36,12 @@ public interface TabMineContract {
          */
         void navigateLogin();
 
-        /**
-         * 导航至用户资料
-         *
-         * @param userId 用户id
-         */
-        void navigateUserProfile(String userId);
-
-        /**
-         * 导航至提醒界面
-         *
-         * @param userId 用户id
-         */
-        void navigateRemind(String userId);
-
-        /**
-         * 导航至提醒界面
-         *
-         * @param userId 用户id
-         */
-        void navigateMessage(String userId);
-
-        /**
-         * 导航至我的账单
-         *
-         * @param userId 用户id
-         */
-        void navigateMineBill(String userId);
-
-        /**
-         * 导航至邀请朋友
-         *
-         * @param userId 用户id
-         */
-        void navigateInvitation(String userId);
-
-        /**
+     /**
          * 导航至考拉圈圈
          */
         void navigateKaolaGroup(String userId, String userName);
 
-        /**
-         * 导航至帮助与反馈
-         *
-         * @param userId 用户id
-         */
-        void navigateHelpAndFeedback(String userId);
-
-        /**
-         * 导航至设置
-         *
-         * @param userId 用户id
-         */
-        void navigateSetting(String userId);
-
-        /**
+     /**
          * 更新我的借款按钮是否显示
          *
          * @param visible 是否显示
