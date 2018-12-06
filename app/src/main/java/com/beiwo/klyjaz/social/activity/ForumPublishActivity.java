@@ -53,6 +53,8 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
     RelativeLayout rlTitleBar;
     @BindView(R.id.navigate)
     ImageView ivNavigate;
+    @BindView(R.id.title_container)
+    View titleContainer;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.tv_publish)
@@ -131,8 +133,8 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
             topicId = getIntent().getStringExtra("topicId");
             topicTitle = getIntent().getStringExtra("title");
             if(!TextUtils.isEmpty(topicTitle)){
-                tvTitle.setVisibility(View.VISIBLE);
-                tvTitle.setText(topicTitle);
+                titleContainer.setVisibility(View.VISIBLE);
+                tvTitle.setText("#"+topicTitle);
             }
         }
     }
