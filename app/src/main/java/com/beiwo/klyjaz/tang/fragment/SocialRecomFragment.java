@@ -36,6 +36,7 @@ import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
+import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
@@ -202,6 +203,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
                         intent.putExtra("webViewUrl", url);
                         intent.putExtra("webViewTitleName", name);
                         startActivity(intent);
+                        DataStatisticsHelper.getInstance(getActivity()).onCountUv("CommunityActiveHit");
                     }
                 }
             }
@@ -211,6 +213,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
                 Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
                 intent.putExtra("topicId", topicId);
                 startActivity(intent);
+                DataStatisticsHelper.getInstance(getActivity()).onCountUv("CommunityTopicHit");
             }
 
             @Override

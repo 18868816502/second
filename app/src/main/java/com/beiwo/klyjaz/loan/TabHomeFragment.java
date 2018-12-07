@@ -1,7 +1,12 @@
 package com.beiwo.klyjaz.loan;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,15 +23,19 @@ import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
+import com.beiwo.klyjaz.social.bean.IndexForum;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
+import com.beiwo.klyjaz.ui.activity.MainActivity;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -80,7 +89,6 @@ public class TabHomeFragment extends BaseComponentFragment {
         hold_view.setLayoutParams(params);
 
         initRecycler();
-        refresh_layout.setEnableLoadMore(false);
         request();
     }
 
@@ -135,6 +143,8 @@ public class TabHomeFragment extends BaseComponentFragment {
                 });
         //check state
         checkUserState();
+        //topic
+        topicData();
         //recommond product
         Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT)
                 .compose(RxResponse.<List<Product>>compatT())
@@ -144,6 +154,18 @@ public class TabHomeFragment extends BaseComponentFragment {
                         refresh_layout.finishRefresh();
                         homeAdapter.setNormalData(data);
                         recycler.smoothScrollToPosition(0);
+                    }
+                });
+    }
+
+    private void topicData() {
+        Api.getInstance().indexForum()
+                .compose(RxResponse.<IndexForum>compatT())
+                .subscribe(new ApiObserver<IndexForum>() {
+                    @Override
+                    public void onNext(IndexForum data) {
+                        refresh_layout.finishRefresh();
+                        homeAdapter.setTopic(data);
                     }
                 });
     }
@@ -191,6 +213,21 @@ public class TabHomeFragment extends BaseComponentFragment {
                 request();
             }
         });
+        refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@android.support.annotation.NonNull RefreshLayout refreshLayout) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("loan", true);
+                startActivity(intent);
+                refresh_layout.finishLoadMore();
+            }
+        });
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                topicData();
+            }
+        }, new IntentFilter("refresh_layout"));
     }
 
     public static TabHomeFragment newInstance() {

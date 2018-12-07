@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/home_icon_time"
                 android:drawablePadding="3dp"
-                android:text="借款10天"
+                android:text="借款30天"
                 android:textColor="#A5A9B2"
                 android:textSize="12dp" />
 
@@ -79,7 +79,7 @@
                 android:layout_marginLeft="18dp"
                 android:drawableLeft="@mipmap/home_icon_charge"
                 android:drawablePadding="3dp"
-                android:text="服务费"
+                android:text="日息0.05%"
                 android:textColor="#A5A9B2"
                 android:textSize="12dp" />
 
@@ -89,7 +89,8 @@
                 android:layout_height="wrap_content"
                 android:text="58.8元"
                 android:textColor="#A5A9B2"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_question"

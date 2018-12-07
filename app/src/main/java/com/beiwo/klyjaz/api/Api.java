@@ -87,6 +87,7 @@ import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
 import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
+import com.beiwo.klyjaz.social.bean.IndexForum;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
 import com.beiwo.klyjaz.social.bean.SocialMessageBean;
@@ -1490,5 +1491,10 @@ public class Api {
     /*话题详情(动态列表)*/
     public Observable<ResultEntity<List<ForumBean>>> topicList(Map<String, Object> map) {
         return service.topicList(map);
+    }
+
+    /*首页-社区*/
+    public Observable<ResultEntity<IndexForum>> indexForum() {
+        return service.indexForum();
     }
 }

@@ -132,9 +132,9 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
             }
             topicId = getIntent().getStringExtra("topicId");
             topicTitle = getIntent().getStringExtra("title");
-            if(!TextUtils.isEmpty(topicTitle)){
+            if (!TextUtils.isEmpty(topicTitle)) {
                 titleContainer.setVisibility(View.VISIBLE);
-                tvTitle.setText("#"+topicTitle);
+                tvTitle.setText("#" + topicTitle);
             }
         }
     }
@@ -248,6 +248,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
      */
     private void publishForum() {
         mPresenter.addDraftUrls(helper.getDraftUrls());
+        PopUtils.dismiss();
         if (helper.getBitmapList().size() == 0) {
             getForumText();
             mPresenter.fetchPublishTopic("", mForumTitle, mForumContent, status, topicId, forumId);
