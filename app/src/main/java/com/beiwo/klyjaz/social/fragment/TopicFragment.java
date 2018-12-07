@@ -162,7 +162,8 @@ public class TopicFragment extends BaseComponentFragment {
                     @Override
                     public void onNext(List<ForumBean> data) {
                         if (pageNo == 1) {
-                            topicAdapter.setNewData(data);
+                            topicAdapter.getData().clear();
+                            topicAdapter.addData(data);
                         } else {
                             topicAdapter.addData(data);
                         }

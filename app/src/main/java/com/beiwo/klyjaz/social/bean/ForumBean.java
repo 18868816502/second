@@ -31,6 +31,7 @@ public class ForumBean implements Serializable, MultiItemEntity {
     private int commentCount;
     private int isPraise;
     private List<String> picUrl;
+    private List<ExtraPicInfo> picExifUrl;
     //话题
     private List<String> topicUserHeadUrl;
     private String topicTitle;
@@ -147,6 +148,14 @@ public class ForumBean implements Serializable, MultiItemEntity {
         this.picUrl = picUrl;
     }
 
+    public List<ExtraPicInfo> getPicExifUrl() {
+        return picExifUrl;
+    }
+
+    public void setPicExifUrl(List<ExtraPicInfo> picExifUrl) {
+        this.picExifUrl = picExifUrl;
+    }
+
     //话题
     public List<String> getTopicUserHeadUrl() {
         return topicUserHeadUrl;
@@ -228,6 +237,12 @@ public class ForumBean implements Serializable, MultiItemEntity {
 
     public void setLoadProductNum(int loadProductNum) {
         this.loadProductNum = loadProductNum;
+    }
+
+    public static class ExtraPicInfo implements Serializable {
+        public String imgUrl;
+        public int imgHeight;
+        public int imgWidth;
     }
 
     @Override

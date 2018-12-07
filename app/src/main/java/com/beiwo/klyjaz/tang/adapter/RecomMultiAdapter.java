@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.tang.RoundCornerTransformation;
+import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -80,9 +82,33 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
             tv_article_content.setVisibility(View.VISIBLE);
         } else {
             iv_article_icon.setVisibility(View.VISIBLE);
+            int default80 = DensityUtil.dp2px(mContext, 80f);
+            int default180 = DensityUtil.dp2px(mContext, 180f);
+            ViewGroup.LayoutParams params = iv_article_icon.getLayoutParams();
+            int itemViewWidth = App.mWidthPixels / 2 - DensityUtil.dp2px(mContext, 20f);
+            params.width = itemViewWidth;
+            try {
+                int imgWidth = item.getPicExifUrl().get(0).imgWidth;
+                int imgHeight = item.getPicExifUrl().get(0).imgHeight;
+                if (imgWidth > 0 && imgHeight > 0) {
+                    float scale = itemViewWidth * 1.0f / imgWidth;
+                    int height = (int) (item.getPicExifUrl().get(0).imgHeight * scale);
+                    if (height <= default80) params.height = default80;
+                    else if (height >= default180) params.height = default180;
+                    else params.height = height;
+                } else {
+                    params.height = DensityUtil.dp2px(mContext, 140f);
+                }
+            } catch (Exception e) {
+                params.height = DensityUtil.dp2px(mContext, 140f);
+            }
+            System.out.println("item = " + itemViewWidth);
+            System.out.println("full = " + App.mWidthPixels);
+            System.out.println("d140 = " + DensityUtil.dp2px(mContext, 140f));
+            System.out.println("{ width : " + params.width + " , height : " + params.height + " }");
             Glide.with(mContext)
                     .load(picUrl.get(0))
-                    .crossFade(1000)
+                    .override(params.width, params.height)
                     .bitmapTransform(new CenterCrop(mContext), new RoundCornerTransformation(mContext, 4, RoundCornerTransformation.CornerType.TOP))
                     .into(iv_article_icon);
             tv_article_content.setVisibility(View.GONE);
