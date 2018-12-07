@@ -63,6 +63,10 @@ public class ForumHelper {
     BGABanner bgaBanner;
     @BindView(R.id.tv_article_content)
     TextView tvArticleContent;
+    @BindView(R.id.topic_container)
+    View topicContainer;
+    @BindView(R.id.tv_topic_title)
+    TextView tvTopicTitle;
     @BindView(R.id.tv_article_praise)
     TextView tvPraise;
     @BindView(R.id.tv_comment_num)
@@ -139,6 +143,10 @@ public class ForumHelper {
         tvCommentNum.setText(String.valueOf("评论 " + forumBean.getCommentCount()));
         bindBannerData(forumBean.getPicUrl());
         bindForumPraise();
+        if(!TextUtils.isEmpty(forumBean.getTopicTitle())){
+            topicContainer.setVisibility(View.VISIBLE);
+            tvTopicTitle.setText(forumBean.getTopicTitle());
+        }
         //empty数据显示
         if (forumBean.getCommentCount() < 1) {
             emptyContainer.setVisibility(View.VISIBLE);
