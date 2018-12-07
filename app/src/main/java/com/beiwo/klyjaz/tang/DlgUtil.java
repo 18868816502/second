@@ -119,7 +119,7 @@ public class DlgUtil {
     private static TimeCounter counter;
 
     public static void loginDlg(final Activity context, final OnLoginSuccessListener listener) {
-        if (BuildConfig.API_ENV) {
+        if (false) {//密码登陆弃用
             DlgUtil.createDlg(context, R.layout.dlg_login_pwd, new DlgUtil.OnDlgViewClickListener() {
                 @SuppressLint("CheckResult")
                 @Override

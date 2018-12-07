@@ -13,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
@@ -26,6 +27,13 @@ import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -45,13 +53,15 @@ import butterknife.BindView;
  * @date: 2018/12/6
  */
 public class TopicFragment extends BaseComponentFragment {
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refresh_layout;
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
     private int orderType;
     private String topicId;
     private int pageNo = 1;
-    private int pageSize = 10;
+    private int pageSize = 20;
     private Map<String, Object> map = new HashMap<>();
     private TopicAdapter topicAdapter = new TopicAdapter();
     private UserHelper userHelper;
@@ -59,7 +69,7 @@ public class TopicFragment extends BaseComponentFragment {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.temlapte_recycler;
+        return R.layout.template_refresh_recycler;
     }
 
     @Override
@@ -128,6 +138,15 @@ public class TopicFragment extends BaseComponentFragment {
                 }
             }
         });
+        refresh_layout.setEnableRefresh(false);
+        refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refresh_layout.finishLoadMore();
+                pageNo++;
+                request(pageNo);
+            }
+        });
     }
 
     private void request(final int pageNo) {
@@ -158,6 +177,11 @@ public class TopicFragment extends BaseComponentFragment {
                 });
     }
 
+    public void refresh() {
+        pageNo = 1;
+        request(pageNo);
+    }
+
     private void empty() {
         topicAdapter.setNewData(null);
         topicAdapter.setEmptyView(R.layout.empty_layout, recycler);
@@ -183,6 +207,26 @@ public class TopicFragment extends BaseComponentFragment {
                 request(pageNo);
             }
         }, new IntentFilter("refresh_layout"));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recieveMsg(String msg) {
+        if (TextUtils.equals("1", msg)) {
+            pageNo = 1;
+            request(pageNo);
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 
     public static TopicFragment getInstance() {

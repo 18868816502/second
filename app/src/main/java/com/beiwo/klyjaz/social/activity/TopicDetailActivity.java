@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -38,6 +39,9 @@ import com.beiwo.klyjaz.tang.widget.ExpandableTextView;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -66,6 +70,8 @@ import butterknife.OnClick;
  * @date: 2018/12/5
  */
 public class TopicDetailActivity extends BaseComponentActivity {
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refresh_layout;
     @BindView(R.id.ctl_title)
     CollapsingToolbarLayout ctl_title;
     @BindView(R.id.iv_topic_head)
@@ -89,6 +95,8 @@ public class TopicDetailActivity extends BaseComponentActivity {
     private Activity context;
     private String topicTitle;
     private String[] mDataList = {"最热", "最新"};
+    private TopicFragment fragment1 = TopicFragment.getInstance();
+    private TopicFragment fragment2 = TopicFragment.getInstance();
 
     @Override
     public int getLayoutId() {
@@ -103,6 +111,14 @@ public class TopicDetailActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(false).init();
         SlidePanelHelper.attach(this);
         topicId = getIntent().getStringExtra("topicId");
+        request();
+        ctl_title.setExpandedTitleColor(Color.WHITE);
+        ctl_title.setCollapsedTitleTextColor(Color.WHITE);
+        initAdapter();
+        initIndicator();
+    }
+
+    private void request() {
         Api.getInstance().topicDetail(topicId)
                 .compose(RxResponse.<TopicDetail>compatT())
                 .subscribe(new ApiObserver<TopicDetail>() {
@@ -127,10 +143,6 @@ public class TopicDetailActivity extends BaseComponentActivity {
                         expand_tv.setCloseText(data.getContent());
                     }
                 });
-        ctl_title.setExpandedTitleColor(Color.WHITE);
-        ctl_title.setCollapsedTitleTextColor(Color.WHITE);
-        initAdapter();
-        initIndicator();
     }
 
     @OnClick({R.id.tv_involve_topic})
@@ -164,22 +176,36 @@ public class TopicDetailActivity extends BaseComponentActivity {
                 });
             }
         }, new IntentFilter("request_layout"));
+        refresh_layout.setEnableLoadMore(false);
+        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh();
+                request();
+                int currentItem = viewpager.getCurrentItem();
+                if (currentItem == 0) {
+                    fragment1.refresh();
+                } else if (currentItem == 1) {
+                    fragment2.refresh();
+                }
+            }
+        });
     }
 
     private void initAdapter() {
         List<Fragment> fragments = new ArrayList<>();
-        Fragment fragment1 = TopicFragment.getInstance();
         Bundle args1 = new Bundle();
         args1.putInt("type", 2);
         args1.putString("topicId", topicId);
         fragment1.setArguments(args1);
         fragments.add(fragment1);
-        Fragment fragment2 = TopicFragment.getInstance();
+
         Bundle args2 = new Bundle();
         args2.putInt("type", 1);
         args2.putString("topicId", topicId);
         fragment2.setArguments(args2);
         fragments.add(fragment2);
+
         SocialAdapter adapter = new SocialAdapter(getSupportFragmentManager());
         adapter.setDatas(fragments);
         viewpager.setAdapter(adapter);

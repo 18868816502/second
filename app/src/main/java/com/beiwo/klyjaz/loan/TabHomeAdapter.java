@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,8 +34,13 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.LoanActivity;
 import com.beiwo.klyjaz.jjd.activity.VerticyIDActivity;
 import com.beiwo.klyjaz.jjd.bean.CashUserInfo;
+import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
+import com.beiwo.klyjaz.social.activity.TopicDetailActivity;
+import com.beiwo.klyjaz.social.bean.ForumBean;
+import com.beiwo.klyjaz.social.bean.IndexForum;
 import com.beiwo.klyjaz.tang.Decoration;
 import com.beiwo.klyjaz.tang.DlgUtil;
+import com.beiwo.klyjaz.tang.RoundCornerTransformation;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -42,7 +49,9 @@ import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.view.BannerLayout;
+import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -64,6 +73,7 @@ import io.reactivex.annotations.NonNull;
 public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHolder> implements View.OnClickListener {
     private static final int TYPE_HEADER = R.layout.layout_tab_head;
     private static final int TYPE_HEADER1 = R.layout.layout_tab_head1;
+    private static final int TYPE_TOPIC = R.layout.layout_home_topic;
     private static final int TYPE_NORMAL = R.layout.temlapte_recycler;
     private static final int TYPE_FOOT = R.layout.layout_home_footview;
 
@@ -95,6 +105,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     };
     private int progress = 2000;
     private PopAdapter popAdapter = new PopAdapter();
+    private IndexForum indexForum = null;
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles, List<Boolean> needLogin) {
         this.imgs = imgs;
@@ -128,9 +139,14 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         notifyItemChanged(1);
     }
 
+    public void setTopic(IndexForum data) {
+        this.indexForum = data;
+        notifyItemChanged(2);
+    }
+
     public void setNormalData(List<Product> data) {
         this.data = data;
-        notifyItemChanged(2);
+        notifyItemChanged(3);
     }
 
     @Override
@@ -226,6 +242,108 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 handler.post(timeRunable);
             }
         }
+        if (holder.viewType == TYPE_TOPIC) {
+            if (indexForum != null) {
+                final ForumBean topic = indexForum.getTopic();
+                if (topic != null) {
+                    Glide.with(context)
+                            .load(topic.getImgUrl())
+                            .bitmapTransform(new CenterCrop(context), new RoundCornerTransformation(context, 6, RoundCornerTransformation.CornerType.ALL))
+                            .error(R.mipmap.ic_launcher)
+                            .into(holder.iv_topic_img);
+                    holder.tv_topic_title.setText(topic.getTopicTitle());
+                    holder.tv_topic_content.setText(topic.getTopicContent());
+                    holder.tv_topic_num.setText(String.format(context.getString(R.string.topic_num_look), topic.getOnLookCount()));
+                    List<String> headUrls = topic.getTopicUserHeadUrl();
+                    if (headUrls != null) {
+                        if (headUrls.size() > 2) {
+                            holder.iv_topic_icon0.setVisibility(View.VISIBLE);
+                            holder.iv_topic_icon1.setVisibility(View.VISIBLE);
+                            holder.iv_topic_icon2.setVisibility(View.VISIBLE);
+                            Glide.with(context)
+                                    .load(headUrls.get(0))
+                                    .centerCrop()
+                                    .transform(new GlideCircleTransform(context))
+                                    .error(R.drawable.mine_icon_head)
+                                    .into(holder.iv_topic_icon0);
+                            Glide.with(context)
+                                    .load(headUrls.get(1))
+                                    .centerCrop()
+                                    .transform(new GlideCircleTransform(context))
+                                    .error(R.drawable.mine_icon_head)
+                                    .into(holder.iv_topic_icon1);
+                            Glide.with(context)
+                                    .load(headUrls.get(2))
+                                    .centerCrop()
+                                    .transform(new GlideCircleTransform(context))
+                                    .error(R.drawable.mine_icon_head)
+                                    .into(holder.iv_topic_icon2);
+                        } else if (headUrls.size() > 1) {
+                            holder.iv_topic_icon0.setVisibility(View.VISIBLE);
+                            holder.iv_topic_icon1.setVisibility(View.VISIBLE);
+                            holder.iv_topic_icon2.setVisibility(View.GONE);
+                            Glide.with(context)
+                                    .load(headUrls.get(0))
+                                    .centerCrop()
+                                    .transform(new GlideCircleTransform(context))
+                                    .error(R.drawable.mine_icon_head)
+                                    .into(holder.iv_topic_icon0);
+                            Glide.with(context)
+                                    .load(headUrls.get(1))
+                                    .centerCrop()
+                                    .transform(new GlideCircleTransform(context))
+                                    .error(R.drawable.mine_icon_head)
+                                    .into(holder.iv_topic_icon1);
+                        } else if (headUrls.size() > 0) {
+                            holder.iv_topic_icon0.setVisibility(View.VISIBLE);
+                            holder.iv_topic_icon1.setVisibility(View.GONE);
+                            holder.iv_topic_icon2.setVisibility(View.GONE);
+                            Glide.with(context)
+                                    .load(headUrls.get(0))
+                                    .centerCrop()
+                                    .transform(new GlideCircleTransform(context))
+                                    .error(R.drawable.mine_icon_head)
+                                    .into(holder.iv_topic_icon0);
+                        } else {
+                            holder.iv_topic_icon0.setVisibility(View.GONE);
+                            holder.iv_topic_icon1.setVisibility(View.GONE);
+                            holder.iv_topic_icon2.setVisibility(View.GONE);
+                        }
+                    }
+                    holder.csl_topic_wrap.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, TopicDetailActivity.class);
+                            intent.putExtra("topicId", topic.getTopicId());
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+                final ForumBean forum = indexForum.getForum();
+                if (forum != null) {
+                    Glide.with(context)
+                            .load(forum.getUserHeadUrl())
+                            .centerCrop()
+                            .transform(new GlideCircleTransform(context))
+                            .error(R.drawable.mine_icon_head)
+                            .into(holder.iv_forum_icon);
+                    holder.tv_forum_name.setText(forum.getUserName());
+                    holder.tv_forum_time.setText(StringUtil.time2Str(forum.getGmtCreate()));
+                    holder.tv_forum_title.setText(forum.getTitle());
+                    holder.tv_forum_content.setText(forum.getContent());
+                    holder.tv_forum_praise_num.setText(forum.getPraiseCount() + "赞");
+                    holder.csl_forum_wrap.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, ForumDetailActivity.class);
+                            intent.putExtra("forumId", forum.getForumId());
+                            intent.putExtra("userId", UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : "");
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+            }
+        }
         if (holder.viewType == TYPE_NORMAL) {
             if (holder.recycler.getPaddingLeft() <= 0) {
                 holder.recycler.setPadding(DensityUtil.dp2px(context, 10f), 0, DensityUtil.dp2px(context, 10f), 0);
@@ -280,7 +398,6 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     //state 1
     private TextView tv_seekbar_progress;
     private ImageView iv_edit_money;
-    //private TextView tv_service_charge;
     private ImageView iv_question;
     private TextView tv_go_loan;
     //state 2
@@ -292,16 +409,10 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         if (state == 1) {//正常状态
             tv_seekbar_progress = view.findViewById(R.id.tv_seekbar_progress);
             iv_edit_money = view.findViewById(R.id.iv_edit_money);
-            //tv_service_charge = view.findViewById(R.id.tv_service_charge);
             iv_question = view.findViewById(R.id.iv_question);
             tv_go_loan = view.findViewById(R.id.tv_go_loan);
 
             tv_seekbar_progress.setText(FormatNumberUtils.FormatNumberFor0(progress));
-            /*float charge = progress / 100;
-            SpannableString ss = new SpannableString(String.format("%.2f元", charge));
-            ForegroundColorSpan span = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.refresh_one));
-            ss.setSpan(span, 0, ss.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            tv_service_charge.setText(ss);*/
 
             iv_edit_money.setOnClickListener(this);
             iv_question.setOnClickListener(this);
@@ -315,14 +426,15 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return TYPE_HEADER;
         else if (position == 1) return TYPE_HEADER1;
-        else if (position == 3) return TYPE_FOOT;
+        else if (position == 2) return TYPE_TOPIC;
+        else if (position == 4) return TYPE_FOOT;
         else return TYPE_NORMAL;
     }
 
@@ -458,7 +570,6 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private int viewType;
         //head
-        //private BGABanner bga_banner;
         private BannerLayout banner_layout;
         private TextView tv_pro_1;
         private TextView tv_pro_2;
@@ -466,6 +577,19 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         private TextView tv_pro_4;
         private ADTextView adt_looper;
         private FrameLayout state_container;
+        //topic
+        private ConstraintLayout csl_topic_wrap, csl_forum_wrap;
+        private ImageView iv_topic_img;
+        private TextView tv_topic_title;
+        private TextView tv_topic_content;
+        private ImageView iv_topic_icon0, iv_topic_icon1, iv_topic_icon2;
+        private TextView tv_topic_num;
+        private ImageView iv_forum_icon;
+        private TextView tv_forum_name;
+        private TextView tv_forum_time;
+        private TextView tv_forum_title;
+        private TextView tv_forum_content;
+        private TextView tv_forum_praise_num;
         //normal
         private RecyclerView recycler;
 
@@ -482,6 +606,23 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             }
             if (viewType == TYPE_HEADER1) {
                 state_container = itemView.findViewById(R.id.state_container);
+            }
+            if (viewType == TYPE_TOPIC) {
+                csl_topic_wrap = itemView.findViewById(R.id.csl_topic_wrap);
+                csl_forum_wrap = itemView.findViewById(R.id.csl_forum_wrap);
+                iv_topic_img = itemView.findViewById(R.id.iv_topic_img);
+                tv_topic_title = itemView.findViewById(R.id.tv_topic_title);
+                tv_topic_content = itemView.findViewById(R.id.tv_topic_content);
+                iv_topic_icon0 = itemView.findViewById(R.id.iv_topic_icon0);
+                iv_topic_icon1 = itemView.findViewById(R.id.iv_topic_icon1);
+                iv_topic_icon2 = itemView.findViewById(R.id.iv_topic_icon2);
+                tv_topic_num = itemView.findViewById(R.id.tv_topic_num);
+                iv_forum_icon = itemView.findViewById(R.id.iv_forum_icon);
+                tv_forum_name = itemView.findViewById(R.id.tv_forum_name);
+                tv_forum_time = itemView.findViewById(R.id.tv_forum_time);
+                tv_forum_title = itemView.findViewById(R.id.tv_forum_title);
+                tv_forum_content = itemView.findViewById(R.id.tv_forum_content);
+                tv_forum_praise_num = itemView.findViewById(R.id.tv_forum_praise_num);
             }
             if (viewType == TYPE_NORMAL) {
                 recycler = itemView.findViewById(R.id.recycler);

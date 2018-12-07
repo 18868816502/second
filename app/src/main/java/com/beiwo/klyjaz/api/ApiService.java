@@ -82,6 +82,7 @@ import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.bean.DraftsBean;
 import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.ForumInfoBean;
+import com.beiwo.klyjaz.social.bean.IndexForum;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.social.bean.PraiseListBean;
 import com.beiwo.klyjaz.social.bean.SocialMessageBean;
@@ -1556,5 +1557,9 @@ public interface ApiService {
     @FormUrlEncoded//orderType 排序类型 1 最新 2 最热
     @POST("/s6/forumQueryController/queryTopicDetailCommnet")
     Observable<ResultEntity<List<ForumBean>>> topicList(@FieldMap Map<String, Object> map);
+
+    /*首页-社区*/
+    @POST("s6/forumQueryController/indexForum")
+    Observable<ResultEntity<IndexForum>> indexForum();
 
 }

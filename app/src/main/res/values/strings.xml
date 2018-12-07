@@ -249,5 +249,6 @@
     <!--银行卡-->
     <string name="card_num_default">xxxx \txxxx \t xxxx \t xxxx</string>
     <string name="join_topic_num">已有 %d 人参与</string>
+    <string name="topic_num_look">%d人 · 正在围观</string>
 
 </resources>
