@@ -241,7 +241,8 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
         bundle.putSerializable("list", (Serializable) commentLists);
         intent.putExtras(bundle);
         startActivity(intent);
-        overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
+//        overridePendingTransition(R.anim.anim_bottom_enter, R.anim.anim_bottom_exit);
+        overridePendingTransition(R.anim.anim_bottom_enter, 0);
     }
 
     private void page2PersonalActivity(String userId) {
