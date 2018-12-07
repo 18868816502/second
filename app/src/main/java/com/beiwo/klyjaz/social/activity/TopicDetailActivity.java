@@ -95,8 +95,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
     private Activity context;
     private String topicTitle;
     private String[] mDataList = {"最热", "最新"};
-    private TopicFragment fragment1 = TopicFragment.getInstance();
-    private TopicFragment fragment2 = TopicFragment.getInstance();
+    private List<TopicFragment> fragments = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -111,9 +110,9 @@ public class TopicDetailActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(false).init();
         SlidePanelHelper.attach(this);
         topicId = getIntent().getStringExtra("topicId");
-        request();
         ctl_title.setExpandedTitleColor(Color.WHITE);
         ctl_title.setCollapsedTitleTextColor(Color.WHITE);
+        request();
         initAdapter();
         initIndicator();
     }
@@ -180,30 +179,28 @@ public class TopicDetailActivity extends BaseComponentActivity {
         refresh_layout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh();
+                refresh_layout.finishRefresh();
                 request();
-                int currentItem = viewpager.getCurrentItem();
-                if (currentItem == 0) {
-                    fragment1.refresh();
-                } else if (currentItem == 1) {
-                    fragment2.refresh();
-                }
+                fragments.get(viewpager.getCurrentItem()).refresh();
             }
         });
     }
 
     private void initAdapter() {
-        List<Fragment> fragments = new ArrayList<>();
+        TopicFragment fragment1 = TopicFragment.getInstance();
         Bundle args1 = new Bundle();
         args1.putInt("type", 2);
         args1.putString("topicId", topicId);
         fragment1.setArguments(args1);
-        fragments.add(fragment1);
 
+        TopicFragment fragment2 = TopicFragment.getInstance();
         Bundle args2 = new Bundle();
         args2.putInt("type", 1);
         args2.putString("topicId", topicId);
         fragment2.setArguments(args2);
+
+        fragments.clear();
+        fragments.add(fragment1);
         fragments.add(fragment2);
 
         SocialAdapter adapter = new SocialAdapter(getSupportFragmentManager());
