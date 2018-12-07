@@ -193,14 +193,16 @@
     <style name="MyDialogActivityStyle" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
+        <!--是否允许有标题栏-->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowShowWallpaper">true</item>
-        <!--<item name="android:windowIsFloating">true</item>-->
+        <!--&lt;!&ndash;<item name="android:windowIsFloating">true</item>&ndash;&gt;-->
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowFullscreen">true</item>
-        <!--<item name="android:windowAnimationStyle">@style/AnimationActivity</item>-->
-        <item name="android:backgroundDimEnabled">true</item>
+        <!--&lt;!&ndash;<item name="android:windowAnimationStyle">@style/AnimationActivity</item>&ndash;&gt;-->
+        <!--是否允许背景灰暗-->
+        <!--<item name="android:backgroundDimEnabled">true</item>-->
     </style>
 
     <!--&lt;!&ndash;从底部弹出的动画样式&ndash;&gt;-->

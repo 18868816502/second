@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ import butterknife.OnClick;
 public class ForumCommentActivity extends BaseCommentActivity implements ForumCommentContact.View,
         BaseQuickAdapter.OnItemChildClickListener,View.OnClickListener, OnChildViewClickListener{
 
+    @BindView(R.id.hold_view)
+    View hold_view;
     @BindView(R.id.iv_close)
     ImageView ivClose;
     @BindView(R.id.tv_comment_title)
@@ -71,6 +74,12 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
 
     @Override
     public void configViews() {
+        int statusHeight = com.beiwo.klyjaz.util.CommonUtils.getStatusBarHeight(this);
+        ViewGroup.LayoutParams params = hold_view.getLayoutParams();
+        params.height = statusHeight;
+        hold_view.setBackgroundResource(R.color.transparent_half);
+        hold_view.setLayoutParams(params);
+
         fManager = getSupportFragmentManager();
         mAdapter = new ForumCommentAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -125,6 +134,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         switch (v.getId()){
             case R.id.iv_close:
                 finish();
+                overridePendingTransition(0, R.anim.anim_bottom_exit);
                 break;
             case R.id.tv_comment:
                 showInputDialog(getString(R.string.social_forum_comment_hint));
