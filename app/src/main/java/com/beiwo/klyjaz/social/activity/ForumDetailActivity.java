@@ -118,7 +118,8 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     public void onQueryForumInfoSucceed(ForumInfoBean forumBean) {
         this.forumBean = forumBean.getForum();
         refreshLayout.finishRefresh();
-        forumHelper.updateHeadDatas(forumBean.getForum());
+//        forumHelper.updateHeadDatas(forumBean.getForum());
+        forumHelper.updateHeadDatas(forumBean);
         forumHelper.updateFootDatas(forumBean.getForum());
     }
 

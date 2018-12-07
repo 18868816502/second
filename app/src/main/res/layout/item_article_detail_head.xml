@@ -133,7 +133,10 @@
             android:text="#为什么部分人觉得社保交的..."
             android:textColor="@color/black_2"
             android:textSize="@dimen/sp12"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:maxEms="12"
+            android:ellipsize="end"
+            android:singleLine="true"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

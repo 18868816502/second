@@ -18,6 +18,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.ForumBean;
+import com.beiwo.klyjaz.social.bean.ForumInfoBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
@@ -125,13 +126,13 @@ public class ForumHelper {
     /**
      * 更新动态header数据
      *
-     * @param forumBean 动态详情数据
+     * @param bean 动态详情数据
      */
-    public void updateHeadDatas(final ForumBean forumBean) {
-        if (forumBean == null) {
+    public void updateHeadDatas(final ForumInfoBean bean) {
+        if (bean == null) {
             return;
         }
-        this.forumBean = forumBean;
+        this.forumBean = bean.getForum();
         if (!TextUtils.isEmpty(forumBean.getUserHeadUrl())) {
             Glide.with(mContext).load(forumBean.getUserHeadUrl()).into(ivAuthorAvatar);
         } else {
@@ -144,9 +145,10 @@ public class ForumHelper {
         tvCommentNum.setText(String.valueOf("评论 " + forumBean.getCommentCount()));
         bindBannerData(forumBean.getPicUrl());
         bindForumPraise();
-        if(!TextUtils.isEmpty(forumBean.getTopicTitle())){
+        if(bean.getTopicDetail() != null
+                && !TextUtils.isEmpty(bean.getTopicDetail().getTopicTitle())){
             topicContainer.setVisibility(View.VISIBLE);
-            tvTopicTitle.setText(forumBean.getTopicTitle());
+            tvTopicTitle.setText("#"+bean.getTopicDetail().getTopicTitle());
         }
         //empty数据显示
         if (forumBean.getCommentCount() < 1) {

@@ -35,7 +35,7 @@ import butterknife.OnClick;
  * @time 2018/11/01 14:21
  */
 public class ForumCommentActivity extends BaseCommentActivity implements ForumCommentContact.View,
-        BaseQuickAdapter.OnItemChildClickListener,View.OnClickListener, OnChildViewClickListener{
+        BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener, OnChildViewClickListener {
 
     @BindView(R.id.hold_view)
     View hold_view;
@@ -86,7 +86,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
-        mPresenter = new ForumCommentPresenter(this,this);
+        mPresenter = new ForumCommentPresenter(this, this);
         mAdapter.setOnItemChildClickListener(this);
         mAdapter.setOnChildViewClickListener(this);
         getIntentData();
@@ -96,13 +96,13 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     private void getIntentData() {
         datas = new ArrayList<>();
         Intent intent = getIntent();
-        if(intent != null) {
+        if (intent != null) {
             forumId = intent.getStringExtra("forumId");
             type = intent.getIntExtra("type", 0);
-            position = intent.getIntExtra("position",0);
-            childPosition = intent.getIntExtra("childPosition",0);
+            position = intent.getIntExtra("position", 0);
+            childPosition = intent.getIntExtra("childPosition", 0);
             List<CommentReplyBean> comments = (List<CommentReplyBean>) intent.getSerializableExtra("list");
-            if(comments != null) {
+            if (comments != null) {
                 datas.addAll(comments);
             }
         }
@@ -111,12 +111,12 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     @Override
     public void initDatas() {
         bindCommentData(datas);
-        if(type == 0){
+        if (type == 0) {
             showInputDialog(getString(R.string.social_forum_comment_hint));
-        }else if(type == 2){
+        } else if (type == 2) {
             showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
                     datas.get(position).getUserName()));
-        }else if(type == 3){
+        } else if (type == 3) {
             showInputDialog(String.format(getString(R.string.social_forum_comment_reply_hint),
                     datas.get(position).getReplyDtoList().get(childPosition).getUserName()));
         }
@@ -125,13 +125,13 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     /**
      * 获取评论数据
      */
-    private void fetchData(){
-        mPresenter.queryCommentList(forumId,1, 10000);
+    private void fetchData() {
+        mPresenter.queryCommentList(forumId, 1, 10000);
     }
 
-    @OnClick({R.id.iv_close,R.id.tv_comment})
-    public void onViewClick(View v){
-        switch (v.getId()){
+    @OnClick({R.id.iv_close, R.id.tv_comment})
+    public void onViewClick(View v) {
+        switch (v.getId()) {
             case R.id.iv_close:
                 finish();
                 overridePendingTransition(0, R.anim.anim_bottom_exit);
@@ -144,16 +144,15 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         }
     }
 
-    private void showInputDialog(String hint){
+    private void showInputDialog(final String hint) {
         new CommentDialog(hint, new CommentDialog.SendListener() {
             @Override
             public void sendComment(String inputText) {
-//                ToastUtil.toast(inputText);
                 showCommentAuditPop();
                 commentContent = inputText;
             }
         }).show(getSupportFragmentManager(), "comment");
-    }
+}
 
     private void showCommentAuditPop() {
         PopUtils.showCommentAuditWindow(fManager, this, this);
@@ -166,12 +165,12 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         bindCommentData(datas);
     }
 
-    private void bindCommentData(List<CommentReplyBean> list){
-        tvTitle.setText(String.format(getResources().getString(R.string.social_forum_comment_num),list.size()));
-        if(list.size() == 0){
+    private void bindCommentData(List<CommentReplyBean> list) {
+        tvTitle.setText(String.format(getResources().getString(R.string.social_forum_comment_num), list.size()));
+        if (list.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             emptyContainer.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             recyclerView.setVisibility(View.VISIBLE);
             emptyContainer.setVisibility(View.GONE);
             mAdapter.setDatas(list);
@@ -197,7 +196,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         this.position = position;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_article_comment:
                 type = 2;
                 this.position = position;
@@ -220,7 +219,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         this.position = position;
         this.childPosition = childPosition;
         CommentReplyBean.ReplyDtoListBean replyBean = datas.get(position).getReplyDtoList().get(childPosition);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_commentator_avatar:
                 page2PersonalActivity(replyBean.getUserId());
                 break;
@@ -236,7 +235,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
         }
     }
 
-    private void page2PersonalActivity(String userId){
+    private void page2PersonalActivity(String userId) {
         Intent intent = new Intent(ForumCommentActivity.this, PersonalCenterActivity.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
@@ -244,7 +243,7 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_cancel:
                 PopUtils.dismiss();
                 break;
@@ -252,13 +251,13 @@ public class ForumCommentActivity extends BaseCommentActivity implements ForumCo
                 PopUtils.dismiss();
                 sendComment();
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
-    private void sendComment(){
-        switch (type){
+    private void sendComment() {
+        switch (type) {
             //动态评论
             case 0:
                 mPresenter.fetchReplyInfo("", "1", commentContent, forumId,
