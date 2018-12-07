@@ -21,6 +21,7 @@ import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.social.bean.PraiseBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
+import com.beiwo.klyjaz.util.PopUtils;
 import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.CircleImageView;
@@ -195,6 +196,7 @@ public class ForumHelper {
 //                    intent.putExtra("position", position);
 //                    mContext.startActivity(intent);
                     ImageZoom.show(mContext, position, picLists);
+                    PopUtils.dismiss();
 
                 }
             });
