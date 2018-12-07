@@ -1,23 +1,33 @@
 package com.beiwo.klyjaz.social.fragment;
 
 
-import android.graphics.Rect;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.helper.UserHelper;
+import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.adapter.TopicAdapter;
 import com.beiwo.klyjaz.social.bean.ForumBean;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
+import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +55,7 @@ public class TopicFragment extends BaseComponentFragment {
     private Map<String, Object> map = new HashMap<>();
     private TopicAdapter topicAdapter = new TopicAdapter();
     private UserHelper userHelper;
+    private boolean praise;//标记item点赞状态
 
     @Override
     public int getLayoutResId() {
@@ -62,6 +73,61 @@ public class TopicFragment extends BaseComponentFragment {
     public void initDatas() {
         initRecycler();
         request(pageNo);
+        topicAdapter.setOnTopicItemClickListener(new TopicAdapter.OnTopicItemClickListener() {
+            @Override
+            public void itemClick(String forumId, String userId) {
+                Intent intent = new Intent(getActivity(), ForumDetailActivity.class);
+                intent.putExtra("forumId", forumId);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+
+            @Override
+            public void userClick(String userId) {
+                if (!userHelper.isLogin()) {
+                    DlgUtil.loginDlg(getActivity(), null);
+                    return;
+                }
+                Intent intent = new Intent(getActivity(), PersonalCenterActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+
+            @Override
+            public void praiseClick(final ForumBean item, final WeakReference<TextView> tvRef) {
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    DlgUtil.loginDlg(getActivity(), null);
+                    return;
+                }
+                String userId = userHelper.id();
+                praise = item.getIsPraise() == 1;
+                if (praise) {
+                    Api.getInstance().fetchCancelPraise(0, item.getForumId(), userId)
+                            .compose(RxResponse.compatO())
+                            .subscribe(new ApiObserver<Object>() {
+                                @Override
+                                public void onNext(@NonNull Object data) {
+                                    praise = !praise;
+                                    item.setIsPraise(0);
+                                    item.setPraiseCount(item.getPraiseCount() - 1);
+                                    topicAdapter.setPraiseState(item, tvRef.get());
+                                }
+                            });
+                } else {
+                    Api.getInstance().fetchClickPraise(0, item.getForumId(), userId)
+                            .compose(RxResponse.<Object>compatO())
+                            .subscribe(new ApiObserver<Object>() {
+                                @Override
+                                public void onNext(@NonNull Object data) {
+                                    praise = !praise;
+                                    item.setIsPraise(1);
+                                    item.setPraiseCount(item.getPraiseCount() + 1);
+                                    topicAdapter.setPraiseState(item, tvRef.get());
+                                }
+                            });
+                }
+            }
+        });
     }
 
     private void request(final int pageNo) {
@@ -105,6 +171,18 @@ public class TopicFragment extends BaseComponentFragment {
         recycler.setItemAnimator(new DefaultItemAnimator());
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(topicAdapter);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                pageNo = 1;
+                request(pageNo);
+            }
+        }, new IntentFilter("refresh_layout"));
     }
 
     public static TopicFragment getInstance() {

@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -128,7 +129,7 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
                         break;
                     case R.id.tv_account_praise:
                         if (itemClickListener != null)
-                            itemClickListener.praiseClick(item, tv_account_praise);
+                            itemClickListener.praiseClick(item, new WeakReference(tv_account_praise));
                         break;
                     default:
                         break;
@@ -276,7 +277,7 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
 
         void userClick(String userId);
 
-        void praiseClick(ForumBean item, TextView tv);
+        void praiseClick(ForumBean item, WeakReference<TextView> tvRef);
 
         void eventClick(String url, String name);
 
