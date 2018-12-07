@@ -17,6 +17,7 @@ public class ForumInfoBean implements Serializable {
      */
 
     private ForumBean forum;
+    private TopicDetail topicDetail;
     private List<CommentDtoListBean> commentDtoList;
 
     public ForumBean getForum() {
@@ -25,6 +26,14 @@ public class ForumInfoBean implements Serializable {
 
     public void setForum(ForumBean forum) {
         this.forum = forum;
+    }
+
+    public TopicDetail getTopicDetail() {
+        return topicDetail;
+    }
+
+    public void setTopicDetail(TopicDetail topicDetail) {
+        this.topicDetail = topicDetail;
     }
 
     public List<CommentDtoListBean> getCommentDtoList() {

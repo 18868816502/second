@@ -26,6 +26,8 @@ public class TopicDetail implements Serializable {
     private String content;
     private String title;
     private String imgUrl;
+    private String topicTitle;
+    private String topicContent;
 
     public String getTopicId() {
         return topicId;
@@ -65,5 +67,21 @@ public class TopicDetail implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getTopicTitle() {
+        return topicTitle;
+    }
+
+    public void setTopicTitle(String topicTitle) {
+        this.topicTitle = topicTitle;
+    }
+
+    public String getTopicContent() {
+        return topicContent;
+    }
+
+    public void setTopicContent(String topicContent) {
+        this.topicContent = topicContent;
     }
 }
