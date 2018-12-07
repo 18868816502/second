@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.ForumBean;
 import com.beiwo.klyjaz.tang.RoundCornerTransformation;
 import com.beiwo.klyjaz.tang.StringUtil;
@@ -16,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+
+import java.lang.ref.WeakReference;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -34,7 +37,7 @@ public class TopicAdapter extends BaseQuickAdapter<ForumBean, BaseViewHolder> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ForumBean item) {
+    protected void convert(BaseViewHolder helper, final ForumBean item) {
         Drawable praised = ContextCompat.getDrawable(mContext, R.drawable.ic_praised);
         Drawable unpraise = ContextCompat.getDrawable(mContext, R.drawable.ic_unpraised);
         ImageView iv_topic_avator = helper.getView(R.id.iv_topic_avator);
@@ -45,7 +48,7 @@ public class TopicAdapter extends BaseQuickAdapter<ForumBean, BaseViewHolder> {
         //TextView tv_topic_title_pic = helper.getView(R.id.tv_topic_title_pic);
         ImageView iv_topic_content_pic = helper.getView(R.id.iv_topic_content_pic);
         //TextView tv_topic_content = helper.getView(R.id.tv_topic_content);
-        TextView tv_topic_praise = helper.getView(R.id.tv_topic_praise);
+        final TextView tv_topic_praise = helper.getView(R.id.tv_topic_praise);
 
         Glide.with(mContext)
                 .load(item.getUserHeadUrl())
@@ -57,7 +60,30 @@ public class TopicAdapter extends BaseQuickAdapter<ForumBean, BaseViewHolder> {
                 .setText(R.id.tv_topic_title_nopic, item.getTitle())
                 .setText(R.id.tv_topic_title_pic, item.getTitle())
                 .setText(R.id.tv_topic_content, item.getContent())
-                .setText(R.id.tv_topic_praise, item.getPraiseCount() + "");
+                .setText(R.id.tv_topic_praise, item.getPraiseCount() + "")
+                .addOnClickListener(R.id.iv_topic_avator)
+                .addOnClickListener(R.id.tv_account_praise)
+                .addOnClickListener(R.id.csl_topic_wrap);
+        iv_topic_avator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickListener != null) clickListener.userClick(item.getUserId());
+            }
+        });
+        tv_topic_praise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickListener != null)
+                    clickListener.praiseClick(item, new WeakReference(tv_topic_praise));
+            }
+        });
+        helper.getView(R.id.csl_topic_wrap).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickListener != null)
+                    clickListener.itemClick(item.getForumId(), UserHelper.getInstance(mContext).isLogin() ? UserHelper.getInstance(mContext).id() : "");
+            }
+        });
         if (item.getPicUrl() == null || item.getPicUrl().size() <= 0) {
             tv_topic_title_nopic.setVisibility(View.VISIBLE);
             ll_topic_pic_wrap.setVisibility(View.GONE);
@@ -77,5 +103,28 @@ public class TopicAdapter extends BaseQuickAdapter<ForumBean, BaseViewHolder> {
             unpraise.setBounds(0, 0, unpraise.getMinimumWidth(), unpraise.getMinimumHeight());
             tv_topic_praise.setCompoundDrawables(unpraise, null, null, null);
         }
+    }
+
+    public void setPraiseState(ForumBean item, TextView tv) {
+        Drawable praise = ContextCompat.getDrawable(mContext, R.drawable.ic_praised);
+        praise.setBounds(0, 0, praise.getMinimumWidth(), praise.getMinimumHeight());
+        Drawable unpraise = ContextCompat.getDrawable(mContext, R.drawable.ic_unpraised);
+        unpraise.setBounds(0, 0, unpraise.getMinimumWidth(), unpraise.getMinimumHeight());
+        tv.setCompoundDrawables(item.getIsPraise() == 1 ? praise : unpraise, null, null, null);
+        tv.setText(item.getPraiseCount() + "");
+    }
+
+    private OnTopicItemClickListener clickListener;
+
+    public void setOnTopicItemClickListener(OnTopicItemClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public interface OnTopicItemClickListener {
+        void itemClick(String forumId, String userId);
+
+        void userClick(String userId);
+
+        void praiseClick(ForumBean item, WeakReference<TextView> tvRef);
     }
 }

@@ -46,7 +46,7 @@ import butterknife.BindView;
  * @time
  */
 public class PersonalCenterActivity extends BaseComponentActivity implements PersonalCenterContact.View,
-        View.OnClickListener, OnViewClickListener,OnItemClickListener,OnRefreshListener, OnLoadMoreListener {
+        View.OnClickListener, OnViewClickListener, OnItemClickListener, OnRefreshListener, OnLoadMoreListener {
 
     @BindView(R.id.parent)
     LinearLayout parentView;
@@ -95,7 +95,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void initDatas() {
         datas = new ArrayList<>();
-        if(getIntent()!=null){
+        if (getIntent() != null) {
             userId = getIntent().getStringExtra("userId");
         }
     }
@@ -136,7 +136,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     public void onQueryUserTopicSucceed(List<UserTopicBean> list) {
         refreshLayout.finishRefresh();
         if (pageNo == 1) {
-            adapter.setDatas(userInfoBean,list);
+            adapter.setDatas(userInfoBean, list);
             datas.clear();
             datas.addAll(list);
         } else {
@@ -165,13 +165,14 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     /**
      * 显示切换弹窗
+     *
      * @param ivMore 更多控件
      */
     private void showPopWindow(ImageView ivMore) {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_personal_more,parentView, false);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_personal_more, parentView, false);
         view.findViewById(R.id.tv_drafts).setOnClickListener(this);
         view.findViewById(R.id.tv_audits).setOnClickListener(this);
-        popWindow = new PopupWindow(view, DensityUtil.dp2px(this,77), DensityUtil.dp2px(this,75));
+        popWindow = new PopupWindow(view, DensityUtil.dp2px(this, 77), DensityUtil.dp2px(this, 75));
         popWindow.setFocusable(true);
         popWindow.setOutsideTouchable(true);
         int[] location = new int[2];
@@ -190,6 +191,7 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
 
     /**
      * 设置窗口背景颜色值
+     *
      * @param bgAlpha 透明度
      */
     private void setBackgroundbgAlpha(float bgAlpha) {
@@ -200,13 +202,13 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     }
 
     @Override
-    public void onViewClick(View view, int type,int position) {
-        switch (type){
+    public void onViewClick(View view, int type, int position) {
+        switch (type) {
             case ConstantTag.TAG_PERSONAL_AVATAR:
             case ConstantTag.TAG_PERSONAL_INFO_EDIT:
                 Intent intent = new Intent(this, UserProfileActivity.class);
-                intent.putExtra("introduce",userInfoBean.getIntroduce());
-                intent.putExtra("sex",userInfoBean.getSex());
+                intent.putExtra("introduce", userInfoBean.getIntroduce());
+                intent.putExtra("sex", userInfoBean.getSex());
                 startActivity(intent);
                 break;
             case ConstantTag.TAG_PERSONAL_PUBLISH:
@@ -237,9 +239,9 @@ public class PersonalCenterActivity extends BaseComponentActivity implements Per
     @Override
     public void onItemClick(int position) {
 //        Intent intent = new Intent(this,ArticleDetailActivity.class);
-        Intent intent = new Intent(this,ForumDetailActivity.class);
-        intent.putExtra("userId",datas.get(position).getUserId());
-        intent.putExtra("forumId",datas.get(position).getForumId());
+        Intent intent = new Intent(this, ForumDetailActivity.class);
+        intent.putExtra("userId", datas.get(position).getUserId());
+        intent.putExtra("forumId", datas.get(position).getForumId());
         startActivity(intent);
     }
 }

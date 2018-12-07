@@ -48,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,7 +158,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
             }
 
             @Override
-            public void praiseClick(final ForumBean item, final TextView tv) {
+            public void praiseClick(final ForumBean item, final WeakReference<TextView> tvRef) {
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
@@ -173,7 +174,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
                                     praise = !praise;
                                     item.setIsPraise(0);
                                     item.setPraiseCount(item.getPraiseCount() - 1);
-                                    multiAdapter.setPraiseState(item, tv);
+                                    multiAdapter.setPraiseState(item, tvRef.get());
                                 }
                             });
                 } else {
@@ -185,7 +186,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
                                     praise = !praise;
                                     item.setIsPraise(1);
                                     item.setPraiseCount(item.getPraiseCount() + 1);
-                                    multiAdapter.setPraiseState(item, tv);
+                                    multiAdapter.setPraiseState(item, tvRef.get());
                                 }
                             });
                 }
@@ -346,7 +347,6 @@ public class SocialRecomFragment extends BaseComponentFragment {
             }
         }, new IntentFilter("refresh_layout"));
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void recieve(String msg) {

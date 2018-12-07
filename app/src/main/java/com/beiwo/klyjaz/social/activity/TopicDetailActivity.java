@@ -27,8 +27,10 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
+import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.TopicDetail;
 import com.beiwo.klyjaz.social.fragment.TopicFragment;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.adapter.SocialAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -132,12 +134,16 @@ public class TopicDetailActivity extends BaseComponentActivity {
     }
 
     @OnClick({R.id.tv_involve_topic})
-    public void onViewClick(View view){
-        switch(view.getId()){
+    public void onViewClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_involve_topic:
-                Intent intent = new Intent(this,ForumPublishActivity.class);
-                intent.putExtra("topicId",topicId);
-                intent.putExtra("title",topicTitle);
+                if (!UserHelper.getInstance(this).isLogin()) {
+                    DlgUtil.loginDlg(this, null);
+                    return;
+                }
+                Intent intent = new Intent(this, ForumPublishActivity.class);
+                intent.putExtra("topicId", topicId);
+                intent.putExtra("title", topicTitle);
                 startActivity(intent);
                 break;
             default:
@@ -177,7 +183,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
         SocialAdapter adapter = new SocialAdapter(getSupportFragmentManager());
         adapter.setDatas(fragments);
         viewpager.setAdapter(adapter);
-        viewpager.setCurrentItem(1);
+        viewpager.setCurrentItem(0);
     }
 
     private void initIndicator() {
