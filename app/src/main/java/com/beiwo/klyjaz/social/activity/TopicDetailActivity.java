@@ -175,7 +175,6 @@ public class TopicDetailActivity extends BaseComponentActivity {
                 });
             }
         }, new IntentFilter("request_layout"));
-        refresh_layout.setEnableLoadMore(false);
         refresh_layout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
