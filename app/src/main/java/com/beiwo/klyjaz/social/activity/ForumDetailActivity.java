@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,6 +105,7 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
 
     @Override
     public void initDatas() {
+        commentLists = new ArrayList<>();
         Intent intent = getIntent();
         this.forumId = intent.getStringExtra("forumId");
         fetchData();
@@ -126,12 +128,13 @@ public class ForumDetailActivity extends BaseComponentActivity implements ForumD
     @Override
     public void onQueryCommentSucceed(List<CommentReplyBean> list) {
         refreshLayout.finishRefresh();
-        this.commentLists = list;
-        if (list != null) {
-            if (list.size() > 3) {
-                mAdapter.addData(list.subList(0, 3));
+        this.commentLists.clear();
+        this.commentLists.addAll(list);
+        if (commentLists != null) {
+            if (commentLists.size() > 3) {
+                mAdapter.setNewData(commentLists.subList(0, 3));
             } else {
-                mAdapter.addData(list);
+                mAdapter.setNewData(commentLists);
             }
         }
     }
