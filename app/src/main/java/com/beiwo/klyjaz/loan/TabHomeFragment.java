@@ -143,6 +143,8 @@ public class TabHomeFragment extends BaseComponentFragment {
                 });
         //check state
         checkUserState();
+        //下款推荐
+
         //topic
         topicData();
         //recommond product

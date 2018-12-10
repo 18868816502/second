@@ -27,9 +27,6 @@ import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,8 +50,6 @@ import butterknife.BindView;
  * @date: 2018/12/6
  */
 public class TopicFragment extends BaseComponentFragment {
-    @BindView(R.id.refresh_layout)
-    SmartRefreshLayout refresh_layout;
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
@@ -69,7 +64,7 @@ public class TopicFragment extends BaseComponentFragment {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.template_refresh_recycler;
+        return R.layout.temlapte_recycler;
     }
 
     @Override
@@ -138,15 +133,6 @@ public class TopicFragment extends BaseComponentFragment {
                 }
             }
         });
-        refresh_layout.setEnableRefresh(false);
-        refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refresh_layout.finishLoadMore();
-                pageNo++;
-                request(pageNo);
-            }
-        });
     }
 
     private void request(final int pageNo) {
@@ -179,6 +165,11 @@ public class TopicFragment extends BaseComponentFragment {
 
     public void refresh() {
         pageNo = 1;
+        request(pageNo);
+    }
+
+    public void loadMore() {
+        pageNo++;
         request(pageNo);
     }
 

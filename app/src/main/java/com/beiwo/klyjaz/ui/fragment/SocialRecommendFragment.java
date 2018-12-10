@@ -177,7 +177,6 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
             case R.id.iv_publish:
                 DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
-//                    startActivity(new Intent(getActivity(), CommunityPublishActivity.class));
                     startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 } else {
                     DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {

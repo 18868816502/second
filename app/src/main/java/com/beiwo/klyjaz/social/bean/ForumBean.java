@@ -40,6 +40,7 @@ public class ForumBean implements Serializable, MultiItemEntity {
     private int location;
     private String topicId;
     //活动
+    private String activeId;
     private String imgUrl;
     private String activeUrl;
     private String activeName;
@@ -206,6 +207,14 @@ public class ForumBean implements Serializable, MultiItemEntity {
     }
 
     //活动
+    public String getActiveId() {
+        return activeId;
+    }
+
+    public void setActiveId(String activeId) {
+        this.activeId = activeId;
+    }
+
     public String getImgUrl() {
         return imgUrl;
     }

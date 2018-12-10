@@ -102,10 +102,10 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
             } catch (Exception e) {
                 params.height = DensityUtil.dp2px(mContext, 140f);
             }
-            System.out.println("item = " + itemViewWidth);
-            System.out.println("full = " + App.mWidthPixels);
-            System.out.println("d140 = " + DensityUtil.dp2px(mContext, 140f));
-            System.out.println("{ width : " + params.width + " , height : " + params.height + " }");
+            //System.out.println("item = " + itemViewWidth);
+            //System.out.println("full = " + App.mWidthPixels);
+            //System.out.println("d140 = " + DensityUtil.dp2px(mContext, 140f));
+            //System.out.println("{ width : " + params.width + " , height : " + params.height + " }");
             Glide.with(mContext)
                     .load(picUrl.get(0))
                     .override(params.width, params.height)
@@ -188,7 +188,7 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
             @Override
             public void onClick(View v) {
                 if (itemClickListener != null)
-                    itemClickListener.eventClick(item.getActiveUrl(), item.getActiveName());
+                    itemClickListener.eventClick(item.getActiveId(), item.getActiveUrl(), item.getActiveName());
             }
         });
     }
@@ -305,7 +305,7 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
 
         void praiseClick(ForumBean item, WeakReference<TextView> tvRef);
 
-        void eventClick(String url, String name);
+        void eventClick(String eventId, String url, String name);
 
         void topicClick(String topicId);
 

@@ -40,14 +40,11 @@ public class TopicAdapter extends BaseQuickAdapter<ForumBean, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, final ForumBean item) {
         Drawable praised = ContextCompat.getDrawable(mContext, R.drawable.ic_praised);
         Drawable unpraise = ContextCompat.getDrawable(mContext, R.drawable.ic_unpraised);
+
         ImageView iv_topic_avator = helper.getView(R.id.iv_topic_avator);
-        //TextView tv_topic_name = helper.getView(R.id.tv_topic_name);
-        //TextView tv_topic_time = helper.getView(R.id.tv_topic_time);
         TextView tv_topic_title_nopic = helper.getView(R.id.tv_topic_title_nopic);
         LinearLayout ll_topic_pic_wrap = helper.getView(R.id.ll_topic_pic_wrap);
-        //TextView tv_topic_title_pic = helper.getView(R.id.tv_topic_title_pic);
         ImageView iv_topic_content_pic = helper.getView(R.id.iv_topic_content_pic);
-        //TextView tv_topic_content = helper.getView(R.id.tv_topic_content);
         final TextView tv_topic_praise = helper.getView(R.id.tv_topic_praise);
 
         Glide.with(mContext)

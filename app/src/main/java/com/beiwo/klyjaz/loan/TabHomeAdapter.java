@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -45,6 +45,7 @@ import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
+import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.FormatNumberUtils;
 import com.beiwo.klyjaz.util.SPUtils;
@@ -71,11 +72,27 @@ import io.reactivex.annotations.NonNull;
  */
 
 public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHolder> implements View.OnClickListener {
-    private static final int TYPE_HEADER = R.layout.layout_tab_head;
-    private static final int TYPE_HEADER1 = R.layout.layout_tab_head1;
-    private static final int TYPE_TOPIC = R.layout.layout_home_topic;
-    private static final int TYPE_NORMAL = R.layout.temlapte_recycler;
-    private static final int TYPE_FOOT = R.layout.layout_home_footview;
+    private static final int TYPE_HEADER = R.layout.layout_tab_head;//0
+    private static final int TYPE_HEADER1 = R.layout.layout_tab_head1;//1
+    private static final int TYPE_GOODS = R.layout.layout_home_hot;//2
+    private static final int TYPE_TOPIC = R.layout.layout_home_topic;//3
+    private static final int TYPE_NORMAL = R.layout.temlapte_recycler;//4
+    private static final int TYPE_FOOT = R.layout.layout_home_footview;//5
+
+    @Override
+    public int getItemCount() {
+        return 6;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) return TYPE_HEADER;
+        else if (position == 1) return TYPE_HEADER1;
+        else if (position == 2) return TYPE_GOODS;
+        else if (position == 3) return TYPE_TOPIC;
+        else if (position == 5) return TYPE_FOOT;
+        else return TYPE_NORMAL;
+    }
 
     private Activity context;
     private List<String> imgs = new ArrayList<>();
@@ -106,6 +123,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private int progress = 2000;
     private PopAdapter popAdapter = new PopAdapter();
     private IndexForum indexForum = null;
+    private List<Product> hotGoods = new ArrayList<>();
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles, List<Boolean> needLogin) {
         this.imgs = imgs;
@@ -139,14 +157,19 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         notifyItemChanged(1);
     }
 
+    public void setHotGoodsData(List<Product> data) {
+        hotGoods = data;
+        notifyItemChanged(2);
+    }
+
     public void setTopic(IndexForum data) {
         this.indexForum = data;
-        notifyItemChanged(2);
+        notifyItemChanged(3);
     }
 
     public void setNormalData(List<Product> data) {
         this.data = data;
-        notifyItemChanged(3);
+        notifyItemChanged(4);
     }
 
     @Override
@@ -313,6 +336,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     holder.csl_topic_wrap.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            DataStatisticsHelper.getInstance(context).onCountUvPv("CommunityTopicHit", topic.getTopicId());
                             Intent intent = new Intent(context, TopicDetailActivity.class);
                             intent.putExtra("topicId", topic.getTopicId());
                             context.startActivity(intent);
@@ -335,6 +359,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     holder.csl_forum_wrap.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            DataStatisticsHelper.getInstance(context).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forum.getForumId());
                             Intent intent = new Intent(context, ForumDetailActivity.class);
                             intent.putExtra("forumId", forum.getForumId());
                             intent.putExtra("userId", UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : "");
@@ -422,20 +447,6 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             tv_time_counter = view.findViewById(R.id.tv_time_counter);
         }
         return view;
-    }
-
-    @Override
-    public int getItemCount() {
-        return 5;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 0) return TYPE_HEADER;
-        else if (position == 1) return TYPE_HEADER1;
-        else if (position == 2) return TYPE_TOPIC;
-        else if (position == 4) return TYPE_FOOT;
-        else return TYPE_NORMAL;
     }
 
     @Override
@@ -577,6 +588,9 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         private TextView tv_pro_4;
         private ADTextView adt_looper;
         private FrameLayout state_container;
+        //hot
+        private LinearLayout ll_hot_head;
+        private RecyclerView hot_recycler;
         //topic
         private ConstraintLayout csl_topic_wrap, csl_forum_wrap;
         private ImageView iv_topic_img;
@@ -606,6 +620,10 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             }
             if (viewType == TYPE_HEADER1) {
                 state_container = itemView.findViewById(R.id.state_container);
+            }
+            if (viewType == TYPE_GOODS) {
+                ll_hot_head = itemView.findViewById(R.id.ll_hot_head);
+                hot_recycler = itemView.findViewById(R.id.hot_recycler);
             }
             if (viewType == TYPE_TOPIC) {
                 csl_topic_wrap = itemView.findViewById(R.id.csl_topic_wrap);

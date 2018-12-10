@@ -41,6 +41,7 @@ import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -115,6 +116,21 @@ public class TopicDetailActivity extends BaseComponentActivity {
         request();
         initAdapter();
         initIndicator();
+        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refresh_layout.finishRefresh();
+                request();
+                fragments.get(viewpager.getCurrentItem()).refresh();
+            }
+        });
+        refresh_layout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refresh_layout.finishLoadMore();
+                fragments.get(viewpager.getCurrentItem()).loadMore();
+            }
+        });
     }
 
     private void request() {
@@ -175,14 +191,6 @@ public class TopicDetailActivity extends BaseComponentActivity {
                 });
             }
         }, new IntentFilter("request_layout"));
-        refresh_layout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                refresh_layout.finishRefresh();
-                request();
-                fragments.get(viewpager.getCurrentItem()).refresh();
-            }
-        });
     }
 
     private void initAdapter() {

@@ -194,26 +194,26 @@ public class SocialRecomFragment extends BaseComponentFragment {
             }
 
             @Override
-            public void eventClick(String url, String name) {
+            public void eventClick(String eventId, String url, String name) {
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
                     DlgUtil.loginDlg(getActivity(), null);
                 } else {
                     if (!TextUtils.isEmpty(url)) {
+                        DataStatisticsHelper.getInstance(getActivity()).onCountUvPv("CommunityActiveHit", eventId);
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
                         intent.putExtra("webViewUrl", url);
                         intent.putExtra("webViewTitleName", name);
                         startActivity(intent);
-                        DataStatisticsHelper.getInstance(getActivity()).onCountUv("CommunityActiveHit");
                     }
                 }
             }
 
             @Override
             public void topicClick(String topicId) {
+                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv("CommunityTopicHit", topicId);
                 Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
                 intent.putExtra("topicId", topicId);
                 startActivity(intent);
-                DataStatisticsHelper.getInstance(getActivity()).onCountUv("CommunityTopicHit");
             }
 
             @Override
