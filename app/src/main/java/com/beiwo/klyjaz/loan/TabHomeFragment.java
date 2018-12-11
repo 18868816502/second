@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import com.beiwo.klyjaz.R;
@@ -28,8 +29,11 @@ import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.util.AnimationUtil;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
+import com.beiwo.klyjaz.util.ToastUtil;
+import com.beiwo.klyjaz.view.floatbutton.DragFloatButton;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -68,6 +72,8 @@ public class TabHomeFragment extends BaseComponentFragment {
     LinearLayout ll_toolbar_wrap;
     @BindView(R.id.hold_view)
     View hold_view;
+    @BindView(R.id.float_button)
+    DragFloatButton floatButton;
 
     private List<String> imgs = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
@@ -87,6 +93,12 @@ public class TabHomeFragment extends BaseComponentFragment {
         ViewGroup.LayoutParams params = hold_view.getLayoutParams();
         params.height = statusHeight;
         hold_view.setLayoutParams(params);
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.toast("拖拽按钮");
+            }
+        });
 
         initRecycler();
         request();
@@ -107,6 +119,16 @@ public class TabHomeFragment extends BaseComponentFragment {
                 } else {
                     ll_toolbar_wrap.setVisibility(View.GONE);
                     ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(false).init();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
+                    AnimationUtil.with().bottomMoveToViewLocation(floatButton, 500);
+                }else{
+                    AnimationUtil.with().moveToViewBottom(floatButton, 500);
                 }
             }
         });
