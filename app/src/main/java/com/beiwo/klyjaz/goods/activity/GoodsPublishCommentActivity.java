@@ -1,7 +1,31 @@
 package com.beiwo.klyjaz.goods.activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.goods.helper.GoodsHelper;
+import com.beiwo.klyjaz.util.CommonUtils;
+import com.gyf.barlibrary.ImmersionBar;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author chenguoguo
@@ -10,7 +34,17 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
  * @descripe 产品发布评论页面
  * @time 2018/12/11 11:19
  */
-public class GoodsPublishCommentActivity extends BaseComponentActivity {
+public class GoodsPublishCommentActivity extends BaseComponentActivity implements View.OnClickListener {
+
+    @BindView(R.id.tool_bar)
+    Toolbar toolBar;
+    @BindView(R.id.navigate)
+    ImageView navigate;
+    @BindView(R.id.container)
+    LinearLayout viewContainer;
+
+    private GoodsHelper mHelper;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_goods_publish_comment;
@@ -18,11 +52,89 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
-
+        ImmersionBar.with(this).titleBar(toolBar).statusBarDarkFont(true).init();
+        mHelper = new GoodsHelper(this, this);
+        viewContainer.addView(mHelper.init01Layout(viewContainer));
+        viewContainer.addView(mHelper.init02Layout(viewContainer));
     }
 
     @Override
     public void initDatas() {
 
+    }
+
+    @OnClick({R.id.navigate})
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.navigate:
+                finish();
+                break;
+            case R.id.add_container:
+                checkPermission();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200 && resultCode == RESULT_OK) {
+            mHelper.setPhotos(Matisse.obtainPathResult(data));
+        }
+    }
+
+    /**
+     * 检查相机权限
+     */
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    1);
+        } else {
+            openPick();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        doNext(requestCode, grantResults);
+    }
+
+    private void doNext(int requestCode, int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openPick();
+            } else {
+                Toast.makeText(this, "请在应用管理中打开“相机”访问权限！", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+    }
+
+    private void openPick() {
+        Matisse.from(this)
+                .choose(MimeType.ofImage(), false)
+                //自动增长选择的数目
+                .countable(true)
+                .capture(true)
+                //只显示一种媒体类型（图片或者视频）
+                .showSingleMediaType(true)
+                .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider", "kaola"))
+                //限制最大的选择数目
+                .maxSelectable(9)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                .thumbnailScale(0.85f)
+                .imageEngine(new GlideEngine())
+                .originalEnable(true)
+                .maxOriginalSize(10)
+                .autoHideToolbarOnSingleTap(true)
+                .forResult(200);
     }
 }
