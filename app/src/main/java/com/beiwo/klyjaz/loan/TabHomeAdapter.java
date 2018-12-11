@@ -27,6 +27,7 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
+import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
@@ -123,7 +124,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private int progress = 2000;
     private PopAdapter popAdapter = new PopAdapter();
     private IndexForum indexForum = null;
-    private List<Product> hotGoods = new ArrayList<>();
+    private List<Goods> hotGoods = new ArrayList<>();
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles, List<Boolean> needLogin) {
         this.imgs = imgs;
@@ -157,7 +158,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         notifyItemChanged(1);
     }
 
-    public void setHotGoodsData(List<Product> data) {
+    public void setHotGoodsData(List<Goods> data) {
         hotGoods = data;
         notifyItemChanged(2);
     }

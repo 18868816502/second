@@ -23,6 +23,8 @@ import com.beiwo.klyjaz.entity.BillSummaryBean;
 import com.beiwo.klyjaz.entity.BlackList;
 import com.beiwo.klyjaz.entity.CalendarAbstract;
 import com.beiwo.klyjaz.entity.CalendarDebt;
+import com.beiwo.klyjaz.entity.Comments;
+import com.beiwo.klyjaz.entity.CommentsTotal;
 import com.beiwo.klyjaz.entity.CreateAccountReturnIDsBean;
 import com.beiwo.klyjaz.entity.CreditBill;
 import com.beiwo.klyjaz.entity.CreditCard;
@@ -38,6 +40,8 @@ import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
+import com.beiwo.klyjaz.entity.Goods;
+import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
 import com.beiwo.klyjaz.entity.HotNews;
@@ -70,6 +74,7 @@ import com.beiwo.klyjaz.entity.TabImageBean;
 import com.beiwo.klyjaz.entity.ThirdAuthResult;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
 import com.beiwo.klyjaz.entity.Ticket;
+import com.beiwo.klyjaz.entity.UploadImg;
 import com.beiwo.klyjaz.entity.UsedEmail;
 import com.beiwo.klyjaz.entity.UserInfoBean;
 import com.beiwo.klyjaz.entity.UserProfile;
@@ -1493,5 +1498,40 @@ public class Api {
     /*首页-社区*/
     public Observable<ResultEntity<IndexForum>> indexForum() {
         return service.indexForum();
+    }
+
+    /*好评口子/下款热门榜*/
+    public Observable<ResultEntity<List<Goods>>> hotGoods(int pageNo, int pageSize) {
+        return service.hotGoods(pageNo, pageSize);
+    }
+
+    /*下款热门榜*/
+    public Observable<ResultEntity<List>> hotLoan(String groupId) {
+        return service.hotLoan(groupId);
+    }
+
+    /*产品详情-产品信息*/
+    public Observable<ResultEntity<GoodsInfo>> goodsInfo(String cutId, String manageId) {
+        return service.goodsInfo(cutId, manageId);
+    }
+
+    /*评价产品*/
+    public Observable<ResultEntity> commentGoods(Map<String, Object> map) {
+        return service.commentGoods(map);
+    }
+
+    /*口子产品评价上传图片*/
+    public Observable<ResultEntity<UploadImg>> uploadImg(String image) {
+        return service.uploadImg(image);
+    }
+
+    /*产品详情-产品评价总览*/
+    public Observable<ResultEntity<CommentsTotal>> goodsCommentTotal(String cutId, String manageId) {
+        return service.goodsCommentTotal(cutId, manageId);
+    }
+
+    /*产品详情-产品评价分页列表*/
+    public Observable<ResultEntity<Comments>> goodsComments(Map<String, Object> map) {
+        return service.goodsComments(map);
     }
 }
