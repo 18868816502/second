@@ -23,7 +23,7 @@ public class CommentsTotal implements Serializable {
     private double goodCommentRate;//好评率
     private int minCommentCount;//中评论数
     private int badCommentCount;//差评论数
-    private List<Labels> labelList;
+    private List<Labels> labelList;//标签
 
     public String getPraiseCutId() {
         return praiseCutId;
