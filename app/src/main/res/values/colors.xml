@@ -87,4 +87,5 @@
     <color name="title_txt_color">#2F3133</color>
     <color name="bottom_txt_color">#525864</color>
     <color name="status_bar_color">#8c000000</color>
+    <color name="c_ff7465">#ff7465</color>
 </resources>
