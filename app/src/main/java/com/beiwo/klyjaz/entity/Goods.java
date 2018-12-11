@@ -19,7 +19,7 @@ public class Goods implements Serializable {
     private int status;
     private int commentCount;
     private int goodCommentCount;
-    private int goodCommentRate;
+    private float goodCommentRate;
     private String gmtOnline;
     private String gmtCreate;
     private String gmtModify;
@@ -77,11 +77,11 @@ public class Goods implements Serializable {
         this.goodCommentCount = goodCommentCount;
     }
 
-    public int getGoodCommentRate() {
+    public float getGoodCommentRate() {
         return goodCommentRate;
     }
 
-    public void setGoodCommentRate(int goodCommentRate) {
+    public void setGoodCommentRate(float goodCommentRate) {
         this.goodCommentRate = goodCommentRate;
     }
 

@@ -1481,7 +1481,7 @@ public interface ApiService {
     @POST("s6/forumQueryController/indexForum")
     Observable<ResultEntity<IndexForum>> indexForum();
 
-    /*好评口子/下款热门榜*/
+    /*好评口子*/
     @FormUrlEncoded
     @POST("/s5/praiseCut/list")
     Observable<ResultEntity<List<Goods>>> hotGoods(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
@@ -1489,11 +1489,11 @@ public interface ApiService {
     /*下款热门榜*/
     @FormUrlEncoded
     @POST("/s3/product/hotLoan")
-    Observable<ResultEntity<List>> hotLoan(@Field("groupId") String groupId);
+    Observable<ResultEntity<List<Goods>>> hotLoan(@Field("groupId") String groupId);
 
     /*产品详情-产品信息*/
     @FormUrlEncoded
-    @POST("/s3/praiseCut/manage")
+    @POST("/s5/praiseCut/manage")
     Observable<ResultEntity<GoodsInfo>> goodsInfo(@Field("cutId") String cutId, @Field("manageId") String manageId);
 
     /**
@@ -1508,17 +1508,17 @@ public interface ApiService {
      * content      N       评价内容
      */
     @FormUrlEncoded
-    @POST("/s3/praiseCut/saveManagePraise")
+    @POST("/s5/praiseCut/saveManagePraise")
     Observable<ResultEntity> commentGoods(@FieldMap Map<String, Object> map);
 
     /*口子产品评价上传图片*/
     @FormUrlEncoded
-    @POST("/s3/praiseCut/uploadImage")
+    @POST("/s5/praiseCut/uploadImage")
     Observable<ResultEntity<UploadImg>> uploadImg(@Field("image") String image);
 
     /*产品详情-产品评价总览*/
     @FormUrlEncoded
-    @POST("/s3/praiseCut/praiseView")
+    @POST("/s5/praiseCut/praiseView")
     Observable<ResultEntity<CommentsTotal>> goodsCommentTotal(@Field("cutId") String cutId, @Field("manageId") String manageId);
 
     /**
@@ -1532,6 +1532,6 @@ public interface ApiService {
      * pageSize 	Y 	    每页多少条
      */
     @FormUrlEncoded
-    @POST("/s3/praiseCut/praiseList")
+    @POST("/s5/praiseCut/praiseList")
     Observable<ResultEntity<Comments>> goodsComments(@FieldMap Map<String, Object> map);
 }

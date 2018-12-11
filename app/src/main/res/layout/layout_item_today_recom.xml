@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="60dp"
+    android:layout_marginLeft="7.5dp"
+    android:layout_marginRight="7.5dp"
+    android:background="@drawable/bg_white_r6"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <ImageView
+        android:id="@+id/iv_today_recom_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_today_recom_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="马上贷"
+        android:textColor="@color/black_1"
+        android:textSize="14dp"
+        app:layout_constraintLeft_toRightOf="@+id/iv_today_recom_icon"
+        app:layout_constraintTop_toTopOf="@+id/iv_today_recom_icon" />
+
+    <TextView
+        android:id="@+id/tv_today_recom_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2000-4000元"
+        android:textColor="@color/black_2"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_today_recom_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_today_recom_name" />
+</android.support.constraint.ConstraintLayout>

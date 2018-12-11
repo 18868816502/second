@@ -560,7 +560,22 @@
             android:name=".social.activity.ForumCommentActivity"
             android:theme="@style/MyDialogActivityStyle" />
         <activity android:name=".social.activity.ForumPublishActivity" />
-        <activity android:name=".ui.activity.PersonalActivity"></activity>
+        <activity android:name=".ui.activity.PersonalActivity" />
+        <!--下款推荐-->
+        <activity
+            android:name=".goods.activity.LoanGoodsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--口子详情-->
+        <activity
+            android:name=".goods.activity.GoodsDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--口子评价列表-->
+        <activity
+            android:name=".goods.activity.GoodsCommentActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

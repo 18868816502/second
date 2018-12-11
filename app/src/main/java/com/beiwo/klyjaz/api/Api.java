@@ -1500,13 +1500,13 @@ public class Api {
         return service.indexForum();
     }
 
-    /*好评口子/下款热门榜*/
+    /*好评口子*/
     public Observable<ResultEntity<List<Goods>>> hotGoods(int pageNo, int pageSize) {
         return service.hotGoods(pageNo, pageSize);
     }
 
     /*下款热门榜*/
-    public Observable<ResultEntity<List>> hotLoan(String groupId) {
+    public Observable<ResultEntity<List<Goods>>> hotLoan(String groupId) {
         return service.hotLoan(groupId);
     }
 

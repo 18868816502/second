@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,6 +31,9 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.goods.activity.LoanGoodsActivity;
+import com.beiwo.klyjaz.goods.activity.GoodsDetailActivity;
+import com.beiwo.klyjaz.goods.adapter.HotItemAdapter;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.LoanActivity;
@@ -125,6 +129,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private PopAdapter popAdapter = new PopAdapter();
     private IndexForum indexForum = null;
     private List<Goods> hotGoods = new ArrayList<>();
+    private HotItemAdapter hotItemAdapter = new HotItemAdapter();
 
     public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles, List<Boolean> needLogin) {
         this.imgs = imgs;
@@ -265,6 +270,34 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 handler.removeCallbacksAndMessages(null);
                 handler.post(timeRunable);
             }
+        }
+        if (holder.viewType == TYPE_GOODS) {
+            holder.hot_recycler.setFocusableInTouchMode(false);
+            holder.hot_recycler.setItemAnimator(new DefaultItemAnimator());
+            holder.hot_recycler.setLayoutManager(new LinearLayoutManager(context) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
+            holder.hot_recycler.setAdapter(hotItemAdapter);
+            hotItemAdapter.setNewData(hotGoods);
+            hotItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter a, View view, int position) {//商品详情
+                    Goods goods = hotItemAdapter.getData().get(position);
+                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+                    intent.putExtra("cutId", goods.getCutId());
+                    intent.putExtra("manageId", goods.getManageId());
+                    context.startActivity(intent);
+                }
+            });
+            holder.ll_hot_head.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {//下款推荐
+                    context.startActivity(new Intent(context, LoanGoodsActivity.class));
+                }
+            });
         }
         if (holder.viewType == TYPE_TOPIC) {
             if (indexForum != null) {

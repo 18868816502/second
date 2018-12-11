@@ -16,10 +16,10 @@ public class NetConstants {
     /**
      * 分组贷超产品列表 产品分组Id 秒批到账
      */
-    //public static final String SECOND_PRODUCT = "599c7594aaa7453c8d8b52c35b865adf";
     public static final String SECOND_PRODUCT = "b1c82ecf234241a6bded788a585383da";
     public static final String SECOND_PRODUCT_CHECKING1 = "0f7e2d4f8674487591571166318459e2";
-    public static final String SECOND_PRODUCT_CHECKING2 = "2735e029dbf04585baadb750e5faa42f";
+    public static final String SECOND_PRODUCT_HOT_TOP = "599c7594aaa7453c8d8b52c35b865adf";
+    public static final String SECOND_PRODUCT_TODAY = "b1c82ecf234241a6bded788a585383da";
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
 

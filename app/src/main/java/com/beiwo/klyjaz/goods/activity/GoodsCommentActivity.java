@@ -8,11 +8,11 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
  * @author: Tangbuzhi
  * @version:
  * @package:
- * @description:
+ * @description: 口子评价列表
  * @modify:
  * @date: 2018/12/11
  */
-public class GoodsActivity extends BaseComponentActivity {
+public class GoodsCommentActivity extends BaseComponentActivity {
     @Override
     public int getLayoutId() {
         return 0;
