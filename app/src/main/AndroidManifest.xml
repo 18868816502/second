@@ -560,7 +560,9 @@
             android:name=".social.activity.ForumCommentActivity"
             android:theme="@style/MyDialogActivityStyle" />
         <activity android:name=".social.activity.ForumPublishActivity" />
-        <activity android:name=".ui.activity.PersonalActivity"></activity>
+        <activity android:name=".ui.activity.PersonalActivity" />
+        <activity android:name=".goods.activity.GoodsListActivity"></activity>
+        <activity android:name=".goods.activity.GoodsPublishCommentActivity"></activity>
     </application>
 
 </manifest>
