@@ -16,6 +16,8 @@ import com.beiwo.klyjaz.entity.BillSummaryBean;
 import com.beiwo.klyjaz.entity.BlackList;
 import com.beiwo.klyjaz.entity.CalendarAbstract;
 import com.beiwo.klyjaz.entity.CalendarDebt;
+import com.beiwo.klyjaz.entity.Comments;
+import com.beiwo.klyjaz.entity.CommentsTotal;
 import com.beiwo.klyjaz.entity.CreateAccountReturnIDsBean;
 import com.beiwo.klyjaz.entity.CreditBill;
 import com.beiwo.klyjaz.entity.CreditCard;
@@ -31,6 +33,8 @@ import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
+import com.beiwo.klyjaz.entity.Goods;
+import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
@@ -65,6 +69,7 @@ import com.beiwo.klyjaz.entity.TabImageBean;
 import com.beiwo.klyjaz.entity.ThirdAuthResult;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
 import com.beiwo.klyjaz.entity.Ticket;
+import com.beiwo.klyjaz.entity.UploadImg;
 import com.beiwo.klyjaz.entity.UsedEmail;
 import com.beiwo.klyjaz.entity.UserInfoBean;
 import com.beiwo.klyjaz.entity.UserProfile;
@@ -195,13 +200,10 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/accounting/index/v400")
     Observable<ResultEntity<List<TabAccountNewBean>>> queryTabAccountList(@Field("userId") String userId, @Field("collectType") int iconNcollectTypeame);
 
-    /**
-     * @author xhb
-     * 获取首页账单列表
-     */
+    /*分组贷超产品列表(爆款推荐/今日推荐)*/
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/groupProduct/list")
-    Observable<ResultEntity<List<Product>>> queryGroupProductList(@Field("groupId") String groupId);
+    Observable<ResultEntity<List<Product>>> groupProducts(@Field("groupId") String groupId);
 
     /**
      * @author xhb
@@ -948,9 +950,7 @@ public interface ApiService {
     @POST(BASE_PATH_S_FOUR + "/accounting/repayment/billList")
     Observable<ResultEntity<CalendarDebt>> fetchCalendarDebt(@Field("userId") String userId, @Field("begin") String beginDate, @Field("end") String endDate);
 
-    /**
-     * 查询底部栏图标
-     */
+    /*查询底部栏图标*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/bottom/auditList")
     Observable<ResultEntity<TabImageBean>> queryBottomImage(@Field("platform") int platform);
@@ -959,61 +959,44 @@ public interface ApiService {
     @POST(BASE_PATH + "/userInteg/sum")
     Observable<ResultEntity<Integer>> queryTotalRewardPoints(@Field("userId") String userId);
 
-    /**
-     * 查询积分任务信息
-     */
+    /*查询积分任务信息*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/taskType")
     Observable<ResultEntity<List<RewardPoint>>> queryRewardPoint(@Field("userId") String userId, @Field("taskName") String taskName);
 
-    /**
-     * 标记积分任务已读
-     */
+    /*标记积分任务已读*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/isRead")
     Observable<ResultEntity> sendRewardPointRead(@Field("recordId") String recordId, @Field("isRead") int isRead);
 
-    /**
-     * 添加一个积分任务
-     */
+    /*添加一个积分任务*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/userInteg/add")
     Observable<ResultEntity> addRewardPoint(@Field("userId") String userId, @Field("taskId") String taskId);
 
-    /**
-     * 查询菜单，按钮是否显示
-     */
+    /*查询菜单，按钮是否显示*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/appconfig/btnmenu/show")
     Observable<ResultEntity<Boolean>> queryMenuVisible(@Field("flag") String flag);
 
-    /**
-     * 获取网银导入地址
-     */
+    /*获取网银导入地址*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/collection/create/task/nutH5BankCollection")
     Observable<ResultEntity<EBank>> fetchEBankUrl(@Field("userId") String userId);
 
-    /**
-     * 获取用户的邮箱列表
-     */
+    /*获取用户的邮箱列表*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/creditcard/emailList")
     Observable<ResultEntity<List<UsedEmail>>> fetchUsedEmail(@Field("userId") String userId);
 
-    /**
-     * 获取坚果爬虫的银行列表
-     */
+    /*获取坚果爬虫的银行列表*/
     @POST(BASE_PATH + "/dataDictionary/emailConfig")
     Observable<ResultEntity<List<NutEmail>>> fetchNutEmail();
 
-    /**
-     * 查询信用卡账单采集结果
-     */
+    /*查询信用卡账单采集结果*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/collection/task/status/nutSdkEmailCollection")
     Observable<ResultEntity<Boolean>> pollLeadInResult(@Field("userId") String userId, @Field("email") String email);
-
 
     /****************************************************个推账号用户绑定*****************************************************/
     /**
@@ -1025,23 +1008,17 @@ public interface ApiService {
     /**********************************************************************************************************/
 
     /****************************************************数据统计*****************************************************/
-    /**
-     * 点击第三方产品外链
-     */
+    /*点击第三方产品外链*/
     @FormUrlEncoded
     @POST(PRODUCT_PATH + "/product/productSkip")
     Observable<ResultEntity> onProductClicked(@Field("userId") String userId, @Field("id") String id);
 
-    /**
-     * 点击广告，包括启动页，弹窗，banner
-     */
+    /*点击广告，包括启动页，弹窗，banner*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/supernatant/loadSupernatant")
     Observable<ResultEntity> onAdClicked(@Field("id") String id, @Field("userId") String userId, @Field("supernatantType") int supernatantType);
 
-    /**
-     * 统计站内信点击次数
-     */
+    /*统计站内信点击次数*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/pushInfo/details")
     Observable<ResultEntity> onInternalMessageClicked(@Field("id") String id);
@@ -1056,70 +1033,47 @@ public interface ApiService {
     @POST(BASE_PATH + "/dataDictionary/countUv")
     Observable<ResultEntity> onCountUv(@Field("type") String type, @Field("userId") String userId);
 
-    /**
-     * 数据统计（埋点统计）
-     */
+    /*数据统计(埋点统计)*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/dataDictionary/countUv")
     Observable<ResultEntity> onCountUv(@FieldMap Map<String, Object> params);
 
-    /**
-     * 个推消息点击次数统计
-     */
+    /*个推消息点击次数统计*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/dataDictionary/message")
     Observable<ResultEntity> onPushClicked(@Field("userId") String userId, @Field("messageId") String message);
 
-    /**
-     * 查询消息数
-     */
+    /*查询消息数*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/count")
     Observable<ResultEntity<String>> queryMessage(@Field("userId") String userId);
 
-
-    /**
-     * 网贷账单/信用卡备注更新
-     */
+    /*网贷账单/信用卡备注更新*/
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/updateRemark")
     Observable<ResultEntity> updateLoanOrCreditCardRemark(@Field("userId") String userId, @Field("remark") String remark, @Field("recordId") String recordId, @Field("type") String type);
 
-    /**
-     * create by: jiang
-     * create on:2018/7/20 11:54
-     * params:
-     * return:
-     * description: 账单汇总
-     */
+    /*账单汇总*/
     @FormUrlEncoded
     @POST(BASE_PATH_S_FOUR + "/accounting/index/personAmount")
     Observable<ResultEntity<BillSummaryBean>> onBillSummary(@Field("userId") String userId, @Field("pageNo") String pageNo);
 
-    /**
-     * 全部已读
-     */
+    /*全部已读*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/readAll")
     Observable<ResultEntity> onReadAll(@Field("userId") String userId);
 
-    /**
-     * 清空消息
-     */
+    /*清空消息*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/clear")
     Observable<ResultEntity> onDeleteMessageAll(@Field("userId") String userId);
 
-    /**
-     * 提醒查询
-     */
+    /*提醒查询*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/remind/load")
     Observable<ResultEntity<RemindBean>> onRemindInfo(@Field("userId") String userId);
 
-    /**
-     * 提醒设置
-     */
+    /*提醒设置*/
     @FormUrlEncoded
     @POST(BASE_PATH + "/message/remind")
     Observable<ResultEntity> onRemindSetting(@Field("userId") String userId, @Field("geTui") String geTui, @Field("sms") String sms, @Field("wechat") String weChat, @Field("day") String day);
@@ -1252,12 +1206,7 @@ public interface ApiService {
     @POST("/s1/tools/credit/check")
     Observable<ResultEntity<BlackList>> queryCredit(@FieldMap Map<String, Object> map);
 
-    /**
-     * 用户主页-个人信息
-     *
-     * @param userID
-     * @return
-     */
+    /*用户主页-个人信息*/
     @FormUrlEncoded
     @POST("/s6/userIndex/baseInfo")
     Observable<ResultEntity<UserInfoBean>> queryUserInfo(@Field("userId") String userID);
@@ -1397,22 +1346,12 @@ public interface ApiService {
     Observable<ResultEntity> fetchSaveReport(@Field("userId") String userId, @Field("linkId") String linkId,
                                              @Field("reportType") String reportType, @Field("reportContent") String reportContent);
 
-    /**
-     * 删除动态
-     *
-     * @param forumId
-     * @return
-     */
+    /*删除动态*/
     @FormUrlEncoded
     @POST("s6/forumController/cancelForum")
     Observable<ResultEntity> fetchCancelForum(@Field("forumId") String forumId);
 
-    /**
-     * 删除评论回复
-     *
-     * @param replyId
-     * @return
-     */
+    /*删除评论回复*/
     @FormUrlEncoded
     @POST("s6/forumController/cancelReply")
     Observable<ResultEntity> fetchCancelReply(@Field("replyId") String replyId);
@@ -1441,42 +1380,22 @@ public interface ApiService {
     @POST("s6/forumController/cancelPraise")
     Observable<ResultEntity> fetchCancelPraise(@Field("praiseType") int praiseType, @Field("forumReplayId") String forumReplyId, @Field("userId") String userId);
 
-    /**
-     * 保存用户信息
-     *
-     * @param map
-     * @return
-     */
+    /*保存用户信息*/
     @FormUrlEncoded
     @POST("s6/userIndex/saveUserDetailInfo")
     Observable<ResultEntity> fetchSaveUserInfo(@FieldMap Map<String, Object> map);
 
-    /**
-     * 保存用户信息
-     *
-     * @param map
-     * @return
-     */
+    /*保存用户信息*/
     @FormUrlEncoded
     @POST("s6/userIndex/queryCenterForum")
     Observable<ResultEntity<List<DraftsBean>>> queryCenterForum(@FieldMap Map<String, Object> map);
 
-    /**
-     * 查询点赞列表
-     *
-     * @param map
-     * @return
-     */
+    /*查询点赞列表*/
     @FormUrlEncoded
     @POST("s6/forumQueryController/praiseList")
     Observable<ResultEntity<List<PraiseListBean>>> queryPraiseList(@FieldMap Map<String, Object> map);
 
-    /**
-     * 查询点赞列表
-     *
-     * @param map
-     * @return
-     */
+    /*查询点赞列表*/
     @FormUrlEncoded
     @POST("s6/forumQueryController/commentList")
     Observable<ResultEntity<List<PraiseListBean>>> queryCommentList(@FieldMap Map<String, Object> map);
@@ -1562,4 +1481,57 @@ public interface ApiService {
     @POST("s6/forumQueryController/indexForum")
     Observable<ResultEntity<IndexForum>> indexForum();
 
+    /*好评口子/下款热门榜*/
+    @FormUrlEncoded
+    @POST("/s5/praiseCut/list")
+    Observable<ResultEntity<List<Goods>>> hotGoods(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize);
+
+    /*下款热门榜*/
+    @FormUrlEncoded
+    @POST("/s3/product/hotLoan")
+    Observable<ResultEntity<List>> hotLoan(@Field("groupId") String groupId);
+
+    /*产品详情-产品信息*/
+    @FormUrlEncoded
+    @POST("/s3/praiseCut/manage")
+    Observable<ResultEntity<GoodsInfo>> goodsInfo(@Field("cutId") String cutId, @Field("manageId") String manageId);
+
+    /**
+     * 评价产品
+     * 参数       是否必传  说明
+     * manageId     Y       产品管理Id
+     * loanStatus   Y       是否借到 1-审核被拒, 2-放款成功 3-已还款 4 账单逾期 5-复借
+     * flag         Y       产品映象 逗号分隔 QuickLoan放款快/HighLoan额度高/LowThreshold门槛低/ConvenientProcedure手续方便/NoMortgageRequired无需抵押/NoCredit不上征信/AuditTimely审批及时/HeightPass过审高/GoodExperience用户体验好/LargePlatform大平台
+     * type         Y       评价类型 -1-差评 0-中评 1-好评
+     * userId       Y       用户Id
+     * imageUrl     N       评价图片 逗号分隔
+     * content      N       评价内容
+     */
+    @FormUrlEncoded
+    @POST("/s3/praiseCut/saveManagePraise")
+    Observable<ResultEntity> commentGoods(@FieldMap Map<String, Object> map);
+
+    /*口子产品评价上传图片*/
+    @FormUrlEncoded
+    @POST("/s3/praiseCut/uploadImage")
+    Observable<ResultEntity<UploadImg>> uploadImg(@Field("image") String image);
+
+    /*产品详情-产品评价总览*/
+    @FormUrlEncoded
+    @POST("/s3/praiseCut/praiseView")
+    Observable<ResultEntity<CommentsTotal>> goodsCommentTotal(@Field("cutId") String cutId, @Field("manageId") String manageId);
+
+    /**
+     * 产品详情-产品评价分页列表
+     * 参数       是否必传  说明
+     * manageId     Y 	    产品管理Id
+     * cutId 	    Y 	    口子Id
+     * type 	    Y 	    评价类型 -1-差评 0-中评 1-好评
+     * flag 	    Y 	    标签
+     * pageNo 	    Y 	    当前是第几页，从1开始记数
+     * pageSize 	Y 	    每页多少条
+     */
+    @FormUrlEncoded
+    @POST("/s3/praiseCut/praiseList")
+    Observable<ResultEntity<Comments>> goodsComments(@FieldMap Map<String, Object> map);
 }

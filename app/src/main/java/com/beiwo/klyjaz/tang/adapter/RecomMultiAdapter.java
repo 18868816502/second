@@ -82,8 +82,8 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
             tv_article_content.setVisibility(View.VISIBLE);
         } else {
             iv_article_icon.setVisibility(View.VISIBLE);
-            int default80 = DensityUtil.dp2px(mContext, 80f);
-            int default180 = DensityUtil.dp2px(mContext, 180f);
+            int default50 = DensityUtil.dp2px(mContext, 50f);
+            int default200 = DensityUtil.dp2px(mContext, 200f);
             ViewGroup.LayoutParams params = iv_article_icon.getLayoutParams();
             int itemViewWidth = App.mWidthPixels / 2 - DensityUtil.dp2px(mContext, 20f);
             params.width = itemViewWidth;
@@ -93,8 +93,8 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
                 if (imgWidth > 0 && imgHeight > 0) {
                     float scale = itemViewWidth * 1.0f / imgWidth;
                     int height = (int) (item.getPicExifUrl().get(0).imgHeight * scale);
-                    if (height <= default80) params.height = default80;
-                    else if (height >= default180) params.height = default180;
+                    if (height <= default50) params.height = default50;
+                    else if (height >= default200) params.height = default200;
                     else params.height = height;
                 } else {
                     params.height = DensityUtil.dp2px(mContext, 140f);
@@ -102,10 +102,6 @@ public class RecomMultiAdapter extends BaseMultiItemQuickAdapter<ForumBean, Base
             } catch (Exception e) {
                 params.height = DensityUtil.dp2px(mContext, 140f);
             }
-            //System.out.println("item = " + itemViewWidth);
-            //System.out.println("full = " + App.mWidthPixels);
-            //System.out.println("d140 = " + DensityUtil.dp2px(mContext, 140f));
-            //System.out.println("{ width : " + params.width + " , height : " + params.height + " }");
             Glide.with(mContext)
                     .load(picUrl.get(0))
                     .override(params.width, params.height)

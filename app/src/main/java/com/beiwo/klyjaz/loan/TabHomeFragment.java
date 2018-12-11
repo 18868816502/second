@@ -35,7 +35,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -148,7 +147,7 @@ public class TabHomeFragment extends BaseComponentFragment {
         //topic
         topicData();
         //recommond product
-        Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT)
+        Api.getInstance().groupProducts(NetConstants.SECOND_PRODUCT)
                 .compose(RxResponse.<List<Product>>compatT())
                 .subscribe(new ApiObserver<List<Product>>() {
                     @Override

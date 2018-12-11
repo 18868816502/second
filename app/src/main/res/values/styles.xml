@@ -19,6 +19,12 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="rating_bar_style" parent="Base.Widget.AppCompat.RatingBar">
+        <item name="android:maxHeight">25dp</item>
+        <item name="android:minHeight">25dp</item>
+        <item name="android:progressDrawable">@drawable/rating_bar</item>
+    </style>
+
     <!-- popup由下到上动画 -->
     <style name="anim_style_top2bottom">
         <item name="android:windowEnterAnimation">@anim/no_anim</item>
@@ -159,7 +165,6 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-
     <style name="PopDialog" parent="@android:style/Theme.Dialog">
         <!--去除DialogFargment默认的标题栏，背景色和和背景阴影-->
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -179,7 +184,6 @@
         <item name="android:background">@color/white</item>
     </style>
 
-
     <style name="Comment_Dialog" parent="@style/AppTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -188,7 +192,6 @@
         <item name="android:windowSoftInputMode">stateAlwaysVisible</item><!--显示软件盘-->
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
-
 
     <style name="MyDialogActivityStyle" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -205,9 +208,6 @@
         <!--<item name="android:backgroundDimEnabled">true</item>-->
     </style>
 
-    <!--&lt;!&ndash;从底部弹出的动画样式&ndash;&gt;-->
-
-
     <!--View共同属性-->
     <style name="mineItem">
         <item name="android:layout_width">match_parent</item>
@@ -220,7 +220,7 @@
         <item name="android:paddingRight">@dimen/dp15</item>
         <item name="android:gravity">center_vertical</item>
     </style>
-    
+
     <style name="mineCard">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>

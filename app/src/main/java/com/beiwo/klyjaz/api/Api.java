@@ -94,9 +94,6 @@ import com.beiwo.klyjaz.social.bean.SocialMessageBean;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.social.bean.TopicDetail;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -219,9 +216,9 @@ public class Api {
         return service.queryTabAccountList(userId, collectType);
     }
 
-    /*分组贷超产品列表*/
-    public Observable<ResultEntity<List<Product>>> queryGroupProductList(String groupId) {
-        return service.queryGroupProductList(groupId);
+    /*分组贷超产品列表(爆款推荐/今日推荐)*/
+    public Observable<ResultEntity<List<Product>>> groupProducts(String groupId) {
+        return service.groupProducts(groupId);
     }
 
     /*进入贷超产品详情*/

@@ -216,7 +216,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             if (state == 2) {
                 holder.state_container.addView(initState1(R.layout.layout_state_2, 2));
                 if (!TextUtils.equals("true", SPUtils.getValue("checking"))) {
-                    Api.getInstance().queryGroupProductList(NetConstants.SECOND_PRODUCT_CHECKING1)
+                    Api.getInstance().groupProducts(NetConstants.SECOND_PRODUCT_CHECKING1)
                             .compose(RxResponse.<List<Product>>compatT())
                             .subscribe(new ApiObserver<List<Product>>() {
                                 @Override

@@ -36,7 +36,6 @@ import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
-import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
