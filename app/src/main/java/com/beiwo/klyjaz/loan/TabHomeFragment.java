@@ -21,6 +21,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
+import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
@@ -124,9 +125,9 @@ public class TabHomeFragment extends BaseComponentFragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     AnimationUtil.with().bottomMoveToViewLocation(floatButton, 500);
-                }else{
+                } else {
                     AnimationUtil.with().moveToViewBottom(floatButton, 500);
                 }
             }
@@ -165,7 +166,14 @@ public class TabHomeFragment extends BaseComponentFragment {
         //check state
         checkUserState();
         //下款推荐
-
+        Api.getInstance().hotGoods(1, 3)
+                .compose(RxResponse.<List<Goods>>compatT())
+                .subscribe(new ApiObserver<List<Goods>>() {
+                    @Override
+                    public void onNext(List<Goods> data) {
+                        homeAdapter.setHotGoodsData(data);
+                    }
+                });
         //topic
         topicData();
         //recommond product
