@@ -1521,8 +1521,9 @@ public class Api {
     }
 
     /*口子产品评价上传图片*/
-    public Observable<ResultEntity<UploadImg>> uploadImg(String image) {
-        return service.uploadImg(image);
+    public Observable<ResultEntity<UploadImg>> uploadImg(byte[] bytes) {
+        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return service.uploadImg(base64);
     }
 
     /*产品详情-产品评价总览*/

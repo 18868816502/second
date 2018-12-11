@@ -16,8 +16,11 @@ import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.goods.contact.GoodsPublishCommentContact;
 import com.beiwo.klyjaz.goods.helper.GoodsHelper;
+import com.beiwo.klyjaz.goods.presenter.GoodsPublishCommentPresenter;
 import com.beiwo.klyjaz.util.CommonUtils;
+import com.beiwo.klyjaz.util.ToastUtil;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -34,7 +37,7 @@ import butterknife.OnClick;
  * @descripe 产品发布评论页面
  * @time 2018/12/11 11:19
  */
-public class GoodsPublishCommentActivity extends BaseComponentActivity implements View.OnClickListener {
+public class GoodsPublishCommentActivity extends BaseComponentActivity implements View.OnClickListener,GoodsPublishCommentContact.View {
 
     @BindView(R.id.tool_bar)
     Toolbar toolBar;
@@ -44,6 +47,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
     LinearLayout viewContainer;
 
     private GoodsHelper mHelper;
+    private GoodsPublishCommentPresenter mPresenter;
 
     @Override
     public int getLayoutId() {
@@ -53,6 +57,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolBar).statusBarDarkFont(true).init();
+        mPresenter = new GoodsPublishCommentPresenter(this,this);
         mHelper = new GoodsHelper(this, this);
         viewContainer.addView(mHelper.init01Layout(viewContainer));
         viewContainer.addView(mHelper.init02Layout(viewContainer));
@@ -72,6 +77,22 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 break;
             case R.id.add_container:
                 checkPermission();
+                break;
+            case R.id.tv_evaluate:
+//                ToastUtil.toast(mHelper.getFlag());
+                showProgress();
+                if(mHelper.getBitmapList().size() == 0){
+                    mPresenter.fetchPublishComment(
+                            "manageid",
+                            mHelper.getLoanStatus(),
+                            mHelper.getFlag(),
+                            mHelper.getType(),
+                            "",
+                            mHelper.getContent(),
+                            "");
+                }else{
+                    mPresenter.prepareUpload(mHelper.getBitmapList());
+                }
                 break;
             default:
                 break;
@@ -136,5 +157,28 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 .maxOriginalSize(10)
                 .autoHideToolbarOnSingleTap(true)
                 .forResult(200);
+    }
+
+    @Override
+    public void onPublishCommentSucceed() {
+
+    }
+
+    @Override
+    public void onUploadImgSucceed(String imgKey) {
+        dismissProgress();
+        mPresenter.fetchPublishComment(
+                "manageid",
+                mHelper.getLoanStatus(),
+                mHelper.getFlag(),
+                mHelper.getType(),
+                "",
+                mHelper.getContent(),
+                "");
+    }
+
+    @Override
+    public void setPresenter(GoodsPublishCommentContact.Presenter presenter) {
+
     }
 }

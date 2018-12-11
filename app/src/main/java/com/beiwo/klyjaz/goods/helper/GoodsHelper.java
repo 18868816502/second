@@ -1,6 +1,7 @@
 package com.beiwo.klyjaz.goods.helper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.goods.adapter.GoodsEvaluateAdapter;
+import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -86,6 +88,7 @@ public class GoodsHelper implements View.OnClickListener{
     public GoodsHelper(Context mContext, View.OnClickListener listener) {
         this.mContext = mContext;
         this.mListener = listener;
+        photos = new ArrayList<>();
     }
 
     /**
@@ -157,7 +160,7 @@ public class GoodsHelper implements View.OnClickListener{
         recyclerView = view.findViewById(R.id.recycler);
         etInput = view.findViewById(R.id.et_goods_comment);
         tvEvaluate = view.findViewById(R.id.tv_evaluate);
-        tvEvaluate.setOnClickListener(this);
+        tvEvaluate.setOnClickListener(mListener);
         bindRecyclerView();
     }
 
@@ -221,8 +224,34 @@ public class GoodsHelper implements View.OnClickListener{
         return flag.toString();
     }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
+    /**
+     * 获取评论内容
+     * @return
+     */
+    public String getContent(){
+        return etInput.getText().toString();
+    }
+
+    /**
+     * 获取转换后的bitmap集合
+     *
+     * @return 本地选取bitmap集合
+     */
+    public List<Bitmap> getBitmapList() {
+        List<Bitmap> bitmaps = new ArrayList<>();
+        for (int i = 0; i < photos.size(); i++) {
+            Bitmap bitmap = ImageUtils.getFixedBitmap(photos.get(i), 512);
+            bitmaps.add(bitmap);
+        }
+        return bitmaps;
+    }
+
+    /**
+     * 设置本地图片数据
+     * @param list
+     */
+    public void setPhotos(List<String> list) {
+        this.photos.addAll(list);
         photoAdapter.setNewData(photos);
         photoAdapter.notifyDataSetChanged();
     }

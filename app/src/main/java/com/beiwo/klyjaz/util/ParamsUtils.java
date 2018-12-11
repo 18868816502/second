@@ -171,4 +171,32 @@ public class ParamsUtils {
         }
         return mMap;
     }
+
+    /**
+     * 获取产品评论提交参数
+     * @param manageId
+     * @param loanStatus
+     * @param flag
+     * @param type
+     * @param imageUrl
+     * @param content
+     * @param userId
+     * @return
+     */
+    public static Map<String, Object> generateGoodsCommentParams(String manageId, int loanStatus,
+                                                                 String flag, int type, String imageUrl, String content,String userId) {
+        Map<String, Object> mMap = new HashMap<>();
+        mMap.put("manageId", manageId);
+        mMap.put("loanStatus", loanStatus);
+        mMap.put("flag", flag);
+        mMap.put("type", type);
+        if (!TextUtils.isEmpty(imageUrl)) {
+            mMap.put("imageUrl", imageUrl);
+        }
+        if (!TextUtils.isEmpty(content)) {
+            mMap.put("content", content);
+        }
+        mMap.put("userId", userId);
+        return mMap;
+    }
 }
