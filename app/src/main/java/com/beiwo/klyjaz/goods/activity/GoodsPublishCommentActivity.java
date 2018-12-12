@@ -8,10 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
@@ -19,8 +20,9 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.goods.contact.GoodsPublishCommentContact;
 import com.beiwo.klyjaz.goods.helper.GoodsHelper;
 import com.beiwo.klyjaz.goods.presenter.GoodsPublishCommentPresenter;
-import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.beiwo.klyjaz.view.CircleImageView;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -45,9 +47,16 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
     ImageView navigate;
     @BindView(R.id.container)
     LinearLayout viewContainer;
+    @BindView(R.id.iv_goods)
+    CircleImageView ivGoodsLogo;
+    @BindView(R.id.tv_goods_title)
+    TextView tvGoodsName;
+    @BindView(R.id.tv_goods_descripe)
+    TextView tvGoodsDescrip;
 
     private GoodsHelper mHelper;
     private GoodsPublishCommentPresenter mPresenter;
+    private String manageId;
 
     @Override
     public int getLayoutId() {
@@ -65,7 +74,11 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
 
     @Override
     public void initDatas() {
-
+        String logo = getIntent().getStringExtra("logo");
+        String name = getIntent().getStringExtra("name");
+        manageId = getIntent().getStringExtra("manageId");
+        Glide.with(this).load(logo).into(ivGoodsLogo);
+        tvGoodsName.setText(name);
     }
 
     @OnClick({R.id.navigate})
@@ -80,10 +93,22 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 break;
             case R.id.tv_evaluate:
 //                ToastUtil.toast(mHelper.getFlag());
+                if(mHelper.getType() == 0){
+                    ToastUtil.toast("请选择综合评价");
+                    return;
+                }
+                if(mHelper.getLoanStatus() == 0){
+                    ToastUtil.toast("请选择是否借到");
+                    return;
+                }
+                if(TextUtils.isEmpty(mHelper.getContent())){
+                    ToastUtil.toast("请输入文字评价后再提交");
+                    return;
+                }
                 showProgress();
                 if(mHelper.getBitmapList().size() == 0){
                     mPresenter.fetchPublishComment(
-                            "manageid",
+                            manageId,
                             mHelper.getLoanStatus(),
                             mHelper.getFlag(),
                             mHelper.getType(),
@@ -148,7 +173,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 .showSingleMediaType(true)
                 .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider", "kaola"))
                 //限制最大的选择数目
-                .maxSelectable(9)
+                .maxSelectable(4)
                 .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)
@@ -161,14 +186,14 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
 
     @Override
     public void onPublishCommentSucceed() {
-
+        ToastUtil.toast("点评成功，感谢您的反馈！");
     }
 
     @Override
     public void onUploadImgSucceed(String imgKey) {
         dismissProgress();
         mPresenter.fetchPublishComment(
-                "manageid",
+                manageId,
                 mHelper.getLoanStatus(),
                 mHelper.getFlag(),
                 mHelper.getType(),

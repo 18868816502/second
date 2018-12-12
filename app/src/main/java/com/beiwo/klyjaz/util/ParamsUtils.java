@@ -199,4 +199,21 @@ public class ParamsUtils {
         mMap.put("userId", userId);
         return mMap;
     }
+
+    /**
+     * 产品详情-选择产品
+     * @param manageName
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public static Map<String, Object> generateGoodsParams(String manageName,int pageNo, int pageSize) {
+        Map<String, Object> mMap = new HashMap<>();
+        if (!TextUtils.isEmpty(manageName)) {
+            mMap.put("manageName", manageName);
+        }
+        mMap.put("pageNo", pageNo);
+        mMap.put("pageSize", pageSize);
+        return mMap;
+    }
 }

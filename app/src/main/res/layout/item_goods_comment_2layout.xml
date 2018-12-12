@@ -35,7 +35,7 @@
                 android:id="@+id/iv_evaluate01"
                 android:layout_width="@dimen/dp32"
                 android:layout_height="@dimen/dp32"
-                android:background="@drawable/icon_goods_pos_selected"/>
+                android:background="@drawable/icon_goods_pos_unselected"/>
             <TextView
                 android:id="@+id/tv_evaluate01"
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:id="@+id/iv_evaluate02"
                 android:layout_width="@dimen/dp32"
                 android:layout_height="@dimen/dp32"
-                android:background="@drawable/icon_goods_neg_unselected"/>
+                android:background="@drawable/icon_goods_com_unselected"/>
             <TextView
                 android:id="@+id/tv_evaluate02"
                 android:layout_width="wrap_content"

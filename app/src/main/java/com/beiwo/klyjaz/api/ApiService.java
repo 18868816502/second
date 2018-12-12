@@ -35,6 +35,7 @@ import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.GoodsInfo;
+import com.beiwo.klyjaz.entity.GoodsManageBean;
 import com.beiwo.klyjaz.entity.HotTop;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.HomeData;
@@ -1535,4 +1536,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/s5/praiseCut/praiseList")
     Observable<ResultEntity<Comments>> goodsComments(@FieldMap Map<String, Object> map);
+
+    /**/
+    @FormUrlEncoded
+    @POST("/s5/praiseCut/manageList")
+    Observable<ResultEntity<GoodsManageBean>> manageList(@FieldMap Map<String, Object> map);
 }

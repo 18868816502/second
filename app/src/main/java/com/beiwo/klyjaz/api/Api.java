@@ -42,6 +42,7 @@ import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.GoodsInfo;
+import com.beiwo.klyjaz.entity.GoodsManageBean;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
 import com.beiwo.klyjaz.entity.HotNews;
@@ -1535,5 +1536,10 @@ public class Api {
     /*产品详情-产品评价分页列表*/
     public Observable<ResultEntity<Comments>> goodsComments(Map<String, Object> map) {
         return service.goodsComments(map);
+    }
+
+    /*产品详情-选择产品*/
+    public Observable<ResultEntity<GoodsManageBean>> manageList(Map<String, Object> map) {
+        return service.manageList(map);
     }
 }

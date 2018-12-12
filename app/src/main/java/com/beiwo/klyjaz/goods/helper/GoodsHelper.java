@@ -74,11 +74,11 @@ public class GoodsHelper implements View.OnClickListener{
     /**
      * 评价类型
      */
-    private int type = 1;
+    private int type = 0;
     /**
      * 是否借到
      */
-    private int loanStatus = 1;
+    private int loanStatus = 0;
 
     /**
      * 产品印象
@@ -118,7 +118,7 @@ public class GoodsHelper implements View.OnClickListener{
                 return tv;
             }
         });
-        mAdapter.setSelectedList(0);
+//        mAdapter.setSelectedList(0);
     }
 
     /**
@@ -202,7 +202,7 @@ public class GoodsHelper implements View.OnClickListener{
                 return tv;
             }
         });
-        m2Adapter.setSelectedList(0,3,5);
+//        m2Adapter.setSelectedList(0,3,5);
     }
 
     /**
@@ -267,13 +267,13 @@ public class GoodsHelper implements View.OnClickListener{
                 break;
             case R.id.eva_type_container02:
                 clearState();
-                ivEva02.setBackgroundResource(R.drawable.icon_goods_pos_selected);
+                ivEva02.setBackgroundResource(R.drawable.icon_goods_com_selected);
                 tvEva02.setTextColor(mContext.getResources().getColor(R.color.black_1));
                 type = 0;
                 break;
             case R.id.eva_type_container03:
                 clearState();
-                ivEva03.setBackgroundResource(R.drawable.icon_goods_pos_selected);
+                ivEva03.setBackgroundResource(R.drawable.icon_goods_neg_selected);
                 tvEva03.setTextColor(mContext.getResources().getColor(R.color.black_1));
                 type = -1;
                 break;
@@ -289,8 +289,8 @@ public class GoodsHelper implements View.OnClickListener{
      * 清除评价选中状态
      */
     private void clearState(){
-        ivEva01.setBackgroundResource(R.drawable.icon_goods_neg_unselected);
-        ivEva02.setBackgroundResource(R.drawable.icon_goods_neg_unselected);
+        ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_unselected);
+        ivEva02.setBackgroundResource(R.drawable.icon_goods_com_unselected);
         ivEva03.setBackgroundResource(R.drawable.icon_goods_neg_unselected);
         tvEva01.setTextColor(mContext.getResources().getColor(R.color.black_2));
         tvEva02.setTextColor(mContext.getResources().getColor(R.color.black_2));
