@@ -115,11 +115,14 @@ public class TabHomeFragment extends BaseComponentFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 dyTranslate += dy;
-                if (dyTranslate > DensityUtil.dp2px(getActivity(), 170f)) {
+                //float alphaValue = dyTranslate * 1.0f / DensityUtil.dp2px(getActivity(), 170f);
+                if (dyTranslate > DensityUtil.dp2px(getActivity(), 125f)) {
                     ll_toolbar_wrap.setVisibility(View.VISIBLE);
+                    //ll_toolbar_wrap.setAlpha(alphaValue < 1 ? alphaValue : 1f);
                     ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(true).init();
                 } else {
                     ll_toolbar_wrap.setVisibility(View.GONE);
+                    //ll_toolbar_wrap.setAlpha(alphaValue < 1 && alphaValue > 0 ? alphaValue : 0f);
                     ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(false).init();
                 }
             }

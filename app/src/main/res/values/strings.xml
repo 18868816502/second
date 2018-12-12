@@ -250,5 +250,8 @@
     <string name="card_num_default">xxxx \txxxx \t xxxx \t xxxx</string>
     <string name="join_topic_num">已有 %d 人讨论</string>
     <string name="topic_num_look">%d人 · 正在围观</string>
+    <string name="limit_loan">额度%1$s-%2$s元</string>
+    <string name="period_loan">期限%s</string>
+    <string name="loan_comment_num">%d条评价</string>
 
 </resources>

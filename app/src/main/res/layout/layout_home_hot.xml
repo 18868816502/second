@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="极速下载"
+            android:text="极速下款"
             android:textColor="@color/c_e7e7e7"
             android:textSize="12dp" />
 
