@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="80dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
+    <ImageView
+        android:id="@+id/good_iv_icon"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/good_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:textColor="@color/black_1"
+        android:textSize="14dp"
+        app:layout_constraintLeft_toRightOf="@+id/good_iv_icon"
+        app:layout_constraintTop_toTopOf="@+id/good_iv_icon"
+        tools:text="帮帮回租" />
+
+    <TextView
+        android:id="@+id/good_tv_comment_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/black_2"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/good_tv_name"
+        app:layout_constraintLeft_toRightOf="@+id/good_tv_name"
+        app:layout_constraintTop_toTopOf="@+id/good_tv_name"
+        tools:text="5875条评价" />
+
+    <TextView
+        android:id="@+id/good_tv_range_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_2"
+        android:textSize="11dp"
+        app:layout_constraintBottom_toBottomOf="@+id/good_iv_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/good_tv_name"
+        tools:text="额度1,000-5,000元" />
+
+    <TextView
+        android:id="@+id/good_tv_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/black_2"
+        android:textSize="11dp"
+        app:layout_constraintBottom_toBottomOf="@+id/good_tv_range_money"
+        app:layout_constraintLeft_toRightOf="@+id/good_tv_range_money"
+        tools:text="期限28天" />
+
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="20dp"
+        android:background="@color/line_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/good_tv_comment_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/refresh_one"
+        android:textSize="23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/good_tv_comment_rate_right"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35"
+        tools:text="87" />
+
+    <TextView
+        android:id="@+id/good_tv_comment_rate_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1.5dp"
+        android:layout_marginRight="10dp"
+        android:text="%"
+        android:textColor="@color/refresh_one"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/good_tv_comment_rate"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="好评率"
+        android:textColor="@color/black_2"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/good_tv_comment_rate"
+        app:layout_constraintRight_toRightOf="@+id/good_tv_comment_rate_right"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/line_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

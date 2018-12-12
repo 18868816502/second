@@ -36,6 +36,7 @@ import com.beiwo.klyjaz.entity.FastDebtDetail;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.GoodsManageBean;
+import com.beiwo.klyjaz.entity.HotTop;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
@@ -1490,7 +1491,7 @@ public interface ApiService {
     /*下款热门榜*/
     @FormUrlEncoded
     @POST("/s3/product/hotLoan")
-    Observable<ResultEntity<List<Goods>>> hotLoan(@Field("groupId") String groupId);
+    Observable<ResultEntity<List<HotTop>>> hotLoan(@Field("groupId") String groupId);
 
     /*产品详情-产品信息*/
     @FormUrlEncoded

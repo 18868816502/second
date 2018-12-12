@@ -46,6 +46,7 @@ import com.beiwo.klyjaz.entity.GoodsManageBean;
 import com.beiwo.klyjaz.entity.HomeData;
 import com.beiwo.klyjaz.entity.HotLoanProduct;
 import com.beiwo.klyjaz.entity.HotNews;
+import com.beiwo.klyjaz.entity.HotTop;
 import com.beiwo.klyjaz.entity.Invitation;
 import com.beiwo.klyjaz.entity.LastNoticeBean;
 import com.beiwo.klyjaz.entity.LoanAccountIconBean;
@@ -1507,7 +1508,7 @@ public class Api {
     }
 
     /*下款热门榜*/
-    public Observable<ResultEntity<List<Goods>>> hotLoan(String groupId) {
+    public Observable<ResultEntity<List<HotTop>>> hotLoan(String groupId) {
         return service.hotLoan(groupId);
     }
 

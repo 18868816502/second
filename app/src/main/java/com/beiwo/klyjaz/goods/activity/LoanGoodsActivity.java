@@ -12,11 +12,13 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Goods;
+import com.beiwo.klyjaz.entity.HotTop;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.goods.adapter.LoanGoodsAdapter;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
+import com.beiwo.klyjaz.util.DensityUtil;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -47,7 +49,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
 
     private int pageNo = 1;
     private int pageSize = 20;
-
+    private int dyTranslate;
     private LoanGoodsAdapter loanGoodsAdapter = new LoanGoodsAdapter();
 
     @Override
@@ -67,6 +69,18 @@ public class LoanGoodsActivity extends BaseComponentActivity {
     public void initDatas() {
         initRecycler();
         request(pageNo);
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                dyTranslate += dy;
+                if (dyTranslate >= DensityUtil.dp2px(getApplicationContext(), 100f)) {
+                    toolbar.setBackgroundResource(R.color.c_222222);
+                } else {
+                    toolbar.setBackgroundResource(R.color.transparent);
+                }
+            }
+        });
         refresh_layout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -77,7 +91,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 pageNo++;
-                request(pageNo);
+                goods(pageNo);
             }
         });
     }
@@ -91,20 +105,22 @@ public class LoanGoodsActivity extends BaseComponentActivity {
 
     private void request(int pageNo) {
         //今日推荐
-        Api.getInstance().groupProducts(NetConstants.SECOND_PRODUCT_TODAY)
+        Api.getInstance().groupProducts(NetConstants.SECOND_PRODUCT_HOT_TOP)
                 .compose(RxResponse.<List<Product>>compatT())
                 .subscribe(new ApiObserver<List<Product>>() {
                     @Override
                     public void onNext(List<Product> data) {
+                        refresh_layout.finishRefresh();
                         loanGoodsAdapter.setTodayRecom(data);
                     }
                 });
         //下款热门
         Api.getInstance().hotLoan(NetConstants.SECOND_PRODUCT_HOT_TOP)
-                .compose(RxResponse.<List<Goods>>compatT())
-                .subscribe(new ApiObserver<List<Goods>>() {
+                .compose(RxResponse.<List<HotTop>>compatT())
+                .subscribe(new ApiObserver<List<HotTop>>() {
                     @Override
-                    public void onNext(List<Goods> data) {
+                    public void onNext(List<HotTop> data) {
+                        refresh_layout.finishRefresh();
                         loanGoodsAdapter.setHotTop(data);
                     }
                 });
@@ -118,6 +134,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<List<Goods>>() {
                     @Override
                     public void onNext(List<Goods> data) {
+                        refresh_layout.finishLoadMore();
                         if (pageNo == 1) {
                             loanGoodsAdapter.setGood(data);
                         } else {
