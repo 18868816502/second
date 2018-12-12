@@ -99,7 +99,6 @@ public class GoodsListActivity extends BaseComponentActivity {
         etSearch.setOnSearchClickListener(new SearchEditText.OnSearchClickListener() {
             @Override
             public void onSearchClick(View view) {
-                ToastUtil.toast(etSearch.getText().toString());
                 manageName = etSearch.getText().toString();
                 fetchData();
             }

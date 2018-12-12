@@ -22,6 +22,7 @@
         android:layout_width="@dimen/dp22"
         android:layout_height="@dimen/dp22"
         app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/debt_channel_search_clear"/>
+        android:src="@drawable/debt_channel_search_clear"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

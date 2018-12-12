@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -92,6 +93,18 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 break;
             case R.id.tv_evaluate:
 //                ToastUtil.toast(mHelper.getFlag());
+                if(mHelper.getType() == 0){
+                    ToastUtil.toast("请选择综合评价");
+                    return;
+                }
+                if(mHelper.getLoanStatus() == 0){
+                    ToastUtil.toast("请选择是否借到");
+                    return;
+                }
+                if(TextUtils.isEmpty(mHelper.getContent())){
+                    ToastUtil.toast("请输入文字评价后再提交");
+                    return;
+                }
                 showProgress();
                 if(mHelper.getBitmapList().size() == 0){
                     mPresenter.fetchPublishComment(
@@ -160,7 +173,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 .showSingleMediaType(true)
                 .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider", "kaola"))
                 //限制最大的选择数目
-                .maxSelectable(9)
+                .maxSelectable(4)
                 .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)
