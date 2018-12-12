@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseRxPresenter;
+import com.beiwo.klyjaz.entity.UploadImg;
 import com.beiwo.klyjaz.entity.request.RequestConstants;
 import com.beiwo.klyjaz.goods.contact.GoodsPublishCommentContact;
 import com.beiwo.klyjaz.helper.UserHelper;
@@ -95,24 +96,24 @@ public class GoodsPublishCommentPresenter extends BaseRxPresenter implements Goo
                     }
                 })
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<byte[], ObservableSource<ResultEntity<String>>>() {
+                .flatMap(new Function<byte[], ObservableSource<ResultEntity<UploadImg>>>() {
                     @Override
-                    public ObservableSource<ResultEntity<String>> apply(@NonNull byte[] bytes) throws Exception {
-                        return mApi.uploadFourmImg(bytes);
+                    public ObservableSource<ResultEntity<UploadImg>> apply(@NonNull byte[] bytes) throws Exception {
+                        return mApi.uploadImg(bytes);
                     }
                 })
-                .compose(RxUtil.<ResultEntity<String>>io2main())
-                .subscribe(new Consumer<ResultEntity<String>>() {
+                .compose(RxUtil.<ResultEntity<UploadImg>>io2main())
+                .subscribe(new Consumer<ResultEntity<UploadImg>>() {
                                @Override
-                               public void accept(@NonNull ResultEntity<String> result) throws Exception {
+                               public void accept(@NonNull ResultEntity<UploadImg> result) throws Exception {
                                    if (result.isSuccess()) {
                                        uploadIndex ++;
-                                       imgUrls.add(result.getData());
+                                       imgUrls.add(result.getData().getUrl());
                                        if (uploadIndex < bitmaps.size()) {
                                            uploadImg(bitmaps.get(uploadIndex));
                                            return;
                                        }
-                                       mView.onUploadImgSucceed(result.getData());
+                                       mView.onUploadImgSucceed(result.getData().getUrl());
                                    } else {
                                        uploadImg(bitmaps.get(uploadIndex));
 //                                       mView.showErrorMsg(result.getMsg());

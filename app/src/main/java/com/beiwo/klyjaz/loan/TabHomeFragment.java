@@ -23,6 +23,7 @@ import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
+import com.beiwo.klyjaz.goods.activity.GoodsListActivity;
 import com.beiwo.klyjaz.goods.activity.GoodsPublishCommentActivity;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
@@ -97,8 +98,9 @@ public class TabHomeFragment extends BaseComponentFragment {
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.toast("拖拽按钮");
-                startActivity(new Intent(getActivity(), GoodsPublishCommentActivity.class));
+//                ToastUtil.toast("拖拽按钮");
+//                startActivity(new Intent(getActivity(), GoodsPublishCommentActivity.class));
+                startActivity(new Intent(getActivity(), GoodsListActivity.class));
             }
         });
 

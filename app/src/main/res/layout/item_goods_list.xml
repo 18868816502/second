@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/dp15"
+    android:paddingLeft="@dimen/dp15"
+    android:paddingRight="@dimen/dp15">
+    
+    <com.beiwo.klyjaz.view.CircleImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="@dimen/dp35"
+        android:layout_height="@dimen/dp35"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/mine_icon_head"/>
+
+    <TextView
+        android:id="@+id/tv_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/iv_logo"
+        android:layout_marginLeft="@dimen/dp8"
+        android:text="帮帮回租"
+        android:textColor="@color/black_1"
+        android:textSize="@dimen/dp15"/>
+
+    <TextView
+        android:id="@+id/tv_go_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/dp10"
+        android:paddingLeft="@dimen/dp10"
+        android:paddingBottom="@dimen/dp5"
+        android:paddingTop="@dimen/dp5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="去评论"
+        android:textSize="@dimen/dp12"
+        android:textColor="@color/black_2"
+        android:background="@drawable/shape_goods_list_bg"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:layout_marginTop="@dimen/dp15"
+        app:layout_constraintTop_toBottomOf="@id/tv_go_comment"
+        android:background="@color/line_color"/>
+
+</android.support.constraint.ConstraintLayout>
