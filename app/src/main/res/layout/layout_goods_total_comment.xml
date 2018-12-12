@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="18dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="18dp">
+
+    <TextView
+        android:id="@+id/tv_comment_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="产品评价"
+        android:textColor="@color/black_1"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/tv_comment_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="(34798)"
+        android:textColor="@color/black_2"
+        android:textSize="11dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
+        app:layout_constraintLeft_toRightOf="@+id/tv_comment_left" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_come"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_comment_left" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/csl_comment_wrap"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_comment_box"
+        android:padding="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_left">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintWidth_percent="0.35">
+
+            <TextView
+                android:id="@+id/tv_comment_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="10dp"
+                android:text="87"
+                android:textColor="@color/black_1"
+                android:textSize="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_comment_grade_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2.5dp"
+                android:text="%"
+                android:textColor="@color/black_1"
+                android:textSize="13dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_comment_grade"
+                app:layout_constraintLeft_toRightOf="@+id/tv_comment_grade" />
+
+            <RatingBar
+                android:id="@+id/rb_comment_progress"
+                style="@style/rating_bar_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_comment_grade"
+                tools:rating="1" />
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="30dp"
+            android:background="@color/line_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="23dp"
+            android:paddingRight="35dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintWidth_percent="0.65">
+
+            <TextView
+                android:id="@+id/tv_good_comment_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="好评"
+                android:textColor="@color/black_2"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/tv_mid_comment_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="中评"
+                android:textColor="@color/black_2"
+                android:textSize="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_good_comment_left" />
+
+            <TextView
+                android:id="@+id/tv_bad_comment_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="差评"
+                android:textColor="@color/black_2"
+                android:textSize="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_mid_comment_left" />
+
+            <TextView
+                android:id="@+id/tv_good_comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5772"
+                android:textColor="@color/black_2"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_good_comment_left"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_good_comment_left" />
+
+            <TextView
+                android:id="@+id/tv_mid_comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2381"
+                android:textColor="@color/black_2"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_mid_comment_left"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_mid_comment_left" />
+
+            <TextView
+                android:id="@+id/tv_bad_comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1274"
+                android:textColor="@color/black_2"
+                android:textSize="9dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_bad_comment_left"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_bad_comment_left" />
+
+            <ProgressBar
+                android:id="@+id/pb_good_comment"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:progress="38"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_good_comment_left"
+                app:layout_constraintLeft_toRightOf="@+id/tv_good_comment_left"
+                app:layout_constraintRight_toLeftOf="@+id/tv_good_comment_num"
+                app:layout_constraintTop_toTopOf="@+id/tv_good_comment_left" />
+
+            <ProgressBar
+                android:id="@+id/pb_mid_comment"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:progress="89"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_mid_comment_left"
+                app:layout_constraintLeft_toRightOf="@+id/tv_mid_comment_left"
+                app:layout_constraintRight_toLeftOf="@+id/tv_mid_comment_num"
+                app:layout_constraintTop_toTopOf="@+id/tv_mid_comment_left" />
+
+            <ProgressBar
+                android:id="@+id/pb_bad_comment"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:progress="55"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_bad_comment_left"
+                app:layout_constraintLeft_toRightOf="@+id/tv_bad_comment_left"
+                app:layout_constraintRight_toLeftOf="@+id/tv_bad_comment_num"
+                app:layout_constraintTop_toTopOf="@+id/tv_bad_comment_left" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_comment_box_left"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="评价"
+        android:textColor="@color/black_2"
+        android:textSize="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/csl_comment_wrap" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_comment_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_box_left"
+        app:layout_constraintLeft_toRightOf="@+id/tv_comment_box_left"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_comment_box_left" />
+
+    <TextView
+        android:id="@+id/tv_comment_tag_left"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="标签"
+        android:textColor="@color/black_2"
+        android:textSize="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_box_left" />
+
+    <com.beiwo.klyjaz.view.flowlayout.TagFlowLayout
+        android:id="@+id/tfl_tag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tv_comment_tag_left"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_comment_tag_left" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/line_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

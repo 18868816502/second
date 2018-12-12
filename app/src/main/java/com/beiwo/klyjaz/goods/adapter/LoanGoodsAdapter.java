@@ -2,7 +2,6 @@ package com.beiwo.klyjaz.goods.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -138,7 +137,7 @@ public class LoanGoodsAdapter extends RecyclerView.Adapter<LoanGoodsAdapter.View
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     Goods goods = goodsItemAdapter.getData().get(position);
                     Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("cutId", goods.getCutId());
+                    intent.putExtra("cutId", goods.getPraiseCutId());
                     intent.putExtra("manageId", goods.getManageId());
                     context.startActivity(intent);
                 }

@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.goods.activity;
 
+import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 
 /**
@@ -15,7 +16,7 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 public class GoodsCommentActivity extends BaseComponentActivity {
     @Override
     public int getLayoutId() {
-        return 0;
+        return R.layout.activity_goods_comments;
     }
 
     @Override

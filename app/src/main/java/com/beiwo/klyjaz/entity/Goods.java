@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @date: 2018/12/11
  */
 public class Goods implements Serializable {
-    private String cutId;//好评口子ID
+    private String praiseCutId;//好评口子ID
     private String manageId;//口子产品ID
     private String productId;//产品ID
     private int status;
@@ -29,12 +29,12 @@ public class Goods implements Serializable {
     private String minQuota;
     private String maxQuota;
 
-    public String getCutId() {
-        return cutId;
+    public String getPraiseCutId() {
+        return praiseCutId;
     }
 
-    public void setCutId(String cutId) {
-        this.cutId = cutId;
+    public void setPraiseCutId(String praiseCutId) {
+        this.praiseCutId = praiseCutId;
     }
 
     public String getManageId() {

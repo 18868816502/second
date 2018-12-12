@@ -60,10 +60,8 @@ public class FlowLayout extends ViewGroup {
         // wrap_content
         int width = 0;
         int height = 0;
-
         int lineWidth = 0;
         int lineHeight = 0;
-
         int cCount = getChildCount();
 
         for (int i = 0; i < cCount; i++) {
@@ -99,13 +97,10 @@ public class FlowLayout extends ViewGroup {
             }
         }
         setMeasuredDimension(
-                //
                 modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width + getPaddingLeft() + getPaddingRight(),
-                modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height + getPaddingTop() + getPaddingBottom()//
+                modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height + getPaddingTop() + getPaddingBottom()
         );
-
     }
-
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -115,10 +110,8 @@ public class FlowLayout extends ViewGroup {
         lineViews.clear();
 
         int width = getWidth();
-
         int lineWidth = 0;
         int lineHeight = 0;
-
         int cCount = getChildCount();
 
         for (int i = 0; i < cCount; i++) {
@@ -149,16 +142,13 @@ public class FlowLayout extends ViewGroup {
         mLineWidth.add(lineWidth);
         mAllViews.add(lineViews);
 
-
         int left = getPaddingLeft();
         int top = getPaddingTop();
-
         int lineNum = mAllViews.size();
 
         for (int i = 0; i < lineNum; i++) {
             lineViews = mAllViews.get(i);
             lineHeight = mLineHeight.get(i);
-
             // set gravity
             int currentLineWidth = this.mLineWidth.get(i);
             switch (this.mGravity) {
@@ -182,9 +172,7 @@ public class FlowLayout extends ViewGroup {
                     continue;
                 }
 
-                MarginLayoutParams lp = (MarginLayoutParams) child
-                        .getLayoutParams();
-
+                MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
                 int lc = left + lp.leftMargin;
                 int tc = top + lp.topMargin;
                 int rc = lc + child.getMeasuredWidth();
@@ -192,19 +180,16 @@ public class FlowLayout extends ViewGroup {
 
                 child.layout(lc, tc, rc, bc);
 
-                left += child.getMeasuredWidth() + lp.leftMargin
-                        + lp.rightMargin;
+                left += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
             }
             top += lineHeight;
         }
-
     }
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
-
 
     @SuppressWarnings("ResourceType")
     @Override

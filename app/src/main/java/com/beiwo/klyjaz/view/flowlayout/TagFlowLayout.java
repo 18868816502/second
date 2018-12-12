@@ -51,7 +51,6 @@ public class TagFlowLayout extends FlowLayout
         this(context, null);
     }
 
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int cCount = getChildCount();
@@ -67,11 +66,9 @@ public class TagFlowLayout extends FlowLayout
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
     public void setOnSelectListener(OnSelectListener onSelectListener) {
         mOnSelectListener = onSelectListener;
     }
-
 
     public void setOnTagClickListener(OnTagClickListener onTagClickListener) {
         mOnTagClickListener = onTagClickListener;
@@ -97,8 +94,6 @@ public class TagFlowLayout extends FlowLayout
             tagView.setDuplicateParentStateEnabled(true);
             if (tagView.getLayoutParams() != null) {
                 tagViewContainer.setLayoutParams(tagView.getLayoutParams());
-
-
             } else {
                 ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -192,10 +187,8 @@ public class TagFlowLayout extends FlowLayout
         return mTagAdapter;
     }
 
-
     private static final String KEY_CHOOSE_POS = "key_choose_pos";
     private static final String KEY_DEFAULT = "key_default";
-
 
     @Override
     protected Parcelable onSaveInstanceState() {
@@ -229,14 +222,12 @@ public class TagFlowLayout extends FlowLayout
                         setChildChecked(index, tagView);
                     }
                 }
-
             }
             super.onRestoreInstanceState(bundle.getParcelable(KEY_DEFAULT));
             return;
         }
         super.onRestoreInstanceState(state);
     }
-
 
     @Override
     public void onChanged() {

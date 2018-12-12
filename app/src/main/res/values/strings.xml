@@ -228,7 +228,6 @@
     <string name="jjd_vertify_zhima_auth_via">芝麻信用认证通过</string>
     <string name="app_contentdescription">TODO</string>
     <string name="loan_protocol">《%s借款协议》</string>
-
     <!--文章-->
     <string name="article_attention">+ 关注</string>
     <string name="article_praise">赞</string>
@@ -253,5 +252,17 @@
     <string name="limit_loan">额度%1$s-%2$s元</string>
     <string name="period_loan">期限%s</string>
     <string name="loan_comment_num">%d条评价</string>
-
+    <!--口子详情-->
+    <string name="comment_all">(%d)</string>
+    <string name="all_comment">全部 (%d)</string>
+    <string name="good_comment">好评 (%d)</string>
+    <string name="mid_comment">中评 (%d)</string>
+    <string name="bad_comment">差评 (%d)</string>
+    <!--标签-->
+    <string name="tag_low_threhold">门槛低 (%d)</string>
+    <string name="tag_high_pass">过审高 (%d)</string>
+    <string name="tag_big_platform">大平台 (%d)</string>
+    <string name="tag_with_pic">有图 (%d)</string>
+    <string name="tag_loan_speed_quick">放款快 (%d)</string>
+    <string name="tag_high_loan">额度高 (%d)</string>
 </resources>

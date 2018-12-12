@@ -287,7 +287,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 public void onItemClick(BaseQuickAdapter a, View view, int position) {//商品详情
                     Goods goods = hotItemAdapter.getData().get(position);
                     Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("cutId", goods.getCutId());
+                    intent.putExtra("cutId", goods.getPraiseCutId());
                     intent.putExtra("manageId", goods.getManageId());
                     context.startActivity(intent);
                 }
