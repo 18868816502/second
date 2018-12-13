@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -43,7 +44,7 @@ import io.reactivex.functions.Consumer;
  * @modify:
  * @date: 2018/12/11
  */
-public class GoodsListActivity extends BaseComponentActivity implements OnRefreshListener,OnLoadMoreListener {
+public class GoodsListActivity extends BaseComponentActivity implements OnRefreshListener,OnLoadMoreListener,View.OnClickListener {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -77,13 +78,20 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.VERTICAL,R.drawable.shape_item_divider));
         recyclerView.setAdapter(mAdapter);
+        mAdapter.addHeaderView(initHeaderView());
 
         refresh_layout.setOnRefreshListener(this);
         refresh_layout.setOnLoadMoreListener(this);
     }
 
-    @OnClick({R.id.et_search})
-    public void onViewClick(View view){
+    private View initHeaderView(){
+        View view = LayoutInflater.from(this).inflate(R.layout.item_goods_comment_search, recyclerView, false);
+        view.setOnClickListener(this);
+        return view;
+    }
+
+    @Override
+    public void onClick(View view){
         startActivity(new Intent(GoodsListActivity.this,GoodsSearchActivity.class));
     }
 

@@ -30,7 +30,8 @@
         android:layout_marginRight="@dimen/dp15"
         android:layout_marginTop="@dimen/dp15"
         android:clickable="true"
-        android:focusableInTouchMode="false" />
+        android:focusableInTouchMode="false"
+        android:visibility="gone"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"

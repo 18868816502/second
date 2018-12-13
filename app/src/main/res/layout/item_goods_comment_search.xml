@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.beiwo.klyjaz.view.SearchEditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/et_search"
+    style="@style/StyleEditText"
+    android:layout_marginRight="@dimen/dp15"
+    android:layout_marginTop="@dimen/dp15"
+    android:clickable="true"
+    android:focusableInTouchMode="false" />
