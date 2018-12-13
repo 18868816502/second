@@ -74,7 +74,7 @@ public class GoodsHelper implements View.OnClickListener{
     /**
      * 评价类型
      */
-    private int type = 0;
+    private int type = -2;
     /**
      * 是否借到
      */

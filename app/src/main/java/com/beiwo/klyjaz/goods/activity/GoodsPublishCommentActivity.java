@@ -92,8 +92,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 checkPermission();
                 break;
             case R.id.tv_evaluate:
-//                ToastUtil.toast(mHelper.getFlag());
-                if(mHelper.getType() == 0){
+                if(mHelper.getType() == -2){
                     ToastUtil.toast("请选择综合评价");
                     return;
                 }
@@ -187,6 +186,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
     @Override
     public void onPublishCommentSucceed() {
         ToastUtil.toast("点评成功，感谢您的反馈！");
+        finish();
     }
 
     @Override

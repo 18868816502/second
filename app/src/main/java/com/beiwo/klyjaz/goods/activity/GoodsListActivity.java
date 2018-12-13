@@ -1,16 +1,20 @@
 package com.beiwo.klyjaz.goods.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
@@ -54,12 +58,16 @@ public class GoodsListActivity extends BaseComponentActivity {
     SearchEditText etSearch;
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
+    @BindView(R.id.empty_container)
+    LinearLayout emptyContainer;
+    @BindView(R.id.tip_container)
+    LinearLayout tipContainer;
 
     private GoodsListAdapter mAdapter;
     private int pageNo = 1;
     private int pageSize = 10;
     private List<GoodsManageBean.RowsBean> list;
-    private String manageName = "";
+    private String manageName;
 
     @Override
     public int getLayoutId() {
@@ -96,13 +104,13 @@ public class GoodsListActivity extends BaseComponentActivity {
             }
         });
 
-        etSearch.setOnSearchClickListener(new SearchEditText.OnSearchClickListener() {
-            @Override
-            public void onSearchClick(View view) {
-                manageName = etSearch.getText().toString();
-                fetchData();
-            }
-        });
+//        etSearch.setOnSearchClickListener(new SearchEditText.OnSearchClickListener() {
+//            @Override
+//            public void onSearchClick(View view) {
+//                manageName = etSearch.getText().toString();
+//                fetchData();
+//            }
+//        });
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -149,18 +157,6 @@ public class GoodsListActivity extends BaseComponentActivity {
 
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (null != this.getCurrentFocus()) {
-            /**
-             * 点击空白位置 隐藏软键盘
-             */
-            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        }
-        return super.onTouchEvent(event);
-    }
-
     /**
      * 获取产品数据
      */
@@ -180,6 +176,18 @@ public class GoodsListActivity extends BaseComponentActivity {
                                        list.addAll(result.getData().getRows());
                                        mAdapter.notifyGoodsChanged(list);
                                        mAdapter.notifyDataSetChanged();
+                                       if(list.size() == 0){
+                                           refresh_layout.setVisibility(View.GONE);
+                                           emptyContainer.setVisibility(View.VISIBLE);
+                                       }else{
+                                           refresh_layout.setVisibility(View.VISIBLE);
+                                           emptyContainer.setVisibility(View.GONE);
+                                       }
+                                       if(TextUtils.isEmpty(manageName)){
+                                           tipContainer.setVisibility(View.GONE);
+                                       }else{
+                                           tipContainer.setVisibility(View.VISIBLE);
+                                       }
                                    } else {
                                        ToastUtil.toast(result.getMsg());
                                    }
@@ -191,5 +199,47 @@ public class GoodsListActivity extends BaseComponentActivity {
                                 ToastUtil.toast(throwable.getMessage());
                             }
                         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            //当isShouldHideInput(v, ev)为true时，表示的是点击输入框区域，则需要显示键盘，同时显示光标，反之，需要隐藏键盘、光标
+            if (isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    v.clearFocus();
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public  boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }

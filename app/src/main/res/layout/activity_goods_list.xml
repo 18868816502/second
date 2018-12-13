@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -22,10 +24,34 @@
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
-
     <com.beiwo.klyjaz.view.SearchEditText
         android:id="@+id/et_search"
         style="@style/StyleEditText" />
+
+    <LinearLayout
+        android:id="@+id/tip_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp19"
+            android:layout_marginTop="@dimen/dp11"
+            android:text="你可能想找"
+            android:textColor="@color/black_2"
+            android:textSize="@dimen/dp12" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp25"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@color/line_color" />
+    </LinearLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
@@ -37,6 +63,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp71"
+            android:background="@drawable/icon_goods_empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp18"
+            android:gravity="center"
+            android:text="未找到你要的产品"
+            android:textColor="@color/black_2"
+            android:textSize="@dimen/dp15" />
+    </LinearLayout>
 
 
 </LinearLayout>
