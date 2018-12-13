@@ -11,6 +11,7 @@ package com.beiwo.klyjaz.entity;
  * @date: 2018/12/11
  */
 public class GoodsInfo {
+    private String productId;
     private String manageId;
     private String initials;
     private String name;
@@ -24,6 +25,14 @@ public class GoodsInfo {
     private int status;
     private String introduce;
     private String creditContext;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public String getManageId() {
         return manageId;

@@ -9,32 +9,41 @@
     android:paddingRight="15dp"
     android:paddingTop="18dp">
 
-    <TextView
-        android:id="@+id/tv_comment_left"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/csl_head_wrap"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="产品评价"
-        android:textColor="@color/black_1"
-        android:textSize="15dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
-        android:id="@+id/tv_comment_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:text="(34798)"
-        android:textColor="@color/black_2"
-        android:textSize="11dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
-        app:layout_constraintLeft_toRightOf="@+id/tv_comment_left" />
+        <TextView
+            android:id="@+id/tv_comment_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="产品评价"
+            android:textColor="@color/black_1"
+            android:textSize="15dp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_come"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_comment_left" />
+        <TextView
+            android:id="@+id/tv_comment_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="(34798)"
+            android:textColor="@color/black_2"
+            android:textSize="11dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
+            app:layout_constraintLeft_toRightOf="@+id/tv_comment_left" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_come"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_comment_left" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/csl_comment_wrap"
@@ -45,7 +54,7 @@
         android:padding="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_left">
+        app:layout_constraintTop_toBottomOf="@+id/csl_head_wrap">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
@@ -179,6 +188,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:progress="38"
+                android:progressDrawable="@drawable/pb_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_good_comment_left"
                 app:layout_constraintLeft_toRightOf="@+id/tv_good_comment_left"
                 app:layout_constraintRight_toLeftOf="@+id/tv_good_comment_num"
@@ -192,6 +202,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:progress="89"
+                android:progressDrawable="@drawable/pb_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_mid_comment_left"
                 app:layout_constraintLeft_toRightOf="@+id/tv_mid_comment_left"
                 app:layout_constraintRight_toLeftOf="@+id/tv_mid_comment_num"
@@ -205,6 +216,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:progress="55"
+                android:progressDrawable="@drawable/pb_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_bad_comment_left"
                 app:layout_constraintLeft_toRightOf="@+id/tv_bad_comment_left"
                 app:layout_constraintRight_toLeftOf="@+id/tv_bad_comment_num"
@@ -248,14 +260,16 @@
         android:id="@+id/tfl_tag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:paddingBottom="15dp"
         app:layout_constraintLeft_toRightOf="@+id/tv_comment_tag_left"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_comment_tag_left" />
+        app:layout_constraintTop_toTopOf="@+id/tv_comment_tag_left"
+        app:max_select="-1" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:layout_marginTop="15dp"
         android:background="@color/line_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

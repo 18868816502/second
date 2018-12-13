@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
  * @descripe
  * @time 2018/12/11 12:04
  */
-public class GoodsHelper implements View.OnClickListener{
+public class GoodsHelper implements View.OnClickListener {
 
     @BindView(R.id.eva_type_container01)
     View evaTypeContainer01;
@@ -93,6 +93,7 @@ public class GoodsHelper implements View.OnClickListener{
 
     /**
      * 装载综合评价部分View
+     *
      * @param container
      * @return
      */
@@ -123,19 +124,21 @@ public class GoodsHelper implements View.OnClickListener{
 
     /**
      * 获取评价类型
+     *
      * @return 评价类型
      */
-    public int getType(){
+    public int getType() {
         return type;
     }
 
     /**
      * 获取是否借到状态
+     *
      * @return 借到状态
      */
     public int getLoanStatus() {
 
-        for(Integer position:tagFlow01.getSelectedList()){
+        for (Integer position : tagFlow01.getSelectedList()) {
             loanStatus = position + 1;
         }
         return loanStatus;
@@ -144,6 +147,7 @@ public class GoodsHelper implements View.OnClickListener{
 
     /**
      * 加载产品印象View
+     *
      * @param container
      * @return
      */
@@ -182,6 +186,7 @@ public class GoodsHelper implements View.OnClickListener{
 
     /**
      * 装载图片列表的加号布局
+     *
      * @return
      */
     private View initFoot() {
@@ -208,16 +213,16 @@ public class GoodsHelper implements View.OnClickListener{
     /**
      * 获取产品印象
      */
-    public String getFlag(){
+    public String getFlag() {
         flag.setLength(0);
         List<Integer> index = new ArrayList<>();
-        for(Integer position:tagFlow02.getSelectedList()){
+        for (Integer position : tagFlow02.getSelectedList()) {
             index.add(position);
         }
-        for(int i = 0;i<index.size();i++){
-            if(i == index.size() - 1){
+        for (int i = 0; i < index.size(); i++) {
+            if (i == index.size() - 1) {
                 flag.append(m2Vals[i]);
-            }else{
+            } else {
                 flag.append(m2Vals[i]).append(",");
             }
         }
@@ -226,9 +231,10 @@ public class GoodsHelper implements View.OnClickListener{
 
     /**
      * 获取评论内容
+     *
      * @return
      */
-    public String getContent(){
+    public String getContent() {
         return etInput.getText().toString();
     }
 
@@ -248,6 +254,7 @@ public class GoodsHelper implements View.OnClickListener{
 
     /**
      * 设置本地图片数据
+     *
      * @param list
      */
     public void setPhotos(List<String> list) {
@@ -258,7 +265,7 @@ public class GoodsHelper implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.eva_type_container01:
                 clearState();
                 ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_selected);
@@ -280,15 +287,15 @@ public class GoodsHelper implements View.OnClickListener{
             case R.id.tv_evaluate:
                 ToastUtil.toast(getFlag());
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     /**
      * 清除评价选中状态
      */
-    private void clearState(){
+    private void clearState() {
         ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_unselected);
         ivEva02.setBackgroundResource(R.drawable.icon_goods_com_unselected);
         ivEva03.setBackgroundResource(R.drawable.icon_goods_neg_unselected);

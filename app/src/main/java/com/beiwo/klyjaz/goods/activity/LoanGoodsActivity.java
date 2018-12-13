@@ -46,6 +46,8 @@ public class LoanGoodsActivity extends BaseComponentActivity {
     SmartRefreshLayout refresh_layout;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.view_bg_toolbar)
+    View view_bg_toolbar;
 
     private int pageNo = 1;
     private int pageSize = 20;
@@ -74,10 +76,11 @@ public class LoanGoodsActivity extends BaseComponentActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 dyTranslate += dy;
-                if (dyTranslate >= DensityUtil.dp2px(getApplicationContext(), 100f)) {
-                    toolbar.setBackgroundResource(R.color.c_222222);
+                float dyRate = dyTranslate * 1.0f / DensityUtil.dp2px(getApplicationContext(), 50);
+                if (dyTranslate >= DensityUtil.dp2px(getApplicationContext(), 35f)) {
+                    view_bg_toolbar.setAlpha(dyRate < 1f ? dyRate : 1f);
                 } else {
-                    toolbar.setBackgroundResource(R.color.transparent);
+                    view_bg_toolbar.setAlpha(dyRate > 0f && dyRate < 1f ? dyRate : 0f);
                 }
             }
         });

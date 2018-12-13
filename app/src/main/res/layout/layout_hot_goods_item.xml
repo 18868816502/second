@@ -63,5 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:gravity="center_vertical"
+        android:textColor="@color/black_2"
+        android:textSize="13dp"
         tools:text="8924条好评" />
 </LinearLayout>

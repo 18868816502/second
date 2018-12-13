@@ -157,7 +157,6 @@
     <string name="loan_custome_rate_input">请输入自定义利率</string>
     <string name="loan_custome_rate_ensure_text">确定</string>
 
-
     <string name="loan_gjj_empty_tips">请填写公积金贷款金额</string>
     <string name="loan_zero_tips">贷款金额不能为0</string>
     <string name="loan_sd_empty_tips">请填商贷金额</string>
@@ -166,7 +165,6 @@
     <string name="loan_base_rate_percent">%)</string>
     <string name="loan_year">年 (</string>
     <string name="loan_phase">期)</string>
-
 
     <string name="loan_year_text">%1$s年 (%2$d期)</string>
     <string name="user_protocol">《%s用户协议》</string>
@@ -258,11 +256,4 @@
     <string name="good_comment">好评 (%d)</string>
     <string name="mid_comment">中评 (%d)</string>
     <string name="bad_comment">差评 (%d)</string>
-    <!--标签-->
-    <string name="tag_low_threhold">门槛低 (%d)</string>
-    <string name="tag_high_pass">过审高 (%d)</string>
-    <string name="tag_big_platform">大平台 (%d)</string>
-    <string name="tag_with_pic">有图 (%d)</string>
-    <string name="tag_loan_speed_quick">放款快 (%d)</string>
-    <string name="tag_high_loan">额度高 (%d)</string>
 </resources>

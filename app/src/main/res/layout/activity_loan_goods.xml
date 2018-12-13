@@ -15,6 +15,13 @@
             android:layout_height="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    <View
+        android:id="@+id/view_bg_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:alpha="0"
+        android:background="@color/c_222222" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
