@@ -1,9 +1,13 @@
 package com.beiwo.klyjaz.goods.helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +17,11 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.goods.adapter.GoodsEvaluateAdapter;
+import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
+import com.beiwo.klyjaz.social.utils.InputFilterUtils;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -32,7 +39,7 @@ import butterknife.ButterKnife;
  * @descripe
  * @time 2018/12/11 12:04
  */
-public class GoodsHelper implements View.OnClickListener {
+public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     @BindView(R.id.eva_type_container01)
     View evaTypeContainer01;
@@ -63,6 +70,7 @@ public class GoodsHelper implements View.OnClickListener {
 
     private TagFlowLayout tagFlow02;
     private EditText etInput;
+    private TextView tvCount;
     private RecyclerView recyclerView;
     private GoodsEvaluateAdapter photoAdapter;
     private TextView tvEvaluate;
@@ -74,7 +82,7 @@ public class GoodsHelper implements View.OnClickListener {
     /**
      * 评价类型
      */
-    private int type = 0;
+    private int type = -2;
     /**
      * 是否借到
      */
@@ -93,7 +101,6 @@ public class GoodsHelper implements View.OnClickListener {
 
     /**
      * 装载综合评价部分View
-     *
      * @param container
      * @return
      */
@@ -119,26 +126,23 @@ public class GoodsHelper implements View.OnClickListener {
                 return tv;
             }
         });
-//        mAdapter.setSelectedList(0);
     }
 
     /**
      * 获取评价类型
-     *
      * @return 评价类型
      */
-    public int getType() {
+    public int getType(){
         return type;
     }
 
     /**
      * 获取是否借到状态
-     *
      * @return 借到状态
      */
     public int getLoanStatus() {
 
-        for (Integer position : tagFlow01.getSelectedList()) {
+        for(Integer position:tagFlow01.getSelectedList()){
             loanStatus = position + 1;
         }
         return loanStatus;
@@ -147,7 +151,6 @@ public class GoodsHelper implements View.OnClickListener {
 
     /**
      * 加载产品印象View
-     *
      * @param container
      * @return
      */
@@ -163,8 +166,11 @@ public class GoodsHelper implements View.OnClickListener {
         tagFlow02 = view.findViewById(R.id.tag_flow_02);
         recyclerView = view.findViewById(R.id.recycler);
         etInput = view.findViewById(R.id.et_goods_comment);
+        tvCount = view.findViewById(R.id.tv_count);
         tvEvaluate = view.findViewById(R.id.tv_evaluate);
         tvEvaluate.setOnClickListener(mListener);
+        etInput.addTextChangedListener(this);
+        etInput.setFilters(new InputFilter[]{InputFilterUtils.emojiFilter, new InputFilter.LengthFilter(200)});
         bindRecyclerView();
     }
 
@@ -182,11 +188,19 @@ public class GoodsHelper implements View.OnClickListener {
         //设置尾部不占据一整行
         photoAdapter.setFooterViewAsFlow(true);
 //        photoAdapter.setOnItemChildClickListener(this);
+        photoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mContext, PhotoDetailActivity.class);
+                intent.putStringArrayListExtra("datas", (ArrayList<String>) photos);
+                intent.putExtra("position",position);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     /**
      * 装载图片列表的加号布局
-     *
      * @return
      */
     private View initFoot() {
@@ -207,22 +221,21 @@ public class GoodsHelper implements View.OnClickListener {
                 return tv;
             }
         });
-//        m2Adapter.setSelectedList(0,3,5);
     }
 
     /**
      * 获取产品印象
      */
-    public String getFlag() {
+    public String getFlag(){
         flag.setLength(0);
         List<Integer> index = new ArrayList<>();
-        for (Integer position : tagFlow02.getSelectedList()) {
+        for(Integer position:tagFlow02.getSelectedList()){
             index.add(position);
         }
-        for (int i = 0; i < index.size(); i++) {
-            if (i == index.size() - 1) {
+        for(int i = 0;i<index.size();i++){
+            if(i == index.size() - 1){
                 flag.append(m2Vals[i]);
-            } else {
+            }else{
                 flag.append(m2Vals[i]).append(",");
             }
         }
@@ -231,10 +244,9 @@ public class GoodsHelper implements View.OnClickListener {
 
     /**
      * 获取评论内容
-     *
      * @return
      */
-    public String getContent() {
+    public String getContent(){
         return etInput.getText().toString();
     }
 
@@ -254,18 +266,20 @@ public class GoodsHelper implements View.OnClickListener {
 
     /**
      * 设置本地图片数据
-     *
      * @param list
      */
     public void setPhotos(List<String> list) {
         this.photos.addAll(list);
         photoAdapter.setNewData(photos);
         photoAdapter.notifyDataSetChanged();
+        if(photos.size() == 4){
+            photoAdapter.removeAllFooterView();
+        }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()){
             case R.id.eva_type_container01:
                 clearState();
                 ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_selected);
@@ -287,15 +301,15 @@ public class GoodsHelper implements View.OnClickListener {
             case R.id.tv_evaluate:
                 ToastUtil.toast(getFlag());
                 break;
-            default:
-                break;
+                default:
+                    break;
         }
     }
 
     /**
      * 清除评价选中状态
      */
-    private void clearState() {
+    private void clearState(){
         ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_unselected);
         ivEva02.setBackgroundResource(R.drawable.icon_goods_com_unselected);
         ivEva03.setBackgroundResource(R.drawable.icon_goods_neg_unselected);
@@ -305,4 +319,18 @@ public class GoodsHelper implements View.OnClickListener {
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        tvCount.setText(String.valueOf(s.length()));
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

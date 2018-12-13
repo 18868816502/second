@@ -98,9 +98,7 @@ public class TabHomeFragment extends BaseComponentFragment {
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ToastUtil.toast("拖拽按钮");
-//                startActivity(new Intent(getActivity(), GoodsPublishCommentActivity.class));
-                startActivity(new Intent(getActivity(), GoodsListActivity.class));
+                ToastUtil.toast("拖拽按钮");
             }
         });
 

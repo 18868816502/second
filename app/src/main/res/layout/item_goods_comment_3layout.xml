@@ -39,17 +39,20 @@
             android:background="@drawable/shape_et_goods_comment_bg"
             android:gravity="top|left"
             android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
             android:paddingTop="@dimen/dp11"
             android:hint="产品非常好用，推荐推荐..."
             android:textSize="@dimen/dp14"/>
 
         <TextView
+            android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp10"
             android:layout_marginBottom="@dimen/dp10"
+            android:maxLength="200"
             android:textSize="@dimen/dp11"
             android:text="67"
             android:textColor="#d3d5d5"/>

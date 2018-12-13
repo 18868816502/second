@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.goods.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -151,7 +152,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_comment_wrap:
-
+                startActivity(new Intent(this,GoodsListActivity.class));
                 break;
             default:
                 break;
