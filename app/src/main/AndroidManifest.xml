@@ -577,7 +577,8 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity android:name=".goods.activity.GoodsListActivity" />
-        <activity android:name=".goods.activity.GoodsPublishCommentActivity" />
+        <activity android:name=".goods.activity.GoodsPublishCommentActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".goods.activity.GoodsSearchActivity"></activity>
     </application>
 

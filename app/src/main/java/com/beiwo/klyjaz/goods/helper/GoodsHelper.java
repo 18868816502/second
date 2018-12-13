@@ -1,9 +1,12 @@
 package com.beiwo.klyjaz.goods.helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +16,10 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.goods.adapter.GoodsEvaluateAdapter;
+import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -32,7 +37,7 @@ import butterknife.ButterKnife;
  * @descripe
  * @time 2018/12/11 12:04
  */
-public class GoodsHelper implements View.OnClickListener{
+public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     @BindView(R.id.eva_type_container01)
     View evaTypeContainer01;
@@ -63,6 +68,7 @@ public class GoodsHelper implements View.OnClickListener{
 
     private TagFlowLayout tagFlow02;
     private EditText etInput;
+    private TextView tvCount;
     private RecyclerView recyclerView;
     private GoodsEvaluateAdapter photoAdapter;
     private TextView tvEvaluate;
@@ -118,7 +124,6 @@ public class GoodsHelper implements View.OnClickListener{
                 return tv;
             }
         });
-//        mAdapter.setSelectedList(0);
     }
 
     /**
@@ -159,8 +164,10 @@ public class GoodsHelper implements View.OnClickListener{
         tagFlow02 = view.findViewById(R.id.tag_flow_02);
         recyclerView = view.findViewById(R.id.recycler);
         etInput = view.findViewById(R.id.et_goods_comment);
+        tvCount = view.findViewById(R.id.tv_count);
         tvEvaluate = view.findViewById(R.id.tv_evaluate);
         tvEvaluate.setOnClickListener(mListener);
+        etInput.addTextChangedListener(this);
         bindRecyclerView();
     }
 
@@ -178,6 +185,15 @@ public class GoodsHelper implements View.OnClickListener{
         //设置尾部不占据一整行
         photoAdapter.setFooterViewAsFlow(true);
 //        photoAdapter.setOnItemChildClickListener(this);
+        photoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mContext, PhotoDetailActivity.class);
+                intent.putStringArrayListExtra("datas", (ArrayList<String>) photos);
+                intent.putExtra("position",position);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -202,7 +218,6 @@ public class GoodsHelper implements View.OnClickListener{
                 return tv;
             }
         });
-//        m2Adapter.setSelectedList(0,3,5);
     }
 
     /**
@@ -254,6 +269,9 @@ public class GoodsHelper implements View.OnClickListener{
         this.photos.addAll(list);
         photoAdapter.setNewData(photos);
         photoAdapter.notifyDataSetChanged();
+        if(photos.size() == 4){
+            photoAdapter.removeAllFooterView();
+        }
     }
 
     @Override
@@ -298,4 +316,18 @@ public class GoodsHelper implements View.OnClickListener{
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        tvCount.setText(String.valueOf(count));
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

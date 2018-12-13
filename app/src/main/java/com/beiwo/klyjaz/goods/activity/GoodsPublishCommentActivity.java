@@ -1,15 +1,22 @@
 package com.beiwo.klyjaz.goods.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,8 +84,15 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
         String logo = getIntent().getStringExtra("logo");
         String name = getIntent().getStringExtra("name");
         manageId = getIntent().getStringExtra("manageId");
+        String rate = getIntent().getStringExtra("rate");
+        String maxQuota = getIntent().getStringExtra("maxQuota");
+        String term = getIntent().getStringExtra("term");
+
         Glide.with(this).load(logo).into(ivGoodsLogo);
         tvGoodsName.setText(name);
+        StringBuilder sb = new StringBuilder();
+        sb.append("额度: ").append(maxQuota).append("  期限:").append(term).append("  日息:").append(rate);
+        tvGoodsDescrip.setText(sb.toString());
     }
 
     @OnClick({R.id.navigate})
@@ -205,5 +219,52 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
     @Override
     public void setPresenter(GoodsPublishCommentContact.Presenter presenter) {
 
+    }
+
+    /**
+     * 点击输入法外，隐藏输入法
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            //当isShouldHideInput(v, ev)为true时，表示的是点击输入框区域，则需要显示键盘，同时显示光标，反之，需要隐藏键盘、光标
+            if (isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    v.clearFocus();
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public  boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }
