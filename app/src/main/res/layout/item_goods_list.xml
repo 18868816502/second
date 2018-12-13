@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/dp15"
-    android:paddingLeft="@dimen/dp15"
-    android:paddingRight="@dimen/dp15">
+    android:paddingBottom="@dimen/dp15">
     
     <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_logo"
@@ -22,6 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/iv_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_logo"
+        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
         android:layout_marginLeft="@dimen/dp8"
         android:text="帮帮回租"
         android:textColor="@color/black_1"
@@ -43,11 +44,10 @@
         android:textColor="@color/black_2"
         android:background="@drawable/shape_goods_list_bg"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp1"
-        android:layout_marginTop="@dimen/dp15"
-        app:layout_constraintTop_toBottomOf="@id/tv_go_comment"
-        android:background="@color/line_color"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dp1"-->
+        <!--app:layout_constraintTop_toBottomOf="parent"-->
+        <!--android:background="@color/line_color"/>-->
 
 </android.support.constraint.ConstraintLayout>
