@@ -39,6 +39,7 @@
             android:background="@drawable/shape_et_goods_comment_bg"
             android:gravity="top|left"
             android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
             android:paddingTop="@dimen/dp11"
             android:hint="产品非常好用，推荐推荐..."
             android:textSize="@dimen/dp14"/>

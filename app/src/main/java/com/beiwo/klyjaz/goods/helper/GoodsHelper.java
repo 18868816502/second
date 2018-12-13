@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.goods.adapter.GoodsEvaluateAdapter;
 import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
+import com.beiwo.klyjaz.social.utils.InputFilterUtils;
 import com.beiwo.klyjaz.util.ImageUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -168,6 +170,7 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
         tvEvaluate = view.findViewById(R.id.tv_evaluate);
         tvEvaluate.setOnClickListener(mListener);
         etInput.addTextChangedListener(this);
+        etInput.setFilters(new InputFilter[]{InputFilterUtils.emojiFilter, new InputFilter.LengthFilter(200)});
         bindRecyclerView();
     }
 
@@ -323,7 +326,7 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        tvCount.setText(String.valueOf(count));
+        tvCount.setText(String.valueOf(s.length()));
     }
 
     @Override
