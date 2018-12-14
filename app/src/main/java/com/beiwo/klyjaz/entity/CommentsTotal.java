@@ -20,7 +20,7 @@ public class CommentsTotal implements Serializable {
     private int status;
     private int commentCount;//总评论数
     private int goodCommentCount;//好评论数
-    private double goodCommentRate;//好评率
+    private float goodCommentRate;//好评率
     private int minCommentCount;//中评论数
     private int badCommentCount;//差评论数
     private List<Labels> labelList;//标签
@@ -73,11 +73,11 @@ public class CommentsTotal implements Serializable {
         this.goodCommentCount = goodCommentCount;
     }
 
-    public double getGoodCommentRate() {
+    public float getGoodCommentRate() {
         return goodCommentRate;
     }
 
-    public void setGoodCommentRate(double goodCommentRate) {
+    public void setGoodCommentRate(float goodCommentRate) {
         this.goodCommentRate = goodCommentRate;
     }
 

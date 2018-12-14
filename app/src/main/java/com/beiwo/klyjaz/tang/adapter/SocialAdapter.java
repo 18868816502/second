@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.tang.adapter;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
@@ -20,21 +21,20 @@ import java.util.List;
  */
 
 public class SocialAdapter extends FragmentPagerAdapter {
-    private List<TopicFragment> mList;
+    private List<Fragment> mList;
 
     public SocialAdapter(FragmentManager fm) {
         super(fm);
         mList = new ArrayList<>();
     }
 
-    public void setDatas(List<TopicFragment> mList) {
+    public void setDatas(List<? extends Fragment> mList) {
         this.mList.addAll(mList);
         notifyDataSetChanged();
     }
 
-
     @Override
-    public TopicFragment getItem(int position) {
+    public Fragment getItem(int position) {
         return mList.get(position);
     }
 

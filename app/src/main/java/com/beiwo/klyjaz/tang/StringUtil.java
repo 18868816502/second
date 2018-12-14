@@ -40,7 +40,9 @@ public class StringUtil {
             long hour = minite / 60;//时
             long day = hour / 24;//天
             if (day >= 1) {
-                return day + "天前";
+                if (day > 10) {//超过10天显示日期
+                    return time.substring(0, 10);
+                } else return day + "天前";
             } else if (hour >= 1) {
                 return hour + "小时前";
             } else if (minite >= 1) {

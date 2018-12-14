@@ -35,7 +35,7 @@ public class HotItemAdapter extends BaseQuickAdapter<Goods, BaseViewHolder> {
                 .transform(new GlideCircleTransform(mContext))
                 .into((ImageView) helper.getView(R.id.hot_item_iv_icon));
         helper.setText(R.id.hot_item_tv_name, item.getName())
-                .setText(R.id.hot_item_tv_rate, String.format("%.1f", item.getGoodCommentRate() / 10))
+                .setText(R.id.hot_item_tv_rate, String.format("%.1f", item.getGoodCommentRate() * 10))
                 .setText(R.id.hot_item_tv_comment_num, item.getGoodCommentCount() + "条好评");
         RatingBar hot_item_rb_progress = helper.getView(R.id.hot_item_rb_progress);
 
@@ -46,8 +46,8 @@ public class HotItemAdapter extends BaseQuickAdapter<Goods, BaseViewHolder> {
             params.width = -2;
             params.height = scroeHeight;
             hot_item_rb_progress.setLayoutParams(params);
+            hot_item_rb_progress.setRating(item.getGoodCommentRate() * 10 / 2);
         } catch (Exception e) {
         }
-        hot_item_rb_progress.setRating(item.getGoodCommentRate() / 20);
     }
 }
