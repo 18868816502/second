@@ -63,9 +63,11 @@ public class GoodsCommentAdapter extends BaseQuickAdapter<GoodsComment, BaseView
         TagFlowLayout comment_tfl_tag = helper.getView(R.id.comment_tfl_tag);
         List<Labels> labels = item.getLabelList();
         if (labels != null && labels.size() > 0) {
-            final List<String> tags = new ArrayList<>();
+            List<String> tags = new ArrayList<>();
             for (int i = 0; i < labels.size(); i++) {
-                tags.add(TagUtil.getKeyValue(labels.get(i).getFlag(), false));
+                String flag = labels.get(i).getFlag();
+                if (TextUtils.isEmpty(flag)) continue;
+                tags.add(TagUtil.getKeyValue(flag, false));
             }
             comment_tfl_tag.setAdapter(new TagAdapter<String>(tags) {
                 @Override
@@ -83,7 +85,6 @@ public class GoodsCommentAdapter extends BaseQuickAdapter<GoodsComment, BaseView
         }
         //评价图片
         String imageUrl = item.getImageUrl();
-        System.out.println("imageUrl = " + imageUrl);
         if (!TextUtils.isEmpty(imageUrl)) {
             String[] urls = imageUrl.split(",");
             if (urls != null && urls.length > 0) {
