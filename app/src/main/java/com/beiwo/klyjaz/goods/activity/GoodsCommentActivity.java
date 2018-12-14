@@ -21,6 +21,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.CommentsTotal;
 import com.beiwo.klyjaz.entity.GoodsInfo;
+import com.beiwo.klyjaz.entity.Labels;
 import com.beiwo.klyjaz.goods.fragment.GoodsCommentFragment;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.tang.adapter.SocialAdapter;
@@ -71,6 +72,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
     private Activity context;
     private List<SpannableString> tabs = new ArrayList<>();
     private List<GoodsCommentFragment> fragments = new ArrayList<>();
+    public List<Labels> labels = null;
 
     @Override
     public int getLayoutId() {
@@ -107,6 +109,10 @@ public class GoodsCommentActivity extends BaseComponentActivity {
                 .subscribe(new ApiObserver<CommentsTotal>() {
                     @Override
                     public void onNext(CommentsTotal data) {
+                        if (data != null && data.getLabelList() != null && data.getLabelList().size() > 0) {
+                            labels = data.getLabelList();
+                        }
+
                         String title = name + " " + String.format(getString(R.string.comment_all), data.getCommentCount());
                         toolbar_title.setText(convert(title, name.length() + 1));
 
@@ -133,7 +139,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
     private void initAdapter() {
         GoodsCommentFragment fragment1 = GoodsCommentFragment.newInstance();
         Bundle args1 = new Bundle();
-        args1.putInt("type", type);
+        args1.putInt("type", 2);
         args1.putString("tag", tag);
         args1.putString("cutId", cutId);
         args1.putString("manageId", manageId);
@@ -141,7 +147,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
 
         GoodsCommentFragment fragment2 = GoodsCommentFragment.newInstance();
         Bundle args2 = new Bundle();
-        args2.putInt("type", type);
+        args2.putInt("type", 1);
         args2.putString("tag", tag);
         args2.putString("cutId", cutId);
         args2.putString("manageId", manageId);
@@ -149,7 +155,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
 
         GoodsCommentFragment fragment3 = GoodsCommentFragment.newInstance();
         Bundle args3 = new Bundle();
-        args3.putInt("type", type);
+        args3.putInt("type", 0);
         args3.putString("tag", tag);
         args3.putString("cutId", cutId);
         args3.putString("manageId", manageId);
@@ -157,7 +163,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
 
         GoodsCommentFragment fragment4 = GoodsCommentFragment.newInstance();
         Bundle args4 = new Bundle();
-        args4.putInt("type", type);
+        args4.putInt("type", -1);
         args4.putString("tag", tag);
         args4.putString("cutId", cutId);
         args4.putString("manageId", manageId);
@@ -173,6 +179,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
         adapter.setDatas(fragments);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(type);
+        viewpager.setOffscreenPageLimit(fragments.size());
     }
 
     private void initIndicator() {
