@@ -18,6 +18,7 @@ public class HotTop implements Serializable {
     private String logoUrl;
     private int applyCount;
     private int loanCount;
+    private String loanApplyId;
 
     public String getProductId() {
         return productId;
@@ -57,5 +58,13 @@ public class HotTop implements Serializable {
 
     public void setLoanCount(int loanCount) {
         this.loanCount = loanCount;
+    }
+
+    public String getLoanApplyId() {
+        return loanApplyId;
+    }
+
+    public void setLoanApplyId(String loanApplyId) {
+        this.loanApplyId = loanApplyId;
     }
 }

@@ -152,7 +152,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_comment_wrap:
-                startActivity(new Intent(this,GoodsListActivity.class));
+                startActivity(new Intent(this, GoodsListActivity.class));
                 break;
             default:
                 break;

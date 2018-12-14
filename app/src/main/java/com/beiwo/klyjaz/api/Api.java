@@ -233,6 +233,11 @@ public class Api {
         return service.queryGroupProductSkip(userId, productId);
     }
 
+    /*进入贷超产品详情*/
+    public Observable<ResultEntity<String>> queryGroupProductSkip(String userId, String productId, String loanApplyId) {
+        return service.queryGroupProductSkip(userId, productId, loanApplyId);
+    }
+
     /*贷超产品页面跳转（原生)*/
     public Observable<ResultEntity> proSkip(@Field("productId") String productId) {
         return service.proSkip(productId);
@@ -1541,5 +1546,10 @@ public class Api {
     /*产品详情-选择产品*/
     public Observable<ResultEntity<GoodsManageBean>> manageList(Map<String, Object> map) {
         return service.manageList(map);
+    }
+
+    /*页面行为数据 渠道统计*/
+    public Observable<ResultEntity> event(Map<String, Object> map) {
+        return service.event(map);
     }
 }

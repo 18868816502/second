@@ -19,6 +19,7 @@ import com.beiwo.klyjaz.entity.CommentsTotal;
 import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.goods.adapter.GoodsDetailAdapter;
+import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -175,6 +176,7 @@ public class GoodsDetailActivity extends BaseComponentActivity {
     }
 
     private void goProduct(String goodId, final String name) {
+        DataStatisticsHelper.getInstance(this).onCountUvPv("PraiseCutLoanHit", goodId);
         String id = UserHelper.getInstance(this).isLogin() ? UserHelper.getInstance(this).id() : App.androidId;
         Api.getInstance().queryGroupProductSkip(id, goodId)
                 .compose(RxResponse.<String>compatT())

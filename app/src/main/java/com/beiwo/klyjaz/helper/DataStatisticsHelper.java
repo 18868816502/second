@@ -3,6 +3,7 @@ package com.beiwo.klyjaz.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.api.Api;
@@ -13,6 +14,9 @@ import com.beiwo.klyjaz.util.LogUtils;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 
@@ -52,16 +56,50 @@ public class DataStatisticsHelper {
     public static final String ID_OPEN_APP = "OPEN_APP";
     public static final String ID_FIRST_INSTALL = "FirstInstall";
 
-    //    @Inject
+    //事件类型
+    public static final String EVENT_TYPE_STAY = "PageStay ";//页面停留
+    public static final String EVENT_TYPE_CLICK = "PageClick";//页面点击
+    public static final String EVENT_TYPE_EXIT = "ExitApp 	";//退出应用
+    public static final String EVENT_TYPE_OPEN = "OpenApp 	";//启动应用
+    //viewId类型
+    public static final String EVENT_VIEWID_HOMEPAGE = "HomePage";          //首页
+    public static final String EVENT_VIEWID_NEWPRODUCTSDIVISION = "NewProductsDivision";          //新品推荐专区
+    public static final String EVENT_VIEWID_LIGHTNINGACCOUNTDIVISION = "LightningAccountDivision";            //闪电到账专区
+    public static final String EVENT_VIEWID_NOCREDITREPORTINGDIVISION = "NoCreditReportingDivision";            //不查征信专区
+    public static final String EVENT_VIEWID_LOANRECOMMENDDIVISION = "LoanRecommendDivision ";          //下款推荐页面
+    public static final String EVENT_VIEWID_LOANRECOMMENDPRODUCTDETAIL = "LoanRecommendProductDetail";            //下款推荐产品详情页面
+    public static final String EVENT_VIEWID_LOANRECOMMENDPRODUCTSELECT = "LoanRecommendProductSelect";            //下款推荐选择产品页面
+    public static final String EVENT_VIEWID_LOANRECOMMENDPRODUCTPRAISE = "LoanRecommendProductPraise";            //下款推荐产品评价页面
+    public static final String EVENT_VIEWID_LOANPAGE = "LoanPage";          //贷款页面
+    public static final String EVENT_VIEWID_COMMUNITYHOMEPAGE = "CommunityHomePage";          //社区首页
+    public static final String EVENT_VIEWID_COMMUNITYPUBLISHPAGE = "CommunityPublishPage";          //社区发布页面
+    public static final String EVENT_VIEWID_TOPICDETAILPAGE = "TopicDetailPage";          //话题详情页
+    public static final String EVENT_VIEWID_TOOLHOMEPAGE = "ToolHomePage";          //工具首页
+    public static final String EVENT_VIEWID_TALLYHOMEPAGE = "TallyHomePage";          //记账首页
+    public static final String EVENT_VIEWID_LOANBILLPAGE = "LoanBillPage";          //贷款账单页
+    public static final String EVENT_VIEWID_MYPAGE = "MyPage";          //我的页面
+    public static final String EVENT_VIEWID_LARGELIMITLOWINTEREST = "LargeLimitLowInterest";          //大额低息专区
+    public static final String EVENT_VIEWID_LOGINPAGE = "LoginPage";          //登陆页面
+    //eventId类型
+    public static final String EVENT_EVENTID_LOANIMMEDIATELY = "LoanImmediately";    //立即借钱
+    public static final String EVENT_EVENTID_PRAISECUTMORE = "PraiseCutMore";    //好评口子查看更多
+    public static final String EVENT_EVENTID_GETCODE = "GetCode";    //获取验证码
+    public static final String EVENT_EVENTID_LOGINIMMEDIATELY = "LoginImmediately";    //立即登录
+    public static final String EVENT_EVENTID_AMOUNTBTN = "AmountBtn";    //金额
+    public static final String EVENT_EVENTID_CLASSIFYBTN = "ClassifyBtn";    //分类
+    public static final String EVENT_EVENTID_SORTBTN = "SortBtn";    //排序
+    public static final String EVENT_EVENTID_CREDITINQUIRY = "CreditInquiry";    //信用查询
+    public static final String EVENT_EVENTID_MORTGAGECALCULATOR = "MortgageCalculator";    //房贷计算器
+    public static final String EVENT_EVENTID_INVOICEASSISTANT = "InvoiceAssistant";    //发票助手
+    public static final String EVENT_EVENTID_HEADPORTRAIT = "HeadPortrait";    //头像
+    public static final String EVENT_EVENTID_MYPURSE = "MyPurse";    //我的钱包
+    public static final String EVENT_EVENTID_BILLSUMMARY = "BillSummary";    //账单汇总
+    public static final String EVENT_EVENTID_MYMESSAGE = "MyMessage";    //消息
+
     Api api;
-    //    @Inject
     Context context;
 
     private DataStatisticsHelper(Context mContext) {
-//        DaggerDataStatisticHelperComponent.builder()
-//                .appComponent(App.getInstance().getAppComponent())
-//                .build()
-//                .inject(this);
         api = Api.getInstance();
         context = mContext;
     }
@@ -75,6 +113,14 @@ public class DataStatisticsHelper {
             }
         }
         return sInstance;
+    }
+
+    public void event(String type, String viewId, @Nullable String eventId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("platform", 1);
+        map.put("type", type);
+        map.put("viewId", viewId);
+        map.put("eventId", eventId);
     }
 
     public void onProductClicked(String id) {
@@ -104,7 +150,6 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).getProfile() != null) {
             userId = UserHelper.getInstance(context).getProfile().getId();
         } else {
-            //userId = SPUtils.getCacheUserId();
             userId = App.androidId;
         }
         api.onAdClicked(id, userId, type)

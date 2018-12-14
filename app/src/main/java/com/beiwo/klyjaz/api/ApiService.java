@@ -215,6 +215,10 @@ public interface ApiService {
     @POST(PRODUCT_PATH + "/product/skip")
     Observable<ResultEntity<String>> queryGroupProductSkip(@Field("userId") String userId, @Field("productId") String productId);
 
+    @FormUrlEncoded
+    @POST(PRODUCT_PATH + "/product/skip")
+    Observable<ResultEntity<String>> queryGroupProductSkip(@Field("userId") String userId, @Field("productId") String productId, @Field("loanApplyId") String loanApplyId);
+
     /*贷超产品页面跳转（原生)*/
     @FormUrlEncoded
     @POST("/s3/product/productSkipForNative")
@@ -1541,4 +1545,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/s5/praiseCut/manageList")
     Observable<ResultEntity<GoodsManageBean>> manageList(@FieldMap Map<String, Object> map);
+
+    /**
+     * 页面行为数据 渠道统计 详见DataStatisticsHelper.java
+     * platform     是	String    平台
+     * type 	    是 	string 	  事件类型
+     * viewId 	    是 	string 	  页面Id (事件类型 = 启动应用 可以为空)
+     * eventId 	    否 	string 	  事件Id (事件类型=页面点击 不能为空)
+     * duration     否 	Integer   停留时长 (事件类型=页面停留 不能为空)
+     */
+    @FormUrlEncoded
+    @POST("/s1/dataBurialPoint/viewEvents")
+    Observable<ResultEntity> event(@FieldMap Map<String, Object> map);
 }

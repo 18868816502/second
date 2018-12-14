@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class LoanGoodsAdapter extends RecyclerView.Adapter<LoanGoodsAdapter.View
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     Product product = todayRecomAdapter.getData().get(position);
-                    productItemClick(product.getId(), product.getProductName());
+                    productItemClick(product.getId(), product.getProductName(), null);
                 }
             });
         }
@@ -119,7 +120,7 @@ public class LoanGoodsAdapter extends RecyclerView.Adapter<LoanGoodsAdapter.View
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     HotTop hotTop = hotTopAdapter.getData().get(position);
-                    productItemClick(hotTop.getProductId(), hotTop.getProductName());
+                    productItemClick(hotTop.getProductId(), hotTop.getProductName(), hotTop.getLoanApplyId());
                 }
             });
         }
@@ -145,30 +146,44 @@ public class LoanGoodsAdapter extends RecyclerView.Adapter<LoanGoodsAdapter.View
         }
     }
 
-    private void productItemClick(final String goodId, final String name) {
+    private void productItemClick(final String goodId, final String name, final String loanApplyId) {
         if (BuildConfig.FORCE_LOGIN && !UserHelper.getInstance(context).isLogin()) {
             DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
                 @Override
                 public void success(UserProfileAbstract data) {
-                    goProduct(goodId, name);
+                    goProduct(goodId, name, loanApplyId);
                 }
             });
-        } else goProduct(goodId, name);
+        } else goProduct(goodId, name, loanApplyId);
     }
 
-    private void goProduct(String goodId, final String name) {
+    private void goProduct(String goodId, final String name, final String loanApplyId) {
         String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
-        Api.getInstance().queryGroupProductSkip(id, goodId)
-                .compose(RxResponse.<String>compatT())
-                .subscribe(new ApiObserver<String>() {
-                    @Override
-                    public void onNext(@NonNull String data) {
-                        Intent intent = new Intent(context, WebViewActivity.class);
-                        intent.putExtra("webViewUrl", data);
-                        intent.putExtra("webViewTitleName", name);
-                        context.startActivity(intent);
-                    }
-                });
+        if (!TextUtils.isEmpty(loanApplyId)) {
+            Api.getInstance().queryGroupProductSkip(id, goodId, loanApplyId)
+                    .compose(RxResponse.<String>compatT())
+                    .subscribe(new ApiObserver<String>() {
+                        @Override
+                        public void onNext(@NonNull String data) {
+                            Intent intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("webViewUrl", data);
+                            intent.putExtra("webViewTitleName", name);
+                            context.startActivity(intent);
+                        }
+                    });
+        } else {
+            Api.getInstance().queryGroupProductSkip(id, goodId)
+                    .compose(RxResponse.<String>compatT())
+                    .subscribe(new ApiObserver<String>() {
+                        @Override
+                        public void onNext(@NonNull String data) {
+                            Intent intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("webViewUrl", data);
+                            intent.putExtra("webViewTitleName", name);
+                            context.startActivity(intent);
+                        }
+                    });
+        }
     }
 
     private void initRecycler(RecyclerView recycler, RecyclerView.LayoutManager manager, BaseQuickAdapter adapter) {
