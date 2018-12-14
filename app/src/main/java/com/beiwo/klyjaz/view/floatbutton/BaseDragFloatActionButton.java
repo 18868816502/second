@@ -73,6 +73,7 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
     private int lastX;
     private int lastY;
     private boolean isDrag;
+    private long downTime;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -80,6 +81,7 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
         int rawY = (int) event.getRawY();
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
+                downTime=System.currentTimeMillis();
                 //默认是点击事件
                 setPressed(true);
                 //默认是非拖动而是点击事件
@@ -120,7 +122,11 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 //如果是拖动状态下即非点击按压事件
-                setPressed(!isDrag);
+                if(System.currentTimeMillis()-downTime<600){
+                    setPressed(true);
+                }else {
+                    setPressed(!isDrag);
+                }
 //                if (rawX >= parentWidth / 2) {
 //                    //靠右吸附
 //                    animate().setInterpolator(new DecelerateInterpolator())

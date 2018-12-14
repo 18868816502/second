@@ -29,6 +29,7 @@ import com.beiwo.klyjaz.goods.helper.GoodsHelper;
 import com.beiwo.klyjaz.goods.presenter.GoodsPublishCommentPresenter;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.CircleImageView;
+import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.Matisse;
@@ -88,7 +89,15 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
         String maxQuota = getIntent().getStringExtra("maxQuota");
         String term = getIntent().getStringExtra("term");
 
-        Glide.with(this).load(logo).into(ivGoodsLogo);
+        if(TextUtils.isEmpty(logo)){
+            Glide.with(this).load(R.mipmap.ic_launcher)
+                    .transform(new GlideCircleTransform(this))
+                    .into(ivGoodsLogo);
+        }else {
+            Glide.with(this).load(logo)
+                    .transform(new GlideCircleTransform(this))
+                    .into(ivGoodsLogo);
+        }
         tvGoodsName.setText(name);
         StringBuilder sb = new StringBuilder();
         sb.append("额度: ").append(maxQuota).append("  期限:").append(term).append("  日息:").append(rate);
