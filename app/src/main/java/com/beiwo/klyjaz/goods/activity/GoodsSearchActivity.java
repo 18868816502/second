@@ -88,7 +88,6 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.VERTICAL,R.drawable.shape_item_divider));
         recyclerView.setAdapter(mAdapter);
 
         refresh_layout.setOnRefreshListener(this);

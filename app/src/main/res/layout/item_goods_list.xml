@@ -2,10 +2,11 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dp66"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="@dimen/dp15"
-    android:paddingBottom="@dimen/dp15">
+    android:paddingRight="@dimen/dp15"
+    android:paddingLeft="@dimen/dp15"
+    android:background="@color/white">
     
     <com.beiwo.klyjaz.view.CircleImageView
         android:id="@+id/iv_logo"
@@ -14,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@drawable/mine_icon_head"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/tv_goods_name"
@@ -44,10 +45,10 @@
         android:textColor="@color/black_2"
         android:background="@drawable/shape_goods_list_bg"/>
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/dp1"-->
-        <!--app:layout_constraintTop_toBottomOf="parent"-->
-        <!--android:background="@color/line_color"/>-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp05"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/line_color"/>
 
 </android.support.constraint.ConstraintLayout>

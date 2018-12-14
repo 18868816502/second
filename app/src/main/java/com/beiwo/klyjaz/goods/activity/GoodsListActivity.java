@@ -76,7 +76,6 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.VERTICAL,R.drawable.shape_item_divider));
         recyclerView.setAdapter(mAdapter);
         mAdapter.addHeaderView(initHeaderView());
 
