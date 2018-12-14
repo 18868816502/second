@@ -1,10 +1,10 @@
 package com.beiwo.klyjaz.tang.adapter;
 
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.beiwo.klyjaz.social.fragment.TopicFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import java.util.List;
  * @date: 2018/9/11
  */
 
-public class SocialAdapter extends FragmentPagerAdapter {
+public class FragmentAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mList;
 
-    public SocialAdapter(FragmentManager fm) {
+    public FragmentAdapter(FragmentManager fm) {
         super(fm);
         mList = new ArrayList<>();
     }

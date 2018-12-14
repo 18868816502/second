@@ -20,11 +20,10 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.CommentsTotal;
-import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.Labels;
 import com.beiwo.klyjaz.goods.fragment.GoodsCommentFragment;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
-import com.beiwo.klyjaz.tang.adapter.SocialAdapter;
+import com.beiwo.klyjaz.tang.adapter.FragmentAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.DensityUtil;
@@ -175,7 +174,7 @@ public class GoodsCommentActivity extends BaseComponentActivity {
         fragments.add(fragment3);
         fragments.add(fragment4);
 
-        SocialAdapter adapter = new SocialAdapter(getSupportFragmentManager());
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         adapter.setDatas(fragments);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(type);

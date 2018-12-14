@@ -77,10 +77,6 @@ public class TabHomeFragment extends BaseComponentFragment {
     @BindView(R.id.float_button)
     DragFloatButton floatButton;
 
-    private List<String> imgs = new ArrayList<>();
-    private List<String> urls = new ArrayList<>();
-    private List<String> titles = new ArrayList<>();
-    private List<Boolean> needLogin = new ArrayList<>();
     private TabHomeAdapter homeAdapter = new TabHomeAdapter();
     private int dyTranslate;
 
@@ -115,14 +111,12 @@ public class TabHomeFragment extends BaseComponentFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 dyTranslate += dy;
-                //float alphaValue = dyTranslate * 1.0f / DensityUtil.dp2px(getActivity(), 170f);
+                float alphaValue = dyTranslate * 1.0f / DensityUtil.dp2px(getActivity(), 170f);
                 if (dyTranslate > DensityUtil.dp2px(getActivity(), 125f)) {
-                    ll_toolbar_wrap.setVisibility(View.VISIBLE);
-                    //ll_toolbar_wrap.setAlpha(alphaValue < 1 ? alphaValue : 1f);
+                    ll_toolbar_wrap.setAlpha(alphaValue < 1 ? alphaValue : 1f);
                     ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(true).init();
                 } else {
-                    ll_toolbar_wrap.setVisibility(View.GONE);
-                    //ll_toolbar_wrap.setAlpha(alphaValue < 1 && alphaValue > 0 ? alphaValue : 0f);
+                    ll_toolbar_wrap.setAlpha(alphaValue < 1 && alphaValue > 0 ? alphaValue : 0f);
                     ImmersionBar.with(TabHomeFragment.this).statusBarDarkFont(false).init();
                 }
             }
@@ -147,15 +141,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                     @Override
                     public void onNext(@NonNull List<AdBanner> data) {
                         refresh_layout.finishRefresh();
-                        imgs.clear();
-                        urls.clear();
-                        for (int i = 0; i < data.size(); i++) {
-                            imgs.add(data.get(i).getImgUrl());
-                            urls.add(data.get(i).getUrl());
-                            titles.add(data.get(i).getTitle());
-                            needLogin.add(data.get(i).needLogin());
-                        }
-                        homeAdapter.setHeadBanner(imgs, urls, titles, needLogin);
+                        homeAdapter.setHeadBanner(data);
                     }
                 });
         //looper text

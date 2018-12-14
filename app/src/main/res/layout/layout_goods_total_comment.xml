@@ -29,11 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="(34798)"
             android:textColor="@color/black_2"
             android:textSize="11dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_comment_left"
-            app:layout_constraintLeft_toRightOf="@+id/tv_comment_left" />
+            app:layout_constraintLeft_toRightOf="@+id/tv_comment_left"
+            tools:text="(34798)" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -68,13 +68,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="10dp"
-                android:text="87"
                 android:textColor="@color/black_1"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="87" />
 
             <TextView
                 android:id="@+id/tv_comment_grade_right"
@@ -151,34 +151,34 @@
                 android:id="@+id/tv_good_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5772"
                 android:textColor="@color/black_2"
                 android:textSize="9dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_good_comment_left"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_good_comment_left" />
+                app:layout_constraintTop_toTopOf="@+id/tv_good_comment_left"
+                tools:text="5772" />
 
             <TextView
                 android:id="@+id/tv_mid_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2381"
                 android:textColor="@color/black_2"
                 android:textSize="9dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_mid_comment_left"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_mid_comment_left" />
+                app:layout_constraintTop_toTopOf="@+id/tv_mid_comment_left"
+                tools:text="2381" />
 
             <TextView
                 android:id="@+id/tv_bad_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1274"
                 android:textColor="@color/black_2"
                 android:textSize="9dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_bad_comment_left"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_bad_comment_left" />
+                app:layout_constraintTop_toTopOf="@+id/tv_bad_comment_left"
+                tools:text="1274" />
 
             <ProgressBar
                 android:id="@+id/pb_good_comment"
@@ -187,12 +187,12 @@
                 android:layout_height="6dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:progress="38"
                 android:progressDrawable="@drawable/pb_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_good_comment_left"
                 app:layout_constraintLeft_toRightOf="@+id/tv_good_comment_left"
                 app:layout_constraintRight_toLeftOf="@+id/tv_good_comment_num"
-                app:layout_constraintTop_toTopOf="@+id/tv_good_comment_left" />
+                app:layout_constraintTop_toTopOf="@+id/tv_good_comment_left"
+                tools:progress="38" />
 
             <ProgressBar
                 android:id="@+id/pb_mid_comment"
@@ -201,12 +201,12 @@
                 android:layout_height="6dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:progress="89"
                 android:progressDrawable="@drawable/pb_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_mid_comment_left"
                 app:layout_constraintLeft_toRightOf="@+id/tv_mid_comment_left"
                 app:layout_constraintRight_toLeftOf="@+id/tv_mid_comment_num"
-                app:layout_constraintTop_toTopOf="@+id/tv_mid_comment_left" />
+                app:layout_constraintTop_toTopOf="@+id/tv_mid_comment_left"
+                tools:progress="89" />
 
             <ProgressBar
                 android:id="@+id/pb_bad_comment"
@@ -215,12 +215,12 @@
                 android:layout_height="6dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:progress="55"
                 android:progressDrawable="@drawable/pb_comment"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_bad_comment_left"
                 app:layout_constraintLeft_toRightOf="@+id/tv_bad_comment_left"
                 app:layout_constraintRight_toLeftOf="@+id/tv_bad_comment_num"
-                app:layout_constraintTop_toTopOf="@+id/tv_bad_comment_left" />
+                app:layout_constraintTop_toTopOf="@+id/tv_bad_comment_left"
+                tools:progress="55" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
@@ -265,7 +265,7 @@
         app:layout_constraintLeft_toRightOf="@+id/tv_comment_tag_left"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_comment_tag_left"
-        app:max_select="-1" />
+        app:max_select="1" />
 
     <View
         android:layout_width="0dp"

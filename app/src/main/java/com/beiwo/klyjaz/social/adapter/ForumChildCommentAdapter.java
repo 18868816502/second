@@ -80,15 +80,17 @@ public class ForumChildCommentAdapter extends RecyclerView.Adapter {
                 viewHolder.setVisibility(true);
                 if (isOpen) {
                     viewHolder.tvOpenReply.setText("关闭全部回复");
+                    viewHolder.ivOpenReply.setImageResource(R.mipmap.ic_up);
                 } else {
                     viewHolder.tvOpenReply.setText("展开全部回复");
+                    viewHolder.ivOpenReply.setImageResource(R.mipmap.ic_down);
                 }
             }
         } else {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.tvCommentPraise.setTag(position);
             viewHolder.ivCommentatorAcatar.setTag(R.id.user_avatar, position);
-            viewHolder.ivArticleComment.setTag(R.id.tag_child_comment,position);
+            viewHolder.ivArticleComment.setTag(R.id.tag_child_comment, position);
             viewHolder.tvDelete.setTag(position);
             if (!TextUtils.isEmpty(datas.get(position).getUserHeadUrl())) {
                 Glide.with(mContext).load(datas.get(position).getUserHeadUrl()).into(viewHolder.ivCommentatorAcatar);

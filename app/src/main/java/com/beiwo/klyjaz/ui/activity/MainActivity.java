@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.beiwo.klyjaz.App;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
@@ -56,7 +57,6 @@ import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 
 public class MainActivity extends BaseComponentActivity {
-
     //导航栏背景
     @BindView(R.id.navigation_bar_bg)
     ImageView navigationBarBg;
@@ -91,9 +91,7 @@ public class MainActivity extends BaseComponentActivity {
 
     //保存正切换的底部模块 ID
     private int selectedFragmentId = -1;
-
     private AppUpdateHelper updateHelper = AppUpdateHelper.newInstance();
-
     private ImageView[] iconView;
     private TextView[] textView;
     private boolean flag = false;
@@ -184,12 +182,12 @@ public class MainActivity extends BaseComponentActivity {
                 //umeng统计
                 Statistic.onEvent(Events.CLICK_AD_DIALOG);
                 //统计点击
-                DataStatisticsHelper.getInstance(MainActivity.this).onAdClicked(ad.getId(), 3);
+                DataStatisticsHelper.getInstance(activity).onAdClicked(ad.getId(), 3);
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(MainActivity.this).onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
+                DataStatisticsHelper.getInstance(activity).onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
                 //是否需要登录
                 if (ad.needLogin()) {
-                    if (UserHelper.getInstance(MainActivity.this).getProfile() == null) {
+                    if (UserHelper.getInstance(activity).getProfile() == null) {
                         DlgUtil.loginDlg(activity, new DlgUtil.OnLoginSuccessListener() {
                             @Override
                             public void success(UserProfileAbstract data) {
@@ -199,20 +197,35 @@ public class MainActivity extends BaseComponentActivity {
                         return;
                     }
                 }
-                if (ad.isNative()) {//跳原生还是跳Web
-                    Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
+                /*if (ad.isNative()) {//跳原生还是跳Web
+                    Intent intent = new Intent(activity, LoanDetailActivity.class);
                     intent.putExtra("loanId", ad.getLocalId());
                     startActivity(intent);
-                    SPUtils.setValue(ad.getId());
-                } else if (!TextUtils.isEmpty(ad.getUrl())) {
+                    //SPUtils.setValue(ad.getId());
+                } else */
+                if (!TextUtils.isEmpty(ad.getUrl())) {
                     String url = ad.getUrl();
-                    if (url.contains("USERID") && UserHelper.getInstance(MainActivity.this).getProfile() != null) {
-                        url = url.replace("USERID", UserHelper.getInstance(MainActivity.this).getProfile().getId());
+                    if (url.contains("USERID") && UserHelper.getInstance(activity).getProfile() != null) {
+                        url = url.replace("USERID", UserHelper.getInstance(activity).getProfile().getId());
                     }
-                    Intent intent = new Intent(MainActivity.this, ComWebViewActivity.class);
+                    Intent intent = new Intent(activity, ComWebViewActivity.class);
                     intent.putExtra("title", ad.getTitle());
                     intent.putExtra("url", url);
                     startActivity(intent);
+                    SPUtils.setValue(ad.getId());
+                } else if (!TextUtils.isEmpty(ad.getLocalId())) {
+                    String id = UserHelper.getInstance(activity).isLogin() ? UserHelper.getInstance(activity).id() : App.androidId;
+                    Api.getInstance().queryGroupProductSkip(id, ad.getLocalId())
+                            .compose(RxResponse.<String>compatT())
+                            .subscribe(new ApiObserver<String>() {
+                                @Override
+                                public void onNext(@NonNull String data) {
+                                    Intent intent = new Intent(activity, WebViewActivity.class);
+                                    intent.putExtra("webViewUrl", data);
+                                    intent.putExtra("webViewTitleName", ad.getTitle());
+                                    startActivity(intent);
+                                }
+                            });
                     SPUtils.setValue(ad.getId());
                 }
             }
@@ -256,6 +269,7 @@ public class MainActivity extends BaseComponentActivity {
         checkPermission();
         defaultTabIconTxt();
         updateHelper.checkUpdate(this);
+        //获取弹框广告
         Api.getInstance().querySupernatant(3)
                 .compose(RxResponse.<List<AdBanner>>compatT())
                 .subscribe(new ApiObserver<List<AdBanner>>() {
@@ -263,11 +277,11 @@ public class MainActivity extends BaseComponentActivity {
                     public void onNext(@NonNull List<AdBanner> data) {
                         if (data != null && data.size() > 0) {
                             AdBanner adBanner = data.get(0);
-                            if (adBanner.getLocation() == 2) {//发现页
+                            /*if (adBanner.getLocation() == 2) {//发现页
                                 navigationBar.select(R.id.tab_discover_root);
                             } else {//首页
                                 navigationBar.select(R.id.tab_bill_root);
-                            }
+                            }*/
                             showAdDialog(adBanner);
                         }
                     }
@@ -303,7 +317,6 @@ public class MainActivity extends BaseComponentActivity {
 
     private TabHomeFragment tabHome;
     private TabLoanFragment tabDiscover;
-    //private SocialRecommendFragment tabSocial;
     private SocialRecomFragment tabSocial;
     private ToolFragment tabTool;
     private PersonalFragment tabMine;
@@ -322,7 +335,6 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
         }
         if (tabSocial == null) {
-            //tabSocial = SocialRecommendFragment.newInstance();
             tabSocial = SocialRecomFragment.newInstance();
             ft.add(R.id.tab_fragment, tabSocial).hide(tabSocial);
         }
@@ -401,11 +413,6 @@ public class MainActivity extends BaseComponentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!SPUtils.getCheckPermission()) {
                 ArrayList<String> permission = new ArrayList<>();
-                /*for (int i = 0; i < needPermission.length; ++i) {
-                    if (ContextCompat.checkSelfPermission(this, needPermission[i]) != PackageManager.PERMISSION_GRANTED) {
-                        permission.add(needPermission[i]);
-                    }
-                }*/
                 for (String p : needPermission) {
                     if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
                         permission.add(p);

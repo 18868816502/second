@@ -13,13 +13,11 @@ import java.util.Map;
  * 需要检查
  */
 public class NetConstants {
-    /**
-     * 分组贷超产品列表 产品分组Id 秒批到账
-     */
-    public static final String SECOND_PRODUCT = "b1c82ecf234241a6bded788a585383da";
-    public static final String SECOND_PRODUCT_CHECKING1 = "0f7e2d4f8674487591571166318459e2";
-    public static final String SECOND_PRODUCT_HOT_TOP = "599c7594aaa7453c8d8b52c35b865adf";
-    public static final String SECOND_PRODUCT_TODAY = "b1c82ecf234241a6bded788a585383da";
+    /*分组贷超产品列表 产品分组Id 秒批到账*/
+    public static final String SECOND_PRODUCT = "b1c82ecf234241a6bded788a585383da";//爆款推荐
+    public static final String SECOND_PRODUCT_CHECKING1 = "0f7e2d4f8674487591571166318459e2";//审核中
+    public static final String SECOND_PRODUCT_HOT_TOP = "e5638833839049f8bdd52826a0b2ed3b";//下款热门榜
+    public static final String SECOND_PRODUCT_TODAY = "953889cbe98f4a96b8d239f0c6b92f7a";//今日推荐
 
     public static final String DOMAIN = BuildConfig.DOMAIN;
 

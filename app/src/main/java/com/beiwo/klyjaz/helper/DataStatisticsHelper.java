@@ -14,7 +14,6 @@ import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.SPUtils;
 
 
-
 import io.reactivex.annotations.NonNull;
 
 /**
@@ -53,9 +52,9 @@ public class DataStatisticsHelper {
     public static final String ID_OPEN_APP = "OPEN_APP";
     public static final String ID_FIRST_INSTALL = "FirstInstall";
 
-//    @Inject
+    //    @Inject
     Api api;
-//    @Inject
+    //    @Inject
     Context context;
 
     private DataStatisticsHelper(Context mContext) {
@@ -105,7 +104,8 @@ public class DataStatisticsHelper {
         if (UserHelper.getInstance(context).getProfile() != null) {
             userId = UserHelper.getInstance(context).getProfile().getId();
         } else {
-            userId = SPUtils.getCacheUserId();
+            //userId = SPUtils.getCacheUserId();
+            userId = App.androidId;
         }
         api.onAdClicked(id, userId, type)
                 .compose(RxResponse.compatO())

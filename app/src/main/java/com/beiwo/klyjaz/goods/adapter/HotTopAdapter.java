@@ -30,7 +30,7 @@ public class HotTopAdapter extends BaseQuickAdapter<HotTop, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, HotTop item) {
         helper.setText(R.id.tv_hot_top_name, item.getProductName())
                 .setText(R.id.tv_hot_top_apply, item.getApplyCount() + "申请")
-                .setText(R.id.tv_hot_top_download, item.getLoanCount() + "下载")
+                .setText(R.id.tv_hot_top_download, item.getLoanCount() + "下款")
                 .setVisible(R.id.gap_hot_top, helper.getAdapterPosition() == 0);
         ImageView iv_hot_top_rank = helper.getView(R.id.iv_hot_top_rank);
         TextView tv_hot_top_rank = helper.getView(R.id.tv_hot_top_rank);

@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -32,7 +31,7 @@ import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.TopicDetail;
 import com.beiwo.klyjaz.social.fragment.TopicFragment;
 import com.beiwo.klyjaz.tang.DlgUtil;
-import com.beiwo.klyjaz.tang.adapter.SocialAdapter;
+import com.beiwo.klyjaz.tang.adapter.FragmentAdapter;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.tang.widget.ExpandableTextView;
@@ -210,7 +209,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
         fragments.add(fragment1);
         fragments.add(fragment2);
 
-        SocialAdapter adapter = new SocialAdapter(getSupportFragmentManager());
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         adapter.setDatas(fragments);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);

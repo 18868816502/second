@@ -28,6 +28,7 @@ import com.beiwo.klyjaz.BuildConfig;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
+import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
@@ -61,6 +62,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -95,15 +97,13 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
         else if (position == 1) return TYPE_HEADER1;
         else if (position == 2) return TYPE_GOODS;
         else if (position == 3) return TYPE_TOPIC;
+        else if (position == 4) return TYPE_NORMAL;
         else if (position == 5) return TYPE_FOOT;
-        else return TYPE_NORMAL;
+        else return -1;
     }
 
     private Activity context;
-    private List<String> imgs = new ArrayList<>();
-    private List<String> urls = new ArrayList<>();
-    private List<String> titles = new ArrayList<>();
-    private List<Boolean> needLogin = new ArrayList<>();
+    private List<AdBanner> banners = null;
     private List<String> looperTexts = new ArrayList<>();
     private RecomProAdapter adapter = new RecomProAdapter();
     private List<Product> data = new ArrayList<>();
@@ -131,11 +131,8 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     private List<Goods> hotGoods = new ArrayList<>();
     private HotItemAdapter hotItemAdapter = new HotItemAdapter();
 
-    public void setHeadBanner(List<String> imgs, List<String> urls, List<String> titles, List<Boolean> needLogin) {
-        this.imgs = imgs;
-        this.urls = urls;
-        this.titles = titles;
-        this.needLogin = needLogin;
+    public void setHeadBanner(List<AdBanner> data) {
+        this.banners = data;
         notifyItemChanged(0);
     }
 
@@ -193,18 +190,37 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     Glide.with(context).load(path).placeholder(R.drawable.no_banner).error(R.drawable.no_banner).into(imageView);
                 }
             });
-            if (imgs != null && imgs.size() > 0) holder.banner_layout.setViewUrls(imgs);
+            final String[] bannerIds = new String[banners.size()];
+            String[] imgs = new String[banners.size()];
+            final String[] urls = new String[banners.size()];
+            final String[] ids = new String[banners.size()];
+            final String[] titles = new String[banners.size()];
+            final boolean[] needLogin = new boolean[banners.size()];
+            for (int i = 0; i < banners.size(); i++) {
+                AdBanner banner = banners.get(i);
+                bannerIds[i] = banner.getId();
+                imgs[i] = banner.getImgUrl();
+                ids[i] = banner.getLocalId();
+                urls[i] = banner.getUrl();
+                titles[i] = banner.getTitle();
+                needLogin[i] = banner.needLogin();
+            }
+            if (imgs != null && imgs.length > 0)
+                holder.banner_layout.setViewUrls(Arrays.asList(imgs));
             holder.banner_layout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    if (needLogin.get(position) && !UserHelper.getInstance(context).isLogin()) {
+                    if (needLogin[position] && !UserHelper.getInstance(context).isLogin()) {
                         DlgUtil.loginDlg(context, null);
                     } else {
-                        if (!TextUtils.isEmpty(urls.get(position))) {
+                        DataStatisticsHelper.getInstance(context).onAdClicked(bannerIds[position], 2);
+                        if (!TextUtils.isEmpty(urls[position])) {
                             Intent intent = new Intent(context, WebViewActivity.class);
-                            intent.putExtra("webViewUrl", urls.get(position));
-                            intent.putExtra("webViewTitleName", titles.get(position));
+                            intent.putExtra("webViewUrl", urls[position]);
+                            intent.putExtra("webViewTitleName", titles[position]);
                             context.startActivity(intent);
+                        } else if (!TextUtils.isEmpty(ids[position])) {
+                            goProduct(ids[position], titles[position]);
                         }
                     }
                 }
@@ -433,22 +449,22 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
                 @Override
                 public void success(UserProfileAbstract data) {
-                    goProduct(product);
+                    goProduct(product.id, product.productName);
                 }
             });
-        } else goProduct(product);
+        } else goProduct(product.id, product.productName);
     }
 
-    private void goProduct(final Product product) {
+    private void goProduct(final String productId, final String productName) {
         String id = UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : App.androidId;
-        Api.getInstance().queryGroupProductSkip(id, product.getId())
+        Api.getInstance().queryGroupProductSkip(id, productId)
                 .compose(RxResponse.<String>compatT())
                 .subscribe(new ApiObserver<String>() {
                     @Override
                     public void onNext(@NonNull String data) {
                         Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("webViewUrl", data);
-                        intent.putExtra("webViewTitleName", product.getProductName());
+                        intent.putExtra("webViewTitleName", productName);
                         context.startActivity(intent);
                     }
                 });

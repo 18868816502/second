@@ -22,6 +22,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.goods.activity.LoanGoodsActivity;
 import com.beiwo.klyjaz.helper.DataStatisticsHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
@@ -38,7 +39,6 @@ import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -217,7 +217,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
 
             @Override
             public void goodsClick() {
-                ToastUtil.toast("下款推荐点击");
+                startActivity(new Intent(getActivity(), LoanGoodsActivity.class));
             }
         });
     }

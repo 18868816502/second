@@ -119,9 +119,18 @@ public class GoodsDetailAdapter extends RecyclerView.Adapter<GoodsDetailAdapter.
             holder.tv_detail6_extra.setText(goodsInfo.getCreditContext());
         }
         if (holder.viewType == TYPE_TOTAL_COMMENT) {
-            if (commentsTotal == null) return;
+            if (commentsTotal == null) {
+                Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_unstar);
+                int scroeHeight = bmp.getHeight();
+                ViewGroup.LayoutParams params = holder.rb_comment_progress.getLayoutParams();
+                params.width = -2;
+                params.height = scroeHeight;
+                holder.rb_comment_progress.setLayoutParams(params);
+                holder.rb_comment_progress.setRating(0);
+                return;
+            }
             holder.tv_comment_all.setText(String.format(context.getString(R.string.comment_all), commentsTotal.getCommentCount()));
-            holder.tv_comment_grade.setText(String.format("%.0f", commentsTotal.getGoodCommentRate() * 100));
+            holder.tv_comment_grade.setText(String.format("%.0f", commentsTotal.getGoodCommentRate()));
             try {//解决ratingbar流泪问题
                 Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_stared);
                 int scroeHeight = bmp.getHeight();
@@ -129,7 +138,7 @@ public class GoodsDetailAdapter extends RecyclerView.Adapter<GoodsDetailAdapter.
                 params.width = -2;
                 params.height = scroeHeight;
                 holder.rb_comment_progress.setLayoutParams(params);
-                holder.rb_comment_progress.setRating(commentsTotal.getGoodCommentRate() * 10 / 2);
+                holder.rb_comment_progress.setRating(commentsTotal.getGoodCommentRate() / 20);
             } catch (Exception e) {
             }
             //好中差评

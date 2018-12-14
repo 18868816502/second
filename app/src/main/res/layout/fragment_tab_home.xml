@@ -19,9 +19,9 @@
         android:id="@+id/ll_toolbar_wrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:alpha="0"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <View
             android:id="@+id/hold_view"
@@ -46,6 +46,6 @@
         android:id="@+id/float_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"/>
+        android:layout_gravity="bottom|right" />
 
 </FrameLayout>

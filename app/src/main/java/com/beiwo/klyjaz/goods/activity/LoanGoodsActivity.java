@@ -109,7 +109,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
 
     private void request(int pageNo) {
         //今日推荐
-        Api.getInstance().groupProducts(NetConstants.SECOND_PRODUCT_HOT_TOP)
+        Api.getInstance().groupProducts(NetConstants.SECOND_PRODUCT_TODAY)
                 .compose(RxResponse.<List<Product>>compatT())
                 .subscribe(new ApiObserver<List<Product>>() {
                     @Override

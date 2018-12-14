@@ -611,7 +611,7 @@ public interface ApiService {
     Observable<ResultEntity<List<Message>>> queryMessages(@Field("pageNo") int pageNum, @Field("pageSize") int pageSize);
 
     /**
-     * 启动页广告，banner，弹窗广告
+     * 1 - 启动页广告，2 - banner，3 - 弹窗广告
      */
     @FormUrlEncoded
     @POST(BASE_PATH + "/supernatant/querySupernatant")

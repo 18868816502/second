@@ -61,21 +61,17 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     View collectView;
     @BindView(R.id.share)
     View shareView;
-
     @BindView(R.id.base_container)
     View baseContainer;
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.scroll_view)
     WatchableScrollView scrollView;
-
     //我要借款
     @BindView(R.id.apply)
     TextView applyBtn;
-
     @BindView(R.id.product_off_sell_container)
     View productOffSellContainer;
-
     @BindView(R.id.detail_container)
     LinearLayout detailContainer;
     @BindView(R.id.product_detail_container)
@@ -106,17 +102,13 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     TextView tab2Tv;
     @BindView(R.id.tab_3)
     TextView tab3Tv;
-
     @BindView(R.id.interest_text)
     TextView interestText;
 
     private int hitDistance;
-
     private LoanProduct.Row productAbstract;
     private LoanProductDetail productDetail;
-
     LoanDetailPresenter presenter;
-
     private ThirdAuthorizationDialog authDialog;
 
     @Override
@@ -140,7 +132,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
     @Override
     public void configViews() {
         ImmersionBar.with(this).titleBar(toolbar).statusBarDarkFont(true).init();
-        presenter = new LoanDetailPresenter(this,this);
+        presenter = new LoanDetailPresenter(this, this);
         hitDistance = (int) (getResources().getDisplayMetrics().density * 30);
         scrollView.setOnScrollListener(new WatchableScrollView.OnScrollListener() {
             @Override
@@ -159,12 +151,10 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
                 if (!FastClickUtils.isFastClick()) {
                     //pv，uv统计
                     DataStatisticsHelper.getInstance(LoanDetailActivity.this).onCountUv(DataStatisticsHelper.ID_CLICK_LOAN_REQUESTED);
-
                     presenter.clickLoanRequested();
                 }
             }
         });
-
         SlidePanelHelper.attach(this);
     }
 
