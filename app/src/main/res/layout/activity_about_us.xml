@@ -7,17 +7,18 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <TextView
-            android:textColor="@color/black_1"
-            android:textSize="17sp"
+            android:id="@+id/tv_about_us"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/about_us" />
+            android:text="@string/about_app"
+            android:textColor="@color/black_1"
+            android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
     <ImageView
@@ -43,7 +44,19 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:textColor="@color/c_999999"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:lineSpacingExtra="3.5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="考拉有借是杭州贝沃科技有限公司旗下的一款小额现金贷产品。\n考拉有借是一款为有资金需求的年轻人群提供更便捷、优质的金融服务, 结合互联网大数据,省去传统借款繁琐流程手续,无需线下签约,全APP线上 操作,动动手指就能借款。"
+        android:textColor="@color/black_1"
+        android:textSize="14dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +65,8 @@
         android:background="@android:color/white"
         android:orientation="vertical"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingRight="15dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/welcome"

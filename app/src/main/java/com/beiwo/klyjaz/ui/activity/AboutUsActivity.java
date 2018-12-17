@@ -18,15 +18,15 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * 关于我们 页面
- */
+
 public class AboutUsActivity extends BaseComponentActivity {
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     //版本名称
     @BindView(R.id.version_name)
     TextView versionNameTv;
+    @BindView(R.id.tv_about_us)
+    TextView tv_about_us;
 
     @Override
     public int getLayoutId() {
@@ -42,15 +42,13 @@ public class AboutUsActivity extends BaseComponentActivity {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
             versionNameTv.setText("v" + info.versionName);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
         }
-
         SlidePanelHelper.attach(this);
+        tv_about_us.setText(String.format(getString(R.string.about_app), getString(R.string.app_name)));
     }
 
     @Override
     public void initDatas() {
-
     }
 
     @OnClick({R.id.welcome, R.id.get_know_us, R.id.user_agreement})

@@ -1,11 +1,8 @@
 package com.beiwo.klyjaz.goods.adapter;
 
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.GoodsManageBean;
 import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;

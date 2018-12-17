@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.dialog.CommNoneAndroidLoading;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.InputMethodUtil;
@@ -16,6 +17,7 @@ import com.beiwo.klyjaz.util.WeakRefToastUtil;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.disposables.Disposable;
 
 public abstract class BaseComponentFragment extends Fragment {
     private Unbinder unbinder;
@@ -58,6 +60,11 @@ public abstract class BaseComponentFragment extends Fragment {
         if (unbinder != null) {
             unbinder.unbind();
         }
+        if (ApiObserver.disposables.size() > 0) {
+            for (Disposable disposable : ApiObserver.disposables) {
+                if (disposable != null && !disposable.isDisposed()) disposable.dispose();
+            }
+        }
         super.onDestroyView();
     }
 
@@ -73,11 +80,6 @@ public abstract class BaseComponentFragment extends Fragment {
      * set view init data or fetch init data
      */
     public abstract void initDatas();
-
-    /**
-     * set up injection
-     */
-//    protected abstract void configureComponent(AppComponent appComponent);
 
     protected void showProgress(String msg) {
         if (loading == null) {

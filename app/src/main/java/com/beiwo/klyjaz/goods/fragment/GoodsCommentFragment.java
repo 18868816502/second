@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import io.reactivex.disposables.Disposable;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -113,6 +114,11 @@ public class GoodsCommentFragment extends BaseComponentFragment {
         if (tag.equals("all")) map.remove("flag");
         else map.put("flag", tag);
 
+        if (ApiObserver.disposables.size() > 0) {
+            for (Disposable disposable : ApiObserver.disposables) {
+                if (disposable != null && !disposable.isDisposed()) disposable.dispose();
+            }
+        }
         Api.getInstance().goodsComments(map)
                 .compose(RxResponse.<Comments>compatT())
                 .subscribe(new ApiObserver<Comments>() {

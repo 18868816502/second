@@ -225,7 +225,6 @@ public class TabHomeFragment extends BaseComponentFragment {
                         recycler.smoothScrollToPosition(0);
                     }
                 });
-
         //悬浮窗
         Api.getInstance().floating(ParamsUtils.generateFloatingParams(UserHelper.getInstance(getActivity()).id()))
                 .compose(RxResponse.<FloatingBean>compatT())
@@ -237,11 +236,10 @@ public class TabHomeFragment extends BaseComponentFragment {
                             floatButton.setVisibility(View.GONE);
                         } else {
                             floatButton.setVisibility(View.VISIBLE);
-                            floatButton.setFloatBackground(getActivity(),data.getUrl());
+                            floatButton.setFloatBackground(getActivity(), data.getImage());
                         }
                     }
                 });
-
     }
 
     private void topicData() {

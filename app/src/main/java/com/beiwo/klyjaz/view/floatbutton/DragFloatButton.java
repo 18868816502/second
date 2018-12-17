@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.view.GlideCircleTransform;
 import com.bumptech.glide.Glide;
 
 /**
@@ -42,7 +43,7 @@ public class DragFloatButton extends BaseDragFloatActionButton {
         ivFloat = view.findViewById(R.id.iv_float);
     }
 
-    public void setFloatBackground(Context mContext,String url){
-        Glide.with(mContext).load(url).into(ivFloat);
+    public void setFloatBackground(Context mContext, String url) {
+        Glide.with(mContext).load(url).transform(new GlideCircleTransform(mContext)).into(ivFloat);
     }
 }

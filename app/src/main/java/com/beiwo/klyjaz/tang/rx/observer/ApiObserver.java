@@ -4,6 +4,9 @@ import com.beiwo.klyjaz.tang.exception.BaseException;
 import com.beiwo.klyjaz.tang.rx.RxErrorHandler;
 import com.beiwo.klyjaz.util.LogUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
@@ -20,9 +23,11 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class ApiObserver<T> extends DefaultObserver<T> {
     private RxErrorHandler errorHandler = new RxErrorHandler();
+    public static Set<Disposable> disposables = new HashSet<>();
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
+        disposables.add(d);
     }
 
     @Override
