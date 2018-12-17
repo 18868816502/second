@@ -145,6 +145,9 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
         for(Integer position:tagFlow01.getSelectedList()){
             loanStatus = position + 1;
         }
+        if(tagFlow01.getSelectedList().size() == 0){
+            loanStatus = 0;
+        }
         return loanStatus;
     }
 

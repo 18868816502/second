@@ -216,4 +216,35 @@ public class ParamsUtils {
         mMap.put("pageSize", pageSize);
         return mMap;
     }
+
+    /**
+     * 获取悬浮窗参数
+     *
+     * @param userId
+     * @return
+     */
+    public static Map<String, Object> generateFloatingParams(String userId) {
+        Map<String, Object> mMap = new HashMap<>();
+            mMap.put("platform", "1");
+        if (!TextUtils.isEmpty(userId)) {
+            mMap.put("userId", userId);
+        }
+        return mMap;
+    }
+
+    /**
+     * 获取加载悬浮窗参数
+     * @param advertId
+     * @param userId
+     * @return
+     */
+    public static Map<String, Object> generateLoadFloatingParams(String advertId,String userId) {
+        Map<String, Object> mMap = new HashMap<>();
+        mMap.put("platform", "1");
+        mMap.put("advertId", advertId);
+        if (!TextUtils.isEmpty(userId)) {
+            mMap.put("userId", userId);
+        }
+        return mMap;
+    }
 }

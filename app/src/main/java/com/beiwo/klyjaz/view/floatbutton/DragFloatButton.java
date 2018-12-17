@@ -3,8 +3,10 @@ package com.beiwo.klyjaz.view.floatbutton;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.beiwo.klyjaz.R;
+import com.bumptech.glide.Glide;
 
 /**
  * @author chenguoguo
@@ -14,6 +16,8 @@ import com.beiwo.klyjaz.R;
  * @time 2018/12/10 18:01
  */
 public class DragFloatButton extends BaseDragFloatActionButton {
+
+    private ImageView ivFloat;
 
     public DragFloatButton(Context context) {
         super(context);
@@ -35,6 +39,10 @@ public class DragFloatButton extends BaseDragFloatActionButton {
 
     @Override
     public void initView(View view) {
+        ivFloat = view.findViewById(R.id.iv_float);
+    }
 
+    public void setFloatBackground(Context mContext,String url){
+        Glide.with(mContext).load(url).into(ivFloat);
     }
 }
