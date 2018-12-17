@@ -93,6 +93,11 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
      */
     private StringBuilder flag;
 
+    /**
+     * 本地图片选择是否有footer
+     */
+    private int hasFoot = 1;
+
     public GoodsHelper(Context mContext, View.OnClickListener listener) {
         this.mContext = mContext;
         this.mListener = listener;
@@ -200,6 +205,21 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
                 mContext.startActivity(intent);
             }
         });
+        photoAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.iv_delete:
+                        photos.remove(position);
+                        photoAdapter.setNewData(photos);
+                        if(hasFoot == 0) {
+                            photoAdapter.addFooterView(initFoot());
+                            hasFoot = 1;
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     /**
@@ -275,8 +295,9 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
         this.photos.addAll(list);
         photoAdapter.setNewData(photos);
         photoAdapter.notifyDataSetChanged();
-        if(photos.size() == 4){
+        if(photos.size() >= 4){
             photoAdapter.removeAllFooterView();
+            hasFoot = 0;
         }
     }
 
