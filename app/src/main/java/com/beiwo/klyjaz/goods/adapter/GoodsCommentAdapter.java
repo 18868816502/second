@@ -55,10 +55,10 @@ public class GoodsCommentAdapter extends BaseQuickAdapter<GoodsComment, BaseView
                 .into((ImageView) helper.getView(R.id.comment_iv_avator));
         helper.setText(R.id.comment_tv_name, item.getUserName())
                 .setText(R.id.comment_tv_time, item.getShowText())
-                .setText(R.id.comment_tv_type, types[(item.getStatus() + 1) % 3])
+                .setText(R.id.comment_tv_type, types[(item.getType() + 1) % 3])
                 .setText(R.id.comment_tv_content, item.getContent());
         ImageView comment_iv_type = helper.getView(R.id.comment_iv_type);
-        comment_iv_type.setImageResource(imgs[(item.getStatus() + 1) % 3]);
+        comment_iv_type.setImageResource(imgs[(item.getType() + 1) % 3]);
         //标签
         TagFlowLayout comment_tfl_tag = helper.getView(R.id.comment_tfl_tag);
         List<Labels> labels = item.getLabelList();

@@ -89,8 +89,6 @@ public class GoodsCommentActivity extends BaseComponentActivity {
         try {
             cutId = getIntent().getStringExtra("cutId");
             manageId = getIntent().getStringExtra("manageId");
-            //System.out.println("cutId = " + cutId);
-            //System.out.println("manageId = " + manageId);
             name = getIntent().getStringExtra("name");
             type = getIntent().getIntExtra("type", 0);
             tag = getIntent().getStringExtra("tag");

@@ -70,7 +70,7 @@ public class GoodsDetailAdapter extends RecyclerView.Adapter<GoodsDetailAdapter.
     private CommentTextAdapter textAdapter = new CommentTextAdapter();
     private List<String> commTexts = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
-    //private List<String> keys = new ArrayList<>();
+    private List<String> keys = new ArrayList<>();
     private GoodsInfo goodsInfo = null;
     private CommentsTotal commentsTotal = null;
     private List<GoodsComment> goodsComments = new ArrayList<>();
@@ -179,11 +179,11 @@ public class GoodsDetailAdapter extends RecyclerView.Adapter<GoodsDetailAdapter.
                     if (value == null) continue;
                     int count = label.getCount();
                     tagCountSum += count;
-                    //keys.add(label.getFlag());
+                    keys.add(label.getFlag());
                     tags.add(String.format(value, count));
                 }
                 if (tags.size() <= 0) return;
-                //keys.add(0, "all");
+                keys.add(0, "all");
                 tags.add(0, String.format(context.getString(R.string.all_comment), tagCountSum));//全部标签
                 holder.tfl_tag.setAdapter(new TagAdapter<String>(tags) {
                     @Override
@@ -198,7 +198,7 @@ public class GoodsDetailAdapter extends RecyclerView.Adapter<GoodsDetailAdapter.
                 holder.tfl_tag.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                     @Override
                     public boolean onTagClick(View view, int position, FlowLayout parent) {
-                        nextPage(0, tags.get(position));
+                        nextPage(0, keys.get(position));
                         return true;
                     }
                 });

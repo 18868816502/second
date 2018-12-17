@@ -190,6 +190,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     Glide.with(context).load(path).placeholder(R.drawable.no_banner).error(R.drawable.no_banner).into(imageView);
                 }
             });
+            if (banners == null || banners.size() == 0) return;
             final String[] bannerIds = new String[banners.size()];
             String[] imgs = new String[banners.size()];
             final String[] urls = new String[banners.size()];
