@@ -195,7 +195,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
                 .showSingleMediaType(true)
                 .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider", "kaola"))
                 //限制最大的选择数目
-                .maxSelectable(4)
+                .maxSelectable(4 - mHelper.getListSize())
                 .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp120))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)

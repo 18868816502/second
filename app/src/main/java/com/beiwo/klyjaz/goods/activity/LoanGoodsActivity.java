@@ -17,6 +17,8 @@ import com.beiwo.klyjaz.entity.HotTop;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.goods.adapter.LoanGoodsAdapter;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
+import com.beiwo.klyjaz.helper.UserHelper;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.util.DensityUtil;
@@ -152,6 +154,11 @@ public class LoanGoodsActivity extends BaseComponentActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_comment_wrap:
+                if (!UserHelper.getInstance(this).isLogin()) {
+                    //UserAuthorizationActivity.launch(getActivity());
+                    DlgUtil.loginDlg(this, null);
+                    return;
+                }
                 startActivity(new Intent(this, GoodsListActivity.class));
                 break;
             default:
