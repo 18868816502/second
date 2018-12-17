@@ -280,6 +280,10 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
         }
     }
 
+    public int getListSize(){
+        return photos.size();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
