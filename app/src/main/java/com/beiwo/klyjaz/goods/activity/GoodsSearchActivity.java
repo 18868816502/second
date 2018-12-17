@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
-public class GoodsSearchActivity extends BaseComponentActivity implements OnRefreshListener,OnLoadMoreListener,TextWatcher{
+public class GoodsSearchActivity extends BaseComponentActivity implements OnRefreshListener, OnLoadMoreListener, TextWatcher {
 
     @BindView(R.id.hold_view)
     View hold_view;
@@ -83,7 +83,7 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
 
-        showSoftInputFromWindow();
+        //showSoftInputFromWindow();
         mAdapter = new GoodsListAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,7 +96,7 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
     }
 
     @OnClick({R.id.tv_cancel})
-    public void onViewClick(View view){
+    public void onViewClick(View view) {
         finish();
     }
 
@@ -123,8 +123,6 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
                 }
             }
         });
-
-
     }
 
     /**
@@ -146,16 +144,16 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
                                        list.addAll(result.getData().getRows());
                                        mAdapter.notifyGoodsChanged(list);
                                        mAdapter.notifyDataSetChanged();
-                                       if(list.size() == 0){
+                                       if (list.size() == 0) {
                                            refresh_layout.setVisibility(View.GONE);
                                            emptyContainer.setVisibility(View.VISIBLE);
-                                       }else{
+                                       } else {
                                            refresh_layout.setVisibility(View.VISIBLE);
                                            emptyContainer.setVisibility(View.GONE);
                                        }
-                                       if(TextUtils.isEmpty(manageName)|| list.size() == 0){
+                                       if (TextUtils.isEmpty(manageName) || list.size() == 0) {
                                            tipContainer.setVisibility(View.GONE);
-                                       }else{
+                                       } else {
                                            tipContainer.setVisibility(View.VISIBLE);
                                        }
                                    } else {
@@ -171,9 +169,7 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
                         });
     }
 
-    /**
-     * 显示输入法
-     */
+    /*显示输入法*/
     public void showSoftInputFromWindow() {
         etSearch.setFocusable(true);
         etSearch.setFocusableInTouchMode(true);
@@ -183,6 +179,7 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
 
     /**
      * 点击输入法外，隐藏输入法
+     *
      * @param ev
      * @return
      */
@@ -208,9 +205,9 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
         return onTouchEvent(ev);
     }
 
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
-            int[] leftTop = { 0, 0 };
+            int[] leftTop = {0, 0};
             //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];
@@ -231,9 +228,9 @@ public class GoodsSearchActivity extends BaseComponentActivity implements OnRefr
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         pageNo++;
-        if(list.size() >= 10){
+        if (list.size() >= 10) {
             fetchData();
-        }else{
+        } else {
             refresh_layout.finishLoadMore();
         }
     }

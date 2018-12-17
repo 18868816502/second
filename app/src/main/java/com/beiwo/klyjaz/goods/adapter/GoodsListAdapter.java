@@ -21,25 +21,19 @@ import java.util.List;
  * @descripe
  * @time 2018/12/12 13:41
  */
-public class GoodsListAdapter extends BaseQuickAdapter<GoodsManageBean.RowsBean,BaseViewHolder> {
-
-
+public class GoodsListAdapter extends BaseQuickAdapter<GoodsManageBean.RowsBean, BaseViewHolder> {
     public GoodsListAdapter() {
         super(R.layout.item_goods_list);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, GoodsManageBean.RowsBean item) {
-        if(TextUtils.isEmpty(item.getLogo())){
-            Glide.with(mContext).load(R.mipmap.ic_launcher)
-                    .transform(new GlideCircleTransform(mContext))
-                    .into((ImageView) helper.getView(R.id.iv_logo));
-        }else {
-            Glide.with(mContext).load(item.getLogo())
-                    .transform(new GlideCircleTransform(mContext))
-                    .into((ImageView) helper.getView(R.id.iv_logo));
-        }
-        helper.setText(R.id.tv_goods_name,item.getName());
+        Glide.with(mContext)
+                .load(item.getLogo())
+                .transform(new GlideCircleTransform(mContext))
+                .error(R.mipmap.ic_kouzi_default)
+                .into((ImageView) helper.getView(R.id.iv_logo));
+        helper.setText(R.id.tv_goods_name, item.getName());
         helper.addOnClickListener(R.id.tv_go_comment);
     }
 

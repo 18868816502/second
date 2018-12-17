@@ -41,7 +41,7 @@
             android:paddingLeft="@dimen/dp15"
             android:paddingRight="@dimen/dp15"
             android:paddingTop="@dimen/dp11"
-            android:hint="产品非常好用，推荐推荐..."
+            android:hint="请写下您的评价..."
             android:textSize="@dimen/dp14"/>
 
         <TextView

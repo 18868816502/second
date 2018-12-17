@@ -44,7 +44,7 @@ import io.reactivex.functions.Consumer;
  * @modify:
  * @date: 2018/12/11
  */
-public class GoodsListActivity extends BaseComponentActivity implements OnRefreshListener,OnLoadMoreListener,View.OnClickListener {
+public class GoodsListActivity extends BaseComponentActivity implements OnRefreshListener, OnLoadMoreListener, View.OnClickListener {
 
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
@@ -83,15 +83,15 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
         refresh_layout.setOnLoadMoreListener(this);
     }
 
-    private View initHeaderView(){
+    private View initHeaderView() {
         View view = LayoutInflater.from(this).inflate(R.layout.item_goods_comment_search, recyclerView, false);
         view.setOnClickListener(this);
         return view;
     }
 
     @Override
-    public void onClick(View view){
-        startActivity(new Intent(GoodsListActivity.this,GoodsSearchActivity.class));
+    public void onClick(View view) {
+        startActivity(new Intent(this, GoodsSearchActivity.class));
     }
 
     @Override
@@ -117,16 +117,14 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
                 }
             }
         });
-
-
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         pageNo++;
-        if(list.size() >= 10){
+        if (list.size() >= 10) {
             fetchData();
-        }else{
+        } else {
             refresh_layout.finishLoadMore();
         }
     }
@@ -156,10 +154,10 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
                                        list.addAll(result.getData().getRows());
                                        mAdapter.notifyGoodsChanged(list);
                                        mAdapter.notifyDataSetChanged();
-                                       if(list.size() == 0){
+                                       if (list.size() == 0) {
                                            refresh_layout.setVisibility(View.GONE);
                                            emptyContainer.setVisibility(View.VISIBLE);
-                                       }else{
+                                       } else {
                                            refresh_layout.setVisibility(View.VISIBLE);
                                            emptyContainer.setVisibility(View.GONE);
                                        }

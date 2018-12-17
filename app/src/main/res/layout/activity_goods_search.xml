@@ -15,24 +15,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
         <com.beiwo.klyjaz.view.SearchEditText
             android:id="@+id/et_search"
             style="@style/StyleEditText"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:paddingLeft="@dimen/dp15"
             android:paddingRight="@dimen/dp15"
-            android:gravity="center"
             android:text="取消"
-            android:textSize="@dimen/dp15"
-            android:textColor="@color/black_1"/>
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/dp15" />
 
     </LinearLayout>
 
@@ -70,7 +73,7 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp2"/>
+            android:layout_marginTop="@dimen/dp2" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <LinearLayout
@@ -95,6 +98,4 @@
             android:textColor="@color/black_2"
             android:textSize="@dimen/dp15" />
     </LinearLayout>
-
-
 </LinearLayout>
