@@ -98,6 +98,11 @@ public class GoodsCommentFragment extends BaseComponentFragment {
     public void tagRefresh(String tag) {
         pageNo = 1;
         this.tag = tag;
+        if (ApiObserver.disposables.size() > 0) {
+            for (Disposable disposable : ApiObserver.disposables) {
+                if (disposable != null && !disposable.isDisposed()) disposable.dispose();
+            }
+        }
         request(1, tag);
     }
 
@@ -114,11 +119,6 @@ public class GoodsCommentFragment extends BaseComponentFragment {
         if (tag.equals("all")) map.remove("flag");
         else map.put("flag", tag);
 
-        if (ApiObserver.disposables.size() > 0) {
-            for (Disposable disposable : ApiObserver.disposables) {
-                if (disposable != null && !disposable.isDisposed()) disposable.dispose();
-            }
-        }
         Api.getInstance().goodsComments(map)
                 .compose(RxResponse.<Comments>compatT())
                 .subscribe(new ApiObserver<Comments>() {
