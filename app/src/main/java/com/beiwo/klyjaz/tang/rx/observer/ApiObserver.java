@@ -4,8 +4,15 @@ import com.beiwo.klyjaz.tang.exception.BaseException;
 import com.beiwo.klyjaz.tang.rx.RxErrorHandler;
 import com.beiwo.klyjaz.util.LogUtils;
 
+import org.w3c.dom.Node;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -23,7 +30,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class ApiObserver<T> extends DefaultObserver<T> {
     private RxErrorHandler errorHandler = new RxErrorHandler();
-    public static Set<Disposable> disposables = new HashSet<>();
+    public static Queue<Disposable> disposables = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
@@ -45,5 +52,16 @@ public abstract class ApiObserver<T> extends DefaultObserver<T> {
 
     @Override
     public void onComplete() {
+    }
+
+    public static void cancel() {
+        if (disposables.size() > 0) {
+            for (Disposable disposable : disposables) {
+                if (disposable != null && !disposable.isDisposed()) {
+                    disposable.dispose();
+                    disposables.remove(disposable);
+                }
+            }
+        }
     }
 }

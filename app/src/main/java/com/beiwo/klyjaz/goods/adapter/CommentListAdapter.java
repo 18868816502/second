@@ -149,7 +149,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                         tagAdapter.setSelectedList(0);
                         sb.append("all").append(",");
                     }
-                    handler.postDelayed(task, 250);
+                    //handler.postDelayed(task, 250);
+                    //todo 取消重复网络请求
+                    task.run();
                     return true;
                 }
             });
