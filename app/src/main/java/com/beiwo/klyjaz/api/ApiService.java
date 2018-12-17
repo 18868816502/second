@@ -33,6 +33,7 @@ import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
+import com.beiwo.klyjaz.entity.FloatingBean;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.GoodsManageBean;
@@ -1557,4 +1558,14 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/s1/dataBurialPoint/viewEvents")
     Observable<ResultEntity> event(@FieldMap Map<String, Object> map);
+
+    /*悬浮窗*/
+    @FormUrlEncoded
+    @POST("/s1/advert/floating")
+    Observable<ResultEntity<FloatingBean>> floating(@FieldMap Map<String, Object> map);
+
+    /*加载悬浮窗*/
+    @FormUrlEncoded
+    @POST("/s1/advert/loadFloating")
+    Observable<ResultEntity<FloatingBean>> loadFloating(@FieldMap Map<String, Object> map);
 }

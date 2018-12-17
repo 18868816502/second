@@ -40,6 +40,7 @@ import com.beiwo.klyjaz.entity.DetailList;
 import com.beiwo.klyjaz.entity.EBank;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.FastDebtDetail;
+import com.beiwo.klyjaz.entity.FloatingBean;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.GoodsManageBean;
@@ -1551,5 +1552,15 @@ public class Api {
     /*页面行为数据 渠道统计*/
     public Observable<ResultEntity> event(Map<String, Object> map) {
         return service.event(map);
+    }
+
+    /*悬浮窗*/
+    public Observable<ResultEntity<FloatingBean>> floating(Map<String, Object> map) {
+        return service.floating(map);
+    }
+
+    /*加载悬浮窗*/
+    public Observable<ResultEntity<FloatingBean>> loadFloating(Map<String, Object> map) {
+        return service.loadFloating(map);
     }
 }

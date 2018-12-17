@@ -19,8 +19,10 @@ import android.widget.LinearLayout;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
+import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
+import com.beiwo.klyjaz.entity.FloatingBean;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.goods.activity.GoodsListActivity;
@@ -28,15 +30,21 @@ import com.beiwo.klyjaz.goods.activity.GoodsPublishCommentActivity;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
 import com.beiwo.klyjaz.social.bean.IndexForum;
+import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.StringUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.AnimationUtil;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
+import com.beiwo.klyjaz.util.LogUtils;
+import com.beiwo.klyjaz.util.ParamsUtils;
+import com.beiwo.klyjaz.util.RxUtil;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.floatbutton.DragFloatButton;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -52,6 +60,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -79,6 +88,7 @@ public class TabHomeFragment extends BaseComponentFragment {
 
     private TabHomeAdapter homeAdapter = new TabHomeAdapter();
     private int dyTranslate;
+    private FloatingBean floatingBean;
 
     @Override
     public int getLayoutResId() {
@@ -94,12 +104,49 @@ public class TabHomeFragment extends BaseComponentFragment {
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.toast("拖拽按钮");
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    DlgUtil.loginDlg(getActivity(), null);
+                    return;
+                }
+                clickDragFloat();
+
             }
         });
 
         initRecycler();
         request();
+    }
+
+    //悬浮窗
+    private void clickDragFloat() {
+        Api.getInstance().loadFloating(ParamsUtils.generateLoadFloatingParams(floatingBean.getAdvertId(), UserHelper.getInstance(getActivity()).id()))
+                .compose(RxResponse.<FloatingBean>compatT())
+                .subscribe(new ApiObserver<FloatingBean>() {
+                    @Override
+                    public void onNext(FloatingBean data) {
+                        if (data != null) {
+                            if (2 == data.getType()) {
+                                Api.getInstance().queryGroupProductSkip(UserHelper.getInstance(getActivity()).id(), data.getProductId())
+                                        .compose(RxResponse.<String>compatT())
+                                        .subscribe(new ApiObserver<String>() {
+                                            @Override
+                                            public void onNext(@NonNull String data) {
+                                                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                                                intent.putExtra("webViewUrl", data);
+//                                                        intent.putExtra("webViewTitleName", name);
+                                                startActivity(intent);
+                                            }
+                                        });
+
+                            } else {
+                                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                                intent.putExtra("webViewUrl", data.getUrl());
+//                                        intent.putExtra("webViewTitleName", name);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
     }
 
     private void initRecycler() {
@@ -178,6 +225,23 @@ public class TabHomeFragment extends BaseComponentFragment {
                         recycler.smoothScrollToPosition(0);
                     }
                 });
+
+        //悬浮窗
+        Api.getInstance().floating(ParamsUtils.generateFloatingParams(UserHelper.getInstance(getActivity()).id()))
+                .compose(RxResponse.<FloatingBean>compatT())
+                .subscribe(new ApiObserver<FloatingBean>() {
+                    @Override
+                    public void onNext(FloatingBean data) {
+                        floatingBean = data;
+                        if (data == null) {
+                            floatButton.setVisibility(View.GONE);
+                        } else {
+                            floatButton.setVisibility(View.VISIBLE);
+                            floatButton.setFloatBackground(getActivity(),data.getUrl());
+                        }
+                    }
+                });
+
     }
 
     private void topicData() {

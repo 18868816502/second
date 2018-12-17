@@ -164,7 +164,7 @@ public class GoodsPublishCommentPresenter extends BaseRxPresenter implements Goo
         if (imgUrls.size() == bitmaps.size()) {
             for (int i = 0; i < imgUrls.size(); i++) {
                 if (i != imgUrls.size() - 1) {
-                    sb.append(imgUrls.get(i)).append("#");
+                    sb.append(imgUrls.get(i)).append(",");
                 } else {
                     sb.append(imgUrls.get(i));
                 }
