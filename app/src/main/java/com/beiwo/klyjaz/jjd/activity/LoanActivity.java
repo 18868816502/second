@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
@@ -122,7 +122,7 @@ public class LoanActivity extends BaseComponentActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_confirm_loan:
-                DataStatisticsHelper.getInstance(this).onCountUv("HPSureLoanButton");
+                DataHelper.getInstance(this).onCountUv("HPSureLoanButton");
                 map.put("userId", UserHelper.getInstance(this).id());
                 map.put("orderAmount", money);
                 map.put("limitDay", 10);

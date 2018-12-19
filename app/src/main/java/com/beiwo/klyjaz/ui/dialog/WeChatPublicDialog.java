@@ -19,7 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.WeakRefToastUtil;
@@ -77,7 +77,7 @@ public class WeChatPublicDialog extends DialogFragment {
                 Statistic.onEvent(Events.CLICK_WECHAT_GO);
 
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(getActivity()).onCountUv(DataStatisticsHelper.ID_CLICK_GO_WECHAT);
+                DataHelper.getInstance(getActivity()).onCountUv(DataHelper.ID_CLICK_GO_WECHAT);
 
                 try {
                     Intent intent = new Intent();

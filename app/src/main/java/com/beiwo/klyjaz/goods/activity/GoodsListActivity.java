@@ -16,6 +16,7 @@ import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.GoodsManageBean;
 import com.beiwo.klyjaz.goods.adapter.GoodsListAdapter;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.util.ParamsUtils;
 import com.beiwo.klyjaz.util.RxUtil;
@@ -69,6 +70,7 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
@@ -81,6 +83,16 @@ public class GoodsListActivity extends BaseComponentActivity implements OnRefres
 
         refresh_layout.setOnRefreshListener(this);
         refresh_layout.setOnLoadMoreListener(this);
+    }
+
+    private long nao;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (nao != 0 &&System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LOANRECOMMENDPRODUCTSELECT, "", System.currentTimeMillis() - nao);
+        }
     }
 
     private View initHeaderView() {

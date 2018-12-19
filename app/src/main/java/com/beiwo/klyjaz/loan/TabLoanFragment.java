@@ -19,6 +19,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -70,7 +71,7 @@ public class TabLoanFragment extends BaseComponentFragment {
     private Map<String, Object> map = new HashMap<>();
     private int pageNo = 1;
     private int pageSize = 10;
-    private int checking = 0;//是否为审核产品 0：否 1：是
+    //private int checking = 0;//是否为审核产品 0：否 1：是
     private int type = 0;//排序 2 贷款额度 3 贷款利率 4 放款速度
     private int moneyType = 0;
     private int borrowingLow = -1;//金额区别 低值
@@ -152,7 +153,6 @@ public class TabLoanFragment extends BaseComponentFragment {
                 .subscribe(new ApiObserver<String>() {
                     @Override
                     public void onNext(@NonNull String data) {
-                        //System.out.println("native url = " + data);
                         Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("webViewUrl", data);
                         intent.putExtra("webViewTitleName", product.getProductName());
@@ -210,6 +210,36 @@ public class TabLoanFragment extends BaseComponentFragment {
                 });
     }
 
+    private long nao;
+    private boolean viewVisible;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        viewVisible = hidden;
+        if (!hidden) {
+            nao = System.currentTimeMillis();
+        } else {
+            if (viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LOANPAGE, "", System.currentTimeMillis() - nao);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        nao = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+            DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LOANPAGE, "", System.currentTimeMillis() - nao);
+        }
+    }
+
     private void empty() {
         adapter.setNewData(null);
         adapter.setEmptyView(R.layout.empty_layout, recycler);
@@ -233,6 +263,7 @@ public class TabLoanFragment extends BaseComponentFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dtv_money:
+                DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_LOANPAGE, DataHelper.EVENT_EVENTID_AMOUNTBTN, 0);
                 dtv_money.setImg(R.mipmap.ic_up);
                 dtv_money.setTextHighLight(true);
                 PopUtil.pop(context, R.layout.menu_money, dtv_money, new PopUtil.PopViewClickListener() {
@@ -340,6 +371,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                 });
                 break;
             case R.id.dtv_kind:
+                DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_LOANPAGE, DataHelper.EVENT_EVENTID_CLASSIFYBTN, 0);
                 dtv_kind.setImg(R.mipmap.ic_up);
                 dtv_kind.setTextHighLight(true);
                 PopUtil.pop(context, R.layout.menu_kind, dtv_kind, new PopUtil.PopViewClickListener() {
@@ -425,6 +457,7 @@ public class TabLoanFragment extends BaseComponentFragment {
                 });
                 break;
             case R.id.dtv_sort:
+                DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_LOANPAGE, DataHelper.EVENT_EVENTID_SORTBTN, 0);
                 dtv_sort.setImg(R.mipmap.ic_up);
                 dtv_sort.setTextHighLight(true);
                 PopUtil.pop(context, R.layout.menu_sort, dtv_sort, new PopUtil.PopViewClickListener() {

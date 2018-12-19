@@ -9,7 +9,7 @@ import com.beiwo.klyjaz.base.BaseRxPresenter;
 import com.beiwo.klyjaz.entity.LoanProductDetail;
 import com.beiwo.klyjaz.entity.ThirdAuthResult;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -111,7 +111,7 @@ public class LoanDetailPresenter extends BaseRxPresenter implements LoanProductD
 
         if (productDetail != null && productDetail.getBase() != null) {
             //服务端统计
-            DataStatisticsHelper.getInstance(mContext).onProductClicked(productDetail.getBase().getId());
+            DataHelper.getInstance(mContext).onProductClicked(productDetail.getBase().getId());
 
 
             if (productDetail.getBase().getCoopType() == 1) {

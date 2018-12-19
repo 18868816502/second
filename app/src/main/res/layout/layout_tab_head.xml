@@ -41,6 +41,17 @@
             android:textSize="12dp" />
 
         <TextView
+            android:id="@+id/tv_pro_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_home_btn5"
+            android:gravity="center_horizontal"
+            android:text="下款推荐"
+            android:textColor="@color/black_1"
+            android:textSize="12dp" />
+
+        <TextView
             android:id="@+id/tv_pro_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,24 +63,13 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/tv_pro_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@mipmap/ic_home_btn3"
-            android:gravity="center_horizontal"
-            android:text="不查征信"
-            android:textColor="@color/black_1"
-            android:textSize="12dp" />
-
-        <TextView
             android:id="@+id/tv_pro_4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/ic_home_btn4"
+            android:drawableTop="@mipmap/ic_home_btn6"
             android:gravity="center_horizontal"
-            android:text="大额低息"
+            android:text="不查征信"
             android:textColor="@color/black_1"
             android:textSize="12dp" />
     </LinearLayout>

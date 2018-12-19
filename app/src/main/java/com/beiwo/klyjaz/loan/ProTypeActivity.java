@@ -9,6 +9,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.Product;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -34,7 +35,6 @@ import io.reactivex.annotations.NonNull;
  */
 
 public class ProTypeActivity extends BaseComponentActivity {
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.toolbar_title)
@@ -45,7 +45,8 @@ public class ProTypeActivity extends BaseComponentActivity {
     RecyclerView recycler;
 
     private ProType1Adapter type1Adapter;
-    private int productType;
+    public int productType;
+    private long nao;
 
     @Override
     public int getLayoutId() {
@@ -54,6 +55,7 @@ public class ProTypeActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
@@ -117,5 +119,30 @@ public class ProTypeActivity extends BaseComponentActivity {
                         type1Adapter.setData(null);
                     }
                 });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (productType == 1) {
+            if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+                DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_NEWPRODUCTSDIVISION, "", System.currentTimeMillis() - nao);
+            }
+        }
+        if (productType == 2) {
+            if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+                DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LIGHTNINGACCOUNTDIVISION, "", System.currentTimeMillis() - nao);
+            }
+        }
+        if (productType == 3) {
+            if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+                DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LARGELIMITLOWINTEREST, "", System.currentTimeMillis() - nao);
+            }
+        }
+        if (productType == 4) {
+            if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+                DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_NOCREDITREPORTINGDIVISION, "", System.currentTimeMillis() - nao);
+            }
+        }
     }
 }

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.bean.TopicDetail;
@@ -104,6 +105,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         context = this;
         setupToolbar(toolbar, true);
         setupToolbarBackNavigation(toolbar, R.drawable.back_white);
@@ -130,6 +132,16 @@ public class TopicDetailActivity extends BaseComponentActivity {
                 fragments.get(viewpager.getCurrentItem()).loadMore();
             }
         });
+    }
+
+    private long nao;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (nao != 0 &&System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_TOPICDETAILPAGE, "", System.currentTimeMillis() - nao);
+        }
     }
 
     private void request() {

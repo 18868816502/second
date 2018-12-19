@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -16,13 +17,14 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.Audit;
-import com.beiwo.klyjaz.entity.UserProfileAbstract;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
-import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
+import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Timer;
@@ -54,6 +56,7 @@ public class SplashActivity extends BaseComponentActivity {
     private Handler handler = new Handler(Looper.getMainLooper());
     private UserHelper userHelper;
     private boolean adClicked = false;
+    private boolean stopExcuted;
 
     @Override
     public int getLayoutId() {
@@ -62,6 +65,11 @@ public class SplashActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        if (isTaskRoot()) {
+            System.out.println("SplashActivity yes");
+        } else {
+            System.out.println("SplashActivity no");
+        }
         activity = this;
         userHelper = UserHelper.getInstance(this);
         /*是否审核状态*/
@@ -97,6 +105,10 @@ public class SplashActivity extends BaseComponentActivity {
                                     if (ad != null) {
                                         tv_skip.setVisibility(View.VISIBLE);
                                         skipTime--;
+                                        if (skipTime == 0) {
+                                            if (timer != null) timer.cancel();
+                                        }
+
                                         tv_skip.setText(skipTime + "s");
                                         if (activity == null) return;
                                         Glide.with(activity)
@@ -110,17 +122,13 @@ public class SplashActivity extends BaseComponentActivity {
                                                     handler.removeCallbacksAndMessages(null);
                                                 adClicked = true;
                                                 //统计点击
-                                                DataStatisticsHelper.getInstance(activity).onAdClicked(ad.getId(), 1);
+                                                DataHelper.getInstance(activity).onAdClicked(ad.getId(), 1);
                                                 //pv，uv统计
-                                                DataStatisticsHelper.getInstance(activity).onCountUv(DataStatisticsHelper.ID_CLICK_SPLASH_AD);
+                                                DataHelper.getInstance(activity).onCountUv(DataHelper.ID_CLICK_SPLASH_AD);
                                                 //是否需要登录
                                                 if (ad.needLogin() && !userHelper.isLogin()) {
-                                                    DlgUtil.loginDlg(activity, new DlgUtil.OnLoginSuccessListener() {
-                                                        @Override
-                                                        public void success(UserProfileAbstract data) {
-                                                            goProduct(ad);
-                                                        }
-                                                    });
+                                                    EventBus.getDefault().post(new UserLoginWithPendingTaskEvent(ad));
+                                                    MainActivity.init(activity, ad);
                                                 } else goProduct(ad);
                                             }
                                         });
@@ -161,18 +169,32 @@ public class SplashActivity extends BaseComponentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (adClicked) MainActivity.init(activity);
+        if (adClicked) MainActivity.init(activity, null);
+        if (stopExcuted) MainActivity.init(activity, null);
     }
 
     @Override
     public void initDatas() {
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopExcuted = true;
+        if (timer != null) timer.cancel();
+        if (handler != null) handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onBackPressed() {//取消back按钮事件
+        //super.onBackPressed();
+    }
+
     @OnClick({R.id.tv_skip})
     public void onClick(View view) {
         if (timer != null) timer.cancel();
         handler.removeCallbacksAndMessages(null);
-        if (App.audit == 2) MainActivity.init(activity);
+        if (App.audit == 2) MainActivity.init(activity, null);
         else VestMainActivity.init(activity);
     }
 
@@ -182,7 +204,7 @@ public class SplashActivity extends BaseComponentActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.init(activity);
+                    MainActivity.init(activity, null);
                 }
             }, 4000);
         } else VestMainActivity.init(this);

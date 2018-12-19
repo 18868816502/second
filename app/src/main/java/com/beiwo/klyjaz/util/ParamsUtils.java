@@ -13,7 +13,6 @@ import java.util.Map;
  * @time 2018/10/11 15:09
  */
 public class ParamsUtils {
-
     /**
      * 获取话题推荐列表请求参数
      *
@@ -118,7 +117,6 @@ public class ParamsUtils {
         return mMap;
     }
 
-
     /**
      * 动态详情参数
      *
@@ -138,7 +136,6 @@ public class ParamsUtils {
         mMap.put("pageSize", pageSize);
         return mMap;
     }
-
 
     /**
      * 获取发布参数
@@ -174,6 +171,7 @@ public class ParamsUtils {
 
     /**
      * 获取产品评论提交参数
+     *
      * @param manageId
      * @param loanStatus
      * @param flag
@@ -184,7 +182,7 @@ public class ParamsUtils {
      * @return
      */
     public static Map<String, Object> generateGoodsCommentParams(String manageId, int loanStatus,
-                                                                 String flag, int type, String imageUrl, String content,String userId) {
+                                                                 String flag, int type, String imageUrl, String content, String userId) {
         Map<String, Object> mMap = new HashMap<>();
         mMap.put("manageId", manageId);
         mMap.put("loanStatus", loanStatus);
@@ -202,12 +200,13 @@ public class ParamsUtils {
 
     /**
      * 产品详情-选择产品
+     *
      * @param manageName
      * @param pageNo
      * @param pageSize
      * @return
      */
-    public static Map<String, Object> generateGoodsParams(String manageName,int pageNo, int pageSize) {
+    public static Map<String, Object> generateGoodsParams(String manageName, int pageNo, int pageSize) {
         Map<String, Object> mMap = new HashMap<>();
         if (!TextUtils.isEmpty(manageName)) {
             mMap.put("manageName", manageName);
@@ -225,7 +224,7 @@ public class ParamsUtils {
      */
     public static Map<String, Object> generateFloatingParams(String userId) {
         Map<String, Object> mMap = new HashMap<>();
-            mMap.put("platform", "1");
+        mMap.put("platform", "1");
         if (!TextUtils.isEmpty(userId)) {
             mMap.put("userId", userId);
         }
@@ -234,11 +233,12 @@ public class ParamsUtils {
 
     /**
      * 获取加载悬浮窗参数
+     *
      * @param advertId
      * @param userId
      * @return
      */
-    public static Map<String, Object> generateLoadFloatingParams(String advertId,String userId) {
+    public static Map<String, Object> generateLoadFloatingParams(String advertId, String userId) {
         Map<String, Object> mMap = new HashMap<>();
         mMap.put("platform", "1");
         mMap.put("advertId", advertId);

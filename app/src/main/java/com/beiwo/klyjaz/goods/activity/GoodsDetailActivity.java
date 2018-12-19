@@ -19,7 +19,7 @@ import com.beiwo.klyjaz.entity.CommentsTotal;
 import com.beiwo.klyjaz.entity.GoodsInfo;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.goods.adapter.GoodsDetailAdapter;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -70,6 +70,7 @@ public class GoodsDetailActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         setupToolbar(toolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         SlidePanelHelper.attach(this);
@@ -80,6 +81,16 @@ public class GoodsDetailActivity extends BaseComponentActivity {
             manageId = intent.getStringExtra("manageId");
         }
         toolbar_title.setText("产品详情");
+    }
+
+    private long nao;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LOANRECOMMENDPRODUCTDETAIL, "", System.currentTimeMillis() - nao);
+        }
     }
 
     @Override
@@ -176,7 +187,7 @@ public class GoodsDetailActivity extends BaseComponentActivity {
     }
 
     private void goProduct(String goodId, final String name) {
-        DataStatisticsHelper.getInstance(this).onCountUvPv("PraiseCutLoanHit", goodId);
+        DataHelper.getInstance(this).onCountUvPv("PraiseCutLoanHit", goodId);
         String id = UserHelper.getInstance(this).isLogin() ? UserHelper.getInstance(this).id() : App.androidId;
         Api.getInstance().queryGroupProductSkip(id, goodId)
                 .compose(RxResponse.<String>compatT())

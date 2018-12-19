@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.ui.activity.ComWebViewActivity;
 import com.beiwo.klyjaz.ui.presenter.LoanDetailPresenter;
 import com.beiwo.klyjaz.umeng.Events;
@@ -90,7 +90,7 @@ public class ThirdAuthorizationDialog extends DialogFragment {
                 Statistic.onEvent(Events.LOAN_AUTHORIZE_CONFIRM);
 
                 //pv,uv统计
-                DataStatisticsHelper.getInstance(getActivity()).onCountUv(DataStatisticsHelper.ID_CLICK_THIRD_AUTHORIZATION);
+                DataHelper.getInstance(getActivity()).onCountUv(DataHelper.ID_CLICK_THIRD_AUTHORIZATION);
 
                 presenter.clickConfirmAuthorize();
                 break;

@@ -23,6 +23,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.entity.Phone;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.getui.GeTuiClient;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -198,6 +199,7 @@ public class DlgUtil {
                     tv_get_ver_code.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_LOGINPAGE, DataHelper.EVENT_EVENTID_GETCODE, 0);
                             Api.getInstance().requestSms(account, "6")
                                     .compose(RxResponse.<Phone>compatT())
                                     .subscribe(new ApiObserver<Phone>() {
@@ -211,6 +213,7 @@ public class DlgUtil {
                     tv_login.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_LOGINPAGE, DataHelper.EVENT_EVENTID_LOGINIMMEDIATELY, 0);
                             dialog.dismiss();
                             Api.getInstance().loginByCode(account, authcode)
                                     .compose(RxResponse.<UserProfileAbstract>compatT())

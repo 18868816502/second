@@ -10,7 +10,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.CreditCardBean;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
@@ -63,7 +63,7 @@ public class CreditBillActivity extends BaseComponentActivity {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
         //pv，uv统计
-        DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.TALLYCREDITCARD);
+        DataHelper.getInstance(this).onCountUv(NewVersionEvents.TALLYCREDITCARD);
     }
 
     @Override

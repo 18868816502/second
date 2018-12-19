@@ -15,6 +15,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.HomeData;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.activity.LoanBillActivity;
@@ -46,7 +47,6 @@ import io.reactivex.annotations.NonNull;
  */
 
 public class BillListActivity extends BaseComponentActivity {
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.refresh_layout)
@@ -73,12 +73,23 @@ public class BillListActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         setupToolbar(toolbar, true);
         setupToolbarBackNavigation(toolbar, R.drawable.back_white);
         ImmersionBar.with(this).statusBarDarkFont(false).init();
         SlidePanelHelper.attach(this);
 
         currentMonth = new SimpleDateFormat("MM", Locale.CHINA).format(System.currentTimeMillis());
+    }
+
+    private long nao;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (nao != 0 &&System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_TALLYHOMEPAGE, "", System.currentTimeMillis() - nao);
+        }
     }
 
     @Override

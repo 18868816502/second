@@ -23,7 +23,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
 import com.beiwo.klyjaz.goods.activity.LoanGoodsActivity;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
@@ -139,7 +139,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
         multiAdapter.setOnArticleClickListener(new RecomMultiAdapter.OnSocialItemClickListener() {
             @Override
             public void itemClick(String forumId, String userId) {
-                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
+                DataHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forumId);
                 Intent intent = new Intent(getActivity(), ForumDetailActivity.class);
                 intent.putExtra("forumId", forumId);
                 intent.putExtra("userId", userId);
@@ -198,7 +198,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
                     DlgUtil.loginDlg(getActivity(), null);
                 } else {
                     if (!TextUtils.isEmpty(url)) {
-                        DataStatisticsHelper.getInstance(getActivity()).onCountUvPv("CommunityActiveHit", eventId);
+                        DataHelper.getInstance(getActivity()).onCountUvPv("CommunityActiveHit", eventId);
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
                         intent.putExtra("webViewUrl", url);
                         intent.putExtra("webViewTitleName", name);
@@ -209,7 +209,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
 
             @Override
             public void topicClick(String topicId) {
-                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv("CommunityTopicHit", topicId);
+                DataHelper.getInstance(getActivity()).onCountUvPv("CommunityTopicHit", topicId);
                 Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
                 intent.putExtra("topicId", topicId);
                 startActivity(intent);
@@ -220,6 +220,36 @@ public class SocialRecomFragment extends BaseComponentFragment {
                 startActivity(new Intent(getActivity(), LoanGoodsActivity.class));
             }
         });
+    }
+
+    private long nao;
+    private boolean viewVisible;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        viewVisible = hidden;
+        if (!hidden) {
+            nao = System.currentTimeMillis();
+        } else {
+            if (viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_COMMUNITYHOMEPAGE, "", System.currentTimeMillis() - nao);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        nao = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+            DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_COMMUNITYHOMEPAGE, "", System.currentTimeMillis() - nao);
+        }
     }
 
     private void request(final int pageNo) {
@@ -320,7 +350,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
-                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
+                DataHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 } else {

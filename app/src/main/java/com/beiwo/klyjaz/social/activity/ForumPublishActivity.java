@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.social.bean.DraftEditForumBean;
 import com.beiwo.klyjaz.social.classhelper.ForumPublishHelper;
 import com.beiwo.klyjaz.social.contract.ForumPublishContact;
@@ -110,6 +111,7 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         ImmersionBar.with(this).titleBar(rlTitleBar).statusBarDarkFont(true).init();
         mPresenter = new ForumPublishPresenter(this, this);
         helper = new ForumPublishHelper(this);
@@ -120,7 +122,16 @@ public class ForumPublishActivity extends BaseComponentActivity implements Forum
         etPublishTitle.addTextChangedListener(new ForumTitleWatcher(this, tvPublishTitleNum));
         etPublishTitle.setFilters(new InputFilter[]{InputFilterUtils.emojiFilter, new InputFilter.LengthFilter(30)});
         etPublishContent.setFilters(new InputFilter[]{InputFilterUtils.emojiFilter, new InputFilter.LengthFilter(1500)});
+    }
 
+    private long nao;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (nao != 0 &&System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_COMMUNITYPUBLISHPAGE, "", System.currentTimeMillis() - nao);
+        }
     }
 
     @Override

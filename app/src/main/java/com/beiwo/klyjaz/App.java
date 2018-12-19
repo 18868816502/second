@@ -13,7 +13,7 @@ import android.view.WindowManager;
 
 import com.beiwo.klyjaz.base.Constant;
 import com.beiwo.klyjaz.helper.ActivityTracker;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.umeng.Umeng;
 import com.beiwo.klyjaz.util.SPUtils;
@@ -76,6 +76,7 @@ public class App extends Application {
         super.onCreate();
         sInstance = this;
         try {
+            androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             sChannelId = App.getInstance().getPackageManager()
                     .getApplicationInfo(App.getInstance().getPackageName(), PackageManager.GET_META_DATA).metaData.getString("CHANNEL_ID");
             //sChannelId = AnalyticsConfig.getChannel(this);
@@ -83,17 +84,18 @@ public class App extends Application {
         }
         SPUtils.setShowMainAddBanner(true);
         registerActivityLifecycleCallbacks(ActivityTracker.getInstance());//activity生命周期管理
+
         initComponent();
         if (TextUtils.equals(getProcessName(this), getPackageName())) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_OPEN, "", "", 0);
             //pv，uv统计
-            androidId = Settings.System.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             if (UserHelper.getInstance(this).isLogin()) {
-                DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_OPEN_APP);
+                DataHelper.getInstance(this).onCountUv(DataHelper.ID_OPEN_APP);
             } else {
-                DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_OPEN_APP, androidId);
+                DataHelper.getInstance(this).onCountUv(DataHelper.ID_OPEN_APP, androidId);
             }
             if (SPUtils.getFirstInstall()) {
-                DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_FIRST_INSTALL, androidId);
+                DataHelper.getInstance(this).onCountUv(DataHelper.ID_FIRST_INSTALL, androidId);
                 SPUtils.setFirstInstall(false);
             }
         }
@@ -122,15 +124,7 @@ public class App extends Application {
     }
 
     private void initComponent() {
-//        appComponent = DaggerAppComponent.builder()
-//                .apiModule(new ApiModule())
-//                .appModule(new AppModule(this))
-//                .build();
     }
-
-//    public AppComponent getAppComponent() {
-//        return appComponent;
-//    }
 
     private String getProcessName(Context cxt) {
         ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);

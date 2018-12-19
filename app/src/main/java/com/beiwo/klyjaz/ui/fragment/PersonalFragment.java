@@ -19,9 +19,11 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseTabFragment;
 import com.beiwo.klyjaz.entity.EventBean;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.MyBankCardActivity;
 import com.beiwo.klyjaz.jjd.activity.MyLoanActivity;
+import com.beiwo.klyjaz.loan.TabLoanFragment;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.activity.WalletActivity;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
@@ -34,7 +36,6 @@ import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.ui.activity.RemindActivity;
 import com.beiwo.klyjaz.ui.activity.SettingsActivity;
 import com.beiwo.klyjaz.ui.activity.SysMsgActivity;
-import com.beiwo.klyjaz.ui.activity.UserProfileActivity;
 import com.beiwo.klyjaz.ui.adapter.DeployAdapter;
 import com.beiwo.klyjaz.ui.contract.TabMineContract;
 import com.beiwo.klyjaz.ui.presenter.TabMinePresenter;
@@ -43,7 +44,6 @@ import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.FastClickUtils;
 import com.beiwo.klyjaz.util.LegalInputUtils;
-import com.beiwo.klyjaz.util.Util;
 import com.beiwo.klyjaz.view.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -59,7 +59,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PersonalFragment extends BaseTabFragment implements TabMineContract.View {
-
     @BindView(R.id.tool_bar)
     Toolbar toolbar;
     @BindView(R.id.avatar)
@@ -216,6 +215,36 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         }
     }
 
+    private long nao;
+    private boolean viewVisible;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        viewVisible = hidden;
+        if (!hidden) {
+            nao = System.currentTimeMillis();
+        } else {
+            if (viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_MYPAGE, "", System.currentTimeMillis() - nao);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        nao = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_MYPAGE, "", System.currentTimeMillis() - nao);
+        }
+    }
+
     @Override
     public void showRewardPoints(int points) {
     }
@@ -228,68 +257,113 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
             R.id.avatar, R.id.ll_navigate_user_profile, R.id.invite_friend,
             R.id.help_center, R.id.settings, R.id.mine_msg, R.id.dctv_loan, R.id.dctv_bank})
     public void onViewClicked(View view) {
-        if (!UserHelper.getInstance(getActivity()).isLogin()) {
-            goLogin();
-            return;
-        }
         switch (view.getId()) {
-            case R.id.bill_summary:
+            case R.id.bill_summary://账单汇总
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_MYPAGE, DataHelper.EVENT_EVENTID_BILLSUMMARY, 0);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), BillSummaryActivity.class));
                 }
                 break;
-            case R.id.remind:
+            case R.id.remind://提醒设置
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), RemindActivity.class));
                 }
                 break;
             case R.id.login://登录
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     navigateLogin();
                 }
                 break;
             //点击头像 如果未登陆 会跳转到登陆页面
-            case R.id.avatar:
+            case R.id.avatar://头像
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_MYPAGE, DataHelper.EVENT_EVENTID_HEADPORTRAIT, 0);
             case R.id.ll_navigate_user_profile:
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     Intent intent = new Intent(getActivity(), PersonalCenterActivity.class);
                     intent.putExtra("userId", UserHelper.getInstance(getActivity()).getProfile().getId());
                     startActivity(intent);
                 }
                 break;
-            case R.id.invite_friend:
+            case R.id.invite_friend://邀请好友
                 Statistic.onEvent(Events.MINE_CLICK_INVITATION);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), InvitationWebActivity.class));
                 }
                 break;
-            case R.id.help_center:
+            case R.id.help_center://帮助中心
                 Statistic.onEvent(Events.MINE_CLICK_HELP_FEEDBACK);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), HelpAndFeedActivity.class));
                 }
                 break;
-            case R.id.settings:
+            case R.id.settings://设置
                 Statistic.onEvent(Events.MINE_CLICK_SETTING);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), SettingsActivity.class));
                 }
                 break;
-            case R.id.mine_msg:
+            case R.id.mine_msg://消息
                 Statistic.onEvent(Events.MINE_CLICK_MESSAGE);
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_MYPAGE, DataHelper.EVENT_EVENTID_MYMESSAGE, 0);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), SysMsgActivity.class));
                 }
                 break;
             case R.id.my_wallet://我的钱包
-                if (!FastClickUtils.isFastClick())
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_MYPAGE, DataHelper.EVENT_EVENTID_MYPURSE, 0);
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
+                if (!FastClickUtils.isFastClick()) {
                     startActivity(new Intent(getActivity(), WalletActivity.class));
+                }
                 break;
             case R.id.dctv_loan:
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick())
                     startActivity(new Intent(getActivity(), MyLoanActivity.class));
                 break;
             case R.id.dctv_bank:
+                if (!UserHelper.getInstance(getActivity()).isLogin()) {
+                    goLogin();
+                    return;
+                }
                 if (!FastClickUtils.isFastClick())
                     startActivity(new Intent(getActivity(), MyBankCardActivity.class));
                 break;
@@ -340,7 +414,7 @@ public class PersonalFragment extends BaseTabFragment implements TabMineContract
         }
     }
 
-   /*是否显示我的账单按钮*/
+    /*是否显示我的账单按钮*/
     @Override
     public void updateMyLoanVisible(boolean visible) {
     }

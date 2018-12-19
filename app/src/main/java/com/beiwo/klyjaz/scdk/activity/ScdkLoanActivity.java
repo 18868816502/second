@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -116,7 +116,7 @@ public class ScdkLoanActivity extends BaseComponentActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_confirm_loan:
-                DataStatisticsHelper.getInstance(this).onCountUv("JjdSureLoanPage");
+                DataHelper.getInstance(this).onCountUv("JjdSureLoanPage");
                 main();
                 break;
             case R.id.tv_dout:

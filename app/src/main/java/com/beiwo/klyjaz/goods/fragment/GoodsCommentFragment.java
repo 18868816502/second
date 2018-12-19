@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import io.reactivex.disposables.Disposable;
 
 /**
  * https://gitee.com/tangbuzhi

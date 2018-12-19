@@ -16,6 +16,7 @@ import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.HotTop;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.goods.adapter.LoanGoodsAdapter;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -56,6 +57,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
     private int pageSize = 20;
     private int dyTranslate;
     private LoanGoodsAdapter loanGoodsAdapter = new LoanGoodsAdapter();
+    private long nao;
 
     @Override
     public int getLayoutId() {
@@ -64,6 +66,7 @@ public class LoanGoodsActivity extends BaseComponentActivity {
 
     @Override
     public void configViews() {
+        nao = System.currentTimeMillis();
         setupToolbar(toolbar, true);
         setupToolbarBackNavigation(toolbar, R.drawable.back_white);
         ImmersionBar.with(this).statusBarDarkFont(false).init();
@@ -155,7 +158,6 @@ public class LoanGoodsActivity extends BaseComponentActivity {
         switch (view.getId()) {
             case R.id.ll_comment_wrap:
                 if (!UserHelper.getInstance(this).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(this, null);
                     return;
                 }
@@ -163,6 +165,14 @@ public class LoanGoodsActivity extends BaseComponentActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+            DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LOANRECOMMENDDIVISION, "", System.currentTimeMillis() - nao);
         }
     }
 }

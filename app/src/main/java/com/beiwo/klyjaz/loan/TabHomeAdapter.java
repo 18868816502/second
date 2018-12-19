@@ -32,10 +32,11 @@ import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.goods.ExitPageUtil;
 import com.beiwo.klyjaz.goods.activity.LoanGoodsActivity;
 import com.beiwo.klyjaz.goods.activity.GoodsDetailActivity;
 import com.beiwo.klyjaz.goods.adapter.HotItemAdapter;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.activity.LoanActivity;
 import com.beiwo.klyjaz.jjd.activity.VerticyIDActivity;
@@ -210,19 +211,17 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 holder.banner_layout.setViewUrls(Arrays.asList(imgs));
             holder.banner_layout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
-                public void onItemClick(int position) {
+                public void onItemClick(final int position) {
+                    DataHelper.getInstance(context).onAdClicked(bannerIds[position], 2);
                     if (needLogin[position] && !UserHelper.getInstance(context).isLogin()) {
-                        DlgUtil.loginDlg(context, null);
+                        DlgUtil.loginDlg(context, new DlgUtil.OnLoginSuccessListener() {
+                            @Override
+                            public void success(UserProfileAbstract data) {
+                                bannerClick(urls[position], titles[position], ids[position]);
+                            }
+                        });
                     } else {
-                        DataStatisticsHelper.getInstance(context).onAdClicked(bannerIds[position], 2);
-                        if (!TextUtils.isEmpty(urls[position])) {
-                            Intent intent = new Intent(context, WebViewActivity.class);
-                            intent.putExtra("webViewUrl", urls[position]);
-                            intent.putExtra("webViewTitleName", titles[position]);
-                            context.startActivity(intent);
-                        } else if (!TextUtils.isEmpty(ids[position])) {
-                            goProduct(ids[position], titles[position]);
-                        }
+                        bannerClick(urls[position], titles[position], ids[position]);
                     }
                 }
             });
@@ -312,6 +311,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
             holder.ll_hot_head.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {//下款推荐
+                    DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_HOMEPAGE, DataHelper.EVENT_EVENTID_PRAISECUTMORE, 0);
                     context.startActivity(new Intent(context, LoanGoodsActivity.class));
                 }
             });
@@ -387,7 +387,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     holder.csl_topic_wrap.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            DataStatisticsHelper.getInstance(context).onCountUvPv("CommunityTopicHit", topic.getTopicId());
+                            DataHelper.getInstance(context).onCountUvPv("CommunityTopicHit", topic.getTopicId());
                             Intent intent = new Intent(context, TopicDetailActivity.class);
                             intent.putExtra("topicId", topic.getTopicId());
                             context.startActivity(intent);
@@ -410,7 +410,7 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     holder.csl_forum_wrap.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            DataStatisticsHelper.getInstance(context).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forum.getForumId());
+                            DataHelper.getInstance(context).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, forum.getForumId());
                             Intent intent = new Intent(context, ForumDetailActivity.class);
                             intent.putExtra("forumId", forum.getForumId());
                             intent.putExtra("userId", UserHelper.getInstance(context).isLogin() ? UserHelper.getInstance(context).id() : "");
@@ -442,6 +442,17 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                     productItemClick(product);
                 }
             });
+        }
+    }
+
+    private void bannerClick(String url, String title, String id) {
+        if (!TextUtils.isEmpty(url)) {
+            Intent intent = new Intent(context, WebViewActivity.class);
+            intent.putExtra("webViewUrl", url);
+            intent.putExtra("webViewTitleName", title);
+            context.startActivity(intent);
+        } else if (!TextUtils.isEmpty(id)) {
+            goProduct(id, title);
         }
     }
 
@@ -503,25 +514,27 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_pro_1:
+            case R.id.tv_pro_1://新品推荐
                 Intent intent1 = new Intent(context, ProTypeActivity.class);
                 intent1.putExtra("productType", 1);
                 context.startActivity(intent1);
                 break;
-            case R.id.tv_pro_2:
+            case R.id.tv_pro_2://闪电到账
                 Intent intent2 = new Intent(context, ProTypeActivity.class);
                 intent2.putExtra("productType", 2);
                 context.startActivity(intent2);
                 break;
-            case R.id.tv_pro_3:
+            case R.id.tv_pro_3://下款推荐
+                context.startActivity(new Intent(context, LoanGoodsActivity.class));
+                break;
+            case R.id.tv_pro_4://不查征信
                 Intent intent4 = new Intent(context, ProTypeActivity.class);
                 intent4.putExtra("productType", 4);
                 context.startActivity(intent4);
-                break;
-            case R.id.tv_pro_4:
+                /*//大额低息
                 Intent intent3 = new Intent(context, ProTypeActivity.class);
                 intent3.putExtra("productType", 3);
-                context.startActivity(intent3);
+                context.startActivity(intent3);*/
                 break;
             case R.id.iv_edit_money:
                 DlgUtil.createDlg(context, R.layout.dlg_set_loan_money, DlgUtil.DlgLocation.BOTTOM, new DlgUtil.OnDlgViewClickListener() {
@@ -581,12 +594,13 @@ public class TabHomeAdapter extends RecyclerView.Adapter<TabHomeAdapter.ViewHold
                 });
                 break;
             case R.id.tv_go_loan:
+                DataHelper.getInstance(context).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_HOMEPAGE, DataHelper.EVENT_EVENTID_LOANIMMEDIATELY, 0);
                 /*用户认证信息查询*/
                 if (!UserHelper.getInstance(context).isLogin()) {
                     DlgUtil.loginDlg(context, null);
                     return;
                 }
-                DataStatisticsHelper.getInstance(context).onCountUv("HPLoanImmediately");
+                DataHelper.getInstance(context).onCountUv("HPLoanImmediately");
                 Api.getInstance().userAuth(UserHelper.getInstance(context).id())
                         .compose(RxResponse.<CashUserInfo>compatT())
                         .subscribe(new ApiObserver<CashUserInfo>() {

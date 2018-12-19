@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -26,7 +27,8 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.goods.ExitPageUtil;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.loan.TabHomeFragment;
@@ -36,8 +38,6 @@ import com.beiwo.klyjaz.tang.fragment.SocialRecomFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
-import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
-import com.beiwo.klyjaz.ui.dialog.AdDialog;
 import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
 import com.beiwo.klyjaz.umeng.Events;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
@@ -45,10 +45,8 @@ import com.beiwo.klyjaz.umeng.Statistic;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.BottomNavigationBar;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +93,10 @@ public class MainActivity extends BaseComponentActivity {
     private ImageView[] iconView;
     private TextView[] textView;
     private boolean flag = false;
+    private UserHelper userHelper;
+    private MainActivity activity;
+    private Bundle extras;
+    private static AdBanner ad = null;
 
     @SuppressLint("InlinedApi")
     private String[] needPermission = {
@@ -102,10 +104,8 @@ public class MainActivity extends BaseComponentActivity {
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    private MainActivity activity;
-    private Bundle extras;
-
-    public static void init(Activity activity) {
+    public static void init(Activity activity, AdBanner ad) {
+        if (ad != null) MainActivity.ad = ad;
         activity.startActivity(new Intent(activity, MainActivity.class));
         activity.finish();
     }
@@ -159,15 +159,18 @@ public class MainActivity extends BaseComponentActivity {
     private void showAdDialog(final AdBanner ad) {
         if (ad.getShowTimes() == 1) {//仅显示一次
             if (ad.getId().equals(SPUtils.getValue(ad.getId()))) {
+                alert();
                 return;
             } else {
                 SPUtils.setValue(ad.getId());
             }
         } else if (ad.getShowTimes() == 2) {//未点击继续显示
             if (ad.getId().equals(SPUtils.getValue(ad.getId()))) {
+                alert();
                 return;
             }
         } else {//其他情况不展示弹窗广告
+            alert();
             return;
         }
         //更新广告展示时间
@@ -175,67 +178,52 @@ public class MainActivity extends BaseComponentActivity {
         //umeng统计
         Statistic.onEvent(Events.RESUME_AD_DIALOG);
         //pv，uv统计
-        DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_SHOW_HOME_AD_DIALOG);
-        new AdDialog().setAd(ad).setListener(new View.OnClickListener() {
+        DataHelper.getInstance(this).onCountUv(DataHelper.ID_SHOW_HOME_AD_DIALOG);
+        DlgUtil.createDlg(activity, R.layout.dlg_home_ad, DlgUtil.DlgLocation.CENTER, new DlgUtil.OnDlgViewClickListener() {
             @Override
-            public void onClick(View v) {
-                //umeng统计
-                Statistic.onEvent(Events.CLICK_AD_DIALOG);
-                //统计点击
-                DataStatisticsHelper.getInstance(activity).onAdClicked(ad.getId(), 3);
-                //pv，uv统计
-                DataStatisticsHelper.getInstance(activity).onCountUv(DataStatisticsHelper.ID_CLICK_HONE_AD_DIALOG);
-                //是否需要登录
-                if (ad.needLogin()) {
-                    if (UserHelper.getInstance(activity).getProfile() == null) {
-                        DlgUtil.loginDlg(activity, new DlgUtil.OnLoginSuccessListener() {
-                            @Override
-                            public void success(UserProfileAbstract data) {
-                                EventBus.getDefault().post(new UserLoginWithPendingTaskEvent(ad));
-                            }
-                        });
-                        return;
+            public void onViewClick(final Dialog dialog, View dlgView) {
+                ImageView ad_image = dlgView.findViewById(R.id.ad_image);
+                Glide.with(activity)
+                        .load(ad.getImgUrl())
+                        .into(ad_image);
+                dlgView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
-                }
-                /*if (ad.isNative()) {//跳原生还是跳Web
-                    Intent intent = new Intent(activity, LoanDetailActivity.class);
-                    intent.putExtra("loanId", ad.getLocalId());
-                    startActivity(intent);
-                    //SPUtils.setValue(ad.getId());
-                } else */
-                if (!TextUtils.isEmpty(ad.getUrl())) {
-                    String url = ad.getUrl();
-                    if (url.contains("USERID") && UserHelper.getInstance(activity).getProfile() != null) {
-                        url = url.replace("USERID", UserHelper.getInstance(activity).getProfile().getId());
-                    }
-                    Intent intent = new Intent(activity, ComWebViewActivity.class);
-                    intent.putExtra("title", ad.getTitle());
-                    intent.putExtra("url", url);
-                    startActivity(intent);
-                    SPUtils.setValue(ad.getId());
-                } else if (!TextUtils.isEmpty(ad.getLocalId())) {
-                    String id = UserHelper.getInstance(activity).isLogin() ? UserHelper.getInstance(activity).id() : App.androidId;
-                    Api.getInstance().queryGroupProductSkip(id, ad.getLocalId())
-                            .compose(RxResponse.<String>compatT())
-                            .subscribe(new ApiObserver<String>() {
+                });
+                ad_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //umeng统计
+                        Statistic.onEvent(Events.CLICK_AD_DIALOG);
+                        //统计点击
+                        DataHelper.getInstance(activity).onAdClicked(ad.getId(), 3);
+                        //pv，uv统计
+                        DataHelper.getInstance(activity).onCountUv(DataHelper.ID_CLICK_HONE_AD_DIALOG);
+                        //是否需要登录
+                        if (ad.needLogin() && !userHelper.isLogin()) {
+                            DlgUtil.loginDlg(activity, new DlgUtil.OnLoginSuccessListener() {
                                 @Override
-                                public void onNext(@NonNull String data) {
-                                    Intent intent = new Intent(activity, WebViewActivity.class);
-                                    intent.putExtra("webViewUrl", data);
-                                    intent.putExtra("webViewTitleName", ad.getTitle());
-                                    startActivity(intent);
+                                public void success(UserProfileAbstract data) {
+                                    goProduct(ad);
+                                    SPUtils.setValue(ad.getId());
                                 }
                             });
-                    SPUtils.setValue(ad.getId());
-                }
+                        } else {
+                            goProduct(ad);
+                            SPUtils.setValue(ad.getId());
+                        }
+                    }
+                });
             }
-        }).show(getSupportFragmentManager(), AdDialog.class.getSimpleName());
+        });
+        alert();
     }
 
     @Override
     protected void onDestroy() {
         updateHelper.destroy();
-        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -249,7 +237,8 @@ public class MainActivity extends BaseComponentActivity {
         iconView = new ImageView[]{tabBillIcon, tabDiscoverIcon, tabThreeIcon, tabSocialIcon, tabMineIcon};
         textView = new TextView[]{tabBillText, tabDiscoverText, tabThreeText, tabSocialText, tabMineText};
         activity = this;
-        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
+        userHelper = UserHelper.getInstance(activity);
+        selectTab(R.id.tab_bill_root);
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
@@ -257,7 +246,7 @@ public class MainActivity extends BaseComponentActivity {
                     selectTab(selectedId);
                     if (selectedId == R.id.tab_three_root) {
                         //pv，uv统计
-                        DataStatisticsHelper.getInstance(MainActivity.this).onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
+                        DataHelper.getInstance(activity).onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
                     }
                 }
             }
@@ -266,6 +255,7 @@ public class MainActivity extends BaseComponentActivity {
 
     @Override
     public void initDatas() {
+        DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_EXIT, ExitPageUtil.getPageName(SPUtils.getLastActName()), "", 0);
         checkPermission();
         defaultTabIconTxt();
         updateHelper.checkUpdate(this);
@@ -276,47 +266,59 @@ public class MainActivity extends BaseComponentActivity {
                     @Override
                     public void onNext(@NonNull List<AdBanner> data) {
                         if (data != null && data.size() > 0) {
-                            AdBanner adBanner = data.get(0);
-                            /*if (adBanner.getLocation() == 2) {//发现页
-                                navigationBar.select(R.id.tab_discover_root);
-                            } else {//首页
-                                navigationBar.select(R.id.tab_bill_root);
-                            }*/
-                            showAdDialog(adBanner);
+                            showAdDialog(data.get(0));
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        alert();
                     }
                 });
     }
 
-    /**
-     * 点击广告要求登录，登录成功之后收到事件完成后续动作
-     * 事件由UserAuthorizationActivity发出
-     */
-    @Subscribe
-    public void onLoginWithPendingTask(UserLoginWithPendingTaskEvent event) {
-        final AdBanner ad = event.adBanner;
-        navigationBar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //跳Native还是跳Web
-                if (ad.isNative()) {
-                    Intent intent = new Intent(MainActivity.this, LoanDetailActivity.class);
-                    intent.putExtra("loanId", ad.getLocalId());
-                    intent.putExtra("loanName", ad.getTitle());
-                    startActivity(intent);
-                } else if (!TextUtils.isEmpty(ad.getUrl())) {
-                    //跳转网页时，url不为空情况下才跳转
-                    Intent intent = new Intent(MainActivity.this, ComWebViewActivity.class);
-                    intent.putExtra("url", ad.getUrl());
-                    intent.putExtra("title", ad.getTitle());
-                    startActivity(intent);
-                }
+    private void alert() {
+        if (ad != null) {
+            if (ad.needLogin() && !userHelper.isLogin()) {
+                DlgUtil.loginDlg(activity, new DlgUtil.OnLoginSuccessListener() {
+                    @Override
+                    public void success(UserProfileAbstract data) {
+                        goProduct(ad);
+                    }
+                });
+            } else goProduct(ad);
+        }
+    }
+
+    private void goProduct(final AdBanner ad) {
+        if (!TextUtils.isEmpty(ad.getUrl())) {
+            String url = ad.getUrl();
+            if (url.contains("USERID") && userHelper.isLogin()) {
+                url = url.replace("USERID", userHelper.id());
             }
-        }, 400);
+            Intent intent = new Intent(activity, ComWebViewActivity.class);
+            intent.putExtra("title", ad.getTitle());
+            intent.putExtra("url", url);
+            startActivity(intent);
+        } else if (!TextUtils.isEmpty(ad.getLocalId())) {
+            String id = userHelper.isLogin() ? userHelper.id() : App.androidId;
+            Api.getInstance().queryGroupProductSkip(id, ad.getLocalId())
+                    .compose(RxResponse.<String>compatT())
+                    .subscribe(new ApiObserver<String>() {
+                        @Override
+                        public void onNext(@NonNull String data) {
+                            Intent intent = new Intent(activity, WebViewActivity.class);
+                            intent.putExtra("webViewUrl", data);
+                            intent.putExtra("webViewTitleName", ad.getTitle());
+                            startActivity(intent);
+                        }
+                    });
+        }
     }
 
     private TabHomeFragment tabHome;
-    private TabLoanFragment tabDiscover;
+    private TabLoanFragment tabLoan;
     private SocialRecomFragment tabSocial;
     private ToolFragment tabTool;
     private PersonalFragment tabMine;
@@ -330,9 +332,9 @@ public class MainActivity extends BaseComponentActivity {
             tabHome = TabHomeFragment.newInstance();
             ft.add(R.id.tab_fragment, tabHome).hide(tabHome);
         }
-        if (tabDiscover == null) {
-            tabDiscover = TabLoanFragment.newInstance();
-            ft.add(R.id.tab_fragment, tabDiscover).hide(tabDiscover);
+        if (tabLoan == null) {
+            tabLoan = TabLoanFragment.newInstance();
+            ft.add(R.id.tab_fragment, tabLoan).hide(tabLoan);
         }
         if (tabSocial == null) {
             tabSocial = SocialRecomFragment.newInstance();
@@ -347,37 +349,37 @@ public class MainActivity extends BaseComponentActivity {
             ft.add(R.id.tab_fragment, tabMine).hide(tabMine);
         }
         switch (id) {
-            case R.id.tab_bill_root://账单
-                ft.hide(tabDiscover).hide(tabSocial).hide(tabMine).show(tabHome).hide(tabTool);
+            case R.id.tab_bill_root://首页
+                ft.hide(tabLoan).hide(tabSocial).hide(tabMine).show(tabHome).hide(tabTool);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.REPORTBUTTON);
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.REPORTBUTTON);
                 currentFragment = tabHome;
                 break;
-            case R.id.tab_discover_root://发现
-                ft.show(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine).hide(tabSocial);
+            case R.id.tab_discover_root://贷超
+                ft.show(tabLoan).hide(tabHome).hide(tabTool).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
-                currentFragment = tabDiscover;
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
+                currentFragment = tabLoan;
                 break;
             case R.id.tab_three_root://社区
-                ft.show(tabSocial).hide(tabDiscover).hide(tabHome).hide(tabTool).hide(tabMine);
+                ft.show(tabSocial).hide(tabLoan).hide(tabHome).hide(tabTool).hide(tabMine);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
-                currentFragment = tabDiscover;
+                currentFragment = tabSocial;
                 break;
             case R.id.tab_social_root://工具
-                ft.show(tabTool).hide(tabHome).hide(tabDiscover).hide(tabMine).hide(tabSocial);
+                ft.show(tabTool).hide(tabHome).hide(tabLoan).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
-                currentFragment = tabDiscover;
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
+                currentFragment = tabTool;
                 break;
             case R.id.tab_mine_root://个人
-                ft.show(tabMine).hide(tabHome).hide(tabDiscover).hide(tabTool).hide(tabSocial);
+                ft.show(tabMine).hide(tabHome).hide(tabLoan).hide(tabTool).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.DISCOVERBUTTON);
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 currentFragment = tabMine;
                 break;
             default:

@@ -14,7 +14,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.entity.Bill;
 import com.beiwo.klyjaz.entity.BillState;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.MoxieUtil;
@@ -155,7 +155,7 @@ public class BillListAdapter extends BaseQuickAdapter<Bill, BaseViewHolder> {
                         switch (v.getId()) {
                             case R.id.confirm:
                                 //pv，uv统计
-                                DataStatisticsHelper.getInstance(mActivity).onCountUv(DataStatisticsHelper.ID_SET_STATUS_PAID);
+                                DataHelper.getInstance(mActivity).onCountUv(DataHelper.ID_SET_STATUS_PAID);
                                 if (type == 2) {//信用卡记账
                                     Api.getInstance().updateCreditCardBillStatus(userHelper.id(), billId, 2)
                                             .compose(RxResponse.compatO())

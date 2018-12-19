@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.util;
 
+import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -12,8 +13,6 @@ import android.view.animation.TranslateAnimation;
  * @time 2018/12/11 9:39
  */
 public class AnimationUtil {
-
-    private boolean ismHiddenActionstart = false;
     private static AnimationUtil mInstance;
 
     public static AnimationUtil with() {
@@ -31,54 +30,19 @@ public class AnimationUtil {
      * 从控件所在位置移动到控件的底部
      *
      * @param v
-     * @param Duration 动画时间
+     * @param duration 动画时间
      */
-    public void moveToViewBottom(final View v, long Duration) {
-        if (v.getVisibility() != View.VISIBLE)
-            return;
-        if (ismHiddenActionstart)
-            return;
-        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        mHiddenAction.setDuration(Duration);
-        v.clearAnimation();
-        v.setAnimation(mHiddenAction);
-        mHiddenAction.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                ismHiddenActionstart = true;
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                v.setVisibility(View.GONE);
-                ismHiddenActionstart = false;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+    public void moveToViewBottom(final View v, long duration) {
+        ObjectAnimator.ofFloat(v, "translationX", 0f, v.getMeasuredWidth()).setDuration(duration).start();
     }
 
     /**
      * 从控件的底部移动到控件所在位置
      *
      * @param v
-     * @param Duration 动画时间
+     * @param duration 动画时间
      */
-    public void bottomMoveToViewLocation(View v, long Duration) {
-        if (v.getVisibility() == View.VISIBLE)
-            return;
-        v.setVisibility(View.VISIBLE);
-        TranslateAnimation mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        mShowAction.setDuration(Duration);
-        v.clearAnimation();
-        v.setAnimation(mShowAction);
+    public void bottomMoveToViewLocation(View v, long duration) {
+        ObjectAnimator.ofFloat(v, "translationX", v.getMeasuredWidth(), 0f).setDuration(duration).start();
     }
-
 }

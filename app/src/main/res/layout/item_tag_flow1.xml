@@ -4,9 +4,7 @@
     android:layout_marginLeft="@dimen/dp10"
     android:layout_marginTop="10dp"
     android:background="@drawable/round_rectangle_bg"
-    android:text="放款成功"
     android:gravity="center"
-    android:textSize="@dimen/dp12"
+    android:text="放款成功"
     android:textColor="@color/normal_text_color"
-    >
-</TextView>
+    android:textSize="@dimen/dp12" />

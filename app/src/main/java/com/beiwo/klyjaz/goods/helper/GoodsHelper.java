@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
+import com.beiwo.klyjaz.goods.TagUtil;
 import com.beiwo.klyjaz.goods.adapter.GoodsEvaluateAdapter;
 import com.beiwo.klyjaz.social.activity.PhotoDetailActivity;
 import com.beiwo.klyjaz.social.utils.InputFilterUtils;
@@ -39,7 +40,7 @@ import butterknife.ButterKnife;
  * @descripe
  * @time 2018/12/11 12:04
  */
-public class GoodsHelper implements View.OnClickListener,TextWatcher {
+public class GoodsHelper implements View.OnClickListener, TextWatcher {
 
     @BindView(R.id.eva_type_container01)
     View evaTypeContainer01;
@@ -106,6 +107,7 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     /**
      * 装载综合评价部分View
+     *
      * @param container
      * @return
      */
@@ -135,22 +137,23 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     /**
      * 获取评价类型
+     *
      * @return 评价类型
      */
-    public int getType(){
+    public int getType() {
         return type;
     }
 
     /**
      * 获取是否借到状态
+     *
      * @return 借到状态
      */
     public int getLoanStatus() {
-
-        for(Integer position:tagFlow01.getSelectedList()){
+        for (Integer position : tagFlow01.getSelectedList()) {
             loanStatus = position + 1;
         }
-        if(tagFlow01.getSelectedList().size() == 0){
+        if (tagFlow01.getSelectedList().size() == 0) {
             loanStatus = 0;
         }
         return loanStatus;
@@ -159,6 +162,7 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     /**
      * 加载产品印象View
+     *
      * @param container
      * @return
      */
@@ -201,18 +205,18 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, PhotoDetailActivity.class);
                 intent.putStringArrayListExtra("datas", (ArrayList<String>) photos);
-                intent.putExtra("position",position);
+                intent.putExtra("position", position);
                 mContext.startActivity(intent);
             }
         });
         photoAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.iv_delete:
                         photos.remove(position);
                         photoAdapter.setNewData(photos);
-                        if(hasFoot == 0) {
+                        if (hasFoot == 0) {
                             photoAdapter.addFooterView(initFoot());
                             hasFoot = 1;
                         }
@@ -224,6 +228,7 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     /**
      * 装载图片列表的加号布局
+     *
      * @return
      */
     private View initFoot() {
@@ -249,17 +254,17 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
     /**
      * 获取产品印象
      */
-    public String getFlag(){
+    public String getFlag() {
         flag.setLength(0);
         List<Integer> index = new ArrayList<>();
-        for(Integer position:tagFlow02.getSelectedList()){
+        for (Integer position : tagFlow02.getSelectedList()) {
             index.add(position);
         }
-        for(int i = 0;i<index.size();i++){
-            if(i == index.size() - 1){
-                flag.append(m2Vals[i]);
-            }else{
-                flag.append(m2Vals[i]).append(",");
+        for (int i = 0; i < index.size(); i++) {
+            if (i == index.size() - 1) {
+                flag.append(TagUtil.getValByKey(m2Vals[i]));
+            } else {
+                flag.append(TagUtil.getValByKey(m2Vals[i])).append(",");
             }
         }
         return flag.toString();
@@ -267,9 +272,10 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     /**
      * 获取评论内容
+     *
      * @return
      */
-    public String getContent(){
+    public String getContent() {
         return etInput.getText().toString();
     }
 
@@ -289,25 +295,26 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
 
     /**
      * 设置本地图片数据
+     *
      * @param list
      */
     public void setPhotos(List<String> list) {
         this.photos.addAll(list);
         photoAdapter.setNewData(photos);
         photoAdapter.notifyDataSetChanged();
-        if(photos.size() >= 4){
+        if (photos.size() >= 4) {
             photoAdapter.removeAllFooterView();
             hasFoot = 0;
         }
     }
 
-    public int getListSize(){
+    public int getListSize() {
         return photos.size();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.eva_type_container01:
                 clearState();
                 ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_selected);
@@ -329,15 +336,15 @@ public class GoodsHelper implements View.OnClickListener,TextWatcher {
             case R.id.tv_evaluate:
                 ToastUtil.toast(getFlag());
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
     /**
      * 清除评价选中状态
      */
-    private void clearState(){
+    private void clearState() {
         ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_unselected);
         ivEva02.setBackgroundResource(R.drawable.icon_goods_com_unselected);
         ivEva03.setBackgroundResource(R.drawable.icon_goods_neg_unselected);

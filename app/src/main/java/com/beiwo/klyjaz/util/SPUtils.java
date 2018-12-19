@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.beiwo.klyjaz.App;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 
 public class SPUtils {
     private static final String TAG = "Info";
@@ -13,6 +13,18 @@ public class SPUtils {
     public static long getLastAdShowTime() {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         return sp.getLong("lastAdShowTime", 0);
+    }
+
+    public static void setLastActName(String name) {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("last_act_name", name);
+        editor.apply();
+    }
+
+    public static String getLastActName() {
+        SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        return sp.getString("last_act_name", "");
     }
 
     public static void setLastAdShowTime(long showTime) {
@@ -48,13 +60,13 @@ public class SPUtils {
 
     public static boolean getFirstInstall() {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        return sp.getBoolean(DataStatisticsHelper.ID_FIRST_INSTALL, true);
+        return sp.getBoolean(DataHelper.ID_FIRST_INSTALL, true);
     }
 
     public static void setFirstInstall(boolean first) {
         SharedPreferences sp = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(DataStatisticsHelper.ID_FIRST_INSTALL, first);
+        editor.putBoolean(DataHelper.ID_FIRST_INSTALL, first);
         editor.apply();
     }
 

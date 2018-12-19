@@ -29,6 +29,22 @@ public class TagUtil {
         return map;
     }
 
+
+    private static Map<String, String> mapValue2Key() {
+        Map<String, String> map = new HashMap<>();
+        map.put("放款快", "QuickLoan");
+        map.put("额度高", "HighLoan");
+        map.put("门槛低", "LowThreshold");
+        map.put("手续方便", "ConvenientProcedure");
+        map.put("无需抵押", "NoMortgageRequired");
+        map.put("不上征信", "NoCredit");
+        map.put("审批及时", "AuditTimely");
+        map.put("过审高", "HeightPass");
+        map.put("用户体验好", "GoodExperience");
+        map.put("大平台", "LargePlatform");
+        return map;
+    }
+
     private static Map<String, String> mapWithNum() {
         Map<String, String> map = new HashMap<>();
         map.put("QuickLoan", "放款快 (%d)");
@@ -50,5 +66,9 @@ public class TagUtil {
         } else {
             return mapWithoutNum().get(key);
         }
+    }
+
+    public static String getValByKey(String value) {
+        return mapValue2Key().get(value);
     }
 }

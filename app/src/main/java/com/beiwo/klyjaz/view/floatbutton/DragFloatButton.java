@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
  * @time 2018/12/10 18:01
  */
 public class DragFloatButton extends BaseDragFloatActionButton {
-
     private ImageView ivFloat;
 
     public DragFloatButton(Context context) {

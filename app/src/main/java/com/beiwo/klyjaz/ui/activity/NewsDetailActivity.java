@@ -17,7 +17,7 @@ import com.beiwo.klyjaz.api.NetConstants;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.HotNews;
 import com.beiwo.klyjaz.entity.News;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
@@ -53,7 +53,7 @@ public class NewsDetailActivity extends BaseComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //pv，uv统计
-        DataStatisticsHelper.getInstance(this).onCountUv(DataStatisticsHelper.ID_RESUME_NEWS);
+        DataHelper.getInstance(this).onCountUv(DataHelper.ID_RESUME_NEWS);
     }
 
     @Override

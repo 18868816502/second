@@ -37,17 +37,18 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
 
     public BaseDragFloatActionButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-
     }
 
     /**
      * 获取布局文件
+     *
      * @return
      */
     public abstract int getLayoutId();
 
     /**
      * 初始化那些布局
+     *
      * @param view
      */
     public abstract void initView(View view);
@@ -81,7 +82,7 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
         int rawY = (int) event.getRawY();
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                downTime=System.currentTimeMillis();
+                downTime = System.currentTimeMillis();
                 //默认是点击事件
                 setPressed(true);
                 //默认是非拖动而是点击事件
@@ -122,9 +123,9 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 //如果是拖动状态下即非点击按压事件
-                if(System.currentTimeMillis()-downTime<600){
+                if (System.currentTimeMillis() - downTime < 600) {
                     setPressed(true);
-                }else {
+                } else {
                     setPressed(!isDrag);
                 }
 //                if (rawX >= parentWidth / 2) {
@@ -140,7 +141,6 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
 //                    oa.setDuration(500);
 //                    oa.start();
 //                }
-
                 break;
             default:
                 break;
@@ -150,5 +150,4 @@ public abstract class BaseDragFloatActionButton extends RelativeLayout {
         //拖拽事件要自己消费
         return isDrag || super.onTouchEvent(event);
     }
-
 }

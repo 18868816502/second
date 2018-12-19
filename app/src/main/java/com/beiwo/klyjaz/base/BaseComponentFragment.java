@@ -26,7 +26,6 @@ public abstract class BaseComponentFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        configureComponent(App.getInstance().getAppComponent());
     }
 
     @Override
@@ -60,11 +59,7 @@ public abstract class BaseComponentFragment extends Fragment {
         if (unbinder != null) {
             unbinder.unbind();
         }
-        if (ApiObserver.disposables.size() > 0) {
-            for (Disposable disposable : ApiObserver.disposables) {
-                if (disposable != null && !disposable.isDisposed()) disposable.dispose();
-            }
-        }
+        ApiObserver.cancel();
         super.onDestroyView();
     }
 

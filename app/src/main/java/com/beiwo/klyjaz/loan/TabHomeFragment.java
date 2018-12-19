@@ -1,5 +1,6 @@
 package com.beiwo.klyjaz.loan;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,20 +14,18 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.NetConstants;
-import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.AdBanner;
 import com.beiwo.klyjaz.entity.FloatingBean;
 import com.beiwo.klyjaz.entity.Goods;
 import com.beiwo.klyjaz.entity.Product;
-import com.beiwo.klyjaz.goods.activity.GoodsListActivity;
-import com.beiwo.klyjaz.goods.activity.GoodsPublishCommentActivity;
+import com.beiwo.klyjaz.entity.UserProfileAbstract;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.jjd.bean.CashOrder;
 import com.beiwo.klyjaz.social.bean.IndexForum;
@@ -39,12 +38,8 @@ import com.beiwo.klyjaz.ui.activity.WebViewActivity;
 import com.beiwo.klyjaz.util.AnimationUtil;
 import com.beiwo.klyjaz.util.CommonUtils;
 import com.beiwo.klyjaz.util.DensityUtil;
-import com.beiwo.klyjaz.util.LogUtils;
 import com.beiwo.klyjaz.util.ParamsUtils;
-import com.beiwo.klyjaz.util.RxUtil;
-import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.floatbutton.DragFloatButton;
-import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -55,12 +50,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 /**
  * https://gitee.com/tangbuzhi
@@ -74,7 +69,6 @@ import io.reactivex.functions.Consumer;
  */
 
 public class TabHomeFragment extends BaseComponentFragment {
-
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refresh_layout;
     @BindView(R.id.recycler)
@@ -105,14 +99,17 @@ public class TabHomeFragment extends BaseComponentFragment {
             @Override
             public void onClick(View v) {
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    DlgUtil.loginDlg(getActivity(), null);
+                    DlgUtil.loginDlg(getActivity(), new DlgUtil.OnLoginSuccessListener() {
+                        @Override
+                        public void success(UserProfileAbstract data) {
+                            clickDragFloat();
+                        }
+                    });
                     return;
                 }
                 clickDragFloat();
-
             }
         });
-
         initRecycler();
         request();
     }
@@ -133,7 +130,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                                             public void onNext(@NonNull String data) {
                                                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
                                                 intent.putExtra("webViewUrl", data);
-//                                                        intent.putExtra("webViewTitleName", name);
+                                                intent.putExtra("webViewTitleName", floatingBean.getTitle());
                                                 startActivity(intent);
                                             }
                                         });
@@ -141,7 +138,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                             } else {
                                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
                                 intent.putExtra("webViewUrl", data.getUrl());
-//                                        intent.putExtra("webViewTitleName", name);
+                                intent.putExtra("webViewTitleName", floatingBean.getTitle());
                                 startActivity(intent);
                             }
                         }
@@ -149,6 +146,7 @@ public class TabHomeFragment extends BaseComponentFragment {
                 });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initRecycler() {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setItemAnimator(new DefaultItemAnimator());
@@ -171,7 +169,7 @@ public class TabHomeFragment extends BaseComponentFragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (recyclerView.getScrollState() == SCROLL_STATE_IDLE) {
                     AnimationUtil.with().bottomMoveToViewLocation(floatButton, 500);
                 } else {
                     AnimationUtil.with().moveToViewBottom(floatButton, 500);
@@ -281,11 +279,33 @@ public class TabHomeFragment extends BaseComponentFragment {
         } else homeAdapter.setStateNormal();
     }
 
+    private long nao;
+    private boolean viewVisible;
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        viewVisible = hidden;
         if (!hidden) {
-            recycler.smoothScrollToPosition(0);
+            nao = System.currentTimeMillis();
+        } else {
+            if (viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_HOMEPAGE, "", System.currentTimeMillis() - nao);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        nao = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+            DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_HOMEPAGE, "", System.currentTimeMillis() - nao);
         }
     }
 

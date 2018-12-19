@@ -22,7 +22,7 @@ import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.api.ResultEntity;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.UserProfileAbstract;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumPublishActivity;
 import com.beiwo.klyjaz.social.bean.SocialTopicBean;
@@ -175,7 +175,7 @@ public class SocialRecommendFragment extends BaseComponentFragment implements On
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.iv_publish:
-                DataStatisticsHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
+                DataHelper.getInstance(getActivity()).onCountUvPv(NewVersionEvents.COMMUNITY_PUBLISH_PAGE, "");
                 if (UserHelper.getInstance(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), ForumPublishActivity.class));
                 } else {

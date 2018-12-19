@@ -26,7 +26,7 @@ import com.beiwo.klyjaz.base.BaseComponentActivity;
 import com.beiwo.klyjaz.entity.LoanProduct;
 import com.beiwo.klyjaz.entity.LoanProductDetail;
 import com.beiwo.klyjaz.entity.ThirdAuthorization;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.SlidePanelHelper;
 import com.beiwo.klyjaz.ui.contract.LoanProductDetailContract;
 import com.beiwo.klyjaz.ui.dialog.ShareDialog;
@@ -150,7 +150,7 @@ public class LoanDetailActivity extends BaseComponentActivity implements LoanPro
             public void onClick(View v) {
                 if (!FastClickUtils.isFastClick()) {
                     //pv，uv统计
-                    DataStatisticsHelper.getInstance(LoanDetailActivity.this).onCountUv(DataStatisticsHelper.ID_CLICK_LOAN_REQUESTED);
+                    DataHelper.getInstance(LoanDetailActivity.this).onCountUv(DataHelper.ID_CLICK_LOAN_REQUESTED);
                     presenter.clickLoanRequested();
                 }
             }

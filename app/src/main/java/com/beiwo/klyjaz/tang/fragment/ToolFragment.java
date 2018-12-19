@@ -13,6 +13,7 @@ import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.api.Api;
 import com.beiwo.klyjaz.base.BaseComponentFragment;
 import com.beiwo.klyjaz.entity.HomeData;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.loan.BillListActivity;
 import com.beiwo.klyjaz.tang.DlgUtil;
@@ -135,6 +136,36 @@ public class ToolFragment extends BaseComponentFragment {
         }
     }
 
+    private long nao;
+    private boolean viewVisible;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        viewVisible = hidden;
+        if (!hidden) {
+            nao = System.currentTimeMillis();
+        } else {
+            if (viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_TOOLHOMEPAGE, "", System.currentTimeMillis() - nao);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        nao = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
+            DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_TOOLHOMEPAGE, "", System.currentTimeMillis() - nao);
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -150,52 +181,49 @@ public class ToolFragment extends BaseComponentFragment {
             R.id.fl_credit_wrap, R.id.tv_bill_detail, R.id.iv_bill_visible})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.clb_credit_wrap:
+            case R.id.clb_credit_wrap://信用查询
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_TOOLHOMEPAGE, DataHelper.EVENT_EVENTID_CREDITINQUIRY, 0);
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), CreditQueryActivity.class));
                 break;
-            case R.id.clb_interest_wrap:
+            case R.id.clb_interest_wrap://房贷计算器
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_TOOLHOMEPAGE, DataHelper.EVENT_EVENTID_MORTGAGECALCULATOR, 0);
                 startActivity(new Intent(getActivity(), HouseLoanCalculatorActivity.class));
                 break;
-            case R.id.clb_ticket_wrap:
+            case R.id.clb_ticket_wrap://发票助手
+                DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_CLICK, DataHelper.EVENT_VIEWID_TOOLHOMEPAGE, DataHelper.EVENT_EVENTID_INVOICEASSISTANT, 0);
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), TicketActivity.class));
                 break;
-            case R.id.fl_add_bill_wrap:
+            case R.id.fl_add_bill_wrap://记一笔
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), LoanBillActivity.class));
                 break;
-            case R.id.fl_credit_wrap:
+            case R.id.fl_credit_wrap://导入信用卡
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), CreditBillActivity.class));
                 break;
-            case R.id.tv_bill_detail:
+            case R.id.tv_bill_detail://账单首页
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }
                 startActivity(new Intent(getActivity(), BillListActivity.class));
                 break;
-            case R.id.iv_bill_visible:
+            case R.id.iv_bill_visible://金额是否可见
                 if (!UserHelper.getInstance(getActivity()).isLogin()) {
-                    //UserAuthorizationActivity.launch(getActivity());
                     DlgUtil.loginDlg(getActivity(), null);
                     return;
                 }

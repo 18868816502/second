@@ -20,22 +20,17 @@ import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
 import com.beiwo.klyjaz.base.BaseComponentActivity;
-import com.beiwo.klyjaz.entity.AdBanner;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.updatehelper.AppUpdateHelper;
 import com.beiwo.klyjaz.scdk.fragment.LoanFragment;
 import com.beiwo.klyjaz.tang.fragment.SocialRecomFragment;
 import com.beiwo.klyjaz.tang.fragment.ToolFragment;
-import com.beiwo.klyjaz.ui.busevents.UserLoginWithPendingTaskEvent;
 import com.beiwo.klyjaz.ui.fragment.PersonalFragment;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
 import com.beiwo.klyjaz.util.SPUtils;
 import com.beiwo.klyjaz.util.ToastUtil;
 import com.beiwo.klyjaz.view.BottomNavigationBar;
 import com.gyf.barlibrary.ImmersionBar;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +164,6 @@ public class VestMainActivity extends BaseComponentActivity {
     @Override
     protected void onDestroy() {
         updateHelper.destroy();
-        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -183,7 +177,6 @@ public class VestMainActivity extends BaseComponentActivity {
         iconView = new ImageView[]{tabBillIcon, tabSocialIcon, tabToosIcon, tabMineIcon};
         textView = new TextView[]{tabBillText, tabSocialText, tabToolsText, tabMineText};
         activity = this;
-        EventBus.getDefault().register(this);
         navigationBar.setOnSelectedChangedListener(new BottomNavigationBar.OnSelectedChangedListener() {
             @Override
             public void onSelected(int selectedId) {
@@ -191,7 +184,7 @@ public class VestMainActivity extends BaseComponentActivity {
                     selectTab(selectedId);
                     if (selectedId == R.id.tab_three_root) {
                         //pv，uv统计
-                        DataStatisticsHelper.getInstance(VestMainActivity.this).onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
+                        DataHelper.getInstance(VestMainActivity.this).onCountUvPv(NewVersionEvents.COMMUNITY_RECOMMEND_PAGE, "");
                     }
                 }
             }
@@ -202,33 +195,6 @@ public class VestMainActivity extends BaseComponentActivity {
     public void initDatas() {
         checkPermission();
         defaultTabIconTxt();
-    }
-
-    /**
-     * 点击广告要求登录，登录成功之后收到事件完成后续动作
-     * 事件由UserAuthorizationActivity发出
-     */
-    @Subscribe
-    public void onLoginWithPendingTask(UserLoginWithPendingTaskEvent event) {
-        final AdBanner ad = event.adBanner;
-        navigationBar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //跳Native还是跳Web
-                if (ad.isNative()) {
-                    Intent intent = new Intent(activity, LoanDetailActivity.class);
-                    intent.putExtra("loanId", ad.getLocalId());
-                    intent.putExtra("loanName", ad.getTitle());
-                    startActivity(intent);
-                } else if (!TextUtils.isEmpty(ad.getUrl())) {
-                    //跳转网页时，url不为空情况下才跳转
-                    Intent intent = new Intent(activity, ComWebViewActivity.class);
-                    intent.putExtra("url", ad.getUrl());
-                    intent.putExtra("title", ad.getTitle());
-                    startActivity(intent);
-                }
-            }
-        }, 400);
     }
 
     public void switchTab() {
@@ -267,7 +233,7 @@ public class VestMainActivity extends BaseComponentActivity {
                 ft.hide(tabMine).hide(tabSocial).hide(tabTool).show(tabHome);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.REPORTBUTTON);
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.REPORTBUTTON);
                 break;
             case R.id.tab_three_root://社区
                 ft.show(tabSocial).hide(tabHome).hide(tabTool).hide(tabMine);
@@ -277,13 +243,13 @@ public class VestMainActivity extends BaseComponentActivity {
                 ft.show(tabTool).hide(tabHome).hide(tabMine).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(false).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.HPTALLY);
                 break;
             case R.id.tab_mine_root://个人
                 ft.show(tabMine).hide(tabHome).hide(tabTool).hide(tabSocial);
                 ImmersionBar.with(this).statusBarDarkFont(true).init();
                 //pv，uv统计
-                DataStatisticsHelper.getInstance(this).onCountUv(NewVersionEvents.DISCOVERBUTTON);
+                DataHelper.getInstance(this).onCountUv(NewVersionEvents.DISCOVERBUTTON);
                 break;
             default:
                 break;

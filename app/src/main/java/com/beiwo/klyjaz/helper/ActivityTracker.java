@@ -4,12 +4,18 @@ package com.beiwo.klyjaz.helper;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.text.TextUtils;
+
+import com.beiwo.klyjaz.loan.ProTypeActivity;
+import com.beiwo.klyjaz.ui.activity.MainActivity;
+import com.beiwo.klyjaz.util.SPUtils;
 
 import java.util.LinkedList;
 
 public class ActivityTracker implements Application.ActivityLifecycleCallbacks {
     private static ActivityTracker sInstance;
-    private LinkedList<Activity> activityLink;
+    private LinkedList<Activity> activities;
+    private int actSize;
 
     private ActivityTracker() {
     }
@@ -27,23 +33,22 @@ public class ActivityTracker implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        if (activityLink == null) {
-            activityLink = new LinkedList<>();
-        }
-        activityLink.add(activity);
+        if (activities == null) activities = new LinkedList<>();
+        activities.add(activity);
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
+        actSize++;
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
         //use this lifecycle callback to maintain activity active link since activity'destroy may not response
         //immediately, producing wrong last activity exception as it id not removed as quickly as we excepted
-        int index = activityLink.indexOf(activity);
-        for (int i = activityLink.size() - 1; i > index; --i) {
-            activityLink.remove(i);
+        int index = activities.indexOf(activity);
+        for (int i = activities.size() - 1; i > index; --i) {
+            activities.remove(i);
         }
     }
 
@@ -53,6 +58,8 @@ public class ActivityTracker implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityStopped(Activity activity) {
+        --actSize;
+        if (actSize <= 0) saveLastName();
     }
 
     @Override
@@ -61,21 +68,47 @@ public class ActivityTracker implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        if (activityLink != null && activityLink.contains(activity)) {
-            activityLink.remove(activity);
+        if (activities != null && activities.contains(activity)) {
+            activities.remove(activity);
         }
     }
 
     public Activity getLastActivity() {
-        if (activityLink != null && activityLink.size() >= 2) {
-            return activityLink.get(activityLink.size() - 2);
+        if (activities != null && activities.size() >= 2) {
+            return activities.get(activities.size() - 2);
+        }
+        return null;
+    }
+
+    public Activity getTopActivity() {
+        if (activities != null && activities.size() > 0) {
+            return activities.get(activities.size() - 1);
         }
         return null;
     }
 
     public void removeTrackImmediately(Activity activity) {
-        if (activityLink != null && activityLink.contains(activity)) {
-            activityLink.remove(activity);
+        if (activities != null && activities.contains(activity)) {
+            activities.remove(activity);
+        }
+    }
+
+    private void saveLastName() {
+        try {
+            String name = getTopActivity().getClass().getSimpleName();
+            if (TextUtils.equals("MainActivity", name)) {
+                MainActivity activity = (MainActivity) ActivityTracker.getInstance().getTopActivity();
+                String fragmentName = activity.currentFragment.getClass().getSimpleName();
+                System.out.println("frg = " + fragmentName);
+                name = fragmentName;
+            } else if (TextUtils.equals("ProTypeActivity", name)) {
+                ProTypeActivity activity = (ProTypeActivity) ActivityTracker.getInstance().getTopActivity();
+                int type = activity.productType;
+                name = "ProTypeActivity" + type;
+            }
+            SPUtils.setLastActName(name);
+            System.out.println("last = " + name);
+        } catch (Exception e) {
         }
     }
 }

@@ -15,11 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beiwo.klyjaz.R;
-import com.beiwo.klyjaz.helper.DataStatisticsHelper;
+import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;
 import com.beiwo.klyjaz.social.activity.ForumDetailActivity;
 import com.beiwo.klyjaz.social.bean.ForumBean;
-import com.beiwo.klyjaz.social.bean.SocialTopicBean;
 import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.ui.activity.PersonalCenterActivity;
 import com.beiwo.klyjaz.umeng.NewVersionEvents;
@@ -134,7 +133,7 @@ public class SocialRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DataStatisticsHelper.getInstance(mContext).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, datas.get((Integer) v.getTag()).getForumId());
+                    DataHelper.getInstance(mContext).onCountUvPv(NewVersionEvents.COMMUNITY_FORUM_HIT, datas.get((Integer) v.getTag()).getForumId());
                     boolean isLogin = UserHelper.getInstance(v.getContext()).isLogin();
 //                    Intent intent = new Intent(mContext, ArticleDetailActivity.class);
                     Intent intent = new Intent(mContext, ForumDetailActivity.class);

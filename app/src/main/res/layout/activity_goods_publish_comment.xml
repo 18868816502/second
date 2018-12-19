@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
@@ -39,49 +39,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dp21"
-                android:paddingBottom="@dimen/dp21">
+                android:paddingBottom="@dimen/dp21"
+                android:paddingTop="@dimen/dp21">
+
                 <com.beiwo.klyjaz.view.CircleImageView
                     android:id="@+id/iv_goods"
                     android:layout_width="@dimen/dp39"
                     android:layout_height="@dimen/dp39"
                     android:layout_marginLeft="@dimen/dp15"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
                 <TextView
                     android:id="@+id/tv_goods_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp10"
-                    app:layout_constraintLeft_toRightOf="@id/iv_goods"
                     android:text="水象分期"
                     android:textColor="@color/black_1"
                     android:textSize="@dimen/dp14"
-                    app:layout_constraintTop_toTopOf="@id/iv_goods"/>
+                    app:layout_constraintLeft_toRightOf="@id/iv_goods"
+                    app:layout_constraintTop_toTopOf="@id/iv_goods" />
+
                 <TextView
                     android:id="@+id/tv_goods_descripe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp10"
                     android:layout_marginTop="@dimen/dp2"
-                    app:layout_constraintLeft_toRightOf="@id/iv_goods"
-                    app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_goods"
+                    android:lineSpacingExtra="3.5dp"
+                    android:paddingRight="15dp"
                     android:text="额度：1000-3000元 期限：7-14天 日息：0.3%"
                     android:textColor="@color/black_2"
-                    android:textSize="@dimen/dp11"/>
+                    android:textSize="@dimen/dp11"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_goods"
+                    app:layout_constraintLeft_toRightOf="@id/iv_goods"
+                    app:layout_constraintTop_toBottomOf="@id/tv_goods_title" />
             </android.support.constraint.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp10"
-                android:background="@color/c_fffafafa"/>
-
+                android:background="@color/c_fffafafa" />
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
-
 </LinearLayout>
