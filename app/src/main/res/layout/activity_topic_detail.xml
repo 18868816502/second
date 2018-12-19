@@ -25,6 +25,8 @@
                     android:id="@+id/ctl_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:collapsedTitleTextAppearance="@style/coll_txt_style"
+                    app:expandedTitleTextAppearance="@style/expand_txt_style"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <LinearLayout

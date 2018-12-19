@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -112,8 +113,8 @@ public class TopicDetailActivity extends BaseComponentActivity {
         ImmersionBar.with(this).statusBarDarkFont(false).init();
         SlidePanelHelper.attach(this);
         topicId = getIntent().getStringExtra("topicId");
-        ctl_title.setExpandedTitleColor(Color.WHITE);
-        ctl_title.setCollapsedTitleTextColor(Color.WHITE);
+
+        //ctl_title
         request();
         initAdapter();
         initIndicator();
@@ -139,7 +140,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (nao != 0 &&System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+        if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
             DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_TOPICDETAILPAGE, "", System.currentTimeMillis() - nao);
         }
     }
@@ -151,11 +152,11 @@ public class TopicDetailActivity extends BaseComponentActivity {
                     @Override
                     public void onNext(TopicDetail data) {
                         topicTitle = data.getTitle();
-                        ctl_title.setTitle(data.getTitle());
+                        ctl_title.setTitle("#" + data.getTitle() + "#");
                         ctl_title.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ctl_title.setExpandedTitleMarginBottom(expand_tv.getMeasuredHeight() + tv_join_num.getMeasuredHeight() + DensityUtil.dp2px(context, 100f));
+                                ctl_title.setExpandedTitleMarginBottom(expand_tv.getMeasuredHeight() + tv_join_num.getMeasuredHeight() + DensityUtil.dp2px(context, 80f));
                             }
                         }, 150);
                         Glide.with(context).load(data.getImgUrl()).into(iv_topic_head);
@@ -197,7 +198,7 @@ public class TopicDetailActivity extends BaseComponentActivity {
                 ctl_title.post(new Runnable() {
                     @Override
                     public void run() {
-                        ctl_title.setExpandedTitleMarginBottom(expand_tv.getMeasuredHeight() + tv_join_num.getMeasuredHeight() + DensityUtil.dp2px(context, 100f));
+                        ctl_title.setExpandedTitleMarginBottom(expand_tv.getMeasuredHeight() + tv_join_num.getMeasuredHeight() + DensityUtil.dp2px(context, 80f));
                     }
                 });
             }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_hot_item_wrap"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="50dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="15dp"

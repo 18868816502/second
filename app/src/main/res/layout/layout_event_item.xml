@@ -63,12 +63,12 @@
             android:layout_weight="1" />
 
         <TextView
-            android:layout_width="35dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="13dp"
             android:background="@drawable/bg_stroke_line"
             android:gravity="center"
             android:text="活动"
-            android:textColor="@color/black_2"
-            android:textSize="10dp" />
+            android:textColor="#d3d4d5"
+            android:textSize="9dp" />
     </LinearLayout>
 </LinearLayout>

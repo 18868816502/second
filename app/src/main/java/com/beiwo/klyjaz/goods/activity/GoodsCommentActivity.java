@@ -12,6 +12,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -114,10 +115,10 @@ public class GoodsCommentActivity extends BaseComponentActivity {
                         toolbar_title.setText(convert(title, name.length() + 1));
 
                         tabs.clear();
-                        tabs.add(convert(String.format(getString(R.string.all_comment), data.getCommentCount()), 3));
-                        tabs.add(convert(String.format(getString(R.string.good_comment), data.getGoodCommentCount()), 3));
-                        tabs.add(convert(String.format(getString(R.string.mid_comment), data.getMinCommentCount()), 3));
-                        tabs.add(convert(String.format(getString(R.string.bad_comment), data.getBadCommentCount()), 3));
+                        tabs.add(convert(String.format(getString(R.string.all_comment), data.getCommentCount()), 2));
+                        tabs.add(convert(String.format(getString(R.string.good_comment), data.getGoodCommentCount()), 2));
+                        tabs.add(convert(String.format(getString(R.string.mid_comment), data.getMinCommentCount()), 2));
+                        tabs.add(convert(String.format(getString(R.string.bad_comment), data.getBadCommentCount()), 2));
                         initIndicator();
                         initAdapter();
                     }
@@ -206,7 +207,9 @@ public class GoodsCommentActivity extends BaseComponentActivity {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
-                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                linePagerIndicator.setLineWidth(DensityUtil.dp2px(context, 28f));
+                linePagerIndicator.setLineHeight(DensityUtil.dp2px(context, 1.2f));
                 linePagerIndicator.setColors(ContextCompat.getColor(context, R.color.white));
                 return linePagerIndicator;
             }

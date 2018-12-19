@@ -321,8 +321,14 @@ public class SocialRecomFragment extends BaseComponentFragment {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = spanSpec / 3;
-                outRect.bottom = spanSpec / 3;
+                int position = parent.getChildAdapterPosition(view);
+                if (position == 0 || position == 1) {
+                    outRect.top = spanSpec / 3 * 2;
+                    outRect.bottom = spanSpec / 3;
+                } else {
+                    outRect.top = spanSpec / 3;
+                    outRect.bottom = spanSpec / 3;
+                }
                 StaggeredGridLayoutManager.LayoutParams params =
                         (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
                 if (params.getSpanIndex() % 2 == 0) {//span left
@@ -341,7 +347,7 @@ public class SocialRecomFragment extends BaseComponentFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                iv_publish.setVisibility(dy > 0 ? View.VISIBLE : View.GONE);
+                iv_publish.setVisibility(dy < 0 ? View.VISIBLE : View.GONE);
             }
         });
     }

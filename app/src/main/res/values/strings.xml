@@ -252,8 +252,8 @@
     <string name="loan_comment_num">%d条评价</string>
     <!--口子详情-->
     <string name="comment_all">(%d)</string>
-    <string name="all_comment">全部 (%d)</string>
-    <string name="good_comment">好评 (%d)</string>
-    <string name="mid_comment">中评 (%d)</string>
-    <string name="bad_comment">差评 (%d)</string>
+    <string name="all_comment">全部(%d)</string>
+    <string name="good_comment">好评(%d)</string>
+    <string name="mid_comment">中评(%d)</string>
+    <string name="bad_comment">差评(%d)</string>
 </resources>

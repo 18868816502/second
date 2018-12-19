@@ -4,24 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="12dp"
-        android:background="@mipmap/home_borrow_bg"
+        android:layout_marginTop="5dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:text="借款金额(元)"
-            android:textColor="@color/black_1"
+            android:textColor="@color/black_2"
             android:textSize="11dp" />
 
         <LinearLayout
@@ -32,7 +32,8 @@
 
             <android.support.v4.widget.Space
                 android:layout_width="33dp"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:visibility="gone" />
 
             <com.beiwo.klyjaz.tang.widget.CustomNumTextView
                 android:id="@+id/tv_seekbar_progress"
@@ -46,7 +47,8 @@
 
             <android.support.v4.widget.Space
                 android:layout_width="8dp"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_edit_money"
@@ -54,14 +56,15 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:padding="6.5dp"
-                android:src="@drawable/ic_remark" />
+                android:src="@drawable/ic_remark"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -70,8 +73,8 @@
                 android:drawableLeft="@mipmap/home_icon_time"
                 android:drawablePadding="3dp"
                 android:text="借款30天"
-                android:textColor="#A5A9B2"
-                android:textSize="12dp" />
+                android:textColor="@color/black_2"
+                android:textSize="11dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,7 +83,7 @@
                 android:drawableLeft="@mipmap/home_icon_charge"
                 android:drawablePadding="3dp"
                 android:text="日息0.05%"
-                android:textColor="#A5A9B2"
+                android:textColor="@color/black_2"
                 android:textSize="12dp" />
 
             <TextView
@@ -106,12 +109,11 @@
 
     <TextView
         android:id="@+id/tv_go_loan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/home_btn"
+        android:layout_width="125dp"
+        android:layout_height="35dp"
+        android:background="@drawable/bg_refresh_r4"
         android:gravity="center"
-        android:paddingBottom="23dp"
         android:text="立即借钱"
         android:textColor="@color/white"
-        android:textSize="17dp" />
+        android:textSize="14dp" />
 </LinearLayout>

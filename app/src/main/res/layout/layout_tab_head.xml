@@ -9,7 +9,7 @@
     <com.beiwo.klyjaz.view.BannerLayout
         android:id="@+id/banner_layout"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="150dp"
         app:indicatorMargin="15dp"
         app:indicatorPosition="rightBottom"
         app:indicatorShape="oval_rect"

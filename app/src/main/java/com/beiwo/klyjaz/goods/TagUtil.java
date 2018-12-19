@@ -47,16 +47,16 @@ public class TagUtil {
 
     private static Map<String, String> mapWithNum() {
         Map<String, String> map = new HashMap<>();
-        map.put("QuickLoan", "放款快 (%d)");
-        map.put("HighLoan", "额度高 (%d)");
-        map.put("LowThreshold", "门槛低 (%d)");
-        map.put("ConvenientProcedure", "手续方便 (%d)");
-        map.put("NoMortgageRequired", "无需抵押 (%d)");
-        map.put("NoCredit", "不上征信 (%d)");
-        map.put("AuditTimely", "审批及时 (%d)");
-        map.put("HeightPass", "过审高 (%d)");
-        map.put("GoodExperience", "用户体验好 (%d)");
-        map.put("LargePlatform", "大平台 (%d)");
+        map.put("QuickLoan", "放款快(%d)");
+        map.put("HighLoan", "额度高(%d)");
+        map.put("LowThreshold", "门槛低(%d)");
+        map.put("ConvenientProcedure", "手续方便(%d)");
+        map.put("NoMortgageRequired", "无需抵押(%d)");
+        map.put("NoCredit", "不上征信(%d)");
+        map.put("AuditTimely", "审批及时(%d)");
+        map.put("HeightPass", "过审高(%d)");
+        map.put("GoodExperience", "用户体验好(%d)");
+        map.put("LargePlatform", "大平台(%d)");
         return map;
     }
 

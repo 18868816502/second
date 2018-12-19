@@ -288,6 +288,7 @@ public class TabHomeFragment extends BaseComponentFragment {
         viewVisible = hidden;
         if (!hidden) {
             nao = System.currentTimeMillis();
+            recycler.smoothScrollToPosition(0);
         } else {
             if (viewVisible && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < Integer.MAX_VALUE) {
                 DataHelper.getInstance(getActivity()).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_HOMEPAGE, "", System.currentTimeMillis() - nao);

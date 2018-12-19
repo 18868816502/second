@@ -10,6 +10,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -204,7 +205,7 @@ public class VestMainActivity extends BaseComponentActivity {
     }
 
     private LoanFragment tabHome;
-    public SocialRecomFragment tabSocial;
+    private SocialRecomFragment tabSocial;
     private ToolFragment tabTool;
     private PersonalFragment tabMine;
 

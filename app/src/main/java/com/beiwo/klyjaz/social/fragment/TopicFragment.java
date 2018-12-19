@@ -184,7 +184,8 @@ public class TopicFragment extends BaseComponentFragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setHasFixedSize(true);
         recycler.setItemAnimator(new DefaultItemAnimator());
-        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        /*DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        recycler.addItemDecoration(n);*/
         recycler.setAdapter(topicAdapter);
     }
 

@@ -41,7 +41,6 @@ import butterknife.ButterKnife;
  * @time 2018/12/11 12:04
  */
 public class GoodsHelper implements View.OnClickListener, TextWatcher {
-
     @BindView(R.id.eva_type_container01)
     View evaTypeContainer01;
     @BindView(R.id.iv_evaluate01)
@@ -63,7 +62,6 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
     @BindView(R.id.tag_flow_01)
     TagFlowLayout tagFlow01;
 
-
     private Context mContext;
     private View.OnClickListener mListener;
     private TagAdapter mAdapter;
@@ -80,23 +78,15 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
     private String[] m2Vals = {"放款快", "额度高", "门槛低", "手续方便", "无需抵押", "不上征信", "审批及时", "过审高", "用户体验好", "大平台"};
     private List<String> photos;
 
-    /**
-     * 评价类型
-     */
+    /*评价类型*/
     private int type = -2;
-    /**
-     * 是否借到
-     */
+    /*是否借到*/
     private int loanStatus = 0;
 
-    /**
-     * 产品印象
-     */
+    /*产品印象*/
     private StringBuilder flag;
 
-    /**
-     * 本地图片选择是否有footer
-     */
+    /*本地图片选择是否有footer*/
     private int hasFoot = 1;
 
     public GoodsHelper(Context mContext, View.OnClickListener listener) {
@@ -121,9 +111,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         return view;
     }
 
-    /**
-     * 初始化流式布局（是否借到）
-     */
+    /*初始化流式布局(是否借到)*/
     private void initFlow01Data() {
         tagFlow01.setAdapter(mAdapter = new TagAdapter<String>(mVals) {
             @Override
@@ -160,12 +148,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
     }
 
 
-    /**
-     * 加载产品印象View
-     *
-     * @param container
-     * @return
-     */
+    /*加载产品印象View*/
     public View init02Layout(ViewGroup container) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_goods_comment_3layout, container, false);
         init02View(view);
@@ -186,9 +169,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         bindRecyclerView();
     }
 
-    /**
-     * 绑定本地图片列表控件
-     */
+    /*绑定本地图片列表控件*/
     private void bindRecyclerView() {
         photoAdapter = new GoodsEvaluateAdapter();
         GridLayoutManager manager = new GridLayoutManager(mContext, 4);
@@ -199,7 +180,6 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         photoAdapter.addFooterView(initFoot());
         //设置尾部不占据一整行
         photoAdapter.setFooterViewAsFlow(true);
-//        photoAdapter.setOnItemChildClickListener(this);
         photoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -226,20 +206,14 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         });
     }
 
-    /**
-     * 装载图片列表的加号布局
-     *
-     * @return
-     */
+    /*装载图片列表的加号布局*/
     private View initFoot() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_goods_comment_photo_foot, recyclerView, false);
         view.setOnClickListener(mListener);
         return view;
     }
 
-    /**
-     * 初始化流式布局（产品印象）
-     */
+    /*初始化流式布局(产品印象)*/
     private void initFlow02Data() {
         tagFlow02.setAdapter(m2Adapter = new TagAdapter<String>(m2Vals) {
             @Override
@@ -251,9 +225,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         });
     }
 
-    /**
-     * 获取产品印象
-     */
+    /*获取产品印象*/
     public String getFlag() {
         flag.setLength(0);
         List<Integer> index = new ArrayList<>();
@@ -270,11 +242,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         return flag.toString();
     }
 
-    /**
-     * 获取评论内容
-     *
-     * @return
-     */
+    /*获取评论内容*/
     public String getContent() {
         return etInput.getText().toString();
     }
@@ -293,11 +261,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         return bitmaps;
     }
 
-    /**
-     * 设置本地图片数据
-     *
-     * @param list
-     */
+    /*设置本地图片数据*/
     public void setPhotos(List<String> list) {
         this.photos.addAll(list);
         photoAdapter.setNewData(photos);
@@ -341,9 +305,7 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         }
     }
 
-    /**
-     * 清除评价选中状态
-     */
+    /*清除评价选中状态*/
     private void clearState() {
         ivEva01.setBackgroundResource(R.drawable.icon_goods_pos_unselected);
         ivEva02.setBackgroundResource(R.drawable.icon_goods_com_unselected);
@@ -353,19 +315,17 @@ public class GoodsHelper implements View.OnClickListener, TextWatcher {
         tvEva03.setTextColor(mContext.getResources().getColor(R.color.black_2));
     }
 
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        tvCount.setText(String.valueOf(s.length()));
+        tvCount.setText(String.valueOf(200 - s.length()));
+        //tvCount.setText(String.valueOf(s.length()));
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 }

@@ -84,7 +84,7 @@ public class GoodsPublishCommentActivity extends BaseComponentActivity implement
     @Override
     protected void onStop() {
         super.onStop();
-        if (nao != 0 &&System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
+        if (nao != 0 && System.currentTimeMillis() - nao > 500 && System.currentTimeMillis() - nao < DataHelper.MAX_SECOND) {
             DataHelper.getInstance(this).event(DataHelper.EVENT_TYPE_STAY, DataHelper.EVENT_VIEWID_LOANRECOMMENDPRODUCTPRAISE, "", System.currentTimeMillis() - nao);
         }
     }

@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.beiwo.klyjaz.base.Constant;
+import com.beiwo.klyjaz.goods.ExitPageUtil;
 import com.beiwo.klyjaz.helper.ActivityTracker;
 import com.beiwo.klyjaz.helper.DataHelper;
 import com.beiwo.klyjaz.helper.UserHelper;

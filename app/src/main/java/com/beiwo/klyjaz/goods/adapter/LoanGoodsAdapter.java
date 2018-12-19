@@ -2,6 +2,7 @@ package com.beiwo.klyjaz.goods.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.beiwo.klyjaz.tang.DlgUtil;
 import com.beiwo.klyjaz.tang.rx.RxResponse;
 import com.beiwo.klyjaz.tang.rx.observer.ApiObserver;
 import com.beiwo.klyjaz.ui.activity.WebViewActivity;
+import com.beiwo.klyjaz.util.DensityUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -97,6 +99,23 @@ public class LoanGoodsAdapter extends RecyclerView.Adapter<LoanGoodsAdapter.View
         if (holder.viewType == TYPE_TODAY_RECOM) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            if (holder.recycler_today_recom.getPaddingLeft() <= 0) {
+                holder.recycler_today_recom.addItemDecoration(new RecyclerView.ItemDecoration() {
+                    @Override
+                    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                        super.getItemOffsets(outRect, view, parent, state);
+                        if (parent.getChildAdapterPosition(view) == todayRecomData.size() - 1) {
+                            outRect.right = DensityUtil.dp2px(context, 15f);
+                        } else if (parent.getChildAdapterPosition(view) == 0) {
+                            outRect.left = DensityUtil.dp2px(context, 15f);
+                            outRect.right = DensityUtil.dp2px(context, 12f);
+                        } else {
+                            outRect.right = DensityUtil.dp2px(context, 12f);
+                        }
+                    }
+                });
+            }
+
             initRecycler(holder.recycler_today_recom, linearLayoutManager, todayRecomAdapter);
             todayRecomAdapter.setNewData(todayRecomData);
             todayRecomAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
