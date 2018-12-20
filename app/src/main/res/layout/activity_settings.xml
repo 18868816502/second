@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.beiwo.klyjaz.view.RelativeLayoutBar
+            <com.beiwo.qnejqaz.view.RelativeLayoutBar
                 android:id="@+id/about_kaola"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -43,7 +43,7 @@
                 app:left_textView_text="关于考拉记账"
                 app:left_textView_textSize="15sp" />
 
-            <com.beiwo.klyjaz.view.RelativeLayoutBar
+            <com.beiwo.qnejqaz.view.RelativeLayoutBar
                 android:id="@+id/star_me"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -55,7 +55,7 @@
                 app:view_Visible="true"
                 app:view_margin_right="15" />
 
-            <com.beiwo.klyjaz.view.RelativeLayoutBar
+            <com.beiwo.qnejqaz.view.RelativeLayoutBar
                 android:id="@+id/clear_cache"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -69,7 +69,7 @@
                 app:view_Visible="true"
                 app:view_margin_right="15" />
 
-            <com.beiwo.klyjaz.view.RelativeLayoutBar
+            <com.beiwo.qnejqaz.view.RelativeLayoutBar
                 android:id="@+id/check_version"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

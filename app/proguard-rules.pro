@@ -91,10 +91,10 @@
    public static final int *;
 }
  #bean不被混淆
--keep class com.beiwo.klyjaz.entity.**{*;}
--keep class com.beiwo.klyjaz.social.bean.**{*;}
--keep class com.beiwo.klyjaz.jjd.bean.**{*;}
--keep class com.beiwo.klyjaz.api.ResultEntity{*;}
+-keep class com.beiwo.qnejqaz.entity.**{*;}
+-keep class com.beiwo.qnejqaz.social.bean.**{*;}
+-keep class com.beiwo.qnejqaz.jjd.bean.**{*;}
+-keep class com.beiwo.qnejqaz.api.ResultEntity{*;}
 # 小能
 -dontwarn cn.xiaoneng.**
 -dontwarn android.support.v4xn.**

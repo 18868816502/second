@@ -32,7 +32,7 @@
 
     <include layout="@layout/layout_header_system_message" />
 
-    <com.beiwo.klyjaz.view.StateLayout
+    <com.beiwo.qnejqaz.view.StateLayout
         android:id="@+id/state_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -42,12 +42,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.beiwo.klyjaz.view.SlideRecyclerView
+            <com.beiwo.qnejqaz.view.SlideRecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white" />
         </android.support.v4.widget.SwipeRefreshLayout>
-    </com.beiwo.klyjaz.view.StateLayout>
+    </com.beiwo.qnejqaz.view.StateLayout>
 
 </LinearLayout>

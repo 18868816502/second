@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.beiwo.klyjaz.view.pulltoswipe.PullToRefreshScrollLayout
+        <com.beiwo.qnejqaz.view.pulltoswipe.PullToRefreshScrollLayout
             android:id="@+id/prl_fg_tab_account_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -48,7 +48,7 @@
 
             <include layout="@layout/x_pull_to_refresh_head" />
 
-            <com.beiwo.klyjaz.view.pulltoswipe.PulledTabAccountRecyclerView
+            <com.beiwo.qnejqaz.view.pulltoswipe.PulledTabAccountRecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -57,7 +57,7 @@
                 android:splitMotionEvents="false" />
 
             <include layout="@layout/x_pull_to_refresh_load_more" />
-        </com.beiwo.klyjaz.view.pulltoswipe.PullToRefreshScrollLayout>
+        </com.beiwo.qnejqaz.view.pulltoswipe.PullToRefreshScrollLayout>
 
         <LinearLayout
             android:id="@+id/ll_finish_all"

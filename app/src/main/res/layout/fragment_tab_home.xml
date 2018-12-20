@@ -42,7 +42,7 @@
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 
-    <com.beiwo.klyjaz.view.floatbutton.DragFloatButton
+    <com.beiwo.qnejqaz.view.floatbutton.DragFloatButton
         android:id="@+id/float_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

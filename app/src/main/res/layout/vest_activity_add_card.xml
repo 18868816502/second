@@ -61,7 +61,7 @@
                 tools:text="招商银行储蓄卡" />
         </LinearLayout>
 
-        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+        <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_card_num"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -158,7 +158,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/cet_holder_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/cet_card_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
             android:textColor="#292929"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/cet_bank_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

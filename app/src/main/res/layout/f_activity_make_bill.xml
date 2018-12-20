@@ -52,7 +52,7 @@
             android:textColor="@color/black_1"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/et_custom_name"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             android:textColor="@color/black_1"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/et_input_money"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                 android:textColor="@color/black_1"
                 android:textSize="15dp" />
 
-            <com.beiwo.klyjaz.view.ClearEditText
+            <com.beiwo.qnejqaz.view.ClearEditText
                 android:id="@+id/et_remark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

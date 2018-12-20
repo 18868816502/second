@@ -3,65 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_loan_cash_page_full"
+    android:background="#fafafa"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/hold_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+        android:background="@color/main_color"
+        android:minHeight="45dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="借钱"
-            android:textColor="@color/title_txt_color"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
             android:textSize="17dp" />
     </android.support.v7.widget.Toolbar>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@color/main_color" />
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="-150dp">
 
         <RelativeLayout
             android:id="@+id/rl_container_wrap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:paddingBottom="45dp"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_head"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp11"
+                android:background="@drawable/bg_white_r6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:src="@drawable/loan_state02" />
-
-            <View
-                android:id="@+id/view_indicate"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp10"
-                android:layout_below="@id/iv_head"
-                android:layout_marginTop="@dimen/dp10"
-                android:background="@color/colorBackground" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/view_indicate"
-                android:background="@color/white"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/iv_head"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_white_r8"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dp42"
                     android:src="@drawable/loan_clock" />
@@ -81,12 +83,6 @@
                     android:text="您提交的贷款已受理，请您稍后查看"
                     android:textColor="@color/c_999999"
                     android:textSize="@dimen/sp13" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp50"
-                    android:background="@color/colorBackground" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -94,35 +90,35 @@
             android:id="@+id/ll_wrap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bg_loan_cash_page"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:orientation="vertical"
             android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_white_r8"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_r30"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="25dp"
+                android:paddingTop="18dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
                     android:text="借款金额(元)"
-                    android:textColor="#a5a9b2"
+                    android:textColor="@color/black_1"
                     android:textSize="13dp" />
 
                 <TextView
                     android:id="@+id/tv_seekbar_progress"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#f5f6ff"
+                    android:gravity="center"
                     android:text="2000"
                     android:textColor="#2f3133"
                     android:textSize="71dp" />
@@ -130,13 +126,14 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="借款30天"
-                        android:textColor="#A5A9B2"
+                        android:textColor="@color/black_1"
                         android:textSize="12dp" />
 
                     <View
@@ -150,92 +147,86 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="日息0.05%"
-                        android:textColor="#A5A9B2"
+                        android:textColor="@color/black_1"
                         android:textSize="12dp" />
-
-                    <TextView
-                        android:id="@+id/tv_service_charge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="58.8元"
-                        android:textColor="#ff6232"
-                        android:textSize="12dp"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/iv_question"
-                        android:layout_width="25dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="7dp"
-                        android:paddingRight="5dp"
-                        android:src="@mipmap/ic_bill_dout"
-                        android:visibility="gone" />
                 </LinearLayout>
-
-                <SeekBar
-                    android:id="@+id/seekbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="35dp"
-                    android:max="2000"
-                    android:min="500"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="0dp"
-                    android:progressDrawable="@drawable/seekbar"
-                    android:splitTrack="false"
-                    android:thumb="@drawable/ic_seekbar_thumb"
-                    android:thumbOffset="10dp"
-                    tools:progress="580" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="500"
-                        android:textColor="#6B6D73"
-                        android:textSize="11dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:text="2000"
-                        android:textColor="#6B6D73"
-                        android:textSize="11dp" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_go_loan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="35dp"
-                    android:background="@mipmap/ic_bg_btn"
-                    android:gravity="center"
-                    android:paddingBottom="5dp"
-                    android:text="立即借钱"
-                    android:textColor="@color/white"
-                    android:textSize="17dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="本服务不向学生人群提供"
-                    android:textColor="#A5A9B2"
-                    android:textSize="12dp" />
             </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="35dp"
+                android:max="2000"
+                android:maxHeight="5dp"
+                android:min="500"
+                android:minHeight="5dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:progressDrawable="@drawable/seekbar"
+                android:splitTrack="false"
+                android:thumb="@drawable/ic_seekbar_thumb"
+                android:thumbOffset="10dp"
+                tools:progress="580" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="500"
+                    android:textColor="#6B6D73"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="2000"
+                    android:textColor="#6B6D73"
+                    android:textSize="11dp" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_go_loan"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/bg_btn_r28"
+                android:gravity="center"
+                android:text="立即借钱"
+                android:textColor="@color/white"
+                android:textSize="17dp" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:text="本服务不向学生人群提供"
+                android:textColor="@color/black_2"
+                android:textSize="12dp" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="25dp"
                 android:drawableLeft="@mipmap/ic_left_safety"
                 android:drawablePadding="8dp"
                 android:gravity="center"

@@ -71,7 +71,7 @@
                 android:layout_height="60dp"
                 android:orientation="horizontal">
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -270,9 +270,9 @@
         android:layout_height="1dp"
         android:background="@color/colorBackground"/>
 
-    <com.beiwo.klyjaz.view.dialog.LoanListView
+    <com.beiwo.qnejqaz.view.dialog.LoanListView
         android:id="@+id/CapitalCombination_ListTwo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.beiwo.klyjaz.view.dialog.LoanListView>
+    </com.beiwo.qnejqaz.view.dialog.LoanListView>
 </LinearLayout>

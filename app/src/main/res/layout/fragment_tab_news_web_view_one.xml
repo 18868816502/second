@@ -20,7 +20,7 @@
 
                 <include layout="@layout/f_layout_neterror" />
 
-                <com.beiwo.klyjaz.view.BusinessWebView
+                <com.beiwo.qnejqaz.view.BusinessWebView
                     android:id="@+id/bwv_news_web_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -8,16 +8,8 @@
     <color name="colorHintTextColor">#e5e5e5</color>
     <color name="colorBackground">#f7f7f7</color>
 
-
     <!--文字-->
     <color name="text_color_white">#ffffff</color>
-    <!--00000000000000000000000000000000000000000000000000000000000000000000-->
-
-
-    <!--<color name="colorPrimary">#5591FF</color>-->
-    <!--<color name="colorPrimaryDark">#5591FF</color>-->
-    <!--<color name="colorAccent">#5591FF</color> -->
-
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#FF5240</color>
@@ -44,7 +36,6 @@
     <color name="black_1">#424251</color>
     <color name="black_1_66">#66424251</color>
     <color name="black_2">#909298</color>
-
 
     <color name="c_f7f7f7">#f7f7f7</color>
     <color name="c_ff5240">#ff5240</color>
@@ -89,4 +80,7 @@
     <color name="status_bar_color">#8c000000</color>
     <color name="c_ff7465">#ff7465</color>
     <color name="gray_white">#ffcccccc</color>
+
+    <color name="btn_color">#ffc600</color>
+    <color name="main_color">#4aa3e7</color>
 </resources>

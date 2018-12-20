@@ -46,7 +46,7 @@
                 android:paddingBottom="@dimen/dp21"
                 android:paddingTop="@dimen/dp21">
 
-                <com.beiwo.klyjaz.view.CircleImageView
+                <com.beiwo.qnejqaz.view.CircleImageView
                     android:id="@+id/iv_goods"
                     android:layout_width="@dimen/dp39"
                     android:layout_height="@dimen/dp39"

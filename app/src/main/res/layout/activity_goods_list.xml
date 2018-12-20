@@ -24,7 +24,7 @@
             android:textSize="17sp" />
     </android.support.v7.widget.Toolbar>
 
-    <com.beiwo.klyjaz.view.SearchEditText
+    <com.beiwo.qnejqaz.view.SearchEditText
         android:id="@+id/et_search"
         style="@style/StyleEditText"
         android:layout_marginRight="@dimen/dp15"

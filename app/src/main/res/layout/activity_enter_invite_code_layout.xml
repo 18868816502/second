@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.beiwo.klyjaz.ui.activity.EnterInviteCodeActivity">
+    tools:context="com.beiwo.qnejqaz.ui.activity.EnterInviteCodeActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"

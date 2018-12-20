@@ -41,7 +41,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
-        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+        <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_product_money"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:textSize="13dp"
             tools:text="2000-4000元" />
 
-        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+        <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_product_rate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:textSize="13dp"
             tools:text="0.03%" />
 
-        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+        <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_product_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.beiwo.klyjaz.view.flowlayout.TagFlowLayout
+    <com.beiwo.qnejqaz.view.flowlayout.TagFlowLayout
         android:id="@+id/tag_flow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

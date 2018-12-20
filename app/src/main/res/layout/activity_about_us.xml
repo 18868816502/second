@@ -23,11 +23,12 @@
     </android.support.v7.widget.Toolbar>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_logo"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:src="@drawable/about_kaola_logo" />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +56,7 @@
         android:lineSpacingExtra="3.5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:text="考拉有借是杭州贝沃科技有限公司旗下的一款小额现金贷产品。\n考拉有借是一款为有资金需求的年轻人群提供更便捷、优质的金融服务, 结合互联网大数据,省去传统借款繁琐流程手续,无需线下签约,全APP线上 操作,动动手指就能借款。"
+        android:text="去哪儿借钱是杭州优材科技有限公司旗下的一款小额现金贷产品。\n去哪儿借钱是一款为有资金需求的年轻人群提供更便捷、优质的金融服务, 结合互联网大数据,省去传统借款繁琐流程手续,无需线下签约,全APP线上 操作,动动手指就能借款。"
         android:textColor="@color/black_1"
         android:textSize="14dp" />
 

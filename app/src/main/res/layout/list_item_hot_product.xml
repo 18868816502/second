@@ -10,7 +10,7 @@
     tools:background="@android:color/white"
     tools:ignore="RtlHardcoded">
 
-    <com.beiwo.klyjaz.view.CircleImageView
+    <com.beiwo.qnejqaz.view.CircleImageView
         android:id="@+id/product_logo"
         android:layout_width="55dp"
         android:layout_height="55dp"
@@ -20,7 +20,7 @@
         android:scaleType="centerCrop"
         app:civ_border_color="#18000000"
         app:civ_border_width="0.5dp"
-        tools:src="@drawable/about_kaola_logo" />
+        tools:src="@mipmap/ic_launcher" />
 
     <LinearLayout
         android:layout_width="wrap_content"

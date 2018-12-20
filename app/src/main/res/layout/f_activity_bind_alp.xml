@@ -51,7 +51,7 @@
             android:textColor="@color/black_1"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/et_alp_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:textColor="@color/black_1"
             android:textSize="15dp" />
 
-        <com.beiwo.klyjaz.view.ClearEditText
+        <com.beiwo.qnejqaz.view.ClearEditText
             android:id="@+id/et_alp_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

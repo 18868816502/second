@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.beiwo.klyjaz.view.CustomSwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.beiwo.qnejqaz.view.CustomSwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/csm_bill_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+            <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
                 android:id="@+id/tv_home_bill_loan_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                 android:textSize="15dp" />
         </LinearLayout>
 
-        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+        <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_home_bill_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,4 +140,4 @@
             android:textColor="@color/white"
             android:textSize="12dp" />
     </FrameLayout>
-</com.beiwo.klyjaz.view.CustomSwipeMenuLayout>
+</com.beiwo.qnejqaz.view.CustomSwipeMenuLayout>

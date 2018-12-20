@@ -31,7 +31,7 @@
             android:textColor="@color/white"
             android:textSize="13dp" />
 
-        <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+        <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
             android:id="@+id/tv_bill_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

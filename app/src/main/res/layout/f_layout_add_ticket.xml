@@ -38,7 +38,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="15dp" />
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/cet_company_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="15dp" />
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/cet_tax_no"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="15dp" />
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/cet_company_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="15dp" />
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/cet_phone_no"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="15dp" />
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/cet_bank_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -223,7 +223,7 @@
                     android:textColor="@color/black_1"
                     android:textSize="15dp" />
 
-                <com.beiwo.klyjaz.view.ClearEditText
+                <com.beiwo.qnejqaz.view.ClearEditText
                     android:id="@+id/cet_bank_account"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

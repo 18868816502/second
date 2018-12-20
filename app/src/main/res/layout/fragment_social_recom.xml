@@ -32,6 +32,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
-            android:src="@drawable/community_publish" />
+            android:src="@mipmap/community_publish" />
     </FrameLayout>
 </LinearLayout>

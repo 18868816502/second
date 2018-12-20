@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/refresh_one" />
+        android:background="@color/main_color" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:textSize="12dp"
                 tools:text="10月待还(元)" />
 
-            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+            <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
                 android:id="@+id/head_bill_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

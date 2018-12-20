@@ -41,19 +41,19 @@
                     android:layout_height="35dp"
                     android:layout_gravity="center">
 
-                    <com.beiwo.klyjaz.loan.DrawableTextView
+                    <com.beiwo.qnejqaz.loan.DrawableTextView
                         android:id="@+id/dtv_money"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1" />
 
-                    <com.beiwo.klyjaz.loan.DrawableTextView
+                    <com.beiwo.qnejqaz.loan.DrawableTextView
                         android:id="@+id/dtv_kind"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1" />
 
-                    <com.beiwo.klyjaz.loan.DrawableTextView
+                    <com.beiwo.qnejqaz.loan.DrawableTextView
                         android:id="@+id/dtv_sort"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

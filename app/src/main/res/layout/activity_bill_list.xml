@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/refresh_one"
+        android:background="@color/main_color"
         android:minHeight="45dp">
 
         <TextView

@@ -9,7 +9,7 @@
     android:paddingBottom="@dimen/dp10"
     android:gravity="center_vertical">
 
-    <com.beiwo.klyjaz.view.ClearEditText
+    <com.beiwo.qnejqaz.view.ClearEditText
         android:id="@+id/dialog_comment_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

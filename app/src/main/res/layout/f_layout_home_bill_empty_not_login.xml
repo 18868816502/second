@@ -95,7 +95,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+                <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
@@ -105,7 +105,7 @@
                     android:textSize="15dp" />
             </LinearLayout>
 
-            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+            <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="65dp"
@@ -198,7 +198,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+                <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
@@ -208,7 +208,7 @@
                     android:textSize="15dp" />
             </LinearLayout>
 
-            <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+            <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="65dp"

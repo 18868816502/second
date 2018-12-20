@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.beiwo.klyjaz.view.BannerLayout
+    <com.beiwo.qnejqaz.view.BannerLayout
         android:id="@+id/banner_layout"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_home_loop_left" />
 
-        <com.beiwo.klyjaz.loan.ADTextView
+        <com.beiwo.qnejqaz.loan.ADTextView
             android:id="@+id/adt_looper"
             android:layout_width="match_parent"
             android:layout_height="35dp"

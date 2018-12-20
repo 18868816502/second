@@ -7,7 +7,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
-    <com.beiwo.klyjaz.view.CircleImageView
+    <com.beiwo.qnejqaz.view.CircleImageView
         android:id="@+id/circleImg"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -43,7 +43,7 @@
         app:layout_constraintStart_toStartOf="@+id/bill_title_tv"
         app:layout_constraintTop_toBottomOf="@+id/bill_title_tv" />
 
-    <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+    <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
         android:id="@+id/total_money_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

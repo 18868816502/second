@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+    <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
         android:id="@+id/totalliamount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalliamount" />
 
-    <com.beiwo.klyjaz.tang.widget.CustomNumTextView
+    <com.beiwo.qnejqaz.tang.widget.CustomNumTextView
         android:id="@+id/totalover_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white" />
 
-            <com.beiwo.klyjaz.view.BottomNavigationBar
+            <com.beiwo.qnejqaz.view.BottomNavigationBar
                 android:id="@+id/navigation_bar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -179,7 +179,7 @@
                         android:textSize="10dp" />
                 </RelativeLayout>
 
-            </com.beiwo.klyjaz.view.BottomNavigationBar>
+            </com.beiwo.qnejqaz.view.BottomNavigationBar>
         </FrameLayout>
 
         <View

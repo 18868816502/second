@@ -12,7 +12,7 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/white">
+        android:background="@color/main_color">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
                 android:id="@+id/mine_msg"
                 style="@style/ToolBarIconStyle"
                 android:layout_marginRight="15dp"
-                android:src="@drawable/mine_message" />
+                android:src="@mipmap/mine_message" />
 
             <TextView
                 android:id="@+id/tv_message_num"
@@ -50,63 +50,96 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_navigate_user_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:background="@color/main_color"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="50dp"
+                android:paddingTop="10dp">
+
+                <com.beiwo.qnejqaz.view.CircleImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/mine_icon_head" />
 
                 <LinearLayout
-                    android:id="@+id/ll_navigate_user_profile"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="20dp">
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
 
-                    <com.beiwo.klyjaz.view.CircleImageView
-                        android:id="@+id/avatar"
-                        android:layout_width="68dp"
-                        android:layout_height="68dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:src="@drawable/mine_icon_head" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/user_name"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/user_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black_1"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_now"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/login"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/login_now"
-                            android:textColor="@color/black_1"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_user_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="登录开启更多功能"
-                            android:textColor="@color/black_2"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_user_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="登录开启更多功能"
+                        android:textColor="@color/white_7"
+                        android:textSize="12sp" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="-35dp"
+                android:background="@mipmap/bg_mine"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp">
+
+                <com.beiwo.qnejqaz.loan.DrawableCenterTextView
+                    android:id="@+id/dctv_loan"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_loan_my"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="我的借款"
+                    android:textColor="@color/black_1"
+                    android:textSize="15dp" />
+
+                <View
+                    android:layout_width="0.8dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/line_color" />
+
+                <com.beiwo.qnejqaz.loan.DrawableCenterTextView
+                    android:id="@+id/dctv_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_bank_my"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="我的银行卡"
+                    android:textColor="@color/black_1"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,49 +149,12 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@mipmap/bg_mine">
-
-                    <com.beiwo.klyjaz.loan.DrawableCenterTextView
-                        android:id="@+id/dctv_loan"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/icon_loan_my"
-                        android:drawablePadding="5dp"
-                        android:gravity="center_vertical"
-                        android:text="我的借款"
-                        android:textColor="@color/black_1"
-                        android:textSize="15dp" />
-
-                    <View
-                        android:layout_width="0.8dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/line_color" />
-
-                    <com.beiwo.klyjaz.loan.DrawableCenterTextView
-                        android:id="@+id/dctv_bank"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/icon_bank_my"
-                        android:drawablePadding="5dp"
-                        android:gravity="center_vertical"
-                        android:text="我的银行卡"
-                        android:textColor="@color/black_1"
-                        android:textSize="15dp" />
-                </LinearLayout>
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/activity_deploy_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.beiwo.klyjaz.view.CardLayoutBar
+                <com.beiwo.qnejqaz.view.CardLayoutBar
                     android:id="@+id/invite_friend"
                     style="@style/mineCard"
                     android:visibility="gone"
@@ -166,7 +162,7 @@
                     app:left_textView_text="@string/invite_friend"
                     app:right_textView1_text="首邀好友得15元" />
 
-                <com.beiwo.klyjaz.view.CardLayoutBar
+                <com.beiwo.qnejqaz.view.CardLayoutBar
                     android:id="@+id/my_wallet"
                     style="@style/mineCard"
                     app:left_image="@mipmap/ic_me_wallet"

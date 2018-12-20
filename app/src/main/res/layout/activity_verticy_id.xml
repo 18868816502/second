@@ -41,7 +41,7 @@
         android:layout_marginRight="@dimen/dp15"
         android:layout_marginStart="@dimen/dp15"
         android:layout_marginTop="@dimen/dp40"
-        android:background="@drawable/shape_jjd_start_vertify"
+        android:background="@drawable/bg_btn_r28"
         android:gravity="center"
         android:text="@string/jjd_start_vertify_text"
         android:textColor="@color/white"

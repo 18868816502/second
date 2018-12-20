@@ -76,7 +76,7 @@
                                 android:background="@color/line_color" />
                         </LinearLayout>
 
-                        <com.beiwo.klyjaz.tang.widget.ExpandableTextView
+                        <com.beiwo.qnejqaz.tang.widget.ExpandableTextView
                             android:id="@+id/expand_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

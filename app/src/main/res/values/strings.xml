@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">考拉有借</string>
+    <string name="app_name">去哪儿借钱</string>
     <string name="app_content_description">TODO</string>
     <string name="tab_news">发现</string>
     <string name="tab_social">工具</string>
@@ -219,7 +219,7 @@
     <string name="jjd_contact_phone_tips">请从手机通讯录中选择</string>
     <string name="jjd_contact_tips">温馨提示：请提供真实有效的联系信息，否则将导致借款失败</string>
     <string name="jjd_vertify_next_text">下一步</string>
-    <string name="jjd_vertify_start_auth">开始授权</string>
+    <string name="jjd_vertify_start_auth">确认授权</string>
     <string name="jjd_vertify_auth_zhima">请授权您的芝麻信用</string>
     <string name="jjd_vertify_auth_ing">正在授权中...</string>
     <string name="jjd_vertify_auth_back_time_tips">你将在 %1$ds 后自动跳转</string>
